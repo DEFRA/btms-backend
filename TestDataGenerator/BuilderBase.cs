@@ -42,6 +42,13 @@ public abstract class BuilderBase<T, TBuilder>
 
         return (TBuilder)this;
     }
+    
+    protected TBuilder Do(Action<T> action)
+    {
+        _composer = _composer.Do(action);
+
+        return (TBuilder)this;
+    }
 
     public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, Func<TProperty> valueFactory)
     {
@@ -52,7 +59,8 @@ public abstract class BuilderBase<T, TBuilder>
 
     protected string CreateRandomString(int length) => string.Join("", Fixture.CreateMany<char>(length));
     
-    protected string CreateRandomInt(int length) => new Random().Next(Convert.ToInt32(Math.Pow(10, length - 1)), Convert.ToInt32(Math.Pow(10, length) - 1)).ToString();
+    protected string CreateRandomInt(int length) => CreateRandomInt(Convert.ToInt32(Math.Pow(10, length - 1)), Convert.ToInt32(Math.Pow(10, length) - 1)).ToString();
+    protected int CreateRandomInt(int min, int max) => new Random().Next(min, max);
     
     public T Build() => _composer.Create();
 }

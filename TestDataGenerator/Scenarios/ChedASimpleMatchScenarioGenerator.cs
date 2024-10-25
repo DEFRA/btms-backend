@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TestDataGenerator.Scenarios;
 
-internal class SimpleChedAMatchScenarioGenerator(ILogger<SimpleChedAMatchScenarioGenerator> logger) : ScenarioGenerator()
+internal class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger) : ScenarioGenerator()
 {
     internal override GeneratorResult Generate(int item)
     {

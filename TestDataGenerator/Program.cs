@@ -27,7 +27,8 @@ internal class Program
                 services.AddHttpClient();
 
                 services.AddSingleton<GeneratorConfig, GeneratorConfig>();
-                services.AddSingleton<SimpleChedAMatchScenarioGenerator, SimpleChedAMatchScenarioGenerator>();
+                services.AddSingleton<ChedASimpleMatchScenarioGenerator, ChedASimpleMatchScenarioGenerator>();
+                services.AddSingleton<ChedAManyCommoditiesScenarioGenerator, ChedAManyCommoditiesScenarioGenerator>();
                 services.AddSingleton<IBlobService, BlobService>();
                 services.AddTransient<Generator>();
             })
@@ -39,9 +40,14 @@ internal class Program
         var app = builder.Build();
         var generator = app.Services.GetRequiredService<Generator>();
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        var simpleChedAMatch = app.Services.GetRequiredService<SimpleChedAMatchScenarioGenerator>();
+        var chedASimpleMatch = app.Services.GetRequiredService<ChedASimpleMatchScenarioGenerator>();
+        var chedAManyCommodities = app.Services.GetRequiredService<ChedAManyCommoditiesScenarioGenerator>();
         
-        var scenarios = new[] { new {scenario = "SimpleChedAMatch", count = 10, generator = simpleChedAMatch } };
+        var scenarios = new[]
+        {
+            // new { scenario = "ChedASimpleMatch", count = 10,  generator = (ScenarioGenerator)chedASimpleMatch },
+            new { scenario = "ChedAManyCommodities", count = 1, generator = (ScenarioGenerator)chedAManyCommodities }
+        };
         
         logger.LogInformation($"{scenarios.Length} scenario(s) configured");
         
