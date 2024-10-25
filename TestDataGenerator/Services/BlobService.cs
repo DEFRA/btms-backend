@@ -186,7 +186,9 @@ public class BlobService(ILoggerFactory loggerFactory, GeneratorConfig config, I
             {
                 try
                 {
+                    Logger.LogInformation($"Uploading file {item.Name}");
                     var result = await containerClient.UploadBlobAsync(item.Name, BinaryData.FromString(item.Content));
+                    Logger.LogInformation($"Uploaded file {item.Name} Result = {result}");
                 }
                 catch (Exception ex)
                 {

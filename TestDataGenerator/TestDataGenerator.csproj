@@ -33,22 +33,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Scenarios\SimpleChedAMatch\ched.json" />
-      <Content Include="Scenarios\SimpleChedAMatch\ched.json">
+      <None Remove="Properties\local.env" />
+      <Content Include="Properties\local.env">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <None Remove="Scenarios\SimpleChedAMatch\cr.json" />
-      <Content Include="Scenarios\SimpleChedAMatch\cr.json">
+      <Content Include="Scenarios\Samples\cheda-one-commodity.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Properties\local.env">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      </None>
+      <Content Include="Scenarios\Samples\cr-one-item.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 

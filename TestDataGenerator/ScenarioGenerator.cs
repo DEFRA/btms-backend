@@ -3,9 +3,9 @@ using Cdms.Types.Ipaffs;
 
 namespace TestDataGenerator;
 
-public abstract class ScenarioGenerator(string folder)
+public abstract class ScenarioGenerator()
 {
-    private string fullFolder = $"{Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory)}/{folder}";
+    private string fullFolder = $"{Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
 
     internal class GeneratorResult
     {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using TestDataGenerator.Config;
-using TestDataGenerator.Scenarios.SimpleChedAMatch;
+using TestDataGenerator.Scenarios;
 using TestDataGenerator.Services;
 
 namespace TestDataGenerator;
@@ -41,7 +41,7 @@ internal class Program
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
         var simpleChedAMatch = app.Services.GetRequiredService<SimpleChedAMatchScenarioGenerator>();
         
-        var scenarios = new[] { new {scenario = "SimpleChedAMatch", count = 1, generator = simpleChedAMatch } };
+        var scenarios = new[] { new {scenario = "SimpleChedAMatch", count = 10, generator = simpleChedAMatch } };
         
         logger.LogInformation($"{scenarios.Length} scenario(s) configured");
         
@@ -53,5 +53,7 @@ internal class Program
         {
             await generator.Generate(s.count, s.generator);
         }
+        
+        logger.LogInformation("Done");
     }
 }
