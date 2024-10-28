@@ -94,7 +94,8 @@ public class Movement : IMongoIdentifiable, IDataEntity
                 }
             }
 
-            return list.ToList();
+            matchReferences = list.ToList();
+            return matchReferences;
         }
         set => matchReferences = value;
     }

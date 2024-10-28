@@ -14,7 +14,7 @@ public sealed class RelationshipLinks
     {
         return new RelationshipLinks()
         {
-            Self = LinksBuilder.Movement.BuildSelfLink(movement.Id),
+            Self = LinksBuilder.Movement.BuildSelfMovementLink(movement.Id),
             Related = LinksBuilder.Movement.BuildRelatedMovementLink(movement.Id)
         };
     }
@@ -23,7 +23,7 @@ public sealed class RelationshipLinks
     {
         return new RelationshipLinks()
         {
-            Self = LinksBuilder.Notification.BuildSelfLink(notification.Id),
+            Self = LinksBuilder.Notification.BuildSelfNotificationLink(notification.Id),
             Related = LinksBuilder.Notification.BuildRelatedMovementLink(notification.Id)
         };
     }

@@ -76,8 +76,7 @@ namespace Cdms.Backend.Data
 
             if (updateResult.ModifiedCount == 0)
             {
-                //TODO: throw concurrency
-                //throw new Exception("Concurrency Error, change this to a Concurrency exception");
+                throw new ConcurrencyException("Concurrency Error, change this to a Concurrency exception");
             }
         }
     }

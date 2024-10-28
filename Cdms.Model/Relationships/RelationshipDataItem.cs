@@ -42,7 +42,7 @@ public sealed class RelationshipDataItem
                 .FirstOrDefault(x => x.Documents.Any(d => d.DocumentReference.Contains(matchReference)))
                 ?.ItemNumber,
             DestinationItem = notification.Commodities?.FirstOrDefault()?.ComplementId,
-            Links = new ResourceLink() { Self = LinksBuilder.Notification.BuildSelfLink(notification.Id) },
+            Links = new ResourceLink() { Self = LinksBuilder.Notification.BuildSelfNotificationLink(notification.Id) },
             MatchingLevel = 1
         };
     }

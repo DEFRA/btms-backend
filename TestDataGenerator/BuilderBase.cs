@@ -11,38 +11,31 @@ namespace TestDataGenerator;
 public abstract class BuilderBase<T, TBuilder>
     where TBuilder : BuilderBase<T, TBuilder> where T : new()
 {
-    protected Fixture Fixture { get; }
+    protected Fixture Fixture { get; private set; }
 
     private IPostprocessComposer<T> _composer;
 
     protected BuilderBase()
     {
-        Fixture = new Fixture();
-
-        _composer = Fixture.Build<T>();
+        Setup();
     }
 
-    protected BuilderBase(string filePath): this()
+    protected BuilderBase(string filePath)
     {
-        // var filePath =
-            // "/Users/craig/src/defra/cdms/cdms-backend/TestDataGenerator/Scenarios/SimpleChedAMatch/ched.json";
-        
         var json = File.ReadAllText(filePath);
 
         var n = JsonSerializer.Deserialize<T>(json)!;
-        
-        _composer = Fixture.Build<T>()
-            .FromFactory(() => n)
-            .OmitAutoProperties();
+
+        Setup(n);
     }
-    
+
     public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, TProperty value)
     {
         _composer = _composer.With(propertyPicker, value);
 
         return (TBuilder)this;
     }
-    
+
     protected TBuilder Do(Action<T> action)
     {
         _composer = _composer.Do(action);
@@ -58,9 +51,23 @@ public abstract class BuilderBase<T, TBuilder>
     }
 
     protected string CreateRandomString(int length) => string.Join("", Fixture.CreateMany<char>(length));
-    
-    protected string CreateRandomInt(int length) => CreateRandomInt(Convert.ToInt32(Math.Pow(10, length - 1)), Convert.ToInt32(Math.Pow(10, length) - 1)).ToString();
+
+    protected string CreateRandomInt(int length) =>
+        CreateRandomInt(Convert.ToInt32(Math.Pow(10, length - 1)), Convert.ToInt32(Math.Pow(10, length) - 1))
+            .ToString();
+
     protected int CreateRandomInt(int min, int max) => new Random().Next(min, max);
-    
+
     public T Build() => _composer.Create();
+
+    private void Setup(T item = default)
+    {
+        Fixture = new Fixture();
+
+        item ??= Fixture.Create<T>();
+
+        _composer = Fixture.Build<T>()
+            .FromFactory(() => item)
+            .OmitAutoProperties();
+    }
 }

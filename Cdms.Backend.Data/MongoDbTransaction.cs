@@ -25,9 +25,9 @@ public class MongoDbTransaction(IClientSessionHandle session) : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposing)
+        if (disposing && session != null)
         {
-            if (session != null) session.Dispose();
+            session.Dispose();
         }
     }
 }

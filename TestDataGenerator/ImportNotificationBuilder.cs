@@ -29,7 +29,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return new ImportNotificationBuilder<T>();
     }
-    
+
     public static ImportNotificationBuilder<T> FromFile(string file)
     {
         return new ImportNotificationBuilder<T>(file);
@@ -39,16 +39,10 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         var commodityCount = CreateRandomInt(min, max);
 
-        var commodities = Enumerable.Range(0, commodityCount).Select(x => new CommodityComplement()
-            {
-                
-            }
+        var commodities = Enumerable.Range(0, commodityCount).Select(x => new CommodityComplement() { }
         );
-        
-        return Do((n) =>
-        {
-            n.PartOne!.Commodities.CommodityComplements = commodities.ToArray();
-        });
+
+        return Do((n) => { n.PartOne!.Commodities.CommodityComplements = commodities.ToArray(); });
     }
 
     public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int item)

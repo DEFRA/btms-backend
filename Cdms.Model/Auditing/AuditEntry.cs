@@ -104,7 +104,7 @@ public class AuditEntry
 
         foreach (var operation in diff.Operations)
         {
-            auditEntry.Diff.Add(AuditDiffEntry.Create(operation));
+            auditEntry.Diff.Add(AuditDiffEntry.CreateInternal(operation));
         }
 
         return auditEntry;
@@ -119,7 +119,7 @@ public class AuditEntry
 
         public object Value { get; set; }
 
-        public static AuditDiffEntry Create(PatchOperation operation)
+        internal static AuditDiffEntry CreateInternal(PatchOperation operation)
         {
             object value = null;
             if (operation.Value != null)
@@ -148,7 +148,8 @@ public class AuditEntry
                     case JsonValueKind.Null:
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(
+                            $"Unhandled JsonValueKind {operation.Value.GetValueKind()}");
                 }
             }
 
