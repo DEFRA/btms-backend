@@ -66,7 +66,7 @@ public sealed class RelationshipDataItem
             DestinationItem = movement.Items
                 .FirstOrDefault(x => x.Documents.Any(d => d.DocumentReference.Contains(matchReference)))
                 ?.ItemNumber,
-            Links = new ResourceLink() { Self = LinksBuilder.Movement.BuildSelfLink(movement.Id) },
+            Links = new ResourceLink() { Self = LinksBuilder.Movement.BuildRelatedMovementLink(movement.Id) },
             MatchingLevel = 1
         };
     }
