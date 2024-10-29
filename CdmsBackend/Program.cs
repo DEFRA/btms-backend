@@ -16,8 +16,11 @@ using Cdms.BlobService;
 using Cdms.SensitiveData;
 using FluentAssertions.Common;
 using System.Text.Json.Serialization;
+using Cdms.Backend.Data.Healthcheck;
+using HealthChecks.UI.Client;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -91,25 +94,21 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
     // our Example service, remove before deploying!
     builder.Services.AddSingleton<IExamplePersistence, ExamplePersistence>();
 
-    builder.Services
-        .AddHealthChecksUI()
-        .AddInMemoryStorage();
     builder.Services.AddHealthChecks()
         .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>().CreateBlobServiceClient())
-        .AddMongoDb(sp =>
-        {
-            var options = sp.GetService<IOptions<MongoDbOptions>>();
-            return new MongoClient(options.Value.DatabaseUri);
-        });
+        .AddMongoDb();
 }
 
 [ExcludeFromCodeCoverage]
 static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
     var app = builder.Build();
-    app.UseRouting()
-        .UseEndpoints(config => config.MapHealthChecksUI());
-    app.MapHealthChecks("/health");
+
+    app.MapHealthChecks("/health",
+        new HealthCheckOptions()
+        {
+            Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
 
     // Example module, remove before deploying!
     app.UseExampleEndpoints();
