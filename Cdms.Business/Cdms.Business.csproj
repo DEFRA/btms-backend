@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Cdms.Business.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Cdms.Backend.Data\Cdms.Backend.Data.csproj" />
     <ProjectReference Include="..\Cdms.BlobService\Cdms.BlobService.csproj" />
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />

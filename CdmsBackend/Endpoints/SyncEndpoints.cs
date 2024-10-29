@@ -59,7 +59,7 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> SyncDecisions([FromServices] IMediator mediator,
-        [FromBody] SyncNotificationsCommand command)
+        [FromBody] SyncDecisionsCommand command)
     {
         await mediator.Send(command);
         return Results.Ok();
