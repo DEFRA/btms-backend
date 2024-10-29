@@ -32,6 +32,11 @@ public static class ImportNotificationWithTransformMapper
         // var output = from pair in input
         //     select pair.Key;
 
+        if (input == null)
+        {
+            return null;
+        }
+
         return input.ToDictionary(mc => mc.Key.FromSnakeCase(),
             mc => mc.Value);
 

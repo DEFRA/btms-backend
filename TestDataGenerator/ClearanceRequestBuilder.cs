@@ -44,8 +44,23 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         // TODO : manipulate the ref to be correct format first
         // Trying to figure out if there's a way to use lenses to allow the below to work! 
         // https://stackoverflow.com/questions/30938972/how-to-build-nested-property-with-autofixture
-        return With(x => x.Items[0].Documents[0].DocumentReference, chedReference);
+        return Do(x => x.Items[0].Documents[0].DocumentReference = chedReference);
 
         // return With(x => x.Compose(ItemsLens));
+    }
+
+    public ClearanceRequestBuilder<T> WithValidDocumentReferenceNumbers()
+    {
+        return Do(x =>
+        {
+            foreach (var item in x.Items!)
+            {
+                foreach (var document in item.Documents!)
+                {
+                    document.DocumentReference = "GBCHD2024.1001278";
+                    document.DocumentCode = "C640";
+                }
+            }
+        });
     }
 }

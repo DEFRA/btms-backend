@@ -25,26 +25,7 @@ namespace Cdms.Backend.Data
 
         public Type ElementType => EntityQueryable.ElementType;
         public Expression Expression => EntityQueryable.Expression;
-
-        // IMongoQueryProvider IQueryable.Provider => EntityQueryable.Provider;
-
-        //public QueryableExecutionModel GetExecutionModel()
-        //{
-        //    return EntityQueryable.GetExecutionModel();
-        //}
-
-        //public BsonDocument[] LoggedStages => EntityQueryable.LoggedStages;
         public IQueryProvider Provider => EntityQueryable.Provider;
-
-        public IAsyncCursor<T> ToCursor(CancellationToken cancellationToken = new CancellationToken())
-        {
-            return EntityQueryable.ToCursor(cancellationToken);
-        }
-
-        public Task<IAsyncCursor<T>> ToCursorAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            return EntityQueryable.ToCursorAsync(cancellationToken);
-        }
 
         public Task<T> Find(string id)
         {
@@ -61,21 +42,21 @@ namespace Cdms.Backend.Data
                 : collection.InsertOneAsync(item, cancellationToken: cancellationToken);
         }
 
-        public async Task Update(T item, MongoDbTransaction transaction = null,
+        public async Task Update(T item, string etag, MongoDbTransaction transaction = null,
             CancellationToken cancellationToken = default)
         {
             var builder = Builders<T>.Filter;
 
-            var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, item._Etag);
+            var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
 
             item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
 
             IClientSessionHandle session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             var updateResult = session is not null
-                ? await collection.UpdateOneAsync(session, filter, new ObjectUpdateDefinition<T>(item),
+                ? await collection.ReplaceOneAsync(session, filter, item,
                     cancellationToken: cancellationToken)
-                : await collection.UpdateOneAsync(filter, new ObjectUpdateDefinition<T>(item),
+                : await collection.ReplaceOneAsync(filter, item,
                     cancellationToken: cancellationToken);
 
             if (updateResult.ModifiedCount == 0)

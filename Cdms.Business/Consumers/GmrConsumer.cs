@@ -55,7 +55,7 @@ namespace Cdms.Business.Consumers
                             version: internalGmr.AuditEntries.Count + 1,
                             lastUpdated: gmr.LastUpdated);
                         internalGmr.AuditEntries.Add(auditEntry);
-                        await dbContext.Gmrs.Update(internalGmr);
+                        await dbContext.Gmrs.Update(internalGmr, existingGmr._Etag);
                     }
                 }
 

@@ -36,7 +36,7 @@ namespace Cdms.Business.Consumers
                 var merged = existingMovement.MergeDecision(auditId, internalClearanceRequest);
                 if (merged)
                 {
-                    await dbContext.Movements.Update(existingMovement);
+                    await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
                 }
             }
 

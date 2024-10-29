@@ -59,7 +59,7 @@ namespace Cdms.Business.Consumers
                     existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
 
                     existingMovement.Items.AddRange(movement.Items);
-                    await dbContext.Movements.Update(existingMovement);
+                    await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
                 }
             }
             else
