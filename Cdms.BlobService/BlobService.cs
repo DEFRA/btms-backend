@@ -8,14 +8,8 @@ using Microsoft.Extensions.Options;
 
 namespace Cdms.BlobService;
 
-//public interface IBlobConfig : IAzureConfig
-//{
-//    public string DmpBlobContainer { get; }
-
-//    public string DmpBlobUri { get; }
-//}
-
 public class BlobService(
+    IBlobServiceClientFactory blobServiceClientFactory,
     ILogger<BlobService> logger,
     IOptions<BlobServiceOptions> options,
     IHttpClientFactory clientFactory)
@@ -23,17 +17,7 @@ public class BlobService(
 {
     private BlobContainerClient CreateBlobClient(string serviceUri, int retries = 3, int timeout = 10)
     {
-        var bcOptions = new BlobClientOptions
-        {
-            Transport = Transport!,
-            Retry = { MaxRetries = retries, NetworkTimeout = TimeSpan.FromSeconds(timeout) },
-            Diagnostics = { IsLoggingContentEnabled = true, IsLoggingEnabled = true }
-        };
-
-        var blobServiceClient = new BlobServiceClient(
-            new Uri(serviceUri),
-            Credentials,
-            bcOptions);
+        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient();
 
         var containerClient = blobServiceClient.GetBlobContainerClient(options.Value.DmpBlobContainer);
 

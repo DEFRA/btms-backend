@@ -16,6 +16,8 @@ using Cdms.BlobService;
 using Cdms.SensitiveData;
 using FluentAssertions.Common;
 using System.Text.Json.Serialization;
+using MongoDB.Driver;
+using Microsoft.AspNetCore.Builder;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -89,20 +91,24 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
     // our Example service, remove before deploying!
     builder.Services.AddSingleton<IExamplePersistence, ExamplePersistence>();
 
-    builder.Services.AddControllers().AddJsonOptions(x =>
-    {
-        // serialize enums as strings in api responses (e.g. Role)
-        x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
-    builder.Services.AddHealthChecks();
+    builder.Services
+        .AddHealthChecksUI()
+        .AddInMemoryStorage();
+    builder.Services.AddHealthChecks()
+        .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>().CreateBlobServiceClient())
+        .AddMongoDb(sp =>
+        {
+            var options = sp.GetService<IOptions<MongoDbOptions>>();
+            return new MongoClient(options.Value.DatabaseUri);
+        });
 }
 
 [ExcludeFromCodeCoverage]
 static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
     var app = builder.Build();
-
-    app.UseRouting();
+    app.UseRouting()
+        .UseEndpoints(config => config.MapHealthChecksUI());
     app.MapHealthChecks("/health");
 
     // Example module, remove before deploying!

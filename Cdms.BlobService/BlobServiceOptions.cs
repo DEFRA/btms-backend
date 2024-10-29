@@ -13,4 +13,8 @@ public class BlobServiceOptions : IAzureConfig
     public string AzureClientId { get; set; }
     public string AzureTenantId { get; set; }
     public string AzureClientSecret { get; set; }
+
+    public int Retries { get; set; } = 3;
+
+    public int Timeout { get; set; } = 10;
 }

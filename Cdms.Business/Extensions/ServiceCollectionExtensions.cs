@@ -1,6 +1,7 @@
 using Cdms.Backend.Data;
 using Cdms.Backend.Data.Extensions;
 using Cdms.BlobService;
+using Cdms.BlobService.Extensions;
 using Cdms.Business.Commands;
 using Cdms.Business.Consumers;
 using Cdms.Model.Extensions;
@@ -37,6 +38,8 @@ namespace Cdms.Business.Extensions
 
 
             services.AddMongoDbContext(configuration);
+            services.AddBlobStorage(configuration);
+            services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
             services.AddSingleton<IBlobService, BlobService.BlobService>();
             services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
 
@@ -85,6 +88,7 @@ namespace Cdms.Business.Extensions
             services.AddSingleton<ImportNotificationMetrics>();
             services.AddSingleton<AlvsClearanceRequestMetrics>();
             services.AddSingleton<GmrMetrics>();
+            services.AddSingleton<DecisionMetrics>();
 
             return services;
         }
