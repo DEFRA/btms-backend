@@ -1,13 +1,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Options;
 
 namespace Cdms.SensitiveData;
 
-public class SensitiveDataSerializer(ISensitiveDataOptions options) : ISensitiveDataSerializer
+public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options) : ISensitiveDataSerializer
 {
     private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions()
     {
-        TypeInfoResolver = new SensitiveDataTypeInfoResolver(options),
+        TypeInfoResolver = new SensitiveDataTypeInfoResolver(options.Value),
         PropertyNameCaseInsensitive = true,
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
@@ -19,14 +20,13 @@ public class SensitiveDataSerializer(ISensitiveDataOptions options) : ISensitive
         {
             newOptions = new JsonSerializerOptions()
             {
-                TypeInfoResolver = new SensitiveDataTypeInfoResolver(options),
+                TypeInfoResolver = new SensitiveDataTypeInfoResolver(options.Value),
                 PropertyNameCaseInsensitive = true,
                 NumberHandling = JsonNumberHandling.AllowReadingFromString
             };
             optionsOverride(newOptions);
         }
+
         return JsonSerializer.Deserialize<T>(json, newOptions);
     }
-
-    
 }

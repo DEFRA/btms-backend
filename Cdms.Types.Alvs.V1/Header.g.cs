@@ -10,6 +10,7 @@
 
 using System.Text.Json.Serialization;
 using System.Dynamic;
+using Cdms.Types.Alvs.V1;
 
 
 namespace Cdms.Types.Alvs;
@@ -67,6 +68,7 @@ public partial class Header  //
     /// 
     /// </summary
     [JsonPropertyName("arrivalDateTime")]
+    [JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]
     public DateTime? ArrivalDateTime { get; set; }
 
 	

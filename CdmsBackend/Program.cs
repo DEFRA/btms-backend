@@ -1,3 +1,4 @@
+using CdmsBackend.Endpoints;
 using CdmsBackend.Example.Endpoints;
 using CdmsBackend.Example.Services;
 using CdmsBackend.Utils;
@@ -8,6 +9,13 @@ using FluentValidation;
 using Serilog;
 using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
+using Cdms.Backend.Data.Extensions;
+using Cdms.Business.Extensions;
+using Microsoft.Extensions.Options;
+using Cdms.BlobService;
+using Cdms.SensitiveData;
+using FluentAssertions.Common;
+using System.Text.Json.Serialization;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -18,78 +26,88 @@ await app.RunAsync();
 [ExcludeFromCodeCoverage]
 static WebApplication CreateWebApplication(string[] args)
 {
-   var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
-   ConfigureWebApplication(builder);
+    ConfigureWebApplication(builder);
 
-   var app = BuildWebApplication(builder);
+    var app = BuildWebApplication(builder);
 
-   return app;
+    return app;
 }
 
 [ExcludeFromCodeCoverage]
 static void ConfigureWebApplication(WebApplicationBuilder builder)
 {
-   builder.Configuration.AddEnvironmentVariables();
-   builder.Configuration.AddIniFile("Properties/local.env", true);
+    builder.Configuration.AddEnvironmentVariables();
+    builder.Configuration.AddIniFile("Properties/local.env", true)
+        .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 
-   var logger = ConfigureLogging(builder);
+    var logger = ConfigureLogging(builder);
 
-   // Load certificates into Trust Store - Note must happen before Mongo and Http client connections
-   builder.Services.AddCustomTrustStore(logger);
+    // Load certificates into Trust Store - Note must happen before Mongo and Http client connections
+    builder.Services.AddCustomTrustStore(logger);
 
-   ConfigureMongoDb(builder);
+    builder.Services.AddBusinessServices(builder.Configuration);
 
-   ConfigureEndpoints(builder);
+    ConfigureMongoDb(builder);
 
-   builder.Services.AddHttpClient();
+    ConfigureEndpoints(builder);
 
-   // calls outside the platform should be done using the named 'proxy' http client.
-   builder.Services.AddHttpProxyClient(logger);
+    builder.Services.AddHttpClient();
 
-   builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+    // calls outside the platform should be done using the named 'proxy' http client.
+    builder.Services.AddHttpProxyClient(logger);
+
+    builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 }
 
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
-   builder.Logging.ClearProviders();
-   var logger = new LoggerConfiguration()
-       .ReadFrom.Configuration(builder.Configuration)
-       .Enrich.With<LogLevelMapper>()
-       .CreateLogger();
-   builder.Logging.AddSerilog(logger);
-   logger.Information("Starting application");
-   return logger;
+    builder.Logging.ClearProviders();
+    var logger = new LoggerConfiguration()
+        .WriteTo.Seq("http://localhost:6341")
+        .ReadFrom.Configuration(builder.Configuration)
+        .Enrich.With<LogLevelMapper>()
+        .CreateLogger();
+    builder.Logging.AddSerilog(logger);
+    logger.Information("Starting application");
+    return logger;
 }
 
 [ExcludeFromCodeCoverage]
 static void ConfigureMongoDb(WebApplicationBuilder builder)
 {
-   builder.Services.AddSingleton<IMongoDbClientFactory>(_ =>
-       new MongoDbClientFactory(builder.Configuration.GetValue<string>("Mongo:DatabaseUri")!,
-           builder.Configuration.GetValue<string>("Mongo:DatabaseName")!));
+    builder.Services.AddSingleton<IMongoDbClientFactory>(_ =>
+        new MongoDbClientFactory(builder.Configuration.GetValue<string>("Mongo:DatabaseUri")!,
+            builder.Configuration.GetValue<string>("Mongo:DatabaseName")!));
 }
 
 [ExcludeFromCodeCoverage]
 static void ConfigureEndpoints(WebApplicationBuilder builder)
 {
-   // our Example service, remove before deploying!
-   builder.Services.AddSingleton<IExamplePersistence, ExamplePersistence>();
+    // our Example service, remove before deploying!
+    builder.Services.AddSingleton<IExamplePersistence, ExamplePersistence>();
 
-   builder.Services.AddHealthChecks();
+    builder.Services.AddControllers().AddJsonOptions(x =>
+    {
+        // serialize enums as strings in api responses (e.g. Role)
+        x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+    builder.Services.AddHealthChecks();
 }
 
 [ExcludeFromCodeCoverage]
 static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
-   var app = builder.Build();
+    var app = builder.Build();
 
-   app.UseRouting();
-   app.MapHealthChecks("/health");
+    app.UseRouting();
+    app.MapHealthChecks("/health");
 
-   // Example module, remove before deploying!
-   app.UseExampleEndpoints();
+    // Example module, remove before deploying!
+    app.UseExampleEndpoints();
+    app.UseSyncEndpoints();
 
-   return app;
+    return app;
 }

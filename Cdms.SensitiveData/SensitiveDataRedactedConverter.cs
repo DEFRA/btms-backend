@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Cdms.SensitiveData;
 
-public class SensitiveDataRedactedConverter(ISensitiveDataOptions sensitiveDataOptions) : JsonConverter<string>
+public class SensitiveDataRedactedConverter(SensitiveDataOptions sensitiveDataOptions) : JsonConverter<string>
 {
     /// <inheritdoc/>
     public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

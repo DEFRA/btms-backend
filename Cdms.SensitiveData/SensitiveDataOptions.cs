@@ -1,27 +1,11 @@
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 
 namespace Cdms.SensitiveData;
 
-public interface ISensitiveDataOptions
+public class SensitiveDataOptions
 {
-    public bool Include { get; }
-
-    public Func<string, string> Getter { get;  }
-}
-
-public class SensitiveDataOptions : ISensitiveDataOptions
-{
-    private SensitiveDataOptions()
-    {
-
-    }
-
-    public SensitiveDataOptions(IConfiguration configuration)
-    {
-        Include = configuration.GetValue<bool>("INGEST_INCLUDE_SENSITIVE_DATA");
-    }
+    public const string SectionName = nameof(SensitiveDataOptions);
     public bool Include { get; set; }
 
     public Func<string, string> Getter { get; set; } = Sha256;
@@ -35,10 +19,11 @@ public class SensitiveDataOptions : ISensitiveDataOptions
         {
             hash += theByte.ToString("x2");
         }
+
         return hash;
     }
 
-    public static SensitiveDataOptions Default => new ();
+    public static SensitiveDataOptions Default => new();
 
     public static SensitiveDataOptions WithSensitiveData => new() { Include = true };
 }

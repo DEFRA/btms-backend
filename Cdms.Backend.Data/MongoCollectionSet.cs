@@ -2,15 +2,16 @@ using System.Collections;
 using System.Linq.Expressions;
 using Cdms.Model.Data;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
 namespace Cdms.Backend.Data
 {
-    public class MongoCollectionSet<T>(MongoDbContext dbContext) : IMongoQueryable<T> where T : IDataEntity
+    public class MongoCollectionSet<T>(MongoDbContext dbContext) : IQueryable<T> where T : IDataEntity
     {
         private readonly IMongoCollection<T> collection = dbContext.Database.GetCollection<T>(typeof(T).Name);
-        private IMongoQueryable<T> EntityQueryable => collection.AsQueryable();
+        private IQueryable<T> EntityQueryable => collection.AsQueryable();
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -25,14 +26,14 @@ namespace Cdms.Backend.Data
         public Type ElementType => EntityQueryable.ElementType;
         public Expression Expression => EntityQueryable.Expression;
 
-        IMongoQueryProvider IMongoQueryable.Provider => EntityQueryable.Provider;
+        // IMongoQueryProvider IQueryable.Provider => EntityQueryable.Provider;
 
-        public QueryableExecutionModel GetExecutionModel()
-        {
-            return EntityQueryable.GetExecutionModel();
-        }
+        //public QueryableExecutionModel GetExecutionModel()
+        //{
+        //    return EntityQueryable.GetExecutionModel();
+        //}
 
-        public BsonDocument[] LoggedStages => EntityQueryable.LoggedStages;
+        //public BsonDocument[] LoggedStages => EntityQueryable.LoggedStages;
         public IQueryProvider Provider => EntityQueryable.Provider;
 
         public IAsyncCursor<T> ToCursor(CancellationToken cancellationToken = new CancellationToken())
@@ -52,6 +53,7 @@ namespace Cdms.Backend.Data
 
         public Task Insert(T item, MongoDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
+            item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
             IClientSessionHandle session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             return session is not null
@@ -65,6 +67,8 @@ namespace Cdms.Backend.Data
             var builder = Builders<T>.Filter;
 
             var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, item._Etag);
+
+            item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
 
             IClientSessionHandle session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;

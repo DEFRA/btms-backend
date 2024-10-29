@@ -14,8 +14,4 @@
     <PackageReference Include="JsonPatch.Net" Version="3.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Gvms\" />
-  </ItemGroup>
-
 </Project>
