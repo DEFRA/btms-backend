@@ -47,7 +47,7 @@ public static class ImportNotificationWithTransformMapper
     {
         var commodities = from.PartOne!.Commodities;
 
-        if (commodities!.CommodityComplements!.Length == 1)
+        if (commodities?.CommodityComplements?.Length == 1)
         {
             commodities!.CommodityComplements[0].AdditionalData =
                 commodities!.ComplementParameterSets![0].KeyDataPairs!.FromSnakeCase();
@@ -84,23 +84,26 @@ public static class ImportNotificationWithTransformMapper
                 }
             }
 
-            foreach (var commodity in commodities!.CommodityComplements)
+            if (commodities!.CommodityComplements is not null)
             {
-                var parameters = complementParameters[commodity.ComplementId.Value!];
-                commodity.AdditionalData = parameters.KeyDataPairs.FromSnakeCase();
-
-                if (complementRiskAssesments.Any() &&
-                    parameters.UniqueComplementId is not null &&
-                    complementRiskAssesments.ContainsKey(parameters.UniqueComplementId))
+                foreach (var commodity in commodities!.CommodityComplements)
                 {
-                    commodity.RiskAssesment = complementRiskAssesments[parameters.UniqueComplementId!];
-                }
+                    var parameters = complementParameters[commodity.ComplementId.Value!];
+                    commodity.AdditionalData = parameters.KeyDataPairs.FromSnakeCase();
 
-                if (commodityChecks.Any() &&
-                    parameters.UniqueComplementId is not null &&
-                    commodityChecks.ContainsKey(parameters.UniqueComplementId))
-                {
-                    commodity.Checks = commodityChecks[parameters.UniqueComplementId!];
+                    if (complementRiskAssesments.Any() &&
+                        parameters.UniqueComplementId is not null &&
+                        complementRiskAssesments.ContainsKey(parameters.UniqueComplementId))
+                    {
+                        commodity.RiskAssesment = complementRiskAssesments[parameters.UniqueComplementId!];
+                    }
+
+                    if (commodityChecks.Any() &&
+                        parameters.UniqueComplementId is not null &&
+                        commodityChecks.ContainsKey(parameters.UniqueComplementId))
+                    {
+                        commodity.Checks = commodityChecks[parameters.UniqueComplementId!];
+                    }
                 }
             }
         }

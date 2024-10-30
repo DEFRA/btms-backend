@@ -6,23 +6,7 @@ using Cdms.Types.Alvs.Mapping;
 
 namespace Cdms.Business.Consumers
 {
-    public class DecisionMetrics
-    {
-        private readonly Counter<int> processed;
-
-        public DecisionMetrics(IMeterFactory meterFactory)
-        {
-            var meter = meterFactory.Create("Cdms");
-            processed = meter.CreateCounter<int>("cdms.decision.processed");
-        }
-
-        public void MessageProcessed()
-        {
-            processed.Add(1);
-        }
-    }
-
-    public class DecisionsConsumer(IMongoDbContext dbContext, DecisionMetrics metrics)
+    public class DecisionsConsumer(IMongoDbContext dbContext)
         : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
     {
         public async Task OnHandle(AlvsClearanceRequest message)
@@ -39,8 +23,6 @@ namespace Cdms.Business.Consumers
                     await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
                 }
             }
-
-            metrics.MessageProcessed();
         }
 
         public IConsumerContext Context { get; set; }

@@ -21,6 +21,9 @@ using HealthChecks.UI.Client;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -64,17 +67,49 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddHttpProxyClient(logger);
 
     builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+    if (builder.Environment.IsDevelopment())
+    {
+        // This added Open Telemetry, and export to look at metrics locally.
+        // The Aspire dashboard can be used to view these metrics  :
+        // docker run --rm -it -p 18888:18888 -p 4317:18889 -d --name aspire-dashboard -e DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS='true' mcr.microsoft.com/dotnet/nightly/aspire-dashboard:8.0.0-preview.6
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(metrics =>
+            {
+                metrics.AddRuntimeInstrumentation()
+                    .AddMeter("Microsoft.AspNetCore.Hosting", "Microsoft.AspNetCore.Server.Kestrel", "System.Net.Http",
+                        "Cdms");
+            })
+            .WithTracing(tracing =>
+            {
+                tracing.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+            });
+
+        builder.Services.AddOpenTelemetry().UseOtlpExporter();
+    }
 }
 
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
     builder.Logging.ClearProviders();
-    var logger = new LoggerConfiguration()
+    var logBuilder = new LoggerConfiguration()
         .WriteTo.Seq("http://localhost:6341")
         .ReadFrom.Configuration(builder.Configuration)
-        .Enrich.With<LogLevelMapper>()
-        .CreateLogger();
+        .Enrich.With<LogLevelMapper>();
+
+    if (builder.Environment.IsDevelopment())
+    {
+        logBuilder
+            .WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+                options.ResourceAttributes.Add("service.name", "cdmsbackend");
+            });
+    }
+
+    var logger = logBuilder.CreateLogger();
     builder.Logging.AddSerilog(logger);
     logger.Information("Starting application");
     return logger;

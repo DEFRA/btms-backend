@@ -1,4 +1,4 @@
-﻿using Cdms.BlobService;
+using Cdms.BlobService;
 using Cdms.SensitiveData;
 using Cdms.Types.Alvs;
 using Microsoft.Extensions.Logging;
@@ -9,11 +9,13 @@ namespace Cdms.Business.Commands;
 public class SyncClearanceRequestsCommand : SyncCommand
 {
     internal class Handler(
+        SyncMetrics syncMetrics,
         IPublishBus bus,
         ILogger<SyncClearanceRequestsCommand> logger,
         ISensitiveDataSerializer sensitiveDataSerializer,
         IBlobService blobService)
-        : SyncCommand.Handler<SyncClearanceRequestsCommand>(bus, logger, sensitiveDataSerializer, blobService)
+        : SyncCommand.Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
+            blobService)
     {
         public override async Task Handle(SyncClearanceRequestsCommand request, CancellationToken cancellationToken)
         {

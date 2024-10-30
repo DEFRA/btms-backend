@@ -1,4 +1,4 @@
-﻿using Cdms.BlobService;
+using Cdms.BlobService;
 
 namespace Cdms.Business.Tests.Commands;
 
@@ -9,7 +9,7 @@ public class TestBlobItem(string name, string content) : IBlobItem
     public string NormalisedName { get; set; } = default;
     public string Content { get; set; } = content!;
 
-    public async Task<string> Download()
+    public async Task<string> Download(CancellationToken cancellationToken)
     {
         return Content;
     }

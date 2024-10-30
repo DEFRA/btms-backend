@@ -14,20 +14,21 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class LaboratoryTestResultMapper
 {
-	public static Cdms.Model.Ipaffs.LaboratoryTestResult Map(Cdms.Types.Ipaffs.LaboratoryTestResult from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.LaboratoryTestResult ();
-to.SampleUseByDate = from.SampleUseByDate;
-            to.ReleasedOn = from.ReleasedDate;
-            to.LaboratoryTestMethod = from.LaboratoryTestMethod;
-            to.Results = from.Results;
-            to.Conclusion = LaboratoryTestResultConclusionEnumMapper.Map(from?.Conclusion);
-                to.LabTestCreatedOn = from.LabTestCreatedDate;
-            	return to;
-	}
+    public static Cdms.Model.Ipaffs.LaboratoryTestResult Map(Cdms.Types.Ipaffs.LaboratoryTestResult from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.LaboratoryTestResult();
+        to.SampleUseByDate = from.SampleUseByDate;
+        to.ReleasedOn = from.ReleasedDate;
+        to.LaboratoryTestMethod = from.LaboratoryTestMethod;
+        to.Results = from.Results;
+        to.Conclusion = LaboratoryTestResultConclusionEnumMapper.Map(from?.Conclusion);
+        to.LabTestCreatedOn = from.LabTestCreatedDate;
+        return to;
+    }
 }
 

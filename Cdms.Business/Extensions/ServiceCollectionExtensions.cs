@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using SlimMessageBus.Host;
+using SlimMessageBus.Host.Interceptor;
 using SlimMessageBus.Host.Memory;
 
 namespace Cdms.Business.Extensions
@@ -23,6 +24,9 @@ namespace Cdms.Business.Extensions
         public static IServiceCollection AddBusinessServices(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsConsumerInterceptor<>));
+            services.AddTransient(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
+
             services.AddOptions<SensitiveDataOptions>()
                 .Bind(configuration.GetSection(SensitiveDataOptions.SectionName))
                 .ValidateDataAnnotations();
@@ -53,7 +57,7 @@ namespace Cdms.Business.Extensions
                     {
                         cbb.WithProviderMemory(cfg =>
                             {
-                                cfg.EnableBlockingPublish = true;
+                                cfg.EnableBlockingPublish = false;
                                 cfg.EnableMessageHeaders = true;
                             })
                             .AddServicesFromAssemblyContaining<NotificationConsumer>(
@@ -85,10 +89,7 @@ namespace Cdms.Business.Extensions
                 //});
             });
 
-            services.AddSingleton<ImportNotificationMetrics>();
-            services.AddSingleton<AlvsClearanceRequestMetrics>();
-            services.AddSingleton<GmrMetrics>();
-            services.AddSingleton<DecisionMetrics>();
+            services.AddSingleton<SyncMetrics>();
 
             return services;
         }

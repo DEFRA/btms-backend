@@ -9,29 +9,12 @@ using System.Diagnostics.Metrics;
 
 namespace Cdms.Business.Consumers
 {
-    public class ImportNotificationMetrics
-    {
-        private readonly Counter<int> processed;
-
-        public ImportNotificationMetrics(IMeterFactory meterFactory)
-        {
-            var meter = meterFactory.Create("Cdms");
-            processed = meter.CreateCounter<int>("cdms.importnotifications.processed");
-        }
-
-        public void MessageProcessed(ImportNotificationTypeEnum notificationType)
-        {
-            processed.Add(1,
-                new KeyValuePair<string, object?>("importnotification.type", notificationType.ToString()));
-        }
-    }
-
-
-    internal class NotificationConsumer(IMongoDbContext dbContext, ImportNotificationMetrics metrics)
+    internal class NotificationConsumer(IMongoDbContext dbContext)
         : IConsumer<ImportNotification>, IConsumerWithContext
     {
         public async Task OnHandle(ImportNotification message)
         {
+            throw new Exception("tst");
             var internalNotification = message.MapWithTransform();
             var auditId = Context.Headers["messageId"].ToString();
 
@@ -54,8 +37,6 @@ namespace Cdms.Business.Consumers
                 internalNotification.Created(BuildNormalizedIpaffsPath(auditId));
                 await dbContext.Notifications.Insert(internalNotification);
             }
-
-            metrics.MessageProcessed(message.ImportNotificationType.Value);
         }
 
         public IConsumerContext Context { get; set; }

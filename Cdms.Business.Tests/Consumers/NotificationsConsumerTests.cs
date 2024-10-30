@@ -18,7 +18,7 @@ namespace Cdms.Business.Tests.Consumers
             var dbContext = CreateDbContext();
 
 
-            var consumer = new NotificationConsumer(dbContext, new ImportNotificationMetrics(new DummyMeterFactory()));
+            var consumer = new NotificationConsumer(dbContext);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification.ReferenceNumber } }
@@ -44,7 +44,7 @@ namespace Cdms.Business.Tests.Consumers
             notification.LastUpdated = notification.LastUpdated.Value.AddHours(1);
 
 
-            var consumer = new NotificationConsumer(dbContext, new ImportNotificationMetrics(new DummyMeterFactory()));
+            var consumer = new NotificationConsumer(dbContext);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification.ReferenceNumber } }

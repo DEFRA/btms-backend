@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Cdms.Azure;
@@ -22,11 +22,6 @@ public class BlobService(
         var containerClient = blobServiceClient.GetBlobContainerClient(options.Value.DmpBlobContainer);
 
         return containerClient;
-    }
-
-    public async Task<Status> CheckBlobAsync()
-    {
-        return await CheckBlobAsync(options.Value.DmpBlobUri);
     }
 
     public async Task<Status> CheckBlobAsync(string serviceUri)
@@ -59,7 +54,8 @@ public class BlobService(
         }
     }
 
-    public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix)
+
+    public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken)
     {
         Logger.LogInformation("Connecting to blob storage {0} : {1}", options.Value.DmpBlobUri,
             options.Value.DmpBlobContainer);
@@ -70,7 +66,7 @@ public class BlobService(
         Logger.LogInformation("Getting blob files from {0}...", prefix);
         var itemCount = 0;
 
-        var files = containerClient.GetBlobsAsync(prefix: prefix);
+        var files = containerClient.GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
         //var output = new List<IBlobItem>();
 
         await foreach (BlobItem item in files)

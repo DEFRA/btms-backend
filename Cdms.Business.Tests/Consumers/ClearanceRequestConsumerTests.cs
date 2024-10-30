@@ -18,7 +18,7 @@ namespace Cdms.Business.Tests.Consumers
 
 
             var consumer =
-                new AlvsClearanceRequestConsumer(dbContext, new AlvsClearanceRequestMetrics(new DummyMeterFactory()));
+                new AlvsClearanceRequestConsumer(dbContext);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>()

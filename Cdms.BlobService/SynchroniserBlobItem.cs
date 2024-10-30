@@ -1,4 +1,4 @@
-﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs;
 
 namespace Cdms.BlobService;
 
@@ -9,10 +9,14 @@ public class SynchroniserBlobItem(BlobClient client) : IBlobItem
     public string NormalisedName { get; set; } = default;
     public string Content { get; set; } = default!;
 
-    public async Task<string> Download()
+    public async Task<string> Download(CancellationToken cancellationToken)
     {
-        var content = await client.DownloadContentAsync();
-        Content = content.Value.Content.ToString();
+        if (string.IsNullOrWhiteSpace(Content))
+        {
+            var content = await client.DownloadContentAsync(cancellationToken);
+            Content = content.Value.Content.ToString();
+        }
+
         return Content;
     }
 }

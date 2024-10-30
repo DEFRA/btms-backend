@@ -9,24 +9,7 @@ using SearchGmrsForDeclarationIdsResponse = Cdms.Types.Gmr.SearchGmrsForDeclarat
 
 namespace Cdms.Business.Consumers
 {
-    public class GmrMetrics
-    {
-        private readonly Counter<int> processed;
-
-        public GmrMetrics(IMeterFactory meterFactory)
-        {
-            var meter = meterFactory.Create("Cdms");
-            processed = meter.CreateCounter<int>("cdms.gmr.processed");
-        }
-
-        public void MessageProcessed()
-        {
-            processed.Add(1);
-        }
-    }
-
-
-    internal class GmrConsumer(IMongoDbContext dbContext, GmrMetrics metrics)
+    internal class GmrConsumer(IMongoDbContext dbContext)
         : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumerWithContext
     {
         public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message)
@@ -58,8 +41,6 @@ namespace Cdms.Business.Consumers
                         await dbContext.Gmrs.Update(internalGmr, existingGmr._Etag);
                     }
                 }
-
-                metrics.MessageProcessed();
             }
         }
 

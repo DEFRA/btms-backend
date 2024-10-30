@@ -1,5 +1,6 @@
 using Cdms.BlobService;
 using Cdms.Business.Commands;
+using Cdms.Business.Tests.Consumers;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
 using Cdms.Types.Ipaffs;
@@ -23,12 +24,13 @@ namespace Cdms.Business.Tests.Commands
 
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();
-            blob.GetResourcesAsync(Arg.Any<string>())
+            blob.GetResourcesAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
                 .Returns(
                     new TestBlobItem(notification.ReferenceNumber, notification.ToJsonString()).ToAsyncEnumerator());
 
 
             var handler = new SyncNotificationsCommand.Handler(
+                new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 NullLogger<SyncNotificationsCommand>.Instance,
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),

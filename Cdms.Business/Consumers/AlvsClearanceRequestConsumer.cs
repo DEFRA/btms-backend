@@ -3,33 +3,16 @@ using Cdms.Model.Auditing;
 using Cdms.Types.Ipaffs;
 using Cdms.Types.Ipaffs.Mapping;
 using SlimMessageBus;
-using SlimMessageBus.Host.Interceptor;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using Cdms.Model;
 using Cdms.Types.Alvs;
 using Cdms.Types.Alvs.Mapping;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using System;
 
 namespace Cdms.Business.Consumers
 {
-    public class AlvsClearanceRequestMetrics
-    {
-        private readonly Counter<int> processed;
-
-        public AlvsClearanceRequestMetrics(IMeterFactory meterFactory)
-        {
-            var meter = meterFactory.Create("Cdms");
-            processed = meter.CreateCounter<int>("cdms.clearancerequest.processed");
-        }
-
-        public void MessageProcessed()
-        {
-            processed.Add(1);
-        }
-    }
-
-
-    internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext, AlvsClearanceRequestMetrics metrics)
+    internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext)
         : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
     {
         public async Task OnHandle(AlvsClearanceRequest message)
@@ -71,11 +54,7 @@ namespace Cdms.Business.Consumers
                     movement.LastUpdated);
                 movement.Update(auditEntry);
                 await dbContext.Movements.Insert(movement);
-                existingMovement = await dbContext.Movements.Find(movement.Id);
             }
-
-
-            metrics.MessageProcessed();
         }
 
         public IConsumerContext Context { get; set; }
