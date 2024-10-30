@@ -14,17 +14,24 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         var path = DataHelpers.RootBlobPath();
         // await blobService.CleanAsync(path);
     }
-    internal async Task Generate(int count, ScenarioGenerator generator)
+    internal async Task Generate(int count, int days, ScenarioGenerator generator)
     {
-        logger.LogInformation($"Generating {count}x {generator}.");
+        logger.LogInformation($"Generating {count}x{days} {generator}.");
 
-        for (int i = 0; i < count; i++)
+        for (int d = -days+1; d <= 0; d++)
         {
-            logger.LogInformation($"Generating item {i}");
-
-            var result = generator.Generate(i);
-            await InsertToBlobStorage(result);
+            logger.LogInformation($"Generating day {d}");
+            var entryDate = DateTime.Today.AddDays(d);
+            
+            for (int i = 0; i < count; i++)
+            {
+                logger.LogInformation($"Generating item {i}");
+            
+                var result = generator.Generate(i, entryDate);
+                await InsertToBlobStorage(result);
+            }
         }
+        
     }
 
     internal async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result)

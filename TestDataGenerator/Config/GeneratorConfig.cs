@@ -4,6 +4,12 @@ using TestDataGenerator.Services;
 
 namespace TestDataGenerator.Config;
 
+public enum StorageService
+{
+    AzureBlob,
+    Local
+}
+
 public class GeneratorConfig : IAzureConfig
 {
     public string DmpEnvironment { get; set; } = default!;
@@ -20,6 +26,8 @@ public class GeneratorConfig : IAzureConfig
     public string? AzureTenantId { get; set; } = default!;
     public string? AzureClientSecret { get; set; } = default!;
     
+    public StorageService StorageService { get; set; } = default!;
+    
     public GeneratorConfig(IConfiguration configuration)
     {
         // CdsHttpsProxy = configuration["CDP_HTTPS_PROXY"];
@@ -30,6 +38,9 @@ public class GeneratorConfig : IAzureConfig
         AzureClientId = configuration["AZURE_CLIENT_ID"];
         AzureTenantId = configuration["AZURE_TENANT_ID"];
         AzureClientSecret = configuration["AZURE_CLIENT_SECRET"];
+
+        StorageService tmp;
+        this.StorageService = StorageService.TryParse(configuration["STORAGE_SERVICE"], out tmp) ? tmp : StorageService.AzureBlob;
         
         // DmpBusNamespace = $"{configuration["DMP_SERVICE_BUS_NAME"]!}.servicebus.windows.net";
         // DmpBusTopic = $"defra.trade.dmp.ingestipaffs.{DmpEnvironment}.{dmpSlot}.topic";

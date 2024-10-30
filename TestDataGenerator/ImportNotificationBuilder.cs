@@ -62,6 +62,11 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         // TODO : We may need a way to guarantee these don't collide?....
         return With(x => x.ReferenceNumber, $"{prefix}.GB.{DateTime.Now.Year}.{CreateRandomInt(7)}");
     }
+    
+    public ImportNotificationBuilder<T> WithEntryDate(DateTime entryDate)
+    {
+        return this;
+    }
 
     // public ImportNotificationBuilder<T> WithStatus(Status status)
     // {

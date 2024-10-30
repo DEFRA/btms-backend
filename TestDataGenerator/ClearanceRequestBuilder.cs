@@ -45,4 +45,8 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         return Do(x => x.Items![0].Documents![0].DocumentReference = chedReference);
     }
     
+    public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
+    {
+        return this;
+    }
 }
