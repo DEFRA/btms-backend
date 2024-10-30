@@ -67,6 +67,7 @@ static class Bootstrap
         {
             map.MapProperty("Id").SetName("IpaffsId");
             map.MapProperty("Type").SetName("ImportNotificationType");
+            map.MapProperty("LastUpdated").IsDateTime();
         });
 
         GeneratorClassMap.RegisterClassMap("Purpose", map =>

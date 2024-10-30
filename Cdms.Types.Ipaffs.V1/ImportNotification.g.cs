@@ -60,7 +60,7 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
         /// Date when the notification was last updated.
         /// </summary>
     [JsonPropertyName("lastUpdated")]
-    public string? LastUpdated { get; set; }
+    public DateTime? LastUpdated { get; set; }
 
 	
         /// <summary>
