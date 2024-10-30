@@ -115,13 +115,13 @@ namespace CdmsBackend.Cli.Features.GenerateModels.ClassMaps
         public static GeneratorClassMap RegisterClassMap(string name, Action<GeneratorClassMap> classMapInitializer)
         {
             var classMap = new GeneratorClassMap(name, classMapInitializer);
-            classMaps.Add(classMap.Name, classMap);
+            classMaps.Add(classMap.Name.ToLower(), classMap);
             return classMap;
         }
 
         public static GeneratorClassMap LookupClassMap(string name)
         {
-            classMaps.TryGetValue(name, out var classMap);
+            classMaps.TryGetValue(name.ToLower(), out var classMap);
             return classMap;
         }
     }

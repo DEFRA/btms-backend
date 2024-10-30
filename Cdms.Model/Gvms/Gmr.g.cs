@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Model.VehicleMovement;
+namespace Cdms.Model.Gvms;
 
 /// <summary>
 /// 
@@ -27,7 +27,7 @@ public partial class Gmr  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("The Goods Movement Record (GMR) ID for this GMR.  Do not include when POSTing a GMR - GVMS will assign an ID.")]
-    public string? GmrId { get; set; }
+    public string? Id { get; set; }
 
 	
         /// <summary>

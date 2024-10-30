@@ -10,19 +10,19 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class CheckedInCrossingMapper
 {
-	public static Cdms.Model.VehicleMovement.CheckedInCrossing Map(Cdms.Types.Gmr.CheckedInCrossing from)
+	public static Cdms.Model.Gvms.CheckedInCrossing Map(Cdms.Types.Gvms.CheckedInCrossing from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.CheckedInCrossing ();
+		var to = new Cdms.Model.Gvms.CheckedInCrossing ();
 to.RouteId = from.RouteId;
-            to.LocalDateTimeOfArrival = from.LocalDateTimeOfArrival;
+            to.ArrivesAt = from.ArrivesAt;
             	return to;
 	}
 }

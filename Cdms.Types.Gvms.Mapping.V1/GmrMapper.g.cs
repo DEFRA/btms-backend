@@ -10,18 +10,18 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class GmrMapper
 {
-	public static Cdms.Model.VehicleMovement.Gmr Map(Cdms.Types.Gmr.Gmr from)
+	public static Cdms.Model.Gvms.Gmr Map(Cdms.Types.Gvms.Gmr from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.Gmr ();
-to.GmrId = from.GmrId;
+		var to = new Cdms.Model.Gvms.Gmr ();
+to.Id = from.GmrId;
             to.HaulierEori = from.HaulierEori;
             to.State = StateEnumMapper.Map(from?.State);
                 to.InspectionRequired = from.InspectionRequired;

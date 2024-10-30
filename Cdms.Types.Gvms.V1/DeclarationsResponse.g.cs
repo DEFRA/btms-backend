@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Types.Gmr;
+namespace Cdms.Types.Gvms;
 
 /// <summary>
 /// A list of declaration ids.

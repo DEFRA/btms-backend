@@ -241,9 +241,11 @@ static class Bootstrap
         GeneratorClassMap.RegisterClassMap("gmrs", map =>
         {
             map.SetClassName("Gmr");
+            map.MapProperty("gmrId").SetInternalName("id");
             map.MapProperty("haulierEORI").SetName("haulierEori");
-            map.MapProperty("vehicleRegNum").SetName("vehicleRegNumber");
+            map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
             map.MapProperty("updatedDateTime").SetName("lastUpdated").IsDateTime();
+            map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
         });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsResponse",
@@ -252,16 +254,20 @@ static class Bootstrap
         GeneratorClassMap.RegisterClassMap("SearchGmrsForVRNsresponse",
             map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
 
-        GeneratorClassMap.RegisterClassMap("SearchGmrsResponse", map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
+        GeneratorClassMap.RegisterClassMap("searchGmrsResponse", map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
 
 
-        GeneratorClassMap.RegisterClassMap("PlannedCrossing",
-            map => { map.MapProperty("localDateTimeOfDeparture").IsDateTime(); });
+        GeneratorClassMap.RegisterClassMap("plannedCrossing",
+            map =>
+            {
+                map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt");
+                map.MapProperty("localDateTimeOfDeparture").IsDateTime().SetName("departsAt");
+            });
 
-        GeneratorClassMap.RegisterClassMap("ActualCrossing",
-            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime(); });
+        GeneratorClassMap.RegisterClassMap("actualCrossing",
+            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt"); });
 
-        GeneratorClassMap.RegisterClassMap("CheckedInCrossing",
-            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime(); });
+        GeneratorClassMap.RegisterClassMap("checkedInCrossing",
+            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt"); });
     }
 }

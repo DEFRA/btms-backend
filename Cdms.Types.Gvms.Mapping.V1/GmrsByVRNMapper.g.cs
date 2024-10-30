@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class GmrsByVRNMapper
 {
-	public static Cdms.Model.VehicleMovement.GmrsByVRN Map(Cdms.Types.Gmr.GmrsByVRN from)
+	public static Cdms.Model.Gvms.GmrsByVRN Map(Cdms.Types.Gvms.GmrsByVRN from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.GmrsByVRN ();
+		var to = new Cdms.Model.Gvms.GmrsByVRN ();
 to.Vrn = from.Vrn;
             	return to;
 	}

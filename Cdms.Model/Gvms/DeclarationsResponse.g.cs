@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Model.VehicleMovement;
+namespace Cdms.Model.Gvms;
 
 /// <summary>
 /// A list of declaration ids.

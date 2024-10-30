@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Types.Gmr;
+namespace Cdms.Types.Gvms;
 
 /// <summary>
 /// 
@@ -32,7 +32,7 @@ public partial class PlannedCrossing  //
         /// The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker
         /// </summary>
     [JsonPropertyName("localDateTimeOfDeparture")]
-    public string? LocalDateTimeOfDeparture { get; set; }
+    public DateTime? LocalDateTimeOfDeparture { get; set; }
 
 	}
 

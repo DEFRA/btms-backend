@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Types.Gmr;
+namespace Cdms.Types.Gvms;
 
 /// <summary>
 /// 
@@ -32,7 +32,7 @@ public partial class CheckedInCrossing  //
         /// The planned date and time of arrival, in local time of the arrival port. Must not include seconds, time zone or UTC marker
         /// </summary>
     [JsonPropertyName("localDateTimeOfArrival")]
-    public string? LocalDateTimeOfArrival { get; set; }
+    public DateTime? ArrivesAt { get; set; }
 
 	}
 

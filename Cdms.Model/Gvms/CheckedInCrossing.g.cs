@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Model.VehicleMovement;
+namespace Cdms.Model.Gvms;
 
 /// <summary>
 /// 
@@ -35,7 +35,7 @@ public partial class CheckedInCrossing  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("The planned date and time of arrival, in local time of the arrival port. Must not include seconds, time zone or UTC marker")]
-    public string? LocalDateTimeOfArrival { get; set; }
+    public DateTime? ArrivesAt { get; set; }
 
 	}
 

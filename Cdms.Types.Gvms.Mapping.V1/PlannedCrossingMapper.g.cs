@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class PlannedCrossingMapper
 {
-	public static Cdms.Model.VehicleMovement.PlannedCrossing Map(Cdms.Types.Gmr.PlannedCrossing from)
+	public static Cdms.Model.Gvms.PlannedCrossing Map(Cdms.Types.Gvms.PlannedCrossing from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.PlannedCrossing ();
+		var to = new Cdms.Model.Gvms.PlannedCrossing ();
 to.RouteId = from.RouteId;
             to.LocalDateTimeOfDeparture = from.LocalDateTimeOfDeparture;
             	return to;

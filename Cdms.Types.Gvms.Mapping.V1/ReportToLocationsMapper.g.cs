@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class ReportToLocationsMapper
 {
-	public static Cdms.Model.VehicleMovement.ReportToLocations Map(Cdms.Types.Gmr.ReportToLocations from)
+	public static Cdms.Model.Gvms.ReportToLocations Map(Cdms.Types.Gvms.ReportToLocations from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.ReportToLocations ();
+		var to = new Cdms.Model.Gvms.ReportToLocations ();
 to.InspectionTypeId = from.InspectionTypeId;
             	return to;
 	}

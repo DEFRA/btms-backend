@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class ErrorResponseMapper
 {
-	public static Cdms.Model.VehicleMovement.ErrorResponse Map(Cdms.Types.Gmr.ErrorResponse from)
+	public static Cdms.Model.Gvms.ErrorResponse Map(Cdms.Types.Gvms.ErrorResponse from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.ErrorResponse ();
+		var to = new Cdms.Model.Gvms.ErrorResponse ();
 to.Code = from.Code;
             	return to;
 	}
