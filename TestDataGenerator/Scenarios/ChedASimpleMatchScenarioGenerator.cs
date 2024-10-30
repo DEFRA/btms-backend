@@ -7,17 +7,19 @@ namespace TestDataGenerator.Scenarios;
 
 internal class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger) : ScenarioGenerator()
 {
-    internal override GeneratorResult Generate(int item)
+    internal override GeneratorResult Generate(int item, DateTime entryDate)
     {
         // TODO : get a good 'pair' of notification and cr as the source templates
         
         var notification = GetNotificationBuilder("cheda-one-commodity")
+            .WithEntryDate(entryDate)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, item)
             .Build()!;
         
         logger.LogInformation($"Created {notification}, {notification.ReferenceNumber}");
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
+            .WithEntryDate(entryDate)
             // .WithFirstReferenceNumber(notification.ReferenceNumber!)
             .Build();
 

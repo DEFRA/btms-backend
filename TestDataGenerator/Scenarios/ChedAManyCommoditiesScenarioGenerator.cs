@@ -7,7 +7,7 @@ namespace TestDataGenerator.Scenarios;
 
 internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesScenarioGenerator> logger) : ScenarioGenerator()
 {
-    internal override GeneratorResult Generate(int item)
+    internal override GeneratorResult Generate(int item, DateTime entryDate)
     {
         // TODO : get a good 'pair' of notification and cr as the source templates
         
