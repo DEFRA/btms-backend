@@ -12,6 +12,6 @@ public class ClearanceRequestBuilderTests
         var builder = ClearanceRequestBuilder.Default();
         builder.WithFirstReferenceNumber("123");
         var cr = builder.Build();
-        cr.Header!.EntryReference.Should().Be("123");
+        cr.Items![0].Documents![0].DocumentReference!.Should().Be("123");
     }
 }
