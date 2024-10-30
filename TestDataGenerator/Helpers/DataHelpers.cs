@@ -13,7 +13,7 @@ public static class DataHelpers
     internal static string BlobPath(this ImportNotification notification)
     {
         // TODO {notification.LastUpdated} should be a date so we can use it here...
-        return $"{RootBlobPath()}IPAFFS/CHEDA/2024/10/01/{notification.ReferenceNumber!.Replace(".","")}-{Guid.NewGuid()}.json";
+        return $"{RootBlobPath()}IPAFFS/CHEDA/2024/10/01/{notification.ReferenceNumber!.Replace(".","_")}-{Guid.NewGuid()}.json";
     }
 
     internal static string BlobPath(this AlvsClearanceRequest clearanceRequest)

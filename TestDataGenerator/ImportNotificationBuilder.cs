@@ -38,11 +38,14 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     public ImportNotificationBuilder<T> WithRandomCommodities(int min, int max)
     {
         var commodityCount = CreateRandomInt(min, max);
-
-        var commodities = Enumerable.Range(0, commodityCount).Select(x => new CommodityComplement() { }
-        );
-
-        return Do((n) => { n.PartOne!.Commodities.CommodityComplements = commodities.ToArray(); });
+        
+        return Do((n) =>
+        {
+            var commodities = Enumerable.Range(0, commodityCount)
+                .Select(x => n.PartOne!.Commodities.CommodityComplements[0]
+            ).ToArray();
+            n.PartOne!.Commodities.CommodityComplements = commodities;
+        });
     }
 
     public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int item)

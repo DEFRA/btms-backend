@@ -19,10 +19,8 @@ internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditie
         logger.LogInformation($"Created {notification}, {notification.ReferenceNumber}");
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
-            // .WithFirstReferenceNumber(notification.ReferenceNumber!)
+            .WithFirstReferenceNumber(notification.ReferenceNumber!)
             .Build();
-
-        clearanceRequest.Items[0].Documents[0].DocumentReference = notification.ReferenceNumber!;
         
         logger.LogInformation($"Created {clearanceRequest}, {clearanceRequest.Header!.EntryReference}");
 

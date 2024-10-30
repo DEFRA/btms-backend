@@ -12,7 +12,7 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
     internal async Task Cleardown()
     {
         var path = DataHelpers.RootBlobPath();
-        await blobService.CleanAsync(path);
+        // await blobService.CleanAsync(path);
     }
     internal async Task Generate(int count, ScenarioGenerator generator)
     {

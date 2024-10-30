@@ -92,8 +92,52 @@ public abstract class AzureService<T>
     }
 }
 
-public class BlobService(ILoggerFactory loggerFactory, GeneratorConfig config, IHttpClientFactory clientFactory)
-    : AzureService<BlobService>(loggerFactory.CreateLogger<BlobService>(), config, clientFactory), IBlobService
+public class LocalBlobService(ILogger<LocalBlobService> logger) : IBlobService
+{
+    private string _rootPath = "../../../.test-data-generator/";
+        
+    public Task<bool> CleanAsync(string prefix)
+    {
+        // return new Promise
+        // throw new NotImplementedException();
+        try
+        {
+            logger.LogInformation("Clearing local storage");
+            Directory.Delete(_rootPath);
+        }
+        catch (DirectoryNotFoundException)
+        {
+            return null;
+        }
+        return null;
+    }
+
+    public async Task<bool> CreateBlobAsync(IBlobItem item)
+    {
+        var fullPath = $"{_rootPath}{item.Name}";
+        
+        logger.LogInformation($"Create folder for file {fullPath}");
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+        
+        logger.LogInformation($"Create file {fullPath}");
+        await File.WriteAllTextAsync(fullPath, item.Content);
+        
+        return true;
+    }
+
+    public async Task<bool> CreateBlobsAsync(IBlobItem[] items)
+    {
+        foreach (var item in items)
+        {
+            await CreateBlobAsync(item);
+        }
+
+        return true;
+    }
+}
+
+public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IHttpClientFactory clientFactory)
+    : AzureService<BlobService>(logger, config, clientFactory), IBlobService
 {
     private BlobContainerClient CreateBlobClient(string serviceUri, int retries = 3, int timeout = 10)
     {

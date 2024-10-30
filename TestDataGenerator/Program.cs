@@ -29,7 +29,8 @@ internal class Program
                 services.AddSingleton<GeneratorConfig, GeneratorConfig>();
                 services.AddSingleton<ChedASimpleMatchScenarioGenerator, ChedASimpleMatchScenarioGenerator>();
                 services.AddSingleton<ChedAManyCommoditiesScenarioGenerator, ChedAManyCommoditiesScenarioGenerator>();
-                services.AddSingleton<IBlobService, BlobService>();
+                // services.AddSingleton<IBlobService, BlobService>();
+                services.AddSingleton<IBlobService, LocalBlobService>();
                 services.AddTransient<Generator>();
             })
             .AddLogging();
@@ -51,7 +52,7 @@ internal class Program
         
         logger.LogInformation($"{scenarios.Length} scenario(s) configured");
         
-        logger.LogInformation("Clearimg down storage path");
+        logger.LogInformation("Clearing down storage path");
         await generator.Cleardown();
         logger.LogInformation("Cleared down");
         
