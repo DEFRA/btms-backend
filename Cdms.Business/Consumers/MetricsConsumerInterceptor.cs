@@ -1,10 +1,6 @@
-using System;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Text;
-using Microsoft.Extensions.Options;
-using Polly;
-using Polly.Retry;
 using SlimMessageBus;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Interceptor;

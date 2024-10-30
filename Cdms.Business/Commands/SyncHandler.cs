@@ -131,9 +131,6 @@ public class SyncCommand : IRequest
             return (erroredCount, itemCount);
         }
 
-        private static int published = 0;
-        public object l = new object();
-
         private async Task<bool> SyncBlob<T>(string path, string topic, IBlobItem item,
             CancellationToken cancellationToken)
         {
@@ -150,20 +147,11 @@ public class SyncCommand : IRequest
                 syncMetrics.SyncStarted(tagList);
                 var blobContent = await item.Download(cancellationToken);
                 var message = sensitiveDataSerializer.Deserialize<T>(blobContent, _ => { })!;
+                await bus.Publish(message,
+                    topic,
+                    headers: new Dictionary<string, object>() { { "messageId", item.Name } },
+                    cancellationToken: cancellationToken);
 
-
-                lock (l)
-                {
-                    published++;
-                }
-
-                if (published == 1)
-                {
-                    await bus.Publish(message,
-                        topic,
-                        headers: new Dictionary<string, object>() { { "messageId", item.Name } },
-                        cancellationToken: cancellationToken);
-                }
 
                 return true;
             }
