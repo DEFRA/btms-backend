@@ -14,7 +14,6 @@ namespace Cdms.Business.Consumers
     {
         public async Task OnHandle(ImportNotification message)
         {
-            throw new Exception("tst");
             var internalNotification = message.MapWithTransform();
             var auditId = Context.Headers["messageId"].ToString();
 

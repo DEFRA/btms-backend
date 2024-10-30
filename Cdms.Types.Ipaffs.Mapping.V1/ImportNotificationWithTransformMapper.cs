@@ -109,6 +109,6 @@ public static class ImportNotificationWithTransformMapper
         }
 
         to.CommoditiesSummary = CommoditiesMapper.Map(commodities);
-        to.Commodities = commodities.CommodityComplements.Select(x => CommodityComplementMapper.Map(x)).ToArray();
+        to.Commodities = commodities.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray();
     }
 }
