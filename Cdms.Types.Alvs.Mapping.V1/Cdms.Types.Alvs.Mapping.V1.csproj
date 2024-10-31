@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Cdms.Types.Alvs.Mapping</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Alvs.V1\Cdms.Types.Alvs.V1.csproj" />
+  </ItemGroup>
+
+</Project>

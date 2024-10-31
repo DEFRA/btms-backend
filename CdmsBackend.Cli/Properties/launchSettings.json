@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "CdmsBackend.Cli": {
+      "commandName": "Project",
+      //"commandLineArgs": "generate-ipaffs-model --schema D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Cli\\Features\\GenerateModels\\GenerateIpaffsModel\\\\jsonschema.json --outputPath D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Types\\Ipaffs\\"
+      "commandLineArgs": "generate-ipaffs-model --schema D:\\repos\\esynergy\\cdms-backend\\CdmsBackend.Cli\\Features\\GenerateModels\\GenerateIpaffsModel\\\\jsonschema.json"
+
+      // "commandLineArgs": "generate-vehicle-movement-model"
+      //"commandLineArgs": "generate-alvs-model"
+    }
+  }
+}

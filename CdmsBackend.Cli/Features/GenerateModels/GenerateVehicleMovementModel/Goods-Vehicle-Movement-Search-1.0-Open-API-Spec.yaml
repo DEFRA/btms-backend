@@ -1,0 +1,4656 @@
+openapi: 3.0.0
+info:
+  title: Goods Vehicle Movements Search
+  contact: {}
+  version: "1.0"
+servers:
+- url: https://api.service.hmrc.gov.uk/
+paths:
+  /customs/goods-movement-system-search/gmrs-for-vrns:
+    post:
+      summary: Get GMRs for Vehicle Registration Numbers
+      description: "Returns details for GMRs that include one or more VRN from the\
+        \ given list of Vehicle Registration Numbers.\n\nThe details returned include:\n\
+        * the GMR ID(s), if any, for each of the given Vehicle Registration Number.\
+        \  \n* summary details for each matched GMR including state and crossing information.\
+        \ \n* flags to indicate whether an inspection is required and whether the\
+        \ GMR is ready to embark.\n* inspection location information if an inspection\
+        \ is required (if available).\n\nYou can provide a maximum of 2000 VRNs. This\
+        \ limit is enforced by the request schema.\n\nThe results list can be filtered\
+        \ using the `state` query parameter. \n\nThe returned `gmrsByVRN` list retains\
+        \ the ordering of the given list of vrns.\n\nThe returned `gmrs` list is sorted\
+        \ alphabetically by `gmrId`.\n"
+      operationId: GetGMRsforVehicleRegistrationNumbers
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Specifies the format of the request body, which must be JSON.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - name: Accept
+        in: header
+        description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning)
+          of the API to be used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/vnd.hmrc.1.0+json
+      - name: Authorization
+        in: header
+        description: An OAuth 2.0 Bearer Token.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      - name: state
+        in: query
+        description: Filter GMRs for a state.  If not specified, all GMRs matching
+          the search criteria will be returned.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - NOT_FINALISABLE
+          - OPEN
+          - FINALISED
+          - CHECKED_IN
+          - EMBARKED
+          - COMPLETED
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              required:
+              - vrns
+              properties:
+                vrns:
+                  pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                  maxItems: 2000
+                  minItems: 1
+                  type: array
+                  description: A list of VRN to search for GMRs.
+                  items:
+                    type: string
+              example:
+              - vrns:
+                - AB19 HGR
+                - AB19 DEG
+                - AB19 AUK
+                - AB19 POL
+            examples:
+              example-1:
+                value:
+                  vrns:
+                  - AB19 HGR
+                  - AB19 DEG
+                  - AB19 AUK
+                  - AB19 POL
+        required: true
+      responses:
+        "200":
+          description: The search results
+          content:
+            application/json:
+              schema:
+                required:
+                - gmrs
+                - gmrsByVRN
+                properties:
+                  gmrsByVRN:
+                    minItems: 1
+                    type: array
+                    description: ""
+                    items:
+                      title: GmrsByVRN
+                      required:
+                      - gmrs
+                      - vrn
+                      type: object
+                      properties:
+                        vrn:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                          type: string
+                          description: This is the identifier for a Vehicle Registration
+                            Number
+                        gmrs:
+                          minItems: 0
+                          type: array
+                          description: ""
+                          items:
+                            pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                            type: string
+                  gmrs:
+                    minItems: 0
+                    type: array
+                    description: ""
+                    items:
+                      title: gmrSummary
+                      required:
+                      - direction
+                      - gmrId
+                      - haulierEORI
+                      - state
+                      - updatedDateTime
+                      type: object
+                      properties:
+                        gmrId:
+                          pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                          type: string
+                          description: The Goods Movement Record (GMR) ID for this
+                            GMR.  Do not include when POSTing a GMR - GVMS will assign
+                            an ID.
+                        haulierEORI:
+                          pattern: ^GB[0-9]{12,15}$
+                          type: string
+                          description: The EORI of the haulier that is responsible
+                            for the vehicle making the goods movement
+                        state:
+                          description: The state of the GMR
+                          oneOf:
+                          - title: state
+                            type: string
+                            description: The GMR is in a non-finalisable state.  This
+                              means an update will be required from the haulier prior
+                              to check-in.
+                            enum:
+                            - NOT_FINALISABLE
+                          - title: state1
+                            type: string
+                            description: The GMR is open for updates and is ready
+                              for check-in.
+                            enum:
+                            - OPEN
+                          - title: state2
+                            type: string
+                            description: The GMR is finalised, which is part of the
+                              process of check-in by the carrier.  No further updates
+                              from the haulier are permitted.
+                            enum:
+                            - FINALISED
+                          - title: state3
+                            type: string
+                            description: The GMR is checked-in, awaiting embarkation
+                              confirmation from the carrier.
+                            enum:
+                            - CHECKED_IN
+                          - title: state4
+                            type: string
+                            description: The GMR is embarked, meaning the goods movement
+                              has embarked on its crossing but the goods are awaiting
+                              clearance to proceed.
+                            enum:
+                            - EMBARKED
+                          - title: state5
+                            type: string
+                            description: The GMR is completed, meaning the goods movement
+                              has embarked on its crossing and the goods are clear
+                              to proceed.
+                            enum:
+                            - COMPLETED
+                        inspectionRequired:
+                          type: boolean
+                          description: If set to true, indicates that the vehicle
+                            requires a customs inspection.  If set to false, indicates
+                            that the vehicle does not require a customs inspection.  If
+                            not set, indicates the customs inspection decision has
+                            not yet been made or is not applicable.  For outbound
+                            GMRs, this indicates that the vehicle must present at
+                            an inspection facility prior to checking-in at the port.  For
+                            Office of Transit inspections for inbound GMRs, a decision
+                            may be made to inspect subsequent to a notification that
+                            inspection is not required.  In this event a notification
+                            will be sent that changes inspectionRequired from false
+                            to true.  If this happens after leaving the port of arrival,
+                            the inspection should be carried out at the next transit
+                            office e.g. the office of destination.
+                        reportToLocations:
+                          minItems: 1
+                          type: array
+                          description: A list of one or more inspection types, from
+                            GVMS Reference Data, that the vehicle must have carried
+                            out, in the order specified.  This means that where there
+                            are multiple entries here, the vehicle must report for
+                            the first inspection type listed before each subsequent
+                            listed inspection.  Each entry includes a list of available
+                            locations for the inspection type.
+                          items:
+                            title: propertiesreportToLocationsitems
+                            required:
+                            - inspectionTypeId
+                            - locationIds
+                            type: object
+                            properties:
+                              inspectionTypeId:
+                                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                                type: string
+                                description: An inspectionTypeId from GVMS Reference
+                                  Data denoting the type of inspection that needs
+                                  to be performed on the vehicle.
+                              locationIds:
+                                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                                type: array
+                                description: A list of locationIds from GVMS Reference
+                                  Data that are available to perform this type of
+                                  inspection.
+                                items:
+                                  type: string
+                            description: Information about an inspection that is required
+                        updatedDateTime:
+                          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+                          type: string
+                          description: The date and time that this GMR was last updated.
+                        direction:
+                          description: The direction of the movement - into or out
+                            of the UK, or between Great Britain and Northern Ireland
+                          oneOf:
+                          - title: direction
+                            type: string
+                            description: The movement is travelling into the UK
+                            enum:
+                            - UK_INBOUND
+                          - title: direction1
+                            type: string
+                            description: The movement is travelling out of the UK
+                            enum:
+                            - UK_OUTBOUND
+                          - title: direction2
+                            type: string
+                            description: The movement is travelling out of Great Britain
+                              into Northern Ireland
+                            enum:
+                            - GB_TO_NI
+                          - title: direction3
+                            type: string
+                            description: The movement is travelling out of Northern
+                              Ireland into Great Britain
+                            enum:
+                            - NI_TO_GB
+                        haulierType:
+                          description: The type of haulier moving the goods
+                          oneOf:
+                          - title: haulierType
+                            type: string
+                            description: All hauliers that are not one of the other
+                              types
+                            enum:
+                            - STANDARD
+                          - title: haulierType1
+                            type: string
+                            description: Fast parcel operators that are members of
+                              the Anti-Smuggling Network
+                            enum:
+                            - FPO_ASN
+                          - title: haulierType2
+                            type: string
+                            description: Fast parcel operators that are not members
+                              of the ASN and are not moving goods with a Memorandum
+                              of Understanding
+                            enum:
+                            - FPO_OTHER
+                          - title: haulierType3
+                            type: string
+                            description: NATO or MoD
+                            enum:
+                            - NATO_MOD
+                          - title: haulierType4
+                            type: string
+                            description: Royal Mail Group
+                            enum:
+                            - RMG
+                          - title: haulierType5
+                            type: string
+                            description: Extra-Territorial Office of Exchange
+                            enum:
+                            - ETOE
+                        isUnaccompanied:
+                          type: boolean
+                          description: Set to true if the vehicle will not be accompanying
+                            the trailer(s) during the crossing, or if the vehicle
+                            is carrying a container that will be detached and loaded
+                            for the crossing.
+                        vehicleRegNum:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                          type: string
+                          description: Vehicle registration number of the vehicle
+                            that will arrive at port.  If isUnaccompanied is set to
+                            false then vehicleRegNum must be provided to check-in.
+                        trailerRegistrationNums:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                          maxItems: 2
+                          minItems: 1
+                          uniqueItems: true
+                          type: array
+                          description: For vehicles carrying trailers, the trailer
+                            registration number of each trailer.  If isUnaccompanied
+                            is set to true then trailerRegistrationNums or containerReferenceNums
+                            must be provided before check-in.
+                          items:
+                            type: string
+                        containerReferenceNums:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                          minItems: 1
+                          uniqueItems: true
+                          type: array
+                          description: For vehicles arriving with containers that
+                            will be detached and loaded, the container reference number
+                            of each container in the movement. If isUnaccompanied
+                            is set to true then trailerRegistrationNums or containerReferenceNums
+                            must be provided before check-in.
+                          items:
+                            type: string
+                        plannedCrossing:
+                          required:
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfDeparture:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of departure,
+                                in local time of the departure port. Must not include
+                                seconds, time zone or UTC marker
+                        checkedInCrossing:
+                          required:
+                          - localDateTimeOfArrival
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfArrival:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of arrival, in
+                                local time of the arrival port. Must not include seconds,
+                                time zone or UTC marker
+                        actualCrossing:
+                          required:
+                          - localDateTimeOfArrival
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfArrival:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of arrival, in
+                                local time of the arrival port. Must not include seconds,
+                                time zone or UTC marker
+                example:
+                - gmrsByVRN:
+                  - vrn: AB19 HGR
+                    gmrs:
+                    - GMRA000DS6M2
+                  - vrn: AB19 HYK
+                    gmrs:
+                    - GMRA000DS6M3
+                  - vrn: AB19 HRT
+                    gmrs:
+                    - GMRA000DS6M3
+                  - vrn: AB19 HGR
+                    gmrs:
+                    - GMRA000DS6M4
+                    - GMRC000DS6M5
+                  - vrn: AB19 HUI
+                    gmrs: []
+                  gmrs:
+                  - gmrId: GMRA000DS6M2
+                    haulierEORI: GB123456789012
+                    state: CHECKED_IN
+                    direction: UK_INBOUND
+                    isUnaccompanied: false
+                    vehicleRegNum: AB19 DEF
+                    checkedInCrossing:
+                      routeId: "61"
+                      localDateTimeOfArrival: 2022-08-11T10:58
+                    updatedDateTime: 2023-08-12T12:33:52.198Z
+                  - gmrId: GMRA000DS6M3
+                    haulierEORI: GB123456789012
+                    state: NOT_FINALISABLE
+                    direction: UK_INBOUND
+                    isUnaccompanied: false
+                    vehicleRegNum: AB19 DEG
+                    plannedCrossing:
+                      routeId: "14"
+                      localDateTimeOfDeparture: 2022-08-12T14:21
+                    updatedDateTime: 2023-08-12T16:39:03.944Z
+                  - gmrId: GMRA000DS6M4
+                    haulierEORI: GB123456789012
+                    state: EMBARKED
+                    direction: UK_INBOUND
+                    isUnaccompanied: true
+                    trailerRegistrationNums:
+                    - KF293716
+                    - GH28372S
+                    actualCrossing:
+                      routeId: "61"
+                      localDateTimeOfArrival: 2022-08-11T18:09
+                    inspectionRequired: true
+                    reportToLocations:
+                    - inspectionTypeId: "1"
+                      locationIds:
+                      - "13"
+                      - "14"
+                      - "15"
+                    - inspectionTypeId: "2"
+                      locationIds:
+                      - "11"
+                      - "12"
+                    updatedDateTime: 2023-08-12T19:20:01.442Z
+              examples:
+                example-1:
+                  value:
+                    gmrsByVRN:
+                    - vrn: AB19 HGR
+                      gmrs:
+                      - GMRA000DS6M2
+                    - vrn: AB19 HGS
+                      gmrs:
+                      - GMRA000DS6M3
+                    - vrn: AB19 HTY
+                      gmrs:
+                      - GMRA000DS6M3
+                    - vrn: AB19 HFR
+                      gmrs:
+                      - GMRA000DS6M4
+                      - GMRC000DS6M5
+                    - vrn: AB19 YUR
+                      gmrs: []
+                    gmrs:
+                    - gmrId: GMRA000DS6M2
+                      haulierEORI: GB123456789012
+                      state: CHECKED_IN
+                      direction: UK_INBOUND
+                      isUnaccompanied: false
+                      vehicleRegNum: AB19 DEF
+                      checkedInCrossing:
+                        routeId: "61"
+                        localDateTimeOfArrival: 2022-08-11T10:58
+                      updatedDateTime: 2023-08-12T12:33:52.198Z
+                    - gmrId: GMRA000DS6M3
+                      haulierEORI: GB123456789012
+                      state: NOT_FINALISABLE
+                      direction: UK_INBOUND
+                      isUnaccompanied: false
+                      vehicleRegNum: AB19 DEG
+                      plannedCrossing:
+                        routeId: "14"
+                        localDateTimeOfDeparture: 2022-08-12T14:21
+                      updatedDateTime: 2023-08-12T16:39:03.944Z
+                    - gmrId: GMRA000DS6M4
+                      haulierEORI: GB123456789012
+                      state: EMBARKED
+                      direction: UK_INBOUND
+                      isUnaccompanied: true
+                      trailerRegistrationNums:
+                      - KF293716
+                      - GH28372S
+                      actualCrossing:
+                        routeId: "61"
+                        localDateTimeOfArrival: 2022-08-11T18:09
+                      inspectionRequired: true
+                      reportToLocations:
+                      - inspectionTypeId: "1"
+                        locationIds:
+                        - "13"
+                        - "14"
+                        - "15"
+                      - inspectionTypeId: "2"
+                        locationIds:
+                        - "11"
+                        - "12"
+                      updatedDateTime: 2023-08-12T19:20:01.442Z
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: NOT_AUTHORISED
+              examples:
+                notAuthorised:
+                  description: Your application does not have permission to access
+                    this endpoint.
+                  value:
+                    code: NOT_AUTHORISED
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: INVALID_JSON_FORMAT
+              examples:
+                invalidJson:
+                  description: Invalid JSON - the payload could not be parsed
+                  value:
+                    code: INVALID_JSON_FORMAT
+                jsonSchemaError:
+                  description: The JSON payload is not conformant with the JSON schema
+                  value:
+                    code: JSON_SCHEMA_ERROR
+                invalidGmrState:
+                  description: The value of the query parameter 'state' is not a valid
+                    GMR state.
+                  value:
+                    code: INVALID_GMR_STATE
+      deprecated: false
+      security:
+      - applicationRestricted: []
+  /customs/goods-movement-system-search/gmrs-for-declaration-ids:
+    post:
+      summary: Get GMRs for declaration IDs
+      description: "Returns details for GMRs that include one or more customs/transit\
+        \ declarations whose IDs are within the supplied list of declaration IDs.\n\
+        \nThe details returned include:\n* the GMR ID(s), if any, for each of the\
+        \ given declaration IDs.  \n* summary details for each matched GMR including\
+        \ state and crossing information. \n* flags to indicate whether an inspection\
+        \ is required and whether the GMR is ready to embark.\n* inspection location\
+        \ information if an inspection is required (if available).\n\nYou can provide\
+        \ a maximum of 2000 declaration IDs.  This limit is enforced by the request\
+        \ schema.\n\nThe results list can be filtered using the `state` query parameter.\
+        \ \n\nThe returned `gmrByDeclarationId` list retains the ordering of the given\
+        \ list of declaration IDs.\n\nThe returned `gmrs` list is sorted alphabetically\
+        \ by `gmrId`.\n"
+      operationId: GetGMRsfordeclarationIDs
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Specifies the format of the request body, which must be JSON.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - name: Accept
+        in: header
+        description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning)
+          of the API to be used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/vnd.hmrc.1.0+json
+      - name: Authorization
+        in: header
+        description: An OAuth 2.0 Bearer Token.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      - name: state
+        in: query
+        description: Filter GMRs for a state.  If not specified, all GMRs matching
+          the search criteria will be returned.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - NOT_FINALISABLE
+          - OPEN
+          - FINALISED
+          - CHECKED_IN
+          - EMBARKED
+          - COMPLETED
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              required:
+              - declarationIds
+              properties:
+                declarationIds:
+                  pattern: ^[A-Z0-9-)(/]{1,200}$
+                  maxItems: 2000
+                  minItems: 1
+                  type: array
+                  description: A list of declaration IDs to search for.  Currently,
+                    only customs and transit declaration IDs are accepted (DUCR, ERN
+                    or customs/transit MRN, depending on source system and crossing
+                    direction).
+                  items:
+                    type: string
+              example:
+              - declarationIds:
+                - 19GB4S24GC3PPFGVR7
+                - 19GB4S24GC3PPFGVR8
+                - 999123456C20210615
+                - 999123456C20210616
+                - 999123456C20210617
+            examples:
+              example-1:
+                value:
+                  declarationIds:
+                  - 19GB4S24GC3PPFGVR7
+                  - 19GB4S24GC3PPFGVR8
+                  - 999123456C20210615
+                  - 999123456C20210616
+                  - 999123456C20210617
+        required: true
+      responses:
+        "200":
+          description: The search results
+          content:
+            application/json:
+              schema:
+                required:
+                - gmrByDeclarationId
+                - gmrs
+                properties:
+                  gmrByDeclarationId:
+                    minItems: 1
+                    type: array
+                    description: ""
+                    items:
+                      title: GmrByDeclarationId
+                      required:
+                      - dec
+                      - gmrs
+                      type: object
+                      properties:
+                        dec:
+                          pattern: ^[A-Z0-9-)(/]{1,200}$
+                          type: string
+                          description: |-
+                            This is the identifier for a customs declaration from Customs Declaration Service (CDS) or CHIEF.
+                            For inbound movements declared in CDS it is a MRN, for example 19GB4S24GC3PPFGVR7.
+                            For inbound movements declared in CHIEF it is an ERN, for example 999123456C20210615.
+                            For outbound movements declared in either CDS or CHIEF it is a DUCR, for example 0GB689223596000-SE119404.
+                        gmrs:
+                          minItems: 0
+                          type: array
+                          description: ""
+                          items:
+                            pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                            type: string
+                  gmrs:
+                    minItems: 0
+                    type: array
+                    description: ""
+                    items:
+                      title: gmrSummaryWithDeclarations
+                      required:
+                      - direction
+                      - gmrId
+                      - haulierEORI
+                      - state
+                      - updatedDateTime
+                      type: object
+                      properties:
+                        gmrId:
+                          pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                          type: string
+                          description: The Goods Movement Record (GMR) ID for this
+                            GMR.  Do not include when POSTing a GMR - GVMS will assign
+                            an ID.
+                        haulierEORI:
+                          pattern: ^GB[0-9]{12,15}$
+                          type: string
+                          description: The EORI of the haulier that is responsible
+                            for the vehicle making the goods movement
+                        state:
+                          description: The state of the GMR
+                          oneOf:
+                          - title: state
+                            type: string
+                            description: The GMR is in a non-finalisable state.  This
+                              means an update will be required from the haulier prior
+                              to check-in.
+                            enum:
+                            - NOT_FINALISABLE
+                          - title: state1
+                            type: string
+                            description: The GMR is open for updates and is ready
+                              for check-in.
+                            enum:
+                            - OPEN
+                          - title: state2
+                            type: string
+                            description: The GMR is finalised, which is part of the
+                              process of check-in by the carrier.  No further updates
+                              from the haulier are permitted.
+                            enum:
+                            - FINALISED
+                          - title: state3
+                            type: string
+                            description: The GMR is checked-in, awaiting embarkation
+                              confirmation from the carrier.
+                            enum:
+                            - CHECKED_IN
+                          - title: state4
+                            type: string
+                            description: The GMR is embarked, meaning the goods movement
+                              has embarked on its crossing but the goods are awaiting
+                              clearance to proceed.
+                            enum:
+                            - EMBARKED
+                          - title: state5
+                            type: string
+                            description: The GMR is completed, meaning the goods movement
+                              has embarked on its crossing and the goods are clear
+                              to proceed.
+                            enum:
+                            - COMPLETED
+                        inspectionRequired:
+                          type: boolean
+                          description: If set to true, indicates that the vehicle
+                            requires a customs inspection.  If set to false, indicates
+                            that the vehicle does not require a customs inspection.  If
+                            not set, indicates the customs inspection decision has
+                            not yet been made or is not applicable.  For outbound
+                            GMRs, this indicates that the vehicle must present at
+                            an inspection facility prior to checking-in at the port.  For
+                            Office of Transit inspections for inbound GMRs, a decision
+                            may be made to inspect subsequent to a notification that
+                            inspection is not required.  In this event a notification
+                            will be sent that changes inspectionRequired from false
+                            to true.  If this happens after leaving the port of arrival,
+                            the inspection should be carried out at the next transit
+                            office e.g. the office of destination.
+                        reportToLocations:
+                          minItems: 1
+                          type: array
+                          description: A list of one or more inspection types, from
+                            GVMS Reference Data, that the vehicle must have carried
+                            out, in the order specified.  This means that where there
+                            are multiple entries here, the vehicle must report for
+                            the first inspection type listed before each subsequent
+                            listed inspection.  Each entry includes a list of available
+                            locations for the inspection type.
+                          items:
+                            title: propertiesreportToLocationsitems
+                            required:
+                            - inspectionTypeId
+                            - locationIds
+                            type: object
+                            properties:
+                              inspectionTypeId:
+                                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                                type: string
+                                description: An inspectionTypeId from GVMS Reference
+                                  Data denoting the type of inspection that needs
+                                  to be performed on the vehicle.
+                              locationIds:
+                                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                                type: array
+                                description: A list of locationIds from GVMS Reference
+                                  Data that are available to perform this type of
+                                  inspection.
+                                items:
+                                  type: string
+                            description: Information about an inspection that is required
+                        updatedDateTime:
+                          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+                          type: string
+                          description: The date and time that this GMR was last updated.
+                        direction:
+                          description: The direction of the movement - into or out
+                            of the UK, or between Great Britain and Northern Ireland
+                          oneOf:
+                          - title: direction
+                            type: string
+                            description: The movement is travelling into the UK
+                            enum:
+                            - UK_INBOUND
+                          - title: direction1
+                            type: string
+                            description: The movement is travelling out of the UK
+                            enum:
+                            - UK_OUTBOUND
+                          - title: direction2
+                            type: string
+                            description: The movement is travelling out of Great Britain
+                              into Northern Ireland
+                            enum:
+                            - GB_TO_NI
+                          - title: direction3
+                            type: string
+                            description: The movement is travelling out of Northern
+                              Ireland into Great Britain
+                            enum:
+                            - NI_TO_GB
+                        haulierType:
+                          description: The type of haulier moving the goods
+                          oneOf:
+                          - title: haulierType
+                            type: string
+                            description: All hauliers that are not one of the other
+                              types
+                            enum:
+                            - STANDARD
+                          - title: haulierType1
+                            type: string
+                            description: Fast parcel operators that are members of
+                              the Anti-Smuggling Network
+                            enum:
+                            - FPO_ASN
+                          - title: haulierType2
+                            type: string
+                            description: Fast parcel operators that are not members
+                              of the ASN and are not moving goods with a Memorandum
+                              of Understanding
+                            enum:
+                            - FPO_OTHER
+                          - title: haulierType3
+                            type: string
+                            description: NATO or MoD
+                            enum:
+                            - NATO_MOD
+                          - title: haulierType4
+                            type: string
+                            description: Royal Mail Group
+                            enum:
+                            - RMG
+                          - title: haulierType5
+                            type: string
+                            description: Extra-Territorial Office of Exchange
+                            enum:
+                            - ETOE
+                        isUnaccompanied:
+                          type: boolean
+                          description: Set to true if the vehicle will not be accompanying
+                            the trailer(s) during the crossing, or if the vehicle
+                            is carrying a container that will be detached and loaded
+                            for the crossing.
+                        vehicleRegNum:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                          type: string
+                          description: Vehicle registration number of the vehicle
+                            that will arrive at port.  If isUnaccompanied is set to
+                            false then vehicleRegNum must be provided to check-in.
+                        trailerRegistrationNums:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                          maxItems: 2
+                          minItems: 1
+                          uniqueItems: true
+                          type: array
+                          description: For vehicles carrying trailers, the trailer
+                            registration number of each trailer.  If isUnaccompanied
+                            is set to true then trailerRegistrationNums or containerReferenceNums
+                            must be provided before check-in.
+                          items:
+                            type: string
+                        containerReferenceNums:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                          minItems: 1
+                          uniqueItems: true
+                          type: array
+                          description: For vehicles arriving with containers that
+                            will be detached and loaded, the container reference number
+                            of each container in the movement. If isUnaccompanied
+                            is set to true then trailerRegistrationNums or containerReferenceNums
+                            must be provided before check-in.
+                          items:
+                            type: string
+                        plannedCrossing:
+                          required:
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfDeparture:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of departure,
+                                in local time of the departure port. Must not include
+                                seconds, time zone or UTC marker
+                        checkedInCrossing:
+                          required:
+                          - localDateTimeOfArrival
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfArrival:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of arrival, in
+                                local time of the arrival port. Must not include seconds,
+                                time zone or UTC marker
+                        actualCrossing:
+                          required:
+                          - localDateTimeOfArrival
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfArrival:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of arrival, in
+                                local time of the arrival port. Must not include seconds,
+                                time zone or UTC marker
+                        declarations:
+                          properties:
+                            transits:
+                              type: array
+                              description: A list of declaration ids.
+                              items:
+                                required:
+                                - id
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                            customs:
+                              type: array
+                              description: A list of declaration ids.
+                              items:
+                                required:
+                                - id
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                example:
+                - gmrByDeclarationId:
+                  - dec: 19GB4S24GC3PPFGVR7
+                    gmrs:
+                    - GMRA000DS6M2
+                  - dec: 19GB4S24GC3PPFGVR8
+                    gmrs:
+                    - GMRA000DS6M3
+                  - dec: 999123456C20210615
+                    gmrs:
+                    - GMRA000DS6M3
+                  - dec: 999123456C20210616
+                    gmrs:
+                    - GMRA000DS6M4
+                    - GMRC000DS6M5
+                  - dec: 999123456C20210617
+                    gmrs: []
+                  gmrs:
+                  - gmrId: GMRA000DS6M2
+                    haulierEORI: GB123456789012
+                    state: CHECKED_IN
+                    direction: UK_INBOUND
+                    isUnaccompanied: false
+                    vehicleRegNum: AB19 DEF
+                    checkedInCrossing:
+                      routeId: "61"
+                      localDateTimeOfArrival: 2022-08-11T10:58
+                    updatedDateTime: 2023-08-12T12:33:52.198Z
+                  - gmrId: GMRA000DS6M3
+                    haulierEORI: GB123456789012
+                    state: NOT_FINALISABLE
+                    direction: UK_INBOUND
+                    isUnaccompanied: false
+                    vehicleRegNum: AB19 DEG
+                    plannedCrossing:
+                      routeId: "14"
+                      localDateTimeOfDeparture: 2022-08-12T14:21
+                    updatedDateTime: 2023-08-12T16:39:03.944Z
+                  - gmrId: GMRA000DS6M4
+                    haulierEORI: GB123456789012
+                    state: EMBARKED
+                    direction: UK_INBOUND
+                    isUnaccompanied: true
+                    trailerRegistrationNums:
+                    - KF293716
+                    - GH28372S
+                    actualCrossing:
+                      routeId: "61"
+                      localDateTimeOfArrival: 2022-08-11T18:09
+                    inspectionRequired: true
+                    reportToLocations:
+                    - inspectionTypeId: "1"
+                      locationIds:
+                      - "13"
+                      - "14"
+                      - "15"
+                    - inspectionTypeId: "2"
+                      locationIds:
+                      - "11"
+                      - "12"
+                    updatedDateTime: 2023-08-12T19:20:01.442Z
+              examples:
+                example-1:
+                  value:
+                    gmrByDeclarationId:
+                    - dec: 19GB4S24GC3PPFGVR7
+                      gmrs:
+                      - GMRA000DS6M2
+                    - dec: 19GB4S24GC3PPFGVR8
+                      gmrs:
+                      - GMRA000DS6M3
+                    - dec: 999123456C20210615
+                      gmrs:
+                      - GMRA000DS6M3
+                    - dec: 999123456C20210616
+                      gmrs:
+                      - GMRA000DS6M4
+                      - GMRC000DS6M5
+                    - dec: 999123456C20210617
+                      gmrs: []
+                    gmrs:
+                    - gmrId: GMRA000DS6M2
+                      haulierEORI: GB123456789012
+                      state: CHECKED_IN
+                      direction: UK_INBOUND
+                      isUnaccompanied: false
+                      vehicleRegNum: AB19 DEF
+                      checkedInCrossing:
+                        routeId: "61"
+                        localDateTimeOfArrival: 2022-08-11T10:58
+                      updatedDateTime: 2023-08-12T12:33:52.198Z
+                    - gmrId: GMRA000DS6M3
+                      haulierEORI: GB123456789012
+                      state: NOT_FINALISABLE
+                      direction: UK_INBOUND
+                      isUnaccompanied: false
+                      vehicleRegNum: AB19 DEG
+                      plannedCrossing:
+                        routeId: "14"
+                        localDateTimeOfDeparture: 2022-08-12T14:21
+                      updatedDateTime: 2023-08-12T16:39:03.944Z
+                    - gmrId: GMRA000DS6M4
+                      haulierEORI: GB123456789012
+                      state: EMBARKED
+                      direction: UK_INBOUND
+                      isUnaccompanied: true
+                      trailerRegistrationNums:
+                      - KF293716
+                      - GH28372S
+                      actualCrossing:
+                        routeId: "61"
+                        localDateTimeOfArrival: 2022-08-11T18:09
+                      inspectionRequired: true
+                      reportToLocations:
+                      - inspectionTypeId: "1"
+                        locationIds:
+                        - "13"
+                        - "14"
+                        - "15"
+                      - inspectionTypeId: "2"
+                        locationIds:
+                        - "11"
+                        - "12"
+                      updatedDateTime: 2023-08-12T19:20:01.442Z
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: NOT_AUTHORISED
+              examples:
+                notAuthorised:
+                  description: Your application does not have permission to access
+                    this endpoint.
+                  value:
+                    code: NOT_AUTHORISED
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: INVALID_JSON_FORMAT
+              examples:
+                invalidJson:
+                  description: Invalid JSON - the payload could not be parsed
+                  value:
+                    code: INVALID_JSON_FORMAT
+                jsonSchemaError:
+                  description: The JSON payload is not conformant with the JSON schema
+                  value:
+                    code: JSON_SCHEMA_ERROR
+                invalidGmrState:
+                  description: The value of the query parameter 'state' is not a valid
+                    GMR state.
+                  value:
+                    code: INVALID_GMR_STATE
+      deprecated: false
+      security:
+      - applicationRestricted: []
+  /customs/goods-movement-system-search/gmrs:
+    post:
+      summary: Get GMRs for Trailer Registration Numbers
+      description: "Returns details for GMRs that include one or more TRN from the\
+        \ given list of Trailer Registration Numbers.\n\nThe details returned include:\n\
+        * the GMR ID(s), if any, for each of the given Trailer Registration Number.\
+        \  \n* summary details for each matched GMR including state and crossing information.\
+        \ \n* flags to indicate whether an inspection is required and whether the\
+        \ GMR is ready to embark.\n* inspection location information if an inspection\
+        \ is required (if available).\n\nYou can provide a maximum of 2000 TRNs. This\
+        \ limit is enforced by the request schema.\n\nThe results list can be filtered\
+        \ using the `state` and/or `direction` query parameters.\n\nThe returned `gmrs`\
+        \ list is sorted alphabetically by `gmrId`.\n"
+      operationId: GetGMRs
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Specifies the format of the request body, which must be JSON.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - name: Accept
+        in: header
+        description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning)
+          of the API to be used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/vnd.hmrc.1.0+json
+      - name: Authorization
+        in: header
+        description: An OAuth 2.0 Bearer Token.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      - name: direction
+        in: query
+        description: Filter GMRs for a direction.  If not specified, all GMRs matching
+          the search criteria will be returned.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - GB_TO_NI
+          - NI_TO_GB
+          - UK_INBOUND
+          - UK_OUTBOUND
+      - name: state
+        in: query
+        description: Filter GMRs for a state.  If not specified, all GMRs matching
+          the search criteria will be returned.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - NOT_FINALISABLE
+          - OPEN
+          - FINALISED
+          - CHECKED_IN
+          - EMBARKED
+          - COMPLETED
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              required:
+              - trailerRegistrationNums
+              properties:
+                trailerRegistrationNums:
+                  pattern: ^[A-Z0-9-)(/]{1,200}$
+                  maxItems: 2000
+                  minItems: 1
+                  type: array
+                  description: A list of TRNs to search for GMRs.
+                  items:
+                    type: string
+              example:
+              - trailerRegistrationNums:
+                - AB123456
+                - DE123456
+                - FG123456
+                - HI123456
+            examples:
+              example-1:
+                value:
+                  trailerRegistrationNums:
+                  - AB123456
+                  - DE123456
+                  - FG123456
+                  - HI123456
+        required: true
+      responses:
+        "200":
+          description: The search results
+          content:
+            application/json:
+              schema:
+                required:
+                - gmrs
+                properties:
+                  gmrs:
+                    minItems: 0
+                    type: array
+                    description: ""
+                    items:
+                      title: gmrSummaryWithDeclarations
+                      required:
+                      - direction
+                      - gmrId
+                      - haulierEORI
+                      - state
+                      - updatedDateTime
+                      type: object
+                      properties:
+                        gmrId:
+                          pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                          type: string
+                          description: The Goods Movement Record (GMR) ID for this
+                            GMR.  Do not include when POSTing a GMR - GVMS will assign
+                            an ID.
+                        haulierEORI:
+                          pattern: ^GB[0-9]{12,15}$
+                          type: string
+                          description: The EORI of the haulier that is responsible
+                            for the vehicle making the goods movement
+                        state:
+                          description: The state of the GMR
+                          oneOf:
+                          - title: state
+                            type: string
+                            description: The GMR is in a non-finalisable state.  This
+                              means an update will be required from the haulier prior
+                              to check-in.
+                            enum:
+                            - NOT_FINALISABLE
+                          - title: state1
+                            type: string
+                            description: The GMR is open for updates and is ready
+                              for check-in.
+                            enum:
+                            - OPEN
+                          - title: state2
+                            type: string
+                            description: The GMR is finalised, which is part of the
+                              process of check-in by the carrier.  No further updates
+                              from the haulier are permitted.
+                            enum:
+                            - FINALISED
+                          - title: state3
+                            type: string
+                            description: The GMR is checked-in, awaiting embarkation
+                              confirmation from the carrier.
+                            enum:
+                            - CHECKED_IN
+                          - title: state4
+                            type: string
+                            description: The GMR is embarked, meaning the goods movement
+                              has embarked on its crossing but the goods are awaiting
+                              clearance to proceed.
+                            enum:
+                            - EMBARKED
+                          - title: state5
+                            type: string
+                            description: The GMR is completed, meaning the goods movement
+                              has embarked on its crossing and the goods are clear
+                              to proceed.
+                            enum:
+                            - COMPLETED
+                        inspectionRequired:
+                          type: boolean
+                          description: If set to true, indicates that the vehicle
+                            requires a customs inspection.  If set to false, indicates
+                            that the vehicle does not require a customs inspection.  If
+                            not set, indicates the customs inspection decision has
+                            not yet been made or is not applicable.  For outbound
+                            GMRs, this indicates that the vehicle must present at
+                            an inspection facility prior to checking-in at the port.  For
+                            Office of Transit inspections for inbound GMRs, a decision
+                            may be made to inspect subsequent to a notification that
+                            inspection is not required.  In this event a notification
+                            will be sent that changes inspectionRequired from false
+                            to true.  If this happens after leaving the port of arrival,
+                            the inspection should be carried out at the next transit
+                            office e.g. the office of destination.
+                        reportToLocations:
+                          minItems: 1
+                          type: array
+                          description: A list of one or more inspection types, from
+                            GVMS Reference Data, that the vehicle must have carried
+                            out, in the order specified.  This means that where there
+                            are multiple entries here, the vehicle must report for
+                            the first inspection type listed before each subsequent
+                            listed inspection.  Each entry includes a list of available
+                            locations for the inspection type.
+                          items:
+                            title: propertiesreportToLocationsitems
+                            required:
+                            - inspectionTypeId
+                            - locationIds
+                            type: object
+                            properties:
+                              inspectionTypeId:
+                                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                                type: string
+                                description: An inspectionTypeId from GVMS Reference
+                                  Data denoting the type of inspection that needs
+                                  to be performed on the vehicle.
+                              locationIds:
+                                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                                type: array
+                                description: A list of locationIds from GVMS Reference
+                                  Data that are available to perform this type of
+                                  inspection.
+                                items:
+                                  type: string
+                            description: Information about an inspection that is required
+                        updatedDateTime:
+                          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+                          type: string
+                          description: The date and time that this GMR was last updated.
+                        direction:
+                          description: The direction of the movement - into or out
+                            of the UK, or between Great Britain and Northern Ireland
+                          oneOf:
+                          - title: direction
+                            type: string
+                            description: The movement is travelling into the UK
+                            enum:
+                            - UK_INBOUND
+                          - title: direction1
+                            type: string
+                            description: The movement is travelling out of the UK
+                            enum:
+                            - UK_OUTBOUND
+                          - title: direction2
+                            type: string
+                            description: The movement is travelling out of Great Britain
+                              into Northern Ireland
+                            enum:
+                            - GB_TO_NI
+                          - title: direction3
+                            type: string
+                            description: The movement is travelling out of Northern
+                              Ireland into Great Britain
+                            enum:
+                            - NI_TO_GB
+                        haulierType:
+                          description: The type of haulier moving the goods
+                          oneOf:
+                          - title: haulierType
+                            type: string
+                            description: All hauliers that are not one of the other
+                              types
+                            enum:
+                            - STANDARD
+                          - title: haulierType1
+                            type: string
+                            description: Fast parcel operators that are members of
+                              the Anti-Smuggling Network
+                            enum:
+                            - FPO_ASN
+                          - title: haulierType2
+                            type: string
+                            description: Fast parcel operators that are not members
+                              of the ASN and are not moving goods with a Memorandum
+                              of Understanding
+                            enum:
+                            - FPO_OTHER
+                          - title: haulierType3
+                            type: string
+                            description: NATO or MoD
+                            enum:
+                            - NATO_MOD
+                          - title: haulierType4
+                            type: string
+                            description: Royal Mail Group
+                            enum:
+                            - RMG
+                          - title: haulierType5
+                            type: string
+                            description: Extra-Territorial Office of Exchange
+                            enum:
+                            - ETOE
+                        isUnaccompanied:
+                          type: boolean
+                          description: Set to true if the vehicle will not be accompanying
+                            the trailer(s) during the crossing, or if the vehicle
+                            is carrying a container that will be detached and loaded
+                            for the crossing.
+                        vehicleRegNum:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                          type: string
+                          description: Vehicle registration number of the vehicle
+                            that will arrive at port.  If isUnaccompanied is set to
+                            false then vehicleRegNum must be provided to check-in.
+                        trailerRegistrationNums:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                          maxItems: 2
+                          minItems: 1
+                          uniqueItems: true
+                          type: array
+                          description: For vehicles carrying trailers, the trailer
+                            registration number of each trailer.  If isUnaccompanied
+                            is set to true then trailerRegistrationNums or containerReferenceNums
+                            must be provided before check-in.
+                          items:
+                            type: string
+                        containerReferenceNums:
+                          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                          minItems: 1
+                          uniqueItems: true
+                          type: array
+                          description: For vehicles arriving with containers that
+                            will be detached and loaded, the container reference number
+                            of each container in the movement. If isUnaccompanied
+                            is set to true then trailerRegistrationNums or containerReferenceNums
+                            must be provided before check-in.
+                          items:
+                            type: string
+                        plannedCrossing:
+                          required:
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfDeparture:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of departure,
+                                in local time of the departure port. Must not include
+                                seconds, time zone or UTC marker
+                        checkedInCrossing:
+                          required:
+                          - localDateTimeOfArrival
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfArrival:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of arrival, in
+                                local time of the arrival port. Must not include seconds,
+                                time zone or UTC marker
+                        actualCrossing:
+                          required:
+                          - localDateTimeOfArrival
+                          - routeId
+                          properties:
+                            routeId:
+                              pattern: ^[A-Z0-9-]{1,200}$
+                              type: string
+                              description: The ID of the crossing route, using a routeId
+                                from the GVMS reference data
+                            localDateTimeOfArrival:
+                              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                              type: string
+                              description: The planned date and time of arrival, in
+                                local time of the arrival port. Must not include seconds,
+                                time zone or UTC marker
+                        declarations:
+                          properties:
+                            transits:
+                              type: array
+                              description: A list of declaration ids.
+                              items:
+                                required:
+                                - id
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                            customs:
+                              type: array
+                              description: A list of declaration ids.
+                              items:
+                                required:
+                                - id
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                example:
+                - gmrs:
+                  - gmrId: GMRA000DS6M2
+                    haulierEORI: GB123456789012
+                    state: CHECKED_IN
+                    direction: UK_INBOUND
+                    isUnaccompanied: false
+                    vehicleRegNum: AB19 DEF
+                    checkedInCrossing:
+                      routeId: "61"
+                      localDateTimeOfArrival: 2022-08-11T10:58
+                    updatedDateTime: 2023-08-12T12:33:52.198Z
+                    trailerRegistrationNums:
+                    - DE123456
+                    - XZ123456
+                  - gmrId: GMRA000DS6M3
+                    haulierEORI: GB123456789012
+                    state: NOT_FINALISABLE
+                    direction: UK_INBOUND
+                    isUnaccompanied: false
+                    vehicleRegNum: AB19 DEG
+                    plannedCrossing:
+                      routeId: "14"
+                      localDateTimeOfDeparture: 2022-08-12T14:21
+                    updatedDateTime: 2023-08-12T16:39:03.944Z
+                  - gmrId: GMRA000DS6M4
+                    haulierEORI: GB123456789012
+                    state: EMBARKED
+                    direction: UK_INBOUND
+                    isUnaccompanied: true
+                    trailerRegistrationNums:
+                    - CD123456
+                    - DE123456
+                    actualCrossing:
+                      routeId: "61"
+                      localDateTimeOfArrival: 2022-08-11T18:09
+                    inspectionRequired: true
+                    reportToLocations:
+                    - inspectionTypeId: "1"
+                      locationIds:
+                      - "13"
+                      - "14"
+                      - "15"
+                    - inspectionTypeId: "2"
+                      locationIds:
+                      - "11"
+                      - "12"
+                    updatedDateTime: 2023-08-12T19:20:01.442Z
+              examples:
+                example-1:
+                  value:
+                    gmrs:
+                    - gmrId: GMRA000DS6M2
+                      haulierEORI: GB123456789012
+                      state: CHECKED_IN
+                      direction: UK_INBOUND
+                      isUnaccompanied: false
+                      vehicleRegNum: AB19 DEF
+                      checkedInCrossing:
+                        routeId: "61"
+                        localDateTimeOfArrival: 2022-08-11T10:58
+                      updatedDateTime: 2023-08-12T12:33:52.198Z
+                      declarations:
+                        transits:
+                        - id: "123456"
+                      trailerRegistrationNums:
+                      - AB123456
+                    - gmrId: GMRA000DS6M3
+                      haulierEORI: GB123456789012
+                      state: NOT_FINALISABLE
+                      direction: UK_INBOUND
+                      isUnaccompanied: false
+                      vehicleRegNum: AB19 DEG
+                      plannedCrossing:
+                        routeId: "14"
+                        localDateTimeOfDeparture: 2022-08-12T14:21
+                      updatedDateTime: 2023-08-12T16:39:03.944Z
+                      trailerRegistrationNums:
+                      - AB123456
+                      - DE123456
+                    - gmrId: GMRA000DS6M4
+                      haulierEORI: GB123456789012
+                      state: EMBARKED
+                      direction: UK_INBOUND
+                      isUnaccompanied: true
+                      trailerRegistrationNums:
+                      - DE123456
+                      - CD123456
+                      actualCrossing:
+                        routeId: "61"
+                        localDateTimeOfArrival: 2022-08-11T18:09
+                      inspectionRequired: true
+                      reportToLocations:
+                      - inspectionTypeId: "1"
+                        locationIds:
+                        - "13"
+                        - "14"
+                        - "15"
+                      - inspectionTypeId: "2"
+                        locationIds:
+                        - "11"
+                        - "12"
+                      updatedDateTime: 2023-08-12T19:20:01.442Z
+                      declarations:
+                        customs:
+                        - id: "654321"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: NOT_AUTHORISED
+              examples:
+                notAuthorised:
+                  description: Your application does not have permission to access
+                    this endpoint.
+                  value:
+                    code: NOT_AUTHORISED
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: INVALID_JSON_FORMAT
+              examples:
+                invalidJson:
+                  description: Invalid JSON - the payload could not be parsed
+                  value:
+                    code: INVALID_JSON_FORMAT
+                jsonSchemaError:
+                  description: The JSON payload is not conformant with the JSON schema
+                  value:
+                    code: JSON_SCHEMA_ERROR
+                invalidGmrState:
+                  description: The value of the query parameter 'state' is not a valid
+                    GMR state.
+                  value:
+                    code: INVALID_GMR_STATE
+      deprecated: false
+      security:
+      - applicationRestricted: []
+  /customs/goods-movement-system-search/hold/{gmrId}:
+    put:
+      summary: Apply Hold or Clear
+      description: Apply Hold or Clear
+      operationId: ApplyHoldAndClearGMRId
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Specifies the format of the request body, which must be JSON.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - name: Accept
+        in: header
+        description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning)
+          of the API to be used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/vnd.hmrc.1.0+json
+      - name: Authorization
+        in: header
+        description: An OAuth 2.0 Bearer Token.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      - name: gmrId
+        in: path
+        description: GMR Id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      requestBody:
+        description: Apply Hold or Clear
+        content:
+          application/json:
+            schema:
+              type: boolean
+              description: If set to true, Apply Hold  or else apply Clear
+            examples:
+              example-1:
+                value:
+                  hold: true
+              example-2:
+                value:
+                  hold: false
+        required: true
+      responses:
+        "202":
+          description: Apply Hold or Clear response
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - title: errorResponse
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - example:
+                    code: NOT_AUTHORISED
+              examples:
+                notAuthorised:
+                  description: Your application does not have permission to access
+                    this endpoint.
+                  value:
+                    code: NOT_AUTHORISED
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - title: errorResponse
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - title: invalidGMRState
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - title: invalidDirection
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - example:
+                    code: INVALID_JSON_FORMAT
+              examples:
+                invalidJson:
+                  description: Invalid JSON - the payload could not be parsed
+                  value:
+                    code: INVALID_JSON_FORMAT
+                jsonSchemaError:
+                  description: The JSON payload is not conformant with the JSON schema
+                  value:
+                    code: JSON_SCHEMA_ERROR
+                invalidGMRState:
+                  description: GMR is not in the EMBARKED state.
+                  value:
+                    code: INVALID_GMR_STATE
+                invalidDirection:
+                  description: GMR is for a direction where this hold is not applicable.
+                  value:
+                    code: INVALID_DIRECTION
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: GMR_NOT_FOUND
+              examples:
+                gmrNotFound:
+                  description: The goods movement record does not exist.
+                  value:
+                    code: GMR_NOT_FOUND
+      deprecated: false
+      security:
+      - applicationRestricted: []
+  /customs/goods-movement-system-search/defra-holds/{gmrId}:
+    put:
+      summary: Apply or Clear DEFRA Hold
+      description: Apply or Clear DEFRA Hold. GMR needs at least one transit declaration
+      operationId: ApplyDEFRAHold
+      parameters:
+      - name: Accept
+        in: header
+        description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning)
+          of the API to be used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/vnd.hmrc.1.0+json
+      - name: Authorization
+        in: header
+        description: An OAuth 2.0 Bearer Token.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      - name: gmrId
+        in: path
+        description: GMR Id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer 59fc92c1cdf0b8ef1f138a702effdbd2
+      requestBody:
+        description: Apply Hold or Clear
+        content:
+          application/json:
+            schema:
+              type: boolean
+              description: If set to true, Apply Hold  or else apply Clear
+            examples:
+              example-1:
+                value:
+                  hold: true
+              example-2:
+                value:
+                  hold: false
+        required: true
+      responses:
+        "202":
+          description: Apply Hold or Clear response
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - title: errorResponse
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - example:
+                    code: NOT_AUTHORISED
+              examples:
+                notAuthorised:
+                  description: Your application does not have permission to access
+                    this endpoint.
+                  value:
+                    code: NOT_AUTHORISED
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - title: errorResponse
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - title: invalidGMRState
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - title: invalidDirection
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - title: gmrWithoutTransits
+                  required:
+                  - code
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                - example:
+                    code: INVALID_JSON_FORMAT
+              examples:
+                invalidJson:
+                  description: Invalid JSON - the payload could not be parsed
+                  value:
+                    code: INVALID_JSON_FORMAT
+                jsonSchemaError:
+                  description: The JSON payload is not conformant with the JSON schema
+                  value:
+                    code: JSON_SCHEMA_ERROR
+                invalidGMRState:
+                  description: GMR is not in the EMBARKED state.
+                  value:
+                    code: INVALID_GMR_STATE
+                gmrWithoutTransits:
+                  description: GMR needs at least one transit declaration.
+                  value:
+                    code: GMR_WITHOUT_TRANSIT_DECLARATIONS
+                invalidDirection:
+                  description: GMR is for a direction where this hold is not applicable.
+                  value:
+                    code: INVALID_DIRECTION
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                example:
+                - code: GMR_NOT_FOUND
+              examples:
+                gmrNotFound:
+                  description: The goods movement record does not exist.
+                  value:
+                    code: GMR_NOT_FOUND
+      deprecated: false
+      security:
+      - applicationRestricted: []
+  /customs/goods-movement-system-search/reference-data:
+    get:
+      summary: Get reference data
+      description: "\nThis endpoint gets details of all reference data used by GVMS.\n\
+        \nReference data includes lists of:\n\n* Carriers operating on GVMS routes\n\
+        * Ports operating GVMS routes \n* GVMS routes (combining a carrier and a pair\
+        \ of ports)\n* Validation rule failure codes and descriptions\n\nThe reference\
+        \ data is returned as a single JSON document containing all\nrequired data\
+        \ lists.\n\nNew carriers, routes, ports and locations will be added with effective\
+        \ from\nand to dates, so your software will have an advance view of upcoming\
+        \ \nchanges.  It should not offer up routes that are not yet in effect or\
+        \ \nthat have expired.\n\nGVMS reference data is updated periodically. If\
+        \ you are a GVMS API subscriber, you will receive notifications about upcoming\
+        \ updates. If you receive a notification about an update, your application\
+        \ software must refresh the reference data by calling the GET reference-data\
+        \ endpoint.\n"
+      operationId: Getreferencedata
+      parameters:
+      - name: Accept
+        in: header
+        description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning)
+          of the API to be used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/vnd.hmrc.1.0+json
+      responses:
+        "200":
+          description: GMVS reference data is returned in the response body
+          content:
+            application/json:
+              schema:
+                properties:
+                  routes:
+                    type: array
+                    description: The routes covered by GVMS
+                    items:
+                      title: Route
+                      required:
+                      - arrivalPortId
+                      - carrierId
+                      - departurePortId
+                      - routeDirection
+                      - routeEffectiveFrom
+                      - routeId
+                      type: object
+                      properties:
+                        routeId:
+                          type: string
+                          description: The route identifier
+                        routeDirection:
+                          enum:
+                          - UK_INBOUND
+                          - UK_OUTBOUND
+                          - GB_TO_NI
+                          - NI_TO_GB
+                        routeEffectiveFrom:
+                          type: string
+                          description: Date the route came into effect
+                          format: date
+                        departurePortId:
+                          type: integer
+                          description: The id of the departure port
+                          format: int32
+                        arrivalPortId:
+                          type: integer
+                          description: The id of the arrival port
+                          format: int32
+                        carrierId:
+                          type: integer
+                          description: the id of the carrier operating that route
+                          format: int32
+                        routeEffectiveTo:
+                          type: string
+                          description: The date the route stopped being used
+                          format: date
+                  ports:
+                    type: array
+                    description: ""
+                    items:
+                      title: Port
+                      required:
+                      - officeOfTransitCustomsOfficeCode
+                      - portCountryCode
+                      - portDescription
+                      - portEffectiveFrom
+                      - portId
+                      type: object
+                      properties:
+                        portId:
+                          type: integer
+                          description: The id of the port
+                          format: int32
+                        portRegion:
+                          type: string
+                          description: The region the port is grouped into for CTC
+                        portEffectiveFrom:
+                          type: string
+                          description: The date the port came into effect
+                          format: date
+                        portDescription:
+                          maxLength: 255
+                          minLength: 3
+                          type: string
+                          description: 'Description of the port eg: the ports name'
+                        timezoneId:
+                          maxLength: 50
+                          type: string
+                          description: The UTC Identifier
+                        chiefPortCode:
+                          type: string
+                          description: The port code specific to CHIEF
+                        cdsPortCode:
+                          type: string
+                          description: The port code specific to CDS
+                        officeOfTransitCustomsOfficeCode:
+                          maxLength: 8
+                          minLength: 8
+                          type: string
+                          description: Customs office code for CTC
+                        portEffectiveTo:
+                          type: string
+                          description: The date the port stopped being used
+                          format: date
+                        portCountryCode:
+                          pattern: ^[A-Z]{2}$
+                          type: string
+                          description: The Country code of the associated Port
+                        isOperatingArrivedExportsProcess:
+                          type: boolean
+                          description: If true, indicates that this port is operating
+                            the arrived exports process and as such requires all customs
+                            export declarations to be pre-arrived prior to check-in.  If
+                            omitted or false, indicates that this port is operating
+                            the standard exports process.
+                  carriers:
+                    type: array
+                    description: ""
+                    items:
+                      title: Carrier
+                      required:
+                      - carrierId
+                      - carrierName
+                      type: object
+                      properties:
+                        carrierId:
+                          type: integer
+                          description: The id of the carrier
+                          format: int32
+                        carrierName:
+                          maxLength: 255
+                          minLength: 1
+                          type: string
+                          description: The name of the carrier
+                        countryCode:
+                          pattern: ^[A-Z]{2}$
+                          type: string
+                          description: The country code where the carrier is registered
+                  locations:
+                    type: array
+                    description: ""
+                    items:
+                      title: Location
+                      required:
+                      - address
+                      - locationDescription
+                      - locationEffectiveFrom
+                      - locationId
+                      - locationType
+                      - requiredInspectionLocations
+                      - supportedDirections
+                      - supportedInspectionTypeIds
+                      type: object
+                      properties:
+                        locationId:
+                          type: string
+                          description: The id of the inspection facility.
+                        locationDescription:
+                          type: string
+                          description: The name of the inspection facility location.
+                        address:
+                          required:
+                          - lines
+                          - postcode
+                          properties:
+                            lines:
+                              maxItems: 4
+                              minItems: 1
+                              type: array
+                              description: The building name or number, and street
+                                name where the inspection facility is located.
+                              items:
+                                type: string
+                            town:
+                              type: string
+                              description: The town where the inspection facility
+                                is located.
+                            postcode:
+                              type: string
+                              description: The postcode where the inspection facility
+                                is located.
+                        locationType:
+                          enum:
+                          - IBF
+                          - BCP
+                          - ALL
+                        supportedDirections:
+                          maxItems: 4
+                          minItems: 1
+                          type: array
+                          description: The directions of travel supported by the location.
+                          items:
+                            title: SupportedDirection
+                            type: string
+                            enum:
+                            - UK_INBOUND
+                            - UK_OUTBOUND
+                            - GB_TO_NI
+                            - NI_TO_GB
+                        locationEffectiveFrom:
+                          type: string
+                          description: The date the inspection facility location starts
+                            being used.
+                          format: date
+                        locationEffectiveTo:
+                          type: string
+                          description: The date the inspection facility location stops
+                            being used.
+                          format: date
+                        supportedInspectionTypeIds:
+                          minItems: 1
+                          type: array
+                          description: The list of inspectionTypeIds for the types
+                            of inspections carried out.
+                          items:
+                            type: string
+                        requiredInspectionLocations:
+                          minItems: 1
+                          type: array
+                          description: The list of portIds that the inspection facility
+                            supports.
+                          items:
+                            type: integer
+                            format: int32
+                  inspectionTypes:
+                    type: array
+                    description: ""
+                    items:
+                      title: InspectionType
+                      required:
+                      - description
+                      - inspectionTypeId
+                      type: object
+                      properties:
+                        inspectionTypeId:
+                          type: string
+                          description: The id of the type of inspection that needs
+                            to be performed on the vehicle.
+                        description:
+                          type: string
+                          description: The category of the type of inspection that
+                            needs to be performed on the vehicle e.g. CUSTOMS, DEFRA
+                            or TRANSIT.
+                  ruleFailures:
+                    type: array
+                    description: The list of business and other possible rule failures
+                      within a GMR
+                    items:
+                      title: RuleFailure
+                      required:
+                      - ruleDescription
+                      - ruleId
+                      type: object
+                      properties:
+                        ruleId:
+                          type: string
+                        ruleDescription:
+                          type: string
+                example:
+                - routes:
+                  - routeId: "102"
+                    routeEffectiveFrom: 2020-01-01
+                    routeEffectiveTo: 2020-01-02
+                    departurePortId: 7014
+                    routeDirection: UK_OUTBOUND
+                    arrivalPortId: 6085
+                    carrierId: 1
+                  - routeId: "103"
+                    routeEffectiveFrom: 2020-01-01
+                    departurePortId: 7054
+                    routeDirection: UK_OUTBOUND
+                    arrivalPortId: 1401
+                    carrierId: 2
+                  ports:
+                  - portId: 1777
+                    portRegion: Northeast
+                    portEffectiveFrom: 2000-01-01
+                    portDescription: Newcastle-Upon-Tyne
+                    chiefPortCode: TYN
+                    cdsPortCode: NCLLAOCSE
+                    officeOfTransitCustomsOfficeCode: GB000218
+                    timezoneId: Europe/London
+                    portCountryCode: GB
+                  - portId: 1824
+                    portRegion: South
+                    portEffectiveFrom: 2000-01-01
+                    portDescription: Newhaven
+                    chiefPortCode: NHV
+                    cdsPortCode: NHVNHVNHV
+                    officeOfTransitCustomsOfficeCode: GB003250
+                    timezoneId: Europe/London
+                    portCountryCode: GB
+                  carriers:
+                  - carrierId: 1
+                    carrierName: Example carrier 1
+                    countryCode: GB
+                  - carrierId: 2
+                    carrierName: Example carrier 2
+                    countryCode: IE
+                  ruleFailures:
+                  - ruleId: BR005
+                    ruleDescription: A GMR can only be used in one crossing between
+                      two customs territories
+                  - ruleId: BR011
+                    ruleDescription: This Customs declaration cannot be in more than
+                      one GMR
+              examples:
+                example-1:
+                  value:
+                    routes:
+                    - routeId: "102"
+                      routeEffectiveFrom: 2020-01-01
+                      routeEffectiveTo: 2020-01-02
+                      departurePortId: 7014
+                      routeDirection: UK_OUTBOUND
+                      arrivalPortId: 6085
+                      carrierId: 1
+                    - routeId: "103"
+                      routeEffectiveFrom: 2020-01-01
+                      departurePortId: 7054
+                      routeDirection: UK_OUTBOUND
+                      arrivalPortId: 1401
+                      carrierId: 2
+                    ports:
+                    - portId: 1777
+                      portRegion: Northeast
+                      portEffectiveFrom: 2000-01-01
+                      portDescription: Newcastle-Upon-Tyne
+                      chiefPortCode: TYN
+                      cdsPortCode: NCLLAOCSE
+                      officeOfTransitCustomsOfficeCode: GB000218
+                      timezoneId: Europe/London
+                      portCountryCode: GB
+                    - portId: 1824
+                      portRegion: South
+                      portEffectiveFrom: 2000-01-01
+                      portDescription: Newhaven
+                      chiefPortCode: NHV
+                      cdsPortCode: NHVNHVNHV
+                      officeOfTransitCustomsOfficeCode: GB003250
+                      timezoneId: Europe/London
+                      portCountryCode: GB
+                    carriers:
+                    - carrierId: 1
+                      carrierName: Example carrier 1
+                      countryCode: GB
+                    - carrierId: 2
+                      carrierName: Example carrier 2
+                      countryCode: IE
+                    ruleFailures:
+                    - ruleId: BR005
+                      ruleDescription: A GMR can only be used in one crossing between
+                        two customs territories
+                    - ruleId: BR011
+                      ruleDescription: This Customs declaration cannot be in more
+                        than one GMR
+      deprecated: false
+      security:
+      - {}
+components:
+  schemas:
+    errorResponse:
+      title: errorResponse
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+    invalidGMRState:
+      title: invalidGMRState
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+    gmrWithoutTransits:
+      title: gmrWithoutTransits
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+    invalidDirection:
+      title: invalidDirection
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+    gmrNotFound:
+      title: gmrNotFound
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+    propertiesreportToLocationsitems:
+      title: propertiesreportToLocationsitems
+      required:
+      - inspectionTypeId
+      - locationIds
+      type: object
+      properties:
+        inspectionTypeId:
+          pattern: ^[0-9A-Za-z\-_]{1,100}$
+          type: string
+          description: An inspectionTypeId from GVMS Reference Data denoting the type
+            of inspection that needs to be performed on the vehicle.
+        locationIds:
+          pattern: ^[0-9A-Za-z\-_]{1,100}$
+          type: array
+          description: A list of locationIds from GVMS Reference Data that are available
+            to perform this type of inspection.
+          items:
+            type: string
+      description: Information about an inspection that is required
+    actualCrossing:
+      title: actualCrossing
+      required:
+      - localDateTimeOfArrival
+      - routeId
+      type: object
+      properties:
+        routeId:
+          pattern: ^[A-Z0-9-]{1,200}$
+          type: string
+          description: The ID of the crossing route, using a routeId from the GVMS
+            reference data
+        localDateTimeOfArrival:
+          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+          type: string
+          description: The planned date and time of arrival, in local time of the
+            arrival port. Must not include seconds, time zone or UTC marker
+      description: Details of the crossing that the goods movement has been embarked
+        on. These details will only be present in the Goods Movement Record after
+        the vehicle has embarked on a crossing.
+    Address:
+      title: Address
+      required:
+      - lines
+      - postcode
+      type: object
+      properties:
+        lines:
+          maxItems: 4
+          minItems: 1
+          type: array
+          description: The building name or number, and street name where the inspection
+            facility is located.
+          items:
+            type: string
+        town:
+          type: string
+          description: The town where the inspection facility is located.
+        postcode:
+          type: string
+          description: The postcode where the inspection facility is located.
+      description: The address where the inspection facility is located.
+    Carrier:
+      title: Carrier
+      required:
+      - carrierId
+      - carrierName
+      type: object
+      properties:
+        carrierId:
+          type: integer
+          description: The id of the carrier
+          format: int32
+        carrierName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: The name of the carrier
+        countryCode:
+          pattern: ^[A-Z]{2}$
+          type: string
+          description: The country code where the carrier is registered
+    checkedInCrossing:
+      title: checkedInCrossing
+      required:
+      - localDateTimeOfArrival
+      - routeId
+      type: object
+      properties:
+        routeId:
+          pattern: ^[A-Z0-9-]{1,200}$
+          type: string
+          description: The ID of the crossing route, using a routeId from the GVMS
+            reference data
+        localDateTimeOfArrival:
+          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+          type: string
+          description: The planned date and time of arrival, in local time of the
+            arrival port. Must not include seconds, time zone or UTC marker
+      description: Details of the crossing that the vehicle has been checked-in to.
+        These details will only be present in the Goods Movement Record after the
+        vehicle has checked in.
+    declarationsResponse:
+      type: array
+      description: A list of declaration ids.
+      items:
+        required:
+        - id
+        type: object
+        properties:
+          id:
+            type: string
+    declarations:
+      type: object
+      properties:
+        transits:
+          type: array
+          description: A list of declaration ids.
+          items:
+            required:
+            - id
+            type: object
+            properties:
+              id:
+                type: string
+        customs:
+          type: array
+          description: A list of declaration ids.
+          items:
+            required:
+            - id
+            type: object
+            properties:
+              id:
+                type: string
+      anyOf:
+      - required:
+        - transits
+      - required:
+        - customs
+    SearchGmrsForDeclarationIdsrequest:
+      title: SearchGmrsForDeclarationIdsrequest
+      required:
+      - declarationIds
+      type: object
+      properties:
+        declarationIds:
+          pattern: ^[A-Z0-9-)(/]{1,200}$
+          maxItems: 2000
+          minItems: 1
+          type: array
+          description: A list of declaration IDs to search for.  Currently, only customs
+            and transit declaration IDs are accepted (DUCR, ERN or customs/transit
+            MRN, depending on source system and crossing direction).
+          items:
+            type: string
+    SearchGmrsForDeclarationIdsResponse:
+      title: SearchGmrsForDeclarationIdsResponse
+      required:
+      - gmrByDeclarationId
+      - gmrs
+      type: object
+      properties:
+        gmrByDeclarationId:
+          minItems: 1
+          type: array
+          description: ""
+          items:
+            title: GmrByDeclarationId
+            required:
+            - dec
+            - gmrs
+            type: object
+            properties:
+              dec:
+                pattern: ^[A-Z0-9-)(/]{1,200}$
+                type: string
+                description: |-
+                  This is the identifier for a customs declaration from Customs Declaration Service (CDS) or CHIEF.
+                  For inbound movements declared in CDS it is a MRN, for example 19GB4S24GC3PPFGVR7.
+                  For inbound movements declared in CHIEF it is an ERN, for example 999123456C20210615.
+                  For outbound movements declared in either CDS or CHIEF it is a DUCR, for example 0GB689223596000-SE119404.
+              gmrs:
+                minItems: 0
+                type: array
+                description: ""
+                items:
+                  pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                  type: string
+        gmrs:
+          minItems: 0
+          type: array
+          description: ""
+          items:
+            title: gmrSummaryWithDeclarations
+            required:
+            - direction
+            - gmrId
+            - haulierEORI
+            - state
+            - updatedDateTime
+            type: object
+            properties:
+              gmrId:
+                pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                type: string
+                description: The Goods Movement Record (GMR) ID for this GMR.  Do
+                  not include when POSTing a GMR - GVMS will assign an ID.
+              haulierEORI:
+                pattern: ^GB[0-9]{12,15}$
+                type: string
+                description: The EORI of the haulier that is responsible for the vehicle
+                  making the goods movement
+              state:
+                description: The state of the GMR
+                oneOf:
+                - title: state
+                  type: string
+                  description: The GMR is in a non-finalisable state.  This means
+                    an update will be required from the haulier prior to check-in.
+                  enum:
+                  - NOT_FINALISABLE
+                - title: state1
+                  type: string
+                  description: The GMR is open for updates and is ready for check-in.
+                  enum:
+                  - OPEN
+                - title: state2
+                  type: string
+                  description: The GMR is finalised, which is part of the process
+                    of check-in by the carrier.  No further updates from the haulier
+                    are permitted.
+                  enum:
+                  - FINALISED
+                - title: state3
+                  type: string
+                  description: The GMR is checked-in, awaiting embarkation confirmation
+                    from the carrier.
+                  enum:
+                  - CHECKED_IN
+                - title: state4
+                  type: string
+                  description: The GMR is embarked, meaning the goods movement has
+                    embarked on its crossing but the goods are awaiting clearance
+                    to proceed.
+                  enum:
+                  - EMBARKED
+                - title: state5
+                  type: string
+                  description: The GMR is completed, meaning the goods movement has
+                    embarked on its crossing and the goods are clear to proceed.
+                  enum:
+                  - COMPLETED
+              inspectionRequired:
+                type: boolean
+                description: If set to true, indicates that the vehicle requires a
+                  customs inspection.  If set to false, indicates that the vehicle
+                  does not require a customs inspection.  If not set, indicates the
+                  customs inspection decision has not yet been made or is not applicable.  For
+                  outbound GMRs, this indicates that the vehicle must present at an
+                  inspection facility prior to checking-in at the port.  For Office
+                  of Transit inspections for inbound GMRs, a decision may be made
+                  to inspect subsequent to a notification that inspection is not required.  In
+                  this event a notification will be sent that changes inspectionRequired
+                  from false to true.  If this happens after leaving the port of arrival,
+                  the inspection should be carried out at the next transit office
+                  e.g. the office of destination.
+              reportToLocations:
+                minItems: 1
+                type: array
+                description: A list of one or more inspection types, from GVMS Reference
+                  Data, that the vehicle must have carried out, in the order specified.  This
+                  means that where there are multiple entries here, the vehicle must
+                  report for the first inspection type listed before each subsequent
+                  listed inspection.  Each entry includes a list of available locations
+                  for the inspection type.
+                items:
+                  title: propertiesreportToLocationsitems
+                  required:
+                  - inspectionTypeId
+                  - locationIds
+                  type: object
+                  properties:
+                    inspectionTypeId:
+                      pattern: ^[0-9A-Za-z\-_]{1,100}$
+                      type: string
+                      description: An inspectionTypeId from GVMS Reference Data denoting
+                        the type of inspection that needs to be performed on the vehicle.
+                    locationIds:
+                      pattern: ^[0-9A-Za-z\-_]{1,100}$
+                      type: array
+                      description: A list of locationIds from GVMS Reference Data
+                        that are available to perform this type of inspection.
+                      items:
+                        type: string
+                  description: Information about an inspection that is required
+              updatedDateTime:
+                pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+                type: string
+                description: The date and time that this GMR was last updated.
+              direction:
+                description: The direction of the movement - into or out of the UK,
+                  or between Great Britain and Northern Ireland
+                oneOf:
+                - title: direction
+                  type: string
+                  description: The movement is travelling into the UK
+                  enum:
+                  - UK_INBOUND
+                - title: direction1
+                  type: string
+                  description: The movement is travelling out of the UK
+                  enum:
+                  - UK_OUTBOUND
+                - title: direction2
+                  type: string
+                  description: The movement is travelling out of Great Britain into
+                    Northern Ireland
+                  enum:
+                  - GB_TO_NI
+                - title: direction3
+                  type: string
+                  description: The movement is travelling out of Northern Ireland
+                    into Great Britain
+                  enum:
+                  - NI_TO_GB
+              haulierType:
+                description: The type of haulier moving the goods
+                oneOf:
+                - title: haulierType
+                  type: string
+                  description: All hauliers that are not one of the other types
+                  enum:
+                  - STANDARD
+                - title: haulierType1
+                  type: string
+                  description: Fast parcel operators that are members of the Anti-Smuggling
+                    Network
+                  enum:
+                  - FPO_ASN
+                - title: haulierType2
+                  type: string
+                  description: Fast parcel operators that are not members of the ASN
+                    and are not moving goods with a Memorandum of Understanding
+                  enum:
+                  - FPO_OTHER
+                - title: haulierType3
+                  type: string
+                  description: NATO or MoD
+                  enum:
+                  - NATO_MOD
+                - title: haulierType4
+                  type: string
+                  description: Royal Mail Group
+                  enum:
+                  - RMG
+                - title: haulierType5
+                  type: string
+                  description: Extra-Territorial Office of Exchange
+                  enum:
+                  - ETOE
+              isUnaccompanied:
+                type: boolean
+                description: Set to true if the vehicle will not be accompanying the
+                  trailer(s) during the crossing, or if the vehicle is carrying a
+                  container that will be detached and loaded for the crossing.
+              vehicleRegNum:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                type: string
+                description: Vehicle registration number of the vehicle that will
+                  arrive at port.  If isUnaccompanied is set to false then vehicleRegNum
+                  must be provided to check-in.
+              trailerRegistrationNums:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                maxItems: 2
+                minItems: 1
+                uniqueItems: true
+                type: array
+                description: For vehicles carrying trailers, the trailer registration
+                  number of each trailer.  If isUnaccompanied is set to true then
+                  trailerRegistrationNums or containerReferenceNums must be provided
+                  before check-in.
+                items:
+                  type: string
+              containerReferenceNums:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                minItems: 1
+                uniqueItems: true
+                type: array
+                description: For vehicles arriving with containers that will be detached
+                  and loaded, the container reference number of each container in
+                  the movement. If isUnaccompanied is set to true then trailerRegistrationNums
+                  or containerReferenceNums must be provided before check-in.
+                items:
+                  type: string
+              plannedCrossing:
+                required:
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfDeparture:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of departure, in local
+                      time of the departure port. Must not include seconds, time zone
+                      or UTC marker
+              checkedInCrossing:
+                required:
+                - localDateTimeOfArrival
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfArrival:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of arrival, in local time
+                      of the arrival port. Must not include seconds, time zone or
+                      UTC marker
+              actualCrossing:
+                required:
+                - localDateTimeOfArrival
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfArrival:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of arrival, in local time
+                      of the arrival port. Must not include seconds, time zone or
+                      UTC marker
+              declarations:
+                properties:
+                  transits:
+                    type: array
+                    description: A list of declaration ids.
+                    items:
+                      required:
+                      - id
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                  customs:
+                    type: array
+                    description: A list of declaration ids.
+                    items:
+                      required:
+                      - id
+                      type: object
+                      properties:
+                        id:
+                          type: string
+    direction:
+      title: direction
+      type: string
+      description: The movement is travelling into the UK
+      enum:
+      - UK_INBOUND
+    direction1:
+      title: direction1
+      type: string
+      description: The movement is travelling out of the UK
+      enum:
+      - UK_OUTBOUND
+    direction2:
+      title: direction2
+      type: string
+      description: The movement is travelling out of Great Britain into Northern Ireland
+      enum:
+      - GB_TO_NI
+    direction3:
+      title: direction3
+      type: string
+      description: The movement is travelling out of Northern Ireland into Great Britain
+      enum:
+      - NI_TO_GB
+    GmrByDeclarationId:
+      title: GmrByDeclarationId
+      required:
+      - dec
+      - gmrs
+      type: object
+      properties:
+        dec:
+          pattern: ^[A-Z0-9-)(/]{1,200}$
+          type: string
+          description: |-
+            This is the identifier for a customs declaration from Customs Declaration Service (CDS) or CHIEF.
+            For inbound movements declared in CDS it is a MRN, for example 19GB4S24GC3PPFGVR7.
+            For inbound movements declared in CHIEF it is an ERN, for example 999123456C20210615.
+            For outbound movements declared in either CDS or CHIEF it is a DUCR, for example 0GB689223596000-SE119404.
+        gmrs:
+          minItems: 0
+          type: array
+          description: ""
+          items:
+            pattern: ^GMR[A-Z][0-9A-Z]{8}$
+            type: string
+    gmrSummary:
+      title: gmrSummary
+      required:
+      - direction
+      - gmrId
+      - haulierEORI
+      - state
+      - updatedDateTime
+      type: object
+      properties:
+        gmrId:
+          pattern: ^GMR[A-Z][0-9A-Z]{8}$
+          type: string
+          description: The Goods Movement Record (GMR) ID for this GMR.  Do not include
+            when POSTing a GMR - GVMS will assign an ID.
+        haulierEORI:
+          pattern: ^GB[0-9]{12,15}$
+          type: string
+          description: The EORI of the haulier that is responsible for the vehicle
+            making the goods movement
+        state:
+          description: The state of the GMR
+          oneOf:
+          - title: state
+            type: string
+            description: The GMR is in a non-finalisable state.  This means an update
+              will be required from the haulier prior to check-in.
+            enum:
+            - NOT_FINALISABLE
+          - title: state1
+            type: string
+            description: The GMR is open for updates and is ready for check-in.
+            enum:
+            - OPEN
+          - title: state2
+            type: string
+            description: The GMR is finalised, which is part of the process of check-in
+              by the carrier.  No further updates from the haulier are permitted.
+            enum:
+            - FINALISED
+          - title: state3
+            type: string
+            description: The GMR is checked-in, awaiting embarkation confirmation
+              from the carrier.
+            enum:
+            - CHECKED_IN
+          - title: state4
+            type: string
+            description: The GMR is embarked, meaning the goods movement has embarked
+              on its crossing but the goods are awaiting clearance to proceed.
+            enum:
+            - EMBARKED
+          - title: state5
+            type: string
+            description: The GMR is completed, meaning the goods movement has embarked
+              on its crossing and the goods are clear to proceed.
+            enum:
+            - COMPLETED
+        inspectionRequired:
+          type: boolean
+          description: If set to true, indicates that the vehicle requires a customs
+            inspection.  If set to false, indicates that the vehicle does not require
+            a customs inspection.  If not set, indicates the customs inspection decision
+            has not yet been made or is not applicable.  For outbound GMRs, this indicates
+            that the vehicle must present at an inspection facility prior to checking-in
+            at the port.  For Office of Transit inspections for inbound GMRs, a decision
+            may be made to inspect subsequent to a notification that inspection is
+            not required.  In this event a notification will be sent that changes
+            inspectionRequired from false to true.  If this happens after leaving
+            the port of arrival, the inspection should be carried out at the next
+            transit office e.g. the office of destination.
+        reportToLocations:
+          minItems: 1
+          type: array
+          description: A list of one or more inspection types, from GVMS Reference
+            Data, that the vehicle must have carried out, in the order specified.  This
+            means that where there are multiple entries here, the vehicle must report
+            for the first inspection type listed before each subsequent listed inspection.  Each
+            entry includes a list of available locations for the inspection type.
+          items:
+            title: propertiesreportToLocationsitems
+            required:
+            - inspectionTypeId
+            - locationIds
+            type: object
+            properties:
+              inspectionTypeId:
+                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                type: string
+                description: An inspectionTypeId from GVMS Reference Data denoting
+                  the type of inspection that needs to be performed on the vehicle.
+              locationIds:
+                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                type: array
+                description: A list of locationIds from GVMS Reference Data that are
+                  available to perform this type of inspection.
+                items:
+                  type: string
+            description: Information about an inspection that is required
+        updatedDateTime:
+          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+          type: string
+          description: The date and time that this GMR was last updated.
+        direction:
+          description: The direction of the movement - into or out of the UK, or between
+            Great Britain and Northern Ireland
+          oneOf:
+          - title: direction
+            type: string
+            description: The movement is travelling into the UK
+            enum:
+            - UK_INBOUND
+          - title: direction1
+            type: string
+            description: The movement is travelling out of the UK
+            enum:
+            - UK_OUTBOUND
+          - title: direction2
+            type: string
+            description: The movement is travelling out of Great Britain into Northern
+              Ireland
+            enum:
+            - GB_TO_NI
+          - title: direction3
+            type: string
+            description: The movement is travelling out of Northern Ireland into Great
+              Britain
+            enum:
+            - NI_TO_GB
+        haulierType:
+          description: The type of haulier moving the goods
+          oneOf:
+          - title: haulierType
+            type: string
+            description: All hauliers that are not one of the other types
+            enum:
+            - STANDARD
+          - title: haulierType1
+            type: string
+            description: Fast parcel operators that are members of the Anti-Smuggling
+              Network
+            enum:
+            - FPO_ASN
+          - title: haulierType2
+            type: string
+            description: Fast parcel operators that are not members of the ASN and
+              are not moving goods with a Memorandum of Understanding
+            enum:
+            - FPO_OTHER
+          - title: haulierType3
+            type: string
+            description: NATO or MoD
+            enum:
+            - NATO_MOD
+          - title: haulierType4
+            type: string
+            description: Royal Mail Group
+            enum:
+            - RMG
+          - title: haulierType5
+            type: string
+            description: Extra-Territorial Office of Exchange
+            enum:
+            - ETOE
+        isUnaccompanied:
+          type: boolean
+          description: Set to true if the vehicle will not be accompanying the trailer(s)
+            during the crossing, or if the vehicle is carrying a container that will
+            be detached and loaded for the crossing.
+        vehicleRegNum:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+          type: string
+          description: Vehicle registration number of the vehicle that will arrive
+            at port.  If isUnaccompanied is set to false then vehicleRegNum must be
+            provided to check-in.
+        trailerRegistrationNums:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+          maxItems: 2
+          minItems: 1
+          uniqueItems: true
+          type: array
+          description: For vehicles carrying trailers, the trailer registration number
+            of each trailer.  If isUnaccompanied is set to true then trailerRegistrationNums
+            or containerReferenceNums must be provided before check-in.
+          items:
+            type: string
+        containerReferenceNums:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+          minItems: 1
+          uniqueItems: true
+          type: array
+          description: For vehicles arriving with containers that will be detached
+            and loaded, the container reference number of each container in the movement.
+            If isUnaccompanied is set to true then trailerRegistrationNums or containerReferenceNums
+            must be provided before check-in.
+          items:
+            type: string
+        plannedCrossing:
+          required:
+          - routeId
+          properties:
+            routeId:
+              pattern: ^[A-Z0-9-]{1,200}$
+              type: string
+              description: The ID of the crossing route, using a routeId from the
+                GVMS reference data
+            localDateTimeOfDeparture:
+              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+              type: string
+              description: The planned date and time of departure, in local time of
+                the departure port. Must not include seconds, time zone or UTC marker
+        checkedInCrossing:
+          required:
+          - localDateTimeOfArrival
+          - routeId
+          properties:
+            routeId:
+              pattern: ^[A-Z0-9-]{1,200}$
+              type: string
+              description: The ID of the crossing route, using a routeId from the
+                GVMS reference data
+            localDateTimeOfArrival:
+              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+              type: string
+              description: The planned date and time of arrival, in local time of
+                the arrival port. Must not include seconds, time zone or UTC marker
+        actualCrossing:
+          required:
+          - localDateTimeOfArrival
+          - routeId
+          properties:
+            routeId:
+              pattern: ^[A-Z0-9-]{1,200}$
+              type: string
+              description: The ID of the crossing route, using a routeId from the
+                GVMS reference data
+            localDateTimeOfArrival:
+              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+              type: string
+              description: The planned date and time of arrival, in local time of
+                the arrival port. Must not include seconds, time zone or UTC marker
+    gmrSummaryWithDeclarations:
+      title: gmrSummaryWithDeclarations
+      required:
+      - direction
+      - gmrId
+      - haulierEORI
+      - state
+      - updatedDateTime
+      type: object
+      properties:
+        gmrId:
+          pattern: ^GMR[A-Z][0-9A-Z]{8}$
+          type: string
+          description: The Goods Movement Record (GMR) ID for this GMR.  Do not include
+            when POSTing a GMR - GVMS will assign an ID.
+        haulierEORI:
+          pattern: ^GB[0-9]{12,15}$
+          type: string
+          description: The EORI of the haulier that is responsible for the vehicle
+            making the goods movement
+        state:
+          description: The state of the GMR
+          oneOf:
+          - title: state
+            type: string
+            description: The GMR is in a non-finalisable state.  This means an update
+              will be required from the haulier prior to check-in.
+            enum:
+            - NOT_FINALISABLE
+          - title: state1
+            type: string
+            description: The GMR is open for updates and is ready for check-in.
+            enum:
+            - OPEN
+          - title: state2
+            type: string
+            description: The GMR is finalised, which is part of the process of check-in
+              by the carrier.  No further updates from the haulier are permitted.
+            enum:
+            - FINALISED
+          - title: state3
+            type: string
+            description: The GMR is checked-in, awaiting embarkation confirmation
+              from the carrier.
+            enum:
+            - CHECKED_IN
+          - title: state4
+            type: string
+            description: The GMR is embarked, meaning the goods movement has embarked
+              on its crossing but the goods are awaiting clearance to proceed.
+            enum:
+            - EMBARKED
+          - title: state5
+            type: string
+            description: The GMR is completed, meaning the goods movement has embarked
+              on its crossing and the goods are clear to proceed.
+            enum:
+            - COMPLETED
+        inspectionRequired:
+          type: boolean
+          description: If set to true, indicates that the vehicle requires a customs
+            inspection.  If set to false, indicates that the vehicle does not require
+            a customs inspection.  If not set, indicates the customs inspection decision
+            has not yet been made or is not applicable.  For outbound GMRs, this indicates
+            that the vehicle must present at an inspection facility prior to checking-in
+            at the port.  For Office of Transit inspections for inbound GMRs, a decision
+            may be made to inspect subsequent to a notification that inspection is
+            not required.  In this event a notification will be sent that changes
+            inspectionRequired from false to true.  If this happens after leaving
+            the port of arrival, the inspection should be carried out at the next
+            transit office e.g. the office of destination.
+        reportToLocations:
+          minItems: 1
+          type: array
+          description: A list of one or more inspection types, from GVMS Reference
+            Data, that the vehicle must have carried out, in the order specified.  This
+            means that where there are multiple entries here, the vehicle must report
+            for the first inspection type listed before each subsequent listed inspection.  Each
+            entry includes a list of available locations for the inspection type.
+          items:
+            title: propertiesreportToLocationsitems
+            required:
+            - inspectionTypeId
+            - locationIds
+            type: object
+            properties:
+              inspectionTypeId:
+                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                type: string
+                description: An inspectionTypeId from GVMS Reference Data denoting
+                  the type of inspection that needs to be performed on the vehicle.
+              locationIds:
+                pattern: ^[0-9A-Za-z\-_]{1,100}$
+                type: array
+                description: A list of locationIds from GVMS Reference Data that are
+                  available to perform this type of inspection.
+                items:
+                  type: string
+            description: Information about an inspection that is required
+        updatedDateTime:
+          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+          type: string
+          description: The date and time that this GMR was last updated.
+        direction:
+          description: The direction of the movement - into or out of the UK, or between
+            Great Britain and Northern Ireland
+          oneOf:
+          - title: direction
+            type: string
+            description: The movement is travelling into the UK
+            enum:
+            - UK_INBOUND
+          - title: direction1
+            type: string
+            description: The movement is travelling out of the UK
+            enum:
+            - UK_OUTBOUND
+          - title: direction2
+            type: string
+            description: The movement is travelling out of Great Britain into Northern
+              Ireland
+            enum:
+            - GB_TO_NI
+          - title: direction3
+            type: string
+            description: The movement is travelling out of Northern Ireland into Great
+              Britain
+            enum:
+            - NI_TO_GB
+        haulierType:
+          description: The type of haulier moving the goods
+          oneOf:
+          - title: haulierType
+            type: string
+            description: All hauliers that are not one of the other types
+            enum:
+            - STANDARD
+          - title: haulierType1
+            type: string
+            description: Fast parcel operators that are members of the Anti-Smuggling
+              Network
+            enum:
+            - FPO_ASN
+          - title: haulierType2
+            type: string
+            description: Fast parcel operators that are not members of the ASN and
+              are not moving goods with a Memorandum of Understanding
+            enum:
+            - FPO_OTHER
+          - title: haulierType3
+            type: string
+            description: NATO or MoD
+            enum:
+            - NATO_MOD
+          - title: haulierType4
+            type: string
+            description: Royal Mail Group
+            enum:
+            - RMG
+          - title: haulierType5
+            type: string
+            description: Extra-Territorial Office of Exchange
+            enum:
+            - ETOE
+        isUnaccompanied:
+          type: boolean
+          description: Set to true if the vehicle will not be accompanying the trailer(s)
+            during the crossing, or if the vehicle is carrying a container that will
+            be detached and loaded for the crossing.
+        vehicleRegNum:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+          type: string
+          description: Vehicle registration number of the vehicle that will arrive
+            at port.  If isUnaccompanied is set to false then vehicleRegNum must be
+            provided to check-in.
+        trailerRegistrationNums:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+          maxItems: 2
+          minItems: 1
+          uniqueItems: true
+          type: array
+          description: For vehicles carrying trailers, the trailer registration number
+            of each trailer.  If isUnaccompanied is set to true then trailerRegistrationNums
+            or containerReferenceNums must be provided before check-in.
+          items:
+            type: string
+        containerReferenceNums:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+          minItems: 1
+          uniqueItems: true
+          type: array
+          description: For vehicles arriving with containers that will be detached
+            and loaded, the container reference number of each container in the movement.
+            If isUnaccompanied is set to true then trailerRegistrationNums or containerReferenceNums
+            must be provided before check-in.
+          items:
+            type: string
+        plannedCrossing:
+          required:
+          - routeId
+          properties:
+            routeId:
+              pattern: ^[A-Z0-9-]{1,200}$
+              type: string
+              description: The ID of the crossing route, using a routeId from the
+                GVMS reference data
+            localDateTimeOfDeparture:
+              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+              type: string
+              description: The planned date and time of departure, in local time of
+                the departure port. Must not include seconds, time zone or UTC marker
+        checkedInCrossing:
+          required:
+          - localDateTimeOfArrival
+          - routeId
+          properties:
+            routeId:
+              pattern: ^[A-Z0-9-]{1,200}$
+              type: string
+              description: The ID of the crossing route, using a routeId from the
+                GVMS reference data
+            localDateTimeOfArrival:
+              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+              type: string
+              description: The planned date and time of arrival, in local time of
+                the arrival port. Must not include seconds, time zone or UTC marker
+        actualCrossing:
+          required:
+          - localDateTimeOfArrival
+          - routeId
+          properties:
+            routeId:
+              pattern: ^[A-Z0-9-]{1,200}$
+              type: string
+              description: The ID of the crossing route, using a routeId from the
+                GVMS reference data
+            localDateTimeOfArrival:
+              pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+              type: string
+              description: The planned date and time of arrival, in local time of
+                the arrival port. Must not include seconds, time zone or UTC marker
+        declarations:
+          properties:
+            transits:
+              type: array
+              description: A list of declaration ids.
+              items:
+                required:
+                - id
+                type: object
+                properties:
+                  id:
+                    type: string
+            customs:
+              type: array
+              description: A list of declaration ids.
+              items:
+                required:
+                - id
+                type: object
+                properties:
+                  id:
+                    type: string
+    haulierType:
+      title: haulierType
+      type: string
+      description: All hauliers that are not one of the other types
+      enum:
+      - STANDARD
+    haulierType1:
+      title: haulierType1
+      type: string
+      description: Fast parcel operators that are members of the Anti-Smuggling Network
+      enum:
+      - FPO_ASN
+    haulierType2:
+      title: haulierType2
+      type: string
+      description: Fast parcel operators that are not members of the ASN and are not
+        moving goods with a Memorandum of Understanding
+      enum:
+      - FPO_OTHER
+    haulierType3:
+      title: haulierType3
+      type: string
+      description: NATO or MoD
+      enum:
+      - NATO_MOD
+    haulierType4:
+      title: haulierType4
+      type: string
+      description: Royal Mail Group
+      enum:
+      - RMG
+    haulierType5:
+      title: haulierType5
+      type: string
+      description: Extra-Territorial Office of Exchange
+      enum:
+      - ETOE
+    InspectionType:
+      title: InspectionType
+      required:
+      - description
+      - inspectionTypeId
+      type: object
+      properties:
+        inspectionTypeId:
+          type: string
+          description: The id of the type of inspection that needs to be performed
+            on the vehicle.
+        description:
+          type: string
+          description: The category of the type of inspection that needs to be performed
+            on the vehicle e.g. CUSTOMS, DEFRA or TRANSIT.
+    Location:
+      title: Location
+      required:
+      - address
+      - locationDescription
+      - locationEffectiveFrom
+      - locationId
+      - locationType
+      - requiredInspectionLocations
+      - supportedDirections
+      - supportedInspectionTypeIds
+      type: object
+      properties:
+        locationId:
+          type: string
+          description: The id of the inspection facility.
+        locationDescription:
+          type: string
+          description: The name of the inspection facility location.
+        address:
+          required:
+          - lines
+          - postcode
+          properties:
+            lines:
+              maxItems: 4
+              minItems: 1
+              type: array
+              description: The building name or number, and street name where the
+                inspection facility is located.
+              items:
+                type: string
+            town:
+              type: string
+              description: The town where the inspection facility is located.
+            postcode:
+              type: string
+              description: The postcode where the inspection facility is located.
+        locationType:
+          enum:
+          - IBF
+          - BCP
+          - ALL
+        supportedDirections:
+          maxItems: 4
+          minItems: 1
+          type: array
+          description: The directions of travel supported by the location.
+          items:
+            title: SupportedDirection
+            type: string
+            enum:
+            - UK_INBOUND
+            - UK_OUTBOUND
+            - GB_TO_NI
+            - NI_TO_GB
+        locationEffectiveFrom:
+          type: string
+          description: The date the inspection facility location starts being used.
+          format: date
+        locationEffectiveTo:
+          type: string
+          description: The date the inspection facility location stops being used.
+          format: date
+        supportedInspectionTypeIds:
+          minItems: 1
+          type: array
+          description: The list of inspectionTypeIds for the types of inspections
+            carried out.
+          items:
+            type: string
+        requiredInspectionLocations:
+          minItems: 1
+          type: array
+          description: The list of portIds that the inspection facility supports.
+          items:
+            type: integer
+            format: int32
+    LocationType:
+      title: LocationType
+      type: string
+      description: The type of inspection facility; either Inland Border Facility
+        (IBF), Border Control Post (BCP) or a facility that carries out all inspection
+        types (ALL).
+      enum:
+      - IBF
+      - BCP
+      - ALL
+    plannedCrossing:
+      title: plannedCrossing
+      required:
+      - routeId
+      type: object
+      properties:
+        routeId:
+          pattern: ^[A-Z0-9-]{1,200}$
+          type: string
+          description: The ID of the crossing route, using a routeId from the GVMS
+            reference data
+        localDateTimeOfDeparture:
+          pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+          type: string
+          description: The planned date and time of departure, in local time of the
+            departure port. Must not include seconds, time zone or UTC marker
+      description: Details of the planned crossing.
+    Port:
+      title: Port
+      required:
+      - officeOfTransitCustomsOfficeCode
+      - portCountryCode
+      - portDescription
+      - portEffectiveFrom
+      - portId
+      type: object
+      properties:
+        portId:
+          type: integer
+          description: The id of the port
+          format: int32
+        portRegion:
+          type: string
+          description: The region the port is grouped into for CTC
+        portEffectiveFrom:
+          type: string
+          description: The date the port came into effect
+          format: date
+        portDescription:
+          maxLength: 255
+          minLength: 3
+          type: string
+          description: 'Description of the port eg: the ports name'
+        timezoneId:
+          maxLength: 50
+          type: string
+          description: The UTC Identifier
+        chiefPortCode:
+          type: string
+          description: The port code specific to CHIEF
+        cdsPortCode:
+          type: string
+          description: The port code specific to CDS
+        officeOfTransitCustomsOfficeCode:
+          maxLength: 8
+          minLength: 8
+          type: string
+          description: Customs office code for CTC
+        portEffectiveTo:
+          type: string
+          description: The date the port stopped being used
+          format: date
+        portCountryCode:
+          pattern: ^[A-Z]{2}$
+          type: string
+          description: The Country code of the associated Port
+        isOperatingArrivedExportsProcess:
+          type: boolean
+          description: If true, indicates that this port is operating the arrived
+            exports process and as such requires all customs export declarations to
+            be pre-arrived prior to check-in.  If omitted or false, indicates that
+            this port is operating the standard exports process.
+    referenceDatav1.15:
+      title: referenceDatav1.15
+      type: object
+      properties:
+        routes:
+          type: array
+          description: The routes covered by GVMS
+          items:
+            title: Route
+            required:
+            - arrivalPortId
+            - carrierId
+            - departurePortId
+            - routeDirection
+            - routeEffectiveFrom
+            - routeId
+            type: object
+            properties:
+              routeId:
+                type: string
+                description: The route identifier
+              routeDirection:
+                enum:
+                - UK_INBOUND
+                - UK_OUTBOUND
+                - GB_TO_NI
+                - NI_TO_GB
+              routeEffectiveFrom:
+                type: string
+                description: Date the route came into effect
+                format: date
+              departurePortId:
+                type: integer
+                description: The id of the departure port
+                format: int32
+              arrivalPortId:
+                type: integer
+                description: The id of the arrival port
+                format: int32
+              carrierId:
+                type: integer
+                description: the id of the carrier operating that route
+                format: int32
+              routeEffectiveTo:
+                type: string
+                description: The date the route stopped being used
+                format: date
+        ports:
+          type: array
+          description: ""
+          items:
+            title: Port
+            required:
+            - officeOfTransitCustomsOfficeCode
+            - portCountryCode
+            - portDescription
+            - portEffectiveFrom
+            - portId
+            type: object
+            properties:
+              portId:
+                type: integer
+                description: The id of the port
+                format: int32
+              portRegion:
+                type: string
+                description: The region the port is grouped into for CTC
+              portEffectiveFrom:
+                type: string
+                description: The date the port came into effect
+                format: date
+              portDescription:
+                maxLength: 255
+                minLength: 3
+                type: string
+                description: 'Description of the port eg: the ports name'
+              timezoneId:
+                maxLength: 50
+                type: string
+                description: The UTC Identifier
+              chiefPortCode:
+                type: string
+                description: The port code specific to CHIEF
+              cdsPortCode:
+                type: string
+                description: The port code specific to CDS
+              officeOfTransitCustomsOfficeCode:
+                maxLength: 8
+                minLength: 8
+                type: string
+                description: Customs office code for CTC
+              portEffectiveTo:
+                type: string
+                description: The date the port stopped being used
+                format: date
+              portCountryCode:
+                pattern: ^[A-Z]{2}$
+                type: string
+                description: The Country code of the associated Port
+              isOperatingArrivedExportsProcess:
+                type: boolean
+                description: If true, indicates that this port is operating the arrived
+                  exports process and as such requires all customs export declarations
+                  to be pre-arrived prior to check-in.  If omitted or false, indicates
+                  that this port is operating the standard exports process.
+        carriers:
+          type: array
+          description: ""
+          items:
+            title: Carrier
+            required:
+            - carrierId
+            - carrierName
+            type: object
+            properties:
+              carrierId:
+                type: integer
+                description: The id of the carrier
+                format: int32
+              carrierName:
+                maxLength: 255
+                minLength: 1
+                type: string
+                description: The name of the carrier
+              countryCode:
+                pattern: ^[A-Z]{2}$
+                type: string
+                description: The country code where the carrier is registered
+        locations:
+          type: array
+          description: ""
+          items:
+            title: Location
+            required:
+            - address
+            - locationDescription
+            - locationEffectiveFrom
+            - locationId
+            - locationType
+            - requiredInspectionLocations
+            - supportedDirections
+            - supportedInspectionTypeIds
+            type: object
+            properties:
+              locationId:
+                type: string
+                description: The id of the inspection facility.
+              locationDescription:
+                type: string
+                description: The name of the inspection facility location.
+              address:
+                required:
+                - lines
+                - postcode
+                properties:
+                  lines:
+                    maxItems: 4
+                    minItems: 1
+                    type: array
+                    description: The building name or number, and street name where
+                      the inspection facility is located.
+                    items:
+                      type: string
+                  town:
+                    type: string
+                    description: The town where the inspection facility is located.
+                  postcode:
+                    type: string
+                    description: The postcode where the inspection facility is located.
+              locationType:
+                enum:
+                - IBF
+                - BCP
+                - ALL
+              supportedDirections:
+                maxItems: 4
+                minItems: 1
+                type: array
+                description: The directions of travel supported by the location.
+                items:
+                  title: SupportedDirection
+                  type: string
+                  enum:
+                  - UK_INBOUND
+                  - UK_OUTBOUND
+                  - GB_TO_NI
+                  - NI_TO_GB
+              locationEffectiveFrom:
+                type: string
+                description: The date the inspection facility location starts being
+                  used.
+                format: date
+              locationEffectiveTo:
+                type: string
+                description: The date the inspection facility location stops being
+                  used.
+                format: date
+              supportedInspectionTypeIds:
+                minItems: 1
+                type: array
+                description: The list of inspectionTypeIds for the types of inspections
+                  carried out.
+                items:
+                  type: string
+              requiredInspectionLocations:
+                minItems: 1
+                type: array
+                description: The list of portIds that the inspection facility supports.
+                items:
+                  type: integer
+                  format: int32
+        inspectionTypes:
+          type: array
+          description: ""
+          items:
+            title: InspectionType
+            required:
+            - description
+            - inspectionTypeId
+            type: object
+            properties:
+              inspectionTypeId:
+                type: string
+                description: The id of the type of inspection that needs to be performed
+                  on the vehicle.
+              description:
+                type: string
+                description: The category of the type of inspection that needs to
+                  be performed on the vehicle e.g. CUSTOMS, DEFRA or TRANSIT.
+        ruleFailures:
+          type: array
+          description: The list of business and other possible rule failures within
+            a GMR
+          items:
+            title: RuleFailure
+            required:
+            - ruleDescription
+            - ruleId
+            type: object
+            properties:
+              ruleId:
+                type: string
+              ruleDescription:
+                type: string
+      description: reference Data for GVMS v1.15
+    Route:
+      title: Route
+      required:
+      - arrivalPortId
+      - carrierId
+      - departurePortId
+      - routeDirection
+      - routeEffectiveFrom
+      - routeId
+      type: object
+      properties:
+        routeId:
+          type: string
+          description: The route identifier
+        routeDirection:
+          enum:
+          - UK_INBOUND
+          - UK_OUTBOUND
+          - GB_TO_NI
+          - NI_TO_GB
+        routeEffectiveFrom:
+          type: string
+          description: Date the route came into effect
+          format: date
+        departurePortId:
+          type: integer
+          description: The id of the departure port
+          format: int32
+        arrivalPortId:
+          type: integer
+          description: The id of the arrival port
+          format: int32
+        carrierId:
+          type: integer
+          description: the id of the carrier operating that route
+          format: int32
+        routeEffectiveTo:
+          type: string
+          description: The date the route stopped being used
+          format: date
+    RouteDirection:
+      title: RouteDirection
+      type: string
+      description: The direction of the route
+      enum:
+      - UK_INBOUND
+      - UK_OUTBOUND
+      - GB_TO_NI
+      - NI_TO_GB
+    RuleFailure:
+      title: RuleFailure
+      required:
+      - ruleDescription
+      - ruleId
+      type: object
+      properties:
+        ruleId:
+          type: string
+        ruleDescription:
+          type: string
+    state:
+      title: state
+      type: string
+      description: The GMR is in a non-finalisable state.  This means an update will
+        be required from the haulier prior to check-in.
+      enum:
+      - NOT_FINALISABLE
+    state1:
+      title: state1
+      type: string
+      description: The GMR is open for updates and is ready for check-in.
+      enum:
+      - OPEN
+    state2:
+      title: state2
+      type: string
+      description: The GMR is finalised, which is part of the process of check-in
+        by the carrier.  No further updates from the haulier are permitted.
+      enum:
+      - FINALISED
+    state3:
+      title: state3
+      type: string
+      description: The GMR is checked-in, awaiting embarkation confirmation from the
+        carrier.
+      enum:
+      - CHECKED_IN
+    state4:
+      title: state4
+      type: string
+      description: The GMR is embarked, meaning the goods movement has embarked on
+        its crossing but the goods are awaiting clearance to proceed.
+      enum:
+      - EMBARKED
+    state5:
+      title: state5
+      type: string
+      description: The GMR is completed, meaning the goods movement has embarked on
+        its crossing and the goods are clear to proceed.
+      enum:
+      - COMPLETED
+    SupportedDirection:
+      title: SupportedDirection
+      type: string
+      enum:
+      - UK_INBOUND
+      - UK_OUTBOUND
+      - GB_TO_NI
+      - NI_TO_GB
+    hold:
+      type: boolean
+      description: If set to true, Apply Hold  or else apply Clear
+    SearchGmrsForVRNrequest:
+      title: SearchGmrsForVRNrequest
+      required:
+      - vrns
+      type: object
+      properties:
+        vrns:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+          maxItems: 2000
+          minItems: 1
+          type: array
+          description: A list of VRN to search for GMRs.
+          items:
+            type: string
+    SearchGmrsForVRNsresponse:
+      title: SearchGmrsForVRNsresponse
+      required:
+      - gmrs
+      - gmrsByVRN
+      type: object
+      properties:
+        gmrsByVRN:
+          minItems: 1
+          type: array
+          description: ""
+          items:
+            title: GmrsByVRN
+            required:
+            - gmrs
+            - vrn
+            type: object
+            properties:
+              vrn:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                type: string
+                description: This is the identifier for a Vehicle Registration Number
+              gmrs:
+                minItems: 0
+                type: array
+                description: ""
+                items:
+                  pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                  type: string
+        gmrs:
+          minItems: 0
+          type: array
+          description: ""
+          items:
+            title: gmrSummary
+            required:
+            - direction
+            - gmrId
+            - haulierEORI
+            - state
+            - updatedDateTime
+            type: object
+            properties:
+              gmrId:
+                pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                type: string
+                description: The Goods Movement Record (GMR) ID for this GMR.  Do
+                  not include when POSTing a GMR - GVMS will assign an ID.
+              haulierEORI:
+                pattern: ^GB[0-9]{12,15}$
+                type: string
+                description: The EORI of the haulier that is responsible for the vehicle
+                  making the goods movement
+              state:
+                description: The state of the GMR
+                oneOf:
+                - title: state
+                  type: string
+                  description: The GMR is in a non-finalisable state.  This means
+                    an update will be required from the haulier prior to check-in.
+                  enum:
+                  - NOT_FINALISABLE
+                - title: state1
+                  type: string
+                  description: The GMR is open for updates and is ready for check-in.
+                  enum:
+                  - OPEN
+                - title: state2
+                  type: string
+                  description: The GMR is finalised, which is part of the process
+                    of check-in by the carrier.  No further updates from the haulier
+                    are permitted.
+                  enum:
+                  - FINALISED
+                - title: state3
+                  type: string
+                  description: The GMR is checked-in, awaiting embarkation confirmation
+                    from the carrier.
+                  enum:
+                  - CHECKED_IN
+                - title: state4
+                  type: string
+                  description: The GMR is embarked, meaning the goods movement has
+                    embarked on its crossing but the goods are awaiting clearance
+                    to proceed.
+                  enum:
+                  - EMBARKED
+                - title: state5
+                  type: string
+                  description: The GMR is completed, meaning the goods movement has
+                    embarked on its crossing and the goods are clear to proceed.
+                  enum:
+                  - COMPLETED
+              inspectionRequired:
+                type: boolean
+                description: If set to true, indicates that the vehicle requires a
+                  customs inspection.  If set to false, indicates that the vehicle
+                  does not require a customs inspection.  If not set, indicates the
+                  customs inspection decision has not yet been made or is not applicable.  For
+                  outbound GMRs, this indicates that the vehicle must present at an
+                  inspection facility prior to checking-in at the port.  For Office
+                  of Transit inspections for inbound GMRs, a decision may be made
+                  to inspect subsequent to a notification that inspection is not required.  In
+                  this event a notification will be sent that changes inspectionRequired
+                  from false to true.  If this happens after leaving the port of arrival,
+                  the inspection should be carried out at the next transit office
+                  e.g. the office of destination.
+              reportToLocations:
+                minItems: 1
+                type: array
+                description: A list of one or more inspection types, from GVMS Reference
+                  Data, that the vehicle must have carried out, in the order specified.  This
+                  means that where there are multiple entries here, the vehicle must
+                  report for the first inspection type listed before each subsequent
+                  listed inspection.  Each entry includes a list of available locations
+                  for the inspection type.
+                items:
+                  title: propertiesreportToLocationsitems
+                  required:
+                  - inspectionTypeId
+                  - locationIds
+                  type: object
+                  properties:
+                    inspectionTypeId:
+                      pattern: ^[0-9A-Za-z\-_]{1,100}$
+                      type: string
+                      description: An inspectionTypeId from GVMS Reference Data denoting
+                        the type of inspection that needs to be performed on the vehicle.
+                    locationIds:
+                      pattern: ^[0-9A-Za-z\-_]{1,100}$
+                      type: array
+                      description: A list of locationIds from GVMS Reference Data
+                        that are available to perform this type of inspection.
+                      items:
+                        type: string
+                  description: Information about an inspection that is required
+              updatedDateTime:
+                pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+                type: string
+                description: The date and time that this GMR was last updated.
+              direction:
+                description: The direction of the movement - into or out of the UK,
+                  or between Great Britain and Northern Ireland
+                oneOf:
+                - title: direction
+                  type: string
+                  description: The movement is travelling into the UK
+                  enum:
+                  - UK_INBOUND
+                - title: direction1
+                  type: string
+                  description: The movement is travelling out of the UK
+                  enum:
+                  - UK_OUTBOUND
+                - title: direction2
+                  type: string
+                  description: The movement is travelling out of Great Britain into
+                    Northern Ireland
+                  enum:
+                  - GB_TO_NI
+                - title: direction3
+                  type: string
+                  description: The movement is travelling out of Northern Ireland
+                    into Great Britain
+                  enum:
+                  - NI_TO_GB
+              haulierType:
+                description: The type of haulier moving the goods
+                oneOf:
+                - title: haulierType
+                  type: string
+                  description: All hauliers that are not one of the other types
+                  enum:
+                  - STANDARD
+                - title: haulierType1
+                  type: string
+                  description: Fast parcel operators that are members of the Anti-Smuggling
+                    Network
+                  enum:
+                  - FPO_ASN
+                - title: haulierType2
+                  type: string
+                  description: Fast parcel operators that are not members of the ASN
+                    and are not moving goods with a Memorandum of Understanding
+                  enum:
+                  - FPO_OTHER
+                - title: haulierType3
+                  type: string
+                  description: NATO or MoD
+                  enum:
+                  - NATO_MOD
+                - title: haulierType4
+                  type: string
+                  description: Royal Mail Group
+                  enum:
+                  - RMG
+                - title: haulierType5
+                  type: string
+                  description: Extra-Territorial Office of Exchange
+                  enum:
+                  - ETOE
+              isUnaccompanied:
+                type: boolean
+                description: Set to true if the vehicle will not be accompanying the
+                  trailer(s) during the crossing, or if the vehicle is carrying a
+                  container that will be detached and loaded for the crossing.
+              vehicleRegNum:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                type: string
+                description: Vehicle registration number of the vehicle that will
+                  arrive at port.  If isUnaccompanied is set to false then vehicleRegNum
+                  must be provided to check-in.
+              trailerRegistrationNums:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                maxItems: 2
+                minItems: 1
+                uniqueItems: true
+                type: array
+                description: For vehicles carrying trailers, the trailer registration
+                  number of each trailer.  If isUnaccompanied is set to true then
+                  trailerRegistrationNums or containerReferenceNums must be provided
+                  before check-in.
+                items:
+                  type: string
+              containerReferenceNums:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                minItems: 1
+                uniqueItems: true
+                type: array
+                description: For vehicles arriving with containers that will be detached
+                  and loaded, the container reference number of each container in
+                  the movement. If isUnaccompanied is set to true then trailerRegistrationNums
+                  or containerReferenceNums must be provided before check-in.
+                items:
+                  type: string
+              plannedCrossing:
+                required:
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfDeparture:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of departure, in local
+                      time of the departure port. Must not include seconds, time zone
+                      or UTC marker
+              checkedInCrossing:
+                required:
+                - localDateTimeOfArrival
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfArrival:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of arrival, in local time
+                      of the arrival port. Must not include seconds, time zone or
+                      UTC marker
+              actualCrossing:
+                required:
+                - localDateTimeOfArrival
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfArrival:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of arrival, in local time
+                      of the arrival port. Must not include seconds, time zone or
+                      UTC marker
+    GmrsByVRN:
+      title: GmrsByVRN
+      required:
+      - gmrs
+      - vrn
+      type: object
+      properties:
+        vrn:
+          pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+          type: string
+          description: This is the identifier for a Vehicle Registration Number
+        gmrs:
+          minItems: 0
+          type: array
+          description: ""
+          items:
+            pattern: ^GMR[A-Z][0-9A-Z]{8}$
+            type: string
+    SearchGmrsRequest:
+      title: SearchGmrsRequest
+      required:
+      - trailerRegistrationNums
+      type: object
+      properties:
+        trailerRegistrationNums:
+          pattern: ^[A-Z0-9-)(/]{1,200}$
+          maxItems: 2000
+          minItems: 1
+          type: array
+          description: A list of TRNs to search for GMRs.
+          items:
+            type: string
+    SearchGmrsResponse:
+      title: SearchGmrsResponse
+      required:
+      - gmrs
+      type: object
+      properties:
+        gmrs:
+          minItems: 0
+          type: array
+          description: ""
+          items:
+            title: gmrSummaryWithDeclarations
+            required:
+            - direction
+            - gmrId
+            - haulierEORI
+            - state
+            - updatedDateTime
+            type: object
+            properties:
+              gmrId:
+                pattern: ^GMR[A-Z][0-9A-Z]{8}$
+                type: string
+                description: The Goods Movement Record (GMR) ID for this GMR.  Do
+                  not include when POSTing a GMR - GVMS will assign an ID.
+              haulierEORI:
+                pattern: ^GB[0-9]{12,15}$
+                type: string
+                description: The EORI of the haulier that is responsible for the vehicle
+                  making the goods movement
+              state:
+                description: The state of the GMR
+                oneOf:
+                - title: state
+                  type: string
+                  description: The GMR is in a non-finalisable state.  This means
+                    an update will be required from the haulier prior to check-in.
+                  enum:
+                  - NOT_FINALISABLE
+                - title: state1
+                  type: string
+                  description: The GMR is open for updates and is ready for check-in.
+                  enum:
+                  - OPEN
+                - title: state2
+                  type: string
+                  description: The GMR is finalised, which is part of the process
+                    of check-in by the carrier.  No further updates from the haulier
+                    are permitted.
+                  enum:
+                  - FINALISED
+                - title: state3
+                  type: string
+                  description: The GMR is checked-in, awaiting embarkation confirmation
+                    from the carrier.
+                  enum:
+                  - CHECKED_IN
+                - title: state4
+                  type: string
+                  description: The GMR is embarked, meaning the goods movement has
+                    embarked on its crossing but the goods are awaiting clearance
+                    to proceed.
+                  enum:
+                  - EMBARKED
+                - title: state5
+                  type: string
+                  description: The GMR is completed, meaning the goods movement has
+                    embarked on its crossing and the goods are clear to proceed.
+                  enum:
+                  - COMPLETED
+              inspectionRequired:
+                type: boolean
+                description: If set to true, indicates that the vehicle requires a
+                  customs inspection.  If set to false, indicates that the vehicle
+                  does not require a customs inspection.  If not set, indicates the
+                  customs inspection decision has not yet been made or is not applicable.  For
+                  outbound GMRs, this indicates that the vehicle must present at an
+                  inspection facility prior to checking-in at the port.  For Office
+                  of Transit inspections for inbound GMRs, a decision may be made
+                  to inspect subsequent to a notification that inspection is not required.  In
+                  this event a notification will be sent that changes inspectionRequired
+                  from false to true.  If this happens after leaving the port of arrival,
+                  the inspection should be carried out at the next transit office
+                  e.g. the office of destination.
+              reportToLocations:
+                minItems: 1
+                type: array
+                description: A list of one or more inspection types, from GVMS Reference
+                  Data, that the vehicle must have carried out, in the order specified.  This
+                  means that where there are multiple entries here, the vehicle must
+                  report for the first inspection type listed before each subsequent
+                  listed inspection.  Each entry includes a list of available locations
+                  for the inspection type.
+                items:
+                  title: propertiesreportToLocationsitems
+                  required:
+                  - inspectionTypeId
+                  - locationIds
+                  type: object
+                  properties:
+                    inspectionTypeId:
+                      pattern: ^[0-9A-Za-z\-_]{1,100}$
+                      type: string
+                      description: An inspectionTypeId from GVMS Reference Data denoting
+                        the type of inspection that needs to be performed on the vehicle.
+                    locationIds:
+                      pattern: ^[0-9A-Za-z\-_]{1,100}$
+                      type: array
+                      description: A list of locationIds from GVMS Reference Data
+                        that are available to perform this type of inspection.
+                      items:
+                        type: string
+                  description: Information about an inspection that is required
+              updatedDateTime:
+                pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d.\d{3}Z$
+                type: string
+                description: The date and time that this GMR was last updated.
+              direction:
+                description: The direction of the movement - into or out of the UK,
+                  or between Great Britain and Northern Ireland
+                oneOf:
+                - title: direction
+                  type: string
+                  description: The movement is travelling into the UK
+                  enum:
+                  - UK_INBOUND
+                - title: direction1
+                  type: string
+                  description: The movement is travelling out of the UK
+                  enum:
+                  - UK_OUTBOUND
+                - title: direction2
+                  type: string
+                  description: The movement is travelling out of Great Britain into
+                    Northern Ireland
+                  enum:
+                  - GB_TO_NI
+                - title: direction3
+                  type: string
+                  description: The movement is travelling out of Northern Ireland
+                    into Great Britain
+                  enum:
+                  - NI_TO_GB
+              haulierType:
+                description: The type of haulier moving the goods
+                oneOf:
+                - title: haulierType
+                  type: string
+                  description: All hauliers that are not one of the other types
+                  enum:
+                  - STANDARD
+                - title: haulierType1
+                  type: string
+                  description: Fast parcel operators that are members of the Anti-Smuggling
+                    Network
+                  enum:
+                  - FPO_ASN
+                - title: haulierType2
+                  type: string
+                  description: Fast parcel operators that are not members of the ASN
+                    and are not moving goods with a Memorandum of Understanding
+                  enum:
+                  - FPO_OTHER
+                - title: haulierType3
+                  type: string
+                  description: NATO or MoD
+                  enum:
+                  - NATO_MOD
+                - title: haulierType4
+                  type: string
+                  description: Royal Mail Group
+                  enum:
+                  - RMG
+                - title: haulierType5
+                  type: string
+                  description: Extra-Territorial Office of Exchange
+                  enum:
+                  - ETOE
+              isUnaccompanied:
+                type: boolean
+                description: Set to true if the vehicle will not be accompanying the
+                  trailer(s) during the crossing, or if the vehicle is carrying a
+                  container that will be detached and loaded for the crossing.
+              vehicleRegNum:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,30})?$
+                type: string
+                description: Vehicle registration number of the vehicle that will
+                  arrive at port.  If isUnaccompanied is set to false then vehicleRegNum
+                  must be provided to check-in.
+              trailerRegistrationNums:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                maxItems: 2
+                minItems: 1
+                uniqueItems: true
+                type: array
+                description: For vehicles carrying trailers, the trailer registration
+                  number of each trailer.  If isUnaccompanied is set to true then
+                  trailerRegistrationNums or containerReferenceNums must be provided
+                  before check-in.
+                items:
+                  type: string
+              containerReferenceNums:
+                pattern: ^[A-Z0-9-](?:[A-Z0-9 -]{1,199})?$
+                minItems: 1
+                uniqueItems: true
+                type: array
+                description: For vehicles arriving with containers that will be detached
+                  and loaded, the container reference number of each container in
+                  the movement. If isUnaccompanied is set to true then trailerRegistrationNums
+                  or containerReferenceNums must be provided before check-in.
+                items:
+                  type: string
+              plannedCrossing:
+                required:
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfDeparture:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of departure, in local
+                      time of the departure port. Must not include seconds, time zone
+                      or UTC marker
+              checkedInCrossing:
+                required:
+                - localDateTimeOfArrival
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfArrival:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of arrival, in local time
+                      of the arrival port. Must not include seconds, time zone or
+                      UTC marker
+              actualCrossing:
+                required:
+                - localDateTimeOfArrival
+                - routeId
+                properties:
+                  routeId:
+                    pattern: ^[A-Z0-9-]{1,200}$
+                    type: string
+                    description: The ID of the crossing route, using a routeId from
+                      the GVMS reference data
+                  localDateTimeOfArrival:
+                    pattern: ^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d$
+                    type: string
+                    description: The planned date and time of arrival, in local time
+                      of the arrival port. Must not include seconds, time zone or
+                      UTC marker
+              declarations:
+                properties:
+                  transits:
+                    type: array
+                    description: A list of declaration ids.
+                    items:
+                      required:
+                      - id
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                  customs:
+                    type: array
+                    description: A list of declaration ids.
+                    items:
+                      required:
+                      - id
+                      type: object
+                      properties:
+                        id:
+                          type: string
+  parameters:
+    stateParam:
+      name: state
+      in: query
+      description: Filter GMRs for a state.  If not specified, all GMRs matching the
+        search criteria will be returned.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+        - NOT_FINALISABLE
+        - OPEN
+        - FINALISED
+        - CHECKED_IN
+        - EMBARKED
+        - COMPLETED
+  securitySchemes:
+    applicationRestricted:
+      type: oauth2
+      description: |
+        HMRC supports OAuth 2.0 for authenticating application restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
+        See https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/application-restricted-endpoints for details.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          scopes: {}
