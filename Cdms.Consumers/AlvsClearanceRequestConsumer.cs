@@ -4,6 +4,7 @@ using Cdms.Model.Auditing;
 using Cdms.Types.Alvs;
 using Cdms.Types.Alvs.Mapping;
 using SlimMessageBus;
+using Items = Cdms.Model.Alvs.Items;
 
 namespace Cdms.Consumers
 {
@@ -35,6 +36,10 @@ namespace Cdms.Consumers
                         x.Header.EntryReference ==
                         movement.ClearanceRequests[0].Header.EntryReference);
                     existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
+                    if (existingMovement.Items == null)
+                    {
+                        existingMovement.Items = new List<Items>();
+                    }
 
                     existingMovement.Items.AddRange(movement.Items);
                     await dbContext.Movements.Update(existingMovement, existingMovement._Etag);

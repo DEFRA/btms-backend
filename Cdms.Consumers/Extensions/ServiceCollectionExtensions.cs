@@ -52,7 +52,7 @@ namespace Cdms.Consumers.Extensions
                             {
                                 x.Instances(10);
                                 x.Topic("ALVS").WithConsumer<AlvsClearanceRequestConsumer>();
-                                x.Topic("DECISIONS").WithConsumer<AlvsClearanceRequestConsumer>();
+                                //x.Topic("DECISIONS").WithConsumer<AlvsClearanceRequestConsumer>();
                             });
                     });
             });
