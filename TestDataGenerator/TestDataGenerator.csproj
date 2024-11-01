@@ -40,6 +40,10 @@
       <Content Include="Scenarios\Samples\cr-one-item.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Properties\local.env" />
+      <Content Include="Properties\local.env">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 

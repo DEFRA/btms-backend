@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using System.Text.Json;
 using Cdms.Types.Alvs;
 using Cdms.Types.Ipaffs;
@@ -9,12 +10,11 @@ namespace TestDataGenerator;
 
 public class Generator(ILogger<Generator> logger, IBlobService blobService)
 {
-    internal async Task Cleardown()
+    internal async Task Cleardown(string rootPath)
     {
-        var path = DataHelpers.RootBlobPath();
-        // await blobService.CleanAsync(path);
+        await blobService.CleanAsync($"{rootPath}/");
     }
-    internal async Task Generate(int count, int days, ScenarioGenerator generator)
+    internal async Task Generate(int count, int days, ScenarioGenerator generator, string rootPath)
     {
         logger.LogInformation($"Generating {count}x{days} {generator}.");
 
@@ -27,22 +27,26 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
             {
                 logger.LogInformation($"Generating item {i}");
             
-                var result = generator.Generate(i, entryDate);
-                await InsertToBlobStorage(result);
+                var generatorResult = generator.Generate(i, entryDate);
+                var uploadResult = await InsertToBlobStorage(generatorResult, rootPath);
+                if (!uploadResult)
+                {
+                    throw new AuthenticationException("Error uploading item. Probably auth.");
+                }
             }
         }
         
     }
 
-    internal async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result)
+    internal async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result, string rootPath)
     {
         logger.LogInformation($"Uploading {result.ImportNotifications.Length} Notification(s) and {result.ClearanceRequests.Length} Clearance Request(s) to blob storage");
 
         var importNotificationBlobItems = result.ImportNotifications.Select(n => 
-            new BlobItem() { Name = n.BlobPath(), Content = JsonSerializer.Serialize(n) });
+            new BlobItem() { Name = n.BlobPath(rootPath), Content = JsonSerializer.Serialize(n) });
         
         var alvsClearanceRequestBlobItems = result.ClearanceRequests.Select(cr => 
-            new BlobItem() { Name = cr.BlobPath(), Content = JsonSerializer.Serialize(cr) });
+            new BlobItem() { Name = cr.BlobPath(rootPath), Content = JsonSerializer.Serialize(cr) });
 
         var success = await blobService.CreateBlobsAsync(importNotificationBlobItems.Concat(alvsClearanceRequestBlobItems).ToArray());
         return success;

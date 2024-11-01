@@ -14,8 +14,11 @@ public static class SyncEndpoints
 
     public static void UseSyncEndpoints(this IEndpointRouteBuilder app)
     {
+        app.MapGet(BaseRoute + "/notifications/", GetSyncNotifications).AllowAnonymous();
         app.MapPost(BaseRoute + "/notifications/", SyncNotifications).AllowAnonymous();
+        app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
         app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
+        app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
         app.MapGet(BaseRoute + "/queueCounts/", GetQueueCounts).AllowAnonymous();
@@ -27,6 +30,15 @@ public static class SyncEndpoints
         return Results.Ok(queueCounts);
     }
 
+    private static async Task<IResult> GetSyncNotifications(
+        [FromServices] IMediator mediator,
+        [FromServices] IMasterMessageBus bus,
+        SyncPeriod syncPeriod)
+    {
+        SyncNotificationsCommand command = new() { SyncPeriod = syncPeriod };
+        return await SyncNotifications(mediator, bus, command);
+    }
+
     private static async Task<IResult> SyncNotifications([FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         [FromBody] SyncNotificationsCommand command)
@@ -36,14 +48,32 @@ public static class SyncEndpoints
         return Results.Ok();
     }
 
+    private static async Task<IResult> GetSyncClearanceRequests(
+        [FromServices] IMediator mediator,
+        [FromServices] IMasterMessageBus bus,
+        SyncPeriod syncPeriod)
+    {
+        SyncClearanceRequestsCommand command = new() { SyncPeriod = syncPeriod };
+        return await SyncClearanceRequests(mediator, bus, command);
+    }
 
-    private static async Task<IResult> SyncClearanceRequests([FromServices] IMediator mediator,
+    private static async Task<IResult> SyncClearanceRequests(
+        [FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         [FromBody] SyncClearanceRequestsCommand command)
     {
         await mediator.Send(command);
         await WaitUntilQueueIsEmpty("ALVS", bus);
         return Results.Ok();
+    }
+
+    private static async Task<IResult> GetSyncGmrs(
+        [FromServices] IMediator mediator,
+        [FromServices] IMasterMessageBus bus,
+        SyncPeriod syncPeriod)
+    {
+        SyncGmrsCommand command = new() { SyncPeriod = syncPeriod };
+        return await SyncGmrs(mediator, bus, command);
     }
 
     private static async Task<IResult> SyncGmrs([FromServices] IMediator mediator,

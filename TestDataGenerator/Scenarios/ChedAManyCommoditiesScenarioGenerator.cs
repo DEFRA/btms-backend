@@ -12,6 +12,7 @@ internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditie
         // TODO : get a good 'pair' of notification and cr as the source templates
         
         var notification = GetNotificationBuilder("cheda-one-commodity")
+            .WithEntryDate(entryDate)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, item)
             .WithRandomCommodities(10, 100)
             .Build()!;
@@ -19,6 +20,7 @@ internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditie
         logger.LogInformation($"Created {notification}, {notification.ReferenceNumber}");
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
+            .WithEntryDate(entryDate)
             .WithFirstReferenceNumber(notification.ReferenceNumber!)
             .Build();
         

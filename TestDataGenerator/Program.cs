@@ -17,18 +17,12 @@ internal class Program
     {
         var configuration = new ConfigurationBuilder()
             .AddEnvironmentVariables()
-            .AddIniFile("Properties/local.env", true)
+            .AddIniFile("Properties/local.env", false)
             .Build();
 
         var generatorConfig = new GeneratorConfig(configuration);
         
         var builder = Host.CreateDefaultBuilder(args)
-            // .ConfigureAppConfiguration(c =>
-            // {
-            //     c.AddEnvironmentVariables("CDP");
-            //     c.AddEnvironmentVariables();
-            //     c.AddIniFile("Properties/local.env", true);
-            // })
             .ConfigureAppConfiguration(builder =>
             {
                 builder.Sources.Clear();
@@ -63,24 +57,46 @@ internal class Program
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
         var chedASimpleMatch = app.Services.GetRequiredService<ChedASimpleMatchScenarioGenerator>();
         var chedAManyCommodities = app.Services.GetRequiredService<ChedAManyCommoditiesScenarioGenerator>();
-        
-        var scenarios = new[]
-        {
-            // new { scenario = "ChedASimpleMatch", count = 10, days = 1, generator = (ScenarioGenerator)chedASimpleMatch },
-            new { scenario = "ChedAManyCommodities", count = 1, days = 5, generator = (ScenarioGenerator)chedAManyCommodities }
+
+        var datasets = new[] {
+            new {
+                dataset = "LoadTest",
+                rootPath = "GENERATED-LOADTEST",
+                scenarios = new[]
+                {
+                    new { scenario = "ChedASimpleMatch", count = 500, days = 14, generator = (ScenarioGenerator)chedASimpleMatch },
+                    new { scenario = "ChedAManyCommodities", count = 500, days = 14, generator = (ScenarioGenerator)chedAManyCommodities }
+                }
+            },
+            new {
+                dataset = "PHA",
+                rootPath = "GENERATED-PHA",
+                scenarios = new[]
+                {
+                    new { scenario = "ChedASimpleMatch", count = 10, days = 30, generator = (ScenarioGenerator)chedASimpleMatch },
+                    new { scenario = "ChedAManyCommodities", count = 10, days = 30, generator = (ScenarioGenerator)chedAManyCommodities }
+                }
+            }
         };
         
-        logger.LogInformation($"{scenarios.Length} scenario(s) configured");
+        logger.LogInformation($"{datasets.Length} dataset(s) configured");
         
-        logger.LogInformation("Clearing down storage path");
-        await generator.Cleardown();
-        logger.LogInformation("Cleared down");
-        
-        foreach (var s in scenarios)
+        foreach (var dataset in datasets)
         {
-            await generator.Generate(s.count, s.days, s.generator);
+            logger.LogInformation($"{dataset.scenarios.Length} scenario(s) configured");
+        
+            logger.LogInformation("Clearing down storage path");
+            await generator.Cleardown(dataset.rootPath);
+            logger.LogInformation("Cleared down");
+        
+            foreach (var s in dataset.scenarios)
+            {
+                await generator.Generate(s.count, s.days, s.generator, dataset.rootPath);
+            }
+            logger.LogInformation($"{dataset.dataset} Done");
         }
         
         logger.LogInformation("Done");
+        
     }
 }
