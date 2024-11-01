@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Cdms.Azure;
@@ -25,6 +26,9 @@ public class BlobService(
     }
 
 
+    [SuppressMessage("SonarLint", "S3267",
+        Justification =
+            "Ignored this is IAsyncEnumerable and doesn't support linq filtering out the box")]
     public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken)
     {
         Logger.LogDebug("Connecting to blob storage {BlobUri} : {BlobContainer} : {Path}", options.Value.DmpBlobUri,
@@ -35,6 +39,7 @@ public class BlobService(
         var itemCount = 0;
 
         var files = containerClient.GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
+
 
         await foreach (BlobItem item in files)
         {
