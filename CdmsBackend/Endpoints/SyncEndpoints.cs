@@ -1,11 +1,7 @@
-// using FluentValidation.Results;
-// using MongoDB.Bson;
-
-using System.Reflection;
 using Cdms.Business.Commands;
+using Cdms.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SlimMessageBus;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Hybrid;
 using SlimMessageBus.Host.Memory;
@@ -15,24 +11,7 @@ namespace CdmsBackend.Endpoints;
 public static class SyncEndpoints
 {
     private const string BaseRoute = "sync";
-    // private static ILogger Logger = ApplicationLogging.CreateLogger("SyncEndpoints");
-    // private static ILogger Logger = ApplicationLogging.CreateLogger("SyncEndpoints");
 
-    //private static SyncPeriod Parse(string? period)
-    //{
-    //    if (string.IsNullOrEmpty(period))
-    //    {
-    //        return SyncPeriod.All;
-    //    }
-
-    //    return Enum.Parse<SyncPeriod>(period, true);
-
-    //    // if (Enum.TryParse<SyncPeriod>(period, true, out SyncPeriod typed))
-    //    // {
-    //    //     return typed;
-    //    // }
-    //    // return SyncPeriod.All;
-    //}
     public static void UseSyncEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapPost(BaseRoute + "/notifications/", SyncNotifications).AllowAnonymous();
@@ -44,34 +23,9 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetQueueCounts([FromServices] IMasterMessageBus bus)
     {
-        if (bus is HybridMessageBus hybridMessageBus)
-        {
-            var childBus = hybridMessageBus.GetChildBus("InMemory");
-
-            var field = childBus.GetType()
-                .GetField("_messageProcessorQueueByPath", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            var queues = (IDictionary<string, IMessageProcessorQueue>)field.GetValue(childBus);
-            return Results.Ok(queues.Select(x =>
-            {
-                if (x.Value is ConcurrentMessageProcessorQueue concurrentMessageProcessorQueue)
-                {
-                    var queueField = concurrentMessageProcessorQueue.GetType()
-                        .GetField("_queue", BindingFlags.Instance | BindingFlags.NonPublic);
-
-                    var queue =
-                        (Queue<(object TransportMessage, IReadOnlyDictionary<string, object> MessageHeaders)>)
-                        queueField.GetValue(concurrentMessageProcessorQueue);
-                    return new { Name = x.Key, Count = queue.Count };
-                }
-
-                return new { Name = x.Key, Count = 0 };
-            }));
-        }
-
-        return Results.Ok();
+        var queueCounts = GetQueuesCount(bus);
+        return Results.Ok(queueCounts);
     }
-
 
     private static async Task<IResult> SyncNotifications([FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
@@ -122,33 +76,37 @@ public static class SyncEndpoints
 
     private static int? GetQueueCount(string queueName, IMasterMessageBus bus)
     {
+        return GetQueuesCount(bus)?.FirstOrDefault(x => x.QueueName == queueName).Count;
+    }
+
+    private static List<(string QueueName, int Count)> GetQueuesCount(IMasterMessageBus bus)
+    {
+        List<(string QueueName, int Count)> list = new List<(string QueueName, int Count)>();
         if (bus is HybridMessageBus hybridMessageBus)
         {
             var childBus = hybridMessageBus.GetChildBus("InMemory");
 
-            var field = childBus.GetType()
-                .GetField("_messageProcessorQueueByPath", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            var queues = (IDictionary<string, IMessageProcessorQueue>)field.GetValue(childBus);
-            var queueCounts = queues.Select(x =>
+            var queues =
+                childBus.GetPrivateFieldValue<IDictionary<string, IMessageProcessorQueue>>(
+                    "_messageProcessorQueueByPath");
+            foreach (var kvp in queues)
             {
-                if (x.Value is ConcurrentMessageProcessorQueue concurrentMessageProcessorQueue)
+                if (kvp.Value is ConcurrentMessageProcessorQueue concurrentMessageProcessorQueue)
                 {
-                    var queueField = concurrentMessageProcessorQueue.GetType()
-                        .GetField("_queue", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var queue = concurrentMessageProcessorQueue
+                        .GetPrivateFieldValue<
+                            Queue<(object TransportMessage, IReadOnlyDictionary<string, object> MessageHeaders)>>(
+                            "_queue");
 
-                    var queue =
-                        (Queue<(object TransportMessage, IReadOnlyDictionary<string, object> MessageHeaders)>)
-                        queueField.GetValue(concurrentMessageProcessorQueue);
-                    return new { Name = x.Key, Count = queue.Count };
+                    list.Add((kvp.Key, queue.Count));
                 }
-
-                return new { Name = x.Key, Count = 0 };
-            });
-
-            return queueCounts?.FirstOrDefault(x => x.Name == queueName)?.Count;
+                else
+                {
+                    list.Add((kvp.Key, 0));
+                }
+            }
         }
 
-        return 0;
+        return list;
     }
 }

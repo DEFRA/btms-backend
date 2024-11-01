@@ -29,8 +29,7 @@ public class BlobService(
     {
         Logger.LogInformation("Connecting to blob storage {BlobUri} : {BlobContainer}", options.Value.DmpBlobUri,
             options.Value.DmpBlobContainer);
-        // try
-        //{
+
         var containerClient = CreateBlobClient();
 
         Logger.LogInformation("Getting blob files from {Path}...", prefix);
@@ -42,7 +41,6 @@ public class BlobService(
         {
             if (item.Properties.ContentLength is not 0)
             {
-                Logger.LogInformation("\t" + item.Name);
                 yield return
                     new SynchroniserBlobItem(containerClient.GetBlobClient(item.Name)) { Name = item.Name };
                 itemCount++;
