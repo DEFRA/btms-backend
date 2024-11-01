@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -21,11 +22,11 @@ public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
             var s = reader.GetString();
             if (!ulong.TryParse(s, out number))
             {
-                return DateTime.Parse(s!);
+                return DateTime.Parse(s!, new DateTimeFormatInfo());
             }
         }
 
-        var s_epoch = new DateTime(1970, 1, 1, 0, 0, 0);
+        var s_epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         // 1723127967 - DEV
         // 1712851200000 - SND
