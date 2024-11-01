@@ -36,7 +36,7 @@ namespace Cdms.Consumers
 
         public IConsumerContext Context { get; set; }
 
-        private string BuildNormalizedIpaffsPath(string fullPath)
+        private static string BuildNormalizedIpaffsPath(string fullPath)
         {
             return fullPath.Replace("RAW/IPAFFS/", "");
         }

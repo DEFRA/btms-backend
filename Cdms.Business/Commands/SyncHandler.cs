@@ -81,8 +81,6 @@ public class SyncCommand : IRequest
                 var itemCount = 0;
                 var erroredCount = 0;
 
-                // TODO need to figure out how we select path
-
                 await Parallel.ForEachAsync(paths, async (path, token) =>
                 {
                     var (e, i) = await SyncBlobPath<TRequest>(path, period, topic, token);
@@ -98,7 +96,7 @@ public class SyncCommand : IRequest
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.ToString());
+                logger.LogError(ex, "Error syncing blob paths");
 
                 return new Status() { Success = false, Description = ex.Message };
             }
@@ -109,9 +107,6 @@ public class SyncCommand : IRequest
         {
             var itemCount = 0;
             var erroredCount = 0;
-
-
-            // TODO need to figure out how we select path
 
             var result = blobService.GetResourcesAsync($"{path}{GetPeriodPath(period)}", cancellationToken);
 

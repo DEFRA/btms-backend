@@ -95,7 +95,6 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
     builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
-        .WriteTo.Seq("http://localhost:6341")
         .ReadFrom.Configuration(builder.Configuration)
         .Enrich.With<LogLevelMapper>();
 

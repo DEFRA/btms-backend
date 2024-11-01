@@ -18,7 +18,6 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
 
     public string _Etag { get; set; }
 
-    // TODO : this is currently being written on the wire by the json api client
     /// <inheritdoc />
     [BsonIgnore]
     [JsonIgnore]

@@ -20,20 +20,20 @@ namespace Cdms.Consumers
 
             if (existingMovement is not null)
             {
-                if (movement.ClearanceRequests.First().Header.EntryVersionNumber >
-                    existingMovement.ClearanceRequests.First().Header.EntryVersionNumber)
+                if (movement.ClearanceRequests[0].Header.EntryVersionNumber >
+                    existingMovement.ClearanceRequests[0].Header.EntryVersionNumber)
                 {
                     movement.AuditEntries = existingMovement.AuditEntries;
-                    var auditEntry = AuditEntry.CreateUpdated(existingMovement.ClearanceRequests.First(),
-                        movement.ClearanceRequests.First(),
+                    var auditEntry = AuditEntry.CreateUpdated(existingMovement.ClearanceRequests[0],
+                        movement.ClearanceRequests[0],
                         BuildNormalizedAlvsPath(auditId),
-                        movement.ClearanceRequests.First().Header.EntryVersionNumber.GetValueOrDefault(),
+                        movement.ClearanceRequests[0].Header.EntryVersionNumber.GetValueOrDefault(),
                         movement.LastUpdated);
                     movement.Update(auditEntry);
 
                     existingMovement.ClearanceRequests.RemoveAll(x =>
                         x.Header.EntryReference ==
-                        movement.ClearanceRequests.First().Header.EntryReference);
+                        movement.ClearanceRequests[0].Header.EntryReference);
                     existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
 
                     existingMovement.Items.AddRange(movement.Items);
@@ -75,7 +75,7 @@ namespace Cdms.Consumers
             };
         }
 
-        private string BuildNormalizedAlvsPath(string fullPath)
+        private static string BuildNormalizedAlvsPath(string fullPath)
         {
             return fullPath.Replace("RAW/ALVS/", "");
         }

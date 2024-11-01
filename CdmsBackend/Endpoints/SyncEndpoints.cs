@@ -76,7 +76,7 @@ public static class SyncEndpoints
 
     private static int? GetQueueCount(string queueName, IMasterMessageBus bus)
     {
-        return GetQueuesCount(bus)?.FirstOrDefault(x => x.QueueName == queueName).Count;
+        return GetQueuesCount(bus)?.Find(x => x.QueueName == queueName).Count;
     }
 
     private static List<(string QueueName, int Count)> GetQueuesCount(IMasterMessageBus bus)

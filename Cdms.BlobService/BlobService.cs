@@ -27,12 +27,11 @@ public class BlobService(
 
     public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken)
     {
-        Logger.LogInformation("Connecting to blob storage {BlobUri} : {BlobContainer}", options.Value.DmpBlobUri,
-            options.Value.DmpBlobContainer);
+        Logger.LogDebug("Connecting to blob storage {BlobUri} : {BlobContainer} : {Path}", options.Value.DmpBlobUri,
+            options.Value.DmpBlobContainer, prefix);
 
         var containerClient = CreateBlobClient();
 
-        Logger.LogInformation("Getting blob files from {Path}...", prefix);
         var itemCount = 0;
 
         var files = containerClient.GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
@@ -47,6 +46,6 @@ public class BlobService(
             }
         }
 
-        Logger.LogInformation("GetResourcesAsync {itemCount} blobs found.", itemCount);
+        Logger.LogDebug("GetResourcesAsync {itemCount} blobs found.", itemCount);
     }
 }

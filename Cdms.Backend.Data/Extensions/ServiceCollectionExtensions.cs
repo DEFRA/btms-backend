@@ -30,9 +30,7 @@ namespace Cdms.Backend.Data.Extensions
             services.AddSingleton(sp =>
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();
-                var connectionString = configuration.GetValue<string>("Mongo:DatabaseUri")!;
-                var dbName = configuration.GetValue<string>("Mongo:DatabaseName")!;
-                var settings = MongoClientSettings.FromConnectionString(connectionString);
+                var settings = MongoClientSettings.FromConnectionString(options.Value.DatabaseUri);
                 var client = new MongoClient(settings);
 
                 var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
