@@ -9,10 +9,11 @@ using NSubstitute;
 using SlimMessageBus;
 using TestDataGenerator;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Cdms.Business.Tests.Commands
 {
-    public class SyncNotificationsCommandTests
+    public class SyncNotificationsCommandTests(ITestOutputHelper outputHelper)
     {
         [Fact]
         public async Task WhenNotificationBlobsExist_ThenTheyShouldBePlacedOnInternalBus()
@@ -31,7 +32,7 @@ namespace Cdms.Business.Tests.Commands
             var handler = new SyncNotificationsCommand.Handler(
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
-                NullLogger<SyncNotificationsCommand>.Instance,
+                TestLogger.Create<SyncNotificationsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
                 blob);
 

@@ -15,15 +15,13 @@ using Xunit.Abstractions;
 
 namespace Cdms.Business.Tests.Commands
 {
-    public class SyncClearanceRequestsCommandTests(ITestOutputHelper output)
+    public class SyncClearanceRequestsCommandTests(ITestOutputHelper outputHelper)
     {
         [Fact]
         public async Task WhenClearnanceRequestBlobsExist_ThenTheyShouldBePlacedOnInternalBus()
         {
             var clearanceRequest = ClearanceRequestBuilder.Default().Build();
             var command = new SyncClearanceRequestsCommand();
-            LoggerFactory lg = new LoggerFactory();
-            lg.AddXUnit(output);
 
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();
@@ -36,7 +34,7 @@ namespace Cdms.Business.Tests.Commands
             var handler = new SyncClearanceRequestsCommand.Handler(
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
-                lg.CreateLogger<SyncClearanceRequestsCommand>(),
+                TestLogger.Create<SyncClearanceRequestsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
                 blob);
 

@@ -10,10 +10,11 @@ using NSubstitute;
 using SlimMessageBus;
 using TestDataGenerator;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Cdms.Business.Tests.Commands
 {
-    public class SyncDecisionsCommandTests
+    public class SyncDecisionsCommandTests(ITestOutputHelper outputHelper)
     {
         [Fact]
         public async Task WhenDecisionBlobsExist_ThenTheyShouldBePlacedOnInternalBus()
@@ -32,7 +33,7 @@ namespace Cdms.Business.Tests.Commands
             var handler = new SyncDecisionsCommand.Handler(
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
-                NullLogger<SyncDecisionsCommand>.Instance,
+                TestLogger.Create<SyncDecisionsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
                 blob);
 
