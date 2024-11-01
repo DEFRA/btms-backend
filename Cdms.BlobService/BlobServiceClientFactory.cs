@@ -9,7 +9,7 @@ public class BlobServiceClientFactory(
     IOptions<BlobServiceOptions> options,
     ILogger<BlobServiceClientFactory> logger,
     IHttpClientFactory? clientFactory = null)
-    : AzureService<BlobServiceClientFactory>(logger, options.Value, clientFactory), IBlobServiceClientFactory
+    : AzureService(logger, options.Value, clientFactory), IBlobServiceClientFactory
 {
     public BlobServiceClient CreateBlobServiceClient()
     {

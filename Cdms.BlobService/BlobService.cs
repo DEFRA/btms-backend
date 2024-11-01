@@ -13,7 +13,7 @@ public class BlobService(
     ILogger<BlobService> logger,
     IOptions<BlobServiceOptions> options,
     IHttpClientFactory clientFactory)
-    : AzureService<BlobService>(logger, options.Value, clientFactory), IBlobService
+    : AzureService(logger, options.Value, clientFactory), IBlobService
 {
     private BlobContainerClient CreateBlobClient()
     {

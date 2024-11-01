@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Cdms.Azure;
 
-public abstract class AzureService<T>
+public abstract class AzureService
 {
     protected readonly TokenCredential Credentials;
     protected readonly HttpClientTransport? Transport;
