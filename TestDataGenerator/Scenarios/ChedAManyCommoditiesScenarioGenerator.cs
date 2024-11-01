@@ -7,7 +7,7 @@ namespace TestDataGenerator.Scenarios;
 
 internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesScenarioGenerator> logger) : ScenarioGenerator()
 {
-    internal override GeneratorResult Generate(int item)
+    internal override GeneratorResult Generate(int item, DateTime entryDate)
     {
         // TODO : get a good 'pair' of notification and cr as the source templates
         
@@ -19,10 +19,8 @@ internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditie
         logger.LogInformation($"Created {notification}, {notification.ReferenceNumber}");
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
-            // .WithFirstReferenceNumber(notification.ReferenceNumber!)
+            .WithFirstReferenceNumber(notification.ReferenceNumber!)
             .Build();
-
-        clearanceRequest.Items[0].Documents[0].DocumentReference = notification.ReferenceNumber!;
         
         logger.LogInformation($"Created {clearanceRequest}, {clearanceRequest.Header!.EntryReference}");
 

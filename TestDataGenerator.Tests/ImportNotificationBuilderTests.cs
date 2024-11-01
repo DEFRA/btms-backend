@@ -33,4 +33,15 @@ public class ImportNotificationBuilderTests
         var notification = builder.Build();
         notification.PartOne.Commodities.CommodityComplements.Length.Should().Be(5);
     }
+    
+    [Fact]
+    public void WithEntryDate_ShouldSet()
+    {
+        var builder = ImportNotificationBuilder.Default();
+        builder.WithEntryDate(DateTime.Today.AddDays(-5));
+        
+        var notification = builder.Build();
+        DateTime.Parse(notification.LastUpdated!).Should().BeAfter(DateTime.Today.AddDays(-5));
+        DateTime.Parse(notification.LastUpdated!).Should().BeBefore(DateTime.Today.AddDays(-4));
+    }
 }

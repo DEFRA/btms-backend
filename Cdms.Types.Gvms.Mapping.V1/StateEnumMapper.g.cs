@@ -7,11 +7,11 @@
     // </auto-generated>
 //------------------------------------------------------------------------------
 #nullable enable
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class StateEnumMapper
 {
-public static Cdms.Model.VehicleMovement.StateEnum? Map(Cdms.Types.Gmr.StateEnum? from)
+public static Cdms.Model.Gvms.StateEnum? Map(Cdms.Types.Gvms.StateEnum? from)
 {
 if(from == null)
 {
@@ -19,12 +19,12 @@ return default!;
 }
 return from switch
 {
-Cdms.Types.Gmr.StateEnum.NotFinalisable => Cdms.Model.VehicleMovement.StateEnum.NotFinalisable,
-    Cdms.Types.Gmr.StateEnum.Open => Cdms.Model.VehicleMovement.StateEnum.Open,
-    Cdms.Types.Gmr.StateEnum.Finalised => Cdms.Model.VehicleMovement.StateEnum.Finalised,
-    Cdms.Types.Gmr.StateEnum.CheckedIn => Cdms.Model.VehicleMovement.StateEnum.CheckedIn,
-    Cdms.Types.Gmr.StateEnum.Embarked => Cdms.Model.VehicleMovement.StateEnum.Embarked,
-    Cdms.Types.Gmr.StateEnum.Completed => Cdms.Model.VehicleMovement.StateEnum.Completed,
+Cdms.Types.Gvms.StateEnum.NotFinalisable => Cdms.Model.Gvms.StateEnum.NotFinalisable,
+    Cdms.Types.Gvms.StateEnum.Open => Cdms.Model.Gvms.StateEnum.Open,
+    Cdms.Types.Gvms.StateEnum.Finalised => Cdms.Model.Gvms.StateEnum.Finalised,
+    Cdms.Types.Gvms.StateEnum.CheckedIn => Cdms.Model.Gvms.StateEnum.CheckedIn,
+    Cdms.Types.Gvms.StateEnum.Embarked => Cdms.Model.Gvms.StateEnum.Embarked,
+    Cdms.Types.Gvms.StateEnum.Completed => Cdms.Model.Gvms.StateEnum.Completed,
      
 };
 }

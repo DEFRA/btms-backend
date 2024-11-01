@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Cdms.Types.Gmr;
+namespace Cdms.Types.Gvms;
 
 /// <summary>
 /// Information about an inspection that is required

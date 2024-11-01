@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class SearchGmrsResponseMapper
 {
-	public static Cdms.Model.VehicleMovement.SearchGmrsResponse Map(Cdms.Types.Gmr.SearchGmrsResponse from)
+	public static Cdms.Model.Gvms.SearchGmrsResponse Map(Cdms.Types.Gvms.SearchGmrsResponse from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.SearchGmrsResponse ();
+		var to = new Cdms.Model.Gvms.SearchGmrsResponse ();
 to.Gmrs = from?.Gmrs?.Select(x => GmrMapper.Map(x)).ToArray();
                 	return to;
 	}

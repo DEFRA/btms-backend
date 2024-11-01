@@ -10,19 +10,19 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class ActualCrossingMapper
 {
-	public static Cdms.Model.VehicleMovement.ActualCrossing Map(Cdms.Types.Gmr.ActualCrossing from)
+	public static Cdms.Model.Gvms.ActualCrossing Map(Cdms.Types.Gvms.ActualCrossing from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.ActualCrossing ();
+		var to = new Cdms.Model.Gvms.ActualCrossing ();
 to.RouteId = from.RouteId;
-            to.LocalDateTimeOfArrival = from.LocalDateTimeOfArrival;
+            to.ArrivesAt = from.ArrivesAt;
             	return to;
 	}
 }

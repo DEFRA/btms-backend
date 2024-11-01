@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class TransitsMapper
 {
-	public static Cdms.Model.VehicleMovement.Transits Map(Cdms.Types.Gmr.Transits from)
+	public static Cdms.Model.Gvms.Transits Map(Cdms.Types.Gvms.Transits from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.Transits ();
+		var to = new Cdms.Model.Gvms.Transits ();
 to.Id = from.Id;
             	return to;
 	}

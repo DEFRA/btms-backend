@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class DeclarationsResponseMapper
 {
-	public static Cdms.Model.VehicleMovement.DeclarationsResponse Map(Cdms.Types.Gmr.DeclarationsResponse from)
+	public static Cdms.Model.Gvms.DeclarationsResponse Map(Cdms.Types.Gvms.DeclarationsResponse from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.DeclarationsResponse ();
+		var to = new Cdms.Model.Gvms.DeclarationsResponse ();
 	return to;
 	}
 }

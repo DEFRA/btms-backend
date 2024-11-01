@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class SearchGmrsForDeclarationIdsrequestMapper
 {
-	public static Cdms.Model.VehicleMovement.SearchGmrsForDeclarationIdsrequest Map(Cdms.Types.Gmr.SearchGmrsForDeclarationIdsrequest from)
+	public static Cdms.Model.Gvms.SearchGmrsForDeclarationIdsrequest Map(Cdms.Types.Gvms.SearchGmrsForDeclarationIdsrequest from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.SearchGmrsForDeclarationIdsrequest ();
+		var to = new Cdms.Model.Gvms.SearchGmrsForDeclarationIdsrequest ();
 	return to;
 	}
 }

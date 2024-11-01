@@ -22,9 +22,9 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
     }
 
-    public static Lens<AlvsClearanceRequest, Items[]> ItemsLens =
-        new Lens<AlvsClearanceRequest, Items[]>(x => x.Items!);
-
+    // public static Lens<AlvsClearanceRequest, Items[]> ItemsLens =
+    //     new Lens<AlvsClearanceRequest, Items[]>(x => x.Items!);
+    
     public ClearanceRequestBuilder(string file) : base(file)
     {
     }
@@ -33,34 +33,20 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return new ClearanceRequestBuilder<T>();
     }
-
+    
     public static ClearanceRequestBuilder<T> FromFile(string file)
     {
         return new ClearanceRequestBuilder<T>(file);
     }
-
+    
     public ClearanceRequestBuilder<T> WithFirstReferenceNumber(string chedReference)
     {
         // TODO : manipulate the ref to be correct format first
-        // Trying to figure out if there's a way to use lenses to allow the below to work! 
-        // https://stackoverflow.com/questions/30938972/how-to-build-nested-property-with-autofixture
-        return Do(x => x.Items[0].Documents[0].DocumentReference = chedReference);
-
-        // return With(x => x.Compose(ItemsLens));
+        return Do(x => x.Items![0].Documents![0].DocumentReference = chedReference);
     }
-
-    public ClearanceRequestBuilder<T> WithValidDocumentReferenceNumbers()
+    
+    public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
     {
-        return Do(x =>
-        {
-            foreach (var item in x.Items!)
-            {
-                foreach (var document in item.Documents!)
-                {
-                    document.DocumentReference = "GBCHD2024.1001278";
-                    document.DocumentCode = "C640";
-                }
-            }
-        });
+        return this;
     }
 }

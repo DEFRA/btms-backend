@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 
-namespace Cdms.Types.Gmr;
+namespace Cdms.Types.Gvms;
 
 [JsonConverter(typeof(JsonStringEnumMemberConverter))]
 public enum StateEnum

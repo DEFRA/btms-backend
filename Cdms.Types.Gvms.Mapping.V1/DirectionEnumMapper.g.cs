@@ -7,11 +7,11 @@
     // </auto-generated>
 //------------------------------------------------------------------------------
 #nullable enable
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class DirectionEnumMapper
 {
-public static Cdms.Model.VehicleMovement.DirectionEnum? Map(Cdms.Types.Gmr.DirectionEnum? from)
+public static Cdms.Model.Gvms.DirectionEnum? Map(Cdms.Types.Gvms.DirectionEnum? from)
 {
 if(from == null)
 {
@@ -19,10 +19,10 @@ return default!;
 }
 return from switch
 {
-Cdms.Types.Gmr.DirectionEnum.UkInbound => Cdms.Model.VehicleMovement.DirectionEnum.UkInbound,
-    Cdms.Types.Gmr.DirectionEnum.UkOutbound => Cdms.Model.VehicleMovement.DirectionEnum.UkOutbound,
-    Cdms.Types.Gmr.DirectionEnum.GbToNi => Cdms.Model.VehicleMovement.DirectionEnum.GbToNi,
-    Cdms.Types.Gmr.DirectionEnum.NiToGb => Cdms.Model.VehicleMovement.DirectionEnum.NiToGb,
+Cdms.Types.Gvms.DirectionEnum.UkInbound => Cdms.Model.Gvms.DirectionEnum.UkInbound,
+    Cdms.Types.Gvms.DirectionEnum.UkOutbound => Cdms.Model.Gvms.DirectionEnum.UkOutbound,
+    Cdms.Types.Gvms.DirectionEnum.GbToNi => Cdms.Model.Gvms.DirectionEnum.GbToNi,
+    Cdms.Types.Gvms.DirectionEnum.NiToGb => Cdms.Model.Gvms.DirectionEnum.NiToGb,
      
 };
 }

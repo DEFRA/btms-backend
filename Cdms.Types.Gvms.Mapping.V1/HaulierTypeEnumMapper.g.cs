@@ -7,11 +7,11 @@
     // </auto-generated>
 //------------------------------------------------------------------------------
 #nullable enable
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class HaulierTypeEnumMapper
 {
-public static Cdms.Model.VehicleMovement.HaulierTypeEnum? Map(Cdms.Types.Gmr.HaulierTypeEnum? from)
+public static Cdms.Model.Gvms.HaulierTypeEnum? Map(Cdms.Types.Gvms.HaulierTypeEnum? from)
 {
 if(from == null)
 {
@@ -19,12 +19,12 @@ return default!;
 }
 return from switch
 {
-Cdms.Types.Gmr.HaulierTypeEnum.Standard => Cdms.Model.VehicleMovement.HaulierTypeEnum.Standard,
-    Cdms.Types.Gmr.HaulierTypeEnum.FpoAsn => Cdms.Model.VehicleMovement.HaulierTypeEnum.FpoAsn,
-    Cdms.Types.Gmr.HaulierTypeEnum.FpoOther => Cdms.Model.VehicleMovement.HaulierTypeEnum.FpoOther,
-    Cdms.Types.Gmr.HaulierTypeEnum.NatoMod => Cdms.Model.VehicleMovement.HaulierTypeEnum.NatoMod,
-    Cdms.Types.Gmr.HaulierTypeEnum.Rmg => Cdms.Model.VehicleMovement.HaulierTypeEnum.Rmg,
-    Cdms.Types.Gmr.HaulierTypeEnum.Etoe => Cdms.Model.VehicleMovement.HaulierTypeEnum.Etoe,
+Cdms.Types.Gvms.HaulierTypeEnum.Standard => Cdms.Model.Gvms.HaulierTypeEnum.Standard,
+    Cdms.Types.Gvms.HaulierTypeEnum.FpoAsn => Cdms.Model.Gvms.HaulierTypeEnum.FpoAsn,
+    Cdms.Types.Gvms.HaulierTypeEnum.FpoOther => Cdms.Model.Gvms.HaulierTypeEnum.FpoOther,
+    Cdms.Types.Gvms.HaulierTypeEnum.NatoMod => Cdms.Model.Gvms.HaulierTypeEnum.NatoMod,
+    Cdms.Types.Gvms.HaulierTypeEnum.Rmg => Cdms.Model.Gvms.HaulierTypeEnum.Rmg,
+    Cdms.Types.Gvms.HaulierTypeEnum.Etoe => Cdms.Model.Gvms.HaulierTypeEnum.Etoe,
      
 };
 }

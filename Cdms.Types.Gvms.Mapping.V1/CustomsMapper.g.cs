@@ -10,17 +10,17 @@
 #nullable enable
 
 
-namespace Cdms.Types.Gmr.Mapping;
+namespace Cdms.Types.Gvms.Mapping;
 
 public static class CustomsMapper
 {
-	public static Cdms.Model.VehicleMovement.Customs Map(Cdms.Types.Gmr.Customs from)
+	public static Cdms.Model.Gvms.Customs Map(Cdms.Types.Gvms.Customs from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.VehicleMovement.Customs ();
+		var to = new Cdms.Model.Gvms.Customs ();
 to.Id = from.Id;
             	return to;
 	}
