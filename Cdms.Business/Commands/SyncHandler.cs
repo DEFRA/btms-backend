@@ -73,7 +73,7 @@ public class SyncCommand : IRequest
     {
         public abstract Task Handle(T request, CancellationToken cancellationToken);
 
-        protected async Task<Status> SyncBlobPaths<T>(SyncPeriod period, string topic, params string[] paths)
+        protected async Task<Status> SyncBlobPaths<TRequest>(SyncPeriod period, string topic, params string[] paths)
         {
             logger.LogInformation("SyncNotifications period: {period}", period.ToString());
             try
@@ -85,7 +85,7 @@ public class SyncCommand : IRequest
 
                 await Parallel.ForEachAsync(paths, async (path, token) =>
                 {
-                    var (e, i) = await SyncBlobPath<T>(path, period, topic, token);
+                    var (e, i) = await SyncBlobPath<TRequest>(path, period, topic, token);
                     itemCount += i;
                     erroredCount += e;
                 });
@@ -104,7 +104,7 @@ public class SyncCommand : IRequest
             }
         }
 
-        protected async Task<(int, int)> SyncBlobPath<T>(string path, SyncPeriod period, string topic,
+        protected async Task<(int, int)> SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic,
             CancellationToken cancellationToken)
         {
             var itemCount = 0;
@@ -117,7 +117,7 @@ public class SyncCommand : IRequest
 
             await Parallel.ForEachAsync(result, cancellationToken, async (item, token) =>
             {
-                var success = await SyncBlob<T>(path, topic, item, token);
+                var success = await SyncBlob<TRequest>(path, topic, item, token);
                 if (success)
                 {
                     Interlocked.Increment(ref itemCount);
@@ -132,7 +132,7 @@ public class SyncCommand : IRequest
             return (erroredCount, itemCount);
         }
 
-        private async Task<bool> SyncBlob<T>(string path, string topic, IBlobItem item,
+        private async Task<bool> SyncBlob<TRequest>(string path, string topic, IBlobItem item,
             CancellationToken cancellationToken)
         {
             var timer = Stopwatch.StartNew();
@@ -147,7 +147,7 @@ public class SyncCommand : IRequest
             {
                 syncMetrics.SyncStarted(tagList);
                 var blobContent = await item.Download(cancellationToken);
-                var message = sensitiveDataSerializer.Deserialize<T>(blobContent, _ => { })!;
+                var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
                 await bus.Publish(message,
                     topic,
                     headers: new Dictionary<string, object>() { { "messageId", item.Name } },

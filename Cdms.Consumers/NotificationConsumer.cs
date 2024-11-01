@@ -19,7 +19,7 @@ namespace Cdms.Consumers
                 if (internalNotification.LastUpdated > existingNotification.LastUpdated)
                 {
                     internalNotification.AuditEntries = existingNotification.AuditEntries;
-                    internalNotification.Updated(BuildNormalizedIpaffsPath(auditId), existingNotification);
+                    internalNotification.Updated(BuildNormalizedIpaffsPath(auditId!), existingNotification);
                     await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
                 }
                 else

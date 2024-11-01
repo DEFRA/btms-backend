@@ -20,14 +20,14 @@ namespace Cdms.Consumers.Tests
             var consumer = new NotificationConsumer(dbContext);
             consumer.Context = new ConsumerContext()
             {
-                Headers = new Dictionary<string, object>() { { "messageId", notification.ReferenceNumber } }
+                Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }
             };
 
             // ACT
             await consumer.OnHandle(notification);
 
             // ASSERT
-            var savedNotification = await dbContext.Notifications.Find(notification.ReferenceNumber);
+            var savedNotification = await dbContext.Notifications.Find(notification!.ReferenceNumber!);
             savedNotification.Should().NotBeNull();
             savedNotification.AuditEntries.Count.Should().Be(1);
             savedNotification.AuditEntries[0].Status.Should().Be("Created");
@@ -40,20 +40,20 @@ namespace Cdms.Consumers.Tests
             var notification = CreateImportNotification();
             var dbContext = CreateDbContext();
             await dbContext.Notifications.Insert(notification.MapWithTransform());
-            notification.LastUpdated = notification.LastUpdated.Value.AddHours(1);
+            notification.LastUpdated = notification?.LastUpdated?.AddHours(1);
 
 
             var consumer = new NotificationConsumer(dbContext);
             consumer.Context = new ConsumerContext()
             {
-                Headers = new Dictionary<string, object>() { { "messageId", notification.ReferenceNumber } }
+                Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }
             };
 
             // ACT
             await consumer.OnHandle(notification);
 
             // ASSERT
-            var savedNotification = await dbContext.Notifications.Find(notification.ReferenceNumber);
+            var savedNotification = await dbContext.Notifications.Find(notification!.ReferenceNumber!);
             savedNotification.Should().NotBeNull();
             savedNotification.AuditEntries.Count.Should().Be(1);
             savedNotification.AuditEntries[0].Status.Should().Be("Updated");
@@ -66,7 +66,7 @@ namespace Cdms.Consumers.Tests
                 .WithRandomCommodities(1, 2)
                 .Do(x =>
                 {
-                    foreach (var parameterSet in x.PartOne.Commodities.ComplementParameterSets)
+                    foreach (var parameterSet in x.PartOne?.Commodities?.ComplementParameterSets!)
                     {
                         parameterSet.KeyDataPairs = null;
                     }

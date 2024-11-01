@@ -130,7 +130,7 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
     builder.Services.AddSingleton<IExamplePersistence, ExamplePersistence>();
 
     builder.Services.AddHealthChecks()
-        .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>().CreateBlobServiceClient())
+        .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient())
         .AddMongoDb();
 }
 

@@ -22,7 +22,7 @@ namespace Cdms.Consumers.Tests
             {
                 Headers = new Dictionary<string, object>()
                 {
-                    { "messageId", clearanceRequest.Header.EntryReference }
+                    { "messageId", clearanceRequest!.Header!.EntryReference! }
                 }
             };
 
@@ -30,7 +30,7 @@ namespace Cdms.Consumers.Tests
             await consumer.OnHandle(clearanceRequest);
 
             // ASSERT
-            var savedMovement = await dbContext.Movements.Find(clearanceRequest.Header.EntryReference);
+            var savedMovement = await dbContext.Movements.Find(clearanceRequest!.Header!.EntryReference!);
             savedMovement.Should().NotBeNull();
             savedMovement.AuditEntries.Count.Should().Be(1);
             savedMovement.AuditEntries[0].Status.Should().Be("Created");

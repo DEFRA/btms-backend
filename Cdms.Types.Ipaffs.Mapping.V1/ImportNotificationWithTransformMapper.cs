@@ -64,7 +64,7 @@ public static class ImportNotificationWithTransformMapper
 
             foreach (var commoditiesCommodityComplement in commodities!.ComplementParameterSets!)
             {
-                complementParameters[commoditiesCommodityComplement.ComplementId.Value!] =
+                complementParameters[commoditiesCommodityComplement!.ComplementId!.Value!] =
                     commoditiesCommodityComplement;
             }
 
@@ -78,9 +78,9 @@ public static class ImportNotificationWithTransformMapper
 
             if (from.PartTwo?.CommodityChecks != null)
             {
-                foreach (var commodityCheck in from.PartTwo?.CommodityChecks)
+                foreach (var commodityCheck in from.PartTwo.CommodityChecks)
                 {
-                    commodityChecks[commodityCheck.UniqueComplementId] = commodityCheck.Checks;
+                    commodityChecks[commodityCheck.UniqueComplementId!] = commodityCheck.Checks!;
                 }
             }
 
@@ -88,8 +88,8 @@ public static class ImportNotificationWithTransformMapper
             {
                 foreach (var commodity in commodities!.CommodityComplements)
                 {
-                    var parameters = complementParameters[commodity.ComplementId.Value!];
-                    commodity.AdditionalData = parameters.KeyDataPairs.FromSnakeCase();
+                    var parameters = complementParameters[commodity.ComplementId!.Value!];
+                    commodity.AdditionalData = parameters.KeyDataPairs!.FromSnakeCase();
 
                     if (complementRiskAssesments.Any() &&
                         parameters.UniqueComplementId is not null &&

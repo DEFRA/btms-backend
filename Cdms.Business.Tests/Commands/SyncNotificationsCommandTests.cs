@@ -25,7 +25,7 @@ namespace Cdms.Business.Tests.Commands
             var blob = Substitute.For<IBlobService>();
             blob.GetResourcesAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
                 .Returns(
-                    new TestBlobItem(notification.ReferenceNumber, notification.ToJsonString()).ToAsyncEnumerator());
+                    new TestBlobItem(notification!.ReferenceNumber!, notification.ToJsonString()).ToAsyncEnumerator());
 
 
             var handler = new SyncNotificationsCommand.Handler(
@@ -39,7 +39,7 @@ namespace Cdms.Business.Tests.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // ASSERT
-            bus.Received(4).Publish(Arg.Any<ImportNotification>(), "NOTIFICATIONS",
+            await bus.Received(4).Publish(Arg.Any<ImportNotification>(), "NOTIFICATIONS",
                 Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
 
@@ -48,7 +48,7 @@ namespace Cdms.Business.Tests.Commands
             return ImportNotificationBuilder.Default()
                 .Do(x =>
                 {
-                    foreach (var parameterSet in x.PartOne.Commodities.ComplementParameterSets)
+                    foreach (var parameterSet in x!.PartOne!.Commodities!.ComplementParameterSets!)
                     {
                         parameterSet.KeyDataPairs = null;
                     }

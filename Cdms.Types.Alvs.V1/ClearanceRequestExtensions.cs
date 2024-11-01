@@ -22,7 +22,7 @@ public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
             var s = reader.GetString();
             if (!ulong.TryParse(s, out number))
             {
-                return DateTime.Parse(s!, new DateTimeFormatInfo());
+                return DateTime.Parse(s!, new CultureInfo("en-GB"));
             }
         }
 

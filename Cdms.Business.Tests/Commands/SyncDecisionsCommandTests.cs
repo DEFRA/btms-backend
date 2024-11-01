@@ -25,7 +25,7 @@ namespace Cdms.Business.Tests.Commands
             var blob = Substitute.For<IBlobService>();
             blob.GetResourcesAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
                 .Returns(
-                    new TestBlobItem(clearanceRequest.Header.EntryReference, clearanceRequest.ToJsonString())
+                    new TestBlobItem(clearanceRequest!.Header!.EntryReference!, clearanceRequest.ToJsonString())
                         .ToAsyncEnumerator());
 
 
@@ -39,7 +39,7 @@ namespace Cdms.Business.Tests.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // ASSERT
-            bus.Received(1).Publish(Arg.Any<AlvsClearanceRequest>(), "DECISIONS",
+            await bus.Received(1).Publish(Arg.Any<AlvsClearanceRequest>(), "DECISIONS",
                 Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
     }

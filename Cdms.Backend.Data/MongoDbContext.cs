@@ -17,7 +17,7 @@ public interface IMongoDbContext
 public class MongoDbContext(IMongoDatabase database) : IMongoDbContext
 {
     internal IMongoDatabase Database { get; private set; } = database;
-    internal MongoDbTransaction ActiveTransaction { get; private set; }
+    internal MongoDbTransaction? ActiveTransaction { get; private set; }
 
 
     public MongoCollectionSet<ImportNotification> Notifications => new(this);
