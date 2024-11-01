@@ -38,7 +38,7 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
             { "messaging.cdms.destination", context.Path },
             {
                 "messaging.cdms.message_type",
-                ObservabilityExtensions.FormatTypeName(new StringBuilder(), typeof(TMessage))
+                ObservabilityUtils.FormatTypeName(new StringBuilder(), typeof(TMessage))
             },
             { "messaging.cdms.consumer_type", context.Consumer.GetType().Name }
         };

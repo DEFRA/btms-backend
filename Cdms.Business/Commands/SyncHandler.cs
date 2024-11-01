@@ -141,10 +141,7 @@ public class SyncCommand : IRequest
                 { "blob.cdms.sync.service", Process.GetCurrentProcess().ProcessName },
                 { "blob.cdms.sync.path", path },
                 { "blob.cdms.sync.destination", topic },
-                {
-                    "blob.cdms.sync.message_type",
-                    ObservabilityExtensions.FormatTypeName(new StringBuilder(), typeof(T))
-                },
+                { "blob.cdms.sync.message_type", ObservabilityUtils.FormatTypeName(new StringBuilder(), typeof(T)) },
             };
             try
             {

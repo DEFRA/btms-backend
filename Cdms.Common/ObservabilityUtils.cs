@@ -1,19 +1,7 @@
-using System.Reflection;
-using System.Text;
+﻿using System.Text;
 
 namespace Cdms.Common
 {
-    public static class ReflectionUtils
-    {
-        public static TResult GetPrivateFieldValue<TResult>(this object instance, string fieldName)
-        {
-            var field = instance.GetType()
-                .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-
-            return (TResult)field.GetValue(instance);
-        }
-    }
-
     public static class ObservabilityUtils
     {
         public static string FormatTypeName(StringBuilder sb, Type type)
