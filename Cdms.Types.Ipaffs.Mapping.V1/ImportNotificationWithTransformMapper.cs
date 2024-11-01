@@ -34,7 +34,7 @@ public static class ImportNotificationWithTransformMapper
 
         if (input == null)
         {
-            return null;
+            return new Dictionary<string, object>();
         }
 
         return input.ToDictionary(mc => mc.Key.FromSnakeCase(),

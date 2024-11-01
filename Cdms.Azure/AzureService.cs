@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Tracing;
+using System.Diagnostics.Tracing;
 using Azure.Core;
 using Azure.Core.Diagnostics;
 using Azure.Core.Pipeline;
@@ -20,18 +20,19 @@ public abstract class AzureService<T>
 
         if (config.AzureClientId != null)
         {
-            logger.LogDebug($"Creating azure credentials based on config vars for {config.AzureClientId}");
+            logger.LogDebug("Creating azure credentials based on config vars for {AzureClientId}",
+                config.AzureClientId);
             Credentials =
                 new ClientSecretCredential(config.AzureTenantId, config.AzureClientId, config.AzureClientSecret);
 
-            logger.LogDebug($"Created azure credentials");
+            logger.LogDebug("Created azure credentials");
         }
         else
         {
             logger.LogDebug(
-                $"Creating azure credentials using default creds because AZURE_CLIENT_ID env var not found.");
+                "Creating azure credentials using default creds because AZURE_CLIENT_ID env var not found.");
             Credentials = new DefaultAzureCredential();
-            logger.LogDebug($"Created azure default credentials");
+            logger.LogDebug("Created azure default credentials");
         }
 
         if (clientFactory != null)

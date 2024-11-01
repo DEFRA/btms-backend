@@ -7,6 +7,7 @@ using System.Diagnostics.Metrics;
 using System.Text.Json.Serialization;
 using IRequest = MediatR.IRequest;
 using System.Text;
+using Cdms.Common;
 
 namespace Cdms.Business.Commands;
 
@@ -20,10 +21,10 @@ public enum SyncPeriod
 
 public class SyncMetrics
 {
-    Histogram<double> syncDuration;
-    Counter<long> syncTotal;
-    Counter<long> syncFaultTotal;
-    Counter<long> syncInProgress;
+    readonly Histogram<double> syncDuration;
+    readonly Counter<long> syncTotal;
+    readonly Counter<long> syncFaultTotal;
+    readonly Counter<long> syncInProgress;
 
     public SyncMetrics(IMeterFactory meterFactory)
     {
@@ -74,7 +75,7 @@ public class SyncCommand : IRequest
 
         protected async Task<Status> SyncBlobPaths<T>(SyncPeriod period, string topic, params string[] paths)
         {
-            logger.LogInformation($"SyncNotifications period={period}");
+            logger.LogInformation("SyncNotifications period: {period}", period.ToString());
             try
             {
                 var itemCount = 0;
@@ -140,7 +141,10 @@ public class SyncCommand : IRequest
                 { "blob.cdms.sync.service", Process.GetCurrentProcess().ProcessName },
                 { "blob.cdms.sync.path", path },
                 { "blob.cdms.sync.destination", topic },
-                { "blob.cdms.sync.message_type", FormatTypeName(new StringBuilder(), typeof(T)) },
+                {
+                    "blob.cdms.sync.message_type",
+                    ObservabilityExtensions.FormatTypeName(new StringBuilder(), typeof(T))
+                },
             };
             try
             {
@@ -179,10 +183,6 @@ public class SyncCommand : IRequest
             {
                 return DateTime.Today.ToString("/yyyy/MM/");
             }
-            else if (period == SyncPeriod.LastMonth)
-            {
-                return DateTime.Today.AddMonths(-1).ToString("/yyyy/MM/");
-            }
             else if (period == SyncPeriod.Today)
             {
                 return DateTime.Today.ToString("/yyyy/MM/dd/");
@@ -193,39 +193,8 @@ public class SyncCommand : IRequest
             }
             else
             {
-                throw new Exception($"Unexpected SyncPeriod {period}");
+                throw new ArgumentException($"Unexpected SyncPeriod {period}");
             }
-        }
-
-        static string FormatTypeName(StringBuilder sb, Type type)
-        {
-            if (type.IsGenericParameter)
-                return "";
-
-            if (type.IsGenericType)
-            {
-                var name = type.GetGenericTypeDefinition().Name;
-
-                //remove `1
-                var index = name.IndexOf('`');
-                if (index > 0)
-                    name = name.Remove(index);
-
-                sb.Append(name);
-                sb.Append('_');
-                Type[] arguments = type.GenericTypeArguments;
-                for (var i = 0; i < arguments.Length; i++)
-                {
-                    if (i > 0)
-                        sb.Append('_');
-
-                    FormatTypeName(sb, arguments[i]);
-                }
-            }
-            else
-                sb.Append(type.Name);
-
-            return sb.ToString();
         }
     }
 }

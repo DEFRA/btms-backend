@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdms.Consumers", "Cdms.Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdms.Consumers.Tests", "Cdms.Consumers.Tests\Cdms.Consumers.Tests.csproj", "{91F2D8AC-0AF3-424C-805C-CEC0F8EB0BF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdms.Common", "Cdms.Common\Cdms.Common.csproj", "{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{91F2D8AC-0AF3-424C-805C-CEC0F8EB0BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91F2D8AC-0AF3-424C-805C-CEC0F8EB0BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91F2D8AC-0AF3-424C-805C-CEC0F8EB0BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +173,7 @@ Global
 		{D74D5739-3BF5-4AFA-AF9E-5C4171A6DE83} = {2338E9F1-BADC-4D5F-AD5B-B14AF0A75CCD}
 		{BBCE956A-B91B-487D-9AAF-0FDC69FD193B} = {EB18A70D-18CE-4790-BD1D-AA0D86E539C4}
 		{DE402A21-9EC4-4E00-838C-DD76C3F50DE2} = {EB18A70D-18CE-4790-BD1D-AA0D86E539C4}
+		{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977} = {2338E9F1-BADC-4D5F-AD5B-B14AF0A75CCD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A8269F1-22E5-438E-A129-383A6D567DA1}

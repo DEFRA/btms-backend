@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Text;
+using Cdms.Common;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
 
@@ -8,11 +9,11 @@ namespace Cdms.Consumers.Interceptors;
 
 public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessage>
 {
-    Histogram<double> consumeDuration;
-    Counter<long> consumeTotal;
-    Counter<long> consumeFaultTotal;
-    Counter<long> consumerInProgress;
-    Counter<long> consumeRetryTotal;
+    readonly Histogram<double> consumeDuration;
+    readonly Counter<long> consumeTotal;
+    readonly Counter<long> consumeFaultTotal;
+    readonly Counter<long> consumerInProgress;
+    readonly Counter<long> consumeRetryTotal;
 
     public MetricsConsumerInterceptor(IMeterFactory meterFactory)
     {
@@ -35,7 +36,10 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
         {
             { "messaging.cdms.service", Process.GetCurrentProcess().ProcessName },
             { "messaging.cdms.destination", context.Path },
-            { "messaging.cdms.message_type", FormatTypeName(new StringBuilder(), typeof(TMessage)) },
+            {
+                "messaging.cdms.message_type",
+                ObservabilityExtensions.FormatTypeName(new StringBuilder(), typeof(TMessage))
+            },
             { "messaging.cdms.consumer_type", context.Consumer.GetType().Name }
         };
 
@@ -62,36 +66,5 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
             consumerInProgress.Add(-1, tagList);
             consumeDuration.Record(timer.ElapsedMilliseconds, tagList);
         }
-    }
-
-    static string FormatTypeName(StringBuilder sb, Type type)
-    {
-        if (type.IsGenericParameter)
-            return "";
-
-        if (type.IsGenericType)
-        {
-            var name = type.GetGenericTypeDefinition().Name;
-
-            //remove `1
-            var index = name.IndexOf('`');
-            if (index > 0)
-                name = name.Remove(index);
-
-            sb.Append(name);
-            sb.Append('_');
-            var arguments = type.GenericTypeArguments;
-            for (var i = 0; i < arguments.Length; i++)
-            {
-                if (i > 0)
-                    sb.Append('_');
-
-                FormatTypeName(sb, arguments[i]);
-            }
-        }
-        else
-            sb.Append(type.Name);
-
-        return sb.ToString();
     }
 }

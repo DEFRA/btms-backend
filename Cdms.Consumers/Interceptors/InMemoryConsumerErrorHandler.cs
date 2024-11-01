@@ -8,8 +8,6 @@ namespace Cdms.Consumers.Interceptors;
 public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger)
     : IMemoryConsumerErrorHandler<T>
 {
-    private ILogger<InMemoryConsumerErrorHandler<T>> logger = logger;
-
     private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
         Func<Task<object>> retry, Exception exception)
     {

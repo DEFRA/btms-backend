@@ -55,11 +55,6 @@ namespace Cdms.Consumers.Extensions
                                 x.Topic("DECISIONS").WithConsumer<AlvsClearanceRequestConsumer>();
                             });
                     });
-
-                //    .AddChildBus("ASB", cbb =>
-                //{
-                //     //Consume from ASB topics, but route to same consumers
-                //});
             });
 
             return services;
