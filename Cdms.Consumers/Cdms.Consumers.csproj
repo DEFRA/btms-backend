@@ -7,14 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="SlimMessageBus" Version="2.0.4" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Cdms.Consumers.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Cdms.Business.Tests</_Parameter1>
-    </AssemblyAttribute>
+    <PackageReference Include="SlimMessageBus" Version="2.0.4" />
+    <PackageReference Include="SlimMessageBus.Host.Memory" Version="2.5.3" />
   </ItemGroup>
 
   <ItemGroup>

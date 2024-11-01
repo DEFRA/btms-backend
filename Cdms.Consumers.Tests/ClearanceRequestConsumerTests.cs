@@ -1,11 +1,10 @@
-using Cdms.Business.Consumers;
 using Cdms.Types.Alvs;
 using FluentAssertions;
 using SlimMessageBus.Host;
 using TestDataGenerator;
 using Xunit;
 
-namespace Cdms.Business.Tests.Consumers
+namespace Cdms.Consumers.Tests
 {
     public class ClearanceRequestConsumerTests : ConsumerTests
     {

@@ -1,16 +1,11 @@
 using Cdms.Backend.Data;
-using Cdms.Model.Auditing;
-using Cdms.Types.Ipaffs;
-using Cdms.Types.Ipaffs.Mapping;
-using SlimMessageBus;
 using Cdms.Model;
+using Cdms.Model.Auditing;
 using Cdms.Types.Alvs;
 using Cdms.Types.Alvs.Mapping;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
-using System;
+using SlimMessageBus;
 
-namespace Cdms.Business.Consumers
+namespace Cdms.Consumers
 {
     internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext)
         : IConsumer<AlvsClearanceRequest>, IConsumerWithContext

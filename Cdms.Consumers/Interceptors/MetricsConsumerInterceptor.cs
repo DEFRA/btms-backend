@@ -1,58 +1,10 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Text;
-using Microsoft.Extensions.Logging;
 using SlimMessageBus;
-using SlimMessageBus.Host;
 using SlimMessageBus.Host.Interceptor;
-using SlimMessageBus.Host.Memory;
 
-namespace Cdms.Business.Consumers;
-
-public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger)
-    : IMemoryConsumerErrorHandler<T>
-{
-    private ILogger<InMemoryConsumerErrorHandler<T>> logger = logger;
-
-    private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
-        Func<Task<object>> retry, Exception exception)
-    {
-        var value = consumerContext.Properties["cdms.retry.count"];
-
-
-        int retryCount = (int)value;
-        retryCount++;
-        consumerContext.Properties["cdms.retry.count"] = retryCount;
-
-        logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
-        if (retryCount > 5)
-        {
-            return ConsumerErrorHandlerResult.Failure;
-        }
-
-        try
-        {
-            await retry();
-        }
-        catch (Exception e)
-        {
-            await AttemptRetry(consumerContext, retry, e);
-        }
-
-        return ConsumerErrorHandlerResult.Success;
-    }
-
-    public Task<ConsumerErrorHandlerResult> OnHandleError(T message, Func<Task<object>> retry,
-        IConsumerContext consumerContext, Exception exception)
-    {
-        if (!consumerContext.Properties.ContainsKey("cdms.retry.count"))
-        {
-            consumerContext.Properties.Add("cdms.retry.count", 0);
-        }
-
-        return AttemptRetry(consumerContext, retry, exception);
-    }
-}
+namespace Cdms.Consumers.Interceptors;
 
 public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessage>
 {
@@ -128,7 +80,7 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
 
             sb.Append(name);
             sb.Append('_');
-            Type[] arguments = type.GenericTypeArguments;
+            var arguments = type.GenericTypeArguments;
             for (var i = 0; i < arguments.Length; i++)
             {
                 if (i > 0)

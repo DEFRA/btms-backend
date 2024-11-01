@@ -1,6 +1,5 @@
 using Cdms.BlobService;
 using Cdms.Business.Commands;
-using Cdms.Business.Tests.Consumers;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
 using Cdms.Types.Ipaffs;

@@ -1,11 +1,11 @@
 using Cdms.Backend.Data;
 using Cdms.Model.Auditing;
-using SlimMessageBus;
 using Cdms.Model.Gvms;
 using Cdms.Types.Gvms.Mapping;
+using SlimMessageBus;
 using SearchGmrsForDeclarationIdsResponse = Cdms.Types.Gvms.SearchGmrsForDeclarationIdsResponse;
 
-namespace Cdms.Business.Consumers
+namespace Cdms.Consumers
 {
     internal class GmrConsumer(IMongoDbContext dbContext)
         : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumerWithContext

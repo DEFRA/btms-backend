@@ -1,13 +1,9 @@
 using Cdms.Backend.Data;
-using Cdms.Model.Auditing;
 using Cdms.Types.Ipaffs;
 using Cdms.Types.Ipaffs.Mapping;
 using SlimMessageBus;
-using SlimMessageBus.Host.Interceptor;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
 
-namespace Cdms.Business.Consumers
+namespace Cdms.Consumers
 {
     internal class NotificationConsumer(IMongoDbContext dbContext)
         : IConsumer<ImportNotification>, IConsumerWithContext

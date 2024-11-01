@@ -1,6 +1,6 @@
 using EphemeralMongo;
 
-namespace Cdms.Business.Tests.Consumers;
+namespace Cdms.Consumers.Tests;
 
 internal sealed class MongoRunnerProvider
 {

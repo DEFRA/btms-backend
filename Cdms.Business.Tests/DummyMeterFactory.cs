@@ -1,6 +1,6 @@
 using System.Diagnostics.Metrics;
 
-namespace Cdms.Business.Tests.Consumers;
+namespace Cdms.Business.Tests;
 
 internal sealed class DummyMeterFactory : IMeterFactory
 {

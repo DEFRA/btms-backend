@@ -1,10 +1,9 @@
 using Cdms.Backend.Data;
-using SlimMessageBus;
-using System.Diagnostics.Metrics;
 using Cdms.Types.Alvs;
 using Cdms.Types.Alvs.Mapping;
+using SlimMessageBus;
 
-namespace Cdms.Business.Consumers
+namespace Cdms.Consumers
 {
     public class DecisionsConsumer(IMongoDbContext dbContext)
         : IConsumer<AlvsClearanceRequest>, IConsumerWithContext

@@ -1,7 +1,7 @@
 using Cdms.Backend.Data;
 using MongoDB.Driver;
 
-namespace Cdms.Business.Tests.Consumers;
+namespace Cdms.Consumers.Tests;
 
 public abstract class ConsumerTests
 {

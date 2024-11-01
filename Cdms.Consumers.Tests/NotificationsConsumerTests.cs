@@ -1,4 +1,3 @@
-using Cdms.Business.Consumers;
 using Cdms.Types.Ipaffs;
 using Cdms.Types.Ipaffs.Mapping;
 using FluentAssertions;
@@ -6,7 +5,7 @@ using SlimMessageBus.Host;
 using TestDataGenerator;
 using Xunit;
 
-namespace Cdms.Business.Tests.Consumers
+namespace Cdms.Consumers.Tests
 {
     public class NotificationsConsumerTests : ConsumerTests
     {
