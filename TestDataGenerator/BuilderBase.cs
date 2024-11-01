@@ -36,7 +36,7 @@ public abstract class BuilderBase<T, TBuilder>
         return (TBuilder)this;
     }
 
-    protected TBuilder Do(Action<T> action)
+    public TBuilder Do(Action<T> action)
     {
         _composer = _composer.Do(action);
 

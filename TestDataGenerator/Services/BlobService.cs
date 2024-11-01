@@ -8,10 +8,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Logging;
 
-using TestDataGenerator.Config; 
-// using TdmPrototypeBackend.Azure;
-// using TdmPrototypeDmpSynchroniser.Api.Config;
-// using TdmPrototypeDmpSynchroniser.Api.Models;
+using TestDataGenerator.Config;
 
 namespace TestDataGenerator.Services;
 
@@ -48,14 +45,8 @@ public class BlobItem : IBlobItem
 
 public interface IBlobService
 {
-    // public Task<Status> CheckBlobAsync();
-    // public Task<Status> CheckBlobAsync(string uri);
-
     public Task<bool> CleanAsync(string prefix);
-    public Task<bool> CreateBlobAsync(IBlobItem item);
     public Task<bool> CreateBlobsAsync(IBlobItem[] items);
-    // public Task<IEnumerable<IBlobItem>> GetResourcesAsync(string prefix);
-    // public Task<IBlobItem?> GetBlobAsync(string path);
 }
 
 public abstract class AzureService<T> 
@@ -98,18 +89,16 @@ public class LocalBlobService(ILogger<LocalBlobService> logger) : IBlobService
         
     public Task<bool> CleanAsync(string prefix)
     {
-        // return new Promise
-        // throw new NotImplementedException();
         try
         {
             logger.LogInformation("Clearing local storage");
-            Directory.Delete(_rootPath);
+            Directory.Delete($"{_rootPath}{prefix}", true);
+            return Task.Run(() =>  true);
         }
         catch (DirectoryNotFoundException)
         {
-            return null;
+            return Task.Run(() =>  true);
         }
-        return null;
     }
 
     public async Task<bool> CreateBlobAsync(IBlobItem item)
@@ -226,6 +215,7 @@ public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IH
         try
         {
             var containerClient = CreateBlobClient(config.DmpBlobUri);
+            
             foreach (var item in items)
             {
                 try
@@ -233,6 +223,8 @@ public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IH
                     Logger.LogInformation($"Uploading file {item.Name}");
                     var result = await containerClient.UploadBlobAsync(item.Name, BinaryData.FromString(item.Content));
                     Logger.LogInformation($"Uploaded file {item.Name} Result = {result}");
+                    // if (result.Value.)
+                    
                 }
                 catch (Exception ex)
                 {

@@ -37,4 +37,8 @@
     <EmbeddedResource Include="Features\GenerateModels\Templates\ClassTemplate.cshtml" />
     <EmbeddedResource Include="Features\GenerateModels\Templates\EnumTemplate.cshtml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\DataGenerator\" />
+  </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
 
     // public static Lens<AlvsClearanceRequest, Items[]> ItemsLens =
     //     new Lens<AlvsClearanceRequest, Items[]>(x => x.Items!);
-    
+
     public ClearanceRequestBuilder(string file) : base(file)
     {
     }
@@ -33,20 +33,35 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return new ClearanceRequestBuilder<T>();
     }
-    
+
     public static ClearanceRequestBuilder<T> FromFile(string file)
     {
         return new ClearanceRequestBuilder<T>(file);
     }
-    
+
     public ClearanceRequestBuilder<T> WithFirstReferenceNumber(string chedReference)
     {
         // TODO : manipulate the ref to be correct format first
         return Do(x => x.Items![0].Documents![0].DocumentReference = chedReference);
     }
-    
+
     public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
     {
-        return this;
+        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
+    }
+
+    public ClearanceRequestBuilder<T> WithValidDocumentReferenceNumbers()
+    {
+        return Do(x =>
+        {
+            foreach (var item in x.Items!)
+            {
+                foreach (var document in item.Documents!)
+                {
+                    document.DocumentReference = "GBCHD2024.1001278";
+                    document.DocumentCode = "C640";
+                }
+            }
+        });
     }
 }

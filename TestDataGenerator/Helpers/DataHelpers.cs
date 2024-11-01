@@ -5,21 +5,17 @@ namespace TestDataGenerator.Helpers;
 
 public static class DataHelpers
 {
-    internal static string RootBlobPath()
+    internal static string BlobPath(this ImportNotification notification, string rootPath)
     {
-        // TODO {notification.LastUpdated} should be a date so we can use it here...
-        return "GENERATED/";
-    }
-    internal static string BlobPath(this ImportNotification notification)
-    {
-        // TODO {notification.LastUpdated} should be a date so we can use it here...
-        return $"{RootBlobPath()}IPAFFS/CHEDA/2024/10/01/{notification.ReferenceNumber!.Replace(".","_")}-{Guid.NewGuid()}.json";
+        var dateString = notification.LastUpdated!.Value.ToString("yyyy/MM/dd");
+
+        return $"{rootPath}/IPAFFS/CHEDA/{dateString}/{notification.ReferenceNumber!.Replace(".","_")}-{Guid.NewGuid()}.json";
     }
 
-    internal static string BlobPath(this AlvsClearanceRequest clearanceRequest)
+    internal static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
     {
-        var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/dd/MM");
+        var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
         
-        return $"{RootBlobPath()}ALVS/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".","")}-{Guid.NewGuid()}.json";
+        return $"{rootPath}/ALVS/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".","")}-{Guid.NewGuid()}.json";
     }
 }

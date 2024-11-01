@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Cdms.Consumers.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SlimMessageBus" Version="2.0.4" />
+    <PackageReference Include="SlimMessageBus.Host.Memory" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cdms.Backend.Data\Cdms.Backend.Data.csproj" />
+    <ProjectReference Include="..\Cdms.BlobService\Cdms.BlobService.csproj" />
+    <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
+    <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
+    <ProjectReference Include="..\Cdms.SensitiveData\Cdms.SensitiveData.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Alvs.Mapping.V1.Tests\Cdms.Types.Alvs.Mapping.V1.Tests.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Alvs.Mapping.V1\Cdms.Types.Alvs.Mapping.V1.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Alvs.V1\Cdms.Types.Alvs.V1.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Gvms.Mapping.V1\Cdms.Types.Gvms.Mapping.V1.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Gvms.V1\Cdms.Types.Gvms.V1.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Ipaffs.Mapping.V1\Cdms.Types.Ipaffs.Mapping.V1.csproj" />
+    <ProjectReference Include="..\Cdms.Types.Ipaffs.V1\Cdms.Types.Ipaffs.V1.csproj" />
+  </ItemGroup>
+
+</Project>

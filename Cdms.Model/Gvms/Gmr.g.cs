@@ -102,7 +102,7 @@ public partial class Gmr  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("Vehicle registration number of the vehicle that will arrive at port.  If isUnaccompanied is set to false then vehicleRegNum must be provided to check-in.")]
-    public string? VehicleRegNumber { get; set; }
+    public string? VehicleRegistrationNumber { get; set; }
 
 	
         /// <summary>

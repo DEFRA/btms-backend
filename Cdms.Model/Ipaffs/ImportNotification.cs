@@ -127,9 +127,38 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         Relationships.Movements.Matched = Relationships.Movements.Data.Any(x => x.Matched);
     }
 
-    public void Update(AuditEntry auditEntry)
+    public void Changed(AuditEntry auditEntry)
     {
         this.AuditEntries.Add(auditEntry);
         _Ts = DateTime.UtcNow;
+    }
+
+    public void Created(string auditId)
+    {
+        var auditEntry = AuditEntry.CreateCreatedEntry(
+            this,
+            auditId,
+            this.Version.GetValueOrDefault(),
+            this.LastUpdated);
+        this.Changed(auditEntry);
+    }
+
+    public void Skipped(string auditId, int version)
+    {
+        var auditEntry = AuditEntry.CreateSkippedVersion(
+            auditId,
+            version,
+            this.LastUpdated);
+        this.Changed(auditEntry);
+    }
+
+    public void Updated(string auditId, ImportNotification previous)
+    {
+        var auditEntry = AuditEntry.CreateUpdated(previous,
+            this,
+            auditId,
+            this.Version.GetValueOrDefault(),
+            this.LastUpdated);
+        this.Changed(auditEntry);
     }
 }

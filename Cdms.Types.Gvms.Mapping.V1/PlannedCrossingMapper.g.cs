@@ -22,7 +22,7 @@ public static class PlannedCrossingMapper
 	}
 		var to = new Cdms.Model.Gvms.PlannedCrossing ();
 to.RouteId = from.RouteId;
-            to.LocalDateTimeOfDeparture = from.LocalDateTimeOfDeparture;
+            to.DepartsAt = from.DepartsAt;
             	return to;
 	}
 }

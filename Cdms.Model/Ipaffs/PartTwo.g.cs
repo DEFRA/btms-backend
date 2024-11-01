@@ -139,7 +139,7 @@ public partial class PartTwo  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("User entered date when the checks were completed")]
-    public DateOnly? CheckedOn { get; set; }
+    public DateTime? CheckedOn { get; set; }
 
 	
         /// <summary>

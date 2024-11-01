@@ -27,7 +27,8 @@ Cdms.Types.Ipaffs.PurposePurposeGroupEnum.ForImport => Cdms.Model.Ipaffs.Purpose
     Cdms.Types.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport => Cdms.Model.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport,
     Cdms.Types.Ipaffs.PurposePurposeGroupEnum.ForTransferTo => Cdms.Model.Ipaffs.PurposePurposeGroupEnum.ForTransferTo,
     Cdms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck => Cdms.Model.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck,
-     
+    Cdms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket => Cdms.Model.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket,
+
 };
 }
         

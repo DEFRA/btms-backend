@@ -32,6 +32,11 @@ public static class ImportNotificationWithTransformMapper
         // var output = from pair in input
         //     select pair.Key;
 
+        if (input == null)
+        {
+            return new Dictionary<string, object>();
+        }
+
         return input.ToDictionary(mc => mc.Key.FromSnakeCase(),
             mc => mc.Value);
 
@@ -42,7 +47,7 @@ public static class ImportNotificationWithTransformMapper
     {
         var commodities = from.PartOne!.Commodities;
 
-        if (commodities!.CommodityComplements!.Length == 1)
+        if (commodities?.CommodityComplements?.Length == 1)
         {
             commodities!.CommodityComplements[0].AdditionalData =
                 commodities!.ComplementParameterSets![0].KeyDataPairs!.FromSnakeCase();
@@ -59,7 +64,7 @@ public static class ImportNotificationWithTransformMapper
 
             foreach (var commoditiesCommodityComplement in commodities!.ComplementParameterSets!)
             {
-                complementParameters[commoditiesCommodityComplement.ComplementId.Value!] =
+                complementParameters[commoditiesCommodityComplement!.ComplementId!.Value!] =
                     commoditiesCommodityComplement;
             }
 
@@ -73,34 +78,37 @@ public static class ImportNotificationWithTransformMapper
 
             if (from.PartTwo?.CommodityChecks != null)
             {
-                foreach (var commodityCheck in from.PartTwo?.CommodityChecks)
+                foreach (var commodityCheck in from.PartTwo.CommodityChecks)
                 {
-                    commodityChecks[commodityCheck.UniqueComplementId] = commodityCheck.Checks;
+                    commodityChecks[commodityCheck.UniqueComplementId!] = commodityCheck.Checks!;
                 }
             }
 
-            foreach (var commodity in commodities!.CommodityComplements)
+            if (commodities!.CommodityComplements is not null)
             {
-                var parameters = complementParameters[commodity.ComplementId.Value!];
-                commodity.AdditionalData = parameters.KeyDataPairs.FromSnakeCase();
-
-                if (complementRiskAssesments.Any() &&
-                    parameters.UniqueComplementId is not null &&
-                    complementRiskAssesments.ContainsKey(parameters.UniqueComplementId))
+                foreach (var commodity in commodities!.CommodityComplements)
                 {
-                    commodity.RiskAssesment = complementRiskAssesments[parameters.UniqueComplementId!];
-                }
+                    var parameters = complementParameters[commodity.ComplementId!.Value!];
+                    commodity.AdditionalData = parameters.KeyDataPairs!.FromSnakeCase();
 
-                if (commodityChecks.Any() &&
-                    parameters.UniqueComplementId is not null &&
-                    commodityChecks.ContainsKey(parameters.UniqueComplementId))
-                {
-                    commodity.Checks = commodityChecks[parameters.UniqueComplementId!];
+                    if (complementRiskAssesments.Any() &&
+                        parameters.UniqueComplementId is not null &&
+                        complementRiskAssesments.ContainsKey(parameters.UniqueComplementId))
+                    {
+                        commodity.RiskAssesment = complementRiskAssesments[parameters.UniqueComplementId!];
+                    }
+
+                    if (commodityChecks.Any() &&
+                        parameters.UniqueComplementId is not null &&
+                        commodityChecks.ContainsKey(parameters.UniqueComplementId))
+                    {
+                        commodity.Checks = commodityChecks[parameters.UniqueComplementId!];
+                    }
                 }
             }
         }
 
         to.CommoditiesSummary = CommoditiesMapper.Map(commodities);
-        to.Commodities = commodities.CommodityComplements.Select(x => CommodityComplementMapper.Map(x)).ToArray();
+        to.Commodities = commodities.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray();
     }
 }

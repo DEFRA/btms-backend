@@ -174,7 +174,7 @@ static class Bootstrap
         {
             map.MapProperty("commodityChecks").ExcludeFromInternal();
             map.MapProperty("autoClearedDateTime").IsDateTime().SetInternalName("autoClearedOn");
-            map.MapProperty("checkDate").IsDate().SetInternalName("checkedOn");
+            map.MapProperty("checkDate").IsDateTime().SetInternalName("checkedOn");
         });
 
         GeneratorClassMap.RegisterClassMap("PartThree", map => { map.MapProperty("destructionDate").IsDate(); });

@@ -10,6 +10,7 @@
 
 using System.Text.Json.Serialization;
 using System.Dynamic;
+using Cdms.Types.Alvs.V1;
 
 
 namespace Cdms.Types.Alvs;
@@ -46,6 +47,7 @@ public partial class ServiceHeader  //
     /// 
     /// </summary
     [JsonPropertyName("serviceCallTimestamp")]
+    [JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]
     public DateTime? ServiceCallTimestamp { get; set; }
 
 	}

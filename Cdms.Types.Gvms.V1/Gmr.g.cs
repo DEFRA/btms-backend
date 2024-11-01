@@ -88,7 +88,7 @@ public partial class Gmr  //
         /// Vehicle registration number of the vehicle that will arrive at port.  If isUnaccompanied is set to false then vehicleRegNum must be provided to check-in.
         /// </summary>
     [JsonPropertyName("vehicleRegNum")]
-    public string? VehicleRegNumber { get; set; }
+    public string? VehicleRegistrationNumber { get; set; }
 
 	
         /// <summary>

@@ -24,7 +24,9 @@ public enum PurposePurposeGroupEnum
 		ForTransferTo,
 	
 		ForImportReConformityCheck,
-	
+
+        ForImportNonInternalMarket,
+
 }
 
 

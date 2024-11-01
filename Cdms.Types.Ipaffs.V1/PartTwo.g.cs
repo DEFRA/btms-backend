@@ -123,7 +123,7 @@ public partial class PartTwo  //
         /// User entered date when the checks were completed
         /// </summary>
     [JsonPropertyName("checkDate")]
-    public DateOnly? CheckDate { get; set; }
+    public DateTime? CheckDate { get; set; }
 
 	
         /// <summary>

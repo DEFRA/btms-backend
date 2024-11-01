@@ -3,12 +3,12 @@ using System.Text.Json.Serialization.Metadata;
 
 namespace Cdms.SensitiveData;
 
-public class SensitiveDataTypeInfoResolver(ISensitiveDataOptions sensitiveDataOptions) : DefaultJsonTypeInfoResolver
+public class SensitiveDataTypeInfoResolver(SensitiveDataOptions sensitiveDataOptions) : DefaultJsonTypeInfoResolver
 {
     public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
     {
         JsonTypeInfo typeInfo = base.GetTypeInfo(type, options);
-       
+
         if (typeInfo.Kind == JsonTypeInfoKind.Object)
         {
             foreach (var property in typeInfo.Properties)
@@ -31,6 +31,7 @@ public class SensitiveDataTypeInfoResolver(ISensitiveDataOptions sensitiveDataOp
                 }
             }
         }
+
         return typeInfo;
     }
 }
