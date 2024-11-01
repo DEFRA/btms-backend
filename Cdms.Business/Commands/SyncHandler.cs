@@ -105,6 +105,7 @@ public class SyncCommand : IRequest
         protected async Task<(int, int)> SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic,
             CancellationToken cancellationToken)
         {
+            logger.LogInformation("Sync Path: {Path} - period: {period}", path, period.ToString());
             var itemCount = 0;
             var erroredCount = 0;
 
@@ -148,6 +149,7 @@ public class SyncCommand : IRequest
                     headers: new Dictionary<string, object>() { { "messageId", item.Name } },
                     cancellationToken: cancellationToken);
 
+                logger.LogInformation("Synced blob item {blob}", item.Name);
 
                 return true;
             }
