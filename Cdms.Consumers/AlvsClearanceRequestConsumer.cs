@@ -43,9 +43,9 @@ namespace Cdms.Consumers
             else
             {
                 var auditEntry = AuditEntry.CreateCreatedEntry(
-                    movement.ClearanceRequests.First(),
+                    movement.ClearanceRequests[0],
                     BuildNormalizedAlvsPath(auditId),
-                    movement.ClearanceRequests.First().Header.EntryVersionNumber.GetValueOrDefault(),
+                    movement.ClearanceRequests[0].Header.EntryVersionNumber.GetValueOrDefault(),
                     movement.LastUpdated);
                 movement.Update(auditEntry);
                 await dbContext.Movements.Insert(movement);

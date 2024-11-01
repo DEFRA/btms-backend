@@ -11,12 +11,12 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
     private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
         Func<Task<object>> retry, Exception exception)
     {
-        var value = consumerContext.Properties["cdms.retry.count"];
+        var value = consumerContext.Properties[MessageBusHeaders.RetryCount];
 
 
         var retryCount = (int)value;
         retryCount++;
-        consumerContext.Properties["cdms.retry.count"] = retryCount;
+        consumerContext.Properties[MessageBusHeaders.RetryCount] = retryCount;
 
         logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
         if (retryCount > 5)
@@ -39,9 +39,9 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
     public Task<ConsumerErrorHandlerResult> OnHandleError(T message, Func<Task<object>> retry,
         IConsumerContext consumerContext, Exception exception)
     {
-        if (!consumerContext.Properties.ContainsKey("cdms.retry.count"))
+        if (!consumerContext.Properties.ContainsKey(MessageBusHeaders.RetryCount))
         {
-            consumerContext.Properties.Add("cdms.retry.count", 0);
+            consumerContext.Properties.Add(MessageBusHeaders.RetryCount, 0);
         }
 
         return AttemptRetry(consumerContext, retry, exception);

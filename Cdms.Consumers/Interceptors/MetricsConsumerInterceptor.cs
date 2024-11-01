@@ -47,7 +47,7 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
         {
             consumeTotal.Add(1, tagList);
             consumerInProgress.Add(1, tagList);
-            if (context.Properties.TryGetValue("cdms.retry.count", out var value))
+            if (context.Properties.TryGetValue(MessageBusHeaders.RetryCount, out var value))
             {
                 tagList.Add("messaging.cdms.retry_attempt", (int)value);
                 consumeRetryTotal.Add(1, tagList);

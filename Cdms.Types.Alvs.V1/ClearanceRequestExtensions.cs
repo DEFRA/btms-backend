@@ -22,11 +22,11 @@ public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
             var s = reader.GetString();
             if (!ulong.TryParse(s, out number))
             {
-                return DateTime.UnixEpoch;
+                return DateTime.Parse(s!, new CultureInfo("en-GB"));
             }
         }
 
-        var s_epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var s_epoch = DateTime.UnixEpoch;
 
         // 1723127967 - DEV
         // 1712851200000 - SND

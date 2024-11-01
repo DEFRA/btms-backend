@@ -11,9 +11,9 @@ public abstract class AzureService<T>
 {
     protected readonly TokenCredential Credentials;
     protected readonly HttpClientTransport? Transport;
-    protected readonly ILogger<T> Logger;
+    protected readonly ILogger Logger;
 
-    protected AzureService(ILogger<T> logger, IAzureConfig config, IHttpClientFactory? clientFactory = null)
+    protected AzureService(ILogger logger, IAzureConfig config, IHttpClientFactory? clientFactory = null)
     {
         Logger = logger;
         using AzureEventSourceListener listener = AzureEventSourceListener.CreateConsoleLogger(EventLevel.Verbose);
