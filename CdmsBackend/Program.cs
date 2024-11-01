@@ -1,26 +1,16 @@
 using CdmsBackend.Endpoints;
-using CdmsBackend.Example.Endpoints;
-using CdmsBackend.Example.Services;
 using CdmsBackend.Utils;
 using CdmsBackend.Utils.Http;
 using CdmsBackend.Utils.Logging;
-using CdmsBackend.Utils.Mongo;
 using FluentValidation;
 using Serilog;
 using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
-using Cdms.Backend.Data.Extensions;
 using Cdms.Business.Extensions;
-using Microsoft.Extensions.Options;
 using Cdms.BlobService;
-using Cdms.SensitiveData;
-using FluentAssertions.Common;
-using System.Text.Json.Serialization;
 using Cdms.Backend.Data.Healthcheck;
 using Cdms.Consumers.Extensions;
 using HealthChecks.UI.Client;
-using MongoDB.Driver;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
@@ -58,8 +48,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
     builder.Services.AddBusinessServices(builder.Configuration);
     builder.Services.AddConsumers(builder.Configuration);
-
-    ConfigureMongoDb(builder);
 
     ConfigureEndpoints(builder);
 
@@ -117,19 +105,8 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 }
 
 [ExcludeFromCodeCoverage]
-static void ConfigureMongoDb(WebApplicationBuilder builder)
-{
-    builder.Services.AddSingleton<IMongoDbClientFactory>(_ =>
-        new MongoDbClientFactory(builder.Configuration.GetValue<string>("Mongo:DatabaseUri")!,
-            builder.Configuration.GetValue<string>("Mongo:DatabaseName")!));
-}
-
-[ExcludeFromCodeCoverage]
 static void ConfigureEndpoints(WebApplicationBuilder builder)
 {
-    // our Example service, remove before deploying!
-    builder.Services.AddSingleton<IExamplePersistence, ExamplePersistence>();
-
     builder.Services.AddHealthChecks()
         .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient())
         .AddMongoDb();
@@ -146,8 +123,6 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
             Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
 
-    // Example module, remove before deploying!
-    app.UseExampleEndpoints();
     app.UseSyncEndpoints();
 
     return app;
