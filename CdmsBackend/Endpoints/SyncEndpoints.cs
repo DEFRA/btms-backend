@@ -76,12 +76,12 @@ public static class SyncEndpoints
 
     private static int? GetQueueCount(string queueName, IMasterMessageBus bus)
     {
-        return GetQueuesCount(bus)?.Find(x => x.QueueName == queueName).Count;
+        return GetQueuesCount(bus)?.Find(x => x.Name == queueName).Count;
     }
 
-    private static List<(string QueueName, int Count)> GetQueuesCount(IMasterMessageBus bus)
+    private static List<QueueStats> GetQueuesCount(IMasterMessageBus bus)
     {
-        List<(string QueueName, int Count)> list = new List<(string QueueName, int Count)>();
+        var list = new List<QueueStats>();
         if (bus is HybridMessageBus hybridMessageBus)
         {
             var childBus = hybridMessageBus.GetChildBus("InMemory");
@@ -98,15 +98,17 @@ public static class SyncEndpoints
                             Queue<(object TransportMessage, IReadOnlyDictionary<string, object> MessageHeaders)>>(
                             "_queue");
 
-                    list.Add((kvp.Key, queue.Count));
+                    list.Add(new QueueStats(kvp.Key, queue.Count));
                 }
                 else
                 {
-                    list.Add((kvp.Key, 0));
+                    list.Add(new QueueStats(kvp.Key, 0));
                 }
             }
         }
 
         return list;
     }
+
+    public record QueueStats(string Name, int Count);
 }
