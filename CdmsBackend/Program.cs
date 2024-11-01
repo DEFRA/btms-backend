@@ -17,6 +17,7 @@ using Cdms.SensitiveData;
 using FluentAssertions.Common;
 using System.Text.Json.Serialization;
 using Cdms.Backend.Data.Healthcheck;
+using Cdms.Consumers.Extensions;
 using HealthChecks.UI.Client;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Builder;
@@ -56,6 +57,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddCustomTrustStore(logger);
 
     builder.Services.AddBusinessServices(builder.Configuration);
+    builder.Services.AddConsumers(builder.Configuration);
 
     ConfigureMongoDb(builder);
 
