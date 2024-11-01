@@ -39,11 +39,8 @@ namespace Cdms.Business.Tests.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // ASSERT
-            Received.InOrder(async () =>
-            {
-                await bus.Received(1).Publish(Arg.Any<AlvsClearanceRequest>(), "ALVS",
-                    Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
-            });
+            await bus.Received(1).Publish(Arg.Any<AlvsClearanceRequest>(), "ALVS",
+                Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
     }
 }
