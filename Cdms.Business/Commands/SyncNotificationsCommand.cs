@@ -19,10 +19,10 @@ namespace Cdms.Business.Commands
             public override async Task Handle(SyncNotificationsCommand request, CancellationToken cancellationToken)
             {
                 await SyncBlobPaths<Cdms.Types.Ipaffs.ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
-                    "RAW/IPAFFS/CHEDA",
-                    "RAW/IPAFFS/CHEDD",
-                    "RAW/IPAFFS/CHEDP",
-                    "RAW/IPAFFS/CHEDPP");
+                    $"{request.RootFolder}/IPAFFS/CHEDA",
+                    $"{request.RootFolder}/IPAFFS/CHEDD",
+                    $"{request.RootFolder}/IPAFFS/CHEDP",
+                    $"{request.RootFolder}/IPAFFS/CHEDPP");
             }
         }
     }

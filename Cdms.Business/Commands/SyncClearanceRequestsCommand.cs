@@ -19,7 +19,7 @@ public class SyncClearanceRequestsCommand : SyncCommand
     {
         public override async Task Handle(SyncClearanceRequestsCommand request, CancellationToken cancellationToken)
         {
-            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "ALVS", "RAW/ALVS");
+            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "ALVS", $"{request.RootFolder}/ALVS");
         }
     }
 }

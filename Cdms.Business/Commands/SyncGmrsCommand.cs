@@ -18,7 +18,8 @@ public class SyncGmrsCommand : SyncCommand
     {
         public override async Task Handle(SyncGmrsCommand request, CancellationToken cancellationToken)
         {
-            await SyncBlobPaths<SearchGmrsForDeclarationIdsResponse>(request.SyncPeriod, "GMR", "RAW/GVMSAPIRESPONSE");
+            await SyncBlobPaths<SearchGmrsForDeclarationIdsResponse>(request.SyncPeriod, "GMR",
+                $"{request.RootFolder}/GVMSAPIRESPONSE");
         }
     }
 }

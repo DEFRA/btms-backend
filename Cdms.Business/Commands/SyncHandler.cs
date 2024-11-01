@@ -62,6 +62,8 @@ public class SyncCommand : IRequest
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
     public SyncPeriod SyncPeriod { get; set; }
 
+    public string RootFolder { get; set; } = "RAW";
+
     internal abstract class Handler<T>(
         SyncMetrics syncMetrics,
         IPublishBus bus,
