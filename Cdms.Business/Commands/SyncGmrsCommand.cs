@@ -1,6 +1,6 @@
 using Cdms.BlobService;
 using Cdms.SensitiveData;
-using Cdms.Types.Gmr;
+using Cdms.Types.Gvms;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 

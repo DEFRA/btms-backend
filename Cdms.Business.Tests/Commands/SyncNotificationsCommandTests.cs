@@ -41,7 +41,7 @@ namespace Cdms.Business.Tests.Commands
 
             // ASSERT
             bus.Received(4).Publish(Arg.Any<ImportNotification>(), "NOTIFICATIONS",
-                Arg.Any<IDictionary<string, object>>());
+                Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
 
         private ImportNotification CreateImportNotification()

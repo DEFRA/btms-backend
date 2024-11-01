@@ -41,7 +41,7 @@ namespace Cdms.Business.Tests.Commands
 
             // ASSERT
             bus.Received(1).Publish(Arg.Any<AlvsClearanceRequest>(), "DECISIONS",
-                Arg.Any<IDictionary<string, object>>());
+                Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
     }
 }

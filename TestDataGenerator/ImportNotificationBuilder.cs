@@ -38,12 +38,12 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     public ImportNotificationBuilder<T> WithRandomCommodities(int min, int max)
     {
         var commodityCount = CreateRandomInt(min, max);
-        
+
         return Do((n) =>
         {
             var commodities = Enumerable.Range(0, commodityCount)
                 .Select(x => n.PartOne!.Commodities.CommodityComplements[0]
-            ).ToArray();
+                ).ToArray();
             n.PartOne!.Commodities.CommodityComplements = commodities;
         });
     }
@@ -62,10 +62,10 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         // TODO : We may need a way to guarantee these don't collide?....
         return With(x => x.ReferenceNumber, $"{prefix}.GB.{DateTime.Now.Year}.{CreateRandomInt(7)}");
     }
-    
+
     public ImportNotificationBuilder<T> WithEntryDate(DateTime entryDate)
     {
-        return this;
+        return With(x => x.LastUpdated, entryDate);
     }
 
     // public ImportNotificationBuilder<T> WithStatus(Status status)

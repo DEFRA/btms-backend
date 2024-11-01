@@ -14,15 +14,15 @@ public class ClearanceRequestBuilderTests
         var cr = builder.Build();
         cr.Items![0].Documents![0].DocumentReference!.Should().Be("123");
     }
-    
+
     [Fact]
     public void WithEntryDate_ShouldSet()
     {
+        var date = DateTime.Today.AddDays(-5);
         var builder = ClearanceRequestBuilder.Default();
-        builder.WithEntryDate(DateTime.Today.AddDays(-5));
-        
+        builder.WithEntryDate(date);
+
         var cr = builder.Build();
-        cr.ServiceHeader!.ServiceCallTimestamp!.Should().BeAfter(DateTime.Today.AddDays(-5));
-        cr.ServiceHeader!.ServiceCallTimestamp!.Should().BeBefore(DateTime.Today.AddDays(-4));
+        cr.ServiceHeader!.ServiceCallTimestamp!.Should().Be(date);
     }
 }

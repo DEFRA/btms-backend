@@ -1,14 +1,12 @@
-using JsonApiDotNetCore.Resources.Annotations;
-using System.Text.Json.Serialization;
-using System.Dynamic;
-using Cdms.Model.Data;
-using Cdms.Model.Auditing;
-using JsonApiDotNetCore.MongoDb.Resources;
-using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using Cdms.Model.Auditing;
+using Cdms.Model.Data;
+using JsonApiDotNetCore.MongoDb.Resources;
+using JsonApiDotNetCore.Resources.Annotations;
+using MongoDB.Bson.Serialization.Attributes;
 
-
-namespace Cdms.Model.VehicleMovement;
+namespace Cdms.Model.Gvms;
 
 /// <summary>
 /// 
@@ -17,13 +15,6 @@ namespace Cdms.Model.VehicleMovement;
 public partial class Gmr : IMongoIdentifiable, IDataEntity
 {
     [JsonIgnore] public string Type { get; set; } = "gmrs";
-
-    [JsonIgnore]
-    public virtual string? Id
-    {
-        get => GmrId;
-        set => GmrId = value;
-    }
 
     public string _Etag { get; set; }
 

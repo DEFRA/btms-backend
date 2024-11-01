@@ -8,6 +8,7 @@ using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
 using Cdms.Types.Alvs;
 using Cdms.Types.Gmr;
+using Cdms.Types.Gvms;
 using Cdms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,7 +66,7 @@ namespace Cdms.Business.Extensions
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {
-                                x.Instances(10);
+                                x.Instances(20);
                                 x.Topic("NOTIFICATIONS").WithConsumer<NotificationConsumer>();
                             })
                             .Produce<SearchGmrsForDeclarationIdsResponse>(x => x.DefaultTopic("GMR"))
@@ -79,7 +80,7 @@ namespace Cdms.Business.Extensions
                             {
                                 x.Instances(10);
                                 x.Topic("ALVS").WithConsumer<AlvsClearanceRequestConsumer>();
-                                // x.Topic("DECISIONS").WithConsumer<AlvsClearanceRequestConsumer>();
+                                x.Topic("DECISIONS").WithConsumer<AlvsClearanceRequestConsumer>();
                             });
                     });
 

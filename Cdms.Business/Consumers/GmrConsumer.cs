@@ -1,11 +1,9 @@
 using Cdms.Backend.Data;
 using Cdms.Model.Auditing;
 using SlimMessageBus;
-using System.Diagnostics.Metrics;
-using Cdms.Model;
-using Cdms.Model.VehicleMovement;
-using Cdms.Types.Gmr.Mapping;
-using SearchGmrsForDeclarationIdsResponse = Cdms.Types.Gmr.SearchGmrsForDeclarationIdsResponse;
+using Cdms.Model.Gvms;
+using Cdms.Types.Gvms.Mapping;
+using SearchGmrsForDeclarationIdsResponse = Cdms.Types.Gvms.SearchGmrsForDeclarationIdsResponse;
 
 namespace Cdms.Business.Consumers
 {
