@@ -142,4 +142,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 //Here to it can be referenced by integration tests
 public partial class Program
 {
+    protected Program()
+    {
+    }
 }
