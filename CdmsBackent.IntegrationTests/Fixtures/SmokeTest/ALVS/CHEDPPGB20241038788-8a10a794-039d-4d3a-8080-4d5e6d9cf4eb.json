@@ -1,0 +1,295 @@
+{
+    "serviceHeader": {
+        "sourceSystem": "CDS",
+        "destinationSystem": "ALVS",
+        "correlationId": "20",
+        "serviceCallTimestamp": 1619550176000
+    },
+    "header": {
+        "entryReference": "CHEDPPGB20241038788",
+        "entryVersionNumber": 2,
+        "previousVersionNumber": 1,
+        "declarationUCR": "1GB782435121000-000000001079849",
+        "declarationPartNumber": null,
+        "declarationType": "F",
+        "arrivalDateTime": "202309100911",
+        "submitterTURN": "GB363127805000",
+        "declarantId": "GB363127805000",
+        "declarantName": "GB363127805000",
+        "dispatchCountryCode": "GB",
+        "goodsLocationCode": "BELBELGVM",
+        "masterUCR": null
+    },
+    "items": [
+        {
+            "itemNumber": 1,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS1",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 2,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS2",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 3,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS3",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 4,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS4",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 5,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS5",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 6,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS6",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 7,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS7",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 8,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS8",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 9,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS9",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        },
+        {
+            "itemNumber": 10,
+            "customsProcedureCode": "4000000",
+            "taricCommodityCode": "0602905000",
+            "goodsDescription": "PLANTS10",
+            "consigneeId": "GB782435121000",
+            "consigneeName": "GB782435121000",
+            "itemNetMass": 14910.75,
+            "itemSupplementaryUnits": 0,
+            "itemThirdQuantity": null,
+            "itemOriginCountryCode": "NZ",
+            "documents": [
+                {
+                    "documentCode": "N851",
+                    "documentReference": "GBCHD2024.1038788",
+                    "documentStatus": "AE",
+                    "documentControl": "P",
+                    "documentQuantity": null
+                }
+            ],
+            "checks": [
+                {
+                    "checkCode": "H234",
+                    "departmentCode": "PHA"
+                }
+            ]
+        }
+    ]
+}

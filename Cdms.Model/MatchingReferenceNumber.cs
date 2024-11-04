@@ -120,7 +120,8 @@ public class MatchingReferenceNumber
             "N002" or "N851" or "9115" => ImportNotificationTypeEnum.Chedpp,
             "N852" or "C678" => ImportNotificationTypeEnum.Ced,
             "C640" => ImportNotificationTypeEnum.Cveda,
-            "C641" or "C673" => ImportNotificationTypeEnum.Cvedp
+            "C641" or "C673" => ImportNotificationTypeEnum.Cvedp,
+            _ => ImportNotificationTypeEnum.Chedpp,
         };
     }
 }

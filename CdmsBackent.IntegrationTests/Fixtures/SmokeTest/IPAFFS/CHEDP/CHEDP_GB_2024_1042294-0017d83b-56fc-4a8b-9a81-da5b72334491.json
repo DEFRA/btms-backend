@@ -1,0 +1,210 @@
+{
+  "id": 41457,
+  "referenceNumber": "CHEDP.GB.2024.1042294",
+  "version": 2,
+  "lastUpdated": "2024-10-04T11:41:14.31497667Z",
+  "lastUpdatedBy": {
+    "displayName": "Gary Admin-Tester",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "type": "CVEDP",
+  "status": "AMEND",
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "Andrew Inspector-Tester",
+      "companyId": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+      "companyName": "Defra Test BIP",
+      "address": [ "Animal and Plant Health Agency", "Woodham Lane", "New Haw", "Surrey", "Addlestone", "KT15 3NB" ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "020 8225 7295",
+      "email": "DefraTestBIP@anthunt3.33mail.com",
+      "contactId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "consignor": {
+      "id": "d5eba566-9b57-4580-84fb-d28739fa4719",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "c7f606df309a417da4ec442330ddd52a",
+      "address": {
+        "addressLine1": "07584 Gillian Mews",
+        "addressLine2": "Apt. 962",
+        "addressLine3": "Idaho",
+        "city": "Lake Cristina",
+        "postalZipCode": "91645",
+        "countryISOCode": "DE",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10008591
+    },
+    "consignee": {
+      "id": "5a634cba-1f5e-4326-9adb-67ba4967ce2e",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "5f9c011f51e045e1acb005cef10a6f9c",
+      "address": {
+        "addressLine1": "7086 Joseph Via",
+        "addressLine2": "Suite 023",
+        "addressLine3": "Louisiana",
+        "city": "Harmonyburgh",
+        "postalZipCode": "85139",
+        "countryISOCode": "GB",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10006223
+    },
+    "importer": {
+      "id": "5a634cba-1f5e-4326-9adb-67ba4967ce2e",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "5f9c011f51e045e1acb005cef10a6f9c",
+      "address": {
+        "addressLine1": "7086 Joseph Via",
+        "addressLine2": "Suite 023",
+        "addressLine3": "Louisiana",
+        "city": "Harmonyburgh",
+        "postalZipCode": "85139",
+        "countryISOCode": "GB",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10006223
+    },
+    "placeOfDestination": {
+      "id": "5a634cba-1f5e-4326-9adb-67ba4967ce2e",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "5f9c011f51e045e1acb005cef10a6f9c",
+      "address": {
+        "addressLine1": "7086 Joseph Via",
+        "addressLine2": "Suite 023",
+        "addressLine3": "Louisiana",
+        "city": "Harmonyburgh",
+        "postalZipCode": "85139",
+        "countryISOCode": "GB",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10006223
+    },
+    "commodities": {
+      "numberOfPackages": 2,
+      "numberOfAnimals": 2,
+      "commodityComplement": [
+        {
+          "commodityID": "0101",
+          "commodityDescription": "Live horses, asses, mules and hinnies",
+          "complementID": 1,
+          "complementName": "Equus asinus",
+          "speciesID": "242089",
+          "speciesName": "Equus asinus",
+          "speciesType": "2",
+          "speciesClass": "147603",
+          "speciesNomination": "Equus asinus"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "009b038a-1fea-4c4f-8d16-cb6867fa569a",
+          "complementID": 1,
+          "speciesID": "242089",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "2"
+            },
+            {
+              "key": "number_animal",
+              "data": "2"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "AF",
+      "animalsCertifiedAs": "Approved"
+    },
+    "purpose": {
+      "forImportOrAdmission": "Definitive import",
+      "purposeGroup": "For Re-Import"
+    },
+    "arrivalDate": "2024-12-12",
+    "arrivalTime": "12:12:00",
+    "transporter": {
+      "id": "6e8f158e-9c50-4467-a7e4-2d4118652a28",
+      "type": "private transporter",
+      "status": "nonapproved",
+      "companyName": "77625bcc878342b59de0b9c344365143",
+      "address": {
+        "addressLine1": "1405 Darron Skyway",
+        "addressLine2": "Suite 326",
+        "addressLine3": "Virginia",
+        "city": "Gleasonville",
+        "postalZipCode": "93454-1",
+        "countryISOCode": "AL",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10005726
+    },
+    "meansOfTransport": {
+      "id": "Est aliquip et id consectetur provident est volu",
+      "type": "Aeroplane",
+      "document": "Labore adipisicing quod sed nesc"
+    },
+    "meansOfTransportFromEntryPoint": {
+      "id": "123",
+      "type": "Road Vehicle",
+      "document": "234"
+    },
+    "departureDate": "2025-03-07",
+    "departureTime": "12:12:00",
+    "estimatedJourneyTimeInMinutes": 18012,
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "Enim adipisci et mod",
+          "documentIssueDate": "2017-12-28",
+          "attachmentId": "b20703b6-0bda-4746-8b02-6aacb39fd8cf",
+          "attachmentFilename": "clone.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "79f6dc68-2144-e911-a96a-000d3a29ba60",
+          "uploadOrganisationId": "767ceb6a-2144-e911-a96c-000d3a29b5de"
+        }
+      ],
+      "identificationDetails": [
+        {
+          "identificationDetail": "egg mark",
+          "identificationDescription": "blue"
+        }
+      ]
+    },
+    "route": { "transitingStates": [ "AF" ] },
+    "submissionDate": "2024-10-04T07:36:19.759310173Z",
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/",
+        "message": "Add the port of entry"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/providectcmrn",
+        "message": "Select if using the Common Transit Convention (CTC)"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/isgvmsroute",
+        "message": "Select if using the Goods Vehicle Movement Service (GVMS)"
+      }
+    ],
+    "submittedBy": {
+      "displayName": "Andrew Inspector-Tester",
+      "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "complexCommoditySelected": true
+  },
+  "etag": "0000000000091559",
+  "chedTypeVersion": 2
+}

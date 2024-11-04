@@ -2,6 +2,7 @@ using Cdms.Backend.Data.Extensions;
 using Cdms.BlobService;
 using Cdms.BlobService.Extensions;
 using Cdms.Consumers.Interceptors;
+using Cdms.Model.Alvs;
 using Cdms.SensitiveData;
 using Cdms.Types.Alvs;
 using Cdms.Types.Gvms;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Interceptor;
 using SlimMessageBus.Host.Memory;
+using AlvsClearanceRequest = Cdms.Types.Alvs.AlvsClearanceRequest;
 
 namespace Cdms.Consumers.Extensions
 {
@@ -47,12 +49,16 @@ namespace Cdms.Consumers.Extensions
                                 x.Instances(10);
                                 x.Topic("GMR").WithConsumer<GmrConsumer>();
                             })
-                            .Produce<AlvsClearanceRequest>(x => x.DefaultTopic("ALVS"))
+                            .Produce<AlvsClearanceRequest>(x => x.DefaultTopic(nameof(AlvsClearanceRequest)))
                             .Consume<AlvsClearanceRequest>(x =>
                             {
                                 x.Instances(10);
                                 x.Topic("ALVS").WithConsumer<AlvsClearanceRequestConsumer>();
-                                //x.Topic("DECISIONS").WithConsumer<AlvsClearanceRequestConsumer>();
+                            })
+                            .Consume<AlvsClearanceRequest>(x =>
+                            {
+                                x.Instances(10);
+                                x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
                             });
                     });
             });
