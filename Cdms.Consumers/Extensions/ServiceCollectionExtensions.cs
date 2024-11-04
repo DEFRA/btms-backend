@@ -21,6 +21,7 @@ namespace Cdms.Consumers.Extensions
         public static IServiceCollection AddConsumers(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddScoped(typeof(IConsumerInterceptor<>), typeof(InboxConsumerInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsConsumerInterceptor<>));
             services.AddTransient(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
 

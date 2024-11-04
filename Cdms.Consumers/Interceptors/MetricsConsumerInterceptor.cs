@@ -1,7 +1,13 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Dynamic;
 using System.Text;
+using System.Text.Json;
+using Cdms.Backend.Data;
 using Cdms.Common;
+using Cdms.Model;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
 
@@ -66,5 +72,30 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
             consumerInProgress.Add(-1, tagList);
             consumeDuration.Record(timer.ElapsedMilliseconds, tagList);
         }
+    }
+}
+
+public class InboxConsumerInterceptor<TMessage>(IMongoDbContext dbContext) : IConsumerInterceptor<TMessage>
+{
+    public async Task<object> OnHandle(TMessage message, Func<Task<object>> next, IConsumerContext context)
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(message);
+            var v = BsonSerializer.Deserialize<ExpandoObject>(json);
+            await dbContext.Inbox.Insert(new Inbox()
+            {
+                Id = Path.GetFileName(context.Headers["messageId"].ToString()),
+                Data = v,
+                Type = typeof(TMessage).Name,
+                Ts = DateTime.UtcNow,
+            });
+        }
+        catch (Exception exception)
+        {
+            //swallow
+        }
+
+        return await next();
     }
 }

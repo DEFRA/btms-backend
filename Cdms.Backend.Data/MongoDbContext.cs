@@ -11,6 +11,9 @@ public interface IMongoDbContext
     MongoCollectionSet<Movement> Movements { get; }
 
     MongoCollectionSet<Gmr> Gmrs { get; }
+
+    MongoCollectionSet<Inbox> Inbox { get; }
+
     Task<MongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default);
 }
 
@@ -25,6 +28,8 @@ public class MongoDbContext(IMongoDatabase database) : IMongoDbContext
     public MongoCollectionSet<Movement> Movements => new(this, nameof(Movements));
 
     public MongoCollectionSet<Gmr> Gmrs => new(this, nameof(Gmrs));
+
+    public MongoCollectionSet<Inbox> Inbox => new(this, nameof(Inbox));
 
     public async Task<MongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default)
     {

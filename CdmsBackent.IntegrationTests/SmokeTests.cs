@@ -33,6 +33,8 @@ namespace CdmsBackend.IntegrationTests
         [Fact]
         public async Task SyncNotifications()
         {
+            //Arrange
+            await factory.ClearDb(client);
             var response = await MakeSyncNotificationsRequest(new SyncNotificationsCommand()
             {
                 SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
@@ -42,11 +44,14 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             factory.GetDbContext().Notifications.Count().Should().Be(5);
+            factory.GetDbContext().Inbox.Count().Should().Be(5);
         }
 
         [Fact]
         public async Task SyncDecisions()
         {
+            //Arrange
+            await factory.ClearDb(client);
             await SyncClearanceRequests();
             var response = await MakeSyncDecisionsRequest(new SyncDecisionsCommand()
             {
@@ -57,6 +62,7 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var existingMovement = await factory.GetDbContext().Movements.Find("CHEDPGB20241039875A5");
+            factory.GetDbContext().Inbox.Count().Should().Be(6);
 
             existingMovement.Should().NotBeNull();
             existingMovement.Items[0].Checks.Should().NotBeNull();
@@ -68,6 +74,9 @@ namespace CdmsBackend.IntegrationTests
         [Fact]
         public async Task SyncClearanceRequests()
         {
+            //Arrange
+            await factory.ClearDb(client);
+
             //Act
             var response = await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand()
             {
@@ -78,11 +87,15 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             factory.GetDbContext().Movements.Count().Should().Be(5);
+            factory.GetDbContext().Inbox.Count().Should().Be(5);
         }
 
         [Fact]
         public async Task SyncGmrs()
         {
+            //Arrange
+            await factory.ClearDb(client);
+
             //Act
             var response = await MakeSyncGmrsRequest(new SyncGmrsCommand()
             {
@@ -93,6 +106,7 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             factory.GetDbContext().Gmrs.Count().Should().Be(3);
+            factory.GetDbContext().Inbox.Count().Should().Be(1);
         }
 
 
