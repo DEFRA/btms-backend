@@ -15,49 +15,6 @@ using Xunit.Abstractions;
 
 namespace CdmsBackend.IntegrationTests;
 
-public class LocalBlobItem(string name) : IBlobItem
-{
-    public string Name { get; set; } = name;
-
-    public string NormalisedName { get; set; } = default;
-    public string Content { get; set; } = default!;
-
-    public async Task<string> Download(CancellationToken cancellationToken)
-    {
-        if (string.IsNullOrWhiteSpace(Content))
-        {
-            var content = await File.ReadAllTextAsync(Name, cancellationToken);
-            Content = content;
-        }
-
-        return Content;
-    }
-}
-
-public class LocalBlobService(string root) : IBlobService
-{
-    public IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken)
-    {
-        return ScanFiles(Path.Combine(root, prefix), cancellationToken);
-    }
-
-    public async IAsyncEnumerable<IBlobItem> ScanFiles(string prefix, CancellationToken cancellationToken)
-    {
-        foreach (string f in Directory.GetFiles(prefix))
-        {
-            yield return new LocalBlobItem(f);
-        }
-
-        foreach (string d in Directory.GetDirectories(prefix))
-        {
-            await foreach (var item in GetResourcesAsync(d, cancellationToken))
-            {
-                yield return item;
-            }
-        }
-    }
-}
-
 public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)

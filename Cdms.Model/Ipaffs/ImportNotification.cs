@@ -104,7 +104,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         {
             if (matchReference is null)
             {
-                matchReference = MatchingReferenceNumber.FromIpaffs(ReferenceNumber, ImportNotificationType.Value)
+                matchReference = MatchIdentifier.FromNotification(ReferenceNumber)
                     .Identifier;
             }
 

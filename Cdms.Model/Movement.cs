@@ -90,8 +90,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
                     {
                         foreach (var itemDocument in item.Documents)
                         {
-                            list.Add(MatchingReferenceNumber
-                                .FromCds(itemDocument.DocumentReference, itemDocument.DocumentCode).Identifier);
+                            list.Add(MatchIdentifier.FromCds(itemDocument.DocumentReference).Identifier);
                         }
                     }
                 }

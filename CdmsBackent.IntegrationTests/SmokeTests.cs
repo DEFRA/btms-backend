@@ -26,7 +26,6 @@ namespace CdmsBackend.IntegrationTests
         {
             this.factory = factory;
             this.factory.testOutputHelper = testOutputHelper;
-            //this.factory.(b => b.ConfigureLogging(lb => lb.AddXUnit(testOutputHelper)));
             client =
                 this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         }
