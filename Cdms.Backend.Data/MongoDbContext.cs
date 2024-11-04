@@ -20,11 +20,11 @@ public class MongoDbContext(IMongoDatabase database) : IMongoDbContext
     internal MongoDbTransaction? ActiveTransaction { get; private set; }
 
 
-    public MongoCollectionSet<ImportNotification> Notifications => new(this);
+    public MongoCollectionSet<ImportNotification> Notifications => new(this, nameof(Notifications));
 
-    public MongoCollectionSet<Movement> Movements => new(this);
+    public MongoCollectionSet<Movement> Movements => new(this, nameof(Movements));
 
-    public MongoCollectionSet<Gmr> Gmrs => new(this);
+    public MongoCollectionSet<Gmr> Gmrs => new(this, nameof(Gmrs));
 
     public async Task<MongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default)
     {

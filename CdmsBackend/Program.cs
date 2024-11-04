@@ -10,8 +10,10 @@ using Cdms.Business.Extensions;
 using Cdms.BlobService;
 using Cdms.Backend.Data.Healthcheck;
 using Cdms.Consumers.Extensions;
+using CdmsBackend.Config;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -40,6 +42,10 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Configuration.AddEnvironmentVariables();
     builder.Configuration.AddIniFile("Properties/local.env", true)
         .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
+
+    builder.Services.AddOptions<ApiOptions>()
+        .Bind(builder.Configuration.GetSection(ApiOptions.SectionName))
+        .ValidateDataAnnotations();
 
     var logger = ConfigureLogging(builder);
 
@@ -135,6 +141,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
         });
 
     app.UseSyncEndpoints();
+    app.UseManagementEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
 
     return app;
 }
