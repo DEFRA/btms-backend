@@ -29,8 +29,6 @@ public struct MatchIdentifier(int identifier)
 
     public static MatchIdentifier FromCds(string reference)
     {
-        // var reference = document.DocumentReference;
-
         int identifier;
         var parts = reference.Split(".");
 
