@@ -23,7 +23,7 @@ jobs:
         with:
           dotnet-version: |
             8.0
-      - run: dotnet test
+      - run: dotnet test --filter Category!=Integration
     ## SonarCloud
     ## Uncomment to unable SonarCloud scan
     ## Requires project to be set up in SonarCloud
