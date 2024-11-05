@@ -74,28 +74,3 @@ public class MetricsConsumerInterceptor<TMessage> : IConsumerInterceptor<TMessag
         }
     }
 }
-
-public class InboxConsumerInterceptor<TMessage>(IMongoDbContext dbContext) : IConsumerInterceptor<TMessage>
-{
-    public async Task<object> OnHandle(TMessage message, Func<Task<object>> next, IConsumerContext context)
-    {
-        try
-        {
-            var json = JsonSerializer.Serialize(message);
-            var v = BsonSerializer.Deserialize<ExpandoObject>(json);
-            await dbContext.Inbox.Insert(new Inbox()
-            {
-                Id = Path.GetFileName(context.Headers["messageId"].ToString()),
-                Data = v,
-                Type = typeof(TMessage).Name,
-                Ts = DateTime.UtcNow,
-            });
-        }
-        catch (Exception exception)
-        {
-            //swallow
-        }
-
-        return await next();
-    }
-}

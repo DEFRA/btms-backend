@@ -50,7 +50,6 @@ namespace CdmsBackend.IntegrationTests
 
             // Check Db
             factory.GetDbContext().Notifications.Count().Should().Be(5);
-            factory.GetDbContext().Inbox.Count().Should().Be(5);
 
             // Check Api
             var jsonClientResponse = client.AsJsonApiClient().Get<ImportNotification>("api/importnotifications");
@@ -73,7 +72,6 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var existingMovement = await factory.GetDbContext().Movements.Find("CHEDPGB20241039875A5");
-            factory.GetDbContext().Inbox.Count().Should().Be(6);
 
             existingMovement.Should().NotBeNull();
             existingMovement.Items[0].Checks.Should().NotBeNull();
@@ -106,7 +104,6 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             factory.GetDbContext().Movements.Count().Should().Be(5);
-            factory.GetDbContext().Inbox.Count().Should().Be(5);
 
             // Check Api
             var jsonClientResponse = client.AsJsonApiClient().Get<Movement>("api/movements");
@@ -130,7 +127,6 @@ namespace CdmsBackend.IntegrationTests
             await Task.Delay(TimeSpan.FromSeconds(1));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             factory.GetDbContext().Gmrs.Count().Should().Be(3);
-            factory.GetDbContext().Inbox.Count().Should().Be(1);
 
             // Check Api
             var jsonClientResponse = client.AsJsonApiClient().Get<Gmr>("api/gmrs");
