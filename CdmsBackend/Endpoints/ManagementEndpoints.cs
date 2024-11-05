@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-// using MongoDB.Bson;
-
 namespace CdmsBackend.Endpoints;
 
 public static class ManagementEndpoints
@@ -36,14 +34,14 @@ public static class ManagementEndpoints
                                      || key == "CONTAINER_VERSION";
     }
 
-    private static IResult GetEnvironment(IConfiguration configuration)
+    private static IResult GetEnvironment()
     {
         var dict = System.Environment.GetEnvironmentVariables();
         var filtered = dict.Cast<DictionaryEntry>().Where(FilterEnvKeys).ToArray();
         return Results.Ok(filtered);
     }
 
-    private static IResult GetStatus(IConfiguration configuration, HttpRequest request, ClaimsPrincipal user)
+    private static IResult GetStatus()
     {
         var dict = new Dictionary<string, object>
         {
@@ -59,7 +57,7 @@ public static class ManagementEndpoints
         return Results.Ok();
     }
 
-    private static IResult UnsetProxy(IConfiguration configuration)
+    private static IResult UnsetProxy()
     {
         System.Environment.SetEnvironmentVariable("HTTPS_PROXY", "");
         System.Environment.SetEnvironmentVariable("HTTP_PROXY", "");
