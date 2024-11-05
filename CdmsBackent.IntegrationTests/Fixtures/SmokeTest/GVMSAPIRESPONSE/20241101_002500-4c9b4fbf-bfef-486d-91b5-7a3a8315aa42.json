@@ -1,0 +1,315 @@
+{
+  "gmrByDeclarationId": [
+    {
+      "dec": "24GB123457789AB012",
+      "gmrs": [
+        "GMRAQTISEHZ2"
+      ]
+    },
+    {
+      "dec": "56GB123456789AB043",
+      "gmrs": [
+        "GMRAPOQSPDUG"
+      ]
+    },
+    {
+      "dec": "87GB987654321AB012",
+      "gmrs": [
+        "GMRARTEGN8R3"
+      ]
+    },
+    {
+      "dec": "24GB20241047855000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047853000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241046804000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047989000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047780000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047673000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047674000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047056000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241047162000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241046398000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241046275000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241046277000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241046698000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045865000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045860000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045861000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045508000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045614000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045864000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241046697000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB123456789AB000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045171000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045172000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045276000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241044989000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241044109000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241044303000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241044585000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241044690000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043649000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043931000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241044036000",
+      "gmrs": []
+    },
+    {
+      "dec": "23GB1234567890ABCE",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043932000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043456000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043648000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043049000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043050000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043153000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043154000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043339000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241042294000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241042299000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241041387000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241041714000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241041820000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241042044000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241040759000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241041045000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241041281000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241042730000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241042835000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241043452000",
+      "gmrs": []
+    },
+    {
+      "dec": "24GB20241045867000",
+      "gmrs": []
+    }
+  ],
+  "gmrs": [
+    {
+      "plannedCrossing": {
+        "routeId": "19",
+        "localDateTimeOfDeparture": "2024-11-11T00:25"
+      },
+      "haulierEORI": "GB0495996265494",
+      "state": "FINALISED",
+      "gmrId": "GMRAPOQSPDUG",
+      "vehicleRegNum": "SUQBVH",
+      "trailerRegistrationNums": [
+        "Y3E78S",
+        "SPH4Q9"
+      ],
+      "updatedDateTime": "2024-11-01T00:25:00.522Z",
+      "declarations": {
+        "customs": [
+          {
+            "id": "56GB123456789AB043"
+          }
+        ]
+      },
+      "haulierType": "FPO_ASN",
+      "direction": "UK_INBOUND",
+      "isUnaccompanied": true
+    },
+    {
+      "plannedCrossing": {
+        "routeId": "19",
+        "localDateTimeOfDeparture": "2024-11-11T00:25"
+      },
+      "haulierEORI": "GB5299886055757",
+      "state": "OPEN",
+      "gmrId": "GMRAQTISEHZ2",
+      "vehicleRegNum": "6ETZ4C",
+      "trailerRegistrationNums": [
+        "ZU0IZW",
+        "7XVL26"
+      ],
+      "updatedDateTime": "2024-11-01T00:25:00.522Z",
+      "declarations": {
+        "customs": [
+          {
+            "id": "24GB123457789AB012"
+          }
+        ]
+      },
+      "haulierType": "FPO_ASN",
+      "direction": "UK_INBOUND",
+      "isUnaccompanied": true
+    },
+    {
+      "plannedCrossing": {
+        "routeId": "19",
+        "localDateTimeOfDeparture": "2024-11-11T00:25"
+      },
+      "haulierEORI": "GB8167646615482",
+      "state": "OPEN",
+      "gmrId": "GMRARTEGN8R3",
+      "vehicleRegNum": "QK3POW",
+      "trailerRegistrationNums": [
+        "FBJ8RH",
+        "GJJGXC"
+      ],
+      "updatedDateTime": "2024-11-01T00:25:00.522Z",
+      "declarations": {
+        "customs": [
+          {
+            "id": "87GB987654321AB012"
+          }
+        ]
+      },
+      "haulierType": "FPO_ASN",
+      "direction": "UK_INBOUND",
+      "isUnaccompanied": true
+    }
+  ]
+}

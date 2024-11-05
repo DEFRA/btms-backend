@@ -73,12 +73,8 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
     public override void Write(
         Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
     {
-        // We don't need any custom serialization logic for writing the json.
-        // Ideally, this method should not be called at all. It's only called if you
-        // supply JsonSerializerOptions that contains this JsonConverter in it's Converters list.
-        // Don't do that, you will lose performance because of the cast needed below.
-        // Cast to avoid infinite loop: https://github.com/dotnet/docs/issues/19268
-        JsonSerializer.Serialize(writer, (IDictionary<string, object?>)value, options);
+        var list = value.Select(x => new KeyDataPair() { Key = x.Key, Data = x.Value?.ToString() });
+        JsonSerializer.Serialize(writer, list, options);
     }
 
     private object ReadString(ref Utf8JsonReader reader)

@@ -57,35 +57,35 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddHttpProxyClient(logger);
 
     builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-    
+
     // This added Open Telemetry, and export to look at metrics locally.
     // The Aspire dashboard can be used to view these metrics  :
     // docker run --rm -it -p 18888:18888 -p 4317:18889 -d --name aspire-dashboard -e DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS='true' mcr.microsoft.com/dotnet/nightly/aspire-dashboard:8.0.0-preview.6
-   
+
     if (builder.Environment.IsDevelopment())
     {
         builder.Services.AddOpenTelemetry()
-        .WithMetrics(metrics =>
-        {
-            metrics.AddRuntimeInstrumentation()
-                .AddMeter(
-                    "Microsoft.AspNetCore.Hosting",
-                    "Microsoft.AspNetCore.Server.Kestrel",
-                    "System.Net.Http",
-                    "Cdms");
-        });
-    
+            .WithMetrics(metrics =>
+            {
+                metrics.AddRuntimeInstrumentation()
+                    .AddMeter(
+                        "Microsoft.AspNetCore.Hosting",
+                        "Microsoft.AspNetCore.Server.Kestrel",
+                        "System.Net.Http",
+                        "Cdms");
+            });
+
         builder.Services.AddOpenTelemetry()
             .WithTracing(tracing =>
             {
                 tracing.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation();
             });
-        
+
         builder.Services.AddOpenTelemetry().UseOtlpExporter();
     }
     else
-    {   
+    {
         // Assumes we're in CDP... - this doesn't exist
         // builder.Services.AddOpenTelemetry().UseEmfExporter()
     }
@@ -108,7 +108,7 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
                 options.ResourceAttributes.Add("service.name", "cdmsbackend");
             });
     }
-    
+
     var logger = logBuilder.CreateLogger();
     builder.Logging.AddSerilog(logger);
     logger.Information("Starting application");
@@ -137,4 +137,12 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     app.UseSyncEndpoints();
 
     return app;
+}
+
+//Here to it can be referenced by integration tests
+public partial class Program
+{
+    protected Program()
+    {
+    }
 }

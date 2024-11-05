@@ -30,7 +30,6 @@ namespace Cdms.Business.Extensions
             services.AddMongoDbContext(configuration);
             services.AddBlobStorage(configuration);
             services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
-            services.AddSingleton<IBlobService, BlobService.BlobService>();
             services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SyncNotificationsCommand>());

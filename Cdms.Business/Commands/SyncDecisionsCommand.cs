@@ -19,7 +19,7 @@ public class SyncDecisionsCommand : SyncCommand
         public override async Task Handle(SyncDecisionsCommand request, CancellationToken cancellationToken)
         {
             await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "DECISIONS",
-                $"{request.RootFolder}/DECISONS");
+                $"{request.RootFolder}/DECISIONS");
         }
     }
 }

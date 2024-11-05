@@ -101,7 +101,7 @@ public partial class Items  //
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("check")]
+    [JsonPropertyName("checks")]
     public Check[]? Checks { get; set; }
 
 	}

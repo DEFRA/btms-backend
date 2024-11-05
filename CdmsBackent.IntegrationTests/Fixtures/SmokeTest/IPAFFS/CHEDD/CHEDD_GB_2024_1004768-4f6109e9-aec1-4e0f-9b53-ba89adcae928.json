@@ -1,0 +1,201 @@
+{
+  "id": 4768,
+  "referenceNumber": "CHEDD.GB.2024.1004768",
+  "version": 1,
+  "lastUpdated": "2024-10-02T12:13:10.498208Z",
+  "lastUpdatedBy": {
+    "displayName": "Percy Inspector-Tester",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "type": "CED",
+  "status": "SUBMITTED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "REQUIRED",
+        "uniqueId": "d9ba240d-19e2-40d2-ae93-8013635c10c8"
+      }
+    ],
+    "assessmentDateTime": "2024-10-02T13:13:10.245443076"
+  },
+  "isHighRiskEuImport": true,
+  "partOne": {
+    "personResponsible": {
+      "name": "Andrew Inspector-Tester",
+      "companyId": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+      "companyName": "Defra Test BIP",
+      "address": [
+        "Animal and Plant Health Agency",
+        "Woodham Lane",
+        "New Haw",
+        "Surrey",
+        "Addlestone",
+        "KT15 3NB"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "020 8225 7295",
+      "email": "DefraTestBIP@anthunt3.33mail.com",
+      "contactId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "consignor": {
+      "id": "e74aa25e-37ca-4ec6-bdd5-439161d30eb1",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "a2919452268a4abd8ffe18f025ba6fc5",
+      "address": {
+        "addressLine1": "4283 Randee Branch",
+        "addressLine2": "Suite 966",
+        "addressLine3": "Arkansas",
+        "city": "Mertzville",
+        "postalZipCode": "18200",
+        "countryISOCode": "FR",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10000077
+    },
+    "consignee": {
+      "id": "2849e790-8b7a-4142-af5e-73837b3462ad",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "9f7874c27b554226ac9b20984ee4edc2",
+      "address": {
+        "addressLine1": "7246 Osinski Tunnel",
+        "addressLine2": "Apt. 540",
+        "addressLine3": "Colorado",
+        "city": "Beahanborough",
+        "postalZipCode": "66319",
+        "countryISOCode": "GB-WLS",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10000112
+    },
+    "importer": {
+      "id": "2849e790-8b7a-4142-af5e-73837b3462ad",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "9f7874c27b554226ac9b20984ee4edc2",
+      "address": {
+        "addressLine1": "7246 Osinski Tunnel",
+        "addressLine2": "Apt. 540",
+        "addressLine3": "Colorado",
+        "city": "Beahanborough",
+        "postalZipCode": "66319",
+        "countryISOCode": "GB-WLS",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10000112
+    },
+    "placeOfDestination": {
+      "id": "2849e790-8b7a-4142-af5e-73837b3462ad",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "9f7874c27b554226ac9b20984ee4edc2",
+      "address": {
+        "addressLine1": "7246 Osinski Tunnel",
+        "addressLine2": "Apt. 540",
+        "addressLine3": "Colorado",
+        "city": "Beahanborough",
+        "postalZipCode": "66319",
+        "countryISOCode": "GB-WLS",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      },
+      "tracesId": 10000112
+    },
+    "commodities": {
+      "totalGrossWeight": 123,
+      "totalNetWeight": 1,
+      "numberOfPackages": 3,
+      "temperature": "Ambient",
+      "commodityComplement": [
+        {
+          "commodityID": "05010000",
+          "commodityDescription": "Human hair, unworked, whether or not washed or scoured; waste of human hair",
+          "complementID": 1,
+          "speciesType": "2",
+          "speciesClass": "14357"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "d9ba240d-19e2-40d2-ae93-8013635c10c8",
+          "complementID": 1,
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "1"
+            },
+            {
+              "key": "number_package",
+              "data": "3"
+            },
+            {
+              "key": "type_package",
+              "data": "Pallet"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "DE",
+      "isLowRiskArticle72Country": false,
+      "consignedCountry": "DE",
+      "commodityIntendedFor": "feedingstuff"
+    },
+    "purpose": {
+      "purposeGroup": "For Import Non-Internal Market",
+      "estimatedArrivalDateAtPortOfExit": "2024-10-08",
+      "estimatedArrivalTimeAtPortOfExit": "00:00:00",
+      "pointOfExit": "poe"
+    },
+    "pointOfEntry": "GBMNC1",
+    "arrivalDate": "2024-10-09",
+    "arrivalTime": "00:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "123",
+      "type": "Aeroplane",
+      "document": "123"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "123",
+          "documentIssueDate": "2024-10-16"
+        }
+      ]
+    },
+    "submissionDate": "2024-10-02T12:13:05.518533Z",
+    "submittedBy": {
+      "displayName": "Percy Inspector-Tester",
+      "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBMAN",
+    "contactDetails": {
+      "name": "Andrew Inspector-Tester",
+      "telephone": "020 8225 7295",
+      "email": "defratestbip@anthunt3.33mail.com"
+    },
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "decision": {},
+    "consignmentCheck": {},
+    "inspectionRequired": "Required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "etag": "0000000000037AB9",
+  "riskDecisionLockingTime": "2024-10-08T21:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 2
+}
