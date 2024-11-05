@@ -39,8 +39,8 @@ public class GeneratorConfig : IAzureConfig
         AzureTenantId = configuration["AZURE_TENANT_ID"];
         AzureClientSecret = configuration["AZURE_CLIENT_SECRET"];
 
-        StorageService tmp;
-        this.StorageService = StorageService.TryParse(configuration["STORAGE_SERVICE"], out tmp) ? tmp : StorageService.AzureBlob;
+        // StorageService tmp;
+        this.StorageService = Enum.TryParse<StorageService>(configuration["STORAGE_SERVICE"], true, out var tmp) ? tmp : StorageService.AzureBlob;
         
         // DmpBusNamespace = $"{configuration["DMP_SERVICE_BUS_NAME"]!}.servicebus.windows.net";
         // DmpBusTopic = $"defra.trade.dmp.ingestipaffs.{DmpEnvironment}.{dmpSlot}.topic";

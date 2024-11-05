@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Cdms.Model;
 using Cdms.Types.Alvs;
 using Cdms.Types.Ipaffs;
 
@@ -18,14 +19,11 @@ public class ClearanceRequestBuilder : ClearanceRequestBuilder<AlvsClearanceRequ
 public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>>
     where T : AlvsClearanceRequest, new()
 {
-    public ClearanceRequestBuilder() : base()
+    protected ClearanceRequestBuilder() : base()
     {
     }
 
-    // public static Lens<AlvsClearanceRequest, Items[]> ItemsLens =
-    //     new Lens<AlvsClearanceRequest, Items[]>(x => x.Items!);
-
-    public ClearanceRequestBuilder(string file) : base(file)
+    protected ClearanceRequestBuilder(string file) : base(file)
     {
     }
 
@@ -39,10 +37,14 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         return new ClearanceRequestBuilder<T>(file);
     }
 
-    public ClearanceRequestBuilder<T> WithFirstReferenceNumber(string chedReference)
+    public ClearanceRequestBuilder<T> WithReferenceNumber(string chedReference)
     {
-        // TODO : manipulate the ref to be correct format first
-        return Do(x => x.Items![0].Documents![0].DocumentReference = chedReference);
+        var clearanceRequestDocumentReference =
+            MatchIdentifier.FromNotification(chedReference).AsCdsDocumentReference();
+        
+        return Do(x => 
+            Array.ForEach(x.Items!, i => 
+                Array.ForEach(i.Documents!, d=> d.DocumentReference = clearanceRequestDocumentReference)));
     }
 
     public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)

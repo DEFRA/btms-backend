@@ -6,6 +6,12 @@ public struct MatchIdentifier(int identifier)
 {
     public int Identifier { get; private set; } = identifier;
 
+    public string AsCdsDocumentReference()
+    {
+        // TODO - transfer over from TDM POC
+        return $"GBCHD2024.{Identifier}";
+    }
+    
     public static MatchIdentifier FromNotification(string reference)
     {
         if (reference == null)

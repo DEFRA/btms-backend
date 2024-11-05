@@ -69,41 +69,41 @@ internal class Program
                     new
                     {
                         scenario = "ChedASimpleMatch",
-                        count = 500,
+                        count = 100,
                         days = 14,
                         generator = (ScenarioGenerator)chedASimpleMatch
                     },
                     new
                     {
                         scenario = "ChedAManyCommodities",
-                        count = 500,
+                        count = 100,
                         days = 14,
                         generator = (ScenarioGenerator)chedAManyCommodities
                     }
                 }
             },
-            new
-            {
-                dataset = "PHA",
-                rootPath = "GENERATED-PHA",
-                scenarios = new[]
-                {
-                    new
-                    {
-                        scenario = "ChedASimpleMatch",
-                        count = 10,
-                        days = 30,
-                        generator = (ScenarioGenerator)chedASimpleMatch
-                    },
-                    new
-                    {
-                        scenario = "ChedAManyCommodities",
-                        count = 10,
-                        days = 30,
-                        generator = (ScenarioGenerator)chedAManyCommodities
-                    }
-                }
-            }
+            // new
+            // {
+            //     dataset = "PHA",
+            //     rootPath = "GENERATED-PHA",
+            //     scenarios = new[]
+            //     {
+            //         new
+            //         {
+            //             scenario = "ChedASimpleMatch",
+            //             count = 10,
+            //             days = 30,
+            //             generator = (ScenarioGenerator)chedASimpleMatch
+            //         },
+            //         new
+            //         {
+            //             scenario = "ChedAManyCommodities",
+            //             count = 10,
+            //             days = 30,
+            //             generator = (ScenarioGenerator)chedAManyCommodities
+            //         }
+            //     }
+            // }
         };
 
         logger.LogInformation($"{datasets.Length} dataset(s) configured");
