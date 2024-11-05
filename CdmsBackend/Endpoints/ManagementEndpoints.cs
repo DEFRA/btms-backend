@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Security.Claims;
 using CdmsBackend.Config;
-using Json.More;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-
-// using MongoDB.Bson;
 
 namespace CdmsBackend.Endpoints;
 
@@ -30,20 +27,20 @@ public static class ManagementEndpoints
     private static bool FilterEnvKeys(DictionaryEntry d)
     {
         var key = d.Key.ToString()!;
-        return key.StartsWith("DMP") | key.StartsWith("CDP")
-                                     | key.StartsWith("AZURE") | key.StartsWith("TRADE")
-                                     | key.StartsWith("HTTP") | key.StartsWith("TDM")
-                                     | key == "CONTAINER_VERSION";
+        return key.StartsWith("DMP") || key.StartsWith("CDP")
+                                     || key.StartsWith("AZURE") || key.StartsWith("TRADE")
+                                     || key.StartsWith("HTTP") || key.StartsWith("TDM")
+                                     || key == "CONTAINER_VERSION";
     }
 
-    private static IResult GetEnvironment(IConfiguration configuration)
+    private static IResult GetEnvironment()
     {
         var dict = System.Environment.GetEnvironmentVariables();
         var filtered = dict.Cast<DictionaryEntry>().Where(FilterEnvKeys).ToArray();
         return Results.Ok(filtered);
     }
 
-    private static IResult GetStatus(IConfiguration configuration, HttpRequest request, ClaimsPrincipal user)
+    private static IResult GetStatus()
     {
         var dict = new Dictionary<string, object>
         {
@@ -59,7 +56,7 @@ public static class ManagementEndpoints
         return Results.Ok();
     }
 
-    private static IResult UnsetProxy(IConfiguration configuration)
+    private static IResult UnsetProxy()
     {
         System.Environment.SetEnvironmentVariable("HTTPS_PROXY", "");
         System.Environment.SetEnvironmentVariable("HTTP_PROXY", "");
