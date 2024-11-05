@@ -8,9 +8,13 @@ using MongoDB.Driver.Linq;
 
 namespace Cdms.Backend.Data
 {
-    public class MongoCollectionSet<T>(MongoDbContext dbContext) : IQueryable<T> where T : IDataEntity
+    public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionName = null)
+        : IQueryable<T> where T : IDataEntity
     {
-        private readonly IMongoCollection<T> collection = dbContext.Database.GetCollection<T>(typeof(T).Name);
+        private readonly IMongoCollection<T> collection = string.IsNullOrEmpty(collectionName)
+            ? dbContext.Database.GetCollection<T>(typeof(T).Name)
+            : dbContext.Database.GetCollection<T>(collectionName);
+
         private IQueryable<T> EntityQueryable => collection.AsQueryable();
 
         public IEnumerator<T> GetEnumerator()
