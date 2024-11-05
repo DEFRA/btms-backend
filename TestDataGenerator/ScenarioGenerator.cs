@@ -16,10 +16,10 @@ public abstract class ScenarioGenerator()
     // Not sure if this should be abstract or not...
     internal abstract GeneratorResult Generate(int item, DateTime entryDate);
 
-    internal ImportNotificationBuilder GetNotificationBuilder(string file)
+    internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file)
     {
         var fullPath = $"{fullFolder}/{file}.json";
-        var builder = new ImportNotificationBuilder(fullPath);
+        var builder = ImportNotificationBuilder.FromFile(fullPath);
         
         return builder;
     }

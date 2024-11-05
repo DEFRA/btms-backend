@@ -20,10 +20,8 @@ internal class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenari
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithEntryDate(entryDate)
-            // .WithFirstReferenceNumber(notification.ReferenceNumber!)
+            .WithReferenceNumber(notification.ReferenceNumber!)
             .Build();
-
-        clearanceRequest.Items[0].Documents[0].DocumentReference = notification.ReferenceNumber!;
         
         logger.LogInformation($"Created {clearanceRequest}, {clearanceRequest.Header!.EntryReference}");
 

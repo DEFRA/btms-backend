@@ -1,7 +1,9 @@
+using Cdms.Business;
 using Cdms.Business.Commands;
 using Cdms.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Hybrid;
 using SlimMessageBus.Host.Memory;
@@ -34,11 +36,12 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncNotifications(
+        [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         SyncPeriod syncPeriod)
     {
-        SyncNotificationsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncNotificationsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
         return await SyncNotifications(mediator, bus, command);
     }
 
@@ -52,11 +55,12 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncClearanceRequests(
+        [FromServices] BusinessOptions options,
         [FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         SyncPeriod syncPeriod)
     {
-        SyncClearanceRequestsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncClearanceRequestsCommand command = new(options) { SyncPeriod = syncPeriod };
         return await SyncClearanceRequests(mediator, bus, command);
     }
 
@@ -71,11 +75,12 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncGmrs(
+        [FromServices] BusinessOptions options,
         [FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         SyncPeriod syncPeriod)
     {
-        SyncGmrsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncGmrsCommand command = new(options) { SyncPeriod = syncPeriod };
         return await SyncGmrs(mediator, bus, command);
     }
 

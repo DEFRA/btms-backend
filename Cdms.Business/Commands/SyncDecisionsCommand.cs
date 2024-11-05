@@ -6,7 +6,7 @@ using SlimMessageBus;
 
 namespace Cdms.Business.Commands;
 
-public class SyncDecisionsCommand : SyncCommand
+public class SyncDecisionsCommand(BusinessOptions options) : SyncCommand(options)
 {
     internal class Handler(
         SyncMetrics syncMetrics,
