@@ -110,7 +110,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         options.IncludeTotalResourceCount = true;
         options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
         options.ClientIdGeneration = ClientIdGenerationMode.Allowed;
-        // options.AllowClientGeneratedIds = true;
 #if DEBUG
         options.IncludeExceptionStackTraceInErrors = true;
         options.IncludeRequestBodyInErrors = true;
