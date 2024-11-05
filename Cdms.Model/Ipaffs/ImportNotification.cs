@@ -9,12 +9,13 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Cdms.Model.Ipaffs;
 
+[Resource]
 public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 {
     private int? matchReference;
 
     //// This field is used by the jsonapi-consumer to control the correct casing in the type field
-    [JsonIgnore] public string Type { get; set; } = "notifications";
+    [JsonIgnore] public string Type { get; set; } = "importnotifications";
 
     //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     [JsonIgnore]

@@ -6,17 +6,23 @@ using FluentValidation;
 using Serilog;
 using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using Cdms.Business.Extensions;
 using Cdms.BlobService;
 using Cdms.Backend.Data.Healthcheck;
 using Cdms.Consumers.Extensions;
 using CdmsBackend.Config;
 using HealthChecks.UI.Client;
+using JsonApiDotNetCore.Configuration;
+using JsonApiDotNetCore.MongoDb.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using JsonApiDotNetCore.MongoDb.Repositories;
+using JsonApiDotNetCore.Repositories;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -86,6 +92,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
             {
                 tracing.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation();
+                ;
             });
 
         builder.Services.AddOpenTelemetry().UseOtlpExporter();
@@ -95,6 +102,29 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         // Assumes we're in CDP... - this doesn't exist
         // builder.Services.AddOpenTelemetry().UseEmfExporter()
     }
+
+    static void ConfigureJsonApiOptions(JsonApiOptions options)
+    {
+        options.Namespace = "api";
+        options.UseRelativeLinks = true;
+        options.IncludeTotalResourceCount = true;
+        options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.ClientIdGeneration = ClientIdGenerationMode.Allowed;
+        // options.AllowClientGeneratedIds = true;
+#if DEBUG
+        options.IncludeExceptionStackTraceInErrors = true;
+        options.IncludeRequestBodyInErrors = true;
+        options.SerializerOptions.WriteIndented = true;
+#endif
+    }
+
+    builder.Services.AddJsonApi(ConfigureJsonApiOptions,
+        discovery => discovery.AddAssembly(Assembly.Load("Cdms.Model")));
+
+    builder.Services.AddJsonApiMongoDb();
+    builder.Services.AddScoped(typeof(IResourceReadRepository<,>), typeof(MongoRepository<,>));
+    builder.Services.AddScoped(typeof(IResourceWriteRepository<,>), typeof(MongoRepository<,>));
+    builder.Services.AddScoped(typeof(IResourceRepository<,>), typeof(MongoRepository<,>));
 }
 
 [ExcludeFromCodeCoverage]
@@ -133,6 +163,10 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
 static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
     var app = builder.Build();
+
+
+    app.UseJsonApi();
+    app.MapControllers();
 
     app.MapHealthChecks("/health",
         new HealthCheckOptions()

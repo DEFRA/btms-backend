@@ -15,7 +15,7 @@ namespace Cdms.Backend.Data
             ? dbContext.Database.GetCollection<T>(typeof(T).Name)
             : dbContext.Database.GetCollection<T>(collectionName);
 
-        private IQueryable<T> EntityQueryable => collection.AsQueryable();
+        private IMongoQueryable<T> EntityQueryable => collection.AsQueryable();
 
         public IEnumerator<T> GetEnumerator()
         {
