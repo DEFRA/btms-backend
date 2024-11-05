@@ -30,10 +30,10 @@ public static class ManagementEndpoints
     private static bool FilterEnvKeys(DictionaryEntry d)
     {
         var key = d.Key.ToString()!;
-        return key.StartsWith("DMP") | key.StartsWith("CDP")
-                                     | key.StartsWith("AZURE") | key.StartsWith("TRADE")
-                                     | key.StartsWith("HTTP") | key.StartsWith("TDM")
-                                     | key == "CONTAINER_VERSION";
+        return key.StartsWith("DMP") || key.StartsWith("CDP")
+                                     || key.StartsWith("AZURE") || key.StartsWith("TRADE")
+                                     || key.StartsWith("HTTP") || key.StartsWith("TDM")
+                                     || key == "CONTAINER_VERSION";
     }
 
     private static IResult GetEnvironment(IConfiguration configuration)
