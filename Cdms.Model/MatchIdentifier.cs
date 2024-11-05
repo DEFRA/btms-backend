@@ -32,7 +32,7 @@ public struct MatchIdentifier(int identifier)
         int identifier;
         var parts = reference.Split(".");
 
-        var identifierString = parts.Last();
+        var identifierString = parts[^1];
         if (char.IsDigit(identifierString.Last()))
         {
             identifier = int.Parse(identifierString);
