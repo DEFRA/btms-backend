@@ -92,7 +92,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
             {
                 tracing.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation();
-                ;
             });
 
         builder.Services.AddOpenTelemetry().UseOtlpExporter();
