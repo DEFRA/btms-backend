@@ -29,7 +29,7 @@ jobs:
         if: success() || failure()
         with:
           name: Xunit Tests            # Name of the check run which will be created
-          path: TestResults/*.trz    # Path to test results
+          path: TestResults/*.trx    # Path to test results
           reporter: dotnet-trx        # Format of test results
          
     ## SonarCloud
