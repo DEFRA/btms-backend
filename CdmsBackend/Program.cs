@@ -54,9 +54,9 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         .Bind(builder.Configuration.GetSection(ApiOptions.SectionName))
         .ValidateDataAnnotations();
     
-    builder.Services.AddOptions<BusinessOptions>()
-        .Bind(builder.Configuration.GetSection(BusinessOptions.SectionName))
-        .ValidateDataAnnotations();
+    // builder.Services.AddOptions<BusinessOptions>()
+    //     .Bind(builder.Configuration.GetSection(BusinessOptions.SectionName))
+    //     .ValidateDataAnnotations();
     
     var logger = ConfigureLogging(builder);
 

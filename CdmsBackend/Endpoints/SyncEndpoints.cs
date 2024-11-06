@@ -55,12 +55,12 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncClearanceRequests(
-        [FromServices] BusinessOptions options,
+        [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         SyncPeriod syncPeriod)
     {
-        SyncClearanceRequestsCommand command = new(options) { SyncPeriod = syncPeriod };
+        SyncClearanceRequestsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
         return await SyncClearanceRequests(mediator, bus, command);
     }
 
@@ -75,12 +75,12 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncGmrs(
-        [FromServices] BusinessOptions options,
+        [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
         [FromServices] IMasterMessageBus bus,
         SyncPeriod syncPeriod)
     {
-        SyncGmrsCommand command = new(options) { SyncPeriod = syncPeriod };
+        SyncGmrsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
         return await SyncGmrs(mediator, bus, command);
     }
 
