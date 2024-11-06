@@ -14,8 +14,8 @@ public static class SyncEndpoints
 
     public static void UseSyncEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet(BaseRoute + "/notifications/", GetSyncNotifications).AllowAnonymous();
-        app.MapPost(BaseRoute + "/notifications/", SyncNotifications).AllowAnonymous();
+        app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
+        app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
         app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
         app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();

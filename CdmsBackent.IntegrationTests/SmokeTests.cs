@@ -52,7 +52,7 @@ namespace CdmsBackend.IntegrationTests
             factory.GetDbContext().Notifications.Count().Should().Be(5);
 
             // Check Api
-            var jsonClientResponse = client.AsJsonApiClient().Get<ImportNotification>("api/importnotifications");
+            var jsonClientResponse = client.AsJsonApiClient().Get<ImportNotification>("api/import-notifications");
             jsonClientResponse.IsSuccess.Should().BeTrue();
             jsonClientResponse.DocumentRoot.Data.Length.Should().Be(5);
         }
@@ -142,7 +142,7 @@ namespace CdmsBackend.IntegrationTests
 
         private Task<HttpResponseMessage> MakeSyncNotificationsRequest(SyncNotificationsCommand command)
         {
-            return PostCommand(command, "/sync/notifications");
+            return PostCommand(command, "/sync/import-notifications");
         }
 
         private Task<HttpResponseMessage> MakeSyncClearanceRequest(SyncClearanceRequestsCommand command)
