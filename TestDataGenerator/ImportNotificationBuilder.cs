@@ -16,7 +16,7 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
     public static ImportNotificationBuilder<ImportNotification> FromFile(string file)
     {
         return new ImportNotificationBuilder(file)
-            .WithNoComplementParameterSetsKeyDataPairs();
+            .WithClean();
     }
 }
 
@@ -31,10 +31,12 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
     }
     
-    // TODO : This is needed temporarily due to an issue in serialisation
-    protected ImportNotificationBuilder<T> WithNoComplementParameterSetsKeyDataPairs()
+    protected ImportNotificationBuilder<T> WithClean()
     {
-        return Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
+        // TODO : This was needed temporarily due to an issue in serialisation
+        // Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
+        
+        return this; 
     }
 
     public ImportNotificationBuilder<T> WithRandomCommodities(int min, int max)

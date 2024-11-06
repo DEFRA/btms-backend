@@ -63,23 +63,23 @@ internal class Program
             new
             {
                 dataset = "LoadTest",
-                rootPath = "GENERATED-LOADTEST",
+                rootPath = "GENERATED-LOADTEST-90Dx10k",
                 scenarios = new[]
                 {
                     new
                     {
                         scenario = "ChedASimpleMatch",
-                        count = 100,
-                        days = 14,
+                        count = 10000,
+                        days = 90,
                         generator = (ScenarioGenerator)chedASimpleMatch
                     },
-                    new
-                    {
-                        scenario = "ChedAManyCommodities",
-                        count = 100,
-                        days = 14,
-                        generator = (ScenarioGenerator)chedAManyCommodities
-                    }
+                    // new
+                    // {
+                    //     scenario = "ChedAManyCommodities",
+                    //     count = 100,
+                    //     days = 14,
+                    //     generator = (ScenarioGenerator)chedAManyCommodities
+                    // }
                 }
             },
             // new
