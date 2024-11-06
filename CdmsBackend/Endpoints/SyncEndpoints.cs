@@ -28,7 +28,7 @@ public static class SyncEndpoints
     {
         var queueCounts = GetQueuesCount(bus);
 
-        return queueCounts.Any(x => x.Count > 0)
+        return queueCounts.Exists(x => x.Count > 0)
             ? Results.Json(queueCounts, statusCode: 204)
             : Results.Ok(queueCounts);
     }
