@@ -24,7 +24,7 @@ public class ProxyTest
    [Fact]
    public void ExtractProxyCredentials()
    {
-
+       Assert.True(false, "just a sample failing test");
       var proxy = new System.Net.WebProxy
       {
          BypassProxyOnLocal = true
