@@ -14,20 +14,23 @@ public static class SyncEndpoints
 
     public static void UseSyncEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet(BaseRoute + "/notifications/", GetSyncNotifications).AllowAnonymous();
-        app.MapPost(BaseRoute + "/notifications/", SyncNotifications).AllowAnonymous();
+        app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
+        app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
         app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
         app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
-        app.MapGet(BaseRoute + "/queueCounts/", GetQueueCounts).AllowAnonymous();
+        app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
     }
 
     private static async Task<IResult> GetQueueCounts([FromServices] IMasterMessageBus bus)
     {
         var queueCounts = GetQueuesCount(bus);
-        return Results.Ok(queueCounts);
+
+        return queueCounts.Exists(x => x.Count > 0)
+            ? Results.Json(queueCounts, statusCode: 204)
+            : Results.Ok(queueCounts);
     }
 
     private static async Task<IResult> GetSyncNotifications(

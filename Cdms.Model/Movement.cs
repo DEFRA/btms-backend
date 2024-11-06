@@ -24,9 +24,6 @@ public class Movement : IMongoIdentifiable, IDataEntity
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
     public string Type { get; set; } = "movements";
 
-    //[Attr]
-    //public List<MatchingStatus> Notifications { get; set; } = [new() { Matched = false }];
-
     [Attr] public List<Alvs.AlvsClearanceRequest> ClearanceRequests { get; set; } = default!;
 
     [Attr] public List<Alvs.AlvsClearanceRequest> Decisions { get; set; } = default!;
@@ -41,7 +38,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr] public string EntryReference { get; set; }
 
-    [Attr] public string MasterUCR { get; set; }
+    [Attr] public string MasteUcr { get; set; }
 
     [Attr] public int? DeclarationPartNumber { get; set; }
 
@@ -49,7 +46,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr] public DateTime? ArrivalDateTime { get; set; }
 
-    [Attr] public string SubmitterTURN { get; set; }
+    [Attr] public string SubmitterTurn { get; set; }
 
     [Attr] public string DeclarantId { get; set; }
 
@@ -60,10 +57,6 @@ public class Movement : IMongoIdentifiable, IDataEntity
     [Attr] public string GoodsLocationCode { get; set; }
 
     [Attr] public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
-
-    //[Attr]
-    //public Dictionary<string, TdmRelationshipObject> Relationships { get; set; } =
-    //    new() { { "notifications", TdmRelationshipObject.CreateDefault() } };
 
     [Attr]
     [JsonPropertyName("relationships")]

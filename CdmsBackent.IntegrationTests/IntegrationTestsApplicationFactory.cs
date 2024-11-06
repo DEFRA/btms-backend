@@ -54,4 +54,9 @@ public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
+
+    public async Task ClearDb(HttpClient client)
+    {
+        await client.GetAsync("mgmt/collections/drop");
+    }
 }
