@@ -1,7 +1,13 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Dynamic;
 using System.Text;
+using System.Text.Json;
+using Cdms.Backend.Data;
 using Cdms.Common;
+using Cdms.Model;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
 

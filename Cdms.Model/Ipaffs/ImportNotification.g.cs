@@ -18,7 +18,6 @@ namespace Cdms.Model.Ipaffs;
 /// <summary>
 /// 
 /// </summary>
-     [Resource] 
     public partial class ImportNotification  //: CustomStringMongoIdentifiable
 {
 
