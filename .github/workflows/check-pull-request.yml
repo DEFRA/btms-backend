@@ -14,7 +14,7 @@ on:
 jobs:
   pr-validator:
     name: Run Pull Request Checks
-    runs-on: macos-latest
+    runs-on: windows-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -23,7 +23,15 @@ jobs:
         with:
           dotnet-version: |
             8.0
-      - run: dotnet test 
+      - run: dotnet test  --logger trx --results-directory "TestResults" 
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Xunit Tests            # Name of the check run which will be created
+          path: TestResults/*.trz    # Path to test results
+          reporter: dotnet-trx        # Format of test results
+         
     ## SonarCloud
     ## Uncomment to unable SonarCloud scan
     ## Requires project to be set up in SonarCloud
