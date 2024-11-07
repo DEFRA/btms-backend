@@ -2,6 +2,7 @@ using Cdms.Backend.Data.Extensions;
 using Cdms.BlobService;
 using Cdms.BlobService.Extensions;
 using Cdms.Consumers.Interceptors;
+using Cdms.Consumers.MemoryQueue;
 using Cdms.Model.Alvs;
 using Cdms.SensitiveData;
 using Cdms.Types.Alvs;
@@ -21,8 +22,11 @@ namespace Cdms.Consumers.Extensions
         public static IServiceCollection AddConsumers(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
+            services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
+            services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsConsumerInterceptor<>));
-            services.AddTransient(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
+            services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
 
             //Message Bus
             services.AddSlimMessageBus(mbb =>
@@ -36,7 +40,7 @@ namespace Cdms.Consumers.Extensions
                                 cfg.EnableMessageHeaders = true;
                             })
                             .AddServicesFromAssemblyContaining<NotificationConsumer>(
-                                consumerLifetime: ServiceLifetime.Scoped)
+                                consumerLifetime: ServiceLifetime.Transient)
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {

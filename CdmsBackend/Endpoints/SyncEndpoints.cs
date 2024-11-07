@@ -1,12 +1,9 @@
 using Cdms.Business;
 using Cdms.Business.Commands;
-using Cdms.Common;
+using Cdms.Consumers.MemoryQueue;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using SlimMessageBus.Host;
-using SlimMessageBus.Host.Hybrid;
-using SlimMessageBus.Host.Memory;
 
 namespace CdmsBackend.Endpoints;
 
@@ -26,127 +23,93 @@ public static class SyncEndpoints
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
     }
 
-    private static async Task<IResult> GetQueueCounts([FromServices] IMasterMessageBus bus)
+    private static async Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
     {
-        var queueCounts = GetQueuesCount(bus);
-
-        return queueCounts.Exists(x => x.Count > 0)
-            ? Results.Json(queueCounts, statusCode: 204)
-            : Results.Ok(queueCounts);
+       return queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
+            ? Results.Ok(queueStatsMonitor.GetAll())
+            : Results.NoContent();
+       
     }
 
     private static async Task<IResult> GetSyncNotifications(
         [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
         SyncNotificationsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
-        return await SyncNotifications(mediator, bus, command);
+        return await SyncNotifications(mediator, queueStatsMonitor, command);
     }
 
     private static async Task<IResult> SyncNotifications([FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         [FromBody] SyncNotificationsCommand command)
     {
         await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("NOTIFICATIONS", bus);
+        await WaitUntilQueueIsEmpty("NOTIFICATIONS", queueStatsMonitor);
         return Results.Ok();
     }
 
     private static async Task<IResult> GetSyncClearanceRequests(
         [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
         SyncClearanceRequestsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
-        return await SyncClearanceRequests(mediator, bus, command);
+        return await SyncClearanceRequests(mediator, queueStatsMonitor, command);
     }
 
     private static async Task<IResult> SyncClearanceRequests(
         [FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         [FromBody] SyncClearanceRequestsCommand command)
     {
         await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("ALVS", bus);
+        await WaitUntilQueueIsEmpty("ALVS", queueStatsMonitor);
         return Results.Ok();
     }
 
     private static async Task<IResult> GetSyncGmrs(
         [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
         SyncGmrsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
-        return await SyncGmrs(mediator, bus, command);
+        return await SyncGmrs(mediator, queueStatsMonitor, command);
     }
 
     private static async Task<IResult> SyncGmrs([FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         [FromBody] SyncGmrsCommand command)
     {
         await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("GMR", bus);
+        await WaitUntilQueueIsEmpty("GMR", queueStatsMonitor);
         return Results.Ok();
     }
 
     private static async Task<IResult> SyncDecisions([FromServices] IMediator mediator,
-        [FromServices] IMasterMessageBus bus,
+        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         [FromBody] SyncDecisionsCommand command)
     {
         await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("DECISIONS", bus);
+        await WaitUntilQueueIsEmpty("DECISIONS", queueStatsMonitor);
         return Results.Ok();
     }
 
-    private static async Task WaitUntilQueueIsEmpty(string queueName, IMasterMessageBus bus)
+    private static async Task WaitUntilQueueIsEmpty(string queueName, IMemoryQueueStatsMonitor queueMonitor)
     {
-        int? count = GetQueueCount(queueName, bus);
+        int? count = GetQueueCount(queueName, queueMonitor);
         while (count.GetValueOrDefault(0) > 0)
         {
             await Task.Delay(TimeSpan.FromMicroseconds(200));
-            count = GetQueueCount(queueName, bus);
+            count = GetQueueCount(queueName, queueMonitor);
         }
     }
 
-    private static int? GetQueueCount(string queueName, IMasterMessageBus bus)
+    private static int? GetQueueCount(string queueName, IMemoryQueueStatsMonitor queueMonitor)
     {
-        return GetQueuesCount(bus)?.Find(x => x.Name == queueName).Count;
+        return queueMonitor.GetAll()[queueName].Count;
     }
-
-    private static List<QueueStats> GetQueuesCount(IMasterMessageBus bus)
-    {
-        var list = new List<QueueStats>();
-        if (bus is HybridMessageBus hybridMessageBus)
-        {
-            var childBus = hybridMessageBus.GetChildBus("InMemory");
-
-            var queues =
-                childBus.GetPrivateFieldValue<IDictionary<string, IMessageProcessorQueue>>(
-                    "_messageProcessorQueueByPath");
-            foreach (var kvp in queues)
-            {
-                if (kvp.Value is ConcurrentMessageProcessorQueue concurrentMessageProcessorQueue)
-                {
-                    var queue = concurrentMessageProcessorQueue
-                        .GetPrivateFieldValue<
-                            Queue<(object TransportMessage, IReadOnlyDictionary<string, object> MessageHeaders)>>(
-                            "_queue");
-
-                    list.Add(new QueueStats(kvp.Key, queue.Count));
-                }
-                else
-                {
-                    list.Add(new QueueStats(kvp.Key, 0));
-                }
-            }
-        }
-
-        return list;
-    }
-
-    public record QueueStats(string Name, int Count);
 }
