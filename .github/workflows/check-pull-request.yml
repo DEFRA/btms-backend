@@ -17,7 +17,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3      
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.11.0
+        with:
+          mongodb-version: '7.0'
+          mongodb-replica-set: test-rs
       - name: Test
         uses: actions/setup-dotnet@v3
         with:
