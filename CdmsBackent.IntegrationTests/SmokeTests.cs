@@ -30,6 +30,7 @@ namespace CdmsBackend.IntegrationTests
         {
             this.factory = factory;
             this.factory.testOutputHelper = testOutputHelper;
+            this.factory.DatabaseName = "SmokeTests";
             client =
                 this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         }
