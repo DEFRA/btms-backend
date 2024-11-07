@@ -1,7 +1,6 @@
-using Azure.Storage.Blobs;
+
 using Cdms.Backend.Data.Extensions;
 using Cdms.BlobService;
-using Cdms.Consumers.Tests;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
