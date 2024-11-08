@@ -10,7 +10,7 @@ public class ClearanceRequestBuilderTests
     public void WithReferenceNumber_WithChedA_ShouldCreateCorrectReference()
     {
         var builder = ClearanceRequestBuilder.Default();
-        builder.WithFirstReferenceNumber("123");
+        builder.WithReferenceNumber("123");
         var cr = builder.Build();
         cr.Items![0].Documents![0].DocumentReference!.Should().Be("123");
     }

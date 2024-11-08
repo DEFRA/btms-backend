@@ -35,7 +35,8 @@ namespace Cdms.Business.Tests.Commands
                 bus,
                 TestLogger.Create<SyncDecisionsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
-                blob);
+                blob,
+                Options.Create(new BusinessOptions()));
 
             await handler.Handle(command, CancellationToken.None);
 

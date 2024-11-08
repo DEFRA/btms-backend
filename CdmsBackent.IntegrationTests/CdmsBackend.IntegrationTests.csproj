@@ -10,6 +10,10 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="JsonApiSerializer" Version="2.0.1" />
+    <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
@@ -24,7 +28,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="EphemeralMongo7" Version="1.1.3" />
   </ItemGroup>
 
   <ItemGroup>

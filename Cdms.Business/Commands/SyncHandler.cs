@@ -57,12 +57,12 @@ public class SyncMetrics
     }
 }
 
-public class SyncCommand(BusinessOptions options) : IRequest
+public class SyncCommand() : IRequest
 {
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
     public SyncPeriod SyncPeriod { get; set; }
 
-    public string RootFolder { get; set; } = options.DmpBlobRootFolder;
+    public string RootFolder { get; set; }
 
     internal abstract class Handler<T>(
         SyncMetrics syncMetrics,

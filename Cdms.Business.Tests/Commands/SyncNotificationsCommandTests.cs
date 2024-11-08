@@ -30,11 +30,13 @@ namespace Cdms.Business.Tests.Commands
 
 
             var handler = new SyncNotificationsCommand.Handler(
+                
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 TestLogger.Create<SyncNotificationsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
-                blob);
+                blob,
+                Options.Create(new BusinessOptions()));
 
             // ACT
             await handler.Handle(command, CancellationToken.None);

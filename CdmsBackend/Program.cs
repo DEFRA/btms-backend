@@ -54,10 +54,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         .Bind(builder.Configuration.GetSection(ApiOptions.SectionName))
         .ValidateDataAnnotations();
     
-    // builder.Services.AddOptions<BusinessOptions>()
-    //     .Bind(builder.Configuration.GetSection(BusinessOptions.SectionName))
-    //     .ValidateDataAnnotations();
-    
     var logger = ConfigureLogging(builder);
 
     // Load certificates into Trust Store - Note must happen before Mongo and Http client connections

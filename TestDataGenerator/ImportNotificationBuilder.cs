@@ -18,6 +18,12 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
         return new ImportNotificationBuilder(file)
             .WithClean();
     }
+    
+    public static ImportNotificationBuilder<ImportNotification> Default()
+    {
+        return new ImportNotificationBuilder()
+            .WithClean();
+    }
 }
 
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>

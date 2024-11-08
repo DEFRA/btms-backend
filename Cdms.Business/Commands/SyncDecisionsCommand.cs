@@ -2,24 +2,29 @@ using Cdms.BlobService;
 using Cdms.SensitiveData;
 using Cdms.Types.Alvs;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SlimMessageBus;
 
 namespace Cdms.Business.Commands;
 
-public class SyncDecisionsCommand(BusinessOptions options) : SyncCommand(options)
+public class SyncDecisionsCommand : SyncCommand
 {
     internal class Handler(
         SyncMetrics syncMetrics,
         IPublishBus bus,
         ILogger<SyncDecisionsCommand> logger,
         ISensitiveDataSerializer sensitiveDataSerializer,
-        IBlobService blobService)
+        IBlobService blobService,
+        IOptions<BusinessOptions> businessOptions)
         : SyncCommand.Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService)
     {
         public override async Task Handle(SyncDecisionsCommand request, CancellationToken cancellationToken)
         {
+            var rootFolder = string.IsNullOrEmpty(request.RootFolder)
+                ? businessOptions.Value.DmpBlobRootFolder
+                : request.RootFolder;
             await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "DECISIONS",
-                $"{request.RootFolder}/DECISIONS");
+                $"{rootFolder}/DECISIONS");
         }
     }
 }

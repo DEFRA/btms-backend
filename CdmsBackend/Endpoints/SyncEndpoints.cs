@@ -28,16 +28,14 @@ public static class SyncEndpoints
        return queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
             ? Results.Ok(queueStatsMonitor.GetAll())
             : Results.NoContent();
-       
     }
 
     private static async Task<IResult> GetSyncNotifications(
-        [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
         [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
-        SyncNotificationsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
+        SyncNotificationsCommand command = new() { SyncPeriod = syncPeriod };
         return await SyncNotifications(mediator, queueStatsMonitor, command);
     }
 
@@ -51,12 +49,11 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncClearanceRequests(
-        [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
         [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
-        SyncClearanceRequestsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
+        SyncClearanceRequestsCommand command = new() { SyncPeriod = syncPeriod };
         return await SyncClearanceRequests(mediator, queueStatsMonitor, command);
     }
 
@@ -71,12 +68,11 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncGmrs(
-        [FromServices] IOptions<BusinessOptions> options,
         [FromServices] IMediator mediator,
         [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
-        SyncGmrsCommand command = new(options.Value) { SyncPeriod = syncPeriod };
+        SyncGmrsCommand command = new() { SyncPeriod = syncPeriod };
         return await SyncGmrs(mediator, queueStatsMonitor, command);
     }
 
