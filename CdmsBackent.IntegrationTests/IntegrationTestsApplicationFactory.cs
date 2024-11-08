@@ -1,7 +1,6 @@
-using Azure.Storage.Blobs;
+
 using Cdms.Backend.Data.Extensions;
 using Cdms.BlobService;
-using Cdms.Consumers.Tests;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,13 +27,14 @@ public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();
                 var settings = MongoClientSettings.FromConnectionString(options.Value.DatabaseUri);
-                var client = new MongoClient(MongoRunnerProvider.Instance.Get().ConnectionString);
+                var client = new MongoClient(settings);
 
                 var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
                 // convention must be registered before initialising collection
                 ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
-                return client.GetDatabase($"Cdms_MongoDb_{Random.Shared.Next()}_Test");
+                var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
+                return client.GetDatabase($"Cdms_MongoDb_{dbName}_Test");
             });
 
             var blobServiceDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IBlobService));
@@ -49,6 +49,8 @@ public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
     }
 
     internal ITestOutputHelper testOutputHelper { get; set; }
+
+    internal string DatabaseName { get; set; }
 
     public IMongoDbContext GetDbContext()
     {

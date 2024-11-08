@@ -24,7 +24,6 @@ public class ProxyTest
    [Fact]
    public void ExtractProxyCredentials()
    {
-
       var proxy = new System.Net.WebProxy
       {
          BypassProxyOnLocal = true
