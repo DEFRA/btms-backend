@@ -1,10 +1,19 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 
 namespace Cdms.Consumers.MemoryQueue;
 
 public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
 {
-    private ConcurrentDictionary<string, QueueStats> queueStatsByPath = new ConcurrentDictionary<string, QueueStats>();
+    private readonly ConcurrentDictionary<string, QueueStats> queueStatsByPath = new ConcurrentDictionary<string, QueueStats>();
+    readonly Counter<long> queueCount;
+
+    public MemoryQueueStatsMonitor(IMeterFactory meterFactory)
+    {
+        var meter = meterFactory.Create("Cdms");
+        queueCount = meter.CreateCounter<long>("messaging.cdms.memory.queue", "ea", "Number of messages in queue");
+    }
     public void Enqueue(string queue)
     {
         queueStatsByPath.AddOrUpdate(queue,
@@ -19,6 +28,13 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
                 stats.Enqueue();
                 return stats;
             });
+
+        var tagList = new TagList
+        {
+            { "messaging.cdms.service", Process.GetCurrentProcess().ProcessName },
+            { "messaging.cdms.queue", queue },
+        };
+        queueCount.Add(1, tagList);
     }
 
     public void Dequeue(string queue)
@@ -35,6 +51,13 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
                 stats.Dequeue();
                 return stats;
             });
+
+        var tagList = new TagList
+        {
+            { "messaging.cdms.service", Process.GetCurrentProcess().ProcessName },
+            { "messaging.cdms.queue", queue },
+        };
+        queueCount.Add(-1, tagList);
     }
 
     public IDictionary<string, QueueStats> GetAll()
