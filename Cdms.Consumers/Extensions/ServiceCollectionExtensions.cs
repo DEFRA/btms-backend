@@ -40,24 +40,24 @@ namespace Cdms.Consumers.Extensions
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {
-                                x.Instances(2);
+                                x.Instances(20);
                                 x.Topic("NOTIFICATIONS").WithConsumer<NotificationConsumer>();
                             })
                             .Produce<SearchGmrsForDeclarationIdsResponse>(x => x.DefaultTopic("GMR"))
                             .Consume<SearchGmrsForDeclarationIdsResponse>(x =>
                             {
-                                x.Instances(2);
+                                x.Instances(10);
                                 x.Topic("GMR").WithConsumer<GmrConsumer>();
                             })
                             .Produce<AlvsClearanceRequest>(x => x.DefaultTopic(nameof(AlvsClearanceRequest)))
                             .Consume<AlvsClearanceRequest>(x =>
                             {
-                                x.Instances(2);
+                                x.Instances(10);
                                 x.Topic("ALVS").WithConsumer<AlvsClearanceRequestConsumer>();
                             })
                             .Consume<AlvsClearanceRequest>(x =>
                             {
-                                x.Instances(2);
+                                x.Instances(10);
                                 x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
                             });
                     });
