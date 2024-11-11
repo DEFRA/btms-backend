@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using CdmsBackend.Config;
 using Microsoft.AspNetCore.Authorization;
@@ -67,7 +68,13 @@ public static class ManagementEndpoints
     private static async Task<IResult> GetCollectionsAsync(IMongoDatabase db)
     {
         var collections =
-            (await (await db.ListCollectionsAsync()).ToListAsync()).ConvertAll<string>(c => c["name"].ToString()!);
+            (await (await db.ListCollectionsAsync()).ToListAsync()).ConvertAll(c 
+                => new
+                {
+                    name = c["name"].ToString()!,
+                    size = db.GetCollection<object>(c["name"].ToString()!).CountDocuments(Builders<object>.Filter.Empty)
+                });
+        
         return Results.Ok(collections);
     }
 

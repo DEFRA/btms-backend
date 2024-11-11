@@ -29,7 +29,7 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
     {
-        return Results.Ok(store.GetJobs());
+        return Results.Ok(new { jobs = store.GetJobs() });
     }
 
     private static async Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
