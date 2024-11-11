@@ -1,5 +1,6 @@
 using Cdms.BlobService;
 using Cdms.SensitiveData;
+using Cdms.SyncJob;
 using Cdms.Types.Alvs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,15 +16,16 @@ public class SyncDecisionsCommand : SyncCommand
         ILogger<SyncDecisionsCommand> logger,
         ISensitiveDataSerializer sensitiveDataSerializer,
         IBlobService blobService,
-        IOptions<BusinessOptions> businessOptions)
-        : SyncCommand.Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService)
+        IOptions<BusinessOptions> businessOptions,
+        ISyncJobStore syncJobStore)
+        : SyncCommand.Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, syncJobStore)
     {
         public override async Task Handle(SyncDecisionsCommand request, CancellationToken cancellationToken)
         {
             var rootFolder = string.IsNullOrEmpty(request.RootFolder)
                 ? businessOptions.Value.DmpBlobRootFolder
                 : request.RootFolder;
-            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "DECISIONS",
+            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "DECISIONS", request.JobId,
                 $"{rootFolder}/DECISIONS");
         }
     }

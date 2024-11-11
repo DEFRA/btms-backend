@@ -1,6 +1,8 @@
 using Cdms.Business;
 using Cdms.Business.Commands;
 using Cdms.Consumers.MemoryQueue;
+using Cdms.SyncJob;
+using CdmsBackend.Mediatr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,6 +23,18 @@ public static class SyncEndpoints
         app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
+        app.MapGet(BaseRoute + "/sync-jobs/", GetAllSyncJobs).AllowAnonymous();
+        app.MapGet(BaseRoute + "/sync-jobs/{jobId}", GetSyncJob).AllowAnonymous();
+    }
+
+    private static async Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
+    {
+        return Results.Ok(store.GetJobs());
+    }
+
+    private static async Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
+    {
+        return Results.Ok(store.GetJobs().Where(x => x.JobId == Guid.Parse(jobId)));
     }
 
     private static async Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
@@ -31,81 +45,57 @@ public static class SyncEndpoints
     }
 
     private static async Task<IResult> GetSyncNotifications(
-        [FromServices] IMediator mediator,
+        [FromServices] ICdmsMediator mediator,
         [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
         SyncPeriod syncPeriod)
     {
         SyncNotificationsCommand command = new() { SyncPeriod = syncPeriod };
-        return await SyncNotifications(mediator, queueStatsMonitor, command);
+        return await SyncNotifications(mediator, command);
     }
 
-    private static async Task<IResult> SyncNotifications([FromServices] IMediator mediator,
-        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
+    private static async Task<IResult> SyncNotifications([FromServices] ICdmsMediator mediator,
         [FromBody] SyncNotificationsCommand command)
     {
-        await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("NOTIFICATIONS", queueStatsMonitor);
-        return Results.Ok();
+        await mediator.SendSyncJob(command);
+        return Results.Accepted($"/sync/queue-counts/", command.JobId);
+       
     }
 
     private static async Task<IResult> GetSyncClearanceRequests(
-        [FromServices] IMediator mediator,
-        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
+        [FromServices] ICdmsMediator mediator,
         SyncPeriod syncPeriod)
     {
         SyncClearanceRequestsCommand command = new() { SyncPeriod = syncPeriod };
-        return await SyncClearanceRequests(mediator, queueStatsMonitor, command);
+        return await SyncClearanceRequests(mediator, command);
     }
 
     private static async Task<IResult> SyncClearanceRequests(
-        [FromServices] IMediator mediator,
-        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
+        [FromServices] ICdmsMediator mediator,
         [FromBody] SyncClearanceRequestsCommand command)
     {
-        await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("ALVS", queueStatsMonitor);
-        return Results.Ok();
+        await mediator.SendSyncJob(command);
+        return Results.Accepted($"/sync/queue-counts/", command.JobId);
     }
 
     private static async Task<IResult> GetSyncGmrs(
-        [FromServices] IMediator mediator,
-        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
+        [FromServices] ICdmsMediator mediator,
         SyncPeriod syncPeriod)
     {
         SyncGmrsCommand command = new() { SyncPeriod = syncPeriod };
-        return await SyncGmrs(mediator, queueStatsMonitor, command);
+        return await SyncGmrs(mediator, command);
     }
 
-    private static async Task<IResult> SyncGmrs([FromServices] IMediator mediator,
-        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
+    private static async Task<IResult> SyncGmrs([FromServices] ICdmsMediator mediator,
         [FromBody] SyncGmrsCommand command)
     {
-        await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("GMR", queueStatsMonitor);
-        return Results.Ok();
+        await mediator.SendSyncJob(command);
+        return Results.Accepted($"/sync/queue-counts/", command.JobId);
     }
 
-    private static async Task<IResult> SyncDecisions([FromServices] IMediator mediator,
-        [FromServices] IMemoryQueueStatsMonitor queueStatsMonitor,
+    private static async Task<IResult> SyncDecisions([FromServices] ICdmsMediator mediator,
         [FromBody] SyncDecisionsCommand command)
     {
-        await mediator.Send(command);
-        await WaitUntilQueueIsEmpty("DECISIONS", queueStatsMonitor);
-        return Results.Ok();
-    }
-
-    private static async Task WaitUntilQueueIsEmpty(string queueName, IMemoryQueueStatsMonitor queueMonitor)
-    {
-        int? count = GetQueueCount(queueName, queueMonitor);
-        while (count.GetValueOrDefault(0) > 0)
-        {
-            await Task.Delay(TimeSpan.FromMicroseconds(200));
-            count = GetQueueCount(queueName, queueMonitor);
-        }
-    }
-
-    private static int? GetQueueCount(string queueName, IMemoryQueueStatsMonitor queueMonitor)
-    {
-        return queueMonitor.GetAll()[queueName].Count;
+        await mediator.SendSyncJob(command);
+        return Results.Accepted($"/sync/queue-counts/", command.JobId);
     }
 }

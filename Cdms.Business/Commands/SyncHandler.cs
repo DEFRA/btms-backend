@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using IRequest = MediatR.IRequest;
 using System.Text;
 using Cdms.Common;
+using Cdms.SyncJob;
 
 namespace Cdms.Business.Commands;
 
@@ -57,80 +58,69 @@ public class SyncMetrics
     }
 }
 
-public class SyncCommand() : IRequest
+public class SyncCommand() : IRequest, ISyncJob
 {
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
     public SyncPeriod SyncPeriod { get; set; }
 
     public string RootFolder { get; set; }
 
+    public Guid JobId { get; set; } = Guid.NewGuid();
+    public string Description => $"{GetType().Name} for {this.SyncPeriod}";
+
     internal abstract class Handler<T>(
         SyncMetrics syncMetrics,
         IPublishBus bus,
         ILogger<T> logger,
         ISensitiveDataSerializer sensitiveDataSerializer,
-        IBlobService blobService)
+        IBlobService blobService,
+        ISyncJobStore syncJobStore)
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
+        internal static readonly string ActivitySourceName = "Cdms";
+        internal static readonly ActivitySource ActivitySource = new(ActivitySourceName);
+
+        public const string ActivityName = "Cdms.ReadBlob";
+
         public abstract Task Handle(T request, CancellationToken cancellationToken);
 
-        protected async Task<Status> SyncBlobPaths<TRequest>(SyncPeriod period, string topic, params string[] paths)
+        protected async Task SyncBlobPaths<TRequest>(SyncPeriod period, string topic, Guid jobId, params string[] paths)
         {
+            var job = syncJobStore.GetJob(jobId);
+            job.Start();
             logger.LogInformation("SyncNotifications period: {period}", period.ToString());
             try
             {
-                var itemCount = 0;
-                var erroredCount = 0;
-
                 await Parallel.ForEachAsync(paths, async (path, token) =>
                 {
-                    var (e, i) = await SyncBlobPath<TRequest>(path, period, topic, token);
-                    itemCount += i;
-                    erroredCount += e;
+                     await SyncBlobPath<TRequest>(path, period, topic, job, token);
                 });
-
-
-                return new Status()
-                {
-                    Success = true, Description = $"Connected. {itemCount} items upserted. {erroredCount} errors."
-                };
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error syncing blob paths");
-
-                return new Status() { Success = false, Description = ex.Message };
+            }
+            finally
+            {
+                job.CompletedReadingBlobs();
             }
         }
 
-        protected async Task<(int, int)> SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic,
+        protected async Task SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
             logger.LogInformation("Sync Path: {Path} - period: {period}", path, period.ToString());
-            var itemCount = 0;
-            var erroredCount = 0;
 
             var result = blobService.GetResourcesAsync($"{path}{GetPeriodPath(period)}", cancellationToken);
 
             await Parallel.ForEachAsync(result, cancellationToken, async (item, token) =>
             {
-                var success = await SyncBlob<TRequest>(path, topic, item, token);
-                if (success)
-                {
-                    Interlocked.Increment(ref itemCount);
-                }
-                else
-                {
-                    Interlocked.Increment(ref erroredCount);
-                }
+                await SyncBlob<TRequest>(path, topic, item, job, token);
             });
-
-
-            return (erroredCount, itemCount);
         }
 
-        private async Task<bool> SyncBlob<TRequest>(string path, string topic, IBlobItem item,
+        private async Task SyncBlob<TRequest>(string path, string topic, IBlobItem item, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
             var timer = Stopwatch.StartNew();
@@ -144,24 +134,33 @@ public class SyncCommand() : IRequest
             try
             {
                 syncMetrics.SyncStarted(tagList);
-                var blobContent = await item.Download(cancellationToken);
-                var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
-                await bus.Publish(message,
-                    topic,
-                    headers: new Dictionary<string, object>() { { "messageId", item.Name } },
-                    cancellationToken: cancellationToken);
+                using (var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                {
+                    var blobContent = await item.Download(cancellationToken);
+                    var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
+                    var headers = new Dictionary<string, object>()
+                    {
+                        { "messageId", item.Name }, { "jobId", job.JobId }
+                    };
+                    if (ActivitySource.HasListeners())
+                    {
+                        headers.Add("traceparent", activity.Id);
+                    }
+                    await bus.Publish(message,
+                        topic,
+                        headers: headers,
+                        cancellationToken: cancellationToken);
+                }
 
                 logger.LogInformation("Synced blob item {blob}", item.Name);
-
-                return true;
+                job.BlobSuccess();
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Failed process blob item {blob}", item.Name);
 
                 syncMetrics.AddException(ex, tagList);
-
-                return false;
+                job.BlobFailed();
             }
             finally
             {

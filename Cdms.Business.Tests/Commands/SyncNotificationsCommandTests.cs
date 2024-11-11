@@ -2,6 +2,7 @@ using Cdms.BlobService;
 using Cdms.Business.Commands;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
+using Cdms.SyncJob;
 using Cdms.Types.Ipaffs;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -36,7 +37,8 @@ namespace Cdms.Business.Tests.Commands
                 TestLogger.Create<SyncNotificationsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
                 blob,
-                Options.Create(new BusinessOptions()));
+                Options.Create(new BusinessOptions()),
+                new SyncJobStore());
 
             // ACT
             await handler.Handle(command, CancellationToken.None);
