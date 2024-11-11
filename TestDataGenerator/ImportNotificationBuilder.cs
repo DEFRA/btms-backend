@@ -39,8 +39,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     
     protected ImportNotificationBuilder<T> WithClean()
     {
-        // TODO : This was needed temporarily due to an issue in serialisation
-        // Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
+        // TODO : This was needed temporarily due to an issue in serialisation, e.g Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
         
         return this; 
     }
@@ -78,16 +77,4 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return With(x => x.LastUpdated, entryDate);
     }
-
-    // public ImportNotificationBuilder<T> WithStatus(Status status)
-    // {
-    //     var field = typeof(Status).GetField(status.ToString());
-    //     var description = field
-    //         ?.GetCustomAttributes(typeof(EnumMemberAttribute), false)
-    //         .Cast<EnumMemberAttribute>()
-    //         .Select(x => x.Value)
-    //         .FirstOrDefault();
-    //
-    //     return With(x => x.Status, description ?? status.ToString("G"));
-    // }
 }
