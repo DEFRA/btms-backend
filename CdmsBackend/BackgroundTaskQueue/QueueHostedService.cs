@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 namespace CdmsBackend.BackgroundTaskQueue;
 
@@ -30,20 +30,25 @@ internal class QueueHostedService : Microsoft.Extensions.Hosting.BackgroundServi
         {
             var workItem = await TaskQueue.DequeueAsync(stoppingToken);
 
-            try
+            ThreadPool.QueueUserWorkItem(state =>
             {
-                _logger.LogInformation("Starting execution of {workItem}...", nameof(workItem));
-                using (var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                try
                 {
-                    await workItem(stoppingToken);
-                }
+                    _logger.LogInformation("Starting execution of {workItem}...", nameof(workItem));
+                    using (var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                    {
+                        workItem(stoppingToken).GetAwaiter().GetResult();
+                    }
 
-                _logger.LogInformation("Execution of {workItem} completed!!!", nameof(workItem));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occured executing {workItem}", nameof(workItem));
-            }
+                    _logger.LogInformation("Execution of {workItem} completed!!!", nameof(workItem));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error occured executing {workItem}", nameof(workItem));
+                }
+            });
+
+
         }
     }
 
