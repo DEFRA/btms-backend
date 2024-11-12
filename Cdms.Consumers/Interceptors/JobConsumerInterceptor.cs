@@ -1,3 +1,4 @@
+using Cdms.Consumers.Extensions;
 using Cdms.SyncJob;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
@@ -23,10 +24,12 @@ public class JobConsumerInterceptor<TMessage>(ISyncJobStore store) : IConsumerIn
         }
         catch (Exception e)
         {
-            job.MessageFailed();
+            if (context.GetRetryAttempt() == 5)
+            {
+                job.MessageFailed();
+            }
+
             throw;
         }
-
-        return await next();
     }
 }
