@@ -19,6 +19,7 @@ public static class ConsumerContextExtensions
     public static void IncrementRetryAttempt(this IConsumerContext consumerContext)
     {
         var retryCount = consumerContext.GetRetryAttempt();
-        consumerContext.Properties[MessageBusHeaders.RetryCount] = ++retryCount;
+        retryCount++;
+        consumerContext.Properties[MessageBusHeaders.RetryCount] = retryCount;
     }
 }

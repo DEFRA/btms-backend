@@ -106,7 +106,7 @@ internal class Program
             }
         };
 
-        logger.LogInformation("{datasets-count} dataset(s) configured", datasets.Length);
+        logger.LogInformation("{datasetsCount} dataset(s) configured", datasets.Length);
 
         // Allows us to filter the sets and scenarios we want to run at any given time
         // Could be fed by CLI for example
@@ -123,7 +123,7 @@ internal class Program
 
         foreach (var dataset in setsToRun)
         {
-            logger.LogInformation("{scenarios-count)} scenario(s) configured", dataset.scenarios.Count());
+            logger.LogInformation("{scenariosCount)} scenario(s) configured", dataset.scenarios.Count());
 
             logger.LogInformation("Clearing down storage path");
             await generator.Cleardown(dataset.rootPath);
