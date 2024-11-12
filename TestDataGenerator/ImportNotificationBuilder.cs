@@ -37,9 +37,12 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
     }
     
+    /// <summary>
+    /// Allows any customisations needed, such as removing problems with serialisation, e.g Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
+    /// </summary>
     protected ImportNotificationBuilder<T> WithClean()
     {
-        // TODO : This was needed temporarily due to an issue in serialisation, e.g Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
+        // TODO : 
         
         return this; 
     }

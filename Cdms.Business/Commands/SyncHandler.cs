@@ -9,8 +9,6 @@ using System.Text.Json.Serialization;
 using IRequest = MediatR.IRequest;
 using System.Text;
 using Cdms.Common;
-using Cdms.Consumers.MemoryQueue;
-using Cdms.Model;
 using Cdms.SyncJob;
 
 namespace Cdms.Business.Commands;

@@ -116,7 +116,7 @@ internal class Program
                 scenarios = d.scenarios
                     .Where(s =>
                         s.scenario == "ChedASimpleMatch"
-                    ),
+                    ).ToArray(),
                 dataset = d.dataset,
                 rootPath = d.rootPath
             });
