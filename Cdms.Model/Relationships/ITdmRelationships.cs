@@ -2,5 +2,5 @@ namespace Cdms.Model.Relationships;
 
 public interface ITdmRelationships
 {
-    public (string, TdmRelationshipObject) GetRelationshipObject();
+    public List<(string, TdmRelationshipObject)> GetRelationshipObjects();
 }

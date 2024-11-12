@@ -1,6 +1,6 @@
-﻿using Cdms.BlobService;
+using Cdms.BlobService;
 
-namespace CdmsBackend.IntegrationTests;
+namespace CdmsBackend.IntegrationTests.Helpers;
 
 public class LocalBlobService(string root) : IBlobService
 {

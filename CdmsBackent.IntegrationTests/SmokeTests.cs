@@ -11,6 +11,7 @@ using Cdms.Model;
 using Cdms.Model.Gvms;
 using Cdms.Model.Ipaffs;
 using Cdms.SyncJob;
+using CdmsBackend.IntegrationTests.Helpers;
 using CdmsBackend.IntegrationTests.JsonApiClient;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
@@ -55,9 +56,8 @@ namespace CdmsBackend.IntegrationTests
             factory.GetDbContext().Notifications.Count().Should().Be(5);
 
             // Check Api
-            var jsonClientResponse = client.AsJsonApiClient().Get<ImportNotification>("api/import-notifications");
-            jsonClientResponse.IsSuccess.Should().BeTrue();
-            jsonClientResponse.DocumentRoot.Data.Length.Should().Be(5);
+            var jsonClientResponse = client.AsJsonApiClient().Get("api/import-notifications");
+            jsonClientResponse.Data.Count.Should().Be(5);
         }
 
         [Fact]
@@ -82,11 +82,11 @@ namespace CdmsBackend.IntegrationTests
 
             // Check Api
             var jsonClientResponse =
-                client.AsJsonApiClient().GetById<Movement>("CHEDPGB20241039875A5", "api/movements");
-            jsonClientResponse.IsSuccess.Should().BeTrue();
-            jsonClientResponse.DocumentRoot.Data.Items[0].Checks.Length.Should().Be(1);
-            jsonClientResponse.DocumentRoot.Data.Items[0].Checks[0].CheckCode.Should().Be("H234");
-            jsonClientResponse.DocumentRoot.Data.Items[0].Checks[0].DepartmentCode.Should().Be("PHA");
+                client.AsJsonApiClient().GetById("CHEDPGB20241039875A5", "api/movements");
+            var movement = jsonClientResponse.GetResourceObject<Movement>();
+            movement.Items[0].Checks.Length.Should().Be(1);
+            movement.Items[0].Checks[0].CheckCode.Should().Be("H234");
+            movement.Items[0].Checks[0].DepartmentCode.Should().Be("PHA");
         }
 
         [Fact]
@@ -105,9 +105,8 @@ namespace CdmsBackend.IntegrationTests
             factory.GetDbContext().Movements.Count().Should().Be(5);
 
             // Check Api
-            var jsonClientResponse = client.AsJsonApiClient().Get<Movement>("api/movements");
-            jsonClientResponse.IsSuccess.Should().BeTrue();
-            jsonClientResponse.DocumentRoot.Data.Length.Should().Be(5);
+            var jsonClientResponse = client.AsJsonApiClient().Get("api/movements");
+            jsonClientResponse.Data.Count.Should().Be(5);
         }
 
         [Fact]
@@ -126,9 +125,8 @@ namespace CdmsBackend.IntegrationTests
             factory.GetDbContext().Gmrs.Count().Should().Be(3);
 
             // Check Api
-            var jsonClientResponse = client.AsJsonApiClient().Get<Gmr>("api/gmrs");
-            jsonClientResponse.IsSuccess.Should().BeTrue();
-            jsonClientResponse.DocumentRoot.Data.Length.Should().Be(3);
+            var jsonClientResponse = client.AsJsonApiClient().Get("api/gmrs");
+            jsonClientResponse.Data.Count.Should().Be(3);
         }
 
         private async Task WaitOnJobCompleting(Uri jobUri)

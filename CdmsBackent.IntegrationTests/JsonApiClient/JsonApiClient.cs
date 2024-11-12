@@ -1,9 +1,10 @@
-﻿using System.Net.Http.Headers;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using JsonApiDotNetCore.Serialization.JsonConverters;
 using JsonApiSerializer;
-using JsonApiSerializer.JsonApi;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CdmsBackend.IntegrationTests.JsonApiClient;
 
@@ -13,24 +14,13 @@ public class JsonApiClient(HttpClient client)
 
     static MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue(strContentType);
 
-    public static void HandleDeserializationError(object sender, ErrorEventArgs errorArgs)
-    {
-        errorArgs.ErrorContext.Handled = true;
-    }
 
-    /// <summary>
-    /// Jsonapi serializer settings.
-    /// </summary>
-    static JsonApiSerializerSettings settings = new JsonApiSerializerSettings() { Error = HandleDeserializationError, };
-
-    public Response<TRequest[]> Get<TRequest>(
+    public ManyItemsJsonApiDocument Get(
         string path,
         Dictionary<string, string> query = null,
         Dictionary<string, string> headers = null,
-        IList<string> relations = null) where TRequest : class, new()
+        IList<string> relations = null)
     {
-        var response = new Response<TRequest[]>();
-
         client.DefaultRequestHeaders.Accept.Add(contentType);
 
         if (headers != null)
@@ -58,36 +48,21 @@ public class JsonApiClient(HttpClient client)
 
         HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
 
-        response.HttpStatusCode = responseMessage.StatusCode;
-
-        response.IsSuccess = responseMessage.IsSuccessStatusCode;
-
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
-        if (responseMessage.IsSuccessStatusCode)
-        {
-            response.DocumentRoot =
-                JsonConvert.DeserializeObject<DocumentRoot<TRequest[]>>(
-                    responseMessage.Content.ReadAsStringAsync().Result, settings);
-        }
-        else
-        {
-            response.Error =
-                JsonConvert.DeserializeObject<Error>(responseMessage.Content.ReadAsStringAsync().Result, settings);
-        }
-
-        return response;
+        return JsonSerializer.Deserialize<ManyItemsJsonApiDocument>(s,
+            new JsonSerializerOptions()
+            {
+                Converters = { new SingleOrManyDataConverterFactory() }, PropertyNameCaseInsensitive = true
+            });
     }
 
-    public Response<TRequest> GetById<TRequest>(string id,
+    public SingleItemJsonApiDocument GetById(string id,
         string path,
         Dictionary<string, string> query = null,
         Dictionary<string, string> headers = null,
-        IList<string> relations = null) where TRequest : class, new()
+        IList<string> relations = null)
     {
-        var response = new Response<TRequest>();
-
-
         client.DefaultRequestHeaders.Accept.Add(contentType);
 
         if (headers != null)
@@ -115,23 +90,12 @@ public class JsonApiClient(HttpClient client)
 
         HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
 
-        response.HttpStatusCode = responseMessage.StatusCode;
+        var s = responseMessage.Content.ReadAsStringAsync().Result;
 
-        response.IsSuccess = responseMessage.IsSuccessStatusCode;
-
-        if (responseMessage.IsSuccessStatusCode)
-        {
-            response.DocumentRoot =
-                JsonConvert.DeserializeObject<DocumentRoot<TRequest>>(
-                    responseMessage.Content.ReadAsStringAsync().Result, settings);
-        }
-        else
-        {
-            response.Error =
-                JsonConvert.DeserializeObject<Error>(responseMessage.Content.ReadAsStringAsync().Result, settings);
-        }
-
-
-        return response;
+        return JsonSerializer.Deserialize<SingleItemJsonApiDocument>(s,
+            new JsonSerializerOptions()
+            {
+                Converters = { new SingleOrManyDataConverterFactory() }, PropertyNameCaseInsensitive = true
+            });
     }
 }

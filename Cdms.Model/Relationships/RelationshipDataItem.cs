@@ -6,7 +6,7 @@ namespace Cdms.Model.Relationships;
 
 public sealed class RelationshipDataItem
 {
-    [Attr] public bool Matched { get; set; } = default!;
+    [Attr] public bool? Matched { get; set; } = default!;
 
     [Attr] public string Type { get; set; }
 
@@ -22,6 +22,37 @@ public sealed class RelationshipDataItem
     //public Dictionary<string, string> AdditionalInformation { get; set; 
 
     public int? MatchingLevel { get; set; }
+
+    public Dictionary<string, object?> ToDictionary()
+    {
+        var meta = new Dictionary<string, object?>();
+        if (Matched.HasValue)
+        {
+            meta.Add("matched", Matched);
+        }
+
+        if (SourceItem.HasValue)
+        {
+            meta.Add("sourceItem", SourceItem);
+        }
+
+        if (DestinationItem.HasValue)
+        {
+            meta.Add("destinationItem", DestinationItem);
+        }
+
+        if (MatchingLevel.HasValue)
+        {
+            meta.Add("matchingLevel", MatchingLevel);
+        }
+
+        if (!string.IsNullOrEmpty(Links?.Self))
+        {
+            meta.Add("self", Links.Self);
+        }
+
+        return meta;
+    }
 
     public static RelationshipDataItem CreateFromNotification(ImportNotification notification, Movement movement,
         string matchReference, bool matched = true, string reason = null)

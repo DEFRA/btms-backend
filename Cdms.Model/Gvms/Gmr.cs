@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Cdms.Model.Auditing;
 using Cdms.Model.Data;
+using Cdms.Model.Relationships;
 using JsonApiDotNetCore.MongoDb.Resources;
 using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
@@ -37,4 +38,8 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
     public string? LocalId { get; set; }
 
     [Attr] public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
+
+    [Attr]
+    [JsonPropertyName("relationships")]
+    public GmrRelationships Relationships { get; set; } = new GmrRelationships();
 }
