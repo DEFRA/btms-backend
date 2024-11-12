@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -40,6 +40,7 @@
     <ProjectReference Include="..\Cdms.Business\Cdms.Business.csproj" />
     <ProjectReference Include="..\Cdms.Consumers\Cdms.Consumers.csproj" />
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
+    <ProjectReference Include="..\Cdms.SyncJob\Cdms.SyncJob.csproj" />
   </ItemGroup>
 
   <ItemGroup>

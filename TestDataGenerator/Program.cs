@@ -63,20 +63,20 @@ internal class Program
             new
             {
                 dataset = "LoadTest",
-                rootPath = "GENERATED-LOADTEST",
+                rootPath = "GENERATED-LOADTEST-90Dx10k",
                 scenarios = new[]
                 {
                     new
                     {
                         scenario = "ChedASimpleMatch",
-                        count = 500,
-                        days = 14,
+                        count = 10000,
+                        days = 90,
                         generator = (ScenarioGenerator)chedASimpleMatch
                     },
                     new
                     {
                         scenario = "ChedAManyCommodities",
-                        count = 500,
+                        count = 100,
                         days = 14,
                         generator = (ScenarioGenerator)chedAManyCommodities
                     }
@@ -106,11 +106,24 @@ internal class Program
             }
         };
 
-        logger.LogInformation($"{datasets.Length} dataset(s) configured");
+        logger.LogInformation("{datasetsCount} dataset(s) configured", datasets.Length);
 
-        foreach (var dataset in datasets)
+        // Allows us to filter the sets and scenarios we want to run at any given time
+        // Could be fed by CLI for example
+        var setsToRun = datasets
+            .Where(d => d.dataset == "LoadTest")
+            .Select(d => new {
+                scenarios = d.scenarios
+                    .Where(s =>
+                        s.scenario == "ChedASimpleMatch"
+                    ).ToArray(),
+                dataset = d.dataset,
+                rootPath = d.rootPath
+            });
+
+        foreach (var dataset in setsToRun)
         {
-            logger.LogInformation($"{dataset.scenarios.Length} scenario(s) configured");
+            logger.LogInformation("{scenariosCount} scenario(s) configured", dataset.scenarios.Count());
 
             logger.LogInformation("Clearing down storage path");
             await generator.Cleardown(dataset.rootPath);
@@ -121,7 +134,7 @@ internal class Program
                 await generator.Generate(s.count, s.days, s.generator, dataset.rootPath);
             }
 
-            logger.LogInformation($"{dataset.dataset} Done");
+            logger.LogInformation("{dataset} Done", dataset.dataset);
         }
 
         logger.LogInformation("Done");

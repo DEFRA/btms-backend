@@ -1,3 +1,4 @@
+using Cdms.Consumers.Extensions;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 using SlimMessageBus.Host;
@@ -11,13 +12,8 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
     private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
         Func<Task<object>> retry, Exception exception)
     {
-        var value = consumerContext.Properties[MessageBusHeaders.RetryCount];
-
-
-        var retryCount = (int)value;
-        retryCount++;
-        consumerContext.Properties[MessageBusHeaders.RetryCount] = retryCount;
-
+        consumerContext.IncrementRetryAttempt();
+        var retryCount = consumerContext.GetRetryAttempt();
         logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
         if (retryCount > 5)
         {

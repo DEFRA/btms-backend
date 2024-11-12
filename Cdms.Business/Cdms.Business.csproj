@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
     <ProjectReference Include="..\Cdms.SensitiveData\Cdms.SensitiveData.csproj" />
+    <ProjectReference Include="..\Cdms.SyncJob\Cdms.SyncJob.csproj" />
     <ProjectReference Include="..\Cdms.Types.Alvs.Mapping.V1.Tests\Cdms.Types.Alvs.Mapping.V1.Tests.csproj" />
     <ProjectReference Include="..\Cdms.Types.Alvs.Mapping.V1\Cdms.Types.Alvs.Mapping.V1.csproj" />
     <ProjectReference Include="..\Cdms.Types.Alvs.V1\Cdms.Types.Alvs.V1.csproj" />

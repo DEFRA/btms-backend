@@ -5,34 +5,46 @@ namespace TestDataGenerator;
 
 public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotification>
 {
-    public ImportNotificationBuilder()
+    private ImportNotificationBuilder()
     {
     }
 
-    public ImportNotificationBuilder(string file) : base(file)
+    private ImportNotificationBuilder(string file) : base(file)
     {
+    }
+    
+    public static ImportNotificationBuilder<ImportNotification> FromFile(string file)
+    {
+        return new ImportNotificationBuilder(file)
+            .WithClean();
+    }
+    
+    public static ImportNotificationBuilder<ImportNotification> Default()
+    {
+        return new ImportNotificationBuilder()
+            .WithClean();
     }
 }
 
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>
     where T : ImportNotification, new()
 {
-    public ImportNotificationBuilder() : base()
+    protected ImportNotificationBuilder() : base()
     {
     }
 
-    public ImportNotificationBuilder(string file) : base(file)
+    protected ImportNotificationBuilder(string file) : base(file)
     {
     }
-
-    public static ImportNotificationBuilder<T> Default()
+    
+    /// <summary>
+    /// Allows any customisations needed, such as removing problems with serialisation, e.g Do(n => Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
+    /// </summary>
+    protected ImportNotificationBuilder<T> WithClean()
     {
-        return new ImportNotificationBuilder<T>();
-    }
-
-    public static ImportNotificationBuilder<T> FromFile(string file)
-    {
-        return new ImportNotificationBuilder<T>(file);
+        // TODO : 
+        
+        return this; 
     }
 
     public ImportNotificationBuilder<T> WithRandomCommodities(int min, int max)
@@ -42,9 +54,10 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         return Do((n) =>
         {
             var commodities = Enumerable.Range(0, commodityCount)
-                .Select(x => n.PartOne!.Commodities.CommodityComplements[0]
+                .Select(x => n.PartOne!.Commodities!.CommodityComplements![0]
                 ).ToArray();
-            n.PartOne!.Commodities.CommodityComplements = commodities;
+            
+            n.PartOne!.Commodities!.CommodityComplements = commodities;
         });
     }
 
@@ -67,16 +80,4 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return With(x => x.LastUpdated, entryDate);
     }
-
-    // public ImportNotificationBuilder<T> WithStatus(Status status)
-    // {
-    //     var field = typeof(Status).GetField(status.ToString());
-    //     var description = field
-    //         ?.GetCustomAttributes(typeof(EnumMemberAttribute), false)
-    //         .Cast<EnumMemberAttribute>()
-    //         .Select(x => x.Value)
-    //         .FirstOrDefault();
-    //
-    //     return With(x => x.Status, description ?? status.ToString("G"));
-    // }
 }

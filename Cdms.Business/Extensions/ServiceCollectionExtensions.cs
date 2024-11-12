@@ -17,7 +17,6 @@ namespace Cdms.Business.Extensions
                 .Bind(configuration.GetSection(SensitiveDataOptions.SectionName))
                 .ValidateDataAnnotations();
 
-
             services.AddOptions<BlobServiceOptions>()
                 .Bind(configuration.GetSection(BlobServiceOptions.SectionName))
                 .ValidateDataAnnotations();
@@ -26,6 +25,9 @@ namespace Cdms.Business.Extensions
                 .Bind(configuration.GetSection(BlobServiceOptions.SectionName))
                 .ValidateDataAnnotations();
 
+            services.AddOptions<BusinessOptions>()
+                .Bind(configuration.GetSection(BusinessOptions.SectionName))
+                .ValidateDataAnnotations();
 
             services.AddMongoDbContext(configuration);
             services.AddBlobStorage(configuration);

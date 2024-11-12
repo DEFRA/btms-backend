@@ -2,6 +2,7 @@ using Cdms.BlobService;
 using Cdms.Business.Commands;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
+using Cdms.SyncJob;
 using Cdms.Types.Ipaffs;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -21,6 +22,8 @@ namespace Cdms.Business.Tests.Commands
             // ARRANGE
             var notification = CreateImportNotification();
             var command = new SyncNotificationsCommand();
+            var jobStore = new SyncJobStore();
+            jobStore.CreateJob(command.JobId, "Test Job");
 
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();
@@ -30,11 +33,14 @@ namespace Cdms.Business.Tests.Commands
 
 
             var handler = new SyncNotificationsCommand.Handler(
+                
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 TestLogger.Create<SyncNotificationsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
-                blob);
+                blob,
+                Options.Create(new BusinessOptions()),
+                jobStore);
 
             // ACT
             await handler.Handle(command, CancellationToken.None);

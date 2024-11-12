@@ -2,6 +2,7 @@ using Cdms.BlobService;
 using Cdms.Business.Commands;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
+using Cdms.SyncJob;
 using Cdms.Types.Alvs;
 using Cdms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,9 @@ namespace Cdms.Business.Tests.Commands
         {
             var clearanceRequest = ClearanceRequestBuilder.Default().Build();
             var command = new SyncClearanceRequestsCommand();
+            var jobStore = new SyncJobStore();
+            jobStore.CreateJob(command.JobId, "Test Job");
+
 
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();
@@ -36,7 +40,9 @@ namespace Cdms.Business.Tests.Commands
                 bus,
                 TestLogger.Create<SyncClearanceRequestsCommand>(outputHelper),
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
-                blob);
+                blob,
+                Options.Create(new BusinessOptions()),
+                jobStore);
 
             await handler.Handle(command, CancellationToken.None);
 
