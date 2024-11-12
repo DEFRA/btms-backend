@@ -182,8 +182,11 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 
     app.UseJsonApi();
     app.MapControllers();
-
-    app.MapHealthChecks("/health",
+    
+    var dotnetHealthEndpoint = "/health-dotnet";
+    // var dotnetHealthEndpoint = "/health";
+    app.MapGet("/health", GetStatus).AllowAnonymous();
+    app.MapHealthChecks(dotnetHealthEndpoint,
         new HealthCheckOptions()
         {
             Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -193,6 +196,11 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     app.UseManagementEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
 
     return app;
+}
+
+static IResult GetStatus()
+{
+    return Results.Ok();
 }
 
 //Here to it can be referenced by integration tests
