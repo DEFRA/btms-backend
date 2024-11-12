@@ -17,7 +17,7 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
     public void Enqueue(string queue)
     {
         queueStatsByPath.AddOrUpdate(queue,
-            s =>
+            _ =>
             {
                 var value = new QueueStats(queue);
                 value.Enqueue();
@@ -40,7 +40,7 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
     public void Dequeue(string queue)
     {
         queueStatsByPath.AddOrUpdate(queue,
-            s =>
+            _ =>
             {
                 var value = new QueueStats(queue);
                 value.Dequeue();

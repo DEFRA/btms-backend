@@ -40,7 +40,6 @@ await app.RunAsync();
 [ExcludeFromCodeCoverage]
 static WebApplication CreateWebApplication(string[] args)
 {
-    var c = Environment.ProcessorCount;
     var builder = WebApplication.CreateBuilder(args);
 
     ConfigureWebApplication(builder);
