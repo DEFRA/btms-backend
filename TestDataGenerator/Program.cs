@@ -123,7 +123,7 @@ internal class Program
 
         foreach (var dataset in setsToRun)
         {
-            logger.LogInformation("{scenariosCount)} scenario(s) configured", dataset.scenarios.Count());
+            logger.LogInformation("{scenariosCount} scenario(s) configured", dataset.scenarios.Count());
 
             logger.LogInformation("Clearing down storage path");
             await generator.Cleardown(dataset.rootPath);
