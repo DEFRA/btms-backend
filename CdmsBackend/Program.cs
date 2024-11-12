@@ -147,7 +147,8 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
     builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
-        .Enrich.With<LogLevelMapper>();
+        .Enrich.With<LogLevelMapper>()
+        .Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"));
 
     if (builder.Environment.IsDevelopment())
     {
