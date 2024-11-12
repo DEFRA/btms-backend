@@ -9,7 +9,7 @@ namespace Cdms.Backend.Data.Extensions
 {
     public class MongoDbOptions
     {
-        public const string SectionName = nameof(MongoDbOptions);
+        public const string SectionName = "Mongo";
 
         [Required] public string DatabaseUri { get; set; }
 
