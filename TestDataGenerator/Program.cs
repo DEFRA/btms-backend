@@ -73,42 +73,55 @@ internal class Program
                         days = 90,
                         generator = (ScenarioGenerator)chedASimpleMatch
                     },
-                    // new
-                    // {
-                    //     scenario = "ChedAManyCommodities",
-                    //     count = 100,
-                    //     days = 14,
-                    //     generator = (ScenarioGenerator)chedAManyCommodities
-                    // }
+                    new
+                    {
+                        scenario = "ChedAManyCommodities",
+                        count = 100,
+                        days = 14,
+                        generator = (ScenarioGenerator)chedAManyCommodities
+                    }
                 }
             },
-            // new
-            // {
-            //     dataset = "PHA",
-            //     rootPath = "GENERATED-PHA",
-            //     scenarios = new[]
-            //     {
-            //         new
-            //         {
-            //             scenario = "ChedASimpleMatch",
-            //             count = 10,
-            //             days = 30,
-            //             generator = (ScenarioGenerator)chedASimpleMatch
-            //         },
-            //         new
-            //         {
-            //             scenario = "ChedAManyCommodities",
-            //             count = 10,
-            //             days = 30,
-            //             generator = (ScenarioGenerator)chedAManyCommodities
-            //         }
-            //     }
-            // }
+            new
+            {
+                dataset = "PHA",
+                rootPath = "GENERATED-PHA",
+                scenarios = new[]
+                {
+                    new
+                    {
+                        scenario = "ChedASimpleMatch",
+                        count = 10,
+                        days = 30,
+                        generator = (ScenarioGenerator)chedASimpleMatch
+                    },
+                    new
+                    {
+                        scenario = "ChedAManyCommodities",
+                        count = 10,
+                        days = 30,
+                        generator = (ScenarioGenerator)chedAManyCommodities
+                    }
+                }
+            }
         };
 
         logger.LogInformation($"{datasets.Length} dataset(s) configured");
 
-        foreach (var dataset in datasets)
+        // Allows us to filter the sets and scenarios we want to run at any given time
+        // Could be fed by CLI for example
+        var setsToRun = datasets
+            .Where(d => d.dataset == "LoadTest")
+            .Select(d => new {
+                scenarios = d.scenarios
+                    .Where(s =>
+                        s.scenario == "ChedASimpleMatch"
+                    ),
+                dataset = d.dataset,
+                rootPath = d.rootPath
+            });
+
+        foreach (var dataset in setsToRun)
         {
             logger.LogInformation($"{dataset.scenarios.Length} scenario(s) configured");
 
