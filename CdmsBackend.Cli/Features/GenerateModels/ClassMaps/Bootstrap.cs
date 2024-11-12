@@ -247,6 +247,7 @@ static class Bootstrap
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
             map.MapProperty("updatedDateTime").SetName("lastUpdated").IsDateTime();
             map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
+            map.MapProperty("declarations").ExcludeFromInternal();
         });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsResponse",

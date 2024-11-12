@@ -6,8 +6,8 @@ public class MovementTdmRelationships : ITdmRelationships
 {
     [Attr] public TdmRelationshipObject Notifications { get; set; } = TdmRelationshipObject.CreateDefault();
 
-    public (string, TdmRelationshipObject) GetRelationshipObject()
+    public List<(string, TdmRelationshipObject)> GetRelationshipObjects()
     {
-        return ("notifications", Notifications);
+        return [("notifications", Notifications)];
     }
 }

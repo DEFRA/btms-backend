@@ -23,6 +23,8 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using JsonApiDotNetCore.MongoDb.Repositories;
 using JsonApiDotNetCore.Repositories;
+using CdmsBackend.JsonApi;
+using JsonApiDotNetCore.Serialization.Response;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -120,6 +122,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         discovery => discovery.AddAssembly(Assembly.Load("Cdms.Model")));
 
     builder.Services.AddJsonApiMongoDb();
+    builder.Services.AddScoped<IResponseModelAdapter, CdmsResponseModelAdapter>();
     builder.Services.AddScoped(typeof(IResourceReadRepository<,>), typeof(MongoRepository<,>));
     builder.Services.AddScoped(typeof(IResourceWriteRepository<,>), typeof(MongoRepository<,>));
     builder.Services.AddScoped(typeof(IResourceRepository<,>), typeof(MongoRepository<,>));

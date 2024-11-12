@@ -1,6 +1,6 @@
 ﻿using Cdms.BlobService;
 
-namespace CdmsBackend.IntegrationTests;
+namespace CdmsBackend.IntegrationTests.Helpers;
 
 public class LocalBlobItem(string name) : IBlobItem
 {

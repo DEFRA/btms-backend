@@ -12,7 +12,7 @@ using Cdms.Backend.Data;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace CdmsBackend.IntegrationTests;
+namespace CdmsBackend.IntegrationTests.Helpers;
 
 public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
 {

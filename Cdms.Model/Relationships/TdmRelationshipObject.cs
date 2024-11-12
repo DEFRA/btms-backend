@@ -4,7 +4,7 @@ namespace Cdms.Model.Relationships;
 
 public sealed class TdmRelationshipObject
 {
-    [Attr] public bool Matched { get; set; } = default!;
+    [Attr] public bool? Matched { get; set; } = default!;
 
     [Attr] public RelationshipLinks Links { get; set; }
 
@@ -12,6 +12,6 @@ public sealed class TdmRelationshipObject
 
     public static TdmRelationshipObject CreateDefault()
     {
-        return new TdmRelationshipObject() { Matched = false };
+        return new TdmRelationshipObject();
     }
 }
