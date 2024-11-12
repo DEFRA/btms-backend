@@ -21,13 +21,13 @@ namespace CdmsBackend.Mediatr
         public async Task SendSyncJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
         {
             syncJobStore.CreateJob(request.JobId, request.Description);
-            // Activity.Current
+            
             await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (stoppingToken) =>
             {
                 using var scope = serviceScopeFactory.CreateScope();
                 using var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client);
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                await mediator.Send(request, stoppingToken);
+                var m = scope.ServiceProvider.GetRequiredService<IMediator>();
+                await m.Send(request, stoppingToken);
             });
         }
 

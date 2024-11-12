@@ -23,6 +23,9 @@ namespace Cdms.Business.Tests.Commands
         {
             var clearanceRequest = ClearanceRequestBuilder.Default().Build();
             var command = new SyncClearanceRequestsCommand();
+            var jobStore = new SyncJobStore();
+            jobStore.CreateJob(command.JobId, "Test Job");
+
 
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();
@@ -39,7 +42,7 @@ namespace Cdms.Business.Tests.Commands
                 new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
                 blob,
                 Options.Create(new BusinessOptions()),
-                new SyncJobStore());
+                jobStore);
 
             await handler.Handle(command, CancellationToken.None);
 

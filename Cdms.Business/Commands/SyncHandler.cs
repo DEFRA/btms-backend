@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using Cdms.BlobService;
 using Cdms.SensitiveData;
@@ -8,6 +9,8 @@ using System.Text.Json.Serialization;
 using IRequest = MediatR.IRequest;
 using System.Text;
 using Cdms.Common;
+using Cdms.Consumers.MemoryQueue;
+using Cdms.Model;
 using Cdms.SyncJob;
 
 namespace Cdms.Business.Commands;
@@ -78,8 +81,7 @@ public class SyncCommand() : IRequest, ISyncJob
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
-        internal static readonly string ActivitySourceName = "Cdms";
-        internal static readonly ActivitySource ActivitySource = new(ActivitySourceName);
+        private int maxDegreeOfParallelism = Environment.ProcessorCount / 4;
 
         public const string ActivityName = "Cdms.ReadBlob";
 
@@ -92,7 +94,7 @@ public class SyncCommand() : IRequest, ISyncJob
             logger.LogInformation("SyncNotifications period: {period}", period.ToString());
             try
             {
-                await Parallel.ForEachAsync(paths, async (path, token) =>
+                await Parallel.ForEachAsync(paths, new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (path, token) =>
                 {
                      await SyncBlobPath<TRequest>(path, period, topic, job, token);
                 });
@@ -114,16 +116,18 @@ public class SyncCommand() : IRequest, ISyncJob
 
             var result = blobService.GetResourcesAsync($"{path}{GetPeriodPath(period)}", cancellationToken);
 
-            await Parallel.ForEachAsync(result, cancellationToken, async (item, token) =>
+            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = maxDegreeOfParallelism },  async (item, token) =>
             {
                 await SyncBlob<TRequest>(path, topic, item, job, token);
             });
         }
 
+       
         private async Task SyncBlob<TRequest>(string path, string topic, IBlobItem item, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
-            var timer = Stopwatch.StartNew();
+          
+var timer = Stopwatch.StartNew();
             var tagList = new TagList
             {
                 { "blob.cdms.sync.service", Process.GetCurrentProcess().ProcessName },
@@ -134,7 +138,7 @@ public class SyncCommand() : IRequest, ISyncJob
             try
             {
                 syncMetrics.SyncStarted(tagList);
-                using (var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
                 {
                     var blobContent = await item.Download(cancellationToken);
                     var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
@@ -142,7 +146,7 @@ public class SyncCommand() : IRequest, ISyncJob
                     {
                         { "messageId", item.Name }, { "jobId", job.JobId }
                     };
-                    if (ActivitySource.HasListeners())
+                    if (CdmsDiagnostics.ActivitySource.HasListeners())
                     {
                         headers.Add("traceparent", activity.Id);
                     }
@@ -167,6 +171,8 @@ public class SyncCommand() : IRequest, ISyncJob
                 syncMetrics.SyncCompleted(tagList, timer);
             }
         }
+
+       
 
         private static string GetPeriodPath(SyncPeriod period)
         {

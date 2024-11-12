@@ -34,7 +34,7 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
     {
-        return Results.Ok(store.GetJobs().Where(x => x.JobId == Guid.Parse(jobId)));
+        return Results.Ok(store.GetJobs().FirstOrDefault(x => x.JobId == Guid.Parse(jobId)));
     }
 
     private static async Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
