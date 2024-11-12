@@ -81,7 +81,7 @@ public class SyncCommand() : IRequest, ISyncJob
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
-        private int maxDegreeOfParallelism = Environment.ProcessorCount / 4;
+        private readonly int maxDegreeOfParallelism = Environment.ProcessorCount / 4;
 
         public const string ActivityName = "Cdms.ReadBlob";
 
