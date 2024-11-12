@@ -7,12 +7,12 @@ namespace Cdms.Consumers.MemoryQueue;
 public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
 {
     private readonly ConcurrentDictionary<string, QueueStats> queueStatsByPath = new ConcurrentDictionary<string, QueueStats>();
-    readonly Counter<long> queueCount;
+    readonly UpDownCounter<long> queueCount;
 
     public MemoryQueueStatsMonitor(IMeterFactory meterFactory)
     {
         var meter = meterFactory.Create("Cdms");
-        queueCount = meter.CreateCounter<long>("messaging.cdms.memory.queue", "ea", "Number of messages in queue");
+        queueCount = meter.CreateUpDownCounter<long>("messaging.cdms.memory.queue", "ea", "Number of messages in queue");
     }
     public void Enqueue(string queue)
     {
@@ -67,6 +67,6 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
 
     public QueueStats Get(string name)
     {
-        return queueStatsByPath.GetValueOrDefault(name);
+        return queueStatsByPath.GetValueOrDefault(name, new QueueStats(name));
     }
 }
