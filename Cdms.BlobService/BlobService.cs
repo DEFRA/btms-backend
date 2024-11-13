@@ -24,7 +24,41 @@ public class BlobService(
 
         return containerClient;
     }
+    public async Task<Status> CheckBlobAsync()
+    {
+        return await CheckBlobAsync(options.Value.DmpBlobUri);
+    }
+    
+    public async Task<Status> CheckBlobAsync(string serviceUri)
+    {
+        Logger.LogInformation("Connecting to blob storage {0} : {1}", serviceUri,
+            options.Value.DmpBlobContainer);
+        try
+        {
+            var containerClient = CreateBlobClient();
+            
+            Logger.LogInformation("Getting blob folders...");
+            var folders = containerClient.GetBlobsByHierarchyAsync(prefix: "RAW/", delimiter: "/");
 
+            var itemCount = 0;
+            await foreach (BlobHierarchyItem blobItem in folders)
+            {
+                Logger.LogInformation("\t" + blobItem.Prefix);
+                itemCount++;
+            }
+
+            return new Status()
+            {
+                Success = true, Description = String.Format("Connected. {0} blob folders found in RAW", itemCount)
+            };
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.ToString());
+            return new Status() { Success = false, Description = ex.Message };
+        }
+
+    }
 
     [SuppressMessage("SonarLint", "S3267",
         Justification =
