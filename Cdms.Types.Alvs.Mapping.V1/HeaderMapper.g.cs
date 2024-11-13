@@ -24,7 +24,7 @@ public static class HeaderMapper
 to.EntryReference = from.EntryReference;
             to.EntryVersionNumber = from.EntryVersionNumber;
             to.PreviousVersionNumber = from.PreviousVersionNumber;
-            to.DeclarationUCR = from.DeclarationUCR;
+            to.DeclarationUcr = from.DeclarationUcr;
             to.DeclarationPartNumber = from.DeclarationPartNumber;
             to.DeclarationType = from.DeclarationType;
             to.ArrivedAt = from.ArrivalDateTime;

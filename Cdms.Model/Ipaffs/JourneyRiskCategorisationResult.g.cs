@@ -45,7 +45,7 @@ public partial class JourneyRiskCategorisationResult  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("The date and time the risk level has been set for a notification")]
-    public DateTime? RiskLevelDateTime { get; set; }
+    public DateTime? RiskLevelSetFor { get; set; }
 
 	}
 

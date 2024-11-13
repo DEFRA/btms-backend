@@ -51,7 +51,7 @@ public partial class Header  //
     /// </summary
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DeclarationUCR { get; set; }
+    public string? DeclarationUcr { get; set; }
 
 	
     /// <summary>

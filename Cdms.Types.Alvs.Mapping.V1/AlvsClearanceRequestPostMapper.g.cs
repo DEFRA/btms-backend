@@ -24,7 +24,7 @@ public static class AlvsClearanceRequestPostMapper
 to.XmlSchemaVersion = from.XmlSchemaVersion;
             to.UserIdentification = from.UserIdentification;
             to.UserPassword = from.UserPassword;
-            to.SendingDate = from.SendingDate;
+            to.SentOn = from.SendingDate;
             to.AlvsClearanceRequest = AlvsClearanceRequestMapper.Map(from?.AlvsClearanceRequest);
                 	return to;
 	}

@@ -221,7 +221,7 @@ namespace Cdms.Model.Ipaffs;
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date and Time when risk decision was locked")]
-    public string? RiskDecisionLockingTime { get; set; }
+    public DateTime? RiskDecisionLockedOn { get; set; }
 
 	
         /// <summary>

@@ -284,7 +284,7 @@ public partial class PartOne  //
         /// Date and time when the notification was submitted
         /// </summary>
     [JsonPropertyName("submissionDate")]
-    public DateTime? SubmissionDate { get; set; }
+    public DateTime? SubmittedOn { get; set; }
 
 	
         /// <summary>
@@ -347,7 +347,7 @@ public partial class PartOne  //
         /// Original estimated date time of arrival
         /// </summary>
     [JsonPropertyName("originalEstimatedDateTime")]
-    public DateTime? OriginalEstimatedDateTime { get; set; }
+    public DateTime? OriginalEstimatedOn { get; set; }
 
 	
         /// <summary>

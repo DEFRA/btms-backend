@@ -284,7 +284,7 @@ public partial class PartOne  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date and time when the notification was submitted")]
-    public DateTime? SubmissionDate { get; set; }
+    public DateTime? SubmittedOn { get; set; }
 
 	
         /// <summary>
@@ -356,7 +356,7 @@ public partial class PartOne  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("Original estimated date time of arrival")]
-    public DateTime? OriginalEstimatedDateTime { get; set; }
+    public DateTime? OriginalEstimatedOn { get; set; }
 
 	
         /// <summary>

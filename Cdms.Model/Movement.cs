@@ -44,7 +44,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr] public string DeclarationType { get; set; }
 
-    [Attr] public DateTime? ArrivalDateTime { get; set; }
+    [Attr] public DateTime? ArrivedOn { get; set; }
 
     [Attr] public string SubmitterTurn { get; set; }
 

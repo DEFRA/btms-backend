@@ -27,7 +27,7 @@ public partial class SearchGmrsForVRNsresponse  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public GmrsByVRN[]? GmrsByVRNs { get; set; }
+    public GmrsByVrn[]? GmrsByVRNs { get; set; }
 
 	
         /// <summary>

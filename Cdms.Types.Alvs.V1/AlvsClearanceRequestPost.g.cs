@@ -46,7 +46,7 @@ public partial class AlvsClearanceRequestPost  //
     /// 
     /// </summary
     [JsonPropertyName("sendingDate")]
-    public string? SendingDate { get; set; }
+    public DateTime? SendingDate { get; set; }
 
 	
     /// <summary>

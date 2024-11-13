@@ -12,15 +12,15 @@
 
 namespace Cdms.Types.Gvms.Mapping;
 
-public static class GmrsByVRNMapper
+public static class GmrsByVrnMapper
 {
-	public static Cdms.Model.Gvms.GmrsByVRN Map(Cdms.Types.Gvms.GmrsByVRN from)
+	public static Cdms.Model.Gvms.GmrsByVrn Map(Cdms.Types.Gvms.GmrsByVrn from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Cdms.Model.Gvms.GmrsByVRN ();
+		var to = new Cdms.Model.Gvms.GmrsByVrn ();
 to.Vrn = from.Vrn;
             	return to;
 	}

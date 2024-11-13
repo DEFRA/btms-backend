@@ -18,7 +18,7 @@ namespace Cdms.Model.Gvms;
 /// <summary>
 /// 
 /// </summary>
-public partial class GmrsByVRN  //
+public partial class GmrsByVrn  //
 {
 
 

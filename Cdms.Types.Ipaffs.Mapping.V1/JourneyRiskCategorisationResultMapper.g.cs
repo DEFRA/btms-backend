@@ -14,17 +14,19 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class JourneyRiskCategorisationResultMapper
 {
-	public static Cdms.Model.Ipaffs.JourneyRiskCategorisationResult Map(Cdms.Types.Ipaffs.JourneyRiskCategorisationResult from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.JourneyRiskCategorisationResult ();
-to.RiskLevel = JourneyRiskCategorisationResultRiskLevelEnumMapper.Map(from?.RiskLevel);
-                to.RiskLevelMethod = JourneyRiskCategorisationResultRiskLevelMethodEnumMapper.Map(from?.RiskLevelMethod);
-                to.RiskLevelDateTime = from.RiskLevelDateTime;
-            	return to;
-	}
+    public static Cdms.Model.Ipaffs.JourneyRiskCategorisationResult Map(
+        Cdms.Types.Ipaffs.JourneyRiskCategorisationResult from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.JourneyRiskCategorisationResult();
+        to.RiskLevel = JourneyRiskCategorisationResultRiskLevelEnumMapper.Map(from?.RiskLevel);
+        to.RiskLevelMethod = JourneyRiskCategorisationResultRiskLevelMethodEnumMapper.Map(from?.RiskLevelMethod);
+        to.RiskLevelSetFor = from.RiskLevelSetFor;
+        return to;
+    }
 }
 

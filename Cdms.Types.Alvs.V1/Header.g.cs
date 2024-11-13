@@ -47,7 +47,7 @@ public partial class Header  //
     /// 
     /// </summary
     [JsonPropertyName("declarationUCR")]
-    public string? DeclarationUCR { get; set; }
+    public string? DeclarationUcr { get; set; }
 
 	
     /// <summary>

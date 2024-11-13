@@ -21,7 +21,7 @@ public static class SearchGmrsForVRNsresponseMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Gvms.SearchGmrsForVRNsresponse ();
-to.GmrsByVRNs = from?.GmrsByVRNs?.Select(x => GmrsByVRNMapper.Map(x)).ToArray();
+to.GmrsByVRNs = from?.GmrsByVrns?.Select(x => GmrsByVrnMapper.Map(x)).ToArray();
                 to.Gmrs = from?.Gmrs?.Select(x => GmrMapper.Map(x)).ToArray();
                 	return to;
 	}

@@ -63,7 +63,7 @@ namespace CdmsBackend.IntegrationTests
         [Fact]
         public async Task SyncDecisions()
         {
-            //Arrange
+            //Arrange 
             await factory.ClearDb(client);
             await SyncClearanceRequests();
             var response = await MakeSyncDecisionsRequest(new SyncDecisionsCommand()

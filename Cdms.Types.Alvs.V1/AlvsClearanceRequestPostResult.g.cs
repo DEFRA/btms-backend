@@ -32,7 +32,7 @@ public partial class AlvsClearanceRequestPostResult  //
     /// 
     /// </summary
     [JsonPropertyName("sendingDate")]
-    public string? SendingDate { get; set; }
+    public DateTime? SendingDate { get; set; }
 
 	
     /// <summary>

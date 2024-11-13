@@ -193,7 +193,7 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
         /// Date and Time when risk decision was locked
         /// </summary>
     [JsonPropertyName("riskDecisionLockingTime")]
-    public string? RiskDecisionLockingTime { get; set; }
+    public DateTime? RiskDecisionLockedOn { get; set; }
 
 	
         /// <summary>

@@ -51,7 +51,7 @@ public partial class AlvsClearanceRequestPost  //
     /// </summary
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? SendingDate { get; set; }
+    public DateTime? SentOn { get; set; }
 
 	
     /// <summary>

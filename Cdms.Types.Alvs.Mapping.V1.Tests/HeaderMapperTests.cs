@@ -17,7 +17,7 @@ namespace Cdms.Types.Alvs.Mapping.V1.Tests
             mappedHeader.EntryReference.Should().Be(sourceHeader.EntryReference);
             mappedHeader.EntryVersionNumber.Should().Be(sourceHeader.EntryVersionNumber);
             mappedHeader.PreviousVersionNumber.Should().Be(sourceHeader.PreviousVersionNumber);
-            mappedHeader.DeclarationUCR.Should().Be(sourceHeader.DeclarationUCR);
+            mappedHeader.DeclarationUcr.Should().Be(sourceHeader.DeclarationUcr);
             mappedHeader.DeclarationPartNumber.Should().Be(sourceHeader.DeclarationPartNumber);
             mappedHeader.DeclarationType.Should().Be(sourceHeader.DeclarationType);
             mappedHeader.ArrivedAt.Should().Be(sourceHeader.ArrivalDateTime);
