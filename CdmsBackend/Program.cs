@@ -81,7 +81,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddHttpClient();
 
     // calls outside the platform should be done using the named 'proxy' http client.
-    builder.Services.AddHttpProxyClient(logger);
+    builder.Services.AddHttpProxyClient(logger, builder.Configuration);
 
     builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
