@@ -170,8 +170,8 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 static void ConfigureEndpoints(WebApplicationBuilder builder)
 {
     builder.Services.AddHealthChecks()
-        .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient())
-        .AddMongoDb();
+        .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient(), timeout: TimeSpan.FromSeconds(2))
+        .AddMongoDb(timeout: TimeSpan.FromSeconds(2));
 }
 
 [ExcludeFromCodeCoverage]

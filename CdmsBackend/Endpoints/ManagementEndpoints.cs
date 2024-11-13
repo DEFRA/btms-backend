@@ -28,6 +28,7 @@ public static class ManagementEndpoints
     private static bool FilterEnvKeys(DictionaryEntry d)
     {
         var key = d.Key.ToString()!;
+        
         return key.StartsWith("DMP") || key.StartsWith("CDP")
                                      || key.StartsWith("AZURE") || key.StartsWith("TRADE")
                                      || key.StartsWith("HTTP") || key.StartsWith("TDM")
