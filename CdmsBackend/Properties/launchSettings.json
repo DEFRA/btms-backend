@@ -6,7 +6,9 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CDP_HTTPS_PROXY":"https://cdms-backend:q1LX9IZcwLPGR6ekbTUa@proxy.dev.cdp-int.defra.cloud",
+        "CDP_HTTP_PROXY":"http://cdms-backend:q1LX9IZcwLPGR6ekbTUa@proxy.dev.cdp-int.defra.cloud"
       }
     }
   }

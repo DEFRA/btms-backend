@@ -11,14 +11,18 @@ public class BlobServiceClientFactory(
     IHttpClientFactory? clientFactory = null)
     : AzureService(logger, options.Value, clientFactory), IBlobServiceClientFactory
 {
-    public BlobServiceClient CreateBlobServiceClient()
+    public BlobServiceClient CreateBlobServiceClient(int timeout = default, int retries = default)
     {
+        // Allow timeout and retry to be overridden, e.g. from healthchecker
+        timeout = timeout > 0 ? timeout : options.Value.Timeout;
+        retries = retries > 0 ? timeout : options.Value.Retries;
+        
         var bcOptions = new BlobClientOptions
         {
             Transport = Transport!,
             Retry =
             {
-                MaxRetries = options.Value.Retries, NetworkTimeout = TimeSpan.FromSeconds(options.Value.Timeout)
+                MaxRetries = retries, NetworkTimeout = TimeSpan.FromSeconds(timeout)
             },
             Diagnostics = { IsLoggingContentEnabled = true, IsLoggingEnabled = true }
         };

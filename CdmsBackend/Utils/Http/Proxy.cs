@@ -19,8 +19,9 @@ public static class Proxy
     [ExcludeFromCodeCoverage]
     public static void AddHttpProxyClient(this IServiceCollection services, Logger logger, IConfiguration configuration)
     {
-        var handler = ConfigurePrimaryHttpMessageHandler(logger, configuration);
-        var proxy = handler.Proxy;
+        var proxyUri = configuration["CDP_HTTPS_PROXY"];
+        var proxy = CreateProxy(proxyUri, logger);
+        var handler = new HttpClientHandler { Proxy = proxy, UseProxy = proxyUri != null };
         
         // Some .net connections use this http client
         services.AddHttpClient(ProxyClient).ConfigurePrimaryHttpMessageHandler(() => handler);
@@ -30,23 +31,18 @@ public static class Proxy
         services.AddSingleton<IWebProxy, IWebProxy>(provider => proxy!);
     }
 
-    [ExcludeFromCodeCoverage]
-    public static HttpClientHandler ConfigurePrimaryHttpMessageHandler(Logger logger, IConfiguration configuration)
-    {
-        // var proxyUri = Environment.GetEnvironmentVariable("CDP_HTTPS_PROXY");
-        var proxyUri = configuration["CDP_HTTPS_PROXY"];
-        return CreateHttpClientHandler(proxyUri, logger);
-    }
+    // public class CustomProxy : WebProxy
+    // {
+    //     public override Uri? GetProxy(Uri destination)
+    //     {
+    //         return base.GetProxy(destination);
+    //     }
+    // }
 
-    public static HttpClientHandler CreateHttpClientHandler(string? proxyUri, Logger logger)
-    {
-        var proxy = CreateProxy(proxyUri, logger);
-        return new HttpClientHandler { Proxy = proxy, UseProxy = proxyUri != null };
-    }
-
-    public static WebProxy CreateProxy(string? proxyUri, Logger logger)
+    public static IWebProxy CreateProxy(string? proxyUri, Logger logger)
     {
         var proxy = new WebProxy { BypassProxyOnLocal = true };
+        // proxy.
         if (proxyUri != null)
         {
             ConfigureProxy(proxy, proxyUri, logger);

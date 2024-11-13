@@ -128,7 +128,7 @@ public class LocalBlobService(ILogger<LocalBlobService> logger) : IBlobService
 public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IHttpClientFactory clientFactory)
     : AzureService<BlobService>(logger, config, clientFactory), IBlobService
 {
-    private BlobContainerClient CreateBlobClient(string serviceUri, int retries = 3, int timeout = 10)
+    private BlobContainerClient CreateBlobClient(string serviceUri, int retries = 3, int timeout = 2)
     {
         var options = new BlobClientOptions
         {
@@ -138,6 +138,7 @@ public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IH
                 MaxRetries = retries,
                 NetworkTimeout = TimeSpan.FromSeconds(timeout)
             },
+            
             Diagnostics = 
             {
                 IsLoggingContentEnabled = true,

@@ -4,5 +4,5 @@ namespace Cdms.BlobService;
 
 public interface IBlobServiceClientFactory
 {
-    BlobServiceClient CreateBlobServiceClient();
+    BlobServiceClient CreateBlobServiceClient(int timeout = default, int retries = default);
 }
