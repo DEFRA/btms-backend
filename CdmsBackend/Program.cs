@@ -194,7 +194,8 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 
     app.UseSyncEndpoints();
     app.UseManagementEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
-
+    app.UseDiagnosticEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
+    
     return app;
 }
 

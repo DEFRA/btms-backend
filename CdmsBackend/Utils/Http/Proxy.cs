@@ -31,14 +31,6 @@ public static class Proxy
         services.AddSingleton<IWebProxy, IWebProxy>(provider => proxy!);
     }
 
-    // public class CustomProxy : WebProxy
-    // {
-    //     public override Uri? GetProxy(Uri destination)
-    //     {
-    //         return base.GetProxy(destination);
-    //     }
-    // }
-
     public static IWebProxy CreateProxy(string? proxyUri, Logger logger)
     {
         var proxy = new WebProxy { BypassProxyOnLocal = true };
