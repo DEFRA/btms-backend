@@ -155,6 +155,6 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     public string? StringId { get; set; }
     public string? LocalId { get; set; }
-    public string? Id { get; set; }
+    [Attr] public string? Id { get; set; }
     public string _Etag { get; set; }
 }

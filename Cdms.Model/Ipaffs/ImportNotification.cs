@@ -19,6 +19,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 
     //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     [JsonIgnore]
+    [Attr]
     public virtual string Id
     {
         get => ReferenceNumber;
