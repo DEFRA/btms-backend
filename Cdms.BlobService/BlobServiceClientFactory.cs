@@ -15,7 +15,7 @@ public class BlobServiceClientFactory(
     {
         // Allow timeout and retry to be overridden, e.g. from healthchecker
         timeout = timeout > 0 ? timeout : options.Value.Timeout;
-        retries = retries > 0 ? timeout : options.Value.Retries;
+        retries = retries > 0 ? retries : options.Value.Retries;
         
         var bcOptions = new BlobClientOptions
         {

@@ -16,26 +16,26 @@ public class BlobService(
     IHttpClientFactory clientFactory)
     : AzureService(logger, options.Value, clientFactory), IBlobService
 {
-    private BlobContainerClient CreateBlobClient()
+    private BlobContainerClient CreateBlobClient(int timeout = default, int retries = default)
     {
-        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient();
+        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient(timeout, retries);
 
         var containerClient = blobServiceClient.GetBlobContainerClient(options.Value.DmpBlobContainer);
 
         return containerClient;
     }
-    public async Task<Status> CheckBlobAsync()
+    public async Task<Status> CheckBlobAsync(int timeout = default, int retries = default)
     {
-        return await CheckBlobAsync(options.Value.DmpBlobUri);
+        return await CheckBlobAsync(options.Value.DmpBlobUri, timeout, retries);
     }
     
-    public async Task<Status> CheckBlobAsync(string serviceUri)
+    public async Task<Status> CheckBlobAsync(string serviceUri, int timeout = default, int retries = default)
     {
         Logger.LogInformation("Connecting to blob storage {0} : {1}", serviceUri,
             options.Value.DmpBlobContainer);
         try
         {
-            var containerClient = CreateBlobClient();
+            var containerClient = CreateBlobClient(timeout, retries);
             
             Logger.LogInformation("Getting blob folders...");
             var folders = containerClient.GetBlobsByHierarchyAsync(prefix: "RAW/", delimiter: "/");
