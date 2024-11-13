@@ -31,8 +31,7 @@ public class BlobService(
     
     public async Task<Status> CheckBlobAsync(string serviceUri, int timeout = default, int retries = default)
     {
-        Logger.LogInformation("Connecting to blob storage {0} : {1}", serviceUri,
-            options.Value.DmpBlobContainer);
+        Logger.LogInformation($"Connecting to blob storage {serviceUri} : {options.Value.DmpBlobContainer}. timeout={timeout}, retries={retries}.");
         try
         {
             var containerClient = CreateBlobClient(timeout, retries);
