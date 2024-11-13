@@ -79,7 +79,7 @@ public class SyncCommand() : IRequest, ISyncJob
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
-        private readonly int maxDegreeOfParallelism = Environment.ProcessorCount / 4;
+        private readonly int maxDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
 
         public const string ActivityName = "Cdms.ReadBlob";
 
@@ -89,7 +89,7 @@ public class SyncCommand() : IRequest, ISyncJob
         {
             var job = syncJobStore.GetJob(jobId);
             job.Start();
-            logger.LogInformation("SyncNotifications period: {period}", period.ToString());
+            logger.LogInformation($"SyncNotifications period: {period.ToString()}, maxDegreeOfParallelism={maxDegreeOfParallelism}, Environment.ProcessorCount={Environment.ProcessorCount}");
             try
             {
                 await Parallel.ForEachAsync(paths, new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (path, token) =>
