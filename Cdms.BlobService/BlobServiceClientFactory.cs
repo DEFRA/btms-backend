@@ -15,7 +15,9 @@ public class BlobServiceClientFactory(
     {
         // Allow timeout and retry to be overridden, e.g. from healthchecker
         timeout = timeout > 0 ? timeout : options.Value.Timeout;
-        retries = retries > 0 ? timeout : options.Value.Retries;
+        retries = retries > 0 ? retries : options.Value.Retries;
+        
+        logger.LogInformation($"CreateBlobServiceClient timeout={timeout}, retries={retries}.");
         
         var bcOptions = new BlobClientOptions
         {
@@ -26,6 +28,7 @@ public class BlobServiceClientFactory(
             },
             Diagnostics = { IsLoggingContentEnabled = true, IsLoggingEnabled = true }
         };
+        
 
         return new BlobServiceClient(
             new Uri(options.Value.DmpBlobUri),

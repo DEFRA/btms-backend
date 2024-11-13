@@ -2,7 +2,7 @@
 
 public interface IBlobService
 {
-    public Task<Status> CheckBlobAsync();
-    public Task<Status> CheckBlobAsync(string uri);
+    public Task<Status> CheckBlobAsync(int timeout = default, int retries = default);
+    public Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default);
     public IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken);
 }

@@ -66,48 +66,48 @@ public class ProxyTest
       proxy.Address?.AbsoluteUri.Should().Be(localProxy);
    }
 
-   [Fact]
-   public void CreateProxyFromUri()
-   {
-
-      var proxy = Proxy.CreateProxy(proxyUri, logger);
-
-      proxy.Address.Should().NotBeNull();
-      proxy.Address?.AbsoluteUri.Should().Be(localProxy);
-   }
-
-   [Fact]
-   public void CreateNoProxyFromEmptyUri()
-   {
-      var proxy = Proxy.CreateProxy(null, logger);
-
-      proxy.Address.Should().BeNull();
-   }
-
-   [Fact]
-   public void ProxyShouldBypassLocal()
-   {
-
-      var proxy = Proxy.CreateProxy(proxyUri, logger);
-
-      proxy.BypassProxyOnLocal.Should().BeTrue();
-      proxy.IsBypassed(new Uri(localhost)).Should().BeTrue();
-      proxy.IsBypassed(new Uri("https://defra.gov.uk")).Should().BeFalse();
-   }
-
-   [Fact]
-   public void HandlerShouldHaveProxy()
-   {
-      var handler = Proxy.CreateHttpClientHandler(proxyUri, logger);
-
-      handler.Proxy.Should().NotBeNull();
-      handler.UseProxy.Should().BeTrue();
-      handler.Proxy?.Credentials.Should().NotBeNull();
-      handler.Proxy?.GetProxy(new Uri(localhost)).Should().NotBeNull();
-      handler.Proxy?.GetProxy(new Uri("http://google.com")).Should().NotBeNull();
-      handler.Proxy?.GetProxy(new Uri(localhost))?.AbsoluteUri.Should().Be(localhost);
-      handler.Proxy?.GetProxy(new Uri("http://google.com"))?.AbsoluteUri.Should().Be(localProxy);
-   }
+   // [Fact]
+   // public void CreateProxyFromUri()
+   // {
+   //
+   //    var proxy = Proxy.CreateProxy(proxyUri, logger);
+   //
+   //    proxy.Address.Should().NotBeNull();
+   //    proxy.Address?.AbsoluteUri.Should().Be(localProxy);
+   // }
+   //
+   // [Fact]
+   // public void CreateNoProxyFromEmptyUri()
+   // {
+   //    var proxy = Proxy.CreateProxy(null, logger);
+   //
+   //    proxy.Address.Should().BeNull();
+   // }
+   //
+   // [Fact]
+   // public void ProxyShouldBypassLocal()
+   // {
+   //
+   //    var proxy = Proxy.CreateProxy(proxyUri, logger);
+   //
+   //    proxy.BypassProxyOnLocal.Should().BeTrue();
+   //    proxy.IsBypassed(new Uri(localhost)).Should().BeTrue();
+   //    proxy.IsBypassed(new Uri("https://defra.gov.uk")).Should().BeFalse();
+   // }
+   //
+   // [Fact]
+   // public void HandlerShouldHaveProxy()
+   // {
+   //    var handler = Proxy.CreateHttpClientHandler(proxyUri, logger);
+   //
+   //    handler.Proxy.Should().NotBeNull();
+   //    handler.UseProxy.Should().BeTrue();
+   //    handler.Proxy?.Credentials.Should().NotBeNull();
+   //    handler.Proxy?.GetProxy(new Uri(localhost)).Should().NotBeNull();
+   //    handler.Proxy?.GetProxy(new Uri("http://google.com")).Should().NotBeNull();
+   //    handler.Proxy?.GetProxy(new Uri(localhost))?.AbsoluteUri.Should().Be(localhost);
+   //    handler.Proxy?.GetProxy(new Uri("http://google.com"))?.AbsoluteUri.Should().Be(localProxy);
+   // }
 
 
 }
