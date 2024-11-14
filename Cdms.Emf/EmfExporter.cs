@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using Humanizer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cdms.Emf
@@ -15,7 +16,9 @@ namespace Cdms.Emf
     {
         public static IApplicationBuilder UseEmfExporter(this IApplicationBuilder builder)
         {
-            EmfExporter.Init(builder.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(EmfExporter)));
+            var config = builder.ApplicationServices.GetRequiredService<IConfiguration>();
+            var ns = config.GetValue<string>("AWS_EMF_NAMESPACE");
+            EmfExporter.Init(builder.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(EmfExporter)), ns);
             return builder;
         }
     }
@@ -23,10 +26,11 @@ namespace Cdms.Emf
     {
         private static readonly MeterListener meterListener = new();
         private static ILogger log = null!;
-        public static void Init(ILogger logger)
+        private static string awsNamespace;
+        public static void Init(ILogger logger, string awsNamespace)
         {
             log = logger;
-            
+            EmfExporter.awsNamespace = awsNamespace;
             meterListener.InstrumentPublished = (instrument, listener) =>
             {
                 if (instrument.Meter.Name is "Cdms")
@@ -51,6 +55,7 @@ namespace Cdms.Emf
             {
                 using (var metricsLogger = new MetricsLogger())
                 {
+                    metricsLogger.SetNamespace(awsNamespace);
                     var dimensionSet = new DimensionSet();
                     foreach (var tag in tags)
                     {
