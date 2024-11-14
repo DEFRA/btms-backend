@@ -66,6 +66,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
     builder.Services.AddOptions<ApiOptions>()
         .Bind(builder.Configuration.GetSection(ApiOptions.SectionName))
+        .PostConfigure(options => builder.Configuration.Bind(options))
         .ValidateDataAnnotations();
     
     var logger = ConfigureLogging(builder);
@@ -81,7 +82,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddHttpClient();
 
     // calls outside the platform should be done using the named 'proxy' http client.
-    builder.Services.AddHttpProxyClient(logger, builder.Configuration);
+    builder.Services.AddHttpProxyClient();
 
     builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 

@@ -23,6 +23,7 @@ jobs:
         with:
           mongodb-version: '7.0'
           mongodb-replica-set: test-rs
+          mongodb-port: 29017
       - name: Test
         uses: actions/setup-dotnet@v3
         with:

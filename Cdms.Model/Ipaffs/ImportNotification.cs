@@ -30,9 +30,9 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 
     // TODO : this is currently being written on the wire by the json api client
     /// <inheritdoc />
+    
     [BsonIgnore]
-    [JsonIgnore]
-    // [NotMapped]
+    [NotMapped]
     [Attr]
     public string StringId
     {
@@ -42,7 +42,6 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 
     /// <inheritdoc />
     [BsonIgnore]
-    [JsonIgnore]
     [NotMapped]
     // [Attr]
     public string LocalId { get; set; }

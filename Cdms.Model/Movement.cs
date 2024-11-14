@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Cdms.Model.Alvs;
 using Cdms.Model.Auditing;
@@ -7,6 +8,7 @@ using Cdms.Model.Relationships;
 using JsonApiDotNetCore.MongoDb.Resources;
 using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 // using JsonApiSerializer.JsonApi;
 
@@ -153,8 +155,22 @@ public class Movement : IMongoIdentifiable, IDataEntity
         return fullPath.Replace("RAW/DECISIONS/", "");
     }
 
-    public string? StringId { get; set; }
+    [BsonIgnore]
+    [NotMapped]
+    public string StringId
+    {
+        get => Id;
+        set => Id = value;
+    }
+
+    [BsonIgnore]
+    [NotMapped]
+    [Attr]
     public string? LocalId { get; set; }
-    [Attr] public string? Id { get; set; }
+
+    [Attr]
+    [BsonId]
+    public string? Id { get; set; }
+
     public string _Etag { get; set; }
 }
