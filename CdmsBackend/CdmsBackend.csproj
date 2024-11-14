@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cdms.Business\Cdms.Business.csproj" />
     <ProjectReference Include="..\Cdms.Consumers\Cdms.Consumers.csproj" />
+    <ProjectReference Include="..\Cdms.Emf\Cdms.Emf.csproj" />
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
     <ProjectReference Include="..\Cdms.SyncJob\Cdms.SyncJob.csproj" />
   </ItemGroup>

@@ -57,7 +57,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdms.Common", "Cdms.Common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CdmsBackend.IntegrationTests", "CdmsBackent.IntegrationTests\CdmsBackend.IntegrationTests.csproj", "{432F4CD8-E0C9-4966-A5AC-05B309C96905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdms.SyncJob", "Cdms.SyncJob\Cdms.SyncJob.csproj", "{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdms.SyncJob", "Cdms.SyncJob\Cdms.SyncJob.csproj", "{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdms.Emf", "Cdms.Emf\Cdms.Emf.csproj", "{28262A89-041C-4C8A-80EF-878DFC512CE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +167,10 @@ Global
 		{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28262A89-041C-4C8A-80EF-878DFC512CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28262A89-041C-4C8A-80EF-878DFC512CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28262A89-041C-4C8A-80EF-878DFC512CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28262A89-041C-4C8A-80EF-878DFC512CE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +193,7 @@ Global
 		{DE402A21-9EC4-4E00-838C-DD76C3F50DE2} = {EB18A70D-18CE-4790-BD1D-AA0D86E539C4}
 		{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977} = {2338E9F1-BADC-4D5F-AD5B-B14AF0A75CCD}
 		{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34} = {2338E9F1-BADC-4D5F-AD5B-B14AF0A75CCD}
+		{28262A89-041C-4C8A-80EF-878DFC512CE3} = {2338E9F1-BADC-4D5F-AD5B-B14AF0A75CCD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A8269F1-22E5-438E-A129-383A6D567DA1}

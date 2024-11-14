@@ -13,6 +13,7 @@ using Cdms.BlobService;
 using Cdms.Backend.Data.Healthcheck;
 using Cdms.Business;
 using Cdms.Consumers.Extensions;
+using Cdms.Emf;
 using Cdms.SyncJob.Extensions;
 using CdmsBackend.Config;
 using HealthChecks.UI.Client;
@@ -28,6 +29,7 @@ using JsonApiDotNetCore.Repositories;
 using CdmsBackend.BackgroundTaskQueue;
 using CdmsBackend.Mediatr;
 using CdmsBackend.JsonApi;
+using Humanizer;
 using JsonApiDotNetCore.Serialization.Response;
 using Environment = System.Environment;
 
@@ -180,7 +182,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
     var app = builder.Build();
 
-
+    app.UseEmfExporter();
     app.UseJsonApi();
     app.MapControllers();
     
