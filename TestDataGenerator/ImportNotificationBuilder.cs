@@ -1,5 +1,5 @@
-using System.Runtime.Serialization;
 using Cdms.Types.Ipaffs;
+using Cdms.Common.Extensions;
 
 namespace TestDataGenerator;
 
@@ -73,11 +73,19 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         };
 
         // TODO : We may need a way to guarantee these don't collide?....
-        return With(x => x.ReferenceNumber, $"{prefix}.GB.{DateTime.Now.Year}.{CreateRandomInt(7)}");
+        return Do(x => x.ReferenceNumber = $"{prefix}.GB.{DateTime.Now.Year}.{CreateRandomInt(7)}");
     }
 
     public ImportNotificationBuilder<T> WithEntryDate(DateTime entryDate)
     {
-        return With(x => x.LastUpdated, entryDate);
+        return Do(x => x.LastUpdated = entryDate);
+    }
+
+    public override ImportNotificationBuilder<T> Validate()
+    {
+        return Do(n =>
+        {
+            n.ReferenceNumber.AssertHasValue();
+        });
     }
 }

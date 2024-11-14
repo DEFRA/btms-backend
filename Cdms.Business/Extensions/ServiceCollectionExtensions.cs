@@ -5,6 +5,7 @@ using Cdms.Business.Commands;
 using Cdms.Business.Pipelines;
 using Cdms.Business.Pipelines.Matching;
 using Cdms.Business.Pipelines.Matching.Rules;
+using Cdms.Common.Extensions;
 using Cdms.SensitiveData;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -17,22 +18,10 @@ namespace Cdms.Business.Extensions
         public static IServiceCollection AddBusinessServices(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddOptions<SensitiveDataOptions>()
-                .Bind(configuration.GetSection(SensitiveDataOptions.SectionName))
-                .ValidateDataAnnotations();
-
-            services.AddOptions<BlobServiceOptions>()
-                .Bind(configuration.GetSection(BlobServiceOptions.SectionName))
-                .ValidateDataAnnotations();
-
-            services.AddOptions<BlobServiceOptions>()
-                .Bind(configuration.GetSection(BlobServiceOptions.SectionName))
-                .ValidateDataAnnotations();
-
-            services.AddOptions<BusinessOptions>()
-                .Bind(configuration.GetSection(BusinessOptions.SectionName))
-                .ValidateDataAnnotations();
-
+            services.CdmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
+            services.CdmsAddOptions<BlobServiceOptions>(configuration, BlobServiceOptions.SectionName);
+            services.CdmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
+            
             services.AddMongoDbContext(configuration);
             services.AddBlobStorage(configuration);
             services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();

@@ -14,14 +14,14 @@ internal class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenari
         var notification = GetNotificationBuilder("cheda-one-commodity")
             .WithEntryDate(entryDate)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, item)
-            .Build()!;
+            .ValidateAndBuild()!;
         
         logger.LogInformation($"Created {notification}, {notification.ReferenceNumber}");
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithEntryDate(entryDate)
             .WithReferenceNumber(notification.ReferenceNumber!)
-            .Build();
+            .ValidateAndBuild();
         
         logger.LogInformation($"Created {clearanceRequest}, {clearanceRequest.Header!.EntryReference}");
 

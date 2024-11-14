@@ -15,14 +15,14 @@ internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditie
             .WithEntryDate(entryDate)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, item)
             .WithRandomCommodities(10, 100)
-            .Build()!;
+            .ValidateAndBuild()!;
         
         logger.LogInformation($"Created {notification}, {notification.ReferenceNumber}");
         
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithEntryDate(entryDate)
             .WithReferenceNumber(notification.ReferenceNumber!)
-            .Build();
+            .ValidateAndBuild();
         
         logger.LogInformation($"Created {clearanceRequest}, {clearanceRequest.Header!.EntryReference}");
 

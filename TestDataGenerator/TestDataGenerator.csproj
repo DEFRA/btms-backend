@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
       <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
       <ProjectReference Include="..\Cdms.Types.Alvs.V1\Cdms.Types.Alvs.V1.csproj" />
       <ProjectReference Include="..\Cdms.Types.Ipaffs.V1\Cdms.Types.Ipaffs.V1.csproj" />

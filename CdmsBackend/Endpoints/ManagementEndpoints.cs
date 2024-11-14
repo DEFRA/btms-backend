@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Linq.Expressions;
-using System.Security.Claims;
 using CdmsBackend.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
@@ -38,7 +36,7 @@ public static class ManagementEndpoints
     private static IResult GetEnvironment()
     {
         var dict = System.Environment.GetEnvironmentVariables();
-        var filtered = dict.Cast<DictionaryEntry>().Where(FilterEnvKeys).ToArray();
+        var filtered = dict.Cast<DictionaryEntry>().Select(d=> FilterEnvKeys(d) ? d : new DictionaryEntry() { Key = d.Key, Value = "--redacted--"}).ToArray();
         return Results.Ok(filtered);
     }
 

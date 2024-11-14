@@ -59,6 +59,13 @@ public abstract class BuilderBase<T, TBuilder>
     protected int CreateRandomInt(int min, int max) => new Random().Next(min, max);
 
     public T Build() => _composer.Create();
+    
+    public abstract TBuilder Validate();
+
+    public T ValidateAndBuild()
+    {
+        return this.Validate().Build();
+    }
 
     private void Setup(T item = default)
     {

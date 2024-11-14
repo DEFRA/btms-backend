@@ -1,7 +1,7 @@
-using System.Runtime.Serialization;
 using Cdms.Model;
 using Cdms.Types.Alvs;
-using Cdms.Types.Ipaffs;
+using TestDataGenerator.Helpers;
+using Cdms.Common.Extensions;
 
 namespace TestDataGenerator;
 
@@ -39,12 +39,17 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
 
     public ClearanceRequestBuilder<T> WithReferenceNumber(string chedReference)
     {
+        var id = MatchIdentifier.FromNotification(chedReference);
         var clearanceRequestDocumentReference =
-            MatchIdentifier.FromNotification(chedReference).AsCdsDocumentReference();
+            id.AsCdsDocumentReference();
         
-        return Do(x => 
-            Array.ForEach(x.Items!, i => 
-                Array.ForEach(i.Documents!, d=> d.DocumentReference = clearanceRequestDocumentReference)));
+        return 
+            Do(x => x.Header!.EntryReference = id.AsCdsEntryReference())
+            .Do(x => x.Header!.DeclarationUcr = id.AsCdsDeclarationUcr()) // We may want to revisit this
+            .Do(x => x.Header!.MasterUcr = id.AsCdsMasterUcr()) // We may want to revisit this
+            .Do(x => 
+                Array.ForEach(x.Items!, i => 
+                    Array.ForEach(i.Documents!, d=> d.DocumentReference = clearanceRequestDocumentReference)));
     }
 
     public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
@@ -64,6 +69,18 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
                     document.DocumentCode = "C640";
                 }
             }
+        });
+    }
+
+    public override ClearanceRequestBuilder<T> Validate()
+    {
+        return Do(cr =>
+        {
+            cr.Header!.EntryReference.AssertHasValue();
+            cr.Header!.DeclarationUcr.AssertHasValue();
+            cr.Header!.MasterUcr.AssertHasValue();
+            
+            Array.ForEach(cr.Items!, i=> Array.ForEach(i.Documents!, d => d.DocumentReference.AssertHasValue()));
         });
     }
 }

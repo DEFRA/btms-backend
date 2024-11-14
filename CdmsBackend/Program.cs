@@ -29,6 +29,7 @@ using JsonApiDotNetCore.Repositories;
 using CdmsBackend.BackgroundTaskQueue;
 using CdmsBackend.Mediatr;
 using CdmsBackend.JsonApi;
+using Cdms.Common.Extensions;
 using Humanizer;
 using JsonApiDotNetCore.Serialization.Response;
 using Environment = System.Environment;
@@ -66,10 +67,8 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Configuration.AddIniFile("Properties/local.env", true)
         .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 
-    builder.Services.AddOptions<ApiOptions>()
-        .Bind(builder.Configuration.GetSection(ApiOptions.SectionName))
-        .PostConfigure(options => builder.Configuration.Bind(options))
-        .ValidateDataAnnotations();
+    builder.Services.CdmsAddOptionsWithValidation<ApiOptions>(builder.Configuration, ApiOptions.SectionName)
+        .PostConfigure(options => builder.Configuration.Bind(options));
     
     var logger = ConfigureLogging(builder);
 

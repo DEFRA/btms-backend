@@ -55,53 +55,37 @@ internal class Program
         var config = app.Services.GetRequiredService<GeneratorConfig>();
         var generator = app.Services.GetRequiredService<Generator>();
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        var chedASimpleMatch = app.Services.GetRequiredService<ChedASimpleMatchScenarioGenerator>();
-        var chedAManyCommodities = app.Services.GetRequiredService<ChedAManyCommoditiesScenarioGenerator>();
 
         var datasets = new[]
         {
             new
             {
-                dataset = "LoadTest",
-                rootPath = "GENERATED-LOADTEST-90Dx10k",
-                scenarios = new[]
+                Dataset = "LoadTest",
+                RootPath = "GENERATED-LOADTEST-BASIC",
+                Scenarios = new[]
                 {
-                    new
-                    {
-                        scenario = "ChedASimpleMatch",
-                        count = 10000,
-                        days = 90,
-                        generator = (ScenarioGenerator)chedASimpleMatch
-                    },
-                    new
-                    {
-                        scenario = "ChedAManyCommodities",
-                        count = 100,
-                        days = 14,
-                        generator = (ScenarioGenerator)chedAManyCommodities
-                    }
+                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(3, 7),
+                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(3, 7)
                 }
             },
             new
             {
-                dataset = "PHA",
-                rootPath = "GENERATED-PHA",
-                scenarios = new[]
+                Dataset = "LoadTest-90Dx10k",
+                RootPath = "GENERATED-LOADTEST-90Dx10k",
+                Scenarios = new[]
                 {
-                    new
-                    {
-                        scenario = "ChedASimpleMatch",
-                        count = 10,
-                        days = 30,
-                        generator = (ScenarioGenerator)chedASimpleMatch
-                    },
-                    new
-                    {
-                        scenario = "ChedAManyCommodities",
-                        count = 10,
-                        days = 30,
-                        generator = (ScenarioGenerator)chedAManyCommodities
-                    }
+                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10000, 90),
+                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90)
+                }
+            },
+            new
+            {
+                Dataset = "PHA",
+                RootPath = "GENERATED-PHA",
+                Scenarios = new[]
+                {
+                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 30),
+                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 30)
                 }
             }
         };
@@ -111,14 +95,14 @@ internal class Program
         // Allows us to filter the sets and scenarios we want to run at any given time
         // Could be fed by CLI for example
         var setsToRun = datasets
-            .Where(d => d.dataset == "LoadTest")
+            .Where(d => d.Dataset == "LoadTest")
             .Select(d => new {
-                scenarios = d.scenarios
+                scenarios = d.Scenarios
                     .Where(s =>
-                        s.scenario == "ChedASimpleMatch"
+                        s.Name == "ChedASimpleMatch"
                     ).ToArray(),
-                dataset = d.dataset,
-                rootPath = d.rootPath
+                dataset = d.Dataset,
+                rootPath = d.RootPath
             });
 
         foreach (var dataset in setsToRun)
@@ -131,7 +115,7 @@ internal class Program
 
             foreach (var s in dataset.scenarios)
             {
-                await generator.Generate(s.count, s.days, s.generator, dataset.rootPath);
+                await generator.Generate(s.Count, s.Days, s.Generator, dataset.rootPath);
             }
 
             logger.LogInformation("{dataset} Done", dataset.dataset);
