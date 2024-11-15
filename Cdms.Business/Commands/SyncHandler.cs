@@ -98,6 +98,9 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                 {
                      await SyncBlobPath<TRequest>(path, period, topic, job, token);
                 });
+                
+                // TODO Remove this after test 
+                logger.LogError(new Exception(), "Test error for ES stack");
             }
             catch (Exception ex)
             {

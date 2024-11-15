@@ -12,7 +12,7 @@ public interface IValidatingOptions
 
 public static class OptionsExtensions
 {
-    public static OptionsBuilder<TOptions> CdmsValidation<TOptions>(this OptionsBuilder<TOptions>  options) where TOptions : class, IValidatingOptions
+    private static OptionsBuilder<TOptions> CdmsValidation<TOptions>(this OptionsBuilder<TOptions>  options) where TOptions : class, IValidatingOptions
     {
         return options
             .ValidateDataAnnotations()
@@ -26,22 +26,23 @@ public static class OptionsExtensions
             .AddOptions<TOptions>()
             .Bind(configuration.GetSection(section))
             .ValidateDataAnnotations();
-
-        if (typeof(TOptions) is IValidatingOptions)
+        
+        if (typeof(IValidatingOptions).IsAssignableFrom(typeof(TOptions)))
         {
-            
+            s = s.Validate(o => ((IValidatingOptions)o).Validate())
+                .ValidateOnStart();
         }
 
         return s;
     }
     
-    public static OptionsBuilder<TOptions> CdmsAddOptionsWithValidation<TOptions>(this IServiceCollection services, IConfiguration configuration, string section) where TOptions : class, IValidatingOptions
-    {
-        return services
-            .AddOptions<TOptions>()
-            .Bind(configuration.GetSection(section))
-            .ValidateDataAnnotations()  
-            .CdmsValidation();
-    }
+    // public static OptionsBuilder<TOptions> CdmsAddOptionsWithValidation<TOptions>(this IServiceCollection services, IConfiguration configuration, string section) where TOptions : class, IValidatingOptions
+    // {
+    //     return services
+    //         .AddOptions<TOptions>()
+    //         .Bind(configuration.GetSection(section))
+    //         .ValidateDataAnnotations()  
+    //         .CdmsValidation();
+    // }
     
 }

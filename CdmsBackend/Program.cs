@@ -67,7 +67,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Configuration.AddIniFile("Properties/local.env", true)
         .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 
-    builder.Services.CdmsAddOptionsWithValidation<ApiOptions>(builder.Configuration, ApiOptions.SectionName)
+    builder.Services.CdmsAddOptions<ApiOptions>(builder.Configuration, ApiOptions.SectionName)
         .PostConfigure(options => builder.Configuration.Bind(options));
     
     var logger = ConfigureLogging(builder);

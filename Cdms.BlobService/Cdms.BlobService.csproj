@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cdms.Azure\Cdms.Azure.csproj" />
+    <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
   </ItemGroup>
 
 </Project>
