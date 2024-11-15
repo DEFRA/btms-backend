@@ -23,6 +23,7 @@ public class GmrTests :
     {
         this.factory = factory;
         this.factory.testOutputHelper = testOutputHelper;
+        this.factory.DatabaseName = "GmrTests";
         client =
             this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
     }

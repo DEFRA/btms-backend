@@ -4,5 +4,7 @@ public interface ISyncJob
 {
     Guid JobId { get; }
 
-    string Description { get; }
+    string Timespan { get; }
+
+    string Resource { get; }
 }

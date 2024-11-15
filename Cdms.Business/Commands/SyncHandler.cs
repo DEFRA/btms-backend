@@ -59,7 +59,7 @@ public class SyncMetrics
     }
 }
 
-public class SyncCommand() : IRequest, ISyncJob
+public abstract class SyncCommand() : IRequest, ISyncJob
 {
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
     public SyncPeriod SyncPeriod { get; set; }
@@ -67,6 +67,8 @@ public class SyncCommand() : IRequest, ISyncJob
     public string RootFolder { get; set; }
 
     public Guid JobId { get; set; } = Guid.NewGuid();
+    public string Timespan => SyncPeriod.ToString();
+    public abstract string Resource { get; }
     public string Description => $"{GetType().Name} for {this.SyncPeriod}";
 
     internal abstract class Handler<T>(

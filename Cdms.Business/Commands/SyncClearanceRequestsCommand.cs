@@ -29,4 +29,6 @@ public class SyncClearanceRequestsCommand : SyncCommand
             await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "ALVS", request.JobId, $"{rootFolder}/ALVS");
         }
     }
+
+    public override string Resource => "ClearanceRequest";
 }

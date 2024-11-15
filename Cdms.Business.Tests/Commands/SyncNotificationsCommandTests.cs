@@ -23,7 +23,7 @@ namespace Cdms.Business.Tests.Commands
             var notification = CreateImportNotification();
             var command = new SyncNotificationsCommand();
             var jobStore = new SyncJobStore();
-            jobStore.CreateJob(command.JobId, "Test Job");
+            jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "Test Job");
 
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();

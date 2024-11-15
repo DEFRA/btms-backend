@@ -20,7 +20,7 @@ namespace CdmsBackend.Mediatr
 
         public async Task SendSyncJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
         {
-            syncJobStore.CreateJob(request.JobId, request.Description);
+            syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
             
             await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (stoppingToken) =>
             {

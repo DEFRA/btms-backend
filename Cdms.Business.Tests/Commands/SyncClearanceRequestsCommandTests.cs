@@ -24,7 +24,7 @@ namespace Cdms.Business.Tests.Commands
             var clearanceRequest = ClearanceRequestBuilder.Default().Build();
             var command = new SyncClearanceRequestsCommand();
             var jobStore = new SyncJobStore();
-            jobStore.CreateJob(command.JobId, "Test Job");
+            jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "ClearanceRequests");
 
 
             var bus = Substitute.For<IPublishBus>();

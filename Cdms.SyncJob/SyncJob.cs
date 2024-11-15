@@ -1,6 +1,6 @@
 namespace Cdms.SyncJob;
 
-public class SyncJob(Guid id, string description) : ISyncJob
+public class SyncJob(Guid id, string timespan, string resource) : ISyncJob
 {
     private int blobsRead;
     private int blobsPublished;
@@ -11,7 +11,9 @@ public class SyncJob(Guid id, string description) : ISyncJob
 
     public Guid JobId { get; } = id;
 
-    public string Description { get; } = description;
+    public string Timespan { get; } = timespan;
+
+    public string Resource { get; } = resource;
 
     public int BlobsRead => blobsRead;
 

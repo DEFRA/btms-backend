@@ -29,4 +29,6 @@ public class SyncGmrsCommand : SyncCommand
                 $"{rootFolder}/GVMSAPIRESPONSE");
         }
     }
+
+    public override string Resource => "Gmr";
 }

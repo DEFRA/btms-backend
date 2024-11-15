@@ -74,7 +74,7 @@ public static class ManagementEndpoints
                     size = db.GetCollection<object>(c["name"].ToString()!).CountDocuments(Builders<object>.Filter.Empty)
                 });
         
-        return Results.Ok(collections);
+        return Results.Ok(new { collections = collections });
     }
 
     private static async Task<IResult> DropCollectionsAsync(IMongoDatabase db)

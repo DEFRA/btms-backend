@@ -66,6 +66,7 @@ internal class Program
                 {
                     app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(3, 7),
                     app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(3, 7)
+                    // app.CreateScenarioConfig<IbmScenario1SingleItemChedpSingleItemClearanceRequestScenarioGenerator>(3, 7)
                 }
             },
             new
@@ -74,7 +75,7 @@ internal class Program
                 RootPath = "GENERATED-LOADTEST-90Dx10k",
                 Scenarios = new[]
                 {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10000, 90),
+                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(100, 90),
                     app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90)
                 }
             },
@@ -95,12 +96,12 @@ internal class Program
         // Allows us to filter the sets and scenarios we want to run at any given time
         // Could be fed by CLI for example
         var setsToRun = datasets
-            .Where(d => d.Dataset == "LoadTest")
+            .Where(d => d.Dataset == "LoadTest-90Dx10k")
             .Select(d => new {
-                scenarios = d.Scenarios
-                    .Where(s =>
-                        s.Name == "ChedASimpleMatch"
-                    ).ToArray(),
+                scenarios = d.Scenarios,
+                    // .Where(s =>
+                    //     s.Name == "ChedASimpleMatch"
+                    // ).ToArray(),
                 dataset = d.Dataset,
                 rootPath = d.RootPath
             });

@@ -33,5 +33,7 @@ namespace Cdms.Business.Commands
                     $"{rootFolder}/IPAFFS/CHEDPP");
             }
         }
+
+        public override string Resource => "ImportNotification";
     }
 }

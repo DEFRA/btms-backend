@@ -22,10 +22,17 @@ public static class OptionsExtensions
     
     public static OptionsBuilder<TOptions> CdmsAddOptions<TOptions>(this IServiceCollection services, IConfiguration configuration, string section) where TOptions : class
     {
-        return services
+        var s = services
             .AddOptions<TOptions>()
             .Bind(configuration.GetSection(section))
             .ValidateDataAnnotations();
+
+        if (typeof(TOptions) is IValidatingOptions)
+        {
+            
+        }
+
+        return s;
     }
     
     public static OptionsBuilder<TOptions> CdmsAddOptionsWithValidation<TOptions>(this IServiceCollection services, IConfiguration configuration, string section) where TOptions : class, IValidatingOptions

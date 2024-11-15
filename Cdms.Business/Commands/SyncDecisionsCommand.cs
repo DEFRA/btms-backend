@@ -29,4 +29,6 @@ public class SyncDecisionsCommand : SyncCommand
                 $"{rootFolder}/DECISIONS");
         }
     }
+
+    public override string Resource => "Decision";
 }
