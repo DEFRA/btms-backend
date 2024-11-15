@@ -40,7 +40,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr] public string EntryReference { get; set; }
 
-    [Attr] public string MasteUcr { get; set; }
+    [Attr] public string MasterUcr { get; set; }
 
     [Attr] public int? DeclarationPartNumber { get; set; }
 

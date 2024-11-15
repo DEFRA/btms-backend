@@ -22,9 +22,12 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using ThirdParty.Json.LitJson;
 using Xunit;
 using Xunit.Abstractions;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace CdmsBackend.IntegrationTests
 {
+    
+
     [Trait("Category", "Integration")]
     public class SmokeTests :
         IClassFixture<IntegrationTestsApplicationFactory>

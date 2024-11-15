@@ -66,7 +66,7 @@ namespace Cdms.Consumers
                 Id = request.Header!.EntryReference,
                 LastUpdated = request.ServiceHeader?.ServiceCalled,
                 EntryReference = request.Header.EntryReference,
-                MasteUcr = request.Header.MasterUcr,
+                MasterUcr = request.Header.MasterUcr,
                 // DeclarationPartNumber = ConvertInt(r.Header.DeclarationPartNumber),
                 DeclarationType = request.Header.DeclarationType,
                 // ArrivalDateTime = r.Header.ArrivalDateTime,

@@ -16,6 +16,10 @@ jobs:
     name: Run Pull Request Checks
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+           8.0
       - name: Check out code
         uses: actions/checkout@v3      
       - name: Start MongoDB
@@ -24,17 +28,21 @@ jobs:
           mongodb-version: '7.0'
           mongodb-replica-set: test-rs
           mongodb-port: 29017
-      - name: Test
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: |
-            8.0
-      - run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
+      - name: Test       
+        run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+        
+      - name: install dotnet coverage       
+        run: dotnet tool install --global dotnet-coverage        
+        
+      - name: merge coverage reports      
+        run:  dotnet-coverage merge *.cobertura.xml --recursive --output merged.cobertura.xml --output-format cobertura
+  
   
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: coverage/**/coverage.cobertura.xml
+          filename: merged.cobertura.xml
           badge: true
           fail_below_min: false
           format: markdown
