@@ -19,8 +19,8 @@ public static class ScenarioFactory
         return new ScenarioConfig()
         {
             Name = "ChedASimpleMatch",
-            Count = 3,
-            Days = 7,
+            Count = count,
+            Days = days,
             Generator = scenario
         };
     }

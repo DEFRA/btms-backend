@@ -59,6 +59,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     {
         options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+    
     builder.Services.AddSingleton<ICdmsMediator, CdmsMediator>();
     builder.Services.AddSyncJob();
     builder.Services.AddHostedService<QueueHostedService>();
@@ -66,8 +67,8 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Configuration.AddEnvironmentVariables();
     builder.Configuration.AddIniFile("Properties/local.env", true)
         .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
-
-    builder.Services.CdmsAddOptions<ApiOptions>(builder.Configuration, ApiOptions.SectionName)
+    
+    builder.Services.CdmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
         .PostConfigure(options => builder.Configuration.Bind(options));
     
     var logger = ConfigureLogging(builder);
