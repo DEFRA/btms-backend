@@ -10,7 +10,7 @@ public class ImportNotificationBuilderTests
     public void WithReferenceNumber_WithChedA_ShouldCreateCorrectReference()
     {
         var builder = ImportNotificationBuilder.Default();
-        builder.WithReferenceNumber(ImportNotificationTypeEnum.Cveda, 1);
+        builder.WithReferenceNumber(ImportNotificationTypeEnum.Cveda, 1, DateTime.Now, 1);
         var notification = builder.Build();
         notification.ReferenceNumber.Should().StartWith("CHEDA");
     }
@@ -19,7 +19,7 @@ public class ImportNotificationBuilderTests
     public void WithReferenceNumber_WithChedD_ShouldCreateCorrectReference()
     {
         var builder = ImportNotificationBuilder.Default();
-        builder.WithReferenceNumber(ImportNotificationTypeEnum.Ced, 1);
+        builder.WithReferenceNumber(ImportNotificationTypeEnum.Ced, 1, DateTime.Now, 1);
         var notification = builder.Build();
         notification.ReferenceNumber.Should().StartWith("CHEDD");
     }

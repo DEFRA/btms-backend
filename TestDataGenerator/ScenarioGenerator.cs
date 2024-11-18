@@ -14,7 +14,7 @@ public abstract class ScenarioGenerator()
     }
     
     // Not sure if this should be abstract or not...
-    internal abstract GeneratorResult Generate(int item, DateTime entryDate);
+    internal abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate);
 
     internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file)
     {

@@ -61,6 +61,15 @@ internal class Program
         {
             new
             {
+                Dataset = "LoadTest-One",
+                RootPath = "GENERATED-LOADTEST-ONE",
+                Scenarios = new[]
+                {
+                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 3)
+                }
+            },
+            new
+            {
                 Dataset = "LoadTest",
                 RootPath = "GENERATED-LOADTEST-BASIC",
                 Scenarios = new[]
@@ -97,21 +106,22 @@ internal class Program
         // Allows us to filter the sets and scenarios we want to run at any given time
         // Could be fed by CLI for example
         var setsToRun = datasets
-            .Where(d => d.Dataset == "LoadTest-90Dx10k");
+            .Where(d => d.Dataset == "LoadTest");
         
         logger.LogInformation(setsToRun.ToJson());
+
+        var scenario = 1;
         
         foreach (var dataset in setsToRun)
         {
             logger.LogInformation("{scenariosCount} scenario(s) configured", dataset.Scenarios.Count());
 
-            logger.LogInformation("Clearing down storage path");
             await generator.Cleardown(dataset.RootPath);
-            logger.LogInformation("Cleared down");
-
+            
             foreach (var s in dataset.Scenarios)
             {
-                await generator.Generate(s.Count, s.Days, s.Generator, dataset.RootPath);
+                await generator.Generate(scenario, s.Count, s.Days, s.Generator, dataset.RootPath);
+                scenario++;
             }
 
             logger.LogInformation("{dataset} Done", dataset.Dataset);

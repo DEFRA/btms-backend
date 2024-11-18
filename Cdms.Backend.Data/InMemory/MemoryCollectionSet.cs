@@ -7,9 +7,9 @@ namespace Cdms.Backend.Data.InMemory;
 
 public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEntity
 {
-    private static List<T> data = [];
+    private readonly List<T> data = [];
 
-    private static IQueryable<T> EntityQueryable => data.AsQueryable();
+    private IQueryable<T> EntityQueryable => data.AsQueryable();
 
     public IEnumerator<T> GetEnumerator()
     {

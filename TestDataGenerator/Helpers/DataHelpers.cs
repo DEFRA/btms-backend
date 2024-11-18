@@ -12,6 +12,11 @@ public static class DataHelpers
 
         return $"{rootPath}/IPAFFS/CHEDA/{dateString}/{notification.ReferenceNumber!.Replace(".","_")}-{Guid.NewGuid()}.json";
     }
+    
+    internal static string DateRef(this DateTime created)
+    {
+        return created.ToString("MMdd");
+    }
 
     internal static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
     {
@@ -22,16 +27,16 @@ public static class DataHelpers
     
     internal static string AsCdsEntryReference(this MatchIdentifier identifier)
     {
-        return $"23GB99999999999999{identifier.Identifier}";
+        return $"23GB9999{identifier.Identifier}";
     }
     
     internal static string AsCdsDeclarationUcr(this MatchIdentifier identifier)
     {
-        return $"UCGB99999999999999{identifier.Identifier}";
+        return $"UCGB9999{identifier.Identifier}";
     }
     
     internal static string AsCdsMasterUcr(this MatchIdentifier identifier)
     {
-        return $"MUB99999999999999{identifier.Identifier}";
+        return $"MUB9999{identifier.Identifier}";
     }
 }

@@ -21,7 +21,7 @@ namespace Cdms.Model;
 [Resource]
 public class Movement : IMongoIdentifiable, IDataEntity
 {
-    private List<int> matchReferences;
+    private List<string> matchReferences;
 
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
     public string Type { get; set; } = "movements";
@@ -72,11 +72,11 @@ public class Movement : IMongoIdentifiable, IDataEntity
     public DateTime _Ts { get; set; }
 
     [BsonElement("_matchReferences")]
-    public List<int> _MatchReferences
+    public List<string> _MatchReferences
     {
         get
         {
-            var list = new HashSet<int>();
+            var list = new HashSet<string>();
             if (Items is not null)
             {
                 foreach (var item in Items)

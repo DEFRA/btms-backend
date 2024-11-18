@@ -12,7 +12,7 @@ namespace Cdms.Model.Ipaffs;
 [Resource(PublicName = "import-notifications")]
 public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 {
-    private int? matchReference;
+    private string? matchReference;
 
     //// This field is used by the jsonapi-consumer to control the correct casing in the type field
     [JsonIgnore] public string Type { get; set; } = "import-notification";
@@ -99,7 +99,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     }
 
     [BsonElement("_matchReferences")]
-    public int _MatchReference
+    public string _MatchReference
     {
         get
         {
@@ -109,7 +109,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
                     .Identifier;
             }
 
-            return matchReference.Value;
+            return matchReference!;
         }
         set => matchReference = value;
     }

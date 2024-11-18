@@ -2,9 +2,9 @@ using Cdms.Model.Ipaffs;
 
 namespace Cdms.Model;
 
-public struct MatchIdentifier(int identifier)
+public struct MatchIdentifier(string identifier)
 {
-    public int Identifier { get; private set; } = identifier;
+    public string Identifier { get; private set; } = identifier;
 
     public string AsCdsDocumentReference()
     {
@@ -20,14 +20,14 @@ public struct MatchIdentifier(int identifier)
         }
 
         var parts = reference.Split(".");
-        int identifier;
+        string identifier;
         if (char.IsDigit(parts[3].Last()))
         {
-            identifier = int.Parse(parts[3]);
+            identifier = parts[3];
         }
         else
         {
-            identifier = int.Parse(parts[3].Remove(parts[3].Length - 1));
+            identifier = parts[3].Remove(parts[3].Length - 1);
         }
 
         return new MatchIdentifier(identifier);
@@ -35,17 +35,17 @@ public struct MatchIdentifier(int identifier)
 
     public static MatchIdentifier FromCds(string reference)
     {
-        int identifier;
+        string identifier;
         var parts = reference.Split(".");
 
         var identifierString = parts[^1];
         if (char.IsDigit(identifierString.Last()))
         {
-            identifier = int.Parse(identifierString);
+            identifier = identifierString;
         }
         else
         {
-            identifier = int.Parse(identifierString.Remove(identifierString.Length - 1));
+            identifier = identifierString.Remove(identifierString.Length - 1);
         }
 
         return new MatchIdentifier(identifier);

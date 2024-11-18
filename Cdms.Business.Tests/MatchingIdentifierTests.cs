@@ -13,7 +13,7 @@ public class MatchingIdentifierTests(ITestOutputHelper output)
         var referenceNumber =
             MatchIdentifier.FromNotification("CHEDP.GB.2024.1036543");
 
-        referenceNumber.Identifier.Should().Be(1036543);
+        referenceNumber.Identifier.Should().Be("1036543");
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class MatchingIdentifierTests(ITestOutputHelper output)
         var referenceNumber =
             MatchIdentifier.FromNotification("CHEDP.GB.2024.1036543V");
 
-        referenceNumber.Identifier.Should().Be(1036543);
+        referenceNumber.Identifier.Should().Be("1036543");
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class MatchingIdentifierTests(ITestOutputHelper output)
     {
         var referenceNumber = MatchIdentifier.FromCds("GBCHD2024.1036543");
 
-        referenceNumber.Identifier.Should().Be(1036543);
+        referenceNumber.Identifier.Should().Be("1036543");
     }
 
     [Fact]
@@ -38,6 +38,6 @@ public class MatchingIdentifierTests(ITestOutputHelper output)
     {
         var referenceNumber = MatchIdentifier.FromCds("GBCHD2024.1036543V");
 
-        referenceNumber.Identifier.Should().Be(1036543);
+        referenceNumber.Identifier.Should().Be("1036543");
     }
 }

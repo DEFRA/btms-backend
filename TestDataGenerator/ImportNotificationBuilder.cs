@@ -1,5 +1,6 @@
 using Cdms.Types.Ipaffs;
 using Cdms.Common.Extensions;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
 
@@ -61,7 +62,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         });
     }
 
-    public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int item)
+    public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int scenario, DateTime created, int item)
     {
         var prefix = chedType switch
         {
@@ -72,8 +73,14 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             _ => throw new ArgumentOutOfRangeException(nameof(chedType), chedType, null),
         };
 
-        // TODO : We may need a way to guarantee these don't collide?....
-        return Do(x => x.ReferenceNumber = $"{prefix}.GB.{DateTime.Now.Year}.{CreateRandomInt(7)}");
+        if (item > 999999)
+        {
+            throw new ArgumentException("Currently only deals with max 100,000 items");
+        }
+
+        var formatHundredThousands = "000000";
+        
+        return Do(x => x.ReferenceNumber = $"{prefix}.GB.{created.Year}.{scenario.ToString("00")}{created.DateRef()}{(item  + 1).ToString(formatHundredThousands)}");
     }
 
     public ImportNotificationBuilder<T> WithEntryDate(DateTime entryDate)

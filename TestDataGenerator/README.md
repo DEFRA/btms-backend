@@ -16,5 +16,5 @@ az storage blob directory delete --container-name dmp-data-1001 --directory-path
 
 az storage blob directory upload -c dmp-data-1001 -d --account-name snddmpinfdl1001 -s TestDataGenerator/.test-data-generator/GENERATED-LOADTEST --recursive
 
-az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s TestDataGenerator/.test-data-generator/GENERATED-LOADTEST-90Dx10k  --destination-path GENERATED-LOADTEST-90Dx10k
+az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s TestDataGenerator/.test-data-generator/GENERATED-LOADTEST  --destination-path GENERATED-LOADTEST
 az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s TestDataGenerator/.test-data-generator/GENERATED-LOADTEST-BASIC  --destination-path GENERATED-LOADTEST-BASIC

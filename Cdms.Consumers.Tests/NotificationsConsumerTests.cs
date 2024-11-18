@@ -62,7 +62,7 @@ namespace Cdms.Consumers.Tests
         private ImportNotification CreateImportNotification()
         {
             return ImportNotificationBuilder.Default()
-                .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, 8)
+                .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, 1, DateTime.UtcNow, 1)
                 .WithRandomCommodities(1, 2)
                 .Do(x =>
                 {

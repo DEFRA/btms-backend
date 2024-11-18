@@ -23,21 +23,26 @@ public static class ManagementEndpoints
         }
     }
 
+    private static string[] KeysToRedact = [
+        "Mongo__DatabaseUri",
+        "MONGO_URI"
+    ];
+    
     private static bool RedactKeys(string key)
     {   
-        return key.StartsWith("AZURE");
+        return key.StartsWith("AZURE") ||
+               key.StartsWith("BlobServiceOptions__Azure") ||
+               key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
+               KeysToRedact.Contains(key);
     }
 
     private const string Redacted = "--redacted--";
-    
-    private static bool StartsWithPattern(this string str, string matchPattern) => 
-        str.StartsWith(matchPattern);
     
     private static DictionaryEntry Redact(DictionaryEntry d)
     {
         
         object? value = d.Value;
-
+        
         try
         {
             switch(d.Key) 
