@@ -1,14 +1,12 @@
 using Cdms.Backend.Data;
-using MongoDB.Driver;
+using Cdms.Backend.Data.InMemory;
 
 namespace Cdms.Consumers.Tests;
 
 public abstract class ConsumerTests
 {
-    protected MongoDbContext CreateDbContext()
+    protected static IMongoDbContext CreateDbContext()
     {
-        var client = new MongoClient(MongoRunnerProvider.Instance.Get().ConnectionString);
-        var db = client.GetDatabase($"Cdms_MongoDb_{Random.Shared.Next()}_Test");
-        return new MongoDbContext(db);
+        return new MemoryMongoDbContext();
     }
 }

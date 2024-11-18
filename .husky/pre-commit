@@ -28,4 +28,4 @@ echo 'Build Projects'
 dotnet build
 
 echo 'Test Projects'
-#dotnet test
+dotnet test --filter Category!=Integration

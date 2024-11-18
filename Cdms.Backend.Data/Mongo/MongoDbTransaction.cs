@@ -1,10 +1,10 @@
 using MongoDB.Driver;
 
-namespace Cdms.Backend.Data;
+namespace Cdms.Backend.Data.Mongo;
 
-public class MongoDbTransaction(IClientSessionHandle session) : IDisposable
+public class MongoDbTransaction(IClientSessionHandle session) : IMongoDbTransaction
 {
-    internal IClientSessionHandle Session { get; private set; } = session;
+    public IClientSessionHandle Session { get; private set; } = session;
 
     public Task CommitTransaction(CancellationToken cancellationToken = default)
     {

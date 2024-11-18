@@ -1,5 +1,3 @@
-
-using Cdms.Backend.Data.Extensions;
 using Cdms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

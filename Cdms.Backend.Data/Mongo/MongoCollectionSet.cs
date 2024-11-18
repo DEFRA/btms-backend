@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Linq.Expressions;
 using Cdms.Model.Data;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace Cdms.Backend.Data
+namespace Cdms.Backend.Data.Mongo
 {
     public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionName = null)
-        : IQueryable<T> where T : IDataEntity
+        : IMongoCollectionSet<T> where T : IDataEntity
     {
         private readonly IMongoCollection<T> collection = string.IsNullOrEmpty(collectionName)
             ? dbContext.Database.GetCollection<T>(typeof(T).Name)
@@ -34,19 +33,19 @@ namespace Cdms.Backend.Data
         public Task<T> Find(string id)
         {
             return EntityQueryable.SingleOrDefaultAsync(x => x.Id == id);
-        }
+        }       
 
-        public Task Insert(T item, MongoDbTransaction transaction = null, CancellationToken cancellationToken = default)
+        public Task Insert(T item, IMongoDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
             item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
-            IClientSessionHandle session =
+            var session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             return session is not null
                 ? collection.InsertOneAsync(session, item, cancellationToken: cancellationToken)
                 : collection.InsertOneAsync(item, cancellationToken: cancellationToken);
         }
 
-        public async Task Update(T item, string etag, MongoDbTransaction transaction = null,
+        public async Task Update(T item, string etag, IMongoDbTransaction transaction = null,
             CancellationToken cancellationToken = default)
         {
             var builder = Builders<T>.Filter;
@@ -55,7 +54,7 @@ namespace Cdms.Backend.Data
 
             item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
 
-            IClientSessionHandle session =
+            var session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             var updateResult = session is not null
                 ? await collection.ReplaceOneAsync(session, filter, item,

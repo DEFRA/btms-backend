@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using Cdms.Backend.Data.Mongo;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -7,15 +7,6 @@ using MongoDB.Driver;
 
 namespace Cdms.Backend.Data.Extensions
 {
-    public class MongoDbOptions
-    {
-        public const string SectionName = "Mongo";
-
-        [Required] public string DatabaseUri { get; set; }
-
-        [Required] public string DatabaseName { get; set; }
-    }
-
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddMongoDbContext(this IServiceCollection services,
