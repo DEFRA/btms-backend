@@ -6,8 +6,7 @@ public static class ConsumerContextExtensions
 {
     public static int GetRetryAttempt(this IConsumerContext consumerContext)
     {
-        var value = consumerContext.Properties[MessageBusHeaders.RetryCount];
-        if (value is not null)
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.RetryCount, out var value))
         {
             var retryCount = (int)value;
             return retryCount;

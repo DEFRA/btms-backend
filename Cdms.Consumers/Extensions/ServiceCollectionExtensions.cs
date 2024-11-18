@@ -3,6 +3,7 @@ using Cdms.BlobService;
 using Cdms.BlobService.Extensions;
 using Cdms.Consumers.Interceptors;
 using Cdms.Consumers.MemoryQueue;
+using Cdms.Consumers.Metrics;
 using Cdms.Model.Alvs;
 using Cdms.SensitiveData;
 using Cdms.Types.Alvs;
@@ -22,10 +23,13 @@ namespace Cdms.Consumers.Extensions
         public static IServiceCollection AddConsumers(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddSingleton<InMemoryQueueMetrics>();
+            services.AddSingleton<ConsumerMetrics>();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
+            services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsInterceptor<>));
+            services.AddSingleton(typeof(IPublishInterceptor<>), typeof(MetricsInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
-            services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsConsumerInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
 
