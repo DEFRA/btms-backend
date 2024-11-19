@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using Cdms.Consumers.Metrics;
 using SlimMessageBus;
@@ -7,7 +8,7 @@ namespace Cdms.Consumers.Interceptors;
 
 public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, ConsumerMetrics consumerMetrics) : IPublishInterceptor<TMessage>, IConsumerInterceptor<TMessage> where TMessage : notnull
 {
-    private static readonly Dictionary<TMessage, DateTime> messageQueueTimes = new();
+    private static readonly ConcurrentDictionary<TMessage, DateTime> messageQueueTimes = new();
     public async Task<object> OnHandle(TMessage message, Func<Task<object>> next, IConsumerContext context)
     {
         var timer = Stopwatch.StartNew();
@@ -25,7 +26,7 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
             {
                 var msInQueue = DateTime.UtcNow.Subtract(dateTime).Milliseconds;
                 queueMetrics.TimeSpentInQueue(msInQueue, context.Path);
-                messageQueueTimes.Remove(message);
+                messageQueueTimes.TryRemove(message, out var _);
             }
 
             queueMetrics.Outgoing(queueName: context.Path);
@@ -46,7 +47,7 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
     public Task OnHandle(TMessage message, Func<Task> next, IProducerContext context)
     {
         queueMetrics.Incoming(context.Path);
-        messageQueueTimes.Add(message, DateTime.UtcNow);
+        messageQueueTimes.TryAdd(message, DateTime.UtcNow);
         return next();
     }
 }
