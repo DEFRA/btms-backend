@@ -34,6 +34,9 @@ namespace Cdms.Business.Tests.Commands
                     new TestBlobItem(clearanceRequest!.Header!.EntryReference!, clearanceRequest.ToJsonString())
                         .ToAsyncEnumerator());
 
+            blob.GetResource(Arg.Any<IBlobItem>(), Arg.Any<CancellationToken>())
+                .Returns(clearanceRequest.ToJsonString());
+
 
             var handler = new SyncClearanceRequestsCommand.Handler(
                 new SyncMetrics(new DummyMeterFactory()),

@@ -1,9 +1,31 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "Generate": {
+    "Generate EndToEnd-IBM": {
       "commandName": "Project",
-      "targetProject": "../TestDataGenerator.Sample/TestDataGenerator.Sample.csproj",
+      "commandLineArgs": "EndToEnd-IBM",
+      "environmentVariables": {
+        "DMP_ENVIRONMENT": "dev",
+        "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",
+        "DMP_BLOB_STORAGE_NAME": "devdmpinfdl1001",
+        "DMP_SLOT": "1003",
+        "AZURE_TENANT_ID": "c9d74090-b4e6-4b04-981d-e6757a160812"
+      }
+    },
+    "Generate LoadTest-Basic": {
+      "commandName": "Project",
+      "commandLineArgs": "LoadTest-Basic",
+      "environmentVariables": {
+        "DMP_ENVIRONMENT": "dev",
+        "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",
+        "DMP_BLOB_STORAGE_NAME": "devdmpinfdl1001",
+        "DMP_SLOT": "1003",
+        "AZURE_TENANT_ID": "c9d74090-b4e6-4b04-981d-e6757a160812"
+      }
+    },
+    "Generate LoadTest-Full": {
+      "commandName": "Project",
+      "commandLineArgs": "LoadTest-Full",
       "environmentVariables": {
         "DMP_ENVIRONMENT": "dev",
         "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",

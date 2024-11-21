@@ -15,6 +15,11 @@ public class BlobServiceOptions : IAzureConfig
     [Required] public string AzureTenantId { get; set; }
     [Required] public string AzureClientSecret { get; set; }
 
+    public bool CacheReadEnabled { get; set; }
+    public bool CacheWriteEnabled { get; set; }
+    
+    public string CachePath { get; set; } = ".synchroniser-cache";
+    
     public int Retries { get; set; } = 3;
 
     public int Timeout { get; set; } = 10;

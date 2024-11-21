@@ -128,7 +128,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
             CancellationToken cancellationToken)
         {
           
-var timer = Stopwatch.StartNew();
+            var timer = Stopwatch.StartNew();
             var tagList = new TagList
             {
                 { "blob.cdms.sync.service", Process.GetCurrentProcess().ProcessName },
@@ -141,7 +141,7 @@ var timer = Stopwatch.StartNew();
                 syncMetrics.SyncStarted(tagList);
                 using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
                 {
-                    var blobContent = await item.Download(cancellationToken);
+                    var blobContent = await blobService.GetResource(item, cancellationToken);
                     var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
                     var headers = new Dictionary<string, object>()
                     {

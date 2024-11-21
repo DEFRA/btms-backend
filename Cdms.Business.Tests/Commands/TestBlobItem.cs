@@ -7,10 +7,6 @@ public class TestBlobItem(string name, string content) : IBlobItem
     public string Name { get; set; } = name!;
 
     public string NormalisedName { get; set; } = default;
+    
     public string Content { get; set; } = content!;
-
-    public async Task<string> Download(CancellationToken cancellationToken)
-    {
-        return Content;
-    }
 }

@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdms.Consumers.Tests", "Cdm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdms.Common", "Cdms.Common\Cdms.Common.csproj", "{1ED77E5C-656E-4B08-ABF8-5BF54C5C9977}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CdmsBackend.IntegrationTests", "CdmsBackent.IntegrationTests\CdmsBackend.IntegrationTests.csproj", "{432F4CD8-E0C9-4966-A5AC-05B309C96905}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CdmsBackend.IntegrationTests", "CdmsBackend.IntegrationTests\CdmsBackend.IntegrationTests.csproj", "{432F4CD8-E0C9-4966-A5AC-05B309C96905}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdms.SyncJob", "Cdms.SyncJob\Cdms.SyncJob.csproj", "{1CC1AF8A-4C84-41BF-9C17-64AEC0756F34}"
 EndProject

@@ -31,6 +31,9 @@ namespace Cdms.Business.Tests.Commands
                 .Returns(
                     new TestBlobItem(notification!.ReferenceNumber!, notification.ToJsonString()).ToAsyncEnumerator());
 
+            blob.GetResource(Arg.Any<IBlobItem>(), Arg.Any<CancellationToken>())
+                .Returns(notification.ToJsonString());
+
 
             var handler = new SyncNotificationsCommand.Handler(
                 

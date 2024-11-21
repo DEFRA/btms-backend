@@ -19,7 +19,6 @@ namespace Cdms.Business.Extensions
             IConfiguration configuration)
         {
             services.CdmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
-            services.CdmsAddOptions<BlobServiceOptions>(configuration, BlobServiceOptions.SectionName);
             services.CdmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
             
             services.AddMongoDbContext(configuration);

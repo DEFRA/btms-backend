@@ -1,7 +1,5 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -16,7 +14,7 @@ public static class Logging
             .ConfigureLogging((c, l) =>
                 {
                     l.AddConsole();
-                    
+
                     // l.ClearProviders();
                     //
                     // var loggerConfiguration = new LoggerConfiguration()
@@ -33,7 +31,6 @@ public static class Logging
                     //     .CreateLogger();
                     //
                     // builder.Logging.AddSerilog(logger);
-
                 }
             );
         // .AddLogging(l =>

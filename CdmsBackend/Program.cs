@@ -65,13 +65,18 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddHostedService<QueueHostedService>();
     builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
     builder.Configuration.AddEnvironmentVariables();
-    builder.Configuration.AddIniFile("Properties/local.env", true)
-        .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
+
+    var logger = ConfigureLogging(builder);
+
+    if (!builder.Configuration.GetValue<bool>("DisableLoadIniFile"))
+    {
+        builder.Configuration.AddIniFile("Properties/local.env", true)
+            .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
+    }
     
     builder.Services.CdmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
         .PostConfigure(options => builder.Configuration.Bind(options));
     
-    var logger = ConfigureLogging(builder);
 
     // Load certificates into Trust Store - Note must happen before Mongo and Http client connections
     builder.Services.AddCustomTrustStore(logger);

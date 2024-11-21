@@ -1,11 +1,8 @@
 using Cdms.Common.Extensions;
-using Cdms.Types.Alvs;
-using Cdms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using TestDataGenerator.Config;
 using TestDataGenerator.Scenarios;
 using TestDataGenerator.Services;
@@ -14,7 +11,7 @@ namespace TestDataGenerator;
 
 internal class Program
 {
-    static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var configuration = new ConfigurationBuilder()
             .AddEnvironmentVariables()
@@ -37,13 +34,9 @@ internal class Program
                 services.AddSingleton<ChedASimpleMatchScenarioGenerator, ChedASimpleMatchScenarioGenerator>();
                 services.AddSingleton<ChedAManyCommoditiesScenarioGenerator, ChedAManyCommoditiesScenarioGenerator>();
                 if (generatorConfig.StorageService == StorageService.Local)
-                {
                     services.AddSingleton<IBlobService, LocalBlobService>();
-                }
                 else
-                {
                     services.AddSingleton<IBlobService, BlobService>();
-                }
 
                 services.AddTransient<Generator>();
             })
@@ -61,16 +54,19 @@ internal class Program
         {
             new
             {
-                Dataset = "LoadTest-One",
-                RootPath = "GENERATED-LOADTEST-ONE",
-                Scenarios = new[]
-                {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 3)
-                }
+                Dataset = "EndToEnd-IBM",
+                RootPath = "GENERATED-ENDTOEND-IBM",
+                Scenarios = new[] { app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(3500, 1) }
             },
             new
             {
-                Dataset = "LoadTest",
+                Dataset = "LoadTest-One",
+                RootPath = "GENERATED-LOADTEST-ONE",
+                Scenarios = new[] { app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 3) }
+            },
+            new
+            {
+                Dataset = "LoadTest-Basic",
                 RootPath = "GENERATED-LOADTEST-BASIC",
                 Scenarios = new[]
                 {
@@ -81,8 +77,8 @@ internal class Program
             },
             new
             {
-                Dataset = "LoadTest-Full",
-                RootPath = "GENERATED-LOADTEST-FULL",
+                Dataset = "LoadTest",
+                RootPath = "GENERATED-LOADTEST",
                 Scenarios = new[]
                 {
                     app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(100, 90),
@@ -104,20 +100,21 @@ internal class Program
         logger.LogInformation("{datasetsCount} dataset(s) configured", datasets.Length);
 
         // Allows us to filter the sets and scenarios we want to run at any given time
-        // Could be fed by CLI for example
+
+        var ds = args.Length > 0 ? args[0].Split(",") : ["LoadTest-One"];
         var setsToRun = datasets
-            .Where(d => d.Dataset == "LoadTest");
-        
+            .Where(d => ds.Contains(d.Dataset));
+
         logger.LogInformation(setsToRun.ToJson());
 
         var scenario = 1;
-        
+
         foreach (var dataset in setsToRun)
         {
             logger.LogInformation("{scenariosCount} scenario(s) configured", dataset.Scenarios.Count());
 
             await generator.Cleardown(dataset.RootPath);
-            
+
             foreach (var s in dataset.Scenarios)
             {
                 await generator.Generate(scenario, s.Count, s.Days, s.Generator, dataset.RootPath);
