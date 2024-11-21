@@ -1,4 +1,6 @@
-public class PascalCaseNamingPolicy
+namespace CdmsBackend.Cli;
+
+public static class PascalCaseNamingPolicy
 {
     public static string ConvertName(string name)
     {

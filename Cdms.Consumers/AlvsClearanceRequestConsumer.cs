@@ -29,7 +29,7 @@ namespace Cdms.Consumers
                         movement.ClearanceRequests[0],
                         BuildNormalizedAlvsPath(auditId),
                         movement.ClearanceRequests[0].Header.EntryVersionNumber.GetValueOrDefault(),
-                        movement.LastUpdated);
+                        movement.CreatedSource);
                     movement.Update(auditEntry);
 
                     existingMovement.ClearanceRequests.RemoveAll(x =>
@@ -51,7 +51,7 @@ namespace Cdms.Consumers
                     movement.ClearanceRequests[0],
                     BuildNormalizedAlvsPath(auditId),
                     movement.ClearanceRequests[0].Header.EntryVersionNumber.GetValueOrDefault(),
-                    movement.LastUpdated);
+                    movement.CreatedSource);
                 movement.Update(auditEntry);
                 await dbContext.Movements.Insert(movement);
             }
@@ -64,7 +64,7 @@ namespace Cdms.Consumers
             return new Movement()
             {
                 Id = request.Header!.EntryReference,
-                LastUpdated = request.ServiceHeader?.ServiceCalled,
+                CreatedSource = request.ServiceHeader?.ServiceCalled,
                 EntryReference = request.Header.EntryReference,
                 MasterUcr = request.Header.MasterUcr,
                 // DeclarationPartNumber = ConvertInt(r.Header.DeclarationPartNumber),

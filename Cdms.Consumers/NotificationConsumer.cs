@@ -16,10 +16,10 @@ namespace Cdms.Consumers
             var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber);
             if (existingNotification is not null)
             {
-                if (internalNotification.LastUpdated > existingNotification.LastUpdated)
+                if (internalNotification.UpdatedSource > existingNotification.UpdatedSource)
                 {
                     internalNotification.AuditEntries = existingNotification.AuditEntries;
-                    internalNotification.Updated(BuildNormalizedIpaffsPath(auditId!), existingNotification);
+                    internalNotification.Update(BuildNormalizedIpaffsPath(auditId!), existingNotification);
                     await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
                 }
                 else
@@ -29,7 +29,7 @@ namespace Cdms.Consumers
             }
             else
             {
-                internalNotification.Created(BuildNormalizedIpaffsPath(auditId));
+                internalNotification.Create(BuildNormalizedIpaffsPath(auditId));
                 await dbContext.Notifications.Insert(internalNotification);
             }
         }

@@ -36,7 +36,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
     /// Date when the notification was last updated.
     /// </summary>
     [Attr]
-    public DateTime? LastUpdated { get; set; }
+    public DateTime? CreatedSource { get; set; }
 
     [Attr] public string EntryReference { get; set; }
 
@@ -63,14 +63,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
     [Attr]
     [JsonPropertyName("relationships")]
     public MovementTdmRelationships Relationships { get; set; } = new MovementTdmRelationships();
-
-    /// <summary>
-    /// Tracks the last time the record was changed
-    /// </summary>
-    [Attr]
-    [BsonElement("_ts")]
-    public DateTime _Ts { get; set; }
-
+    
     [BsonElement("_matchReferences")]
     public List<string> _MatchReferences
     {
@@ -117,7 +110,6 @@ public class Movement : IMongoIdentifiable, IDataEntity
     public void Update(AuditEntry auditEntry)
     {
         this.AuditEntries.Add(auditEntry);
-        _Ts = DateTime.UtcNow;
     }
 
     public bool MergeDecision(string path, AlvsClearanceRequest clearanceRequest)
@@ -173,4 +165,10 @@ public class Movement : IMongoIdentifiable, IDataEntity
     public string? Id { get; set; }
 
     public string _Etag { get; set; }
+
+    [Attr]
+    public DateTime Created { get; set; }
+
+    [Attr]
+    public DateTime Updated { get; set; }
 }

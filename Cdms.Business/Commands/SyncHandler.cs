@@ -91,7 +91,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         {
             var job = syncJobStore.GetJob(jobId);
             job.Start();
-            logger.LogInformation($"SyncNotifications period: {period.ToString()}, maxDegreeOfParallelism={maxDegreeOfParallelism}, Environment.ProcessorCount={Environment.ProcessorCount}");
+            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={MaxDegreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), maxDegreeOfParallelism, Environment.ProcessorCount);
             try
             {
                 await Parallel.ForEachAsync(paths, new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (path, token) =>
@@ -113,7 +113,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         protected async Task SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
-            logger.LogInformation("Sync Path: {Path} - period: {period}", path, period.ToString());
+            logger.LogInformation("Sync Path: {Path} - period: {Period}", path, period.ToString());
 
             var result = blobService.GetResourcesAsync($"{path}{GetPeriodPath(period)}", cancellationToken);
 

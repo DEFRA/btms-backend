@@ -28,6 +28,12 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 
     public string _Etag { get; set; }
 
+    [Attr] 
+    public DateTime Created { get; set; }
+
+    [Attr] 
+    public DateTime Updated { get; set; }
+
     // TODO : this is currently being written on the wire by the json api client
     /// <inheritdoc />
     
@@ -63,12 +69,6 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     // They are removed from the document that is sent to the client by the JsonApiResourceDefinition OnApplySparseFieldSet
     // mechanism
 
-    /// <summary>
-    /// Tracks the last time the record was changed
-    /// </summary>
-    [Attr]
-    [BsonElement("_ts")]
-    public DateTime _Ts { get; set; }
 
     [Attr]
     [BsonElement("_pointOfEntry")]
@@ -131,16 +131,15 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     public void Changed(AuditEntry auditEntry)
     {
         this.AuditEntries.Add(auditEntry);
-        _Ts = DateTime.UtcNow;
     }
 
-    public void Created(string auditId)
+    public void Create(string auditId)
     {
         var auditEntry = AuditEntry.CreateCreatedEntry(
             this,
             auditId,
             this.Version.GetValueOrDefault(),
-            this.LastUpdated);
+            this.UpdatedSource);
         this.Changed(auditEntry);
     }
 
@@ -149,17 +148,17 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         var auditEntry = AuditEntry.CreateSkippedVersion(
             auditId,
             version,
-            this.LastUpdated);
+            this.UpdatedSource);
         this.Changed(auditEntry);
     }
 
-    public void Updated(string auditId, ImportNotification previous)
+    public void Update(string auditId, ImportNotification previous)
     {
         var auditEntry = AuditEntry.CreateUpdated(previous,
             this,
             auditId,
             this.Version.GetValueOrDefault(),
-            this.LastUpdated);
+            this.UpdatedSource);
         this.Changed(auditEntry);
     }
 }

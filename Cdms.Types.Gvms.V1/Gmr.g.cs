@@ -60,7 +60,7 @@ public partial class Gmr  //
         /// The date and time that this GMR was last updated.
         /// </summary>
     [JsonPropertyName("updatedDateTime")]
-    public DateTime? LastUpdated { get; set; }
+    public DateTime? UpdatedSource { get; set; }
 
 	
         /// <summary>

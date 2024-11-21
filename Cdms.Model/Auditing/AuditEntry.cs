@@ -8,33 +8,32 @@ namespace Cdms.Model.Auditing;
 public class AuditEntry
 {
     private const string CreatedBySystem = "System";
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
     public int Version { get; set; }
 
-    public string CreatedBy { get; set; }
+    public string CreatedBy { get; set; } = null!;
 
     public DateTime? CreatedSource { get; set; }
 
-    public DateTime CreatedLocal { get; set; } = System.DateTime.UtcNow;
+    public DateTime Created { get; set; } = DateTime.UtcNow;
 
-    public string Status { get; set; }
+    public string Status { get; set; } = null!;
 
     public List<AuditDiffEntry> Diff { get; set; } = new();
 
 
-    public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated,
-        string lastUpdatedBy, string status)
+    public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated, string status)
     {
         var node1 = JsonNode.Parse(previous.ToJsonString());
         var node2 = JsonNode.Parse(current.ToJsonString());
 
-        return CreateInternal(node1, node2, id, version, lastUpdated, status);
+        return Internal(node1!, node2!, id, version, lastUpdated, status);
     }
 
 
     public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated)
     {
-        return Create(previous, current, id, version, lastUpdated, CreatedBySystem, "Updated");
+        return Create(previous, current, id, version, lastUpdated, "Updated");
     }
 
     public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated)
@@ -45,7 +44,7 @@ public class AuditEntry
             Version = version,
             CreatedSource = lastUpdated,
             CreatedBy = CreatedBySystem,
-            CreatedLocal = DateTime.UtcNow,
+            Created = DateTime.UtcNow,
             Status = "Created"
         };
     }
@@ -58,7 +57,7 @@ public class AuditEntry
             Version = version,
             CreatedSource = lastUpdated,
             CreatedBy = CreatedBySystem,
-            CreatedLocal = DateTime.UtcNow,
+            Created = DateTime.UtcNow,
             Status = "Updated"
         };
     }
@@ -71,7 +70,7 @@ public class AuditEntry
             Version = version,
             CreatedSource = lastUpdated,
             CreatedBy = CreatedBySystem,
-            CreatedLocal = DateTime.UtcNow,
+            Created = DateTime.UtcNow,
             Status = "Matched"
         };
     }
@@ -82,10 +81,10 @@ public class AuditEntry
         var node1 = JsonNode.Parse(previous);
         var node2 = JsonNode.Parse(current);
 
-        return CreateInternal(node1, node2, id, version, lastUpdated, "Decision");
+        return Internal(node1!, node2!, id, version, lastUpdated, "Decision");
     }
 
-    private static AuditEntry CreateInternal(JsonNode previous, JsonNode current, string id, int version,
+    private static AuditEntry Internal(JsonNode previous, JsonNode current, string id, int version,
         DateTime? lastUpdated, string status)
     {
         var diff = previous.CreatePatch(current);
@@ -96,7 +95,7 @@ public class AuditEntry
             Version = version,
             CreatedSource = lastUpdated,
             CreatedBy = CreatedBySystem,
-            CreatedLocal = DateTime.UtcNow,
+            Created = DateTime.UtcNow,
             Status = status
         };
 
@@ -111,15 +110,15 @@ public class AuditEntry
 
     public class AuditDiffEntry
     {
-        public string Path { get; set; }
+        public string Path { get; set; } = null!;
 
-        public string Op { get; set; }
+        public string Op { get; set; } = null!;
 
-        public object Value { get; set; }
+        public object Value { get; set; } = null!;
 
         internal static AuditDiffEntry CreateInternal(PatchOperation operation)
         {
-            object value = null;
+            object value = null!;
             if (operation.Value != null)
             {
                 switch (operation.Value.GetValueKind())
@@ -151,7 +150,7 @@ public class AuditEntry
                 }
             }
 
-            return new AuditEntry.AuditDiffEntry()
+            return new AuditDiffEntry()
             {
                 Path = operation.Path.ToString(), Op = operation.Op.ToString(), Value = value
             };

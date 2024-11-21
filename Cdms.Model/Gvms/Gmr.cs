@@ -19,6 +19,12 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
 
     public string _Etag { get; set; }
 
+    [Attr] 
+    public DateTime Created { get; set; }
+
+    [Attr] 
+    public DateTime Updated { get; set; }
+
     /// <inheritdoc />
     [BsonIgnore]
     [JsonIgnore]

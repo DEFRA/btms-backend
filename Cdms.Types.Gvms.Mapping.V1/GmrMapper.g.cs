@@ -28,7 +28,7 @@ to.Id = from.GmrId;
             to.State = StateEnumMapper.Map(from?.State);
                 to.InspectionRequired = from.InspectionRequired;
             to.ReportToLocations = from?.ReportToLocations?.Select(x => ReportToLocationsMapper.Map(x)).ToArray();
-                to.LastUpdated = from.LastUpdated;
+                to.UpdatedSource = from.UpdatedSource;
             to.Direction = DirectionEnumMapper.Map(from?.Direction);
                 to.HaulierType = HaulierTypeEnumMapper.Map(from?.HaulierType);
                 to.IsUnaccompanied = from.IsUnaccompanied;

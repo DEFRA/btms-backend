@@ -71,7 +71,7 @@ static class Bootstrap
         {
             map.MapProperty("Id").SetName("IpaffsId");
             map.MapProperty("Type").SetName("ImportNotificationType");
-            map.MapProperty("LastUpdated").IsDateTime();
+            map.MapProperty("LastUpdated").SetName("UpdatedSource").IsDateTime();
             map.MapProperty("RiskDecisionLockingTime").SetName("RiskDecisionLockedOn").IsDateTime();
         });
 
@@ -253,7 +253,7 @@ static class Bootstrap
             map.MapProperty("gmrId").SetInternalName("id");
             map.MapProperty("haulierEORI").SetName("haulierEori");
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
-            map.MapProperty("updatedDateTime").SetName("lastUpdated").IsDateTime();
+            map.MapProperty("updatedDateTime").SetSourceName("LastUpdated").SetInternalName("UpdatedSource").IsDateTime();
             map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
             map.MapProperty("declarations").ExcludeFromInternal();
         });

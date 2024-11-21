@@ -32,6 +32,8 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public Task Insert(T item, IMongoDbTransaction transaction = null, CancellationToken cancellationToken = default)
     {
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+        item.Created = DateTime.UtcNow;
+        item.Updated = DateTime.UtcNow;
         data.Add(item);
         return Task.CompletedTask;
     }
@@ -39,7 +41,8 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public Task Update(T item, string etag, IMongoDbTransaction transaction = null, CancellationToken cancellationToken = default)
     {
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-
+        item.Created = DateTime.UtcNow;
+        item.Updated = DateTime.UtcNow;
         var existingItem = data.Find(x => x.Id == item.Id);
 
         if (existingItem?._Etag != etag)

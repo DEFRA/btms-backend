@@ -72,19 +72,6 @@ namespace CdmsBackend.Cli.Features.GenerateModels.ClassMaps
             NewProperties.Add(property);
         }
 
-        /*
-         *  map.MapProperty("estimatedArrivalTimeAtPortOfExit").IsTime().ExcludeFromInternal();
-            map.MapProperty("estimatedArrivalDateAtPortOfExit").IsDate().ExcludeFromInternal();
-            map.AddProperty(new PropertyDescriptor("estimatedArrivedAtPortOfExit", "DateTime",
-                "DateTime", false, false, "")
-            {
-                ExcludedFromSource = true,
-                Mapper =
-                    "DateTimeMapper.Map(from?.EstimatedArrivalDateAtPortOfExit, from?.EstimatedArrivalTimeAtPortOfExit);",
-                MappingInline = true,
-            });
-         */
-
         public void MapDateOnlyAndTimeOnlyToDateTimeProperty(string dateOnlyProperty, string timeOnlyProperty,
             string dateTimeProperty)
         {
