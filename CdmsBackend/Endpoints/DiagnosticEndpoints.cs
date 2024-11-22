@@ -18,12 +18,9 @@ public static class DiagnosticEndpoints
         }
     }
     
-    private static async Task<IResult> GetBlobDiagnosticAsync(
-        IBlobService service
-        // IBlobServiceClientFactory factory
+    private static async Task<IResult> GetBlobDiagnosticAsync(IBlobService service
     )
     {
-        // var service = factory.CreateBlobServiceClient();
         var result = await service.CheckBlobAsync(5, 1);
         Console.WriteLine(result.ToJson());
         if (result.Success)

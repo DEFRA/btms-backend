@@ -14,33 +14,8 @@ public static class Logging
             .ConfigureLogging((_, l) =>
                 {
                     l.AddConsole();
-
-                    // l.ClearProviders();
-                    //
-                    // var loggerConfiguration = new LoggerConfiguration()
-                    //     .ReadFrom.Configuration(c.Configuration)
-                    //     .Enrich.With<LogLevelMapper>();
-
-
-                    //
-                    // // Is there something better we can do here:
-                    // var loggerFactory = c.Services.BuildServiceProvider()
-                    //     .GetService<ILoggerFactory>()!;
-                    //
-                    // var logger = loggerConfiguration
-                    //     .CreateLogger();
-                    //
-                    // builder.Logging.AddSerilog(logger);
                 }
             );
-        // .AddLogging(l =>
-        // {
-        //     l.AddSerilog();
-        // })
-        // .ConfigureServices(s =>
-        // {
-        //     
-        // });
     }
 }
 

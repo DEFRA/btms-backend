@@ -17,7 +17,7 @@ public class BlobServiceClientFactory(
         timeout = timeout > 0 ? timeout : options.Value.Timeout;
         retries = retries > 0 ? retries : options.Value.Retries;
         
-        logger.LogInformation($"CreateBlobServiceClient timeout={timeout}, retries={retries}.");
+        logger.LogInformation("CreateBlobServiceClient timeout={Timeout}, retries={Retries}.", timeout, retries);
         
         var bcOptions = new BlobClientOptions
         {

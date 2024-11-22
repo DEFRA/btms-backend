@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace TestDataGenerator;
 
-internal class Program
+class Program
 {
     private static async Task Main(string[] args)
     {
