@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.CommodityRiskResultRiskDecisionEnum.Required => Cdms.Model.Ipa
     Cdms.Types.Ipaffs.CommodityRiskResultRiskDecisionEnum.Notrequired => Cdms.Model.Ipaffs.CommodityRiskResultRiskDecisionEnum.Notrequired,
     Cdms.Types.Ipaffs.CommodityRiskResultRiskDecisionEnum.Inconclusive => Cdms.Model.Ipaffs.CommodityRiskResultRiskDecisionEnum.Inconclusive,
     Cdms.Types.Ipaffs.CommodityRiskResultRiskDecisionEnum.ReenforcedCheck => Cdms.Model.Ipaffs.CommodityRiskResultRiskDecisionEnum.ReenforcedCheck,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

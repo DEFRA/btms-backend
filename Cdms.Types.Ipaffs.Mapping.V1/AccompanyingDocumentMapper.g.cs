@@ -22,14 +22,14 @@ public static class AccompanyingDocumentMapper
 	}
 		var to = new Cdms.Model.Ipaffs.AccompanyingDocument ();
 to.DocumentType = AccompanyingDocumentDocumentTypeEnumMapper.Map(from?.DocumentType);
-                to.DocumentReference = from.DocumentReference;
-            to.DocumentIssuedOn = from.DocumentIssueDate;
-            to.AttachmentId = from.AttachmentId;
-            to.AttachmentFilename = from.AttachmentFilename;
-            to.AttachmentContentType = from.AttachmentContentType;
-            to.UploadUserId = from.UploadUserId;
-            to.UploadOrganisationId = from.UploadOrganisationId;
-            to.ExternalReference = ExternalReferenceMapper.Map(from?.ExternalReference);
+                to.DocumentReference = from?.DocumentReference;
+            to.DocumentIssuedOn = from?.DocumentIssueDate;
+            to.AttachmentId = from?.AttachmentId;
+            to.AttachmentFilename = from?.AttachmentFilename;
+            to.AttachmentContentType = from?.AttachmentContentType;
+            to.UploadUserId = from?.UploadUserId;
+            to.UploadOrganisationId = from?.UploadOrganisationId;
+            to.ExternalReference = ExternalReferenceMapper.Map(from?.ExternalReference!);
                 	return to;
 	}
 }

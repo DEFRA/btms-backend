@@ -25,7 +25,7 @@ public static class JourneyRiskCategorisationResultMapper
         var to = new Cdms.Model.Ipaffs.JourneyRiskCategorisationResult();
         to.RiskLevel = JourneyRiskCategorisationResultRiskLevelEnumMapper.Map(from?.RiskLevel);
         to.RiskLevelMethod = JourneyRiskCategorisationResultRiskLevelMethodEnumMapper.Map(from?.RiskLevelMethod);
-        to.RiskLevelSetFor = from.RiskLevelSetFor;
+        to.RiskLevelSetFor = from?.RiskLevelSetFor;
         return to;
     }
 }

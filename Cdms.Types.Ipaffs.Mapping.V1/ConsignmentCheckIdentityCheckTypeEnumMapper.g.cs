@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.ConsignmentCheckIdentityCheckTypeEnum.SealCheck => Cdms.Model.Ipaffs.ConsignmentCheckIdentityCheckTypeEnum.SealCheck,
     Cdms.Types.Ipaffs.ConsignmentCheckIdentityCheckTypeEnum.FullIdentityCheck => Cdms.Model.Ipaffs.ConsignmentCheckIdentityCheckTypeEnum.FullIdentityCheck,
     Cdms.Types.Ipaffs.ConsignmentCheckIdentityCheckTypeEnum.NotDone => Cdms.Model.Ipaffs.ConsignmentCheckIdentityCheckTypeEnum.NotDone,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

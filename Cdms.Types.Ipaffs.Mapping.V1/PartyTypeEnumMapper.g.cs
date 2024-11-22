@@ -11,20 +11,23 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class PartyTypeEnumMapper
 {
-public static Cdms.Model.Ipaffs.PartyTypeEnum? Map(Cdms.Types.Ipaffs.PartyTypeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.PartyTypeEnum.CommercialTransporter => Cdms.Model.Ipaffs.PartyTypeEnum.CommercialTransporter,
-    Cdms.Types.Ipaffs.PartyTypeEnum.PrivateTransporter => Cdms.Model.Ipaffs.PartyTypeEnum.PrivateTransporter,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.PartyTypeEnum? Map(Cdms.Types.Ipaffs.PartyTypeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.PartyTypeEnum.CommercialTransporter => Cdms.Model.Ipaffs.PartyTypeEnum
+                .CommercialTransporter,
+            Cdms.Types.Ipaffs.PartyTypeEnum.PrivateTransporter => Cdms.Model.Ipaffs.PartyTypeEnum.PrivateTransporter,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

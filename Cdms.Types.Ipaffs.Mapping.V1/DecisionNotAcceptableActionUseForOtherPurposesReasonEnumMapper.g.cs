@@ -11,23 +11,31 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class DecisionNotAcceptableActionUseForOtherPurposesReasonEnumMapper
 {
-public static Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? Map(Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.ContaminatedProducts => Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.ContaminatedProducts,
-    Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart => Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart,
-    Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial => Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial,
-    Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport => Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport,
-    Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other => Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? Map(
+        Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.ContaminatedProducts => Cdms
+                .Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.ContaminatedProducts,
+            Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart => Cdms.Model
+                .Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart,
+            Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial => Cdms.Model
+                .Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial,
+            Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport => Cdms.Model
+                .Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport,
+            Cdms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other => Cdms.Model.Ipaffs
+                .DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

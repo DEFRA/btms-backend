@@ -7,7 +7,7 @@ using MongoDB.Driver.Linq;
 
 namespace Cdms.Backend.Data.Mongo
 {
-    public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionName = null)
+    public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionName = null!)
         : IMongoCollectionSet<T> where T : IDataEntity
     {
         private readonly IMongoCollection<T> collection = string.IsNullOrEmpty(collectionName)
@@ -35,11 +35,9 @@ namespace Cdms.Backend.Data.Mongo
             return EntityQueryable.SingleOrDefaultAsync(x => x.Id == id);
         }       
 
-        public Task Insert(T item, IMongoDbTransaction transaction = null, CancellationToken cancellationToken = default)
+        public Task Insert(T item, IMongoDbTransaction transaction = null!, CancellationToken cancellationToken = default)
         {
-            item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
-            item.Created = DateTime.UtcNow;
-            item.Updated = DateTime.UtcNow;
+            item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
             var session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             return session is not null
@@ -47,16 +45,15 @@ namespace Cdms.Backend.Data.Mongo
                 : collection.InsertOneAsync(item, cancellationToken: cancellationToken);
         }
 
-        public async Task Update(T item, string etag, IMongoDbTransaction transaction = null,
+        public async Task Update(T item, string etag, IMongoDbTransaction transaction = null!,
             CancellationToken cancellationToken = default)
         {
             var builder = Builders<T>.Filter;
 
             var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
 
-            item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString();
-            item.Created = DateTime.UtcNow;
-            item.Updated = DateTime.UtcNow;
+            item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+
             var session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             var updateResult = session is not null

@@ -11,20 +11,24 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class PartThreeControlStatusEnumMapper
 {
-public static Cdms.Model.Ipaffs.PartThreeControlStatusEnum? Map(Cdms.Types.Ipaffs.PartThreeControlStatusEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.PartThreeControlStatusEnum.Required => Cdms.Model.Ipaffs.PartThreeControlStatusEnum.Required,
-    Cdms.Types.Ipaffs.PartThreeControlStatusEnum.Completed => Cdms.Model.Ipaffs.PartThreeControlStatusEnum.Completed,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.PartThreeControlStatusEnum? Map(Cdms.Types.Ipaffs.PartThreeControlStatusEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.PartThreeControlStatusEnum.Required => Cdms.Model.Ipaffs.PartThreeControlStatusEnum
+                .Required,
+            Cdms.Types.Ipaffs.PartThreeControlStatusEnum.Completed => Cdms.Model.Ipaffs.PartThreeControlStatusEnum
+                .Completed,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

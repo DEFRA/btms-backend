@@ -5,14 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-// using System.Configuration;
-using System.IO;
 using Cdms.Backend.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.AspNetCore.Builder;
 
 namespace CdmsBackend.IntegrationTests.Helpers;
 
@@ -58,22 +54,22 @@ public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
                     return client.GetDatabase($"Cdms_MongoDb_{dbName}_Test");
                 });
 
-                services.AddLogging(lb => lb.AddXUnit(testOutputHelper));
+                services.AddLogging(lb => lb.AddXUnit(TestOutputHelper));
             });
 
         builder.UseEnvironment("Development");
     }
 
-    internal ITestOutputHelper testOutputHelper { get; set; }
+    internal ITestOutputHelper TestOutputHelper { get; set; } = null!;
 
-    internal string DatabaseName { get; set; }
+    internal string DatabaseName { get; set; } = null!;
 
     public IMongoDbContext GetDbContext()
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
 
-    public async Task ClearDb(HttpClient client)
+    public static async Task ClearDb(HttpClient client)
     {
         await client.GetAsync("mgmt/collections/drop");
     }

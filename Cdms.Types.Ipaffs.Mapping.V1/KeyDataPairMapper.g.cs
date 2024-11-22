@@ -21,8 +21,8 @@ public static class KeyDataPairMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.KeyDataPair ();
-to.Key = from.Key;
-            to.Data = from.Data;
+to.Key = from?.Key;
+            to.Data = from?.Data;
             	return to;
 	}
 }

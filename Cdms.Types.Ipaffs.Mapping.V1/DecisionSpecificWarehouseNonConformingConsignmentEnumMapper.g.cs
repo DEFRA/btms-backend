@@ -11,22 +11,29 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class DecisionSpecificWarehouseNonConformingConsignmentEnumMapper
 {
-public static Cdms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? Map(Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse => Cdms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse,
-    Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.FreeZoneOrFreeWarehouse => Cdms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.FreeZoneOrFreeWarehouse,
-    Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier => Cdms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier,
-    Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship => Cdms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? Map(
+        Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse => Cdms.Model.Ipaffs
+                .DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse,
+            Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.FreeZoneOrFreeWarehouse => Cdms
+                .Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.FreeZoneOrFreeWarehouse,
+            Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier => Cdms.Model.Ipaffs
+                .DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier,
+            Cdms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship => Cdms.Model.Ipaffs
+                .DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

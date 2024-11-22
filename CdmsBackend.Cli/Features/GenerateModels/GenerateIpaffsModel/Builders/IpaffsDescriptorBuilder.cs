@@ -19,13 +19,13 @@ public class IpaffsDescriptorBuilder(List<ISchemaVisitor> visitors)
             new ClassDescriptor("ImportNotification", SourceNamespace, InternalNamespace, ClassNamePrefix);
         mainClassDescriptor.IsResource = true;
         csharpDescriptor.AddClassDescriptor(mainClassDescriptor);
-        foreach (var property in mySchema.GetProperties())
+        foreach (var property in mySchema.GetProperties()!)
         {
             visitors.ForEach(x => x.OnProperty(new PropertyVisitorContext(csharpDescriptor, mainClassDescriptor,
                 mySchema, property.Key, property.Value)));
         }
 
-        foreach (var definition in mySchema.GetDefinitions())
+        foreach (var definition in mySchema.GetDefinitions()!)
         {
             visitors.ForEach(x =>
                 x.OnDefinition(new DefinitionVisitorContext(csharpDescriptor, mySchema, definition.Key,

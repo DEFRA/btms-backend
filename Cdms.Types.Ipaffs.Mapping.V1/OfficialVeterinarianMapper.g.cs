@@ -21,12 +21,12 @@ public static class OfficialVeterinarianMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.OfficialVeterinarian ();
-to.FirstName = from.FirstName;
-            to.LastName = from.LastName;
-            to.Email = from.Email;
-            to.Phone = from.Phone;
-            to.Fax = from.Fax;
-            to.Signed = from.Signed;
+to.FirstName = from?.FirstName;
+            to.LastName = from?.LastName;
+            to.Email = from?.Email;
+            to.Phone = from?.Phone;
+            to.Fax = from?.Fax;
+            to.Signed = from?.Signed;
             	return to;
 	}
 }

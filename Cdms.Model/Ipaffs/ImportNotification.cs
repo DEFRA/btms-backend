@@ -20,37 +20,28 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     [JsonIgnore]
     [Attr]
-    public virtual string Id
+    public virtual string? Id
     {
-        get => ReferenceNumber;
+        get => ReferenceNumber!;
         set => ReferenceNumber = value;
     }
 
-    public string _Etag { get; set; }
-
-    [Attr] 
-    public DateTime Created { get; set; }
-
-    [Attr] 
-    public DateTime Updated { get; set; }
-
-    // TODO : this is currently being written on the wire by the json api client
-    /// <inheritdoc />
+    public string _Etag { get; set; } = default!;
     
     [BsonIgnore]
     [NotMapped]
     [Attr]
-    public string StringId
+    public string? StringId
     {
         get => Id;
-        set => Id = value;
+        set => Id = value!;
     }
 
     /// <inheritdoc />
     [BsonIgnore]
     [NotMapped]
     // [Attr]
-    public string LocalId { get; set; }
+    public string? LocalId { get; set; } = default!;
 
     [Attr] public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
 
@@ -58,9 +49,9 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     [JsonPropertyName("relationships")]
     public NotificationTdmRelationships Relationships { get; set; } = new NotificationTdmRelationships();
 
-    [Attr] public Commodities CommoditiesSummary { get; set; }
+    [Attr] public Commodities CommoditiesSummary { get; set; } = default!;
 
-    [Attr] public CommodityComplement[] Commodities { get; set; }
+    [Attr] public CommodityComplement[] Commodities { get; set; } = default!;
 
     // Filter fields...
     // These fields are added to the model solely for use by the filtering
@@ -69,12 +60,18 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     // They are removed from the document that is sent to the client by the JsonApiResourceDefinition OnApplySparseFieldSet
     // mechanism
 
+    /// <summary>
+    /// Tracks the last time the record was changed
+    /// </summary>
+    [Attr]
+    [BsonElement("_ts")]
+    public DateTime _Ts { get; set; }
 
     [Attr]
     [BsonElement("_pointOfEntry")]
     public string _PointOfEntry
     {
-        get => PartOne?.PointOfEntry;
+        get => PartOne?.PointOfEntry!;
         set
         {
             if (PartOne != null)
@@ -88,7 +85,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     [BsonElement("_pointOfEntryControlPoint")]
     public string _PointOfEntryControlPoint
     {
-        get => PartOne?.PointOfEntryControlPoint;
+        get => PartOne?.PointOfEntryControlPoint!;
         set
         {
             if (PartOne != null)
@@ -105,7 +102,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         {
             if (matchReference is null)
             {
-                matchReference = MatchIdentifier.FromNotification(ReferenceNumber)
+                matchReference = MatchIdentifier.FromNotification(ReferenceNumber!)
                     .Identifier;
             }
 
@@ -117,29 +114,27 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     public void AddRelationship(string type, TdmRelationshipObject relationship)
     {
         Relationships.Movements.Links ??= relationship.Links;
-        foreach (var dataItem in relationship.Data)
+        foreach (var dataItem in relationship.Data.Where(dataItem => Relationships.Movements.Data.TrueForAll(x => x.Id != dataItem.Id)))
         {
-            if (Relationships.Movements.Data.All(x => x.Id != dataItem.Id))
-            {
-                Relationships.Movements.Data.Add(dataItem);
-            }
+            Relationships.Movements.Data.Add(dataItem);
         }
 
-        Relationships.Movements.Matched = Relationships.Movements.Data.Any(x => x.Matched.GetValueOrDefault());
+        Relationships.Movements.Matched = Relationships.Movements.Data.Exists(x => x.Matched.GetValueOrDefault());
     }
 
     public void Changed(AuditEntry auditEntry)
     {
         this.AuditEntries.Add(auditEntry);
+        _Ts = DateTime.UtcNow;
     }
 
-    public void Create(string auditId)
+    public void Created(string auditId)
     {
         var auditEntry = AuditEntry.CreateCreatedEntry(
             this,
             auditId,
             this.Version.GetValueOrDefault(),
-            this.UpdatedSource);
+            this.LastUpdated);
         this.Changed(auditEntry);
     }
 
@@ -148,17 +143,17 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         var auditEntry = AuditEntry.CreateSkippedVersion(
             auditId,
             version,
-            this.UpdatedSource);
+            this.LastUpdated);
         this.Changed(auditEntry);
     }
 
-    public void Update(string auditId, ImportNotification previous)
+    public void Updated(string auditId, ImportNotification previous)
     {
         var auditEntry = AuditEntry.CreateUpdated(previous,
             this,
             auditId,
             this.Version.GetValueOrDefault(),
-            this.UpdatedSource);
+            this.LastUpdated);
         this.Changed(auditEntry);
     }
 }

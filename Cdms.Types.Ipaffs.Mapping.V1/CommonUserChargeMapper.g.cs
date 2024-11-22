@@ -21,7 +21,7 @@ public static class CommonUserChargeMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.CommonUserCharge ();
-to.WasSentToTradeCharge = from.WasSentToTradeCharge;
+to.WasSentToTradeCharge = from?.WasSentToTradeCharge;
             	return to;
 	}
 }

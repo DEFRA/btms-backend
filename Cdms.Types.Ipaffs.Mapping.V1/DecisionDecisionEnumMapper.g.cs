@@ -29,7 +29,8 @@ Cdms.Types.Ipaffs.DecisionDecisionEnum.NonAcceptable => Cdms.Model.Ipaffs.Decisi
     Cdms.Types.Ipaffs.DecisionDecisionEnum.AcceptableForPrivateImport => Cdms.Model.Ipaffs.DecisionDecisionEnum.AcceptableForPrivateImport,
     Cdms.Types.Ipaffs.DecisionDecisionEnum.AcceptableForTransfer => Cdms.Model.Ipaffs.DecisionDecisionEnum.AcceptableForTransfer,
     Cdms.Types.Ipaffs.DecisionDecisionEnum.HorseReEntry => Cdms.Model.Ipaffs.DecisionDecisionEnum.HorseReEntry,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

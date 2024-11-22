@@ -13,7 +13,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options) : I
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    public T Deserialize<T>(string json, Action<JsonSerializerOptions> optionsOverride = null)
+    public T Deserialize<T>(string json, Action<JsonSerializerOptions> optionsOverride = null!)
     {
         JsonSerializerOptions newOptions = jsonOptions;
         if (optionsOverride is not null)
@@ -27,6 +27,6 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options) : I
             optionsOverride(newOptions);
         }
 
-        return JsonSerializer.Deserialize<T>(json, newOptions);
+        return JsonSerializer.Deserialize<T>(json, newOptions)!;
     }
 }

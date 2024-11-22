@@ -8,12 +8,12 @@ public class MongoDbTransaction(IClientSessionHandle session) : IMongoDbTransact
 
     public Task CommitTransaction(CancellationToken cancellationToken = default)
     {
-        return session.CommitTransactionAsync(cancellationToken);
+        return Session.CommitTransactionAsync(cancellationToken);
     }
 
     public Task RollbackTransaction(CancellationToken cancellationToken = default)
     {
-        return session.AbortTransactionAsync(cancellationToken);
+        return Session.AbortTransactionAsync(cancellationToken);
     }
 
     public void Dispose()
@@ -24,9 +24,9 @@ public class MongoDbTransaction(IClientSessionHandle session) : IMongoDbTransact
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposing && session != null)
+        if (disposing && Session != null)
         {
-            session.Dispose();
+            Session.Dispose();
         }
     }
 }

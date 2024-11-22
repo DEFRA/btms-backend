@@ -21,8 +21,8 @@ public static class CatchCertificateAttachmentMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.CatchCertificateAttachment ();
-to.AttachmentId = from.AttachmentId;
-            to.NumberOfCatchCertificates = from.NumberOfCatchCertificates;
+to.AttachmentId = from?.AttachmentId;
+            to.NumberOfCatchCertificates = from?.NumberOfCatchCertificates;
             to.CatchCertificateDetails = from?.CatchCertificateDetails?.Select(x => CatchCertificateDetailsMapper.Map(x)).ToArray();
                 	return to;
 	}

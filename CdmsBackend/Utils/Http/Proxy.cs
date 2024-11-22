@@ -26,7 +26,7 @@ public static class Proxy
         {
             var options = sp.GetRequiredService<IOptions<ApiOptions>>();
             var proxy = sp.GetRequiredService<IWebProxy>();
-            return CreateHttpClientHandler(proxy, options.Value.CdpHttpsProxy);
+            return CreateHttpClientHandler(proxy, options.Value.CdpHttpsProxy!);
         });
 
         // Others, including the Azure SDK, rely on this, falling back to HTTPS_PROXY.

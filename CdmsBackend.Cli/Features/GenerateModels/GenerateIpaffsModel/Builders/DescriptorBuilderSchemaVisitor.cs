@@ -18,10 +18,12 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
                 var itemsKeyword = context.JsonSchema.GetKeyword<ItemsKeyword>();
                 if (itemsKeyword is not null)
                 {
-                    if (itemsKeyword.SingleSchema.IsReferenceType())
+                    if (itemsKeyword.SingleSchema!.IsReferenceType())
                     {
-                        var refKeyword = itemsKeyword.SingleSchema.GetKeyword<RefKeyword>();
-                        var value = refKeyword.Reference.ToString().Split('/').Last();
+                        var refKeyword = itemsKeyword.SingleSchema?.GetKeyword<RefKeyword>();
+#pragma warning disable S6608
+                        var value = refKeyword?.Reference.ToString().Split('/').Last();
+#pragma warning restore S6608
 
                         context.ClassDescriptor.Properties.Add(new PropertyDescriptor(context.Key,
                             $"{value}",
@@ -30,7 +32,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
                     }
                     else
                     {
-                        var itemType = itemsKeyword.SingleSchema.GetKeyword<TypeKeyword>().Type;
+                        var itemType = itemsKeyword.SingleSchema!.GetKeyword<TypeKeyword>()!.Type;
                         if (itemType != SchemaValueType.Object)
                         {
                             context.ClassDescriptor.Properties.Add(new PropertyDescriptor(context.Key,
@@ -59,7 +61,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
                     classDescriptor.Description = context.JsonSchema.GetDescription();
                     
 
-                    foreach (var property in propertiesKeyword.Properties)
+                    foreach (var property in propertiesKeyword?.Properties!)
                     {
                         OnProperty(new PropertyVisitorContext(context.CSharpDescriptor, classDescriptor, context.RootJsonSchema, property.Key,
                             property.Value));
@@ -92,11 +94,13 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
             var refKeyword = context.JsonSchema.GetKeyword<RefKeyword>();
             if (refKeyword is not null)
             {
+#pragma warning disable S6608
                 var value = refKeyword.Reference.ToString().Split('/').Last();
-                var definition = context.RootJsonSchema.GetDefinitions().FirstOrDefault(x =>
+#pragma warning restore S6608
+                var definition = context.RootJsonSchema.GetDefinitions()!.FirstOrDefault(x =>
                     x.Key.Equals(value, StringComparison.InvariantCultureIgnoreCase));
 
-                var defType = definition.Value.GetKeyword<TypeKeyword>().Type;
+                var defType = definition.Value.GetKeyword<TypeKeyword>()!.Type;
 
                 if (defType == SchemaValueType.Object)
                 {
@@ -108,7 +112,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
                     var itemsKeyword = definition.Value.GetKeyword<ItemsKeyword>();
                     if (itemsKeyword is not null)
                     {
-                        var itemType = itemsKeyword.SingleSchema.GetKeyword<TypeKeyword>().Type;
+                        var itemType = itemsKeyword.SingleSchema!.GetKeyword<TypeKeyword>()!.Type;
                         if (itemType != SchemaValueType.Object)
                         {
                             context.ClassDescriptor.Properties.Add(new PropertyDescriptor(context.Key,
@@ -132,7 +136,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
                 classDescriptor.Description = context.JsonSchema.GetDescription();
                 context.CSharpDescriptor.AddClassDescriptor(classDescriptor);
 
-                foreach (var property in propertiesKeyword.Properties)
+                foreach (var property in propertiesKeyword!.Properties)
                 {
                     OnProperty(new PropertyVisitorContext(context.CSharpDescriptor, classDescriptor, context.RootJsonSchema, property.Key,
                         property.Value));
@@ -154,7 +158,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
     {
         if (context.JsonSchema.IsEnum())
         {
-            OnEnum(context.CSharpDescriptor, context.JsonSchema, null, context.Key);
+            OnEnum(context.CSharpDescriptor, context.JsonSchema, null!, context.Key);
 
         }
         else if (context.JsonSchema.IsClass())
@@ -165,7 +169,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
 
             var propertiesKeyword = context.JsonSchema.GetKeyword<PropertiesKeyword>();
 
-            foreach (var property in propertiesKeyword.Properties)
+            foreach (var property in propertiesKeyword!.Properties)
             {
                 OnProperty(new PropertyVisitorContext(context.CSharpDescriptor, classDescriptor, context.RootJsonSchema, property.Key,
                     property.Value));
@@ -179,9 +183,9 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
 
         if (enumKeyword is not null)
         {
-            var values = enumKeyword.Values.Select(x => new EnumDescriptor.EnumValueDescriptor(x.ToString()))
+            var values = enumKeyword.Values.Select(x => new EnumDescriptor.EnumValueDescriptor(x!.ToString()))
                 .ToList();
-            cSharpDescriptor.AddEnumDescriptor(new EnumDescriptor(name, classDescriptor?.Name, IpaffsDescriptorBuilder.SourceNamespace, IpaffsDescriptorBuilder.InternalNamespace, IpaffsDescriptorBuilder.ClassNamePrefix) { Values = values });
+            cSharpDescriptor.AddEnumDescriptor(new EnumDescriptor(name, classDescriptor?.Name!, IpaffsDescriptorBuilder.SourceNamespace, IpaffsDescriptorBuilder.InternalNamespace, IpaffsDescriptorBuilder.ClassNamePrefix) { Values = values });
         }
     }
 }

@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.Contami
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.InterceptedPart => Cdms.Model.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.InterceptedPart,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.PackagingMaterial => Cdms.Model.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.PackagingMaterial,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.Other => Cdms.Model.Ipaffs.DecisionNotAcceptableActionQuarantineImposedReasonEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

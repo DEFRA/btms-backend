@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.ContaminatedP
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.InterceptedPart => Cdms.Model.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.InterceptedPart,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.PackagingMaterial => Cdms.Model.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.PackagingMaterial,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.Other => Cdms.Model.Ipaffs.DecisionNotAcceptableActionDestructionReasonEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

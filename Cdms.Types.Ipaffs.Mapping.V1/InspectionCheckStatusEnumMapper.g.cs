@@ -11,25 +11,32 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class InspectionCheckStatusEnumMapper
 {
-public static Cdms.Model.Ipaffs.InspectionCheckStatusEnum? Map(Cdms.Types.Ipaffs.InspectionCheckStatusEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.InspectionCheckStatusEnum.ToDo => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.ToDo,
-    Cdms.Types.Ipaffs.InspectionCheckStatusEnum.Compliant => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.Compliant,
-    Cdms.Types.Ipaffs.InspectionCheckStatusEnum.AutoCleared => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.AutoCleared,
-    Cdms.Types.Ipaffs.InspectionCheckStatusEnum.NonCompliant => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.NonCompliant,
-    Cdms.Types.Ipaffs.InspectionCheckStatusEnum.NotInspected => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.NotInspected,
-    Cdms.Types.Ipaffs.InspectionCheckStatusEnum.ToBeInspected => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.ToBeInspected,
-    Cdms.Types.Ipaffs.InspectionCheckStatusEnum.Hold => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.Hold,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.InspectionCheckStatusEnum? Map(Cdms.Types.Ipaffs.InspectionCheckStatusEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.ToDo => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.ToDo,
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.Compliant => Cdms.Model.Ipaffs.InspectionCheckStatusEnum
+                .Compliant,
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.AutoCleared => Cdms.Model.Ipaffs.InspectionCheckStatusEnum
+                .AutoCleared,
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.NonCompliant => Cdms.Model.Ipaffs.InspectionCheckStatusEnum
+                .NonCompliant,
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.NotInspected => Cdms.Model.Ipaffs.InspectionCheckStatusEnum
+                .NotInspected,
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.ToBeInspected => Cdms.Model.Ipaffs.InspectionCheckStatusEnum
+                .ToBeInspected,
+            Cdms.Types.Ipaffs.InspectionCheckStatusEnum.Hold => Cdms.Model.Ipaffs.InspectionCheckStatusEnum.Hold,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

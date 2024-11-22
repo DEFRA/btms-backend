@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.CommoditiesCommodityIntendedForEnum.Human => Cdms.Model.Ipaffs
     Cdms.Types.Ipaffs.CommoditiesCommodityIntendedForEnum.Feedingstuff => Cdms.Model.Ipaffs.CommoditiesCommodityIntendedForEnum.Feedingstuff,
     Cdms.Types.Ipaffs.CommoditiesCommodityIntendedForEnum.Further => Cdms.Model.Ipaffs.CommoditiesCommodityIntendedForEnum.Further,
     Cdms.Types.Ipaffs.CommoditiesCommodityIntendedForEnum.Other => Cdms.Model.Ipaffs.CommoditiesCommodityIntendedForEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

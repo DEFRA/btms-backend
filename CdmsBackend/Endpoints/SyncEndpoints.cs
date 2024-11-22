@@ -28,27 +28,27 @@ public static class SyncEndpoints
 		app.MapGet(BaseRoute + "/jobs/{jobId}", GetSyncJob).AllowAnonymous();
     }
 
-    private static async Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
+    private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
     {
-        return Results.Ok(new { jobs = store.GetJobs() });
+        return Task.FromResult(Results.Ok(new { jobs = store.GetJobs() }));
     }
 
-    private static async Task<IResult> ClearSyncJobs([FromServices] ISyncJobStore store)
+    private static Task<IResult> ClearSyncJobs([FromServices] ISyncJobStore store)
     {
 		store.ClearSyncJobs();
-	    return Results.Ok();
+	    return Task.FromResult(Results.Ok());
     }
 
-	private static async Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
+	private static Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
     {
-        return Results.Ok(store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId)));
+        return Task.FromResult(Results.Ok(store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId))));
     }
 
-    private static async Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
+    private static Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
     {
-       return queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
+       return Task.FromResult(queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
             ? Results.Ok(queueStatsMonitor.GetAll())
-            : Results.NoContent();
+            : Results.NoContent());
     }
 
     private static async Task<IResult> GetSyncNotifications(

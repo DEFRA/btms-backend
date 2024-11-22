@@ -11,20 +11,22 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class UnitEnumMapper
 {
-public static Cdms.Model.Ipaffs.UnitEnum? Map(Cdms.Types.Ipaffs.UnitEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.UnitEnum.Percent => Cdms.Model.Ipaffs.UnitEnum.Percent,
-    Cdms.Types.Ipaffs.UnitEnum.Number => Cdms.Model.Ipaffs.UnitEnum.Number,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.UnitEnum? Map(Cdms.Types.Ipaffs.UnitEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.UnitEnum.Percent => Cdms.Model.Ipaffs.UnitEnum.Percent,
+            Cdms.Types.Ipaffs.UnitEnum.Number => Cdms.Model.Ipaffs.UnitEnum.Number,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

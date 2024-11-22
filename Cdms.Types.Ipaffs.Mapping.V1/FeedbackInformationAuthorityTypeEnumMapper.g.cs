@@ -11,22 +11,28 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class FeedbackInformationAuthorityTypeEnumMapper
 {
-public static Cdms.Model.Ipaffs.FeedbackInformationAuthorityTypeEnum? Map(Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Exitbip => Cdms.Model.Ipaffs.FeedbackInformationAuthorityTypeEnum.Exitbip,
-    Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Finalbip => Cdms.Model.Ipaffs.FeedbackInformationAuthorityTypeEnum.Finalbip,
-    Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Localvetunit => Cdms.Model.Ipaffs.FeedbackInformationAuthorityTypeEnum.Localvetunit,
-    Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Inspunit => Cdms.Model.Ipaffs.FeedbackInformationAuthorityTypeEnum.Inspunit,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.FeedbackInformationAuthorityTypeEnum? Map(
+        Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Exitbip => Cdms.Model.Ipaffs
+                .FeedbackInformationAuthorityTypeEnum.Exitbip,
+            Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Finalbip => Cdms.Model.Ipaffs
+                .FeedbackInformationAuthorityTypeEnum.Finalbip,
+            Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Localvetunit => Cdms.Model.Ipaffs
+                .FeedbackInformationAuthorityTypeEnum.Localvetunit,
+            Cdms.Types.Ipaffs.FeedbackInformationAuthorityTypeEnum.Inspunit => Cdms.Model.Ipaffs
+                .FeedbackInformationAuthorityTypeEnum.Inspunit,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
 
 }
 

@@ -5,8 +5,6 @@ namespace Cdms.BlobService;
 public class SynchroniserBlobItem : IBlobItem
 {
     public string Name { get; set; } = default!;
-
-    public string NormalisedName { get; set; } = default;
     public string Content { get; set; } = default!;
 
     public async Task<string> Download(BlobClient client, CancellationToken cancellationToken)

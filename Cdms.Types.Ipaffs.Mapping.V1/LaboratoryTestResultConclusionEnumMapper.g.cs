@@ -11,22 +11,29 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class LaboratoryTestResultConclusionEnumMapper
 {
-public static Cdms.Model.Ipaffs.LaboratoryTestResultConclusionEnum? Map(Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Satisfactory => Cdms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.Satisfactory,
-    Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotSatisfactory => Cdms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.NotSatisfactory,
-    Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotInterpretable => Cdms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.NotInterpretable,
-    Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Pending => Cdms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.Pending,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.LaboratoryTestResultConclusionEnum? Map(
+        Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Satisfactory => Cdms.Model.Ipaffs
+                .LaboratoryTestResultConclusionEnum.Satisfactory,
+            Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotSatisfactory => Cdms.Model.Ipaffs
+                .LaboratoryTestResultConclusionEnum.NotSatisfactory,
+            Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotInterpretable => Cdms.Model.Ipaffs
+                .LaboratoryTestResultConclusionEnum.NotInterpretable,
+            Cdms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Pending => Cdms.Model.Ipaffs
+                .LaboratoryTestResultConclusionEnum.Pending,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

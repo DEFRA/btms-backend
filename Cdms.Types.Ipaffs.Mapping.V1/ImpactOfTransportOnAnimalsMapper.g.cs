@@ -21,11 +21,11 @@ public static class ImpactOfTransportOnAnimalsMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.ImpactOfTransportOnAnimals ();
-to.NumberOfDeadAnimals = from.NumberOfDeadAnimals;
-            to.NumberOfDeadAnimalsUnit = from.NumberOfDeadAnimalsUnit;
-            to.NumberOfUnfitAnimals = from.NumberOfUnfitAnimals;
-            to.NumberOfUnfitAnimalsUnit = from.NumberOfUnfitAnimalsUnit;
-            to.NumberOfBirthOrAbortion = from.NumberOfBirthOrAbortion;
+to.NumberOfDeadAnimals = from?.NumberOfDeadAnimals;
+            to.NumberOfDeadAnimalsUnit = from?.NumberOfDeadAnimalsUnit;
+            to.NumberOfUnfitAnimals = from?.NumberOfUnfitAnimals;
+            to.NumberOfUnfitAnimalsUnit = from?.NumberOfUnfitAnimalsUnit;
+            to.NumberOfBirthOrAbortion = from?.NumberOfBirthOrAbortion;
             	return to;
 	}
 }

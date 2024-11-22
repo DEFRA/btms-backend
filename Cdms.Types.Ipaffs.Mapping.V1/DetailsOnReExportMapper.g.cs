@@ -21,12 +21,12 @@ public static class DetailsOnReExportMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.DetailsOnReExport ();
-to.Date = from.Date;
-            to.MeansOfTransportNo = from.MeansOfTransportNo;
+to.Date = from?.Date;
+            to.MeansOfTransportNo = from?.MeansOfTransportNo;
             to.TransportType = DetailsOnReExportTransportTypeEnumMapper.Map(from?.TransportType);
-                to.Document = from.Document;
-            to.CountryOfReDispatching = from.CountryOfReDispatching;
-            to.ExitBip = from.ExitBip;
+                to.Document = from?.Document;
+            to.CountryOfReDispatching = from?.CountryOfReDispatching;
+            to.ExitBip = from?.ExitBip;
             	return to;
 	}
 }

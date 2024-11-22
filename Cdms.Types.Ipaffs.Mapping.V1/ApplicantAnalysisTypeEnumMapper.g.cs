@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.ApplicantAnalysisTypeEnum.InitialAnalysis => Cdms.Model.Ipaffs.ApplicantAnalysisTypeEnum.InitialAnalysis,
     Cdms.Types.Ipaffs.ApplicantAnalysisTypeEnum.CounterAnalysis => Cdms.Model.Ipaffs.ApplicantAnalysisTypeEnum.CounterAnalysis,
     Cdms.Types.Ipaffs.ApplicantAnalysisTypeEnum.SecondExpertAnalysis => Cdms.Model.Ipaffs.ApplicantAnalysisTypeEnum.SecondExpertAnalysis,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

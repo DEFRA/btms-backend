@@ -62,8 +62,8 @@ public class ProxyTest
     {
 
         var proxy = Proxy.CreateProxy(proxyUri, NullLogger.Instance) as System.Net.WebProxy;
-        proxy.Address.Should().NotBeNull();
-        proxy.Address?.AbsoluteUri.Should().Be(localProxy);
+        proxy?.Address.Should().NotBeNull();
+        proxy?.Address?.AbsoluteUri.Should().Be(localProxy);
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class ProxyTest
         var proxy = Proxy.CreateProxy(null, NullLogger.Instance) as System.Net.WebProxy;
 
 
-        proxy.Address.Should().BeNull();
+        proxy?.Address.Should().BeNull();
     }
 
     [Fact]

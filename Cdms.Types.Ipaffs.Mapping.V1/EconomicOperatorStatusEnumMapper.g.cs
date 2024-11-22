@@ -11,21 +11,26 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class EconomicOperatorStatusEnumMapper
 {
-public static Cdms.Model.Ipaffs.EconomicOperatorStatusEnum? Map(Cdms.Types.Ipaffs.EconomicOperatorStatusEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.EconomicOperatorStatusEnum.Approved => Cdms.Model.Ipaffs.EconomicOperatorStatusEnum.Approved,
-    Cdms.Types.Ipaffs.EconomicOperatorStatusEnum.Nonapproved => Cdms.Model.Ipaffs.EconomicOperatorStatusEnum.Nonapproved,
-    Cdms.Types.Ipaffs.EconomicOperatorStatusEnum.Suspended => Cdms.Model.Ipaffs.EconomicOperatorStatusEnum.Suspended,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.EconomicOperatorStatusEnum? Map(Cdms.Types.Ipaffs.EconomicOperatorStatusEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.EconomicOperatorStatusEnum.Approved => Cdms.Model.Ipaffs.EconomicOperatorStatusEnum
+                .Approved,
+            Cdms.Types.Ipaffs.EconomicOperatorStatusEnum.Nonapproved => Cdms.Model.Ipaffs.EconomicOperatorStatusEnum
+                .Nonapproved,
+            Cdms.Types.Ipaffs.EconomicOperatorStatusEnum.Suspended => Cdms.Model.Ipaffs.EconomicOperatorStatusEnum
+                .Suspended,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

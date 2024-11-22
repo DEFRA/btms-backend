@@ -6,16 +6,16 @@ namespace Cdms.Model.Relationships;
 
 public sealed class RelationshipLinks
 {
-    [Attr] public string Self { get; set; }
+    [Attr] public string Self { get; set; } = default!;
 
-    [Attr] public string Related { get; set; }
+    [Attr] public string Related { get; set; } = default!;
 
     public static RelationshipLinks CreateForMovement(Movement movement)
     {
         return new RelationshipLinks()
         {
-            Self = LinksBuilder.Movement.BuildSelfMovementLink(movement.Id),
-            Related = LinksBuilder.Movement.BuildRelatedMovementLink(movement.Id)
+            Self = LinksBuilder.Movement.BuildSelfMovementLink(movement.Id!),
+            Related = LinksBuilder.Movement.BuildRelatedMovementLink(movement.Id!)
         };
     }
 
@@ -23,8 +23,8 @@ public sealed class RelationshipLinks
     {
         return new RelationshipLinks()
         {
-            Self = LinksBuilder.Notification.BuildSelfNotificationLink(notification.Id),
-            Related = LinksBuilder.Notification.BuildRelatedMovementLink(notification.Id)
+            Self = LinksBuilder.Notification.BuildSelfNotificationLink(notification.Id!),
+            Related = LinksBuilder.Notification.BuildRelatedMovementLink(notification.Id!)
         };
     }
 }

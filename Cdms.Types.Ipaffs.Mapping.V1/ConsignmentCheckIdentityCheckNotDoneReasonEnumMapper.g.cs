@@ -21,7 +21,8 @@ return from switch
 {
 Cdms.Types.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.ReducedChecksRegime => Cdms.Model.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.ReducedChecksRegime,
     Cdms.Types.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.NotRequired => Cdms.Model.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.NotRequired,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

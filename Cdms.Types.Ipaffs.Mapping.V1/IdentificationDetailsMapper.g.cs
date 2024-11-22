@@ -21,8 +21,8 @@ public static class IdentificationDetailsMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.IdentificationDetails ();
-to.IdentificationDetail = from.IdentificationDetail;
-            to.IdentificationDescription = from.IdentificationDescription;
+to.IdentificationDetail = from?.IdentificationDetail;
+            to.IdentificationDescription = from?.IdentificationDescription;
             	return to;
 	}
 }

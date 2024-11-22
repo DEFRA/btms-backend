@@ -11,23 +11,25 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class ImportNotificationTypeEnumMapper
 {
-public static Cdms.Model.Ipaffs.ImportNotificationTypeEnum? Map(Cdms.Types.Ipaffs.ImportNotificationTypeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Cveda => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Cveda,
-    Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Cvedp => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Cvedp,
-    Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Chedpp => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Chedpp,
-    Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Ced => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Ced,
-    Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Imp => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Imp,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.ImportNotificationTypeEnum? Map(Cdms.Types.Ipaffs.ImportNotificationTypeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Cveda => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Cveda,
+            Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Cvedp => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Cvedp,
+            Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Chedpp => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Chedpp,
+            Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Ced => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Ced,
+            Cdms.Types.Ipaffs.ImportNotificationTypeEnum.Imp => Cdms.Model.Ipaffs.ImportNotificationTypeEnum.Imp,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

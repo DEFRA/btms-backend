@@ -48,12 +48,12 @@ public static class ManagementEndpoints
             switch(d.Key) 
             {
                 case "HTTP_PROXY" or "HTTPS_PROXY":
-                    // TODO : redact the password - doesn't have protocol, ie.
+                    // redact the password - doesn't have protocol, ie.
                     // cdms-backend::passC@proxy.perf-test.cdp-int.defra.cloud
                     value = Redacted;
                     break;
                 case "CDP_HTTP_PROXY" or "CDP_HTTPS_PROXY":
-                    // TODO : redact the password
+                    //  redact the password
                     // https://cdms-backend::passC@proxy.perf-test.cdp-int.defra.cloud
                     value = Redacted;
                     break;
@@ -64,7 +64,7 @@ public static class ManagementEndpoints
                     break;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             value = Redacted;
         }

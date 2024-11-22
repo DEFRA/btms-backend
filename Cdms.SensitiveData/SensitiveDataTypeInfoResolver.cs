@@ -13,20 +13,17 @@ public class SensitiveDataTypeInfoResolver(SensitiveDataOptions sensitiveDataOpt
         {
             foreach (var property in typeInfo.Properties)
             {
-                if (!sensitiveDataOptions.Include)
+                if (!sensitiveDataOptions.Include && property.AttributeProvider!.GetCustomAttributes(typeof(SensitiveDataAttribute), false).Any())
                 {
-                    if (property.AttributeProvider.GetCustomAttributes(typeof(SensitiveDataAttribute), false).Any())
+                    if (property.PropertyType == typeof(string))
                     {
-                        if (property.PropertyType == typeof(string))
-                        {
-                            property.CustomConverter =
-                                new SensitiveDataRedactedConverter(sensitiveDataOptions);
-                        }
-                        else if (property.PropertyType == typeof(string[]))
-                        {
-                            property.CustomConverter =
-                                new StringArraySensitiveDataRedactedConverter(sensitiveDataOptions);
-                        }
+                        property.CustomConverter =
+                            new SensitiveDataRedactedConverter(sensitiveDataOptions);
+                    }
+                    else if (property.PropertyType == typeof(string[]))
+                    {
+                        property.CustomConverter =
+                            new StringArraySensitiveDataRedactedConverter(sensitiveDataOptions);
                     }
                 }
             }

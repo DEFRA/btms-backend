@@ -11,25 +11,35 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class DetailsOnReExportTransportTypeEnumMapper
 {
-public static Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum? Map(Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Rail => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.Rail,
-    Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Plane => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.Plane,
-    Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Ship => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.Ship,
-    Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Road => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.Road,
-    Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Other => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.Other,
-    Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.CShipRoad => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.CShipRoad,
-    Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.CShipRail => Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum.CShipRail,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.DetailsOnReExportTransportTypeEnum? Map(
+        Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Rail => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.Rail,
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Plane => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.Plane,
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Ship => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.Ship,
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Road => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.Road,
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.Other => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.Other,
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.CShipRoad => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.CShipRoad,
+            Cdms.Types.Ipaffs.DetailsOnReExportTransportTypeEnum.CShipRail => Cdms.Model.Ipaffs
+                .DetailsOnReExportTransportTypeEnum.CShipRail,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

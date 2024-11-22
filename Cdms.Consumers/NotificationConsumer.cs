@@ -13,28 +13,28 @@ namespace Cdms.Consumers
             var internalNotification = message.MapWithTransform();
             var auditId = Context.Headers["messageId"].ToString();
 
-            var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber);
+            var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber!);
             if (existingNotification is not null)
             {
-                if (internalNotification.UpdatedSource > existingNotification.UpdatedSource)
+                if (internalNotification.LastUpdated > existingNotification.LastUpdated)
                 {
                     internalNotification.AuditEntries = existingNotification.AuditEntries;
-                    internalNotification.Update(BuildNormalizedIpaffsPath(auditId!), existingNotification);
+                    internalNotification.Updated(BuildNormalizedIpaffsPath(auditId!), existingNotification);
                     await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
                 }
                 else
                 {
-                    //TODO: when an older notification is processed what should happen here?
+                    //when an older notification is processed what should happen here?
                 }
             }
             else
             {
-                internalNotification.Create(BuildNormalizedIpaffsPath(auditId));
+                internalNotification.Created(BuildNormalizedIpaffsPath(auditId!));
                 await dbContext.Notifications.Insert(internalNotification);
             }
         }
 
-        public IConsumerContext Context { get; set; }
+        public IConsumerContext Context { get; set; } = null!;
 
         private static string BuildNormalizedIpaffsPath(string fullPath)
         {

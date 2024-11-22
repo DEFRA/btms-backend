@@ -47,6 +47,6 @@ internal class GeneratorEnumMap
     public static GeneratorEnumMap LookupEnumMap(string name)
     {
         classMaps.TryGetValue(name, out var classMap);
-        return classMap;
+        return classMap!;
     }
 }

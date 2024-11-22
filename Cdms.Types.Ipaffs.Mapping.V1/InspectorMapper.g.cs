@@ -21,9 +21,9 @@ public static class InspectorMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.Inspector ();
-to.Name = from.Name;
-            to.Phone = from.Phone;
-            to.Email = from.Email;
+to.Name = from?.Name;
+            to.Phone = from?.Phone;
+            to.Email = from?.Email;
             	return to;
 	}
 }

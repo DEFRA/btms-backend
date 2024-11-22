@@ -18,7 +18,7 @@ namespace Cdms.Emf
         {
             var config = builder.ApplicationServices.GetRequiredService<IConfiguration>();
             var ns = config.GetValue<string>("AWS_EMF_NAMESPACE");
-            EmfExporter.Init(builder.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(EmfExporter)), ns);
+            EmfExporter.Init(builder.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(EmfExporter)), ns!);
             return builder;
         }
     }
@@ -26,8 +26,8 @@ namespace Cdms.Emf
     {
         private static readonly MeterListener meterListener = new();
         private static ILogger log = null!;
-        private static string awsNamespace;
-        public static void Init(ILogger logger, string awsNamespace)
+        private static string? awsNamespace;
+        public static void Init(ILogger logger, string? awsNamespace)
         {
             log = logger;
             EmfExporter.awsNamespace = awsNamespace;

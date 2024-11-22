@@ -23,7 +23,7 @@ public static class OpenApiExtensions
     {
         var openApiType = openApiSchema.Value.Type;
 
-        return openApiType switch
+        return (openApiType switch
         {
             "Boolean" => "bool",
             "boolean" => "bool",
@@ -33,7 +33,7 @@ public static class OpenApiExtensions
             "object" => "objectTDB",
             "" => "",
             null => null,
-            _ => throw new ArgumentOutOfRangeException(nameof(openApiType), openApiType, null)
-        };
+            _ => throw new ArgumentOutOfRangeException(nameof(openApiSchema), openApiSchema, null)
+        })!;
     }
 }

@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.Cont
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.InterceptedPart => Cdms.Model.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.InterceptedPart,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.PackagingMaterial => Cdms.Model.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.PackagingMaterial,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.Other => Cdms.Model.Ipaffs.DecisionNotAcceptableActionIndustrialProcessingReasonEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

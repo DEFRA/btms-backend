@@ -6,7 +6,6 @@ namespace CdmsBackend.Cli.Features.GenerateModels.DescriptorModel;
 [DebuggerDisplay("{Name}")]
 public class ClassDescriptor(string name, string sourceNamespace, string internalNamespace, string classNamePrefix)
 {
-    // private const string classPrefix = "Ipaffs";
     public string Name { get; set; } = name;
 
     public bool IgnoreInternalClass { get; set; }
@@ -14,7 +13,7 @@ public class ClassDescriptor(string name, string sourceNamespace, string interna
 
     public string InternalNamespace { get; } = internalNamespace;
 
-    public string Description { get; set; }
+    public string Description { get; set; } = null!;
 
     public bool IsResource { get; set; }
 
@@ -22,7 +21,7 @@ public class ClassDescriptor(string name, string sourceNamespace, string interna
 
     public void AddPropertyDescriptor(PropertyDescriptor propertyDescriptor)
     {
-        if (Properties.All(x => x.SourceName != propertyDescriptor.SourceName))
+        if (Properties.TrueForAll(x => x.SourceName != propertyDescriptor.SourceName))
         {
             Properties.Add(propertyDescriptor);
         }
@@ -35,12 +34,12 @@ public class ClassDescriptor(string name, string sourceNamespace, string interna
 
     public string GetSourceFullClassName()
     {
-        return $"{sourceNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
+        return $"{SourceNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
     }
 
     public string GetInternalFullClassName()
     {
-        return $"{internalNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
+        return $"{InternalNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
     }
 
     public static string BuildClassName(string name, string classNamePrefix, bool isResource = false)

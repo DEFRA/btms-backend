@@ -11,22 +11,27 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class InspectionCheckTypeEnumMapper
 {
-public static Cdms.Model.Ipaffs.InspectionCheckTypeEnum? Map(Cdms.Types.Ipaffs.InspectionCheckTypeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiDocument => Cdms.Model.Ipaffs.InspectionCheckTypeEnum.PhsiDocument,
-    Cdms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiIdentity => Cdms.Model.Ipaffs.InspectionCheckTypeEnum.PhsiIdentity,
-    Cdms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiPhysical => Cdms.Model.Ipaffs.InspectionCheckTypeEnum.PhsiPhysical,
-    Cdms.Types.Ipaffs.InspectionCheckTypeEnum.Hmi => Cdms.Model.Ipaffs.InspectionCheckTypeEnum.Hmi,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.InspectionCheckTypeEnum? Map(Cdms.Types.Ipaffs.InspectionCheckTypeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiDocument => Cdms.Model.Ipaffs.InspectionCheckTypeEnum
+                .PhsiDocument,
+            Cdms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiIdentity => Cdms.Model.Ipaffs.InspectionCheckTypeEnum
+                .PhsiIdentity,
+            Cdms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiPhysical => Cdms.Model.Ipaffs.InspectionCheckTypeEnum
+                .PhsiPhysical,
+            Cdms.Types.Ipaffs.InspectionCheckTypeEnum.Hmi => Cdms.Model.Ipaffs.InspectionCheckTypeEnum.Hmi,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

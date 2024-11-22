@@ -21,9 +21,9 @@ public static class ComplementParameterSetMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.ComplementParameterSet ();
-to.UniqueComplementId = from.UniqueComplementId;
-            to.ComplementId = from.ComplementId;
-            to.SpeciesId = from.SpeciesId;
+to.UniqueComplementId = from?.UniqueComplementId;
+            to.ComplementId = from?.ComplementId;
+            to.SpeciesId = from?.SpeciesId;
             to.KeyDataPairs = Cdms.Types.Ipaffs.Mapping.DictionaryMapper.Map(from?.KeyDataPairs);
             to.CatchCertificates = from?.CatchCertificates?.Select(x => CatchCertificatesMapper.Map(x)).ToArray();
                 to.Identifiers = from?.Identifiers?.Select(x => IdentifiersMapper.Map(x)).ToArray();

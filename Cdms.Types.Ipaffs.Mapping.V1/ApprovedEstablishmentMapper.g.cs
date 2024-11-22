@@ -21,12 +21,12 @@ public static class ApprovedEstablishmentMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.ApprovedEstablishment ();
-to.Id = from.Id;
-            to.Name = from.Name;
-            to.Country = from.Country;
-            to.Types = from.Types;
-            to.ApprovalNumber = from.ApprovalNumber;
-            to.Section = from.Section;
+to.Id = from?.Id;
+            to.Name = from?.Name;
+            to.Country = from?.Country;
+            to.Types = from?.Types;
+            to.ApprovalNumber = from?.ApprovalNumber;
+            to.Section = from?.Section;
             	return to;
 	}
 }

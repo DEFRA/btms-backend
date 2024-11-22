@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonApiDotNetCore.Serialization.JsonConverters;
 using JsonApiDotNetCore.Serialization.Objects;
@@ -16,7 +16,7 @@ public abstract class JsonApiDocument<T>
 
     [JsonPropertyName("links")] public TopLevelLinks? Links { get; set; }
 
-    [JsonPropertyName("data")] public T Data { get; set; }
+    [JsonPropertyName("data")] public T Data { get; set; } = default!;
 
     [JsonPropertyName("errors")] public IList<ErrorObject>? Errors { get; set; }
 

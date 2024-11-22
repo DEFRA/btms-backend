@@ -1,8 +1,6 @@
-using System.Net;
 using System.Text;
 using System.Text.Json;
 using Cdms.Business.Commands;
-using Cdms.Model;
 using CdmsBackend.IntegrationTests.Helpers;
 using CdmsBackend.IntegrationTests.JsonApiClient;
 using FluentAssertions;
@@ -22,7 +20,7 @@ public class GmrTests :
     public GmrTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
     {
         this.factory = factory;
-        this.factory.testOutputHelper = testOutputHelper;
+        this.factory.TestOutputHelper = testOutputHelper;
         this.factory.DatabaseName = "GmrTests";
         client =
             this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
@@ -30,7 +28,7 @@ public class GmrTests :
 
     public async Task InitializeAsync()
     {
-        await factory.ClearDb(client);
+        await IntegrationTestsApplicationFactory.ClearDb(client);
 
         await MakeSyncGmrsRequest(new SyncGmrsCommand()
         {
@@ -43,18 +41,18 @@ public class GmrTests :
     }
 
     [Fact]
-    public async Task FetchSingleGmrTest()
+    public void FetchSingleGmrTest()
     {
 
         //Act
         var jsonClientResponse = client.AsJsonApiClient().GetById("GMRAPOQSPDUG","api/gmrs");
 
         // Assert
-        jsonClientResponse.Data.Relationships["customs"].Links.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
-        jsonClientResponse.Data.Relationships["customs"].Links.Related.Should().Be("/api/import-notifications/:id");
+        jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
+        jsonClientResponse.Data.Relationships?["customs"]?.Links?.Related.Should().Be("/api/import-notifications/:id");
 
-        jsonClientResponse.Data.Relationships["customs"].Data.ManyValue[0].Id.Should().Be("56GB123456789AB043");
-        jsonClientResponse.Data.Relationships["customs"].Data.ManyValue[0].Type.Should().Be("import-notifications");
+        jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0]?.Id.Should().Be("56GB123456789AB043");
+        jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
     }
 
 

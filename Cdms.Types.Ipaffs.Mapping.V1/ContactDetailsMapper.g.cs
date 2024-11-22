@@ -21,10 +21,10 @@ public static class ContactDetailsMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.ContactDetails ();
-to.Name = from.Name;
-            to.Telephone = from.Telephone;
-            to.Email = from.Email;
-            to.Agent = from.Agent;
+to.Name = from?.Name;
+            to.Telephone = from?.Telephone;
+            to.Email = from?.Email;
+            to.Agent = from?.Agent;
             	return to;
 	}
 }

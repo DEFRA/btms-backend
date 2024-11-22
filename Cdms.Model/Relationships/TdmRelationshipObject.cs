@@ -6,9 +6,9 @@ public sealed class TdmRelationshipObject
 {
     [Attr] public bool? Matched { get; set; } = default!;
 
-    [Attr] public RelationshipLinks Links { get; set; }
+    [Attr] public RelationshipLinks Links { get; set; } = default!;
 
-    [Attr] public List<RelationshipDataItem> Data { get; set; } = new List<RelationshipDataItem>();
+    [Attr] public List<RelationshipDataItem> Data { get; set; } = [];
 
     public static TdmRelationshipObject CreateDefault()
     {

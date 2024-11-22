@@ -12,15 +12,15 @@ public class SensitiveDataOptions
 
     static string Sha256(string input)
     {
-        var crypt = new SHA256Managed();
-        string hash = String.Empty;
+        var crypt = SHA256.Create();
+        StringBuilder hash = new StringBuilder();
         byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(input));
         foreach (byte theByte in crypto)
         {
-            hash += theByte.ToString("x2");
+            hash.Append(theByte.ToString("x2"));
         }
 
-        return hash;
+        return hash.ToString();
     }
 
     public static SensitiveDataOptions Default => new();

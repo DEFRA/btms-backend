@@ -14,17 +14,18 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class InspectionOverrideMapper
 {
-	public static Cdms.Model.Ipaffs.InspectionOverride Map(Cdms.Types.Ipaffs.InspectionOverride from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.InspectionOverride ();
-to.OriginalDecision = from.OriginalDecision;
-            to.OverriddenOn = from.OverriddenOn;
-            to.OverriddenBy = UserInformationMapper.Map(from?.OverriddenBy);
-                	return to;
-	}
+    public static Cdms.Model.Ipaffs.InspectionOverride Map(Cdms.Types.Ipaffs.InspectionOverride from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.InspectionOverride();
+        to.OriginalDecision = from?.OriginalDecision;
+        to.OverriddenOn = from?.OverriddenOn;
+        to.OverriddenBy = UserInformationMapper.Map(from?.OverriddenBy!);
+        return to;
+    }
 }
 

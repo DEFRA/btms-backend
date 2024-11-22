@@ -22,10 +22,10 @@ public static class ExternalReferenceMapper
 	}
 		var to = new Cdms.Model.Ipaffs.ExternalReference ();
 to.System = ExternalReferenceSystemEnumMapper.Map(from?.System);
-                to.Reference = from.Reference;
-            to.ExactMatch = from.ExactMatch;
-            to.VerifiedByImporter = from.VerifiedByImporter;
-            to.VerifiedByInspector = from.VerifiedByInspector;
+                to.Reference = from?.Reference;
+            to.ExactMatch = from?.ExactMatch;
+            to.VerifiedByImporter = from?.VerifiedByImporter;
+            to.VerifiedByInspector = from?.VerifiedByInspector;
             	return to;
 	}
 }

@@ -6,8 +6,6 @@ namespace CdmsBackend.Cli.Features.GenerateModels.DescriptorModel;
 [DebuggerDisplay("{Name}")]
 public class EnumDescriptor(string name, string parentName, string sourceNamespace, string internalNamespace, string classNamePrefix)
 {
-    
-    //private const string prefix = "Ipaffs";
     private const string suffix = "Enum";
 
     public string Name { get; set; } = name;
@@ -32,19 +30,19 @@ public class EnumDescriptor(string name, string parentName, string sourceNamespa
 
     public string GetSourceFullEnumName()
     {
-        return $"{sourceNamespace}.{BuildEnumName(Name, parentName, classNamePrefix)}";
+        return $"{SourceNamespace}.{BuildEnumName(Name, parentName, classNamePrefix)}";
     }
 
     public string GetInternalFullEnumName()
     {
-        return $"{internalNamespace}.{BuildEnumName(Name, parentName, classNamePrefix)}";
+        return $"{InternalNamespace}.{BuildEnumName(Name, parentName, classNamePrefix)}";
     }
 
     public class EnumValueDescriptor(string value)
     {
         public string Value { get; set; } = value;
 
-        public string OverriddenValue { get; set; }
+        public string OverriddenValue { get; set; } = null!;
 
         public string GetCSharpValue()
         {
@@ -53,9 +51,9 @@ public class EnumDescriptor(string name, string parentName, string sourceNamespa
                 return OverriddenValue;
             }
 
-            if (value.Contains("_"))
+            if (Value.Contains("_"))
             {
-                return value.Replace("_", "-").ToLower().Dehumanize();
+                return Value.Replace("_", "-").ToLower().Dehumanize();
             }
             else
             {

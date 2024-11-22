@@ -21,22 +21,22 @@ public static class PartyMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.Party ();
-to.Id = from.Id;
-            to.Name = from.Name;
-            to.CompanyId = from.CompanyId;
-            to.ContactId = from.ContactId;
-            to.CompanyName = from.CompanyName;
-            to.Addresses = from.Addresses;
-            to.County = from.County;
-            to.PostCode = from.PostCode;
-            to.Country = from.Country;
-            to.City = from.City;
-            to.TracesId = from.TracesId;
+to.Id = from?.Id;
+            to.Name = from?.Name;
+            to.CompanyId = from?.CompanyId;
+            to.ContactId = from?.ContactId;
+            to.CompanyName = from?.CompanyName;
+            to.Addresses = from?.Addresses;
+            to.County = from?.County;
+            to.PostCode = from?.PostCode;
+            to.Country = from?.Country;
+            to.City = from?.City;
+            to.TracesId = from?.TracesId;
             to.Type = PartyTypeEnumMapper.Map(from?.Type);
-                to.ApprovalNumber = from.ApprovalNumber;
-            to.Phone = from.Phone;
-            to.Fax = from.Fax;
-            to.Email = from.Email;
+                to.ApprovalNumber = from?.ApprovalNumber;
+            to.Phone = from?.Phone;
+            to.Fax = from?.Fax;
+            to.Email = from?.Email;
             	return to;
 	}
 }

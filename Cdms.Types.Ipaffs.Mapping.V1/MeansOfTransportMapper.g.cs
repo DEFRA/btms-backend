@@ -14,17 +14,18 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class MeansOfTransportMapper
 {
-	public static Cdms.Model.Ipaffs.MeansOfTransport Map(Cdms.Types.Ipaffs.MeansOfTransport from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.MeansOfTransport ();
-to.Type = MeansOfTransportTypeEnumMapper.Map(from?.Type);
-                to.Document = from.Document;
-            to.Id = from.Id;
-            	return to;
-	}
+    public static Cdms.Model.Ipaffs.MeansOfTransport Map(Cdms.Types.Ipaffs.MeansOfTransport from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.MeansOfTransport();
+        to.Type = MeansOfTransportTypeEnumMapper.Map(from?.Type);
+        to.Document = from?.Document;
+        to.Id = from?.Id;
+        return to;
+    }
 }
 

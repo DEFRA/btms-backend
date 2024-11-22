@@ -67,7 +67,7 @@ namespace Cdms.Model.Ipaffs;
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date when the notification was last updated.")]
-    public DateTime? UpdatedSource { get; set; }
+    public DateTime? LastUpdated { get; set; }
 
 	
         /// <summary>

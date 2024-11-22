@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.CommodityRiskResultPhsiClassificationEnum.Mandatory => Cdms.Model.Ipaffs.CommodityRiskResultPhsiClassificationEnum.Mandatory,
     Cdms.Types.Ipaffs.CommodityRiskResultPhsiClassificationEnum.Reduced => Cdms.Model.Ipaffs.CommodityRiskResultPhsiClassificationEnum.Reduced,
     Cdms.Types.Ipaffs.CommodityRiskResultPhsiClassificationEnum.Controlled => Cdms.Model.Ipaffs.CommodityRiskResultPhsiClassificationEnum.Controlled,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

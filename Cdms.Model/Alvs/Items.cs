@@ -28,7 +28,7 @@ public partial class Items  //
             checks = new List<Check>();
         }
 
-        foreach (var decisionItemsCheck in decisionItems.Checks)
+        foreach (var decisionItemsCheck in decisionItems.Checks!)
         {
             var existing = checks.Find(x => x.CheckCode == decisionItemsCheck.CheckCode);
             if (existing != null)

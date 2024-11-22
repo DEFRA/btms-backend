@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,30 +22,30 @@ public class CachingBlobService(
         return blobService.CheckBlobAsync(uri, timeout, retries);
     }
 
-    public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var path = Path.GetFullPath($"{options.Value.CachePath}/{prefix}");
-        logger.LogInformation("Scanning disk {path}", path);
+        logger.LogInformation("Scanning disk {Path}", path);
 
         if (Directory.Exists(path))
         {
-            logger.LogInformation("Folder {path} exists, looking for files.", path);  
+            logger.LogInformation("Folder {Path} exists, looking for files.", path);  
            foreach (string f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
            {
                var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}/{options.Value.CachePath}", f);
-                logger.LogInformation("Found file {relativePath}", relativePath);
-                yield return new SynchroniserBlobItem() { Name = relativePath };
+                logger.LogInformation("Found file {RelativePath}", relativePath);
+                yield return await Task.FromResult(new SynchroniserBlobItem() { Name = relativePath });
             }           
         }
         else{
-            logger.LogWarning("Cannot scan folder {path} as it doesn't exist.", path);    
+            logger.LogWarning("Cannot scan folder {Path} as it doesn't exist.", path);    
         }
     }
 
     public Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)
     {
         var filePath = $"{options.Value.CachePath}/{item.Name}";
-        logger.LogInformation("GetResource {filePath}", filePath);
-        return Task.Run(() => File.ReadAllText(filePath));
+        logger.LogInformation("GetResource {FilePath}", filePath);
+        return Task.Run(() => File.ReadAllText(filePath), cancellationToken);
     }
 }

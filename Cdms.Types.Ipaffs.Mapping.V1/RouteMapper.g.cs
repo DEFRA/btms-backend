@@ -21,7 +21,7 @@ public static class RouteMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.Route ();
-to.TransitingStates = from.TransitingStates;
+to.TransitingStates = from?.TransitingStates;
             	return to;
 	}
 }

@@ -21,14 +21,14 @@ namespace Cdms.Backend.Data.Extensions
             services.AddSingleton(sp =>
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();
-                var settings = MongoClientSettings.FromConnectionString(options.Value.DatabaseUri);
+                var settings = MongoClientSettings.FromConnectionString(options?.Value.DatabaseUri);
                 var client = new MongoClient(settings);
 
                 var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
                 // convention must be registered before initialising collection
                 ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
-                return client.GetDatabase(options.Value.DatabaseName);
+                return client.GetDatabase(options?.Value.DatabaseName);
             });
 
             return services;

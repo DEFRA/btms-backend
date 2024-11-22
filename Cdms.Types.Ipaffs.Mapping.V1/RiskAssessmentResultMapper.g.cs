@@ -14,16 +14,17 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class RiskAssessmentResultMapper
 {
-	public static Cdms.Model.Ipaffs.RiskAssessmentResult Map(Cdms.Types.Ipaffs.RiskAssessmentResult from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.RiskAssessmentResult ();
-to.CommodityResults = from?.CommodityResults?.Select(x => CommodityRiskResultMapper.Map(x)).ToArray();
-                to.AssessedOn = from.AssessmentDateTime;
-            	return to;
-	}
+    public static Cdms.Model.Ipaffs.RiskAssessmentResult Map(Cdms.Types.Ipaffs.RiskAssessmentResult from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.RiskAssessmentResult();
+        to.CommodityResults = from?.CommodityResults?.Select(x => CommodityRiskResultMapper.Map(x)).ToArray();
+        to.AssessedOn = from?.AssessmentDateTime;
+        return to;
+    }
 }
 

@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.ControlConsignmentLeaveEnum.Yes => Cdms.Model.Ipaffs.ControlConsignmentLeaveEnum.Yes,
     Cdms.Types.Ipaffs.ControlConsignmentLeaveEnum.No => Cdms.Model.Ipaffs.ControlConsignmentLeaveEnum.No,
     Cdms.Types.Ipaffs.ControlConsignmentLeaveEnum.ItHasBeenDestroyed => Cdms.Model.Ipaffs.ControlConsignmentLeaveEnum.ItHasBeenDestroyed,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

@@ -46,7 +46,8 @@ Cdms.Types.Ipaffs.AnimalCertificationEnum.AnimalFeedingStuff => Cdms.Model.Ipaff
     Cdms.Types.Ipaffs.AnimalCertificationEnum.TechnicalPharmaceuticalUse => Cdms.Model.Ipaffs.AnimalCertificationEnum.TechnicalPharmaceuticalUse,
     Cdms.Types.Ipaffs.AnimalCertificationEnum.Transit => Cdms.Model.Ipaffs.AnimalCertificationEnum.Transit,
     Cdms.Types.Ipaffs.AnimalCertificationEnum.ZooCollection => Cdms.Model.Ipaffs.AnimalCertificationEnum.ZooCollection,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

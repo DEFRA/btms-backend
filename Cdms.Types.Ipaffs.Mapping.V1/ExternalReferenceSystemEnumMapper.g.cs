@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.ExternalReferenceSystemEnum.Ecert => Cdms.Model.Ipaffs.Externa
     Cdms.Types.Ipaffs.ExternalReferenceSystemEnum.Ephyto => Cdms.Model.Ipaffs.ExternalReferenceSystemEnum.Ephyto,
     Cdms.Types.Ipaffs.ExternalReferenceSystemEnum.Enotification => Cdms.Model.Ipaffs.ExternalReferenceSystemEnum.Enotification,
     Cdms.Types.Ipaffs.ExternalReferenceSystemEnum.Ncts => Cdms.Model.Ipaffs.ExternalReferenceSystemEnum.Ncts,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

@@ -21,11 +21,11 @@ public static class CatchCertificateDetailsMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.CatchCertificateDetails ();
-to.CatchCertificateId = from.CatchCertificateId;
-            to.CatchCertificateReference = from.CatchCertificateReference;
-            to.IssuedOn = from.DateOfIssue;
-            to.FlagState = from.FlagState;
-            to.Species = from.Species;
+to.CatchCertificateId = from?.CatchCertificateId;
+            to.CatchCertificateReference = from?.CatchCertificateReference;
+            to.IssuedOn = from?.DateOfIssue;
+            to.FlagState = from?.FlagState;
+            to.Species = from?.Species;
             	return to;
 	}
 }

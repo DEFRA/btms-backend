@@ -3,7 +3,7 @@ using Humanizer;
 
 namespace CdmsBackend.Cli.Features.GenerateModels.DescriptorModel
 {
-    [DebuggerDisplay("{Name}")]
+    [DebuggerDisplay("{SourceName}")]
     public class PropertyDescriptor
     {
         private readonly bool _isReferenceType;
@@ -44,8 +44,6 @@ namespace CdmsBackend.Cli.Features.GenerateModels.DescriptorModel
                     "[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]");
             }
         }
-        // private const string prefix = "Ipaffs";
-
         public string SourceName { get; set; }
 
         public string InternalName { get; set; }
@@ -64,7 +62,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.DescriptorModel
 
         public bool IsArray { get; set; }
 
-        public string Mapper { get; set; }
+        public string Mapper { get; set; } = null!;
 
 
         public bool MappingInline { get; set; }

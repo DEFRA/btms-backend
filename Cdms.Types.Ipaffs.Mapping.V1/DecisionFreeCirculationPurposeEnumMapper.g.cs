@@ -25,7 +25,8 @@ Cdms.Types.Ipaffs.DecisionFreeCirculationPurposeEnum.AnimalFeedingStuff => Cdms.
     Cdms.Types.Ipaffs.DecisionFreeCirculationPurposeEnum.TechnicalUse => Cdms.Model.Ipaffs.DecisionFreeCirculationPurposeEnum.TechnicalUse,
     Cdms.Types.Ipaffs.DecisionFreeCirculationPurposeEnum.FurtherProcess => Cdms.Model.Ipaffs.DecisionFreeCirculationPurposeEnum.FurtherProcess,
     Cdms.Types.Ipaffs.DecisionFreeCirculationPurposeEnum.Other => Cdms.Model.Ipaffs.DecisionFreeCirculationPurposeEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

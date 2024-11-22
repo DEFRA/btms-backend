@@ -24,7 +24,8 @@ Cdms.Types.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.Contaminated
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.PackagingMaterial => Cdms.Model.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.PackagingMaterial,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.MeansOfTransport => Cdms.Model.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.MeansOfTransport,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.Other => Cdms.Model.Ipaffs.DecisionNotAcceptableActionEntryRefusalReasonEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

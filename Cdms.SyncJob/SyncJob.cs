@@ -87,7 +87,7 @@ public class SyncJob(Guid id, string timespan, string resource) : ISyncJob
 
     private void TryComplete()
     {
-        if (readingBlobsFinished && messagesProcessed - blobsPublished <= 0)
+        if (readingBlobsFinished && messagesProcessed - blobsPublished == 0)
         {
             Complete();
         }

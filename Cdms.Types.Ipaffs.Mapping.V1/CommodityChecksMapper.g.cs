@@ -21,9 +21,9 @@ public static class CommodityChecksMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.CommodityChecks ();
-to.UniqueComplementId = from.UniqueComplementId;
+to.UniqueComplementId = from?.UniqueComplementId;
             to.Checks = from?.Checks?.Select(x => InspectionCheckMapper.Map(x)).ToArray();
-                to.ValidityPeriod = from.ValidityPeriod;
+                to.ValidityPeriod = from?.ValidityPeriod;
             	return to;
 	}
 }

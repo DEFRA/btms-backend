@@ -1,4 +1,4 @@
-﻿using Cdms.Backend.Data.Extensions;
+using Cdms.Backend.Data.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -24,7 +24,7 @@ public static class MongoDbHealthCheckBuilderExtensions
             sp =>
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();
-                return new MongoDbHealthCheck(options.Value.DatabaseUri, options.Value.DatabaseName);
+                return new MongoDbHealthCheck(options?.Value.DatabaseUri!, options?.Value.DatabaseName!);
             },
             failureStatus,
             tags,

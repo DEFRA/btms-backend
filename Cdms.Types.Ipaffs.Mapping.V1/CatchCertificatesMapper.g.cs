@@ -21,8 +21,8 @@ public static class CatchCertificatesMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.CatchCertificates ();
-to.CertificateNumber = from.CertificateNumber;
-            to.Weight = from.Weight;
+to.CertificateNumber = from?.CertificateNumber;
+            to.Weight = from?.Weight;
             	return to;
 	}
 }

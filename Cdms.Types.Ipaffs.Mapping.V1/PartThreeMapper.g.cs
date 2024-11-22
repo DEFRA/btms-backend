@@ -14,20 +14,22 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class PartThreeMapper
 {
-	public static Cdms.Model.Ipaffs.PartThree Map(Cdms.Types.Ipaffs.PartThree from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.PartThree ();
-to.ControlStatus = PartThreeControlStatusEnumMapper.Map(from?.ControlStatus);
-                to.Control = ControlMapper.Map(from?.Control);
-                to.ConsignmentValidations = from?.ConsignmentValidations?.Select(x => ValidationMessageCodeMapper.Map(x)).ToArray();
-                to.SealCheckRequired = from.SealCheckRequired;
-            to.SealCheck = SealCheckMapper.Map(from?.SealCheck);
-                to.SealCheckOverride = InspectionOverrideMapper.Map(from?.SealCheckOverride);
-                	return to;
-	}
+    public static Cdms.Model.Ipaffs.PartThree Map(Cdms.Types.Ipaffs.PartThree from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.PartThree();
+        to.ControlStatus = PartThreeControlStatusEnumMapper.Map(from?.ControlStatus);
+        to.Control = ControlMapper.Map(from?.Control!);
+        to.ConsignmentValidations =
+            from?.ConsignmentValidations?.Select(x => ValidationMessageCodeMapper.Map(x)).ToArray();
+        to.SealCheckRequired = from?.SealCheckRequired;
+        to.SealCheck = SealCheckMapper.Map(from?.SealCheck!);
+        to.SealCheckOverride = InspectionOverrideMapper.Map(from?.SealCheckOverride!);
+        return to;
+    }
 }
 

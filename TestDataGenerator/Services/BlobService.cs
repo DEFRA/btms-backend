@@ -32,7 +32,7 @@ public interface IBlobItem
 
 public class BlobItem : IBlobItem
 {
-    public string NormalisedName { get; set; } = default;
+    public string NormalisedName { get; set; } = default!;
     public string Name { get; set; } = default!;
 
     public string Content { get; set; } = default!;
@@ -49,10 +49,10 @@ public class BlobServiceException(Exception innerException) : Exception("BlobSer
 public abstract class AzureService<T>
 {
     protected readonly TokenCredential Credentials;
-    protected readonly ILogger<T> Logger;
+    protected readonly ILogger<AzureService<T>> Logger;
     protected readonly HttpClientTransport? Transport;
 
-    protected AzureService(ILogger<T> logger, IAzureConfig config, IHttpClientFactory? clientFactory = null)
+    protected AzureService(ILogger<AzureService<T>> logger, IAzureConfig config, IHttpClientFactory? clientFactory = null)
     {
         Logger = logger;
         using var listener = AzureEventSourceListener.CreateConsoleLogger(EventLevel.Verbose);
@@ -107,7 +107,7 @@ public class LocalBlobService(ILogger<LocalBlobService> logger) : IBlobService
         var fullPath = $"{_rootPath}{item.Name}";
 
         logger.LogInformation("Create folder for file {FullPath}", fullPath);
-        Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
 
         logger.LogInformation("Create file {FullPath}", fullPath);
         await File.WriteAllTextAsync(fullPath, item.Content);
@@ -128,23 +128,23 @@ public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IH
             var containerClient = CreateBlobClient(config.DmpBlobUri);
             var allBlobs = await GetResourcesAsync(prefix);
 
-            foreach (var blobItem in allBlobs)
+            foreach (var blobName in allBlobs.Select(x => x.Name))
             {
-                Logger.LogInformation("Deleting {BlobItemName}", blobItem.Name);
-                await containerClient.DeleteBlobAsync(blobItem.Name);
+                Logger.LogInformation("Deleting {BlobItemName}", blobName);
+                await containerClient.DeleteBlobAsync(blobName);
             }
 
-            // TODO : we currently delete the files, but not the folders, not the end of the world but would prefer to
-            // Remove the folders too - it means doing it recursively from the leaf as you can't remove a folder that has folders
-            // or files in it :|
+            //// TO-DO: we currently delete the files, but not the folders, not the end of the world but would prefer to
+            //// Remove the folders too - it means doing it recursively from the leaf as you can't remove a folder that has folders
+            //// or files in it :|
 
-            // var directories = containerClient.GetBlobsByHierarchyAsync(prefix: prefix, delimiter:"/");
-            //
-            // await foreach (var blobItem in directories)
-            // {
-            //     Logger.LogInformation($"Found {blobItem.Prefix}, item IsBlob {blobItem.IsBlob}, IsPrefix {blobItem.IsPrefix}");
-            //     await containerClient.DeleteBlobAsync(blobItem.Prefix);
-            // }
+            //// var directories = containerClient.GetBlobsByHierarchyAsync(prefix: prefix, delimiter:"/");
+            ////
+            //// await foreach (var blobItem in directories)
+            //// {
+            ////     Logger.LogInformation($"Found {blobItem.Prefix}, item IsBlob {blobItem.IsBlob}, IsPrefix {blobItem.IsPrefix}");
+            ////     await containerClient.DeleteBlobAsync(blobItem.Prefix);
+            //// }
 
             return true;
         }
@@ -234,7 +234,9 @@ public class BlobService(ILogger<BlobService> logger, GeneratorConfig config, IH
             var files = containerClient.GetBlobsAsync(prefix: prefix);
             var output = new List<IBlobItem>();
 
+#pragma warning disable S3267
             await foreach (var item in files)
+#pragma warning restore S3267
                 if (item.Properties.ContentLength is not 0)
                 {
                     Logger.LogInformation(item.Name);

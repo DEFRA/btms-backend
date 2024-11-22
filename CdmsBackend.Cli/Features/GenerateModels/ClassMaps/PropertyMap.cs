@@ -11,9 +11,9 @@ internal class PropertyMap(string name)
 {
     public string Name { get; set; } = name;
 
-    public string Type { get; set; }
+    public string Type { get; set; } = null!;
 
-    public string InternalType { get; set; }
+    public string InternalType { get; set; } = null!;
 
     public bool InternalTypeOverwritten { get; set; }
 
@@ -25,9 +25,9 @@ internal class PropertyMap(string name)
 
     public bool AttributesOverwritten { get; set; }
 
-    public string OverriddenSourceName { get; set; }
+    public string OverriddenSourceName { get; set; } = null!;
 
-    public string OverriddenInternalName { get; set; }
+    public string OverriddenInternalName { get; set; } = null!;
 
     public bool SourceNameOverwritten { get; set; }
 
@@ -39,13 +39,13 @@ internal class PropertyMap(string name)
 
     public bool ExcludedFromSource { get; set; } = false;
 
-    public MapperMap Mapper { get; set; }
+    public MapperMap Mapper { get; set; } = null!;
 
     public class MapperMap
     {
         public bool Inline { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
     }
 
     public PropertyMap SetInternalType(string type)

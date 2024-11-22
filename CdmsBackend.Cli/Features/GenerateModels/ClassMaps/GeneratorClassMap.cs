@@ -109,7 +109,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.ClassMaps
         public static GeneratorClassMap LookupClassMap(string name)
         {
             classMaps.TryGetValue(name.ToLower(), out var classMap);
-            return classMap;
+            return classMap!;
         }
     }
 }

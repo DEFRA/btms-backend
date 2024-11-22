@@ -21,7 +21,7 @@ public static class LaboratoryTestsMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.LaboratoryTests ();
-to.TestedOn = from.TestDate;
+to.TestedOn = from?.TestDate;
             to.TestReason = LaboratoryTestsTestReasonEnumMapper.Map(from?.TestReason);
                 to.SingleLaboratoryTests = from?.SingleLaboratoryTests?.Select(x => SingleLaboratoryTestMapper.Map(x)).ToArray();
                 	return to;

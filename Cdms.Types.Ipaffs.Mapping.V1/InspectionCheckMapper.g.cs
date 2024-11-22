@@ -23,10 +23,10 @@ public static class InspectionCheckMapper
 		var to = new Cdms.Model.Ipaffs.InspectionCheck ();
 to.Type = InspectionCheckTypeEnumMapper.Map(from?.Type);
                 to.Status = InspectionCheckStatusEnumMapper.Map(from?.Status);
-                to.Reason = from.Reason;
-            to.OtherReason = from.OtherReason;
-            to.IsSelectedForChecks = from.IsSelectedForChecks;
-            to.HasChecksComplete = from.HasChecksComplete;
+                to.Reason = from?.Reason;
+            to.OtherReason = from?.OtherReason;
+            to.IsSelectedForChecks = from?.IsSelectedForChecks;
+            to.HasChecksComplete = from?.HasChecksComplete;
             	return to;
 	}
 }

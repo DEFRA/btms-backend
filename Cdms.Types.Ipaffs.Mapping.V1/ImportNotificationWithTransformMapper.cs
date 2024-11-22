@@ -29,9 +29,6 @@ public static class ImportNotificationWithTransformMapper
 
     private static IDictionary<string, object> FromSnakeCase(this IDictionary<string, object> input)
     {
-        // var output = from pair in input
-        //     select pair.Key;
-
         if (input == null)
         {
             return new Dictionary<string, object>();
@@ -39,21 +36,19 @@ public static class ImportNotificationWithTransformMapper
 
         return input.ToDictionary(mc => mc.Key.FromSnakeCase(),
             mc => mc.Value);
-
-        // return output;
     }
 
     private static void Map(ImportNotification from, Model.Ipaffs.ImportNotification to)
     {
-        var commodities = from.PartOne!.Commodities;
+        var commodities = from?.PartOne!.Commodities;
 
         if (commodities?.CommodityComplements?.Length == 1)
         {
             commodities!.CommodityComplements[0].AdditionalData =
                 commodities!.ComplementParameterSets![0].KeyDataPairs!.FromSnakeCase();
-            if (from.RiskAssessment != null)
+            if (from?.RiskAssessment != null)
             {
-                commodities!.CommodityComplements[0].RiskAssesment = from.RiskAssessment.CommodityResults![0];
+                commodities!.CommodityComplements[0].RiskAssesment = from?.RiskAssessment.CommodityResults![0];
             }
         }
         else
@@ -68,17 +63,17 @@ public static class ImportNotificationWithTransformMapper
                     commoditiesCommodityComplement;
             }
 
-            if (from.RiskAssessment != null)
+            if (from?.RiskAssessment != null)
             {
-                foreach (var commoditiesRa in from.RiskAssessment.CommodityResults!)
+                foreach (var commoditiesRa in from?.RiskAssessment.CommodityResults!)
                 {
                     complementRiskAssesments[commoditiesRa.UniqueId!] = commoditiesRa;
                 }
             }
 
-            if (from.PartTwo?.CommodityChecks != null)
+            if (from?.PartTwo?.CommodityChecks != null)
             {
-                foreach (var commodityCheck in from.PartTwo.CommodityChecks)
+                foreach (var commodityCheck in from?.PartTwo.CommodityChecks!)
                 {
                     commodityChecks[commodityCheck.UniqueComplementId!] = commodityCheck.Checks!;
                 }
@@ -109,6 +104,6 @@ public static class ImportNotificationWithTransformMapper
         }
 
         to.CommoditiesSummary = CommoditiesMapper.Map(commodities);
-        to.Commodities = commodities.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray();
+        to.Commodities = commodities.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray()!;
     }
 }

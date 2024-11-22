@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.ChedppNotAcceptableReasonCommodityOrPackageEnum.C => Cdms.Model.Ipaffs.ChedppNotAcceptableReasonCommodityOrPackageEnum.C,
     Cdms.Types.Ipaffs.ChedppNotAcceptableReasonCommodityOrPackageEnum.P => Cdms.Model.Ipaffs.ChedppNotAcceptableReasonCommodityOrPackageEnum.P,
     Cdms.Types.Ipaffs.ChedppNotAcceptableReasonCommodityOrPackageEnum.Cp => Cdms.Model.Ipaffs.ChedppNotAcceptableReasonCommodityOrPackageEnum.Cp,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

@@ -14,20 +14,21 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class SingleLaboratoryTestMapper
 {
-	public static Cdms.Model.Ipaffs.SingleLaboratoryTest Map(Cdms.Types.Ipaffs.SingleLaboratoryTest from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.SingleLaboratoryTest ();
-to.CommodityCode = from.CommodityCode;
-            to.SpeciesId = from.SpeciesId;
-            to.TracesId = from.TracesId;
-            to.TestName = from.TestName;
-            to.Applicant = ApplicantMapper.Map(from?.Applicant);
-                to.LaboratoryTestResult = LaboratoryTestResultMapper.Map(from?.LaboratoryTestResult);
-                	return to;
-	}
+    public static Cdms.Model.Ipaffs.SingleLaboratoryTest Map(Cdms.Types.Ipaffs.SingleLaboratoryTest from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.SingleLaboratoryTest();
+        to.CommodityCode = from?.CommodityCode;
+        to.SpeciesId = from?.SpeciesId;
+        to.TracesId = from?.TracesId;
+        to.TestName = from?.TestName;
+        to.Applicant = ApplicantMapper.Map(from?.Applicant!);
+        to.LaboratoryTestResult = LaboratoryTestResultMapper.Map(from?.LaboratoryTestResult!);
+        return to;
+    }
 }
 

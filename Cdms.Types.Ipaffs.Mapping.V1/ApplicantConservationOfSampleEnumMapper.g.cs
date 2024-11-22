@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.ApplicantConservationOfSampleEnum.Ambient => Cdms.Model.Ipaffs.ApplicantConservationOfSampleEnum.Ambient,
     Cdms.Types.Ipaffs.ApplicantConservationOfSampleEnum.Chilled => Cdms.Model.Ipaffs.ApplicantConservationOfSampleEnum.Chilled,
     Cdms.Types.Ipaffs.ApplicantConservationOfSampleEnum.Frozen => Cdms.Model.Ipaffs.ApplicantConservationOfSampleEnum.Frozen,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

@@ -25,7 +25,7 @@ public class ItemsMapperTests
         mappedValue.ItemSupplementaryUnits.Should().Be(sourceValue.ItemSupplementaryUnits);
         mappedValue.ItemThirdQuantity.Should().Be(sourceValue.ItemThirdQuantity);
         mappedValue.ItemOriginCountryCode.Should().Be(sourceValue.ItemOriginCountryCode);
-        mappedValue.Documents.Length.Should().Be(sourceValue.Documents.Length);
-        mappedValue.Checks.Length.Should().Be(sourceValue.Checks.Length);
+        if (sourceValue.Documents != null) mappedValue.Documents?.Length.Should().Be(sourceValue.Documents.Length);
+        if (sourceValue.Checks != null) mappedValue.Checks?.Length.Should().Be(sourceValue.Checks.Length);
     }
 }

@@ -11,24 +11,27 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class ResultEnumMapper
 {
-public static Cdms.Model.Ipaffs.ResultEnum? Map(Cdms.Types.Ipaffs.ResultEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.ResultEnum.Satisfactory => Cdms.Model.Ipaffs.ResultEnum.Satisfactory,
-    Cdms.Types.Ipaffs.ResultEnum.SatisfactoryFollowingOfficialIntervention => Cdms.Model.Ipaffs.ResultEnum.SatisfactoryFollowingOfficialIntervention,
-    Cdms.Types.Ipaffs.ResultEnum.NotSatisfactory => Cdms.Model.Ipaffs.ResultEnum.NotSatisfactory,
-    Cdms.Types.Ipaffs.ResultEnum.NotDone => Cdms.Model.Ipaffs.ResultEnum.NotDone,
-    Cdms.Types.Ipaffs.ResultEnum.Derogation => Cdms.Model.Ipaffs.ResultEnum.Derogation,
-    Cdms.Types.Ipaffs.ResultEnum.NotSet => Cdms.Model.Ipaffs.ResultEnum.NotSet,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.ResultEnum? Map(Cdms.Types.Ipaffs.ResultEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.ResultEnum.Satisfactory => Cdms.Model.Ipaffs.ResultEnum.Satisfactory,
+            Cdms.Types.Ipaffs.ResultEnum.SatisfactoryFollowingOfficialIntervention => Cdms.Model.Ipaffs.ResultEnum
+                .SatisfactoryFollowingOfficialIntervention,
+            Cdms.Types.Ipaffs.ResultEnum.NotSatisfactory => Cdms.Model.Ipaffs.ResultEnum.NotSatisfactory,
+            Cdms.Types.Ipaffs.ResultEnum.NotDone => Cdms.Model.Ipaffs.ResultEnum.NotDone,
+            Cdms.Types.Ipaffs.ResultEnum.Derogation => Cdms.Model.Ipaffs.ResultEnum.Derogation,
+            Cdms.Types.Ipaffs.ResultEnum.NotSet => Cdms.Model.Ipaffs.ResultEnum.NotSet,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

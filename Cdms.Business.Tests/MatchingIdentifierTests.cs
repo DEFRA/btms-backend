@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 namespace Cdms.Business.Tests;
 
-public class MatchingIdentifierTests(ITestOutputHelper output)
+public class MatchingIdentifierTests()
 {
     [Fact]
     public void ReferenceNumber_FromIpaffs_NoSplitIndicator()

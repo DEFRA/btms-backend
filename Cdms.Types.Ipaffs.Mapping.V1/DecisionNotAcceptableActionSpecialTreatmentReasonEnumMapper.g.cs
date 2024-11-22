@@ -23,7 +23,8 @@ Cdms.Types.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.Contamin
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.InterceptedPart => Cdms.Model.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.InterceptedPart,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.PackagingMaterial => Cdms.Model.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.PackagingMaterial,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.Other => Cdms.Model.Ipaffs.DecisionNotAcceptableActionSpecialTreatmentReasonEnum.Other,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

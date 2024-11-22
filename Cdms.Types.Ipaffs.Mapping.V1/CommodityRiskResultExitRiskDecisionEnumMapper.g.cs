@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.CommodityRiskResultExitRiskDecisionEnum.Required => Cdms.Model.Ipaffs.CommodityRiskResultExitRiskDecisionEnum.Required,
     Cdms.Types.Ipaffs.CommodityRiskResultExitRiskDecisionEnum.Notrequired => Cdms.Model.Ipaffs.CommodityRiskResultExitRiskDecisionEnum.Notrequired,
     Cdms.Types.Ipaffs.CommodityRiskResultExitRiskDecisionEnum.Inconclusive => Cdms.Model.Ipaffs.CommodityRiskResultExitRiskDecisionEnum.Inconclusive,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

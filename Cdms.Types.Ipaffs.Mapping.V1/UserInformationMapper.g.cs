@@ -21,9 +21,9 @@ public static class UserInformationMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.UserInformation ();
-to.DisplayName = from.DisplayName;
-            to.UserId = from.UserId;
-            to.IsControlUser = from.IsControlUser;
+to.DisplayName = from?.DisplayName;
+            to.UserId = from?.UserId;
+            to.IsControlUser = from?.IsControlUser;
             	return to;
 	}
 }

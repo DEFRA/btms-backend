@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.DecisionDefinitiveImportPurposeEnum.Slaughter => Cdms.Model.Ipaffs.DecisionDefinitiveImportPurposeEnum.Slaughter,
     Cdms.Types.Ipaffs.DecisionDefinitiveImportPurposeEnum.Approvedbodies => Cdms.Model.Ipaffs.DecisionDefinitiveImportPurposeEnum.Approvedbodies,
     Cdms.Types.Ipaffs.DecisionDefinitiveImportPurposeEnum.Quarantine => Cdms.Model.Ipaffs.DecisionDefinitiveImportPurposeEnum.Quarantine,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

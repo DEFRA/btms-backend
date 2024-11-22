@@ -11,21 +11,27 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class JourneyRiskCategorisationResultRiskLevelEnumMapper
 {
-public static Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? Map(Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.High => Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.High,
-    Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Medium => Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Medium,
-    Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Low => Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Low,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? Map(
+        Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.High => Cdms.Model.Ipaffs
+                .JourneyRiskCategorisationResultRiskLevelEnum.High,
+            Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Medium => Cdms.Model.Ipaffs
+                .JourneyRiskCategorisationResultRiskLevelEnum.Medium,
+            Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Low => Cdms.Model.Ipaffs
+                .JourneyRiskCategorisationResultRiskLevelEnum.Low,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

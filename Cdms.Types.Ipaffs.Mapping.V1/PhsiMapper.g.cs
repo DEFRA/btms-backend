@@ -21,9 +21,9 @@ public static class PhsiMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.Phsi ();
-to.DocumentCheck = from.DocumentCheck;
-            to.IdentityCheck = from.IdentityCheck;
-            to.PhysicalCheck = from.PhysicalCheck;
+to.DocumentCheck = from?.DocumentCheck;
+            to.IdentityCheck = from?.IdentityCheck;
+            to.PhysicalCheck = from?.PhysicalCheck;
             	return to;
 	}
 }

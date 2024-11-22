@@ -5,6 +5,7 @@ using Azure.Storage.Blobs.Models;
 using Cdms.Azure;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Options;
 
 namespace Cdms.BlobService;
@@ -31,7 +32,7 @@ public class BlobService(
     
     public async Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default)
     {
-        Logger.LogInformation("Connecting to blob storage {uri} : {blobContainer}. timeout={timeout}, retries={retries}.",
+        Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}. timeout={Timeout}, retries={Retries}.",
             uri, options.Value.DmpBlobContainer, timeout, retries);
         
         try
@@ -44,7 +45,7 @@ public class BlobService(
             var itemCount = 0;
             await foreach (BlobHierarchyItem blobItem in folders)
             {
-                Logger.LogInformation("\t{prefix}", blobItem.Prefix);
+                Logger.LogInformation("\t{Prefix}", blobItem.Prefix);
                 itemCount++;
             }
 
@@ -64,7 +65,7 @@ public class BlobService(
     [SuppressMessage("SonarLint", "S3267",
         Justification =
             "Ignored this is IAsyncEnumerable and doesn't support linq filtering out the box")]
-    public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         Logger.LogDebug("Connecting to blob storage {BlobUri} : {BlobContainer} : {Path}", options.Value.DmpBlobUri,
             options.Value.DmpBlobContainer, prefix);
@@ -86,7 +87,7 @@ public class BlobService(
             }
         }
 
-        Logger.LogDebug("GetResourcesAsync {itemCount} blobs found.", itemCount);
+        Logger.LogDebug("GetResourcesAsync {ItemCount} blobs found.", itemCount);
     }
 
     public async Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)

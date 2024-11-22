@@ -21,8 +21,8 @@ public static class SplitConsignmentMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.SplitConsignment ();
-to.ValidReferenceNumber = from.ValidReferenceNumber;
-            to.RejectedReferenceNumber = from.RejectedReferenceNumber;
+to.ValidReferenceNumber = from?.ValidReferenceNumber;
+            to.RejectedReferenceNumber = from?.RejectedReferenceNumber;
             	return to;
 	}
 }

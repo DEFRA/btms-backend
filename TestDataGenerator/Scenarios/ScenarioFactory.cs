@@ -5,10 +5,10 @@ namespace TestDataGenerator.Scenarios;
 
 public class ScenarioConfig
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     public int Count { get; set; }
     public int Days { get; set; }
-    public ScenarioGenerator Generator { get; set; }
+    public ScenarioGenerator Generator { get; set; } = null!;
 }
 
 public static class ScenarioFactory

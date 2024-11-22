@@ -1,9 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using JsonApiDotNetCore.Serialization.JsonConverters;
-using JsonApiSerializer;
 using Microsoft.AspNetCore.WebUtilities;
-using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CdmsBackend.IntegrationTests.JsonApiClient;
@@ -17,9 +15,9 @@ public class JsonApiClient(HttpClient client)
 
     public ManyItemsJsonApiDocument Get(
         string path,
-        Dictionary<string, string> query = null,
-        Dictionary<string, string> headers = null,
-        IList<string> relations = null)
+        Dictionary<string, string> query = null!,
+        Dictionary<string, string> headers = null!,
+        IList<string> relations = null!)
     {
         client.DefaultRequestHeaders.Accept.Add(contentType);
 
@@ -43,7 +41,7 @@ public class JsonApiClient(HttpClient client)
 
         if (query != null)
         {
-            uri = QueryHelpers.AddQueryString(uri, query);
+            uri = QueryHelpers.AddQueryString(uri, query!);
         }
 
         HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
@@ -54,14 +52,14 @@ public class JsonApiClient(HttpClient client)
             new JsonSerializerOptions()
             {
                 Converters = { new SingleOrManyDataConverterFactory() }, PropertyNameCaseInsensitive = true
-            });
+            })!;
     }
 
     public SingleItemJsonApiDocument GetById(string id,
         string path,
-        Dictionary<string, string> query = null,
-        Dictionary<string, string> headers = null,
-        IList<string> relations = null)
+        Dictionary<string, string> query = null!,
+        Dictionary<string, string> headers = null!,
+        IList<string> relations = null!)
     {
         client.DefaultRequestHeaders.Accept.Add(contentType);
 
@@ -85,7 +83,7 @@ public class JsonApiClient(HttpClient client)
 
         if (query != null)
         {
-            uri = QueryHelpers.AddQueryString(uri, query);
+            uri = QueryHelpers.AddQueryString(uri, query!);
         }
 
         HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
@@ -96,6 +94,6 @@ public class JsonApiClient(HttpClient client)
             new JsonSerializerOptions()
             {
                 Converters = { new SingleOrManyDataConverterFactory() }, PropertyNameCaseInsensitive = true
-            });
+            })!;
     }
 }

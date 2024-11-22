@@ -11,30 +11,45 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class ImportNotificationStatusEnumMapper
 {
-public static Cdms.Model.Ipaffs.ImportNotificationStatusEnum? Map(Cdms.Types.Ipaffs.ImportNotificationStatusEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Draft => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Draft,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Submitted => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Submitted,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Validated => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Validated,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Rejected => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Rejected,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.InProgress => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.InProgress,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Amend => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Amend,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Modify => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Modify,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Replaced => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Replaced,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Cancelled => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Cancelled,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Deleted => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Deleted,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected,
-    Cdms.Types.Ipaffs.ImportNotificationStatusEnum.SplitConsignment => Cdms.Model.Ipaffs.ImportNotificationStatusEnum.SplitConsignment,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.ImportNotificationStatusEnum? Map(
+        Cdms.Types.Ipaffs.ImportNotificationStatusEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Draft =>
+                Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Draft,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Submitted => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Submitted,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Validated => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Validated,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Rejected => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Rejected,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.InProgress => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .InProgress,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Amend =>
+                Cdms.Model.Ipaffs.ImportNotificationStatusEnum.Amend,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Modify => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Modify,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Replaced => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Replaced,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Cancelled => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Cancelled,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.Deleted => Cdms.Model.Ipaffs.ImportNotificationStatusEnum
+                .Deleted,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected => Cdms.Model.Ipaffs
+                .ImportNotificationStatusEnum.PartiallyRejected,
+            Cdms.Types.Ipaffs.ImportNotificationStatusEnum.SplitConsignment => Cdms.Model.Ipaffs
+                .ImportNotificationStatusEnum.SplitConsignment,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

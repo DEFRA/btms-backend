@@ -32,7 +32,8 @@ Cdms.Types.Ipaffs.DecisionNotAcceptableActionEnum.Slaughter => Cdms.Model.Ipaffs
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionEnum.IndustrialProcessing => Cdms.Model.Ipaffs.DecisionNotAcceptableActionEnum.IndustrialProcessing,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionEnum.ReDispatch => Cdms.Model.Ipaffs.DecisionNotAcceptableActionEnum.ReDispatch,
     Cdms.Types.Ipaffs.DecisionNotAcceptableActionEnum.UseForOtherPurposes => Cdms.Model.Ipaffs.DecisionNotAcceptableActionEnum.UseForOtherPurposes,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

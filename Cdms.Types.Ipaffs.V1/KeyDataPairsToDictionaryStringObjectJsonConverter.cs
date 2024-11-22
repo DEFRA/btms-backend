@@ -32,7 +32,6 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
             if (reader.TokenType == JsonTokenType.EndArray)
             {
                 return dictionary;
-                continue;
             }
 
             if (reader.TokenType == JsonTokenType.StartArray || reader.TokenType == JsonTokenType.StartObject)
@@ -63,7 +62,7 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
                 var v = ExtractValue(ref reader, options);
 
 
-                dictionary.Add(key.ToString(), v);
+                dictionary.Add(key?.ToString()!, v);
             }
         }
 
@@ -77,7 +76,7 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
         JsonSerializer.Serialize(writer, list, options);
     }
 
-    private object ReadString(ref Utf8JsonReader reader)
+    private static object ReadString(ref Utf8JsonReader reader)
     {
         var s = reader.GetString();
         int i;
@@ -86,7 +85,7 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
             return i;
         }
 
-        return s;
+        return s!;
     }
 
     private object? ExtractValue(ref Utf8JsonReader reader, JsonSerializerOptions options)

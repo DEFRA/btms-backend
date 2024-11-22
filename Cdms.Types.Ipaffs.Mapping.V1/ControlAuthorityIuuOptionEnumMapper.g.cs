@@ -22,7 +22,8 @@ return from switch
 Cdms.Types.Ipaffs.ControlAuthorityIuuOptionEnum.Iuuok => Cdms.Model.Ipaffs.ControlAuthorityIuuOptionEnum.Iuuok,
     Cdms.Types.Ipaffs.ControlAuthorityIuuOptionEnum.Iuuna => Cdms.Model.Ipaffs.ControlAuthorityIuuOptionEnum.Iuuna,
     Cdms.Types.Ipaffs.ControlAuthorityIuuOptionEnum.IUUNotCompliant => Cdms.Model.Ipaffs.ControlAuthorityIuuOptionEnum.IUUNotCompliant,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

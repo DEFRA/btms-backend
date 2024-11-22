@@ -21,9 +21,9 @@ public static class NominatedContactMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.NominatedContact ();
-to.Name = from.Name;
-            to.Email = from.Email;
-            to.Telephone = from.Telephone;
+to.Name = from?.Name;
+            to.Email = from?.Email;
+            to.Telephone = from?.Telephone;
             	return to;
 	}
 }

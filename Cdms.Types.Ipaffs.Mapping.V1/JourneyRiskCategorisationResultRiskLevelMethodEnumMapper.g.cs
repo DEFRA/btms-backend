@@ -11,20 +11,25 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class JourneyRiskCategorisationResultRiskLevelMethodEnumMapper
 {
-public static Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? Map(Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.System => Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.System,
-    Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.User => Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.User,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? Map(
+        Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.System => Cdms.Model.Ipaffs
+                .JourneyRiskCategorisationResultRiskLevelMethodEnum.System,
+            Cdms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.User => Cdms.Model.Ipaffs
+                .JourneyRiskCategorisationResultRiskLevelMethodEnum.User,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

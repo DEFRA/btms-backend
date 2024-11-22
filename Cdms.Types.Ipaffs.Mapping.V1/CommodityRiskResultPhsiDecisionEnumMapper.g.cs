@@ -21,7 +21,8 @@ return from switch
 {
 Cdms.Types.Ipaffs.CommodityRiskResultPhsiDecisionEnum.Required => Cdms.Model.Ipaffs.CommodityRiskResultPhsiDecisionEnum.Required,
     Cdms.Types.Ipaffs.CommodityRiskResultPhsiDecisionEnum.Notrequired => Cdms.Model.Ipaffs.CommodityRiskResultPhsiDecisionEnum.Notrequired,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

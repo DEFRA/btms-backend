@@ -8,7 +8,7 @@ namespace TestDataGenerator;
 public abstract class BuilderBase<T, TBuilder>
     where TBuilder : BuilderBase<T, TBuilder> where T : new()
 {
-    private IPostprocessComposer<T> _composer;
+    private IPostprocessComposer<T> _composer = null!;
 
     protected BuilderBase()
     {
@@ -24,7 +24,7 @@ public abstract class BuilderBase<T, TBuilder>
         Setup(n);
     }
 
-    protected Fixture Fixture { get; private set; }
+    protected Fixture Fixture { get; private set; } = null!;
 
     public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, TProperty value)
     {
@@ -33,16 +33,16 @@ public abstract class BuilderBase<T, TBuilder>
         return (TBuilder)this;
     }
 
-    public TBuilder Do(Action<T> action)
+    public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, Func<TProperty> valueFactory)
     {
-        _composer = _composer.Do(action);
+        _composer = _composer.With(propertyPicker, valueFactory);
 
         return (TBuilder)this;
     }
 
-    public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, Func<TProperty> valueFactory)
+    public TBuilder Do(Action<T> action)
     {
-        _composer = _composer.With(propertyPicker, valueFactory);
+        _composer = _composer.Do(action);
 
         return (TBuilder)this;
     }
@@ -75,7 +75,7 @@ public abstract class BuilderBase<T, TBuilder>
         return Validate().Build();
     }
 
-    private void Setup(T item = default)
+    private void Setup(T item = default!)
     {
         Fixture = new Fixture();
 

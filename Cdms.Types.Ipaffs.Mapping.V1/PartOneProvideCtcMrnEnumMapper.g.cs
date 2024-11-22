@@ -11,21 +11,24 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class PartOneProvideCtcMrnEnumMapper
 {
-public static Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum? Map(Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum.Yes => Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum.Yes,
-    Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum.YesAddLater => Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum.YesAddLater,
-    Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum.No => Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum.No,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum? Map(Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum.Yes => Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum.Yes,
+            Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum.YesAddLater => Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum
+                .YesAddLater,
+            Cdms.Types.Ipaffs.PartOneProvideCtcMrnEnum.No => Cdms.Model.Ipaffs.PartOneProvideCtcMrnEnum.No,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

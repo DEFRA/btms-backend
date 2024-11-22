@@ -15,18 +15,18 @@ public class JobConsumerInterceptor<TMessage>(ISyncJobStore store) : IConsumerIn
             return await next();
         }
 
-        var job = store.GetJob(Guid.Parse(value.ToString()));
+        var job = store.GetJob(Guid.Parse(value.ToString()!));
         try
         {
             var result = await next();
-            job.MessageProcessed();
+            job?.MessageProcessed();
             return result;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             if (context.GetRetryAttempt() == 5)
             {
-                job.MessageFailed();
+                job?.MessageFailed();
             }
 
             throw;

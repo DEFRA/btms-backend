@@ -11,21 +11,27 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class PurposeForImportOrAdmissionEnumMapper
 {
-public static Cdms.Model.Ipaffs.PurposeForImportOrAdmissionEnum? Map(Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.DefinitiveImport => Cdms.Model.Ipaffs.PurposeForImportOrAdmissionEnum.DefinitiveImport,
-    Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.HorsesReEntry => Cdms.Model.Ipaffs.PurposeForImportOrAdmissionEnum.HorsesReEntry,
-    Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses => Cdms.Model.Ipaffs.PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.PurposeForImportOrAdmissionEnum? Map(
+        Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.DefinitiveImport => Cdms.Model.Ipaffs
+                .PurposeForImportOrAdmissionEnum.DefinitiveImport,
+            Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.HorsesReEntry => Cdms.Model.Ipaffs
+                .PurposeForImportOrAdmissionEnum.HorsesReEntry,
+            Cdms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses => Cdms.Model.Ipaffs
+                .PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

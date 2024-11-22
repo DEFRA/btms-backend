@@ -21,8 +21,8 @@ public static class InternationalTelephoneMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.InternationalTelephone ();
-to.CountryCode = from.CountryCode;
-            to.SubscriberNumber = from.SubscriberNumber;
+to.CountryCode = from?.CountryCode;
+            to.SubscriberNumber = from?.SubscriberNumber;
             	return to;
 	}
 }

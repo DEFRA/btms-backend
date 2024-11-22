@@ -39,12 +39,12 @@ public class CdmsResponseModelAdapter(
 
         var listOfResourceObjects = document.Data.ManyValue is not null
             ? document.Data.ManyValue.ToList()
-            : [document.Data.SingleValue];
+            : [document.Data.SingleValue!];
 
 
         foreach (var resourceObject in listOfResourceObjects)
         {
-            if (resourceObject.Attributes.TryGetValue("relationships", out var value))
+            if (resourceObject.Attributes!.TryGetValue("relationships", out var value))
             {
                 ProcessRelationships(value, resourceObject);
             }
@@ -56,17 +56,19 @@ public class CdmsResponseModelAdapter(
 
     private static void ProcessRelationships(object? value, ResourceObject resourceObject)
     {
-        var relationships = (value as ITdmRelationships).GetRelationshipObjects();
+        var relationships = (value as ITdmRelationships)?.GetRelationshipObjects();
         resourceObject.Relationships = new Dictionary<string, RelationshipObject?>();
 
-        foreach (var relationship in relationships)
+        foreach (var relationship in relationships!)
         {
-            var list = relationship.Item2.Data.Select(item =>
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            List<ResourceIdentifierObject> list = relationship.Item2.Data.Select(item =>
                     new ResourceIdentifierObject()
                     {
                         Type = item.Type, Id = item.Id, Meta = item.ToDictionary(),
                     })
                 .ToList();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
 
             var meta = new Dictionary<string, object?>();
@@ -89,6 +91,6 @@ public class CdmsResponseModelAdapter(
                 });
         }
 
-        resourceObject.Attributes.Remove("relationships");
+        resourceObject.Attributes!.Remove("relationships");
     }
 }

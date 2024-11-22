@@ -8,7 +8,7 @@ public class SensitiveDataRedactedConverter(SensitiveDataOptions sensitiveDataOp
     /// <inheritdoc/>
     public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        return sensitiveDataOptions.Getter(reader.GetString());
+        return sensitiveDataOptions.Getter(reader.GetString()!);
     }
 
     /// <inheritdoc/>

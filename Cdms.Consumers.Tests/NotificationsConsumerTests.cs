@@ -40,7 +40,7 @@ namespace Cdms.Consumers.Tests
             var notification = CreateImportNotification();
             var dbContext = CreateDbContext();
             await dbContext.Notifications.Insert(notification.MapWithTransform());
-            notification.LastUpdated = notification?.LastUpdated?.AddHours(1);
+            notification.LastUpdated = notification.LastUpdated?.AddHours(1);
 
 
             var consumer = new NotificationConsumer(dbContext);
@@ -59,7 +59,7 @@ namespace Cdms.Consumers.Tests
             savedNotification.AuditEntries[0].Status.Should().Be("Updated");
         }
 
-        private ImportNotification CreateImportNotification()
+        private static ImportNotification CreateImportNotification()
         {
             return ImportNotificationBuilder.Default()
                 .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, 1, DateTime.UtcNow, 1)

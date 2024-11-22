@@ -22,12 +22,12 @@ public static class LaboratoryTestResultMapper
         }
 
         var to = new Cdms.Model.Ipaffs.LaboratoryTestResult();
-        to.SampleUseByDate = from.SampleUseByDate;
-        to.ReleasedOn = from.ReleasedDate;
-        to.LaboratoryTestMethod = from.LaboratoryTestMethod;
-        to.Results = from.Results;
+        to.SampleUseByDate = from?.SampleUseByDate;
+        to.ReleasedOn = from?.ReleasedDate;
+        to.LaboratoryTestMethod = from?.LaboratoryTestMethod;
+        to.Results = from?.Results;
         to.Conclusion = LaboratoryTestResultConclusionEnumMapper.Map(from?.Conclusion);
-        to.LabTestCreatedOn = from.LabTestCreatedDate;
+        to.LabTestCreatedOn = from?.LabTestCreatedDate;
         return to;
     }
 }

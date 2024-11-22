@@ -21,22 +21,22 @@ public static class ConsignmentCheckMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.ConsignmentCheck ();
-to.EuStandard = from.EuStandard;
-            to.AdditionalGuarantees = from.AdditionalGuarantees;
-            to.DocumentCheckResult = from.DocumentCheckResult;
-            to.NationalRequirements = from.NationalRequirements;
-            to.IdentityCheckDone = from.IdentityCheckDone;
+to.EuStandard = from?.EuStandard;
+            to.AdditionalGuarantees = from?.AdditionalGuarantees;
+            to.DocumentCheckResult = from?.DocumentCheckResult;
+            to.NationalRequirements = from?.NationalRequirements;
+            to.IdentityCheckDone = from?.IdentityCheckDone;
             to.IdentityCheckType = ConsignmentCheckIdentityCheckTypeEnumMapper.Map(from?.IdentityCheckType);
-                to.IdentityCheckResult = from.IdentityCheckResult;
+                to.IdentityCheckResult = from?.IdentityCheckResult;
             to.IdentityCheckNotDoneReason = ConsignmentCheckIdentityCheckNotDoneReasonEnumMapper.Map(from?.IdentityCheckNotDoneReason);
-                to.PhysicalCheckDone = from.PhysicalCheckDone;
-            to.PhysicalCheckResult = from.PhysicalCheckResult;
+                to.PhysicalCheckDone = from?.PhysicalCheckDone;
+            to.PhysicalCheckResult = from?.PhysicalCheckResult;
             to.PhysicalCheckNotDoneReason = ConsignmentCheckPhysicalCheckNotDoneReasonEnumMapper.Map(from?.PhysicalCheckNotDoneReason);
-                to.PhysicalCheckOtherText = from.PhysicalCheckOtherText;
-            to.WelfareCheck = from.WelfareCheck;
-            to.NumberOfAnimalsChecked = from.NumberOfAnimalsChecked;
-            to.LaboratoryCheckDone = from.LaboratoryCheckDone;
-            to.LaboratoryCheckResult = from.LaboratoryCheckResult;
+                to.PhysicalCheckOtherText = from?.PhysicalCheckOtherText;
+            to.WelfareCheck = from?.WelfareCheck;
+            to.NumberOfAnimalsChecked = from?.NumberOfAnimalsChecked;
+            to.LaboratoryCheckDone = from?.LaboratoryCheckDone;
+            to.LaboratoryCheckResult = from?.LaboratoryCheckResult;
             	return to;
 	}
 }

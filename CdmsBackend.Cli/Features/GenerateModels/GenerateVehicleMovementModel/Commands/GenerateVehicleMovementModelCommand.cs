@@ -23,7 +23,6 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.C
         public string MappingOutputPath { get; set; } =
             "D:\\repos\\esynergy\\Cdms-Backend\\Cdms.Types.Gvms.Mapping.V1\\";
 
-        // public string OutputPath { get; set; } = "D:\\repos\\esynergy\\cdms-backend\\TdmPrototypeBackend.Types\\VehicleMovement\\";
         public class Handler : AsyncRequestHandler<GenerateVehicleMovementModelCommand>
         {
             protected override async Task Handle(GenerateVehicleMovementModelCommand request,
@@ -31,7 +30,9 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.C
             {
                 using var streamReader =
                     new StreamReader(
+#pragma warning disable S1075
                         "D:\\repos\\esynergy\\cdms-backend\\cdmsBackend.Cli\\Features\\GenerateModels\\GenerateVehicleMovementModel\\Goods-Vehicle-Movement-Search-1.0-Open-API-Spec.yaml");
+#pragma warning restore S1075
                 var reader = new OpenApiStreamReader();
                 var document = reader.Read(streamReader.BaseStream, out var diagnostic);
 
@@ -67,7 +68,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.C
                         {
                             var propertyDescriptor = new PropertyDescriptor(
                                 sourceName: property.Key,
-                                type: ClassDescriptor.BuildClassName(property.Key, null),
+                                type: ClassDescriptor.BuildClassName(property.Key, null!),
                                 description: property.Value.Description,
                                 isReferenceType: true,
                                 isArray: true,
@@ -82,7 +83,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.C
                     {
                         var propertyDescriptor = new PropertyDescriptor(
                             sourceName: property.Key,
-                            type: ClassDescriptor.BuildClassName(property.Key, null),
+                            type: ClassDescriptor.BuildClassName(property.Key, null!),
                             description: property.Value.Description,
                             isReferenceType: true,
                             isArray: false,
@@ -93,7 +94,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.C
                     }
                     else if (property.Value.OneOf.Any())
                     {
-                        var enumDescriptor = new EnumDescriptor(property.Key, null, SourceNamespace, InternalNamespace,
+                        var enumDescriptor = new EnumDescriptor(property.Key, null!, SourceNamespace, InternalNamespace,
                             ClassNamePrefix);
                         cSharpDescriptor.AddEnumDescriptor(enumDescriptor);
                         foreach (var oneOfSchema in property.Value.OneOf)
@@ -105,7 +106,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.C
 
                         var propertyDescriptor = new PropertyDescriptor(
                             sourceName: property.Key,
-                            type: EnumDescriptor.BuildEnumName(property.Key, null, null),
+                            type: EnumDescriptor.BuildEnumName(property.Key, null!, null!),
                             description: property.Value.Description,
                             isReferenceType: true,
                             isArray: false,

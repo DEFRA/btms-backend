@@ -14,19 +14,20 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class FeedbackInformationMapper
 {
-	public static Cdms.Model.Ipaffs.FeedbackInformation Map(Cdms.Types.Ipaffs.FeedbackInformation from)
-	{
-	if(from is null)
-	{
-		return default!;
-	}
-		var to = new Cdms.Model.Ipaffs.FeedbackInformation ();
-to.AuthorityType = FeedbackInformationAuthorityTypeEnumMapper.Map(from?.AuthorityType);
-                to.ConsignmentArrival = from.ConsignmentArrival;
-            to.ConsignmentConformity = from.ConsignmentConformity;
-            to.ConsignmentNoArrivalReason = from.ConsignmentNoArrivalReason;
-            to.DestructionDate = from.DestructionDate;
-            	return to;
-	}
+    public static Cdms.Model.Ipaffs.FeedbackInformation Map(Cdms.Types.Ipaffs.FeedbackInformation from)
+    {
+        if (from is null)
+        {
+            return default!;
+        }
+
+        var to = new Cdms.Model.Ipaffs.FeedbackInformation();
+        to.AuthorityType = FeedbackInformationAuthorityTypeEnumMapper.Map(from?.AuthorityType);
+        to.ConsignmentArrival = from?.ConsignmentArrival;
+        to.ConsignmentConformity = from?.ConsignmentConformity;
+        to.ConsignmentNoArrivalReason = from?.ConsignmentNoArrivalReason;
+        to.DestructionDate = from?.DestructionDate;
+        return to;
+    }
 }
 

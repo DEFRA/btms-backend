@@ -11,22 +11,24 @@ namespace Cdms.Types.Gvms.Mapping;
 
 public static class DirectionEnumMapper
 {
-public static Cdms.Model.Gvms.DirectionEnum? Map(Cdms.Types.Gvms.DirectionEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Gvms.DirectionEnum.UkInbound => Cdms.Model.Gvms.DirectionEnum.UkInbound,
-    Cdms.Types.Gvms.DirectionEnum.UkOutbound => Cdms.Model.Gvms.DirectionEnum.UkOutbound,
-    Cdms.Types.Gvms.DirectionEnum.GbToNi => Cdms.Model.Gvms.DirectionEnum.GbToNi,
-    Cdms.Types.Gvms.DirectionEnum.NiToGb => Cdms.Model.Gvms.DirectionEnum.NiToGb,
-     
-};
-}
-        
+    public static Cdms.Model.Gvms.DirectionEnum? Map(Cdms.Types.Gvms.DirectionEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Gvms.DirectionEnum.UkInbound => Cdms.Model.Gvms.DirectionEnum.UkInbound,
+            Cdms.Types.Gvms.DirectionEnum.UkOutbound => Cdms.Model.Gvms.DirectionEnum.UkOutbound,
+            Cdms.Types.Gvms.DirectionEnum.GbToNi => Cdms.Model.Gvms.DirectionEnum.GbToNi,
+            Cdms.Types.Gvms.DirectionEnum.NiToGb => Cdms.Model.Gvms.DirectionEnum.NiToGb,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

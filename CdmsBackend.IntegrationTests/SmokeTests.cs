@@ -1,25 +1,15 @@
-using System;
-using System.Data.Common;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Cdms.Backend.Data;
 using Cdms.Business.Commands;
 using Cdms.Model;
-using Cdms.Model.Gvms;
-using Cdms.Model.Ipaffs;
 using Cdms.SyncJob;
 using CdmsBackend.IntegrationTests.Helpers;
 using CdmsBackend.IntegrationTests.JsonApiClient;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using ThirdParty.Json.LitJson;
 using Xunit;
 using Xunit.Abstractions;
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
@@ -38,7 +28,7 @@ namespace CdmsBackend.IntegrationTests
         public SmokeTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
         {
             this.factory = factory;
-            this.factory.testOutputHelper = testOutputHelper;
+            this.factory.TestOutputHelper = testOutputHelper;
             this.factory.DatabaseName = "SmokeTests";
             client =
                 this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
@@ -48,8 +38,8 @@ namespace CdmsBackend.IntegrationTests
         public async Task SyncNotifications()
         {
             //Arrange
-            await factory.ClearDb(client);
-            var response = await MakeSyncNotificationsRequest(new SyncNotificationsCommand()
+            await IntegrationTestsApplicationFactory.ClearDb(client);
+            await MakeSyncNotificationsRequest(new SyncNotificationsCommand()
             {
                 SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
             });
@@ -67,9 +57,9 @@ namespace CdmsBackend.IntegrationTests
         public async Task SyncDecisions()
         {
             //Arrange 
-            await factory.ClearDb(client);
+            await IntegrationTestsApplicationFactory.ClearDb(client);
             await SyncClearanceRequests();
-            var response = await MakeSyncDecisionsRequest(new SyncDecisionsCommand()
+            await MakeSyncDecisionsRequest(new SyncDecisionsCommand()
             {
                 SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
             });
@@ -79,27 +69,27 @@ namespace CdmsBackend.IntegrationTests
 
             existingMovement.Should().NotBeNull();
             existingMovement.Items[0].Checks.Should().NotBeNull();
-            existingMovement.Items[0].Checks.Length.Should().Be(1);
-            existingMovement.Items[0].Checks[0].CheckCode.Should().Be("H234");
-            existingMovement.Items[0].Checks[0].DepartmentCode.Should().Be("PHA");
+            existingMovement.Items[0].Checks?.Length.Should().Be(1);
+            existingMovement.Items[0].Checks?[0].CheckCode.Should().Be("H234");
+            existingMovement.Items[0].Checks?[0].DepartmentCode.Should().Be("PHA");
 
             // Check Api
             var jsonClientResponse =
                 client.AsJsonApiClient().GetById("CHEDPGB20241039875A5", "api/movements");
             var movement = jsonClientResponse.GetResourceObject<Movement>();
-            movement.Items[0].Checks.Length.Should().Be(1);
-            movement.Items[0].Checks[0].CheckCode.Should().Be("H234");
-            movement.Items[0].Checks[0].DepartmentCode.Should().Be("PHA");
+            movement.Items[0].Checks?.Length.Should().Be(1);
+            movement.Items[0].Checks?[0].CheckCode.Should().Be("H234");
+            movement.Items[0].Checks?[0].DepartmentCode.Should().Be("PHA");
         }
 
         [Fact]
         public async Task SyncClearanceRequests()
         {
             //Arrange
-            await factory.ClearDb(client);
+            await IntegrationTestsApplicationFactory.ClearDb(client);
 
             //Act
-            var response = await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand()
+            await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand()
             {
                 SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
             });
@@ -116,10 +106,10 @@ namespace CdmsBackend.IntegrationTests
         public async Task SyncGmrs()
         {
             //Arrange
-            await factory.ClearDb(client);
+            await IntegrationTestsApplicationFactory.ClearDb(client);
 
             //Act
-            var response = await MakeSyncGmrsRequest(new SyncGmrsCommand()
+            await MakeSyncGmrsRequest(new SyncGmrsCommand()
             {
                 SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
             });
@@ -147,7 +137,7 @@ namespace CdmsBackend.IntegrationTests
                     await Task.Delay(200);
                     var jobResponse = await client.GetAsync(jobUri);
                     var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
-                    status = syncJob.Status;
+                    status = syncJob!.Status;
                 }
             });
 
@@ -198,38 +188,9 @@ namespace CdmsBackend.IntegrationTests
 
             //get job id and wait for job to be completed
             var jobUri = response.Headers.Location;
-            await WaitOnJobCompleting(jobUri);
+            await WaitOnJobCompleting(jobUri!);
 
             return response;
         }
     }
-}
-
-public class SyncJobResponse
-{
-    public Guid JobId { get; set; }
-
-    public string Description { get; set; }
-
-    public int BlobsRead { get; set; }
-
-    public int BlobsPublished { get; set; }
-
-    public int BlobsFailed { get; set; }
-
-    public int MessagesProcessed { get; set; }
-
-    public int MessagesFailed { get; set; }
-
-
-
-    public DateTime QueuedOn { get; set; }
-    public DateTime StartedOn { get; set; }
-
-    public DateTime? CompletedOn { get; set; }
-
-    public TimeSpan RunTime { get; set; }
-
-    public SyncJobStatus Status { get; set; }
-
 }

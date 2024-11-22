@@ -11,21 +11,25 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class InspectionRequiredEnumMapper
 {
-public static Cdms.Model.Ipaffs.InspectionRequiredEnum? Map(Cdms.Types.Ipaffs.InspectionRequiredEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.InspectionRequiredEnum.Required => Cdms.Model.Ipaffs.InspectionRequiredEnum.Required,
-    Cdms.Types.Ipaffs.InspectionRequiredEnum.Inconclusive => Cdms.Model.Ipaffs.InspectionRequiredEnum.Inconclusive,
-    Cdms.Types.Ipaffs.InspectionRequiredEnum.NotRequired => Cdms.Model.Ipaffs.InspectionRequiredEnum.NotRequired,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.InspectionRequiredEnum? Map(Cdms.Types.Ipaffs.InspectionRequiredEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.InspectionRequiredEnum.Required => Cdms.Model.Ipaffs.InspectionRequiredEnum.Required,
+            Cdms.Types.Ipaffs.InspectionRequiredEnum.Inconclusive => Cdms.Model.Ipaffs.InspectionRequiredEnum
+                .Inconclusive,
+            Cdms.Types.Ipaffs.InspectionRequiredEnum.NotRequired =>
+                Cdms.Model.Ipaffs.InspectionRequiredEnum.NotRequired,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

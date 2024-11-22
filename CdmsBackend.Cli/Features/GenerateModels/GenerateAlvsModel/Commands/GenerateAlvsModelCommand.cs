@@ -21,18 +21,19 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateAlvsModel.Commands
 
         public string MappingOutputPath { get; set; } = "D:\\repos\\esynergy\\Cdms-Backend\\Cdms.Types.Alvs.Mapping.V1\\";
 
-        //public string OutputPath { get; set; } = "D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Types\\Alvs\\";
         public class Handler : AsyncRequestHandler<GenerateAlvsModelCommand>
         {
            
             protected override async Task Handle(GenerateAlvsModelCommand request, CancellationToken cancellationToken)
             {
+#pragma warning disable S1075
                 XmlTextReader reader = new XmlTextReader("D:\\repos\\esynergy\\Cdms-Backend\\CdmsBackend.Cli\\Features\\GenerateModels\\GenerateAlvsModel\\sendALVSClearanceRequest.xsd");
-                XmlSchema schema = XmlSchema.Read(reader, ValidationCallback);
+#pragma warning restore S1075
+                XmlSchema schema = XmlSchema.Read(reader, ValidationCallback!)!;
 
                 var csharpDescriptor = new CSharpDescriptor();
 
-                foreach (var schemaItem in schema.Items)
+                foreach (var schemaItem in schema?.Items!)
                 {
                     if (schemaItem is XmlSchemaComplexType complexType)
                     {
@@ -49,11 +50,11 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateAlvsModel.Commands
 
                 if (string.IsNullOrEmpty(name))
                 {
-                    name = ((XmlSchemaElement)complexType.Parent).Name;
+                    name = ((XmlSchemaElement)complexType.Parent!)?.Name;
                 }
 
                 Console.WriteLine($"Class Name: {name}");
-                var classDescriptor = new ClassDescriptor(name, SourceNamespace, InternalNamespace, ClassNamePrefix);
+                var classDescriptor = new ClassDescriptor(name!, SourceNamespace, InternalNamespace, ClassNamePrefix);
 
                 classDescriptor.Description = complexType.GetDescription();
                 cSharpDescriptor.AddClassDescriptor(classDescriptor);
@@ -62,23 +63,20 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateAlvsModel.Commands
                 {
                     foreach (var sequenceItem in sequence.Items)
                     {
-                        if (sequenceItem is XmlSchemaElement schemaSequence)
+                        if (sequenceItem is XmlSchemaElement schemaSequence && schemaSequence.SchemaType is XmlSchemaComplexType ct)
                         {
-                            if (schemaSequence.SchemaType is XmlSchemaComplexType ct)
-                            {
-                                BuildClass(cSharpDescriptor, ct);
-                            }
+                            BuildClass(cSharpDescriptor, ct);
                         }
 
                         var schemaElement = sequenceItem as XmlSchemaElement;
-                        Console.WriteLine($"Property Name: {schemaElement.Name} - Type: {schemaElement.GetSchemaType()}");
-                        var propertyName = System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(schemaElement.Name);
+                        Console.WriteLine($"Property Name: {schemaElement?.Name} - Type: {schemaElement?.GetSchemaType()}");
+                        var propertyName = System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(schemaElement?.Name!);
                         var propertyDescriptor = new PropertyDescriptor(
                             sourceName: propertyName,
-                            type: schemaElement.GetSchemaType(),
+                            type: schemaElement?.GetSchemaType()!,
                             description: "",
-                            isReferenceType: IsReferenceType(schemaElement.GetSchemaType()),
-                            isArray: schemaElement.MaxOccursString == "unbounded",
+                            isReferenceType: IsReferenceType(schemaElement!.GetSchemaType()),
+                            isArray: schemaElement?.MaxOccursString == "unbounded",
                             classNamePrefix: ClassNamePrefix);
                         classDescriptor.Properties.Add(propertyDescriptor);
                     }

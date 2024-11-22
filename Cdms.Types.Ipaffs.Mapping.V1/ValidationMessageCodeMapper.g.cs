@@ -21,8 +21,8 @@ public static class ValidationMessageCodeMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.ValidationMessageCode ();
-to.Field = from.Field;
-            to.Code = from.Code;
+to.Field = from?.Field;
+            to.Code = from?.Code;
             	return to;
 	}
 }

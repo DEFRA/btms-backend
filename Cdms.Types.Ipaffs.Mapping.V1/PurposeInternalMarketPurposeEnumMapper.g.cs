@@ -11,36 +11,57 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class PurposeInternalMarketPurposeEnumMapper
 {
-public static Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum? Map(Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.AnimalFeedingStuff => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.AnimalFeedingStuff,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.HumanConsumption => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.HumanConsumption,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.PharmaceuticalUse => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.PharmaceuticalUse,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.TechnicalUse => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.TechnicalUse,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Other => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Other,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSale => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSale,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Rescue => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Rescue,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Breeding => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Breeding,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Research => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Research,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RacingOrCompetition => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.RacingOrCompetition,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Production => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Production,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Slaughter => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Slaughter,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Fattening => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Fattening,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.GameRestocking => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.GameRestocking,
-    Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RegisteredHorses => Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.RegisteredHorses,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.PurposeInternalMarketPurposeEnum? Map(
+        Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.AnimalFeedingStuff => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.AnimalFeedingStuff,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.HumanConsumption => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.HumanConsumption,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.PharmaceuticalUse => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.PharmaceuticalUse,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.TechnicalUse => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.TechnicalUse,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Other => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Other,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSale => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.CommercialSale,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Rescue => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Rescue,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Breeding => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Breeding,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Research => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Research,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RacingOrCompetition => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.RacingOrCompetition,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming => Cdms.Model
+                .Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Production => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Production,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Slaughter => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Slaughter,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Fattening => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.Fattening,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.GameRestocking => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.GameRestocking,
+            Cdms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RegisteredHorses => Cdms.Model.Ipaffs
+                .PurposeInternalMarketPurposeEnum.RegisteredHorses,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

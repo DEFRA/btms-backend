@@ -11,26 +11,34 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class MeansOfTransportTypeEnumMapper
 {
-public static Cdms.Model.Ipaffs.MeansOfTransportTypeEnum? Map(Cdms.Types.Ipaffs.MeansOfTransportTypeEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.Aeroplane => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.Aeroplane,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicle => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.RoadVehicle,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.RailwayWagon => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.RailwayWagon,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.Ship => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.Ship,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.Other => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.Other,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicleAeroplane => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.RoadVehicleAeroplane,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRailwayWagon => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.ShipRailwayWagon,
-    Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRoadVehicle => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.ShipRoadVehicle,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.MeansOfTransportTypeEnum? Map(Cdms.Types.Ipaffs.MeansOfTransportTypeEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.Aeroplane =>
+                Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.Aeroplane,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicle => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum
+                .RoadVehicle,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.RailwayWagon => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum
+                .RailwayWagon,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.Ship => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.Ship,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.Other => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum.Other,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicleAeroplane => Cdms.Model.Ipaffs
+                .MeansOfTransportTypeEnum.RoadVehicleAeroplane,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRailwayWagon => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum
+                .ShipRailwayWagon,
+            Cdms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRoadVehicle => Cdms.Model.Ipaffs.MeansOfTransportTypeEnum
+                .ShipRoadVehicle,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

@@ -11,21 +11,23 @@ namespace Cdms.Types.Ipaffs.Mapping;
 
 public static class TemperatureEnumMapper
 {
-public static Cdms.Model.Ipaffs.TemperatureEnum? Map(Cdms.Types.Ipaffs.TemperatureEnum? from)
-{
-if(from == null)
-{
-return default!;
-}
-return from switch
-{
-Cdms.Types.Ipaffs.TemperatureEnum.Ambient => Cdms.Model.Ipaffs.TemperatureEnum.Ambient,
-    Cdms.Types.Ipaffs.TemperatureEnum.Chilled => Cdms.Model.Ipaffs.TemperatureEnum.Chilled,
-    Cdms.Types.Ipaffs.TemperatureEnum.Frozen => Cdms.Model.Ipaffs.TemperatureEnum.Frozen,
-     
-};
-}
-        
+    public static Cdms.Model.Ipaffs.TemperatureEnum? Map(Cdms.Types.Ipaffs.TemperatureEnum? from)
+    {
+        if (from == null)
+        {
+            return default!;
+        }
+
+        return from switch
+        {
+            Cdms.Types.Ipaffs.TemperatureEnum.Ambient => Cdms.Model.Ipaffs.TemperatureEnum.Ambient,
+            Cdms.Types.Ipaffs.TemperatureEnum.Chilled => Cdms.Model.Ipaffs.TemperatureEnum.Chilled,
+            Cdms.Types.Ipaffs.TemperatureEnum.Frozen => Cdms.Model.Ipaffs.TemperatureEnum.Frozen,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+        };
+    }
+
 
 }
 

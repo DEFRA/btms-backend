@@ -48,7 +48,8 @@ Cdms.Types.Ipaffs.ChedppNotAcceptableReasonReasonEnum.DocPhmdm => Cdms.Model.Ipa
     Cdms.Types.Ipaffs.ChedppNotAcceptableReasonReasonEnum.PhyOrsr => Cdms.Model.Ipaffs.ChedppNotAcceptableReasonReasonEnum.PhyOrsr,
     Cdms.Types.Ipaffs.ChedppNotAcceptableReasonReasonEnum.OthCnl => Cdms.Model.Ipaffs.ChedppNotAcceptableReasonReasonEnum.OthCnl,
     Cdms.Types.Ipaffs.ChedppNotAcceptableReasonReasonEnum.OthO => Cdms.Model.Ipaffs.ChedppNotAcceptableReasonReasonEnum.OthO,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

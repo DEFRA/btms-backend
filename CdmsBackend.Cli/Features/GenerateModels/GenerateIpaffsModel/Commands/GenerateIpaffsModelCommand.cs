@@ -9,7 +9,7 @@ namespace CdmsBackend.Cli.Features.GenerateModels.GenerateIpaffsModel.Commands
     {
         [Option('s', "schema", Required = true,
             HelpText = "The Json schema file, which to use to generate the csharp classes.")]
-        public string SchemaFile { get; set; }
+        public string SchemaFile { get; set; } = null!;
 
         // [Option('o', "sourceOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
         public string SourceOutputPath { get; set; } = "D:\\repos\\esynergy\\cdms-backend\\Cdms.Types.Ipaffs.V1\\";

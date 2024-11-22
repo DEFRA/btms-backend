@@ -21,7 +21,8 @@ return from switch
 {
 Cdms.Types.Ipaffs.DecisionIfChanneledOptionEnum.Article8 => Cdms.Model.Ipaffs.DecisionIfChanneledOptionEnum.Article8,
     Cdms.Types.Ipaffs.DecisionIfChanneledOptionEnum.Article15 => Cdms.Model.Ipaffs.DecisionIfChanneledOptionEnum.Article15,
-     
+
+    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
 };
 }
         

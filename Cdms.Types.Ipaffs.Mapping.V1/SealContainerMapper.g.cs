@@ -21,10 +21,10 @@ public static class SealContainerMapper
 		return default!;
 	}
 		var to = new Cdms.Model.Ipaffs.SealContainer ();
-to.SealNumber = from.SealNumber;
-            to.ContainerNumber = from.ContainerNumber;
-            to.OfficialSeal = from.OfficialSeal;
-            to.ResealedSealNumber = from.ResealedSealNumber;
+to.SealNumber = from?.SealNumber;
+            to.ContainerNumber = from?.ContainerNumber;
+            to.OfficialSeal = from?.OfficialSeal;
+            to.ResealedSealNumber = from?.ResealedSealNumber;
             	return to;
 	}
 }
