@@ -132,7 +132,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
             {
                 foreach (var path in paths)
                 {
-                    await SyncBlob<TRequest>(path, topic, new SynchroniserBlobItem() { Name = path }, job!, CancellationToken.None);
+                    await SyncBlob<TRequest>(path, topic, new CdmsBlobItem() { Name = path }, job!, CancellationToken.None);
                 }
 
             }
