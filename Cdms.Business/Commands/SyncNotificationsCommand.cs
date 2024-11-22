@@ -1,3 +1,4 @@
+using Azure.Core;
 using Cdms.BlobService;
 using Cdms.SensitiveData;
 using Cdms.SyncJob;
@@ -7,8 +8,14 @@ using SlimMessageBus;
 
 namespace Cdms.Business.Commands
 {
-    public class SyncNotificationsCommand : SyncCommand 
+    public class SyncNotificationsCommand : SyncCommand
     {
+        public string[] ChedTypes { get; set; } = [];
+        public override string Resource => "ImportNotification";
+
+        public string[] BlobFiles { get; set; } = [];
+
+
         internal class Handler(
             SyncMetrics syncMetrics,
             IPublishBus bus,
@@ -25,15 +32,34 @@ namespace Cdms.Business.Commands
                 var rootFolder = string.IsNullOrEmpty(request.RootFolder)
                     ? businessOptions.Value.DmpBlobRootFolder
                     : request.RootFolder;
-                await SyncBlobPaths<Cdms.Types.Ipaffs.ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
+
+                if (request.BlobFiles.Any())
+                {
+                    await SyncBlobs<Types.Ipaffs.ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
+                        request.JobId,
+                        request.BlobFiles.Select(x => $"{rootFolder}/IPAFFS/{x}").ToArray());
+                    return;
+                }
+
+                var chedTypesToSync = new List<string>();
+
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDA");
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDD");
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDP");
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDPP");
+
+                await SyncBlobPaths<Types.Ipaffs.ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
                     request.JobId,
-                    $"{rootFolder}/IPAFFS/CHEDA",
-                    $"{rootFolder}/IPAFFS/CHEDD",
-                    $"{rootFolder}/IPAFFS/CHEDP",
-                    $"{rootFolder}/IPAFFS/CHEDPP");
+                    chedTypesToSync.ToArray());
+            }
+
+            private static void AddIf(List<string> chedTypesToSync, SyncNotificationsCommand request, string rootFolder, string chedType)
+            {
+                if (!request.ChedTypes.Any() || request.ChedTypes.Contains(chedType))
+                {
+                    chedTypesToSync.Add($"{rootFolder}/IPAFFS/{chedType}");
+                }
             }
         }
-
-        public override string Resource => "ImportNotification";
     }
 }

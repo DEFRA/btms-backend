@@ -1,7 +1,6 @@
 using Amazon.CloudWatch.EMF.Logger;
 using Amazon.CloudWatch.EMF.Model;
 using System.Diagnostics.Metrics;
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using Humanizer;
@@ -12,13 +11,19 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Cdms.Emf
 {
 
-    public static class EmfExportExtentions
+    public static class EmfExportExtensions
     {
         public static IApplicationBuilder UseEmfExporter(this IApplicationBuilder builder)
         {
             var config = builder.ApplicationServices.GetRequiredService<IConfiguration>();
-            var ns = config.GetValue<string>("AWS_EMF_NAMESPACE");
+
+            bool enabled = config.GetValue<bool>("AWS_EMF_ENABLED", true);
+
+            if (enabled)
+            {
+                var ns = config.GetValue<string>("AWS_EMF_NAMESPACE");
             EmfExporter.Init(builder.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(EmfExporter)), ns!);
+            }
             return builder;
         }
     }

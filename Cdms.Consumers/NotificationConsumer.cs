@@ -1,4 +1,5 @@
 using Cdms.Backend.Data;
+using Cdms.Common.Extensions;
 using Cdms.Types.Ipaffs;
 using Cdms.Types.Ipaffs.Mapping;
 using SlimMessageBus;
@@ -16,7 +17,7 @@ namespace Cdms.Consumers
             var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber!);
             if (existingNotification is not null)
             {
-                if (internalNotification.LastUpdated > existingNotification.LastUpdated)
+                if (internalNotification.LastUpdated.TrimMicroseconds() > existingNotification.LastUpdated.TrimMicroseconds())
                 {
                     internalNotification.AuditEntries = existingNotification.AuditEntries;
                     internalNotification.Updated(BuildNormalizedIpaffsPath(auditId!), existingNotification);
