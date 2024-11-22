@@ -10,8 +10,7 @@ public static class DataHelpers
     {
         var dateString = notification.LastUpdated!.Value.ToString("yyyy/MM/dd");
 
-        return
-            $"{rootPath}/IPAFFS/CHEDA/{dateString}/{notification.ReferenceNumber!.Replace(".", "_")}-{Guid.NewGuid()}.json";
+        return $"{rootPath}/IPAFFS/{notification.ImportNotificationType!.Value.ConvertToChedType()}/{dateString}/{notification.ReferenceNumber!.Replace(".", "_")}-{Guid.NewGuid()}.json";
     }
 
     internal static string DateRef(this DateTime created)

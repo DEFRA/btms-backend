@@ -1,8 +1,8 @@
 using System.Security.Authentication;
 using System.Text.Json;
+using Cdms.BlobService;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Helpers;
-using TestDataGenerator.Services;
 
 namespace TestDataGenerator;
 
@@ -33,20 +33,21 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         }
     }
 
-    internal async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result, string rootPath)
+    private async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result, string rootPath)
     {
         logger.LogInformation(
-            "Uploading {ImportNotificationsLength} Notification(s) and {ClearanceRequestsLength} Clearance Request(s) to blob storage", result.ImportNotifications.Length, result.ClearanceRequests.Length);
+            "Uploading {ImportNotificationsLength} Notification(s) and {ClearanceRequestsLength} Clearance Request(s) to blob storage",
+            result.ImportNotifications.Length, result.ClearanceRequests.Length);
 
         var importNotificationBlobItems = result.ImportNotifications.Select(n =>
-            new BlobItem { Name = n.BlobPath(rootPath), Content = JsonSerializer.Serialize(n) });
+            new CdmsBlobItem { Name = n.BlobPath(rootPath), Content = JsonSerializer.Serialize(n) });
 
         var alvsClearanceRequestBlobItems = result.ClearanceRequests.Select(cr =>
-            new BlobItem { Name = cr.BlobPath(rootPath), Content = JsonSerializer.Serialize(cr) });
+            new CdmsBlobItem { Name = cr.BlobPath(rootPath), Content = JsonSerializer.Serialize(cr) });
 
-        var success =
-            await blobService.CreateBlobsAsync(importNotificationBlobItems.Concat(alvsClearanceRequestBlobItems)
-                .ToArray());
+        var success = await blobService.CreateBlobsAsync(importNotificationBlobItems
+            .Concat(alvsClearanceRequestBlobItems).ToArray<IBlobItem>());
+
         return success;
     }
 }

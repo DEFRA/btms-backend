@@ -9,6 +9,6 @@ public static class AsyncEnumeratorExtensions
 
     public static TestAsyncEnumerator<T> ToAsyncEnumerator<T>(this T item)
     {
-        return new TestAsyncEnumerator<T>(new[] { item });
+        return new TestAsyncEnumerator<T>([item]);
     }
 }

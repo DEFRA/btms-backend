@@ -24,14 +24,13 @@ public class ImportNotificationBuilderTests
         notification.ReferenceNumber.Should().StartWith("CHEDD");
     }
 
-
     [Fact]
     public void WithRandomCommodities_5_ShouldHave5Commodities()
     {
         var builder = ImportNotificationBuilder.Default();
         builder.WithRandomCommodities(5, 5);
         var notification = builder.Build();
-        notification.PartOne.Commodities.CommodityComplements.Length.Should().Be(5);
+        notification.PartOne?.Commodities?.CommodityComplements?.Length.Should().Be(5);
     }
 
     [Fact]

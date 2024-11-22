@@ -5,7 +5,7 @@ namespace TestDataGenerator;
 
 public abstract class ScenarioGenerator
 {
-    private readonly string fullFolder =
+    private readonly string _fullFolder =
         $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
 
     // Not sure if this should be abstract or not...
@@ -13,7 +13,7 @@ public abstract class ScenarioGenerator
 
     internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file)
     {
-        var fullPath = $"{fullFolder}/{file}.json";
+        var fullPath = $"{_fullFolder}/{file}.json";
         var builder = ImportNotificationBuilder.FromFile(fullPath);
 
         return builder;
@@ -21,7 +21,7 @@ public abstract class ScenarioGenerator
 
     internal ClearanceRequestBuilder GetClearanceRequestBuilder(string file)
     {
-        var fullPath = $"{fullFolder}/{file}.json";
+        var fullPath = $"{_fullFolder}/{file}.json";
         var builder = new ClearanceRequestBuilder(fullPath);
 
         return builder;

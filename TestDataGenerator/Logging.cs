@@ -11,7 +11,7 @@ public static class Logging
     {
         // Serilog - WIP
         return builder
-            .ConfigureLogging((c, l) =>
+            .ConfigureLogging((_, l) =>
                 {
                     l.AddConsole();
 

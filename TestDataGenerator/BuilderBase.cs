@@ -9,6 +9,7 @@ public abstract class BuilderBase<T, TBuilder>
     where TBuilder : BuilderBase<T, TBuilder> where T : new()
 {
     private IPostprocessComposer<T> _composer = null!;
+    private Fixture Fixture { get; set; } = null!;
 
     protected BuilderBase()
     {
@@ -23,8 +24,6 @@ public abstract class BuilderBase<T, TBuilder>
 
         Setup(n);
     }
-
-    protected Fixture Fixture { get; private set; } = null!;
 
     public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, TProperty value)
     {
@@ -46,7 +45,17 @@ public abstract class BuilderBase<T, TBuilder>
 
         return (TBuilder)this;
     }
-
+    
+    public T Build()
+    {
+        return _composer.Create();
+    }
+    
+    public T ValidateAndBuild()
+    {
+        return Validate().Build();
+    }
+    
     protected string CreateRandomString(int length)
     {
         return string.Join("", Fixture.CreateMany<char>(length));
@@ -62,20 +71,9 @@ public abstract class BuilderBase<T, TBuilder>
     {
         return Random.Shared.Next(min, max);
     }
-
-    public T Build()
-    {
-        return _composer.Create();
-    }
-
-    public abstract TBuilder Validate();
-
-    public T ValidateAndBuild()
-    {
-        return Validate().Build();
-    }
-
-    private void Setup(T item = default!)
+    protected abstract TBuilder Validate();
+    
+    private void Setup(T? item = default)
     {
         Fixture = new Fixture();
 

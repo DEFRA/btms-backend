@@ -1,11 +1,10 @@
 using Cdms.Model;
 using FluentAssertions;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Cdms.Business.Tests;
 
-public class MatchingIdentifierTests()
+public class MatchingIdentifierTests
 {
     [Fact]
     public void ReferenceNumber_FromIpaffs_NoSplitIndicator()

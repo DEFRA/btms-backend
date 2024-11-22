@@ -29,6 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cdms.Azure\Cdms.Azure.csproj" />
+    <ProjectReference Include="..\Cdms.BlobService\Cdms.BlobService.csproj" />
     <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj"/>
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj"/>
     <ProjectReference Include="..\Cdms.Types.Alvs.V1\Cdms.Types.Alvs.V1.csproj"/>
@@ -47,6 +49,9 @@
     <Content Include="Properties\local.env">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Update="Scenarios\Samples\chedp-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

@@ -1,4 +1,3 @@
-using Cdms.Types.Ipaffs;
 using FluentAssertions;
 using Xunit;
 

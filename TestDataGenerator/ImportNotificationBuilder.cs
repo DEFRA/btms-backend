@@ -30,7 +30,7 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>
     where T : ImportNotification, new()
 {
-    protected ImportNotificationBuilder()
+    protected ImportNotificationBuilder() : base()
     {
     }
 
@@ -44,8 +44,6 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     /// </summary>
     protected ImportNotificationBuilder<T> WithClean()
     {
-        // TODO : 
-
         return this;
     }
 
@@ -56,24 +54,17 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         return Do(n =>
         {
             var commodities = Enumerable.Range(0, commodityCount)
-                .Select(x => n.PartOne!.Commodities!.CommodityComplements![0]
+                .Select(_ => n.PartOne!.Commodities!.CommodityComplements![0]
                 ).ToArray();
 
             n.PartOne!.Commodities!.CommodityComplements = commodities;
         });
     }
-
+    
     public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int scenario,
-        DateTime created, int item)
+         DateTime created, int item)
     {
-        var prefix = chedType switch
-        {
-            ImportNotificationTypeEnum.Cveda => "CHEDA",
-            ImportNotificationTypeEnum.Cvedp => "CHEDP",
-            ImportNotificationTypeEnum.Chedpp => "CHEDPP",
-            ImportNotificationTypeEnum.Ced => "CHEDD",
-            _ => throw new ArgumentOutOfRangeException(nameof(chedType), chedType, null)
-        };
+        var prefix = chedType.ConvertToChedType();
 
         if (item > 999999) throw new ArgumentException("Currently only deals with max 100,000 items");
 
@@ -89,7 +80,24 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         return Do(x => x.LastUpdated = entryDate);
     }
 
-    public override ImportNotificationBuilder<T> Validate()
+    public ImportNotificationBuilder<T> WithCommodity(string commodityCode, string description, int netWeight)
+    {
+        return Do(n =>
+        {
+            n.PartOne!.Commodities!.TotalNetWeight = netWeight;
+            n.PartOne!.Commodities!.TotalGrossWeight = netWeight;
+            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesId = "000";
+            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesClass = "XXXX";
+            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesName = "XXXX";
+            n.PartOne!.Commodities!.CommodityComplements![0].CommodityDescription = description;
+            n.PartOne!.Commodities!.CommodityComplements![0].ComplementName = "XXXX";
+            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesNomination = "XXXX";
+            n.PartOne!.Commodities!.ComplementParameterSets![0].SpeciesId = "000";
+            n.PartOne!.Commodities!.ComplementParameterSets![0].KeyDataPairs!["netweight"] = netWeight;
+        });
+    }
+
+    protected override ImportNotificationBuilder<T> Validate()
     {
         return Do(n => { n.ReferenceNumber.AssertHasValue(); });
     }

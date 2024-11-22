@@ -8,27 +8,24 @@ internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditie
 {
     internal override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
     {
-        // TODO : get a good 'pair' of notification and cr as the source templates
-
         var notification = GetNotificationBuilder("cheda-one-commodity")
             .WithEntryDate(entryDate)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
             .WithRandomCommodities(10, 100)
             .ValidateAndBuild()!;
-
-        logger.LogInformation("Created {notification}, {referenceNumber}", notification, notification.ReferenceNumber);
+        
+        logger.LogInformation("Created {@Notification}, {NotificationReferenceNumber}", notification,
+            notification.ReferenceNumber);
 
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithEntryDate(entryDate)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .ValidateAndBuild();
-
-        logger.LogInformation("Created {clearanceRequest}, {entryReference}", clearanceRequest,
+        
+        logger.LogInformation("Created {@ClearanceRequest}, {EntryReference}", clearanceRequest,
             clearanceRequest.Header!.EntryReference);
 
-        return new GeneratorResult
-        {
-            ClearanceRequests = new[] { clearanceRequest }, ImportNotifications = new[] { notification }
-        };
+        return new GeneratorResult { ClearanceRequests = [clearanceRequest], ImportNotifications = [notification] };
+
     }
 }

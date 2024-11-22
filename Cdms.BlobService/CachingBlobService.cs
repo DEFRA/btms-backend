@@ -33,8 +33,8 @@ public class CachingBlobService(
            foreach (string f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
            {
                var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}/{options.Value.CachePath}", f);
-                logger.LogInformation("Found file {RelativePath}", relativePath);
-                yield return await Task.FromResult(new SynchroniserBlobItem() { Name = relativePath });
+                 logger.LogInformation("Found file {RelativePath}", relativePath);
+                 yield return await Task.FromResult(new CdmsBlobItem() { Name = relativePath });
             }           
         }
         else{
@@ -47,5 +47,41 @@ public class CachingBlobService(
         var filePath = $"{options.Value.CachePath}/{item.Name}";
         logger.LogInformation("GetResource {FilePath}", filePath);
         return Task.Run(() => File.ReadAllText(filePath), cancellationToken);
+    }
+    
+    public async Task<bool> CreateBlobsAsync(IBlobItem[] items)
+    {
+        foreach (var item in items) await CreateBlobAsync(item);
+
+        return true;
+    }
+    
+    private async Task<bool> CreateBlobAsync(IBlobItem item)
+    {
+        var fullPath = Path.GetFullPath($"{options.Value.CachePath}/{item.Name}");
+        
+        logger.LogInformation("Create folder for file {FullPath}", fullPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+
+        logger.LogInformation("Create file {FullPath}", fullPath);
+        await File.WriteAllTextAsync(fullPath, item.Content);
+
+        return true;
+    }
+    
+    public Task<bool> CleanAsync(string prefix)
+    {
+        var fullPath = Path.GetFullPath($"{options.Value.CachePath}/{prefix}");
+        logger.LogInformation("Clearing local storage {path}", fullPath);
+        
+        try
+        {
+            Directory.Delete(fullPath, true);
+            return Task.Run(() => true);
+        }
+        catch (DirectoryNotFoundException)
+        {
+            return Task.Run(() => true);
+        }
     }
 }

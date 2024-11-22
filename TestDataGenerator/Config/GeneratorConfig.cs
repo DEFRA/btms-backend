@@ -1,5 +1,5 @@
+using Cdms.Azure;
 using Microsoft.Extensions.Configuration;
-using TestDataGenerator.Services;
 
 namespace TestDataGenerator.Config;
 
@@ -28,13 +28,12 @@ public class GeneratorConfig : IAzureConfig
         DmpBlobUri = $"https://{configuration["DMP_BLOB_STORAGE_NAME"]!}.blob.core.windows.net";
         DmpBlobContainer = $"dmp-data-{dmpSlot}";
     }
-
-    public string DmpEnvironment { get; set; } = default!;
-    public string DmpBlobUri { get; set; } = default!;
-    public string DmpBlobContainer { get; set; } = default!;
-
-    public StorageService StorageService { get; set; }
-    public string? AzureClientId { get; set; }
-    public string? AzureTenantId { get; set; }
-    public string? AzureClientSecret { get; set; }
+    
+    public string DmpEnvironment { get; }
+    public string DmpBlobUri { get; }
+    public string DmpBlobContainer { get; }
+    public StorageService StorageService { get; }
+    public string? AzureClientId { get; }
+    public string? AzureTenantId { get; }
+    public string? AzureClientSecret { get; }
 }

@@ -5,10 +5,10 @@ namespace TestDataGenerator.Scenarios;
 
 public class ScenarioConfig
 {
-    public string Name { get; set; } = null!;
-    public int Count { get; set; }
-    public int Days { get; set; }
-    public ScenarioGenerator Generator { get; set; } = null!;
+    public required string Name { get; init; }
+    public required int Count { get; init; }
+    public required int Days { get; init; }
+    public required ScenarioGenerator Generator { get; init; }
 }
 
 public static class ScenarioFactory
@@ -20,7 +20,10 @@ public static class ScenarioFactory
             throw new ArgumentException(
                 "Currently only deals with max 100,000 items. Check ImportNotificationBuilder WithReferenceNumber.");
 
-        var scenario = (ScenarioGenerator)app.Services.GetRequiredService<T>();
-        return new ScenarioConfig { Name = "ChedASimpleMatch", Count = count, Days = days, Generator = scenario };
+        var scenario = app.Services.GetRequiredService<T>();
+        return new ScenarioConfig
+        {
+            Name = nameof(T).Replace("ScenarioGenerator", ""), Count = count, Days = days, Generator = scenario
+        };
     }
 }

@@ -82,7 +82,7 @@ public class BlobService(
             if (item.Properties.ContentLength is not 0)
             {
                 yield return
-                    new SynchroniserBlobItem() { Name = item.Name };
+                    new CdmsBlobItem() { Name = item.Name };
                 itemCount++;
             }
         }
@@ -97,5 +97,17 @@ public class BlobService(
         
         var content = await blobClient.DownloadContentAsync(cancellationToken);
         return content.Value.Content.ToString();
+    }
+
+    // If we want these, there's code in the old generator implementation
+    // https://github.com/DEFRA/cdms-backend/blob/b88e8354e26bf1ee1b9258647a00aea46d6970d6/TestDataGenerator/Services/BlobService.cs
+    public Task<bool> CreateBlobsAsync(IBlobItem[] items)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CleanAsync(string prefix)
+    {
+        throw new NotImplementedException();
     }
 }

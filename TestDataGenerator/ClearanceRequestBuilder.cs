@@ -5,21 +5,12 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
 
-public class ClearanceRequestBuilder : ClearanceRequestBuilder<AlvsClearanceRequest>
-{
-    public ClearanceRequestBuilder()
-    {
-    }
-
-    public ClearanceRequestBuilder(string file) : base(file)
-    {
-    }
-}
+public class ClearanceRequestBuilder(string file) : ClearanceRequestBuilder<AlvsClearanceRequest>(file);
 
 public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>>
     where T : AlvsClearanceRequest, new()
 {
-    protected ClearanceRequestBuilder()
+    private ClearanceRequestBuilder() : base()
     {
     }
 
@@ -40,21 +31,34 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     public ClearanceRequestBuilder<T> WithReferenceNumber(string chedReference)
     {
         var id = MatchIdentifier.FromNotification(chedReference);
-        var clearanceRequestDocumentReference =
-            id.AsCdsDocumentReference();
+        var clearanceRequestDocumentReference = id.AsCdsDocumentReference();
 
         return
-            Do(x => x.Header!.EntryReference = id.AsCdsEntryReference())
-                .Do(x => x.Header!.DeclarationUcr = id.AsCdsDeclarationUcr()) // We may want to revisit this
-                .Do(x => x.Header!.MasterUcr = id.AsCdsMasterUcr()) // We may want to revisit this
-                .Do(x =>
-                    Array.ForEach(x.Items!, i =>
-                        Array.ForEach(i.Documents!, d => d.DocumentReference = clearanceRequestDocumentReference)));
+            Do(x =>
+            {
+                x.Header!.EntryReference = id.AsCdsEntryReference();
+                x.Header!.DeclarationUcr = id.AsCdsDeclarationUcr();
+                x.Header!.MasterUcr = id.AsCdsMasterUcr();
+                Array.ForEach(x.Items!, i =>
+                    Array.ForEach(i.Documents!, d => d.DocumentReference = clearanceRequestDocumentReference));
+            });
     }
 
     public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
     {
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
+    }
+
+    public ClearanceRequestBuilder<T> WithItem(string documentCode, string commodityCode, string description,
+        int netWeight)
+    {
+        return Do(x =>
+        {
+            x.Items![0].TaricCommodityCode = commodityCode;
+            x.Items![0].GoodsDescription = description;
+            x.Items![0].ItemNetMass = netWeight;
+            x.Items![0].Documents![0].DocumentCode = documentCode;
+        });
     }
 
     public ClearanceRequestBuilder<T> WithValidDocumentReferenceNumbers()
@@ -67,12 +71,12 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
                 {
                     document.DocumentReference = "GBCHD2024.1001278";
                     document.DocumentCode = "C640";
-                }
+                }    
             }
         });
     }
 
-    public override ClearanceRequestBuilder<T> Validate()
+    protected override ClearanceRequestBuilder<T> Validate()
     {
         return Do(cr =>
         {
