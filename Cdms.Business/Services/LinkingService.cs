@@ -63,6 +63,8 @@ public class LinkingService(IMongoDbContext dbContext) : ILinkingService
             }
         }
 
+        await transaction.CommitTransaction(cancellationToken);
+
 
 
         return result;
