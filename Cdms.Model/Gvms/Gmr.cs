@@ -1,11 +1,11 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Cdms.Model.Auditing;
 using Cdms.Model.Data;
 using Cdms.Model.Relationships;
 using JsonApiDotNetCore.MongoDb.Resources;
 using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Cdms.Model.Gvms;
 
@@ -18,6 +18,8 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
     [JsonIgnore] public string Type { get; set; } = "gmrs";
 
     public string _Etag { get; set; } = default!;
+    [Attr] public DateTime Created { get; set; }
+    [Attr] public DateTime Updated { get; set; }
 
     /// <inheritdoc />
     [BsonIgnore]

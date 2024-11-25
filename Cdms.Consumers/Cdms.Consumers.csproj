@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cdms.Backend.Data\Cdms.Backend.Data.csproj" />
     <ProjectReference Include="..\Cdms.BlobService\Cdms.BlobService.csproj" />
+    <ProjectReference Include="..\Cdms.Business\Cdms.Business.csproj" />
     <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
     <ProjectReference Include="..\Cdms.SensitiveData\Cdms.SensitiveData.csproj" />

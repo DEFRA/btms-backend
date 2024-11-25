@@ -1,23 +1,29 @@
 using Cdms.Backend.Data;
+using Cdms.Business.Services;
 using Cdms.Model;
 using Cdms.Model.Auditing;
 using Cdms.Types.Alvs;
 using Cdms.Types.Alvs.Mapping;
 using SlimMessageBus;
+using System.Diagnostics.CodeAnalysis;
 using Items = Cdms.Model.Alvs.Items;
 
 namespace Cdms.Consumers
 {
-    internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext)
+    internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext, ILinkingService linkingService)
         : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
     {
+        private ILinkingService linkingService { get; } = linkingService;
+
+        [SuppressMessage("SonarLint", "S1481",
+            Justification =
+                "LinkResult variable is unused until matching and decisions are implemented")]
         public async Task OnHandle(AlvsClearanceRequest message)
         {
             var internalClearanceRequest = AlvsClearanceRequestMapper.Map(message);
             var auditId = Context.Headers["messageId"].ToString();
             var movement = BuildMovement(internalClearanceRequest);
             var existingMovement = await dbContext.Movements.Find(movement.Id!);
-
 
             if (existingMovement is not null)
             {
@@ -29,7 +35,7 @@ namespace Cdms.Consumers
                         movement.ClearanceRequests[0],
                         BuildNormalizedAlvsPath(auditId!),
                         movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
-                        movement.LastUpdated);
+                        movement.UpdatedSource);
                     movement.Update(auditEntry);
 
                     existingMovement.ClearanceRequests.RemoveAll(x =>
@@ -51,10 +57,13 @@ namespace Cdms.Consumers
                     movement.ClearanceRequests[0],
                     BuildNormalizedAlvsPath(auditId!),
                     movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
-                    movement.LastUpdated);
+                    movement.UpdatedSource);
                 movement.Update(auditEntry);
                 await dbContext.Movements.Insert(movement);
             }
+
+            var linkContext = new MovementLinkContext(movement, existingMovement);
+            var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
         }
 
         public IConsumerContext Context { get; set; } = null!;
@@ -64,7 +73,7 @@ namespace Cdms.Consumers
             return new Movement()
             {
                 Id = request.Header!.EntryReference,
-                LastUpdated = request.ServiceHeader?.ServiceCalled,
+                UpdatedSource = request.ServiceHeader?.ServiceCalled,
                 EntryReference = request.Header.EntryReference!,
                 MasterUcr = request.Header.MasterUcr!,
                 DeclarationType = request.Header.DeclarationType!,

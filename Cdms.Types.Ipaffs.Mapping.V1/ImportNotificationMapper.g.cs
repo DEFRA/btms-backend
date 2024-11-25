@@ -27,7 +27,7 @@ public static class ImportNotificationMapper
         to.ExternalReferences = from?.ExternalReferences?.Select(x => ExternalReferenceMapper.Map(x)).ToArray();
         to.ReferenceNumber = from?.ReferenceNumber;
         to.Version = from?.Version;
-        to.LastUpdated = from?.LastUpdated;
+        to.UpdatedSource = from?.LastUpdated;
         to.LastUpdatedBy = UserInformationMapper.Map(from?.LastUpdatedBy!);
         to.ImportNotificationType = ImportNotificationTypeEnumMapper.Map(from?.ImportNotificationType);
         to.Replaces = from?.Replaces;

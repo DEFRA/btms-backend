@@ -68,7 +68,7 @@ public partial class Gmr  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("The date and time that this GMR was last updated.")]
-    public DateTime? LastUpdated { get; set; }
+    public DateTime? UpdatedSource { get; set; }
 
 	
         /// <summary>

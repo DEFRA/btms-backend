@@ -5,6 +5,7 @@ using Cdms.Business.Commands;
 using Cdms.Business.Pipelines;
 using Cdms.Business.Pipelines.Matching;
 using Cdms.Business.Pipelines.Matching.Rules;
+using Cdms.Business.Services;
 using Cdms.Common.Extensions;
 using Cdms.SensitiveData;
 using MediatR;
@@ -54,6 +55,8 @@ namespace Cdms.Business.Extensions
                 cfg.AddBehavior<IPipelineBehavior<MatchRequest, PipelineResult>, MatchTerminatePipeline>();
             });
 
+            services.AddScoped<ILinkingService, LinkingService>();
+            
             services.AddSingleton<SyncMetrics>();
 
             return services;

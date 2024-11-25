@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Linq.Expressions;
 using Cdms.Model.Data;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Collections;
+using System.Linq.Expressions;
 
 namespace Cdms.Backend.Data.Mongo
 {
@@ -33,11 +33,13 @@ namespace Cdms.Backend.Data.Mongo
         public Task<T> Find(string id)
         {
             return EntityQueryable.SingleOrDefaultAsync(x => x.Id == id);
-        }       
+        }
 
         public Task Insert(T item, IMongoDbTransaction transaction = null!, CancellationToken cancellationToken = default)
         {
             item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+            item.Created = DateTime.UtcNow;
+            item.Updated = DateTime.UtcNow;
             var session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             return session is not null
@@ -53,7 +55,7 @@ namespace Cdms.Backend.Data.Mongo
             var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
 
             item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-
+            item.Updated = DateTime.UtcNow;
             var session =
                 transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
             var updateResult = session is not null

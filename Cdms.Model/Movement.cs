@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Cdms.Model.Alvs;
 using Cdms.Model.Auditing;
 using Cdms.Model.Data;
@@ -8,6 +6,8 @@ using Cdms.Model.Relationships;
 using JsonApiDotNetCore.MongoDb.Resources;
 using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Cdms.Model;
 
@@ -28,11 +28,8 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr] public List<Items> Items { get; set; } = [];
 
-    /// <summary>
-    /// Date when the notification was last updated.
-    /// </summary>
     [Attr]
-    public DateTime? LastUpdated { get; set; }
+    public DateTime? UpdatedSource { get; set; }
 
     [Attr] public string EntryReference { get; set; } = default!;
 
@@ -60,12 +57,6 @@ public class Movement : IMongoIdentifiable, IDataEntity
     [JsonPropertyName("relationships")]
     public MovementTdmRelationships Relationships { get; set; } = new MovementTdmRelationships();
 
-    /// <summary>
-    /// Tracks the last time the record was changed
-    /// </summary>
-    [Attr]
-    [BsonElement("_ts")]
-    public DateTime _Ts { get; set; }
 
     [BsonElement("_matchReferences")]
     public List<string> _MatchReferences
@@ -91,24 +82,35 @@ public class Movement : IMongoIdentifiable, IDataEntity
         set => matchReferences = value;
     }
 
-    public void AddRelationship(string type, TdmRelationshipObject relationship)
+    public void AddRelationship(TdmRelationshipObject relationship)
     {
+        bool linked = false;
         Relationships.Notifications.Links ??= relationship.Links;
-        foreach (var dataItem in relationship.Data.Where(dataItem => Relationships.Notifications.Data.TrueForAll(x => x.Id != dataItem.Id)))
+
+        var dataItems = relationship.Data.Where(dataItem =>
+            Relationships.Notifications.Data.TrueForAll(x => x.Id != dataItem.Id))
+            .ToList();
+
+        if (dataItems.Any())
         {
-            Relationships.Notifications.Data.Add(dataItem);
+            Relationships.Notifications.Data.AddRange(dataItems);
+            linked = true;
         }
 
         Relationships.Notifications.Matched = Items
             .Select(x => x.ItemNumber)
             .All(itemNumber =>
                 Relationships.Notifications.Data.Exists(x => x.Matched.GetValueOrDefault() && x.SourceItem == itemNumber));
+
+        if (linked)
+        {
+            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
+        }
     }
 
     public void Update(AuditEntry auditEntry)
     {
         this.AuditEntries.Add(auditEntry);
-        _Ts = DateTime.UtcNow;
         matchReferences = [];
     }
 
@@ -165,4 +167,6 @@ public class Movement : IMongoIdentifiable, IDataEntity
     public string? Id { get; set; } = null!;
 
     public string _Etag { get; set; } = null!;
+    [Attr] public DateTime Created { get; set; }
+    [Attr] public DateTime Updated { get; set; }
 }

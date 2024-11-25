@@ -16,6 +16,7 @@ namespace Cdms.Backend.Data.Extensions
                 .Bind(configuration.GetSection(MongoDbOptions.SectionName))
                 .ValidateDataAnnotations();
 
+            services.AddHostedService<MongoIndexService>();
 
             services.AddScoped<IMongoDbContext, MongoDbContext>();
             services.AddSingleton(sp =>

@@ -27,7 +27,7 @@ namespace Cdms.Consumers
                 }
                 else
                 {
-                    if (gmr.UpdatedSource > existingGmr.LastUpdated)
+                    if (gmr.UpdatedSource > existingGmr.UpdatedSource)
                     {
                         internalGmr.AuditEntries = existingGmr.AuditEntries;
                         var auditEntry = AuditEntry.CreateUpdated<Gmr>(

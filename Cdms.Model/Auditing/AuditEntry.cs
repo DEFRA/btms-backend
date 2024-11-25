@@ -31,7 +31,6 @@ public class AuditEntry
         return CreateInternal(node1!, node2!, id, version, lastUpdated, status);
     }
 
-
     public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated)
     {
         return Create(previous, current, id, version, lastUpdated, CreatedBySystem, "Updated");
@@ -60,6 +59,19 @@ public class AuditEntry
             CreatedBy = CreatedBySystem,
             CreatedLocal = DateTime.UtcNow,
             Status = "Updated"
+        };
+    }
+
+    public static AuditEntry CreateLinked(string id, int version, DateTime? lastUpdated)
+    {
+        return new AuditEntry()
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = lastUpdated,
+            CreatedBy = CreatedBySystem,
+            CreatedLocal = DateTime.UtcNow,
+            Status = "Linked"
         };
     }
 
