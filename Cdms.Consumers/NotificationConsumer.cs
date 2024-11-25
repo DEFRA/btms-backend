@@ -27,6 +27,7 @@ namespace Cdms.Consumers
                 if (internalNotification.UpdatedSource.TrimMicroseconds() > existingNotification.UpdatedSource.TrimMicroseconds())
                 {
                     internalNotification.AuditEntries = existingNotification.AuditEntries;
+                    internalNotification.CreatedSource = existingNotification.CreatedSource;
                     internalNotification.Update(BuildNormalizedIpaffsPath(auditId!), existingNotification);
                     await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
                 }

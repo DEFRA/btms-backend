@@ -19,6 +19,7 @@ public static class GrmWithTransformMapper
 
     private static void Map(Gmr from, Model.Gvms.Gmr to)
     {
+        to.CreatedSource = from.UpdatedSource;
         if (from.Declarations?.Customs is not null)
         {
             to.Relationships.Customs = new TdmRelationshipObject()
@@ -30,7 +31,8 @@ public static class GrmWithTransformMapper
                 },
                 Data = from.Declarations.Customs.Select(x => new RelationshipDataItem()
                 {
-                    Id = x.Id!, Type = "import-notifications"
+                    Id = x.Id!,
+                    Type = "import-notifications"
                 }).ToList()
             };
         }
@@ -46,7 +48,8 @@ public static class GrmWithTransformMapper
                 },
                 Data = from.Declarations.Transits.Select(x => new RelationshipDataItem()
                 {
-                    Id = x.Id!, Type = "movement"
+                    Id = x.Id!,
+                    Type = "movement"
                 }).ToList()
             };
         }

@@ -40,6 +40,7 @@ public static class ImportNotificationWithTransformMapper
 
     private static void Map(ImportNotification from, Model.Ipaffs.ImportNotification to)
     {
+        to.CreatedSource = from.LastUpdated;
         var commodities = from?.PartOne!.Commodities;
 
         if (commodities?.CommodityComplements?.Length == 1)

@@ -18,6 +18,7 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
     [JsonIgnore] public string Type { get; set; } = "gmrs";
 
     public string _Etag { get; set; } = default!;
+    [Attr] public DateTime? CreatedSource { get; set; }
     [Attr] public DateTime Created { get; set; }
     [Attr] public DateTime Updated { get; set; }
 

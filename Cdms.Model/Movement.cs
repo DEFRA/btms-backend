@@ -30,6 +30,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr]
     public DateTime? UpdatedSource { get; set; }
+    [Attr] public DateTime? CreatedSource { get; set; }
 
     [Attr] public string EntryReference { get; set; } = default!;
 
@@ -63,7 +64,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
     {
         get
         {
-            if (matchReferences.Any())
+            if (!matchReferences.Any())
             {
                 var list = new HashSet<string>();
                 foreach (var item in Items.Where(x => x.Documents != null))
