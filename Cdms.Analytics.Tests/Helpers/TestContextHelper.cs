@@ -16,7 +16,7 @@ public static class TestContextHelper
     public static IHostBuilder CreateBuilder(ITestOutputHelper testOutputHelper)
     {
         var builder = Host.CreateDefaultBuilder();
-       
+
         // Any integration test overrides could be added here
         // And we don't want to load the backend ini file 
         var configurationValues = new Dictionary<string, string>
@@ -35,7 +35,7 @@ public static class TestContextHelper
             .ConfigureAppConfiguration(c => c.AddInMemoryCollection(configurationValues!))
             .ConfigureServices((hostContext, s) =>
             {
-                s.AddSingleton<IMatchingAggregationService, MatchingAggregationService>();
+                s.AddScoped<IMatchingAggregationService, MatchingAggregationService>();
                 s.ConfigureTestGenerationServices();
                 s.AddMongoDbContext(hostContext.Configuration);
                 s.AddBusinessServices(hostContext.Configuration);
