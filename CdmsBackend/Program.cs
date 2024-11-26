@@ -200,10 +200,11 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
         {
             Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
-
-    app.UseSyncEndpoints();
-    app.UseManagementEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
-    app.UseDiagnosticEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
+    
+    var options = app.Services.GetRequiredService<IOptions<ApiOptions>>();
+    app.UseSyncEndpoints(options);
+    app.UseManagementEndpoints(options);
+    app.UseDiagnosticEndpoints(options);
     app.UseAnalyticsEndpoints();
     
     return app;

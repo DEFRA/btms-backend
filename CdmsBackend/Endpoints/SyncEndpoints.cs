@@ -2,6 +2,7 @@ using Cdms.Business;
 using Cdms.Business.Commands;
 using Cdms.Consumers.MemoryQueue;
 using Cdms.SyncJob;
+using CdmsBackend.Config;
 using CdmsBackend.Mediatr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,16 @@ public static class SyncEndpoints
 {
     private const string BaseRoute = "sync";
 
-    public static void UseSyncEndpoints(this IEndpointRouteBuilder app)
+    public static void UseSyncEndpoints(this IEndpointRouteBuilder app, IOptions<ApiOptions> options)
     {
-        app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
-        app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
-        app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
-        app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
+        if (options.Value.EnableSync)
+        {
+            app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
+            app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
+            app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
+            app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
+        }
+
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
