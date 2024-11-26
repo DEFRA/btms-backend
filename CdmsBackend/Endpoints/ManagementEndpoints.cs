@@ -1,4 +1,5 @@
 using System.Collections;
+using Cdms.Backend.Data;
 using CdmsBackend.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
@@ -18,8 +19,6 @@ public static class ManagementEndpoints
             app.MapGet(BaseRoute + "/collections/drop", DropCollectionsAsync).AllowAnonymous();
             app.MapGet(BaseRoute + "/environment", GetEnvironment).AllowAnonymous();
             app.MapGet(BaseRoute + "/status", GetStatus).AllowAnonymous();
-            app.MapGet(BaseRoute + "/proxy/set", SetProxy).AllowAnonymous();
-            app.MapGet(BaseRoute + "/proxy/unset", UnsetProxy).AllowAnonymous();
         }
     }
 
@@ -88,20 +87,6 @@ public static class ManagementEndpoints
         return Results.Ok(dict);
     }
 
-    private static IResult SetProxy(IConfiguration configuration)
-    {
-        System.Environment.SetEnvironmentVariable("HTTPS_PROXY", configuration["CDP_HTTPS_PROXY"]);
-        System.Environment.SetEnvironmentVariable("HTTP_PROXY", configuration["CDP_HTTP_PROXY"]);
-        return Results.Ok();
-    }
-
-    private static IResult UnsetProxy()
-    {
-        System.Environment.SetEnvironmentVariable("HTTPS_PROXY", "");
-        System.Environment.SetEnvironmentVariable("HTTP_PROXY", "");
-        return Results.Ok();
-    }
-
     [AllowAnonymous]
     private static async Task<IResult> GetCollectionsAsync(IMongoDatabase db)
     {
@@ -116,16 +101,11 @@ public static class ManagementEndpoints
         return Results.Ok(new { collections = collections });
     }
 
-    private static async Task<IResult> DropCollectionsAsync(IMongoDatabase db)
+    private static async Task<IResult> DropCollectionsAsync(IMongoDbContext context)
     {
         try
         {
-            var collections = await (await db.ListCollectionsAsync()).ToListAsync();
-
-            foreach (var collection in collections)
-            {
-                await db.DropCollectionAsync(collection["name"].ToString());
-            }
+            await context.DropCollections();
         }
         catch (Exception e)
         {

@@ -24,4 +24,14 @@ public class MongoDbContext(IMongoDatabase database) : IMongoDbContext
         ActiveTransaction = new MongoDbTransaction(session);
         return ActiveTransaction;
     }
+
+    public async Task DropCollections()
+    {
+        var collections = await (await Database.ListCollectionsAsync()).ToListAsync();
+
+        foreach (var collection in collections)
+        {
+            await Database.DropCollectionAsync(collection["name"].ToString());
+        }
+    }
 }

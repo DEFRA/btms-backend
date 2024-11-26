@@ -45,7 +45,7 @@ namespace Cdms.Consumers.Extensions
                                 cfg.EnableMessageHeaders = true;
                             })
                             .AddServicesFromAssemblyContaining<NotificationConsumer>(
-                                consumerLifetime: ServiceLifetime.Transient)
+                                consumerLifetime: ServiceLifetime.Scoped)
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {

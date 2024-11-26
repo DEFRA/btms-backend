@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace TestDataGenerator.Scenarios;
 
-internal class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioGenerator> logger) : ScenarioGenerator
+public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioGenerator> logger) : ScenarioGenerator
 {
-    internal override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
+    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
     {
         var notification = GetNotificationBuilder("chedp-one-commodity")
             .WithEntryDate(entryDate)

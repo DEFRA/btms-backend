@@ -55,15 +55,11 @@ public class GmrTests :
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
     }
 
-
-   
-
     private Task<HttpResponseMessage> MakeSyncGmrsRequest(SyncGmrsCommand command)
     {
         return PostCommand(command, "/sync/gmrs");
     }
-
-
+    
     private Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
     {
         var jsonData = JsonSerializer.Serialize(command);
@@ -71,8 +67,6 @@ public class GmrTests :
 
         return client.PostAsync(uri, content);
     }
-
-   
 
     public Task DisposeAsync()
     {

@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace TestDataGenerator.Scenarios;
 
-internal class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger) : ScenarioGenerator
+public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger) : ScenarioGenerator
 {
-    internal override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
+    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
     {
         // TODO : get a good 'pair' of notification and cr as the source templates
 

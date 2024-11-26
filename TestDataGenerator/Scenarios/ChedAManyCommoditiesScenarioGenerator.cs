@@ -3,10 +3,10 @@ using Microsoft.Extensions.Logging;
 
 namespace TestDataGenerator.Scenarios;
 
-internal class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesScenarioGenerator> logger)
+public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesScenarioGenerator> logger)
     : ScenarioGenerator
 {
-    internal override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
+    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate)
     {
         var notification = GetNotificationBuilder("cheda-one-commodity")
             .WithEntryDate(entryDate)

@@ -9,7 +9,7 @@ public abstract class ScenarioGenerator
         $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
 
     // Not sure if this should be abstract or not...
-    internal abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate);
+    public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate);
 
     internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file)
     {
@@ -27,7 +27,7 @@ public abstract class ScenarioGenerator
         return builder;
     }
 
-    internal class GeneratorResult
+    public class GeneratorResult
     {
         public ImportNotification[] ImportNotifications { get; set; } = default!;
         public AlvsClearanceRequest[] ClearanceRequests { get; set; } = default!;

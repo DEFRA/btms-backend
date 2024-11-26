@@ -13,7 +13,7 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         await blobService.CleanAsync($"{rootPath}/");
     }
 
-    internal async Task Generate(int scenario, int count, int days, ScenarioGenerator generator, string rootPath)
+    public async Task Generate(int scenario, int count, int days, ScenarioGenerator generator, string rootPath)
     {
         logger.LogInformation("Generating {Count}x{Days} {Generator}.", count, days, generator);
 

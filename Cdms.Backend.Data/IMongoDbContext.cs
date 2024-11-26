@@ -12,4 +12,6 @@ public interface IMongoDbContext
     IMongoCollectionSet<Gmr> Gmrs { get; }
 
     Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default);
+
+    Task DropCollections();
 }

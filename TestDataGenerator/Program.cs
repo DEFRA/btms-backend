@@ -8,6 +8,7 @@ using TestDataGenerator.Config;
 using TestDataGenerator.Scenarios;
 using Cdms.BlobService.Extensions;
 using Microsoft.Extensions.Options;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
 
@@ -43,15 +44,12 @@ class Program
                 services.AddHttpClient();
 
                 services.AddSingleton<GeneratorConfig>(_ => generatorConfig);
-                services.AddSingleton<ChedASimpleMatchScenarioGenerator>();
-                services.AddSingleton<ChedAManyCommoditiesScenarioGenerator>();
-                services.AddSingleton<ChedPSimpleMatchScenarioGenerator>();
                 services.AddBlobStorage(configuration);
+
                 services.AddTransient<Generator>();
                 
-                var blobOptionsValidatorDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>))!;
-                services.Remove(blobOptionsValidatorDescriptor);
-
+                services.ConfigureTestGenerationServices();
+                
             })
             .AddLogging();
 

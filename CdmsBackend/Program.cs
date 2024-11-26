@@ -8,6 +8,7 @@ using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Cdms.Analytics;
 using Cdms.Business.Extensions;
 using Cdms.BlobService;
 using Cdms.Backend.Data.Healthcheck;
@@ -147,6 +148,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddScoped(typeof(IResourceReadRepository<,>), typeof(MongoRepository<,>));
     builder.Services.AddScoped(typeof(IResourceWriteRepository<,>), typeof(MongoRepository<,>));
     builder.Services.AddScoped(typeof(IResourceRepository<,>), typeof(MongoRepository<,>));
+    builder.Services.AddSingleton<IMatchingAggregationService,MatchingAggregationService>();
 }
 
 [ExcludeFromCodeCoverage]
@@ -202,6 +204,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     app.UseSyncEndpoints();
     app.UseManagementEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
     app.UseDiagnosticEndpoints(app.Services.GetRequiredService<IOptions<ApiOptions>>());
+    app.UseAnalyticsEndpoints();
     
     return app;
 }

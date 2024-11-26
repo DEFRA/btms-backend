@@ -18,7 +18,7 @@ namespace Cdms.Backend.Data.Extensions
 
             services.AddHostedService<MongoIndexService>();
 
-            services.AddScoped<IMongoDbContext, MongoDbContext>();
+            services.AddSingleton<IMongoDbContext, MongoDbContext>();
             services.AddSingleton(sp =>
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();

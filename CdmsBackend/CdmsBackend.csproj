@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cdms.Analytics\Cdms.Analytics.csproj" />
     <ProjectReference Include="..\Cdms.Business\Cdms.Business.csproj" />
     <ProjectReference Include="..\Cdms.Consumers\Cdms.Consumers.csproj" />
     <ProjectReference Include="..\Cdms.Emf\Cdms.Emf.csproj" />

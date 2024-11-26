@@ -1,5 +1,10 @@
+using Cdms.BlobService;
+using Cdms.BlobService.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using TestDataGenerator.Config;
 
 namespace TestDataGenerator.Scenarios;
 
@@ -13,6 +18,7 @@ public class ScenarioConfig
 
 public static class ScenarioFactory
 {
+    
     public static ScenarioConfig CreateScenarioConfig<T>(this IHost app, int count, int days)
         where T : ScenarioGenerator
     {

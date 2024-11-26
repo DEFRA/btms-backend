@@ -13,4 +13,8 @@ public class MemoryMongoDbContext : IMongoDbContext
     {
         return Task.FromResult<IMongoDbTransaction>(new EmptyMongoDbTransaction());
     }
+    public Task DropCollections()
+    {
+        throw new NotImplementedException();
+    }
 }

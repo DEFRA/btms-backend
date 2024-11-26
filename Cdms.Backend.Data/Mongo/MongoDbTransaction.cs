@@ -6,14 +6,16 @@ public class MongoDbTransaction(IClientSessionHandle session) : IMongoDbTransact
 {
     public IClientSessionHandle Session { get; private set; } = session;
 
-    public Task CommitTransaction(CancellationToken cancellationToken = default)
+    public async Task CommitTransaction(CancellationToken cancellationToken = default)
     {
-        return Session.CommitTransactionAsync(cancellationToken);
+        await Session.CommitTransactionAsync(cancellationToken: cancellationToken);
+        Session = null!;
     }
 
-    public Task RollbackTransaction(CancellationToken cancellationToken = default)
+    public async Task RollbackTransaction(CancellationToken cancellationToken = default)
     {
-        return Session.AbortTransactionAsync(cancellationToken);
+        await Session.AbortTransactionAsync(cancellationToken);
+        Session = null!;
     }
 
     public void Dispose()
