@@ -2,6 +2,7 @@ using Cdms.Backend.Data;
 using CdmsBackend.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections;
 
@@ -95,7 +96,8 @@ public static class ManagementEndpoints
 				=> new
 				{
 					name = c["name"].ToString()!,
-					size = db.GetCollection<object>(c["name"].ToString()!).CountDocuments(Builders<object>.Filter.Empty)
+					size = db.GetCollection<object>(c["name"].ToString()!).CountDocuments(Builders<object>.Filter.Empty),
+					indexes = GetIndexes(db, c["name"].ToString()!)
 				});
 
 		return Results.Ok(new { collections = collections });
@@ -114,5 +116,11 @@ public static class ManagementEndpoints
 		}
 
 		return Results.Ok("Dropped");
+	}
+
+	private static List<string?> GetIndexes(IMongoDatabase db, string collectionName)
+	{
+		var indexes = db.GetCollection<BsonDocument>(collectionName).Indexes.List().ToList();
+		return indexes.Select(x => x["name"].ToString()).ToList();
 	}
 }
