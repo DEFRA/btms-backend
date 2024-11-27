@@ -1,5 +1,6 @@
 using Cdms.Common.Extensions;
 using Cdms.Types.Ipaffs;
+using Json.Patch;
 using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
@@ -80,6 +81,20 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         return Do(x => x.LastUpdated = entryDate);
     }
 
+    public ImportNotificationBuilder<T> WithRandomArrivalDateTime(int maxDays, int maxHours=6)
+    {
+        var dayOffset = CreateRandomInt(maxDays * -1, maxDays);
+        var hourOffset = CreateRandomInt(maxHours * -1, maxHours);
+        
+        return Do(x =>
+        {
+            var dt = DateTime.Today.AddDays(dayOffset).AddHours(hourOffset);
+            dt = dt > x.LastUpdated ? dt : x.LastUpdated ?? dt;
+            x.PartOne!.ArrivalDate = dt.ToDate();
+            x.PartOne!.ArrivalTime = dt.ToTime();
+        });
+    }
+
     public ImportNotificationBuilder<T> WithCommodity(string commodityCode, string description, int netWeight)
     {
         return Do(n =>
@@ -99,6 +114,11 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
 
     protected override ImportNotificationBuilder<T> Validate()
     {
-        return Do(n => { n.ReferenceNumber.AssertHasValue(); });
+        return Do(n =>
+        {
+            n.ReferenceNumber.AssertHasValue("Import Notification ReferenceNumber missing");
+            n.PartOne!.ArrivalDate.AssertHasValue("Import Notification ArrivalDate missing");
+            n.PartOne!.ArrivalTime.AssertHasValue("Import Notification ArrivalTime missing");
+        });
     }
 }

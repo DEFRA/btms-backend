@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EntityFramework" Version="6.5.1" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
@@ -15,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Cdms.Backend.Data\Cdms.Backend.Data.csproj" />
+      <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
     </ItemGroup>
 
 </Project>

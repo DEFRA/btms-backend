@@ -1,5 +1,6 @@
 using Cdms.Types.Alvs;
 using Cdms.Types.Ipaffs;
+using TestDataGenerator.Scenarios;
 
 namespace TestDataGenerator;
 
@@ -8,8 +9,7 @@ public abstract class ScenarioGenerator
     private readonly string _fullFolder =
         $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
 
-    // Not sure if this should be abstract or not...
-    public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate);
+    public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
     internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file)
     {

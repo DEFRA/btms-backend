@@ -1,4 +1,5 @@
 using Cdms.Model.Data;
+using MongoDB.Driver;
 
 namespace Cdms.Backend.Data;
 
@@ -9,4 +10,6 @@ public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
 
     Task Update(T item, string etag, IMongoDbTransaction transaction = default!,
         CancellationToken cancellationToken = default);
+
+    IAggregateFluent<T> Aggregate();
 }

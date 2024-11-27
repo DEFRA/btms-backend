@@ -69,5 +69,10 @@ namespace Cdms.Backend.Data.Mongo
                 throw new ConcurrencyException("Concurrency Error, change this to a Concurrency exception");
             }
         }
+
+        public IAggregateFluent<T> Aggregate()
+        {
+            return collection.Aggregate();
+        }
     }
 }

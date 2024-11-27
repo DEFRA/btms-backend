@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq.Expressions;
 using Cdms.Model.Data;
 using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Driver;
 
 namespace Cdms.Backend.Data.InMemory;
 
@@ -49,5 +50,10 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
 
         data[data.IndexOf(existingItem)] = item;
         return Task.CompletedTask;
+    }
+
+    public IAggregateFluent<T> Aggregate()
+    {
+        throw new NotImplementedException();
     }
 }

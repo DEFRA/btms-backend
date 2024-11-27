@@ -13,7 +13,7 @@ namespace Cdms.Analytics.Tests.Helpers;
 
 public static class TestContextHelper
 {
-    public static IHostBuilder CreateBuilder(ITestOutputHelper testOutputHelper)
+    public static IHostBuilder CreateBuilder<T>(ITestOutputHelper testOutputHelper)
     {
         var builder = Host.CreateDefaultBuilder();
 
@@ -23,7 +23,7 @@ public static class TestContextHelper
         {
             { "DisableLoadIniFile", "true" },
             { "Mongo:DatabaseUri", "mongodb://127.0.0.1:29017?retryWrites=false" },
-            { "Mongo:DatabaseName", "Cdms_MongoDb_Aggregation_Test" },
+            { "Mongo:DatabaseName", $"Cdms_{typeof(T).Name}" },
             
             // TODO these aren't relevant to us, but cause an error
             // if not specified

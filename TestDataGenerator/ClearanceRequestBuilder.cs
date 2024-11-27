@@ -49,6 +49,21 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
     }
 
+    public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 
+        int maxHoursOffset = 12, int maxMinsOffset = 30)
+    {
+        DateOnly d = date ?? DateTime.Today.ToDate();
+        TimeOnly t = time ?? DateTime.Now.ToTime();
+        var hoursOffset = CreateRandomInt(maxHoursOffset * -1, maxHoursOffset);
+        var minsOffset = CreateRandomInt(maxMinsOffset * -1, maxMinsOffset);
+
+        var dateTime = d.ToDateTime(t)
+            .AddHours(hoursOffset)
+            .AddMinutes(minsOffset);
+        
+        return Do(x => x.Header!.ArrivalDateTime = dateTime);
+    }
+
     public ClearanceRequestBuilder<T> WithItem(string documentCode, string commodityCode, string description,
         int netWeight)
     {
@@ -80,9 +95,10 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return Do(cr =>
         {
-            cr.Header!.EntryReference.AssertHasValue();
-            cr.Header!.DeclarationUcr.AssertHasValue();
-            cr.Header!.MasterUcr.AssertHasValue();
+            cr.Header!.EntryReference.AssertHasValue("Clearance Request EntryReference missing");
+            cr.Header!.DeclarationUcr.AssertHasValue("Clearance Request DeclarationUcr missing");
+            cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing");
+            cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
 
             Array.ForEach(cr.Items!, i => Array.ForEach(i.Documents!, d => d.DocumentReference.AssertHasValue()));
         });

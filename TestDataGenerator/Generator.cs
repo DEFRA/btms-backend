@@ -3,6 +3,7 @@ using System.Text.Json;
 using Cdms.BlobService;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Helpers;
+using TestDataGenerator.Scenarios;
 
 namespace TestDataGenerator;
 
@@ -13,8 +14,12 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         await blobService.CleanAsync($"{rootPath}/");
     }
 
-    public async Task Generate(int scenario, int count, int days, ScenarioGenerator generator, string rootPath)
+    public async Task Generate(int scenario, ScenarioConfig config, string rootPath)
     {
+        int days = config.CreationDateRange;
+        int count = config.Count;
+        ScenarioGenerator generator = config.Generator;
+        
         logger.LogInformation("Generating {Count}x{Days} {Generator}.", count, days, generator);
 
         for (var d = -days + 1; d <= 0; d++)
@@ -26,7 +31,7 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
             {
                 logger.LogInformation("Generating item {I}", i);
 
-                var generatorResult = generator.Generate(scenario, i, entryDate);
+                var generatorResult = generator.Generate(scenario, i, entryDate, config);
                 var uploadResult = await InsertToBlobStorage(generatorResult, rootPath);
                 if (!uploadResult) throw new AuthenticationException("Error uploading item. Probably auth.");
             }
