@@ -9,7 +9,7 @@ namespace CdmsBackend.Authentication
 		{
 			if (options.Value.Credentials.TryGetValue(clientId, out string? secret))
 			{
-				return Task.FromResult(clientSecret.Equals(secret));
+				return Task.FromResult(!string.IsNullOrEmpty(secret) && clientSecret.Equals(secret));
 			}
 
 			return Task.FromResult(false);
