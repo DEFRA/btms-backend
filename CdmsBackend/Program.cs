@@ -6,6 +6,7 @@ using Cdms.Common.Extensions;
 using Cdms.Consumers.Extensions;
 using Cdms.Emf;
 using Cdms.SyncJob.Extensions;
+using CdmsBackend.Authentication;
 using CdmsBackend.BackgroundTaskQueue;
 using CdmsBackend.Config;
 using CdmsBackend.Endpoints;
@@ -16,6 +17,7 @@ using CdmsBackend.Utils.Http;
 using CdmsBackend.Utils.Logging;
 using FluentValidation;
 using HealthChecks.UI.Client;
+using idunno.Authentication.Basic;
 using JsonApiDotNetCore.Configuration;
 using JsonApiDotNetCore.MongoDb.Configuration;
 using JsonApiDotNetCore.MongoDb.Repositories;
@@ -30,6 +32,7 @@ using Serilog;
 using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Environment = System.Environment;
 
@@ -45,6 +48,7 @@ static WebApplication CreateWebApplication(string[] args)
 	var builder = WebApplication.CreateBuilder(args);
 
 	ConfigureWebApplication(builder);
+	ConfigureAuthentication(builder);
 
 	var app = BuildWebApplication(builder);
 
@@ -74,7 +78,11 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	}
 
 	builder.Services.CdmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
-		.PostConfigure(options => builder.Configuration.Bind(options));
+		.PostConfigure(options =>
+		{
+			builder.Configuration.Bind(options);
+			builder.Configuration.GetSection("AuthKeyStore").Bind(options);
+		});
 
 
 	// Load certificates into Trust Store - Note must happen before Mongo and Http client connections
@@ -175,6 +183,43 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 }
 
 [ExcludeFromCodeCoverage]
+static void ConfigureAuthentication(WebApplicationBuilder builder)
+{
+	builder.Services.AddSingleton<IClientCredentialsManager, ClientCredentialsManager>();
+
+	builder.Services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
+		.AddBasic(options =>
+		{
+			options.AllowInsecureProtocol = true;
+			options.Realm = "Basic Authentication";
+			options.Events = new BasicAuthenticationEvents
+			{
+				OnValidateCredentials = async context =>
+				{
+					var clientCredentialsManager = context.HttpContext.RequestServices.GetRequiredService<IClientCredentialsManager>();
+
+					if (await clientCredentialsManager.IsValid(context.Username, context.Password))
+					{
+						var claims = new[]
+						{
+							new Claim(ClaimTypes.NameIdentifier, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+							new Claim(ClaimTypes.Name, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+						};
+
+						context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
+						context.Success();
+					}
+					else
+					{
+						context.Fail("Invalid Credentials");
+					}
+				}
+			};
+		});
+	builder.Services.AddAuthorization();
+}
+
+[ExcludeFromCodeCoverage]
 static void ConfigureEndpoints(WebApplicationBuilder builder)
 {
 	builder.Services.AddHealthChecks()
@@ -187,9 +232,12 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
 	var app = builder.Build();
 
+
 	app.UseEmfExporter();
+	app.UseAuthentication();
+	app.UseAuthorization();
 	app.UseJsonApi();
-	app.MapControllers();
+	app.MapControllers().RequireAuthorization();
 
 	var dotnetHealthEndpoint = "/health-dotnet";
 	app.MapGet("/health", GetStatus).AllowAnonymous();

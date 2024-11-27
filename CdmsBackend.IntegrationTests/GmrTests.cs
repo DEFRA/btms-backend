@@ -1,10 +1,12 @@
-using System.Text;
-using System.Text.Json;
 using Cdms.Business.Commands;
 using CdmsBackend.IntegrationTests.Helpers;
 using CdmsBackend.IntegrationTests.JsonApiClient;
 using FluentAssertions;
+using idunno.Authentication.Basic;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -24,6 +26,11 @@ public class GmrTests :
         this.factory.DatabaseName = "GmrTests";
         client =
             this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        string credentials = "IntTest:Password";
+        byte[] credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
+        var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
     }
 
     public async Task InitializeAsync()
@@ -45,7 +52,7 @@ public class GmrTests :
     {
 
         //Act
-        var jsonClientResponse = client.AsJsonApiClient().GetById("GMRAPOQSPDUG","api/gmrs");
+        var jsonClientResponse = client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         // Assert
         jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
@@ -59,7 +66,7 @@ public class GmrTests :
     {
         return PostCommand(command, "/sync/gmrs");
     }
-    
+
     private Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
     {
         var jsonData = JsonSerializer.Serialize(command);

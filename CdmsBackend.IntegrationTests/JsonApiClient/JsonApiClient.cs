@@ -1,7 +1,9 @@
-using System.Net.Http.Headers;
-using System.Text.Json;
+using FluentAssertions;
 using JsonApiDotNetCore.Serialization.JsonConverters;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CdmsBackend.IntegrationTests.JsonApiClient;
@@ -46,12 +48,16 @@ public class JsonApiClient(HttpClient client)
 
         HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
 
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
+
+
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
         return JsonSerializer.Deserialize<ManyItemsJsonApiDocument>(s,
             new JsonSerializerOptions()
             {
-                Converters = { new SingleOrManyDataConverterFactory() }, PropertyNameCaseInsensitive = true
+                Converters = { new SingleOrManyDataConverterFactory() },
+                PropertyNameCaseInsensitive = true
             })!;
     }
 
@@ -88,12 +94,15 @@ public class JsonApiClient(HttpClient client)
 
         HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
 
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
+
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
         return JsonSerializer.Deserialize<SingleItemJsonApiDocument>(s,
             new JsonSerializerOptions()
             {
-                Converters = { new SingleOrManyDataConverterFactory() }, PropertyNameCaseInsensitive = true
+                Converters = { new SingleOrManyDataConverterFactory() },
+                PropertyNameCaseInsensitive = true
             })!;
     }
 }

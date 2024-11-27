@@ -1,22 +1,24 @@
-using System.Net;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Cdms.Business.Commands;
 using Cdms.Model;
 using Cdms.SyncJob;
 using CdmsBackend.IntegrationTests.Helpers;
 using CdmsBackend.IntegrationTests.JsonApiClient;
 using FluentAssertions;
+using idunno.Authentication.Basic;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Xunit;
 using Xunit.Abstractions;
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace CdmsBackend.IntegrationTests
 {
-    
+
 
     [Trait("Category", "Integration")]
     public class SmokeTests :
@@ -32,6 +34,11 @@ namespace CdmsBackend.IntegrationTests
             this.factory.DatabaseName = "SmokeTests";
             client =
                 this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+            string credentials = "IntTest:Password";
+            byte[] credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
+            var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
         }
 
         [Fact]
@@ -41,7 +48,8 @@ namespace CdmsBackend.IntegrationTests
             await IntegrationTestsApplicationFactory.ClearDb(client);
             await MakeSyncNotificationsRequest(new SyncNotificationsCommand()
             {
-                SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+                SyncPeriod = SyncPeriod.All,
+                RootFolder = "SmokeTest"
             });
 
             // Assert
@@ -61,7 +69,8 @@ namespace CdmsBackend.IntegrationTests
             await SyncClearanceRequests();
             await MakeSyncDecisionsRequest(new SyncDecisionsCommand()
             {
-                SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+                SyncPeriod = SyncPeriod.All,
+                RootFolder = "SmokeTest"
             });
 
             // Assert
@@ -91,7 +100,8 @@ namespace CdmsBackend.IntegrationTests
             //Act
             await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand()
             {
-                SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+                SyncPeriod = SyncPeriod.All,
+                RootFolder = "SmokeTest"
             });
 
             // Assert
@@ -111,7 +121,8 @@ namespace CdmsBackend.IntegrationTests
             //Act
             await MakeSyncGmrsRequest(new SyncGmrsCommand()
             {
-                SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+                SyncPeriod = SyncPeriod.All,
+                RootFolder = "SmokeTest"
             });
 
             // Assert

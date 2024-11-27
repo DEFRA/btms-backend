@@ -1,13 +1,13 @@
+using Cdms.Backend.Data;
 using Cdms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using Cdms.Backend.Data;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace CdmsBackend.IntegrationTests.Helpers;
@@ -23,9 +23,10 @@ public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
         {
             { "DisableLoadIniFile", "true" },
             { "BlobServiceOptions:CachePath", "../../../Fixtures" },
-            { "BlobServiceOptions:CacheReadEnabled", "true" }
+            { "BlobServiceOptions:CacheReadEnabled", "true" },
+            { "AuthKeyStore:Credentials:IntTest", "Password" }
         };
-        
+
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues!)
             .Build();
