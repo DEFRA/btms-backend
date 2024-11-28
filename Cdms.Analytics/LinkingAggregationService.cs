@@ -14,6 +14,8 @@ namespace Cdms.Analytics;
 
 public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingAggregationService> logger) : ILinkingAggregationService
 {
+    static DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].BsonType != BsonType.Null ? b["dateToUse"].ToUniversalTime() : DateTime.MinValue;
+    
     private static string GetLinkedName(bool linked, string type)
     {
         return $"{type} {GetLinkedName(linked)}";
@@ -47,7 +49,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
 
         string CreateDatasetName(BsonDocument b) => GetLinkedName(b["_id"]["linked"].ToBoolean());
 
-        DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
+        // DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
 
         return GetMovementAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$createdSource", aggregateBy);
     }
@@ -76,8 +78,6 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
 
         string CreateDatasetName(BsonDocument b) => GetLinkedName(b["_id"]["linked"].ToBoolean());
 
-        DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
-        
         return GetMovementAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$arrivesAt", aggregateBy);
     }
     
@@ -98,7 +98,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
 
         string CreateDatasetName(BsonDocument b) => GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!);
 
-        DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
+        // DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
 
         return GetImportNotificationAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$createdSource", aggregateBy);
     }
@@ -117,7 +117,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
 
         string CreateDatasetName(BsonDocument b) => $"{b["_id"]["importNotificationType"].ToString()!} {(b["_id"]["linked"].ToBoolean() ? "Linked" : "Not Linked")}";
 
-        DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
+        // DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
 
         return GetImportNotificationAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$partOne.arrivesAt", aggregateBy);
     }
