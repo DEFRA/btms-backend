@@ -10,42 +10,49 @@ public static class AnalyticsEndpoints
     
     public static void UseAnalyticsEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet(BaseRoute + "/get-dashboard", GetDashboard).AllowAnonymous();
+        app.MapGet(BaseRoute + "/dashboard", GetDashboard).AllowAnonymous();
     }
     
     private static async Task<IResult> GetDashboard(
         [FromServices] ILinkingAggregationService svc)
     {
         var importNotificationLinkingByCreated = await svc
-            .GetImportNotificationLinkingByCreated(DateTime.Today.MonthAgo(), DateTime.Today);
+            .ImportNotificationsByCreated(DateTime.Today.MonthAgo(), DateTime.Today);
         
         var importNotificationLinkingByArrival = await svc
-            .GetImportNotificationLinkingByArrival(DateTime.Today, DateTime.Today.MonthLater()) ;
+            .ImportNotificationsByArrival(DateTime.Today, DateTime.Today.MonthLater()) ;
         
         var last7DaysImportNotificationsLinkingStatus = await svc
-            .GetImportNotificationLinkingStatus(DateTime.Today.WeekAgo(), DateTime.Today);
+            .ImportNotificationsByStatus(DateTime.Today.WeekAgo(), DateTime.Now);
         
         var last24HoursImportNotificationsLinkingStatus = await svc
-            .GetImportNotificationLinkingStatus(DateTime.Now.Yesterday(), DateTime.Now);
+            .ImportNotificationsByStatus(DateTime.Now.Yesterday(), DateTime.Now);
         
         var last24HoursMovementsLinkingByCreated = await svc
-            .GetMovementsLinkingByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour);
+            .MovementsByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour);
         
         var last24HoursImportNotificationsLinkingByCreated= await svc
-            .GetImportNotificationLinkingByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour);
+            .ImportNotificationsByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour);
         
         var movementsLinkingByCreated = await svc
-            .GetMovementsLinkingByCreated(DateTime.Today.MonthAgo(), DateTime.Today) ;
+            .MovementsByCreated(DateTime.Today.MonthAgo(), DateTime.Today) ;
         
         var movementsLinkingByArrival = await svc
-            .GetMovementsLinkingByArrival(DateTime.Today, DateTime.Today.MonthLater());
+            .MovementsByArrival(DateTime.Today, DateTime.Today.MonthLater());
+        
+        var lastMonthImportNotificationsByTypeAndStatus = await svc
+            .ImportNotificationsByStatus(DateTime.Today.MonthAgo(), DateTime.Now);
+        
+        var lastMonthMovementsByStatus = await svc
+            .MovementsByStatus(DateTime.Today.MonthAgo(), DateTime.Now);
         
         return Results.Ok(new
         {
             importNotificationLinkingByCreated, importNotificationLinkingByArrival,
             last7DaysImportNotificationsLinkingStatus, last24HoursImportNotificationsLinkingStatus,
             last24HoursMovementsLinkingByCreated, last24HoursImportNotificationsLinkingByCreated,
-            movementsLinkingByCreated, movementsLinkingByArrival
+            movementsLinkingByCreated, movementsLinkingByArrival,
+            lastMonthImportNotificationsByTypeAndStatus, lastMonthMovementsByStatus
         });
     }
 }

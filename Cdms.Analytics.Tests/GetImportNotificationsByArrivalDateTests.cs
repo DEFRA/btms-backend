@@ -17,7 +17,7 @@ public class GetImportNotificationsByArrivalDateTests(
         testOutputHelper.WriteLine("Querying for aggregated data");
         
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .GetImportNotificationLinkingByArrival(DateTime.Today, DateTime.Today.MonthLater()))
+            .ImportNotificationsByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .ToList();
 
         testOutputHelper.WriteLine($"{result.Count} aggregated items found");

@@ -16,7 +16,7 @@ public class GetImportNotificationsByCreatedDateTests(
     public async Task WhenCalledLast24Hours_ReturnExpectedAggregation()
     {
         var result = (await aggregationTestFixture.LinkingAggregationService
-                .GetImportNotificationLinkingByCreated(DateTime.Now.NextHour(), DateTime.Now.NextHour().Tomorrow(),AggregationPeriod.Hour))
+                .ImportNotificationsByCreated(DateTime.Now.NextHour(), DateTime.Now.NextHour().Tomorrow(),AggregationPeriod.Hour))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -42,7 +42,7 @@ public class GetImportNotificationsByCreatedDateTests(
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .GetImportNotificationLinkingByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
+            .ImportNotificationsByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());

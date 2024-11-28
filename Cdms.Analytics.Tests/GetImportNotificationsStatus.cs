@@ -16,7 +16,7 @@ public class GetImportNotificationsStatus(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .GetImportNotificationLinkingStatus(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
+            .ImportNotificationsByStatus(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
@@ -29,7 +29,7 @@ public class GetImportNotificationsStatus(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .GetImportNotificationLinkingStatus(DateTime.Now.AddDays(-1), DateTime.Now));
+            .ImportNotificationsByStatus(DateTime.Now.AddDays(-1), DateTime.Now));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         

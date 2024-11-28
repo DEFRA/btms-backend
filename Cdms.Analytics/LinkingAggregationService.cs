@@ -32,7 +32,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
     /// <param name="to">Time period to search to (exclusive)</param>
     /// <param name="aggregateBy">Aggregate by day/hour</param>
     /// <returns></returns>
-    public Task<Dataset[]> GetMovementsLinkingByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<Dataset[]> MovementsByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         int RangeFromPeriod(TimeSpan t) => Convert.ToInt32(aggregateBy == AggregationPeriod.Hour ? t.TotalHours : t.TotalDays);
         DateTime IncrementPeriod(DateTime d, int offset) => aggregateBy == AggregationPeriod.Hour ? d.AddHours(offset) : d.AddDays(offset);
@@ -61,7 +61,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
     /// <param name="to">Time period to search to (exclusive)</param>
     /// <param name="aggregateBy">Aggregate by day/hour</param>
     /// <returns></returns>
-    public Task<Dataset[]> GetMovementsLinkingByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<Dataset[]> MovementsByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         int RangeFromPeriod(TimeSpan t) => Convert.ToInt32(aggregateBy == AggregationPeriod.Hour ? t.TotalHours : t.TotalDays);
         DateTime IncrementPeriod(DateTime d, int offset) => aggregateBy == AggregationPeriod.Hour ? d.AddHours(offset) : d.AddDays(offset);
@@ -81,7 +81,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
         return GetMovementAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$arrivesAt", aggregateBy);
     }
     
-    public Task<Dataset[]> GetImportNotificationLinkingByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<Dataset[]> ImportNotificationsByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         int RangeFromPeriod(TimeSpan t) => Convert.ToInt32(aggregateBy == AggregationPeriod.Hour ? t.TotalHours : t.TotalDays);
         DateTime IncrementPeriod(DateTime d, int offset) => aggregateBy == AggregationPeriod.Hour ? d.AddHours(offset) : d.AddDays(offset);
@@ -103,7 +103,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
         return GetImportNotificationAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$createdSource", aggregateBy);
     }
 
-    public Task<Dataset[]> GetImportNotificationLinkingByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<Dataset[]> ImportNotificationsByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         // By creating the dates we care about, we can ensure the arrays have all the dates, 
         // including any series that don't have data on a given day. We need these to be zero for the chart to render
@@ -122,7 +122,22 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
         return GetImportNotificationAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$partOne.arrivesAt", aggregateBy);
     }
 
-    public Task<PieChartDataset> GetImportNotificationLinkingStatus(DateTime from, DateTime to)
+    public Task<PieChartDataset> MovementsByStatus(DateTime from, DateTime to)
+    {
+        var data = context
+            .Movements
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(m => m.Relationships.Notifications.Data.Count > 0 )
+            .Select(g => new { g.Key, Count = g.Count() })
+            .ToList();
+
+        return Task.FromResult(new PieChartDataset()
+        {
+            Values = data.ToDictionary(g => GetLinkedName(g.Key), g=> g.Count )
+        });
+    }
+    
+    public Task<PieChartDataset> ImportNotificationsByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Notifications
