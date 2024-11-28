@@ -48,7 +48,7 @@ public class MatchingAggregationService(IMongoDbContext context, ILogger<Matchin
             .ToArray(); 
         
         Expression<Func<ImportNotification, bool>> matchFilter = n =>
-            n.PartOne!.ArrivedOn >= DateTime.Today && n.PartOne!.ArrivedOn <= DateTime.Today.AddDays(days);
+            n.PartOne!.ArrivesAt >= DateTime.Today && n.PartOne!.ArrivesAt <= DateTime.Today.AddDays(days);
 
         Func<BsonDocument, string> createDatasetName = b =>
             $"{b["_id"]["importNotificationType"].ToString()!} {(b["_id"]["linked"].ToBoolean() ? "Linked" : "Not Linked")}";
@@ -56,7 +56,7 @@ public class MatchingAggregationService(IMongoDbContext context, ILogger<Matchin
         Func<BsonValue, DateOnly> aggregateDateCreator = b =>
             b["dateToUse"].ToUniversalTime().ToDate();
         
-        return GetImportNotificationAggregate(dateRange, createDatasetName, matchFilter, aggregateDateCreator, "$partOne.arrivedOn");
+        return GetImportNotificationAggregate(dateRange, createDatasetName, matchFilter, aggregateDateCreator, "$partOne.arrivesAt");
     }
     
     private Task<Dataset[]> GetImportNotificationAggregate(DateOnly[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, Func<BsonValue, DateOnly> aggregateDateCreator, string dateField)

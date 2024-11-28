@@ -20,7 +20,7 @@ namespace Cdms.Types.Alvs.Mapping.V1.Tests
             mappedHeader.DeclarationUcr.Should().Be(sourceHeader.DeclarationUcr);
             mappedHeader.DeclarationPartNumber.Should().Be(sourceHeader.DeclarationPartNumber);
             mappedHeader.DeclarationType.Should().Be(sourceHeader.DeclarationType);
-            mappedHeader.ArrivedAt.Should().Be(sourceHeader.ArrivalDateTime);
+            mappedHeader.ArrivesAt.Should().Be(sourceHeader.ArrivalDateTime);
             mappedHeader.SubmitterTurn.Should().Be(sourceHeader.SubmitterTurn);
             mappedHeader.DeclarantId.Should().Be(sourceHeader.DeclarantId);
 

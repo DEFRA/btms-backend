@@ -75,7 +75,7 @@ public partial class Header  //
     /// </summary
     [Attr]
     [System.ComponentModel.Description("")]
-    public DateTime? ArrivedAt { get; set; }
+    public DateTime? ArrivesAt { get; set; }
 
 	
     /// <summary>

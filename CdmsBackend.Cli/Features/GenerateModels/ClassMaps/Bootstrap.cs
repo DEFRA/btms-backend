@@ -21,7 +21,7 @@ static class Bootstrap
     {
         GeneratorClassMap.RegisterClassMap("Header", map =>
         {
-            map.MapProperty("ArrivalDateTime").IsDateTime().SetInternalName("ArrivedAt");
+            map.MapProperty("ArrivalDateTime").IsDateTime().SetInternalName("ArrivesAt");
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
@@ -78,7 +78,7 @@ static class Bootstrap
         GeneratorClassMap.RegisterClassMap("Purpose", map =>
         {
             map.MapDateOnlyAndTimeOnlyToDateTimeProperty("estimatedArrivalDateAtPortOfExit",
-                "estimatedArrivalTimeAtPortOfExit", "estimatedArrivedAtPortOfExit");
+                "estimatedArrivalTimeAtPortOfExit", "estimatedArrivesAtPortOfExit");
 
 
             map.MapProperty("exitDate").IsDate();
@@ -164,7 +164,7 @@ static class Bootstrap
             map.MapProperty("isGVMSRoute").SetName("isGvmsRoute");
             map.MapProperty("portOfExitDate").IsDateTime().SetInternalName("ExitedPortOfOn");
 
-            map.MapDateOnlyAndTimeOnlyToDateTimeProperty("arrivalDate", "arrivalTime", "arrivedOn");
+            map.MapDateOnlyAndTimeOnlyToDateTimeProperty("arrivalDate", "arrivalTime", "arrivesAt");
             map.MapDateOnlyAndTimeOnlyToDateTimeProperty("departureDate", "departureTime", "departedOn");
         });
 

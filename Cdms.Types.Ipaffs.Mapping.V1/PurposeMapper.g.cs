@@ -36,7 +36,7 @@ public static class PurposeMapper
         to.ExitDate = from?.ExitDate;
         to.FinalBip = from?.FinalBip;
         to.PurposeGroup = PurposePurposeGroupEnumMapper.Map(from?.PurposeGroup);
-        to.EstimatedArrivedAtPortOfExit = DateTimeMapper.Map(from?.EstimatedArrivalDateAtPortOfExit, from?.EstimatedArrivalTimeAtPortOfExit);
+        to.EstimatedArrivesAtPortOfExit = DateTimeMapper.Map(from?.EstimatedArrivalDateAtPortOfExit, from?.EstimatedArrivalTimeAtPortOfExit);
         return to;
     }
 }

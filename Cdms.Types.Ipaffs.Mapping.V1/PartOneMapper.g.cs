@@ -71,7 +71,7 @@ public static class PartOneMapper
         to.WasChargeable = from?.WasChargeable;
         to.CommonUserCharge = CommonUserChargeMapper.Map(from?.CommonUserCharge!);
         to.ProvideCtcMrn = PartOneProvideCtcMrnEnumMapper.Map(from?.ProvideCtcMrn);
-        to.ArrivedOn = DateTimeMapper.Map(from?.ArrivalDate, from?.ArrivalTime);
+        to.ArrivesAt = DateTimeMapper.Map(from?.ArrivalDate, from?.ArrivalTime);
         to.DepartedOn = DateTimeMapper.Map(from?.DepartureDate, from?.DepartureTime);
         return to;
     }

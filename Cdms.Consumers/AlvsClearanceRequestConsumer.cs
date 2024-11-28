@@ -75,6 +75,7 @@ namespace Cdms.Consumers
                 Id = request.Header!.EntryReference,
                 UpdatedSource = request.ServiceHeader?.ServiceCalled,
                 CreatedSource = request.ServiceHeader?.ServiceCalled,
+                ArrivesAt = request.Header.ArrivesAt, 
                 EntryReference = request.Header.EntryReference!,
                 MasterUcr = request.Header.MasterUcr!,
                 DeclarationType = request.Header.DeclarationType!,

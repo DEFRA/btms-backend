@@ -143,7 +143,7 @@ public partial class Purpose  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("DateTime")]
-    public DateTime? EstimatedArrivedAtPortOfExit { get; set; }
+    public DateTime? EstimatedArrivesAtPortOfExit { get; set; }
 
 	}
 
