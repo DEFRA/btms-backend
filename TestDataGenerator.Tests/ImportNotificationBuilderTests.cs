@@ -1,4 +1,5 @@
 using Cdms.Types.Ipaffs;
+using Cdms.Common.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -41,6 +42,6 @@ public class ImportNotificationBuilderTests
         builder.WithEntryDate(date);
 
         var notification = builder.Build();
-        notification.LastUpdated.Should().Be(date);
+        notification.LastUpdated.ToDate().Should().Be(date.ToDate());
     }
 }

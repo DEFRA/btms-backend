@@ -6,6 +6,11 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections;
 
+using Cdms.Business.Commands;
+using Cdms.SyncJob;
+using CdmsBackend.Mediatr;
+using Microsoft.AspNetCore.Mvc;
+
 namespace CdmsBackend.Endpoints;
 
 public static class ManagementEndpoints
@@ -20,6 +25,7 @@ public static class ManagementEndpoints
 			app.MapGet(BaseRoute + "/collections/drop", DropCollectionsAsync).AllowAnonymous();
 			app.MapGet(BaseRoute + "/environment", GetEnvironment).AllowAnonymous();
 			app.MapGet(BaseRoute + "/status", GetStatus).AllowAnonymous();
+            app.MapGet(BaseRoute + "/initialise", Initialise).AllowAnonymous();
 		}
 	}
 
@@ -72,7 +78,18 @@ public static class ManagementEndpoints
 		return new DictionaryEntry() { Key = d.Key, Value = value };
 	}
 
-	private static IResult GetEnvironment()
+    private static async Task<IResult> Initialise(
+        [FromServices] IHost app,
+        IMongoDbContext context,
+        SyncPeriod syncPeriod)
+    {
+        await DropCollectionsAsync(context);
+        await SyncEndpoints.InitialiseEnvironment(app, syncPeriod);
+
+        return Results.Ok();
+    }
+
+    private static IResult GetEnvironment()
 	{
 		var dict = System.Environment.GetEnvironmentVariables();
 		var filtered = dict.Cast<DictionaryEntry>().Select(Redact).ToArray();

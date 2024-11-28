@@ -16,6 +16,7 @@ public static class BuilderExtensions
         services.AddSingleton<ChedAManyCommoditiesScenarioGenerator>();
         services.AddSingleton<ChedPSimpleMatchScenarioGenerator>();
         services.AddSingleton<ChedANoMatchScenarioGenerator>();
+        services.AddSingleton<CRNoMatchScenarioGenerator>();
                 
         var blobOptionsValidatorDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>))!;
         services.Remove(blobOptionsValidatorDescriptor);

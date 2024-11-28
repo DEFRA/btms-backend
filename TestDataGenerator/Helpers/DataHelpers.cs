@@ -40,4 +40,16 @@ public static class DataHelpers
     {
         return $"MUB9999{identifier.Identifier}";
     }
+    
+    internal static string GenerateReferenceNumber(ImportNotificationTypeEnum chedType, int scenario,
+        DateTime created, int item)
+    {
+        var prefix = chedType.ConvertToChedType();
+
+        if (item > 999999) throw new ArgumentException("Currently only deals with max 100,000 items");
+
+        var formatHundredThousands = "000000";
+
+        return $"{prefix}.GB.{created.Year}.{scenario.ToString("00")}{created.DateRef()}{(item + 1).ToString(formatHundredThousands)}";
+    }
 }

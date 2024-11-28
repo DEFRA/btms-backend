@@ -8,7 +8,7 @@ public static class AnalyticsExtensions
     public static IServiceCollection AddServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<IMatchingAggregationService, MatchingAggregationService>();
+        services.AddScoped<ILinkingAggregationService, LinkingAggregationService>();
         return services;
     }
 }

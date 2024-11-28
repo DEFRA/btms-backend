@@ -19,14 +19,4 @@ public static class GeneralExtensions
     {
         Debug.Assert(val.HasValue(),  message);
     }
-    
-    public static DateOnly ToDate(this DateTime val)
-    {
-        return DateOnly.FromDateTime(val);
-    }
-    
-    public static TimeOnly ToTime(this DateTime val)
-    {
-        return TimeOnly.FromDateTime(val);
-    }
 }

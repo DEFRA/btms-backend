@@ -1,3 +1,4 @@
+using Cdms.Common.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -22,6 +23,6 @@ public class ClearanceRequestBuilderTests
         builder.WithEntryDate(date);
 
         var cr = builder.Build();
-        cr.ServiceHeader!.ServiceCallTimestamp!.Should().Be(date);
+        cr.ServiceHeader!.ServiceCallTimestamp.ToDate().Should().Be(date.ToDate());
     }
 }

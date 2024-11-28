@@ -46,7 +46,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
 
     public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
     {
-        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
+        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime());
     }
 
     public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 

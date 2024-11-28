@@ -33,6 +33,20 @@ public static class SyncEndpoints
 		app.MapGet(BaseRoute + "/jobs/{jobId}", GetSyncJob).AllowAnonymous();
     }
 
+    internal static async Task<IResult> InitialiseEnvironment(IHost app, SyncPeriod period)
+    {
+        var store = app.Services.GetRequiredService<ISyncJobStore>();
+        var mediator = app.Services.GetRequiredService<ICdmsMediator>();
+        
+        await ClearSyncJobs(store);
+        await GetSyncNotifications(mediator, period);
+        await GetSyncClearanceRequests(mediator, period);
+        // await GetSyncDecisions(mediator, period);
+        // await GetSyncGmrs(mediator, period);
+
+        return Results.Ok();
+    }
+
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
     {
         return Task.FromResult(Results.Ok(new { jobs = store.GetJobs() }));
@@ -103,10 +117,20 @@ public static class SyncEndpoints
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
+    private static async Task<IResult> GetSyncDecisions(
+        [FromServices] ICdmsMediator mediator,
+        SyncPeriod syncPeriod)
+    {
+        SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod };
+        return await SyncDecisions(mediator, command);
+    }
+
     private static async Task<IResult> SyncDecisions([FromServices] ICdmsMediator mediator,
         [FromBody] SyncDecisionsCommand command)
     {
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
+    
+    
 }

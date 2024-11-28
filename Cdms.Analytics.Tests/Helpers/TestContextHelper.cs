@@ -13,7 +13,7 @@ namespace Cdms.Analytics.Tests.Helpers;
 
 public static class TestContextHelper
 {
-    public static IHostBuilder CreateBuilder<T>(ITestOutputHelper testOutputHelper)
+    public static IHostBuilder CreateBuilder<T>(ITestOutputHelper testOutputHelper = null!)
     {
         var builder = Host.CreateDefaultBuilder();
 
@@ -25,7 +25,7 @@ public static class TestContextHelper
             { "Mongo:DatabaseUri", "mongodb://127.0.0.1:29017?retryWrites=false" },
             { "Mongo:DatabaseName", $"Cdms_{typeof(T).Name}" },
             
-            // TODO these aren't relevant to us, but cause an error
+            // TO-DO these aren't relevant to us, but cause an error
             // if not specified
             { "BlobServiceOptions:CachePath", "../../../Fixtures" },
             { "BlobServiceOptions:CacheReadEnabled", "true" }
@@ -35,13 +35,16 @@ public static class TestContextHelper
             .ConfigureAppConfiguration(c => c.AddInMemoryCollection(configurationValues!))
             .ConfigureServices((hostContext, s) =>
             {
-                s.AddScoped<IMatchingAggregationService, MatchingAggregationService>();
+                s.AddScoped<ILinkingAggregationService, LinkingAggregationService>();
                 s.ConfigureTestGenerationServices();
                 s.AddMongoDbContext(hostContext.Configuration);
                 s.AddBusinessServices(hostContext.Configuration);
                 s.AddConsumers(hostContext.Configuration);
                 s.AddSyncJob();
-                s.AddLogging(lb => lb.AddXUnit(testOutputHelper));
+                if (testOutputHelper is not null)
+                {
+                    s.AddLogging(lb => lb.AddXUnit(testOutputHelper));
+                }
             });
 
         return builder;

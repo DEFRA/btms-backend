@@ -65,20 +65,13 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int scenario,
          DateTime created, int item)
     {
-        var prefix = chedType.ConvertToChedType();
-
-        if (item > 999999) throw new ArgumentException("Currently only deals with max 100,000 items");
-
-        var formatHundredThousands = "000000";
-
         return Do(x =>
-            x.ReferenceNumber =
-                $"{prefix}.GB.{created.Year}.{scenario.ToString("00")}{created.DateRef()}{(item + 1).ToString(formatHundredThousands)}");
+            x.ReferenceNumber = DataHelpers.GenerateReferenceNumber(chedType, scenario, created, item));
     }
 
     public ImportNotificationBuilder<T> WithEntryDate(DateTime entryDate)
     {
-        return Do(x => x.LastUpdated = entryDate);
+        return Do(x => x.LastUpdated = entryDate.RandomTime());
     }
 
     public ImportNotificationBuilder<T> WithRandomArrivalDateTime(int maxDays, int maxHours=6)
