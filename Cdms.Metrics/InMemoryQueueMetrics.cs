@@ -1,8 +1,10 @@
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.IO;
 using SlimMessageBus.Host;
 
-namespace Cdms.Consumers.Metrics;
+namespace Cdms.Metrics;
 
 public class InMemoryQueueMetrics
 {
@@ -11,9 +13,10 @@ public class InMemoryQueueMetrics
     readonly Counter<long> outgoingCountMetric;
     private long queueCount;
     private readonly int noOfQueues;
+
     public InMemoryQueueMetrics(IMeterFactory meterFactory, IMasterMessageBus messageBusProvider)
     {
-        var meter = meterFactory.Create("Cdms");
+        var meter = meterFactory.Create(MetricNames.MeterName);
         timeInQueue = meter.CreateHistogram<int>("messaging.memory.time_queued", "ms", "Elapsed time spent consuming a message, in millis");
         meter.CreateObservableUpDownCounter("messaging.memory.active", () => queueCount, description: "Number of messages in queue");
         incomingCountMetric = meter.CreateCounter<long>("messaging.memory.incoming", description: "Number of messages incoming");
@@ -23,11 +26,7 @@ public class InMemoryQueueMetrics
     }
     public void Incoming(string queueName)
     {
-        var tagList = new TagList
-        {
-            { "service", Process.GetCurrentProcess().ProcessName },
-            { "messaging.queue_name", queueName },
-        };
+        var tagList = BuildTags(queueName);
 
 
         Interlocked.Increment(ref queueCount);
@@ -36,22 +35,14 @@ public class InMemoryQueueMetrics
 
     public void TimeSpentInQueue(int milliseconds, string queueName)
     {
-        var tagList = new TagList
-        {
-            { "service", Process.GetCurrentProcess().ProcessName },
-            { "messaging.queue_name", queueName },
-        };
+        var tagList = BuildTags(queueName);
 
         timeInQueue.Record(milliseconds, tagList);
     }
 
     public void Outgoing(string queueName)
     {
-        var tagList = new TagList
-        {
-            { "service", Process.GetCurrentProcess().ProcessName },
-            { "messaging.queue_name", queueName },
-        };
+        var tagList = BuildTags(queueName);
 
         outgoingCountMetric.Add(1, tagList);
     }
@@ -59,5 +50,14 @@ public class InMemoryQueueMetrics
     public void Completed()
     {
         Interlocked.Decrement(ref queueCount);
+    }
+
+    private static TagList BuildTags(string queueName)
+    {
+        return new TagList
+        {
+            { MetricNames.CommonTags.Service, Process.GetCurrentProcess().ProcessName },
+            { MetricNames.CommonTags.QueueName, queueName },
+        };
     }
 }

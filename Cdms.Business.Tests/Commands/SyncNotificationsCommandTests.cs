@@ -1,10 +1,10 @@
 using Cdms.BlobService;
 using Cdms.Business.Commands;
+using Cdms.Metrics;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
 using Cdms.SyncJob;
 using Cdms.Types.Ipaffs;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using SlimMessageBus;
@@ -53,7 +53,7 @@ namespace Cdms.Business.Tests.Commands
                 Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
 
-        private ImportNotification CreateImportNotification()
+        private static ImportNotification CreateImportNotification()
         {
             return ImportNotificationBuilder.Default()
                 .Do(x =>

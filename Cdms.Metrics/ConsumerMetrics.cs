@@ -1,0 +1,78 @@
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Text;
+using Cdms.Common;
+
+namespace Cdms.Metrics;
+
+public class ConsumerMetrics
+{
+    readonly Histogram<double> consumeDuration;
+    readonly Counter<long> consumeTotal;
+    readonly Counter<long> consumeFaultTotal;
+    readonly Counter<long> consumerInProgress;
+    readonly Counter<long> consumeRetryTotal;
+
+    public ConsumerMetrics(IMeterFactory meterFactory)
+    {
+        var meter = meterFactory.Create(MetricNames.MeterName);
+        consumeTotal = meter.CreateCounter<long>("cdms.consume", description: "Number of messages consumed");
+        consumeFaultTotal = meter.CreateCounter<long>("cdms.consume.errors", description: "Number of message consume faults");
+        consumerInProgress = meter.CreateCounter<long>("cdms.consume.active", description: "Number of consumers in progress");
+        consumeDuration = meter.CreateHistogram<double>("cdms.consume.duration", "ms", "Elapsed time spent consuming a message, in millis");
+        consumeRetryTotal = meter.CreateCounter<long>("cdms.consume.retries", description: "Number of message consume retries");
+    }
+
+    public void Start<TMessage>(string path, string consumerName)
+    {
+        var tagList = BuildTags<TMessage>(path, consumerName);
+
+        consumeTotal.Add(1, tagList);
+        consumerInProgress.Add(1, tagList);
+    }
+
+    public void Retry<TMessage>(string path, string consumerName, int attempt)
+    {
+        var tagList = BuildTags<TMessage>(path, consumerName);
+
+        tagList.Add(Constants.Tags.RetryAttempt, attempt);
+        consumeRetryTotal.Add(1, tagList);
+    }
+
+    public void Faulted<TMessage>(string path, string consumerName, Exception exception)
+    {
+        var tagList = BuildTags<TMessage>(path, consumerName);
+
+        tagList.Add(MetricNames.CommonTags.ExceptionType, exception.GetType().Name);
+        consumeFaultTotal.Add(1, tagList);
+    }
+
+    public void Complete<TMessage>(string path, string consumerName, long milliseconds)
+    {
+        var tagList = BuildTags<TMessage>(path, consumerName);
+
+        consumerInProgress.Add(-1, tagList);
+        consumeDuration.Record(milliseconds, tagList);
+    }
+
+    private static TagList BuildTags<TMessage>(string path, string consumerName)
+    {
+        return new TagList
+        {
+            { MetricNames.CommonTags.Service, Process.GetCurrentProcess().ProcessName },
+            { Constants.Tags.Destination, path },
+            { MetricNames.CommonTags.MessageType, ObservabilityUtils.FormatTypeName(new StringBuilder(), typeof(TMessage)) },
+            { Constants.Tags.ConsumerType, consumerName }
+        };
+    }
+
+    public static class Constants
+    {
+        public static class Tags
+        {
+            public const string Destination = "cdms.destination";
+            public const string ConsumerType = "cdms.consumer_type";
+            public const string RetryAttempt = "cdms.retry_attempt";
+        }
+    }
+}

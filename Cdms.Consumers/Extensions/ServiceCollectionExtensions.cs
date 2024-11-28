@@ -1,12 +1,6 @@
-using Cdms.Backend.Data.Extensions;
-using Cdms.BlobService;
-using Cdms.BlobService.Extensions;
 using Cdms.Consumers.Interceptors;
 using Cdms.Consumers.MemoryQueue;
-using Cdms.Consumers.Metrics;
-using Cdms.Model.Alvs;
-using Cdms.SensitiveData;
-using Cdms.Types.Alvs;
+using Cdms.Metrics.Extensions;
 using Cdms.Types.Gvms;
 using Cdms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
@@ -23,8 +17,7 @@ namespace Cdms.Consumers.Extensions
         public static IServiceCollection AddConsumers(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddSingleton<InMemoryQueueMetrics>();
-            services.AddSingleton<ConsumerMetrics>();
+            services.AddCdmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsInterceptor<>));
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(MetricsInterceptor<>));

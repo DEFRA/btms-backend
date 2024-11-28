@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Text;
 using System.Text.Json.Serialization;
+using Cdms.Metrics;
 using IRequest = MediatR.IRequest;
 
 namespace Cdms.Business.Commands;
@@ -18,44 +19,6 @@ public enum SyncPeriod
     LastMonth,
     ThisMonth,
     All
-}
-
-public class SyncMetrics
-{
-    readonly Histogram<double> syncDuration;
-    readonly Counter<long> syncTotal;
-    readonly Counter<long> syncFaultTotal;
-    readonly Counter<long> syncInProgress;
-
-    public SyncMetrics(IMeterFactory meterFactory)
-    {
-        var meter = meterFactory.Create("Cdms");
-        syncTotal = meter.CreateCounter<long>("blob.cdms.sync", "ea", "Number of blobs read");
-        syncFaultTotal = meter.CreateCounter<long>("blob.cdms.sync.errors", "ea",
-            "Number of sync faults");
-        syncInProgress = meter.CreateCounter<long>("blob.cdms.sync.active", "ea",
-            "Number of blobs syncing in progress");
-        syncDuration = meter.CreateHistogram<double>("blob.cdms.sync.duration", "ms",
-            "Elapsed time spent reading the blob, in millis");
-    }
-
-    public void AddException(Exception exception, TagList tagList)
-    {
-        tagList.Add("sync.cdms.exception_type", exception.GetType().Name);
-        syncFaultTotal.Add(1, tagList);
-    }
-
-    public void SyncStarted(TagList tagList)
-    {
-        syncTotal.Add(1, tagList);
-        syncInProgress.Add(1, tagList);
-    }
-
-    public void SyncCompleted(TagList tagList, Stopwatch timer)
-    {
-        syncInProgress.Add(-1, tagList);
-        syncDuration.Record(timer.ElapsedMilliseconds, tagList);
-    }
 }
 
 public abstract class SyncCommand() : IRequest, ISyncJob
@@ -151,16 +114,9 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         {
 
             var timer = Stopwatch.StartNew();
-            var tagList = new TagList
-            {
-                { "blob.cdms.sync.service", Process.GetCurrentProcess().ProcessName },
-                { "blob.cdms.sync.path", path },
-                { "blob.cdms.sync.destination", topic },
-                { "blob.cdms.sync.message_type", ObservabilityUtils.FormatTypeName(new StringBuilder(), typeof(T)) },
-            };
             try
             {
-                syncMetrics.SyncStarted(tagList);
+                syncMetrics.SyncStarted<T>(path, topic);
                 using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
                 {
                     var blobContent = await blobService.GetResource(item, cancellationToken);
@@ -186,12 +142,12 @@ public abstract class SyncCommand() : IRequest, ISyncJob
             {
                 logger.LogError(ex, "Failed process blob item {blob}", item.Name);
 
-                syncMetrics.AddException(ex, tagList);
+                syncMetrics.AddException<T>(ex, path, topic);
                 job.BlobFailed();
             }
             finally
             {
-                syncMetrics.SyncCompleted(tagList, timer);
+                syncMetrics.SyncCompleted<T>(path, topic, timer);
             }
         }
 

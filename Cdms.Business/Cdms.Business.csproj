@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Cdms.Backend.Data\Cdms.Backend.Data.csproj" />
     <ProjectReference Include="..\Cdms.BlobService\Cdms.BlobService.csproj" />
     <ProjectReference Include="..\Cdms.Common\Cdms.Common.csproj" />
+    <ProjectReference Include="..\Cdms.Metrics\Cdms.Metrics.csproj" />
     <ProjectReference Include="..\Cdms.Model\Cdms.Model.csproj" />
     <ProjectReference Include="..\Cdms.SensitiveData\Cdms.SensitiveData.csproj" />
     <ProjectReference Include="..\Cdms.SyncJob\Cdms.SyncJob.csproj" />

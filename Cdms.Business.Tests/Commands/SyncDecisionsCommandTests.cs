@@ -1,5 +1,6 @@
 using Cdms.BlobService;
 using Cdms.Business.Commands;
+using Cdms.Metrics;
 using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
 using Cdms.SyncJob;

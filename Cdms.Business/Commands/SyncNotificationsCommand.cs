@@ -1,5 +1,6 @@
 using Azure.Core;
 using Cdms.BlobService;
+using Cdms.Metrics;
 using Cdms.SensitiveData;
 using Cdms.SyncJob;
 using Microsoft.Extensions.Logging;

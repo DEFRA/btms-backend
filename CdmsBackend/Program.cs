@@ -5,6 +5,7 @@ using Cdms.Business.Extensions;
 using Cdms.Common.Extensions;
 using Cdms.Consumers.Extensions;
 using Cdms.Emf;
+using Cdms.Metrics;
 using Cdms.SyncJob.Extensions;
 using CdmsBackend.Authentication;
 using CdmsBackend.BackgroundTaskQueue;
@@ -114,7 +115,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 						"Microsoft.AspNetCore.Hosting",
 						"Microsoft.AspNetCore.Server.Kestrel",
 						"System.Net.Http",
-						"Cdms");
+						MetricNames.MeterName);
 			});
 
 		builder.Services.AddOpenTelemetry()

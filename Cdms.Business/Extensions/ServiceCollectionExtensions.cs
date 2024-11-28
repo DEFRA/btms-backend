@@ -7,6 +7,7 @@ using Cdms.Business.Pipelines.Matching;
 using Cdms.Business.Pipelines.Matching.Rules;
 using Cdms.Business.Services;
 using Cdms.Common.Extensions;
+using Cdms.Metrics.Extensions;
 using Cdms.SensitiveData;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ namespace Cdms.Business.Extensions
         public static IServiceCollection AddBusinessServices(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddCdmsMetrics();
             services.CdmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
             services.CdmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
             
@@ -56,8 +58,6 @@ namespace Cdms.Business.Extensions
             });
 
             services.AddScoped<ILinkingService, LinkingService>();
-            
-            services.AddSingleton<SyncMetrics>();
 
             return services;
         }

@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using Cdms.Consumers.Metrics;
+using Cdms.Metrics;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
 
