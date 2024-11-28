@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 
 namespace Cdms.Backend.Data.Extensions
 {
@@ -23,6 +24,7 @@ namespace Cdms.Backend.Data.Extensions
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();
                 var settings = MongoClientSettings.FromConnectionString(options?.Value.DatabaseUri);
+                settings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber(new InstrumentationOptions { CaptureCommandText = true }));
                 var client = new MongoClient(settings);
 
                 var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };

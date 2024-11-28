@@ -1,5 +1,8 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using Cdms.Common;
+using Cdms.Common.Extensions;
+using Cdms.Consumers.Extensions;
 using Cdms.Metrics;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
@@ -8,10 +11,13 @@ namespace Cdms.Consumers.Interceptors;
 
 public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, ConsumerMetrics consumerMetrics) : IPublishInterceptor<TMessage>, IConsumerInterceptor<TMessage> where TMessage : notnull
 {
+    public const string ActivityName = "Cdms.Consumer";
+    public const string TimeInQueueActivityName = "Cdms.TimeInQueue";
     private static readonly ConcurrentDictionary<TMessage, DateTime> messageQueueTimes = new();
     public async Task<object> OnHandle(TMessage message, Func<Task<object>> next, IConsumerContext context)
     {
         var timer = Stopwatch.StartNew();
+        var deQueueTime = DateTime.UtcNow;
 
         try
         {
@@ -22,15 +28,30 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
                 
             }
 
+            var activityContext = context.GetActivityContext();
+
             if (messageQueueTimes.TryGetValue(message, out var dateTime))
             {
-                var msInQueue = DateTime.UtcNow.Subtract(dateTime).Milliseconds;
-                queueMetrics.TimeSpentInQueue(msInQueue, context.Path);
-                messageQueueTimes.TryRemove(message, out var _);
+                int msInQueue;
+                using (var activity = CdmsDiagnostics.ActivitySource.CreateActivity(TimeInQueueActivityName,
+                               ActivityKind.Client, activityContext)
+                           ?.SetStartTime(dateTime)
+                           .Start())
+                {
+                    activity?.Stop();
+                    activity?.SetEndTime(deQueueTime);
+                    msInQueue = deQueueTime.Subtract(dateTime).Milliseconds;
+                    queueMetrics.TimeSpentInQueue(msInQueue, context.Path);
+                    messageQueueTimes.Remove(message, out var _);
+
+                }
             }
 
             queueMetrics.Outgoing(queueName: context.Path);
-            return await next();
+            using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, parentContext: activityContext, kind: ActivityKind.Client))
+            {
+                return await next();
+            }
         }
         catch (Exception exception)
         {
