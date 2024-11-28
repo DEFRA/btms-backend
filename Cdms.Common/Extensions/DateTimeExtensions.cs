@@ -6,6 +6,11 @@ public static class DateTimeExtensions
     {
         return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, dt.Millisecond, dt.Kind);
     }
+    
+    public static DateTime TrimMinutes(this DateTime dt)
+    {
+        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, 0, 0, 0, dt.Kind);
+    }
 
     public static DateTime? TrimMicroseconds(this DateTime? dt)
     {
@@ -19,7 +24,7 @@ public static class DateTimeExtensions
     
     public static DateTime NextHour(this DateTime dt)
     {
-        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour+1, 0, 0, dt.Kind);
+        return dt.AddHours(-1).TrimMinutes();
     }
     
     public static DateTime Yesterday(this DateTime dt)
