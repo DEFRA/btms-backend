@@ -1,6 +1,6 @@
-﻿using System.Text;
+using System.Text;
 
-namespace Cdms.Common
+namespace Cdms.Metrics
 {
     public static class ObservabilityUtils
     {

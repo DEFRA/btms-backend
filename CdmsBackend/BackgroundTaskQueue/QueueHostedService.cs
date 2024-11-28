@@ -1,11 +1,11 @@
+using Cdms.Common;
+using Cdms.Metrics;
 using System.Diagnostics;
 
 namespace CdmsBackend.BackgroundTaskQueue;
 
 internal class QueueHostedService : Microsoft.Extensions.Hosting.BackgroundService
 {
-    internal static readonly string ActivitySourceName = "Cdms.Job";
-    internal static readonly ActivitySource ActivitySource = new(ActivitySourceName, "1.0");
     public const string ActivityName = "Cdms.Job.Run";
     private readonly ILogger<QueueHostedService> _logger;
 
@@ -35,7 +35,7 @@ internal class QueueHostedService : Microsoft.Extensions.Hosting.BackgroundServi
                 try
                 {
                     _logger.LogInformation("Starting execution of {workItem}...", nameof(workItem));
-                    using (var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                    using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
                     {
                         workItem(stoppingToken).GetAwaiter().GetResult();
                     }

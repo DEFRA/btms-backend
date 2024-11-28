@@ -45,7 +45,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
     {
         private readonly int maxDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
 
-        public const string ActivityName = "Cdms.ReadBlob";
+        public const string ActivityName = "Cdms.ProcessBlob";
 
         public abstract Task Handle(T request, CancellationToken cancellationToken);
 
@@ -117,7 +117,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
             try
             {
                 syncMetrics.SyncStarted<T>(path, topic);
-                using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(name: ActivityName, kind: ActivityKind.Client, tags: new TagList() { { "blob.name", item.Name } }))
                 {
                     var blobContent = await blobService.GetResource(item, cancellationToken);
                     var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;

@@ -1,4 +1,5 @@
 using SlimMessageBus;
+using System.Diagnostics;
 
 namespace Cdms.Consumers.Extensions;
 
@@ -13,6 +14,16 @@ public static class ConsumerContextExtensions
         }
 
         return 0;
+    }
+
+    public static ActivityContext GetActivityContext(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.TraceParent, out var value))
+        {
+            return ActivityContext.Parse(value.ToString()!, null);
+        }
+
+        return new ActivityContext();
     }
 
     public static void IncrementRetryAttempt(this IConsumerContext consumerContext)

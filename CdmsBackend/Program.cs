@@ -122,7 +122,9 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 			.WithTracing(tracing =>
 			{
 				tracing.AddAspNetCoreInstrumentation()
-					.AddHttpClientInstrumentation();
+					.AddHttpClientInstrumentation()
+					.AddSource(MetricNames.MeterName)
+					.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
 			});
 
 		builder.Services.AddOpenTelemetry().UseOtlpExporter();
@@ -173,7 +175,7 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 			.WriteTo.OpenTelemetry(options =>
 			{
 				options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-				options.ResourceAttributes.Add("service.name", "cdmsbackend");
+				options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
 			});
 	}
 
