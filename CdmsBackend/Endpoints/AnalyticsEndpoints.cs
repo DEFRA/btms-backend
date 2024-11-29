@@ -20,7 +20,7 @@ public static class AnalyticsEndpoints
             .ImportNotificationsByCreated(DateTime.Today.MonthAgo(), DateTime.Today);
         
         var importNotificationLinkingByArrival = await svc
-            .ImportNotificationsByArrival(DateTime.Today, DateTime.Today.MonthLater()) ;
+            .ImportNotificationsByArrival(DateTime.Today.MonthAgo(), DateTime.Today.MonthLater()) ;
         
         var last7DaysImportNotificationsLinkingStatus = await svc
             .ImportNotificationsByStatus(DateTime.Today.WeekAgo(), DateTime.Now);
@@ -38,7 +38,7 @@ public static class AnalyticsEndpoints
             .MovementsByCreated(DateTime.Today.MonthAgo(), DateTime.Today) ;
         
         var movementsLinkingByArrival = await svc
-            .MovementsByArrival(DateTime.Today, DateTime.Today.MonthLater());
+            .MovementsByArrival(DateTime.Today.MonthAgo(), DateTime.Today.MonthLater());
         
         var lastMonthImportNotificationsByTypeAndStatus = await svc
             .ImportNotificationsByStatus(DateTime.Today.MonthAgo(), DateTime.Now);
