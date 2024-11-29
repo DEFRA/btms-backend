@@ -16,15 +16,15 @@ public static class DateTimeExtensions
     {
         return dt?.TrimMicroseconds();
     }
-
-    public static DateTime CurrentHour(this DateTime dt)
-    {
-        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, 0, 0, dt.Kind);
-    }
     
     public static DateTime NextHour(this DateTime dt)
     {
         return dt.AddHours(-1).TrimMinutes();
+    }
+    
+    public static DateTime CurrentHour(this DateTime dt)
+    {
+        return dt.TrimMinutes();
     }
     
     public static DateTime Yesterday(this DateTime dt)

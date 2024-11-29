@@ -12,11 +12,10 @@ public class GetMovementsByCreatedDateTests(
     ITestOutputHelper testOutputHelper) {
     
     [Fact]
-    public async Task WhenCalledLast24Hours_ReturnExpectedAggregation()
+    public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .MovementsByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour))
+            .MovementsByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -25,7 +24,7 @@ public class GetMovementsByCreatedDateTests(
 
         result[0].Name.Should().Be("Linked");
         result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
-        result[0].Periods.Count.Should().Be(24);
+        result[0].Periods.Count.Should().Be(48);
         
         result[1].Name.Should().Be("Not Linked");
     }

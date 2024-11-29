@@ -3,6 +3,7 @@ using Cdms.Model.Extensions;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace Cdms.Analytics.Tests;
 
@@ -13,10 +14,10 @@ public class GetImportNotificationsByCreatedDateTests(
 {
     
     [Fact]
-    public async Task WhenCalledLast24Hours_ReturnExpectedAggregation()
+    public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
         var result = (await aggregationTestFixture.LinkingAggregationService
-                .ImportNotificationsByCreated(DateTime.Now.NextHour(), DateTime.Now.NextHour().Tomorrow(),AggregationPeriod.Hour))
+            .ImportNotificationsByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(),AggregationPeriod.Hour))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -27,15 +28,15 @@ public class GetImportNotificationsByCreatedDateTests(
 
         result[0].Name.Should().Be("Cveda Linked");
         result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today.Tomorrow());
-        result[0].Periods.Count.Should().Be(24);
+        result[0].Periods.Count.Should().Be(48);
         
         result[1].Name.Should().Be("Cveda Not Linked");
         result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today.Tomorrow());
-        result[1].Periods.Count.Should().Be(24);
+        result[1].Periods.Count.Should().Be(48);
         
         result[2].Name.Should().Be("Cvedp Linked");
         result[2].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today.Tomorrow());
-        result[2].Periods.Count.Should().Be(24);
+        result[2].Periods.Count.Should().Be(48);
     }
     
     [Fact]

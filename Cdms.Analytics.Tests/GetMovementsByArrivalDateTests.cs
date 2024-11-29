@@ -12,22 +12,19 @@ public class GetMovementsByArrivalDateTests(
     ITestOutputHelper testOutputHelper) {
     
     [Fact]
-    public async Task WhenCalledNext24Hours_ReturnExpectedAggregation()
+    public async Task WhenCalledNext72Hours_ReturnExpectedAggregation()
     {
 
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .MovementsByArrival(DateTime.Now, DateTime.Now.Tomorrow(), AggregationPeriod.Hour))
+            .MovementsByArrival(DateTime.Now.CurrentHour(), DateTime.Now.CurrentHour().AddDays(3), AggregationPeriod.Hour))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(2);
+        result.Select(r => r.Name).Order().Should().Equal(["Linked", "Not Linked"]);
 
-        result[0].Name.Should().Be("Linked");
         result[0].Periods[0].Period.Should().BeOnOrAfter(DateTime.Today);
-        result[0].Periods.Count.Should().Be(24);
-        
-        result[1].Name.Should().Be("Not Linked");
+        result[0].Periods.Count.Should().Be(72);
     }
     
     [Fact]

@@ -25,11 +25,11 @@ public class GetImportNotificationsStatus(
     }
     
     [Fact]
-    public async Task WhenCalledLast24Hours_ReturnExpectedAggregation()
+    public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await aggregationTestFixture.LinkingAggregationService
-            .ImportNotificationsByStatus(DateTime.Now.AddDays(-1), DateTime.Now));
+            .ImportNotificationsByStatus(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         

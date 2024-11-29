@@ -15,9 +15,12 @@ namespace Cdms.Analytics.Tests.Helpers;
 
 public static class TestDataGeneratorHelpers
 {
-    public static async Task<IHost> PushToConsumers(this IHost app, ScenarioConfig scenario, int scenarioIndex)
+    private static int scenarioIndex = 0;
+    
+    public static async Task<IHost> PushToConsumers(this IHost app, ScenarioConfig scenario)
     {
-        var generatorResults = app.Generate(scenarioIndex, scenario);
+        var generatorResults = app.Generate(scenario);
+        scenarioIndex++;
         
         var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         
@@ -53,7 +56,7 @@ public static class TestDataGeneratorHelpers
         return app;
     } 
     
-    private static ScenarioGenerator.GeneratorResult[] Generate(this IHost app, int scenarioIndex, ScenarioConfig scenario)
+    private static ScenarioGenerator.GeneratorResult[] Generate(this IHost app, ScenarioConfig scenario)
     {
         var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         var days = scenario.CreationDateRange;

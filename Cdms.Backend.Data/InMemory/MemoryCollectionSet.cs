@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Cdms.Model.Data;
 using MongoDB.Bson.Serialization.IdGenerators;
@@ -37,18 +38,21 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         return Task.CompletedTask;
     }
 
+    [SuppressMessage("SonarLint", "S2955",
+        Justification =
+            "IEquatable<T> would need to be implemented on every data entity just to stop sonar complaining about a null check. Nope.")]
     public Task Update(T item, string etag, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default)
     {
-        item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-
         var existingItem = data.Find(x => x.Id == item.Id);
+        if (existingItem == null) return Task.CompletedTask;
 
-        if (existingItem?._Etag != etag)
+        if ((existingItem._Etag ?? "") != etag)
         {
             throw new ConcurrencyException("Concurrency Error, change this to a Concurrency exception");
         }
 
-        data[data.IndexOf(existingItem)] = item;
+        item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+        data[data.IndexOf(existingItem!)] = item;
         return Task.CompletedTask;
     }
 

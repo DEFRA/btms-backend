@@ -20,7 +20,7 @@ namespace Cdms.Business.Tests.Commands
     public class SyncClearanceRequestsCommandTests(ITestOutputHelper outputHelper)
     {
         [Fact]
-        public async Task WhenClearnanceRequestBlobsExist_ThenTheyShouldBePlacedOnInternalBus()
+        public async Task WhenClearanceRequestBlobsExist_ThenTheyShouldBePlacedOnInternalBus()
         {
             var clearanceRequest = ClearanceRequestBuilder.Default().Build();
             var command = new SyncClearanceRequestsCommand();
