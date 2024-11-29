@@ -1,11 +1,12 @@
 using Cdms.Model;
 using Cdms.Model.Gvms;
 using Cdms.Model.Ipaffs;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Cdms.Backend.Data.Mongo;
 
-public class MongoDbContext(IMongoDatabase database) : IMongoDbContext
+public class MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory) : IMongoDbContext
 {
     internal IMongoDatabase Database { get; } = database;
     internal MongoDbTransaction? ActiveTransaction { get; private set; }
@@ -25,13 +26,15 @@ public class MongoDbContext(IMongoDatabase database) : IMongoDbContext
         return ActiveTransaction;
     }
 
-    public async Task DropCollections()
+    public async Task ResetCollections(CancellationToken cancellationToken = default)
     {
-        var collections = await (await Database.ListCollectionsAsync()).ToListAsync();
+        var collections = await (await Database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken);
 
         foreach (var collection in collections)
         {
-            await Database.DropCollectionAsync(collection["name"].ToString());
+            await Database.DropCollectionAsync(collection["name"].ToString(), cancellationToken);
         }
+
+        await new MongoIndexService(Database, loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(cancellationToken);
     }
 }

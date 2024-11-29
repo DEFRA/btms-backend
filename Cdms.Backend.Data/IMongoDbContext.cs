@@ -13,5 +13,5 @@ public interface IMongoDbContext
 
     Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default);
 
-    Task DropCollections();
+    Task ResetCollections(CancellationToken cancellationToken = default);
 }

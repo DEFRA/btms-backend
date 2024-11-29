@@ -24,7 +24,7 @@ public class AggregationTestFixture : IDisposable
         MongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
         LinkingAggregationService = rootScope.ServiceProvider.GetRequiredService<ILinkingAggregationService>();
         
-        MongoDbContext.DropCollections().GetAwaiter().GetResult();
+        MongoDbContext.ResetCollections().GetAwaiter().GetResult();
 
         // Ensure we have some data scenarios around 24 hour tests
         App.PushToConsumers(App.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 1, arrivalDateRange: 2), 1)

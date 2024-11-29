@@ -124,7 +124,7 @@ public static class ManagementEndpoints
 	{
 		try
 		{
-			await context.DropCollections();
+			await context.ResetCollections();
 		}
 		catch (Exception e)
 		{
@@ -132,7 +132,7 @@ public static class ManagementEndpoints
 			throw;
 		}
 
-		return Results.Ok("Dropped");
+		return Results.Ok("Reset");
 	}
 
 	private static List<string?> GetIndexes(IMongoDatabase db, string collectionName)

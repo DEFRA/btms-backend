@@ -1,4 +1,4 @@
-﻿using Cdms.Model;
+using Cdms.Model;
 using Cdms.Model.Gvms;
 using Cdms.Model.Ipaffs;
 
@@ -13,7 +13,8 @@ public class MemoryMongoDbContext : IMongoDbContext
     {
         return Task.FromResult<IMongoDbTransaction>(new EmptyMongoDbTransaction());
     }
-    public Task DropCollections()
+
+    public Task ResetCollections(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
