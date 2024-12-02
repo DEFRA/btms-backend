@@ -157,17 +157,12 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 	var logBuilder = new LoggerConfiguration()
 		.ReadFrom.Configuration(builder.Configuration)
 		.Enrich.With<LogLevelMapper>()
-		.Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"));
-
-	if (builder.Environment.IsDevelopment())
-	{
-		logBuilder
-			.WriteTo.OpenTelemetry(options =>
-			{
-				options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-				options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
-			});
-	}
+		.Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"))
+		.WriteTo.OpenTelemetry(options =>
+		{
+			options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+			options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
+		});
 
 	var logger = logBuilder.CreateLogger();
 	builder.Logging.AddSerilog(logger);
