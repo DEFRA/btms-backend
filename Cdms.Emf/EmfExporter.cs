@@ -3,6 +3,7 @@ using Amazon.CloudWatch.EMF.Model;
 using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Cdms.Metrics;
 using Humanizer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +39,7 @@ namespace Cdms.Emf
             EmfExporter.awsNamespace = awsNamespace;
             meterListener.InstrumentPublished = (instrument, listener) =>
             {
-                if (instrument.Meter.Name is "Cdms")
+                if (instrument.Meter.Name is MetricNames.MeterName)
                 {
                     listener.EnableMeasurementEvents(instrument);
                 }

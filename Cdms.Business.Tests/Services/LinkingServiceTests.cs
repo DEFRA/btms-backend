@@ -6,6 +6,7 @@ using Cdms.Model;
 using Cdms.Model.Alvs;
 using Cdms.Model.Ipaffs;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 using Document = Cdms.Model.Alvs.Document;
 using Items = Cdms.Model.Alvs.Items;
@@ -15,29 +16,23 @@ namespace Cdms.Business.Tests.Services;
 public class LinkingServiceTests
 {
     private static readonly Random random = new ();
-    private static readonly IMongoDbContext dbContext;
-    private static readonly LinkingMetrics linkingMetrics;
+    private readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
+    private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
     private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
     private static string GenerateNotificationReference(int id) => $"CHEDP.GB.2024.{id}";
-    
-    static LinkingServiceTests()
-    {
-        dbContext = new MemoryMongoDbContext();
-        linkingMetrics = new LinkingMetrics(new DummyMeterFactory());
-    }
 
     [Fact]
     public async Task Link_UnknownContextType_ShouldThrowException()
     {
         // Arrange
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var ctx = new BadContext();
         
         // Act
         var test = () => sut.Link(ctx);
 
         // Assert
-        await test.Should().ThrowAsync<ArgumentException>();
+        await test.Should().ThrowAsync<LinkException>();
     }
     
     [Fact]
@@ -46,7 +41,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData();
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(testData.Movements[0], [testData.Cheds[0], null], true, true);
 
         // Act
@@ -65,7 +60,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData();
 
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(testData.Movements[0], [null], true, true);
         
         // Act
@@ -84,7 +79,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData();
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(testData.Movements[0], [testData.Cheds[0]], true, false);
         
         // Act
@@ -103,7 +98,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData();
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(null, [testData.Cheds[0]], true, true);
         
         // Act
@@ -122,7 +117,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData(2, 1, 2);
 
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(null, [testData.Cheds[0], testData.Cheds[1]], false, false);
         
         // Act
@@ -139,7 +134,7 @@ public class LinkingServiceTests
     public async Task LinkMovement_NewRequest_NoMatchingCHEDs_NoMatchingTriggered()
     {
         // Arrange
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(null, [null], true, true);
         
         // Act
@@ -158,7 +153,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData();
 
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, true);
         
         // Act
@@ -177,7 +172,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData(2,2,2);
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, true);
         
         // Act
@@ -196,7 +191,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData(1, 1, 0);
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, true);
         
         // Act
@@ -215,7 +210,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData(2, 2, 2);
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, false);
         
         // Act
@@ -234,7 +229,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData(0,4,0, 1);
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.UnmatchedChedRefs[0], string.Empty, false, true);
         
         // Act
@@ -253,7 +248,7 @@ public class LinkingServiceTests
         // Arrange
         var testData = await AddTestData(0,1,0, 1);
         
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.UnmatchedChedRefs[0], string.Empty, false, true);
         
         // Act
@@ -270,7 +265,7 @@ public class LinkingServiceTests
     public async Task LinkNotification_NewNotification_NoMatchingMRNs_NoMatchingTriggered()
     {
         // Arrange
-        var sut = new LinkingService(dbContext, linkingMetrics);
+        var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(null, false, false);
         
         // Act
@@ -340,13 +335,16 @@ public class LinkingServiceTests
                 [ new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }]
         };
 
+        CommodityComplement[] c = fieldsOfInterest
+            ? []
+            : [new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }];
+
         var existingNotification = createExistingNotification
             ? new ImportNotification()
             {
                 Id = GenerateNotificationReference(chedReference),
                 Updated = DateTime.UtcNow,
-                Commodities = fieldsOfInterest
-                    ? [] : [ new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }]
+                Commodities = c
             }
             : null;
 
@@ -445,4 +443,10 @@ public class LinkingServiceTests
     }
 }
 
-public record BadContext : LinkContext;
+public record BadContext : LinkContext
+{
+    public override string GetIdentifiers()
+    {
+        return "Test";
+    }
+}

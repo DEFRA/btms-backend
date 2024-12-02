@@ -5,6 +5,7 @@ using Cdms.Model.Extensions;
 using Cdms.SensitiveData;
 using Cdms.SyncJob;
 using Cdms.Types.Ipaffs;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using SlimMessageBus;
@@ -40,7 +41,7 @@ namespace Cdms.Business.Tests.Commands
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 TestLogger.Create<SyncNotificationsCommand>(outputHelper),
-                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
+                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance),
                 blob,
                 Options.Create(new BusinessOptions()),
                 jobStore);

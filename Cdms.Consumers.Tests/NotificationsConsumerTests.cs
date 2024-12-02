@@ -2,6 +2,7 @@ using Cdms.Business.Services;
 using Cdms.Types.Ipaffs;
 using Cdms.Types.Ipaffs.Mapping;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using SlimMessageBus.Host;
 using TestDataGenerator;
@@ -19,7 +20,7 @@ namespace Cdms.Consumers.Tests
             var dbContext = CreateDbContext();
             var mockLinkingService = Substitute.For<ILinkingService>();
 
-            var consumer = new NotificationConsumer(dbContext, mockLinkingService);
+            var consumer = new NotificationConsumer(dbContext, mockLinkingService, NullLogger<NotificationConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }
@@ -46,7 +47,7 @@ namespace Cdms.Consumers.Tests
             var mockLinkingService = Substitute.For<ILinkingService>();
 
 
-            var consumer = new NotificationConsumer(dbContext, mockLinkingService);
+            var consumer = new NotificationConsumer(dbContext, mockLinkingService, NullLogger<NotificationConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }

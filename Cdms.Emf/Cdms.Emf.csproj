@@ -13,4 +13,8 @@
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cdms.Metrics\Cdms.Metrics.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -12,6 +12,7 @@ public class ConsumerMetrics
     readonly Counter<long> consumeFaultTotal;
     readonly Counter<long> consumerInProgress;
     readonly Counter<long> consumeRetryTotal;
+    readonly Counter<long> skippedTotal;
 
     public ConsumerMetrics(IMeterFactory meterFactory)
     {
@@ -21,6 +22,7 @@ public class ConsumerMetrics
         consumerInProgress = meter.CreateCounter<long>("cdms.consume.active", description: "Number of consumers in progress");
         consumeDuration = meter.CreateHistogram<double>("cdms.consume.duration", "ms", "Elapsed time spent consuming a message, in millis");
         consumeRetryTotal = meter.CreateCounter<long>("cdms.consume.retries", description: "Number of message consume retries");
+        skippedTotal = meter.CreateCounter<long>("cdms.consume.skipped", description: "Number of message skipped");
     }
 
     public void Start<TMessage>(string path, string consumerName)
@@ -45,6 +47,13 @@ public class ConsumerMetrics
 
         tagList.Add(MetricNames.CommonTags.ExceptionType, exception.GetType().Name);
         consumeFaultTotal.Add(1, tagList);
+    }
+
+    public void Skipped<TMessage>(string path, string consumerName)
+    {
+        var tagList = BuildTags<TMessage>(path, consumerName);
+
+        skippedTotal.Add(1, tagList);
     }
 
     public void Complete<TMessage>(string path, string consumerName, long milliseconds)

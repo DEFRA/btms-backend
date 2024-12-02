@@ -16,6 +16,16 @@ public static class ConsumerContextExtensions
         return 0;
     }
 
+    public static string? GetJobId(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Headers.TryGetValue(MessageBusHeaders.JobId, out var value))
+        {
+            return value?.ToString();
+        }
+
+        return null;
+    }
+
     public static ActivityContext GetActivityContext(this IConsumerContext consumerContext)
     {
         if (consumerContext.Properties.TryGetValue(MessageBusHeaders.TraceParent, out var value))
@@ -24,6 +34,21 @@ public static class ConsumerContextExtensions
         }
 
         return new ActivityContext();
+    }
+
+    public static void Skipped(this IConsumerContext consumerContext)
+    {
+        consumerContext.Properties.Add(MessageBusHeaders.Skipped, true);
+    }
+
+    public static bool WasSkipped(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.Skipped, out _))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public static void IncrementRetryAttempt(this IConsumerContext consumerContext)

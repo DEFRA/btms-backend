@@ -4,13 +4,15 @@ using Cdms.Model;
 using Cdms.Model.Auditing;
 using Cdms.Types.Alvs;
 using Cdms.Types.Alvs.Mapping;
+using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 using System.Diagnostics.CodeAnalysis;
+using Cdms.Consumers.Extensions;
 using Items = Cdms.Model.Alvs.Items;
 
 namespace Cdms.Consumers
 {
-    internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext, ILinkingService linkingService)
+    internal class AlvsClearanceRequestConsumer(IMongoDbContext dbContext, ILinkingService linkingService, ILogger<AlvsClearanceRequestConsumer> logger)
         : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
     {
         private ILinkingService linkingService { get; } = linkingService;
@@ -20,50 +22,64 @@ namespace Cdms.Consumers
                 "LinkResult variable is unused until matching and decisions are implemented")]
         public async Task OnHandle(AlvsClearanceRequest message)
         {
-            var internalClearanceRequest = AlvsClearanceRequestMapper.Map(message);
             var auditId = Context.Headers["messageId"].ToString();
-            var movement = BuildMovement(internalClearanceRequest);
-            var existingMovement = await dbContext.Movements.Find(movement.Id!);
-
-            if (existingMovement is not null)
+            using (logger.BeginScope(new List<KeyValuePair<string, object>>
+                   {
+                       new("JobId", Context.GetJobId()!),
+                       new("MessageId", auditId!),
+                       new("Consumer", GetType().Name),
+                       new("Identifier", message.Header?.EntryReference!),
+                   }))
             {
-                if (movement.ClearanceRequests[0].Header?.EntryVersionNumber >
-                    existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
+                var internalClearanceRequest = AlvsClearanceRequestMapper.Map(message);
+                var movement = BuildMovement(internalClearanceRequest);
+                var existingMovement = await dbContext.Movements.Find(movement.Id!);
+
+                if (existingMovement is not null)
                 {
-                    movement.AuditEntries = existingMovement.AuditEntries;
-                    var auditEntry = AuditEntry.CreateUpdated(existingMovement.ClearanceRequests[0],
+                    if (movement.ClearanceRequests[0].Header?.EntryVersionNumber >
+                        existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
+                    {
+                        movement.AuditEntries = existingMovement.AuditEntries;
+                        var auditEntry = AuditEntry.CreateUpdated(existingMovement.ClearanceRequests[0],
+                            movement.ClearanceRequests[0],
+                            BuildNormalizedAlvsPath(auditId!),
+                            movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
+                            movement.UpdatedSource);
+                        movement.Update(auditEntry);
+
+                        existingMovement.ClearanceRequests.RemoveAll(x =>
+                            x.Header?.EntryReference ==
+                            movement.ClearanceRequests[0].Header?.EntryReference);
+                        existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
+                        if (existingMovement.Items == null)
+                        {
+                            existingMovement.Items = new List<Items>();
+                        }
+
+                        existingMovement.Items.AddRange(movement.Items);
+                        await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
+                    }
+                    else
+                    {
+                        logger.LogWarning("AlvsClearanceRequest skipped");
+                        Context.Skipped();
+                    }
+                }
+                else
+                {
+                    var auditEntry = AuditEntry.CreateCreatedEntry(
                         movement.ClearanceRequests[0],
                         BuildNormalizedAlvsPath(auditId!),
                         movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
                         movement.UpdatedSource);
                     movement.Update(auditEntry);
-
-                    existingMovement.ClearanceRequests.RemoveAll(x =>
-                        x.Header?.EntryReference ==
-                        movement.ClearanceRequests[0].Header?.EntryReference);
-                    existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
-                    if (existingMovement.Items == null)
-                    {
-                        existingMovement.Items = new List<Items>();
-                    }
-
-                    existingMovement.Items.AddRange(movement.Items);
-                    await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
+                    await dbContext.Movements.Insert(movement);
                 }
-            }
-            else
-            {
-                var auditEntry = AuditEntry.CreateCreatedEntry(
-                    movement.ClearanceRequests[0],
-                    BuildNormalizedAlvsPath(auditId!),
-                    movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
-                    movement.UpdatedSource);
-                movement.Update(auditEntry);
-                await dbContext.Movements.Insert(movement);
-            }
 
-            var linkContext = new MovementLinkContext(movement, existingMovement);
-            var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
+                var linkContext = new MovementLinkContext(movement, existingMovement);
+                var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
+            }
         }
 
         public IConsumerContext Context { get; set; } = null!;

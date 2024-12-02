@@ -1,3 +1,4 @@
+using Cdms.Common.Extensions;
 using Cdms.Consumers.Extensions;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
@@ -9,16 +10,19 @@ namespace Cdms.Consumers.Interceptors;
 public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger)
     : IMemoryConsumerErrorHandler<T>
 {
-    private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
+    private async Task<ConsumerErrorHandlerResult> AttemptRetry(T message, IConsumerContext consumerContext,
         Func<Task<object>> retry, Exception exception)
     {
         consumerContext.IncrementRetryAttempt();
         var retryCount = consumerContext.GetRetryAttempt();
-        logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
+        
         if (retryCount > 5)
         {
+            logger.LogError(exception, "Error Consuming Message Retry count {RetryCount} - {Record}", retryCount, message?.ToJson());
             return ConsumerErrorHandlerResult.Failure;
         }
+
+        logger.LogWarning(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
 
         try
         {
@@ -26,7 +30,7 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
         }
         catch (Exception e)
         {
-            await AttemptRetry(consumerContext, retry, e);
+            await AttemptRetry(message, consumerContext, retry, e);
         }
 
         return ConsumerErrorHandlerResult.Success;
@@ -40,6 +44,6 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
             consumerContext.Properties.Add(MessageBusHeaders.RetryCount, 0);
         }
 
-        return AttemptRetry(consumerContext, retry, exception);
+        return AttemptRetry(message, consumerContext, retry, exception);
     }
 }

@@ -41,7 +41,7 @@ namespace Cdms.Business.Tests.Commands
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 TestLogger.Create<SyncDecisionsCommand>(outputHelper),
-                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData)),
+                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance),
                 blob,
                 Options.Create(new BusinessOptions()),
                 jobStore);

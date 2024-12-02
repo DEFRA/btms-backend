@@ -4,89 +4,110 @@ using Cdms.Metrics;
 using Cdms.Model;
 using Cdms.Model.Ipaffs;
 using Cdms.Model.Relationships;
+using Microsoft.Extensions.Logging;
 
 namespace Cdms.Business.Services;
 
-public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics) : ILinkingService
+public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, ILogger<LinkingService> logger) : ILinkingService
 {
     public async Task<LinkResult> Link(LinkContext linkContext, CancellationToken cancellationToken = default)
     {
         var startedAt = TimeProvider.System.GetTimestamp();
         LinkResult result;
-
-        try
+        using (logger.BeginScope(new List<KeyValuePair<string, object>>
+               {
+                   new("MatchIdentifier", linkContext.GetIdentifiers()),
+                   new("ContextType", linkContext.GetType().Name),
+               }))
         {
-            switch (linkContext)
+            logger.LogInformation("Linking started");
+            try
             {
-                case MovementLinkContext movementLinkContext:
-                    if (!ShouldLink(movementLinkContext))
-                    {
-                        return new LinkResult(LinkState.NotLinked);
-                    }
-
-                    result = await FindMovementLinks(movementLinkContext.ReceivedMovement, cancellationToken);
-                    break;
-                case ImportNotificationLinkContext notificationLinkContext:
-                    if (!ShouldLink(notificationLinkContext))
-                    {
-                        return new LinkResult(LinkState.NotLinked);
-                    }
-
-                    result = await FindImportNotificationLinks(notificationLinkContext.ReceivedImportNotification,
-                        cancellationToken);
-                    break;
-                default: throw new ArgumentException("context type not supported");
-            }
-
-            using var transaction = await dbContext.StartTransaction(cancellationToken);
-            foreach (var notification in result.Notifications)
-            {
-                foreach (var movement in result.Movements)
+                switch (linkContext)
                 {
-                    notification.AddRelationship(new TdmRelationshipObject()
-                    {
-                        Links = RelationshipLinks.CreateForNotification(notification),
-                        Data =
-                        [
-                            RelationshipDataItem.CreateFromMovement(notification, movement,
-                                notification._MatchReference)
-                        ]
-                    });
+                    case MovementLinkContext movementLinkContext:
+                        if (!ShouldLink(movementLinkContext))
+                        {
+                            logger.LogInformation("Should link criteria was not met");
+                            return new LinkResult(LinkState.NotLinked);
+                        }
 
-                    movement.AddRelationship(new TdmRelationshipObject()
-                    {
-                        Links = RelationshipLinks.CreateForMovement(movement),
-                        Data =
-                        [
-                            RelationshipDataItem.CreateFromNotification(notification, movement,
-                                notification._MatchReference)
-                        ]
-                    });
+                        result = await FindMovementLinks(movementLinkContext.ReceivedMovement, cancellationToken);
+                        break;
+                    case ImportNotificationLinkContext notificationLinkContext:
+                        if (!ShouldLink(notificationLinkContext))
+                        {
+                            logger.LogInformation("Should link criteria was not met");
+                            return new LinkResult(LinkState.NotLinked);
+                        }
 
-                    await dbContext.Movements.Update(movement, movement._Etag, transaction, cancellationToken);
-                    await dbContext.Notifications.Update(notification, notification._Etag, transaction,
-                        cancellationToken);
+                        result = await FindImportNotificationLinks(notificationLinkContext.ReceivedImportNotification,
+                            cancellationToken);
+                        break;
+                    default: throw new ArgumentException("context type not supported");
                 }
+
+
+                if (result.State == LinkState.NotLinked)
+                {
+                    logger.LogInformation("No link found");
+                    return result;
+                }
+
+                logger.LogInformation("links found: {MovementCount} Movements and {NotificationsCount} Notifications",
+                    result.Movements.Count, result.Notifications.Count);
+
+                metrics.Linked<Movement>(result.Movements.Count);
+                metrics.Linked<ImportNotification>(result.Notifications.Count);
+
+                using var transaction = await dbContext.StartTransaction(cancellationToken);
+                foreach (var notification in result.Notifications)
+                {
+                    foreach (var movement in result.Movements)
+                    {
+                        notification.AddRelationship(new TdmRelationshipObject()
+                        {
+                            Links = RelationshipLinks.CreateForNotification(notification),
+                            Data =
+                            [
+                                RelationshipDataItem.CreateFromMovement(notification, movement,
+                                    notification._MatchReference)
+                            ]
+                        });
+
+                        movement.AddRelationship(new TdmRelationshipObject()
+                        {
+                            Links = RelationshipLinks.CreateForMovement(movement),
+                            Data =
+                            [
+                                RelationshipDataItem.CreateFromNotification(notification, movement,
+                                    notification._MatchReference)
+                            ]
+                        });
+
+                        await dbContext.Movements.Update(movement, movement._Etag, transaction, cancellationToken);
+                        await dbContext.Notifications.Update(notification, notification._Etag, transaction,
+                            cancellationToken);
+                    }
+                }
+
+                await transaction.CommitTransaction(cancellationToken);
             }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Linking Failed");
+                metrics.Faulted(e);
+                throw new LinkException(e);
+            }
+            finally
+            {
+                var e = TimeProvider.System.GetElapsedTime(startedAt);
+                metrics.Completed(e.TotalMilliseconds);
+                logger.LogInformation("Linking finished");
+            }
+        }
 
-            await transaction.CommitTransaction(cancellationToken);
-        }
-        catch (Exception e)
-        {
-            metrics.Faulted(e);
-            throw;
-        }
-        finally
-        {
-            var e = TimeProvider.System.GetElapsedTime(startedAt);
-            metrics.Completed(e.TotalMilliseconds);
-        }
-
-        if (result.State == LinkState.Linked)
-        {
-            metrics.Linked<Movement>(result.Movements.Count);
-            metrics.Linked<ImportNotification>(result.Notifications.Count);
-        }
+       
 
         return result;
     }

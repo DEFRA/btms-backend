@@ -14,4 +14,6 @@ public abstract record LinkContext
     {
         return new ImportNotificationLinkContext(receivedImportNotification, existingImportNotification);
     }
+
+    public abstract string GetIdentifiers();
 }

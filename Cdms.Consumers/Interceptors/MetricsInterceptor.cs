@@ -50,7 +50,12 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
             queueMetrics.Outgoing(queueName: context.Path);
             using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(ActivityName, parentContext: activityContext, kind: ActivityKind.Client))
             {
-                return await next();
+                var result = await next();
+                if (context.WasSkipped())
+                {
+                    consumerMetrics.Skipped<TMessage>(context.Path, context.Consumer.GetType().Name);
+                }
+                return result;
             }
         }
         catch (Exception exception)

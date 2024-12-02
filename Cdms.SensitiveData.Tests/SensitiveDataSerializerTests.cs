@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -12,7 +13,7 @@ public class SensitiveDataSerializerTests
     {
         // ARRANGE
         SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = false };
-        var serializer = new SensitiveDataSerializer(Options.Create(options));
+        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
         var simpleClass = new SimpleClass()
         {
@@ -42,7 +43,7 @@ public class SensitiveDataSerializerTests
     {
         // ARRANGE
         SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = true };
-        var serializer = new SensitiveDataSerializer(Options.Create(options));
+        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
         var simpleClass = new SimpleClass()
         {

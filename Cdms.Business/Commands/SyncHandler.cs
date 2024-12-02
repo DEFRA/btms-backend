@@ -1,12 +1,9 @@
 using Cdms.BlobService;
-using Cdms.Common;
 using Cdms.SensitiveData;
 using Cdms.SyncJob;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Text;
 using System.Text.Json.Serialization;
 using Cdms.Metrics;
 using IRequest = MediatR.IRequest;
@@ -53,30 +50,44 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         {
             var job = syncJobStore.GetJob(jobId);
             job?.Start();
-            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={MaxDegreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), maxDegreeOfParallelism, Environment.ProcessorCount);
-            try
+            using (logger.BeginScope(new List<KeyValuePair<string, object>>
+                   {
+                       new("JobId", job?.JobId!),
+                       new("SyncPeriod", period.ToString()),
+                       new("Parallelism", maxDegreeOfParallelism),
+                       new("ProcessorCount", Environment.ProcessorCount),
+                       new("Command", typeof(T).Name),
+                   }))
             {
-                await Parallel.ForEachAsync(paths, new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (path, token) =>
+                logger.LogInformation("Sync Handler Started");
+                try
                 {
-                    await SyncBlobPath<TRequest>(path, period, topic, job!, token);
-                });
+                    await Parallel.ForEachAsync(paths,
+                        new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism },
+                        async (path, token) =>
+                        {
+                            using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("SyncPath", path), }))
+                            {
+                                await SyncBlobPath<TRequest>(path, period, topic, job!, token);
+                            }
+                        });
 
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error syncing blob paths");
-            }
-            finally
-            {
-                job?.CompletedReadingBlobs();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error syncing blob paths");
+                }
+                finally
+                {
+                    job?.CompletedReadingBlobs();
+                    logger.LogInformation("Sync Handler Started");
+                }
             }
         }
 
         protected async Task SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
-            logger.LogInformation("Sync Path: {Path} - period: {period}", path, period.ToString());
-
             var result = blobService.GetResourcesAsync($"{path}{GetPeriodPath(period)}", cancellationToken);
 
             await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (item, token) =>
@@ -112,42 +123,47 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         private async Task SyncBlob<TRequest>(string path, string topic, IBlobItem item, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
-
             var timer = Stopwatch.StartNew();
-            try
+            using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("BlobPath", item.Name), }))
             {
-                syncMetrics.SyncStarted<T>(path, topic);
-                using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(name: ActivityName, kind: ActivityKind.Client, tags: new TagList() { { "blob.name", item.Name } }))
+                try
                 {
-                    var blobContent = await blobService.GetResource(item, cancellationToken);
-                    var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
-                    var headers = new Dictionary<string, object>()
+                    logger.LogInformation("Processing Blob Started");
+                    syncMetrics.SyncStarted<T>(path, topic);
+                    using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(name: ActivityName,
+                               kind: ActivityKind.Client, tags: new TagList() { { "blob.name", item.Name } }))
                     {
-                        { "messageId", item.Name }, { "jobId", job.JobId }
-                    };
-                    if (CdmsDiagnostics.ActivitySource.HasListeners())
-                    {
-                        headers.Add("traceparent", activity?.Id!);
+                        var blobContent = await blobService.GetResource(item, cancellationToken);
+                        var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
+                        var headers = new Dictionary<string, object>()
+                        {
+                            { "messageId", item.Name }, { "jobId", job.JobId }
+                        };
+                        if (CdmsDiagnostics.ActivitySource.HasListeners())
+                        {
+                            headers.Add("traceparent", activity?.Id!);
+                        }
+
+                        await bus.Publish(message,
+                            topic,
+                            headers: headers,
+                            cancellationToken: cancellationToken);
                     }
-                    await bus.Publish(message,
-                        topic,
-                        headers: headers,
-                        cancellationToken: cancellationToken);
+
+                    job.BlobSuccess();
                 }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Processing Blob Failed");
 
-                logger.LogInformation("Synced blob item {blob}", item.Name);
-                job.BlobSuccess();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed process blob item {blob}", item.Name);
-
-                syncMetrics.AddException<T>(ex, path, topic);
-                job.BlobFailed();
-            }
-            finally
-            {
-                syncMetrics.SyncCompleted<T>(path, topic, timer);
+                    syncMetrics.AddException<T>(ex, path, topic);
+                    job.BlobFailed();
+                }
+                finally
+                {
+                    syncMetrics.SyncCompleted<T>(path, topic, timer);
+                    logger.LogInformation("Processing Blob Finished");
+                }
             }
         }
 

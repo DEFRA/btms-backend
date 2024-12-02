@@ -1,6 +1,7 @@
 using Cdms.Business.Services;
 using Cdms.Types.Alvs;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using SlimMessageBus.Host;
 using TestDataGenerator;
@@ -19,7 +20,7 @@ namespace Cdms.Consumers.Tests
             var mockLinkingService = Substitute.For<ILinkingService>();
 
             var consumer =
-                new AlvsClearanceRequestConsumer(dbContext, mockLinkingService);
+                new AlvsClearanceRequestConsumer(dbContext, mockLinkingService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>()
