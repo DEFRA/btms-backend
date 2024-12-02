@@ -21,6 +21,7 @@ namespace Cdms.Consumers
         public async Task OnHandle(ImportNotification message)
         {
             var auditId = Context.Headers["messageId"].ToString();
+            logger.ConsumerStarted(Context.GetJobId()!, auditId!, GetType().Name, message.ReferenceNumber!);
             using (logger.BeginScope(new List<KeyValuePair<string, object>>
                    {
                        new("JobId", Context.GetJobId()!),
@@ -45,7 +46,7 @@ namespace Cdms.Consumers
                     }
                     else
                     {
-                        logger.LogWarning("Import Notification skipped");
+                        logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.ReferenceNumber!);
                         Context.Skipped();
                     }
                 }

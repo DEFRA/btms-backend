@@ -23,6 +23,7 @@ namespace Cdms.Consumers
         public async Task OnHandle(AlvsClearanceRequest message)
         {
             var auditId = Context.Headers["messageId"].ToString();
+            logger.ConsumerStarted(Context.GetJobId()!, auditId!, GetType().Name, message.Header?.EntryReference!);
             using (logger.BeginScope(new List<KeyValuePair<string, object>>
                    {
                        new("JobId", Context.GetJobId()!),
@@ -62,7 +63,7 @@ namespace Cdms.Consumers
                     }
                     else
                     {
-                        logger.LogWarning("AlvsClearanceRequest skipped");
+                        logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.Header?.EntryReference!);
                         Context.Skipped();
                     }
                 }
