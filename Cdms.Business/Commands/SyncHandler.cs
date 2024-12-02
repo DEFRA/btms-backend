@@ -18,6 +18,21 @@ public enum SyncPeriod
     All
 }
 
+internal static partial class SyncHandlerLogging
+{
+    [LoggerMessage(Level = LogLevel.Information, Message = "Sync Started for {JobId} - {SyncPeriod} - {Parallelism} - {ProcessorCount} - {Command}")]
+    internal static partial void SyncStarted(this ILogger logger, string jobId, string syncPeriod, int parallelism, int processorCount, string command);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Processing Blob Started {JobId} - {BlobPath}")]
+    internal static partial void BlobStarted(this ILogger logger, string jobId, string blobPath);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Processing Blob Finished {JobId} - {BlobPath}")]
+    internal static partial void BlobFinished(this ILogger logger, string jobId, string blobPath);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Processing Blob Failed {JobId} - {BlobPath}")]
+    internal static partial void BlobFailed(this ILogger logger, Exception exception, string jobId, string blobPath);
+}
+
 public abstract class SyncCommand() : IRequest, ISyncJob
 {
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
@@ -59,7 +74,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                        new("Command", typeof(T).Name),
                    }))
             {
-                logger.LogInformation("Sync Handler Started");
+                logger.SyncStarted(job?.JobId.ToString()!, period.ToString(), maxDegreeOfParallelism, Environment.ProcessorCount, typeof(T).Name);
                 try
                 {
                     await Parallel.ForEachAsync(paths,
@@ -80,7 +95,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                 finally
                 {
                     job?.CompletedReadingBlobs();
-                    logger.LogInformation("Sync Handler Started");
+                    logger.LogInformation("Sync Handler Finished");
                 }
             }
         }
@@ -128,7 +143,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
             {
                 try
                 {
-                    logger.LogInformation("Processing Blob Started");
+                    logger.BlobStarted(job.JobId.ToString(), item.Name);
                     syncMetrics.SyncStarted<T>(path, topic);
                     using (var activity = CdmsDiagnostics.ActivitySource.StartActivity(name: ActivityName,
                                kind: ActivityKind.Client, tags: new TagList() { { "blob.name", item.Name } }))
@@ -154,7 +169,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Processing Blob Failed");
+                    logger.BlobFailed(ex, job.JobId.ToString(), item.Name);
 
                     syncMetrics.AddException<T>(ex, path, topic);
                     job.BlobFailed();
@@ -162,7 +177,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                 finally
                 {
                     syncMetrics.SyncCompleted<T>(path, topic, timer);
-                    logger.LogInformation("Processing Blob Finished");
+                    logger.BlobFinished(job.JobId.ToString(), item.Name);
                 }
             }
         }
