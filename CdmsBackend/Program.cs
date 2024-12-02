@@ -101,39 +101,29 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
 	builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-	// This added Open Telemetry, and export to look at metrics locally.
-	// The Aspire dashboard can be used to view these metrics  :
-	// docker run --rm -it -p 18888:18888 -p 4317:18889 -d --name aspire-dashboard -e DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS='true' mcr.microsoft.com/dotnet/nightly/aspire-dashboard:8.0.0-preview.6
+	// This uses grafana for metrics and tracing and works with the local docker compose setup as well as in CDP
+	
+	builder.Services.AddOpenTelemetry()
+		.WithMetrics(metrics =>
+		{
+			metrics.AddRuntimeInstrumentation()
+				.AddMeter(
+					"Microsoft.AspNetCore.Hosting",
+					"Microsoft.AspNetCore.Server.Kestrel",
+					"System.Net.Http",
+					MetricNames.MeterName);
+		});
 
-	if (builder.Environment.IsDevelopment())
-	{
-		builder.Services.AddOpenTelemetry()
-			.WithMetrics(metrics =>
-			{
-				metrics.AddRuntimeInstrumentation()
-					.AddMeter(
-						"Microsoft.AspNetCore.Hosting",
-						"Microsoft.AspNetCore.Server.Kestrel",
-						"System.Net.Http",
-						MetricNames.MeterName);
-			});
+	builder.Services.AddOpenTelemetry()
+		.WithTracing(tracing =>
+		{
+			tracing.AddAspNetCoreInstrumentation()
+				.AddHttpClientInstrumentation()
+				.AddSource(MetricNames.MeterName)
+				.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
+		});
 
-		builder.Services.AddOpenTelemetry()
-			.WithTracing(tracing =>
-			{
-				tracing.AddAspNetCoreInstrumentation()
-					.AddHttpClientInstrumentation()
-					.AddSource(MetricNames.MeterName)
-					.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
-			});
-
-		builder.Services.AddOpenTelemetry().UseOtlpExporter();
-	}
-	else
-	{
-		// Assumes we're in CDP... - this doesn't exist
-		// builder.Services.AddOpenTelemetry().UseEmfExporter()
-	}
+	builder.Services.AddOpenTelemetry().UseOtlpExporter();
 
 	static void ConfigureJsonApiOptions(JsonApiOptions options)
 	{
@@ -167,17 +157,12 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 	var logBuilder = new LoggerConfiguration()
 		.ReadFrom.Configuration(builder.Configuration)
 		.Enrich.With<LogLevelMapper>()
-		.Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"));
-
-	if (builder.Environment.IsDevelopment())
-	{
-		logBuilder
-			.WriteTo.OpenTelemetry(options =>
-			{
-				options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-				options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
-			});
-	}
+		.Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"))
+		.WriteTo.OpenTelemetry(options =>
+		{
+			options.LogsEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+			options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
+		});
 
 	var logger = logBuilder.CreateLogger();
 	builder.Logging.AddSerilog(logger);
