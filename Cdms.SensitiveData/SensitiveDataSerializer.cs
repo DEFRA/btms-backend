@@ -1,7 +1,11 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
+using JsonFlatten;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Cdms.SensitiveData;
 
@@ -40,5 +44,44 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
             throw;
         }
        
+    }
+
+    public string RedactRawJson(string json, Type type)
+    {
+        if (options.Value.Include)
+        {
+            return json;
+        }
+        var sensitiveFields = SensitiveFieldsProvider.Get(type);
+       
+        var jObject = JObject.Parse(json);
+
+        var fields = jObject.Flatten();
+
+        foreach (var field in sensitiveFields)
+        {
+            if (fields.TryGetValue(field, out var value))
+            {
+                if (!options.Value.Include)
+                {
+                    fields[field] = options.Value.Getter(value.ToString()!);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < fields.Keys.Count; i++)
+                {
+                    var key = fields.Keys.ElementAt(i);
+                    var replaced = Regex.Replace(key, "\\[.*?\\]", "", RegexOptions.NonBacktracking);
+                    if (replaced == field && fields.TryGetValue(key, out var v) && !options.Value.Include)
+                    {
+                        fields[key] = options.Value.Getter(v.ToString()!);
+                    }
+                }
+            }
+        }
+
+        var redactedString = fields.Unflatten().ToString();
+        return redactedString;
     }
 }

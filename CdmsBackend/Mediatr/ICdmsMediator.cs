@@ -1,4 +1,4 @@
-﻿using Cdms.SyncJob;
+using Cdms.SyncJob;
 using MediatR;
 
 namespace CdmsBackend.Mediatr;
@@ -6,6 +6,9 @@ namespace CdmsBackend.Mediatr;
 public interface ICdmsMediator
 {
     Task SendSyncJob<TRequest>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IRequest, ISyncJob;
+
+    Task SendJob<TRequest>(TRequest request, CancellationToken cancellationToken = default)
         where TRequest : IRequest, ISyncJob;
 
 

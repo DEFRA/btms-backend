@@ -1,10 +1,17 @@
+using System.IO.Compression;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Cdms.Business.Commands;
 using Cdms.Consumers.MemoryQueue;
 using Cdms.SyncJob;
+using Cdms.Types.Alvs;
+using Cdms.Types.Ipaffs;
 using CdmsBackend.Config;
 using CdmsBackend.Mediatr;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static Cdms.Business.Commands.DownloadCommand;
 
 namespace CdmsBackend.Endpoints;
 
@@ -20,6 +27,9 @@ public static class SyncEndpoints
             app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
             app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
             app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
+
+            app.MapGet(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
+            app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
         }
 
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
@@ -44,6 +54,19 @@ public static class SyncEndpoints
         //// await GetSyncGmrs(mediator, period);
 
         return Results.Ok();
+    }
+
+    private static IResult DownloadNotifications([FromServices] IWebHostEnvironment env, string id)
+    {
+        var stream = File.OpenRead($"{System.IO.Path.Combine(env.ContentRootPath, id)}.zip");
+        return Results.File(stream, "application/zip", $"{id}.zip");
+    }
+
+    private static async Task<IResult> GenerateDownload([FromServices] ICdmsMediator mediator, [FromQuery] SyncPeriod period)
+    {
+        var command = new DownloadCommand() { SyncPeriod = period };
+        await mediator.SendJob(command);
+        return Results.Ok(command.JobId);
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)

@@ -67,4 +67,35 @@ public class SensitiveDataSerializerTests
         result.SimpleStringArrayTwo[0].Should().Be("Test String Array Two Item One");
         result.SimpleStringArrayTwo[1].Should().Be("Test String Array Two Item Two");
     }
+
+    [Fact]
+    public void WhenDoNotIncludeSensitiveData_AndRequestForRawJson_ThenDataShouldBeRedacted()
+    {
+        // ARRANGE
+        SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = false };
+        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
+
+        var simpleClass = new SimpleClass()
+        {
+            SimpleStringOne = "Test String One",
+            SimpleStringTwo = "Test String Two",
+            SimpleStringArrayOne =
+                new[] { "Test String Array One Item One", "Test String Array One Item Two" },
+            SimpleStringArrayTwo = new[] { "Test String Array Two Item One", "Test String Array Two Item Two" }
+        };
+
+        var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+
+        // ACT
+        var result = serializer.RedactRawJson(json, typeof(SimpleClass));
+
+        // ASSERT
+        var resultClass = JsonSerializer.Deserialize<SimpleClass>(result, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        resultClass?.SimpleStringOne.Should().Be("TestRedacted");
+        resultClass?.SimpleStringTwo.Should().Be("Test String Two");
+        resultClass?.SimpleStringArrayOne[0].Should().Be("TestRedacted");
+        resultClass?.SimpleStringArrayOne[1].Should().Be("TestRedacted");
+        resultClass?.SimpleStringArrayTwo[0].Should().Be("Test String Array Two Item One");
+        resultClass?.SimpleStringArrayTwo[1].Should().Be("Test String Array Two Item Two");
+    }
 }
