@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="traceswsns"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="traceswsns"
+           attributeFormDefault="qualified"
+           targetNamespace="traceswsns"
+           elementFormDefault="qualified">
+  <xs:element name="ALVSClearanceRequestPost"
+              type="ALVSClearanceRequestPost">
+    <xs:annotation>
+      <xs:documentation>Message sent to the server to send an ALVSClearanceRequest.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ALVSClearanceRequestPost">
+    <xs:annotation>
+      <xs:documentation>Message sent to the server to send an ALVSClearanceRequest.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="XMLSchemaVersion"
+                  type="XMLSchemaVersion">
+      </xs:element>
+      <xs:element name="UserIdentification"
+                  type="UserAuthenticationString">
+      </xs:element>
+      <xs:element name="UserPassword"
+                  type="UserAuthenticationString">
+      </xs:element>
+      <xs:element name="SendingDate"
+                  type="Timestamp">
+      </xs:element>
+      <xs:element name="ALVSClearanceRequest"
+                  type="ALVSClearanceRequest">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ALVSClearanceRequestPostResult"
+              type="ALVSClearanceRequestPostResult">
+    <xs:annotation>
+      <xs:documentation>Message returned by the server as answer to the ALVSClearanceRequest.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ALVSClearanceRequestPostResult">
+    <xs:annotation>
+      <xs:documentation>Message returned by the server as answer to the ALVSClearanceRequest.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="XMLSchemaVersion"
+                  type="XMLSchemaVersion">
+      </xs:element>
+      <xs:element name="SendingDate"
+                  type="Timestamp">
+      </xs:element>
+      <xs:element name="OperationCode"
+                  type="xs:int">
+      </xs:element>
+      <xs:element name="RequestIdentifier"
+                  type="RequestIdentifier">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ALVSClearanceRequest">
+    <xs:sequence>
+      <xs:element name="ServiceHeader">
+        <xs:annotation>
+          <xs:documentation>Contain information about the original service call from the sending system. For Audit purpose only.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="SourceSystem">
+              <xs:annotation>
+                <xs:documentation>Identifies the system calling the ALVS service</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="8"/>
+                  <xs:enumeration value="CHIEF"/>
+                  <xs:enumeration value="CDS"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DestinationSystem">
+              <xs:annotation>
+                <xs:documentation>Identifies the system the service call is destined for</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="8"/>
+                  <xs:enumeration value="ALVS"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="CorrelationId">
+              <xs:annotation>
+                <xs:documentation>Unique ID that identifies this particular service call. This number will be passed back to the calling system when the Error Notification service is called in order to identify which original service call from the sending system is related to.</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="20"/>
+                  <xs:pattern value="[0-9]*"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="ServiceCallTimestamp" type="xs:dateTime">
+              <xs:annotation>
+                <xs:documentation>The Date/Time at which the calling system made the call. (i.e. HMRC, eHMI). Only for logging info purpose.
+                  i.e. 2002-10-10T12:00:00.123</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="EntryReference">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="18"/>
+                  <xs:maxLength value="22"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="EntryVersionNumber">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="1"/>
+                  <xs:maxInclusive value="99"/>
+                  <xs:totalDigits value="2"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="PreviousVersionNumber" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="1"/>
+                  <xs:maxInclusive value="99"/>
+                  <xs:totalDigits value="2"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DeclarationUCR">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="35"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DeclarationPartNumber" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="3"/>
+                  <xs:pattern value="[0-9]*"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DeclarationType">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="1"/>
+                  <xs:enumeration value="F"/>
+                  <xs:enumeration value="S"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="ArrivalDateTime" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="12"/>
+                  <xs:pattern value="[0-9]*"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="SubmitterTURN" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="18"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DeclarantId">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="18"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DeclarantName">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="35"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="DispatchCountryCode">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="2"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="GoodsLocationCode" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="17"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="MasterUCR" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="35"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Items" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ItemNumber">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="1"/>
+                  <xs:maxInclusive value="999"/>
+                  <xs:totalDigits value="3"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="CustomsProcedureCode">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="7"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="TaricCommodityCode">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="10"/>
+                  <xs:pattern value="[0-9]*"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="GoodsDescription">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="280"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="ConsigneeId">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="18"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="ConsigneeName">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="35"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="ItemNetMass" type="tns:DecimalType"/>
+            <xs:element name="ItemSupplementaryUnits" type="tns:DecimalType" minOccurs="0"/>
+            <xs:element name="ItemThirdQuantity" type="tns:DecimalType" minOccurs="0"/>
+            <xs:element name="ItemOriginCountryCode">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="2"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="Document" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="DocumentCode">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="4"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="DocumentReference" minOccurs="0">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="35"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="DocumentStatus">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="2"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="DocumentControl">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="1"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="DocumentQuantity" type="tns:DecimalType" minOccurs="0"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Check" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="CheckCode">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="4"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="DepartmentCode">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="8"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="DecimalType">
+    <xs:annotation>
+      <xs:documentation>measurement for an item or goods</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="14"/>
+      <xs:fractionDigits value="3"/>
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="99999999999.999"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Timestamp">
+    <xs:annotation>
+      <xs:documentation>Timestamp format</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{4}-\d{2}-\d{2} \d{2}:\d{2}">
+      </xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RequestIdentifier">
+    <xs:annotation>
+      <xs:documentation>Identifier associated to the request by the Member State</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1">
+      </xs:minLength>
+      <xs:maxLength value="32">
+      </xs:maxLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="XMLSchemaVersion">
+    <xs:annotation>
+      <xs:documentation>Version of the XML Schema used to validate the XML file</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1">
+      </xs:minLength>
+      <xs:maxLength value="32">
+      </xs:maxLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UserAuthenticationString">
+    <xs:annotation>
+      <xs:documentation>String object that may hold a user name or a user password</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="5">
+      </xs:minLength>
+      <xs:maxLength value="80">
+      </xs:maxLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="SlimMessageBus" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Btms.Business.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Btms.Backend.Data\Btms.Backend.Data.csproj" />
+    <ProjectReference Include="..\Btms.BlobService\Btms.BlobService.csproj" />
+    <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
+    <ProjectReference Include="..\Btms.Metrics\Btms.Metrics.csproj" />
+    <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
+    <ProjectReference Include="..\Btms.SensitiveData\Btms.SensitiveData.csproj" />
+    <ProjectReference Include="..\Btms.SyncJob\Btms.SyncJob.csproj" />
+    <ProjectReference Include="..\Btms.Types.Alvs.Mapping.V1.Tests\Btms.Types.Alvs.Mapping.V1.Tests.csproj" />
+    <ProjectReference Include="..\Btms.Types.Alvs.Mapping.V1\Btms.Types.Alvs.Mapping.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Alvs.V1\Btms.Types.Alvs.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Gvms.Mapping.V1\Btms.Types.Gvms.Mapping.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Gvms.V1\Btms.Types.Gvms.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Ipaffs.Mapping.V1\Btms.Types.Ipaffs.Mapping.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
+  </ItemGroup>
+
+</Project>

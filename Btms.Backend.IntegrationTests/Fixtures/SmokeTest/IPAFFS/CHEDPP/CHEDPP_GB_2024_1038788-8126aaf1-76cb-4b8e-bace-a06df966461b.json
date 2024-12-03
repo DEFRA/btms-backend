@@ -1,0 +1,846 @@
+{
+    "id": 38788,
+    "referenceNumber": "CHEDPP.GB.2024.1038788",
+    "version": 1,
+    "lastUpdated": "2024-09-24T08:03:21.182441964Z",
+    "lastUpdatedBy": {
+        "displayName": "Andrew Inspector-Tester",
+        "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "type": "CHEDPP",
+    "status": "IN_PROGRESS",
+    "riskAssessment": {
+        "commodityResults": [
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "172b1da8-d011-4259-bcbe-38395c6d7618",
+                "eppoCode": "EUOJA"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "c8dd1a40-8f9f-4e67-bfc8-f207add6d462",
+                "eppoCode": "HYEPA"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "078be7fe-8ac4-4ef0-bde7-effa7d0af522",
+                "eppoCode": "PHNFR"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "e33b87d2-0965-4303-ae18-1587a0580d08",
+                "eppoCode": "CVBSE"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "d173d179-57f2-4fe5-b6be-2859dd588278",
+                "eppoCode": "SKMJA"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "378dc2a3-6d3c-419f-9d6b-5dfd1a41ea3d",
+                "eppoCode": "RHOSS"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "e08a4573-2ea3-4737-aacd-2e18067b5ea0",
+                "eppoCode": "LUTSS"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "e03f84ea-894d-4b55-8850-db8632412caa",
+                "eppoCode": "TAXSS"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "9280fa3c-36e9-4dd4-916e-ecc93e4412ab",
+                "eppoCode": "BUXSE"
+            },
+            {
+                "hmiDecision": "NOTREQUIRED",
+                "phsiDecision": "REQUIRED",
+                "phsiClassification": "Mandatory",
+                "uniqueId": "ed464eae-ac9a-49e4-9938-822f6a0b3731",
+                "eppoCode": "ILECR"
+            }
+        ],
+        "assessmentDateTime": "2024-09-23T17:10:43.3110435"
+    },
+    "isHighRiskEuImport": false,
+    "partOne": {
+        "personResponsible": {
+            "name": "Andrew Inspector-Tester",
+            "companyId": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+            "companyName": "Defra Test BIP",
+            "address": [
+                "Animal and Plant Health Agency",
+                "Woodham Lane",
+                "New Haw",
+                "Surrey",
+                "Addlestone",
+                "KT15 3NB",
+                "GB"
+            ],
+            "country": "GB",
+            "tracesID": 1001,
+            "phone": "020 8225 7295",
+            "email": "DefraTestBIP@anthunt3.33mail.com",
+            "contactId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+        },
+        "consignor": {
+            "id": "6a4149f9-24de-440e-9a23-5ff02a6bb9c7",
+            "type": "exporter",
+            "status": "nonapproved",
+            "companyName": "8673d453505548a0a5ff01b98835ed65",
+            "address": {
+                "addressLine1": "528 Shad Path",
+                "addressLine2": "Apt. 933",
+                "addressLine3": "Wyoming",
+                "city": "Lennaville",
+                "postalZipCode": "13400",
+                "countryISOCode": "AL",
+                "telephone": "01615555555",
+                "email": "ukoperator@email.com"
+            },
+            "tracesId": 10005161
+        },
+        "consignee": {
+            "id": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+            "type": "consignee",
+            "companyName": "Defra Test BIP",
+            "address": {
+                "addressLine1": "Animal and Plant Health Agency",
+                "addressLine2": "Woodham Lane",
+                "addressLine3": "New Haw",
+                "city": "Addlestone",
+                "postalZipCode": "KT15 3NB",
+                "countryISOCode": "GB",
+                "telephone": "020 8225 7295",
+                "email": "DefraTestBIP@anthunt3.33mail.com"
+            },
+            "tracesId": 10000686
+        },
+        "importer": {
+            "id": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+            "type": "importer",
+            "companyName": "Defra Test BIP",
+            "address": {
+                "addressLine1": "Animal and Plant Health Agency",
+                "addressLine2": "Woodham Lane",
+                "addressLine3": "New Haw",
+                "city": "Addlestone",
+                "postalZipCode": "KT15 3NB",
+                "countryISOCode": "GB",
+                "telephone": "020 8225 7295",
+                "email": "DefraTestBIP@anthunt3.33mail.com"
+            },
+            "tracesId": 10000686
+        },
+        "placeOfDestination": {
+            "id": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+            "type": "destination",
+            "companyName": "Defra Test BIP",
+            "address": {
+                "addressLine1": "Animal and Plant Health Agency",
+                "addressLine2": "Woodham Lane",
+                "addressLine3": "New Haw",
+                "city": "Addlestone",
+                "postalZipCode": "KT15 3NB",
+                "countryISOCode": "GB",
+                "telephone": "020 8225 7295",
+                "email": "DefraTestBIP@anthunt3.33mail.com"
+            },
+            "tracesId": 10000686
+        },
+        "commodities": {
+            "totalGrossWeight": 500,
+            "totalNetWeight": 20,
+            "numberOfPackages": 10,
+            "commodityComplement": [
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 1,
+                    "complementName": "Euonymus japonicus",
+                    "eppoCode": "EUOJA",
+                    "speciesID": "1361746",
+                    "speciesName": "Euonymus japonicus",
+                    "speciesNomination": "Euonymus japonicus"
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 2,
+                    "complementName": "Hydrangea paniculata",
+                    "eppoCode": "HYEPA",
+                    "speciesID": "1421487",
+                    "speciesName": "Hydrangea paniculata",
+                    "speciesNomination": "Hydrangea paniculata"
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 3,
+                    "complementName": "Photinia x fraseri",
+                    "eppoCode": "PHNFR",
+                    "speciesID": "1407720",
+                    "speciesName": "Photinia x fraseri",
+                    "speciesNomination": "Photinia x fraseri"
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 4,
+                    "complementName": "Cupressus sempervirens",
+                    "eppoCode": "CVBSE",
+                    "speciesID": "1406775",
+                    "speciesName": "Cupressus sempervirens",
+                    "speciesNomination": "Cupressus sempervirens"
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 5,
+                    "complementName": "Skimmia japonica",
+                    "eppoCode": "SKMJA",
+                    "speciesID": "1356045",
+                    "speciesName": "Skimmia japonica",
+                    "speciesNomination": "Skimmia japonica"
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 6,
+                    "complementName": "Rhododendron sp.",
+                    "eppoCode": "RHOSS",
+                    "speciesID": "1388378",
+                    "speciesName": "Rhododendron sp.",
+                    "speciesNomination": "Rhododendron sp."
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 7,
+                    "complementName": "Leucothoe sp.",
+                    "eppoCode": "LUTSS",
+                    "speciesID": "1421491",
+                    "speciesName": "Leucothoe sp.",
+                    "speciesNomination": "Leucothoe sp."
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 8,
+                    "complementName": "Taxus sp.",
+                    "eppoCode": "TAXSS",
+                    "speciesID": "1384182",
+                    "speciesName": "Taxus sp.",
+                    "speciesNomination": "Taxus sp."
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 9,
+                    "complementName": "Buxus sempervirens",
+                    "eppoCode": "BUXSE",
+                    "speciesID": "1331014",
+                    "speciesName": "Buxus sempervirens",
+                    "speciesNomination": "Buxus sempervirens"
+                },
+                {
+                    "commodityID": "06029050",
+                    "commodityDescription": "Other outdoor plants",
+                    "complementID": 10,
+                    "complementName": "Ilex crenata",
+                    "eppoCode": "ILECR",
+                    "speciesID": "1366360",
+                    "speciesName": "Ilex crenata",
+                    "speciesNomination": "Ilex crenata"
+                }
+            ],
+            "complementParameterSet": [
+                {
+                    "uniqueComplementID": "172b1da8-d011-4259-bcbe-38395c6d7618",
+                    "complementID": 1,
+                    "speciesID": "1361746",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1361746"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "c8dd1a40-8f9f-4e67-bfc8-f207add6d462",
+                    "complementID": 2,
+                    "speciesID": "1421487",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1421487"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "078be7fe-8ac4-4ef0-bde7-effa7d0af522",
+                    "complementID": 3,
+                    "speciesID": "1407720",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1407720"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "e33b87d2-0965-4303-ae18-1587a0580d08",
+                    "complementID": 4,
+                    "speciesID": "1406775",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1406775"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "d173d179-57f2-4fe5-b6be-2859dd588278",
+                    "complementID": 5,
+                    "speciesID": "1356045",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1356045"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "378dc2a3-6d3c-419f-9d6b-5dfd1a41ea3d",
+                    "complementID": 6,
+                    "speciesID": "1388378",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1388378"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "e08a4573-2ea3-4737-aacd-2e18067b5ea0",
+                    "complementID": 7,
+                    "speciesID": "1421491",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1421491"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "e03f84ea-894d-4b55-8850-db8632412caa",
+                    "complementID": 8,
+                    "speciesID": "1384182",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1384182"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "9280fa3c-36e9-4dd4-916e-ecc93e4412ab",
+                    "complementID": 9,
+                    "speciesID": "1331014",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1331014"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                },
+                {
+                    "uniqueComplementID": "ed464eae-ac9a-49e4-9938-822f6a0b3731",
+                    "complementID": 10,
+                    "speciesID": "1366360",
+                    "keyDataPair": [
+                        {
+                            "key": "regulatory_authority",
+                            "data": "PHSI"
+                        },
+                        {
+                            "key": "requires_finished_or_propagated_data",
+                            "data": "true"
+                        },
+                        {
+                            "key": "propagation",
+                            "data": "Plant"
+                        },
+                        {
+                            "key": "type_package",
+                            "data": "Bag"
+                        },
+                        {
+                            "key": "container",
+                            "data": "1366360"
+                        },
+                        {
+                            "key": "netweight",
+                            "data": "2"
+                        },
+                        {
+                            "key": "number_package",
+                            "data": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "data": "2"
+                        },
+                        {
+                            "key": "type_quantity",
+                            "data": "Stems"
+                        },
+                        {
+                            "key": "commodity_group",
+                            "data": "Plants for Planting"
+                        },
+                        {
+                            "key": "finished_or_propagated",
+                            "data": "Finished"
+                        }
+                    ]
+                }
+            ],
+            "includeNonAblactedAnimals": false,
+            "countryOfOrigin": "NZ",
+            "countryOfOriginIsPodCountry": false,
+            "consignedCountry": "NZ",
+            "consignedCountryInChargeGroup": false
+        },
+        "purpose": {
+            "purposeGroup": "For Import"
+        },
+        "pointOfEntry": "GBBOH4PP",
+        "pointOfEntryControlPoint": "INSPBOH1",
+        "arrivalDate": "2024-09-24",
+        "arrivalTime": "11:00:00",
+        "meansOfTransport": {},
+        "meansOfTransportFromEntryPoint": {
+            "id": "2345",
+            "type": "Aeroplane",
+            "document": "test"
+        },
+        "veterinaryInformation": {
+            "accompanyingDocuments": [
+                {
+                    "documentType": "phytosanitaryCertificate",
+                    "documentReference": "43567",
+                    "documentIssueDate": "2024-09-01",
+                    "attachmentId": "254fb3d5-50fd-4ebf-89fb-b18d673019d0",
+                    "attachmentFilename": "Decision.png",
+                    "attachmentContentType": "image/png",
+                    "uploadUserId": "79f6dc68-2144-e911-a96a-000d3a29ba60",
+                    "uploadOrganisationId": "767ceb6a-2144-e911-a96c-000d3a29b5de"
+                }
+            ]
+        },
+        "submissionDate": "2024-09-23T16:10:42.46996279Z",
+        "submittedBy": {
+            "displayName": "Andrew Inspector-Tester",
+            "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+        },
+        "complexCommoditySelected": true,
+        "contactDetails": {
+            "name": "Andrew Inspector-Tester",
+            "telephone": "020 8225 7295",
+            "email": "defratestbip@anthunt3.33mail.com"
+        },
+        "isGVMSRoute": false,
+        "provideCtcMrn": "NO"
+    },
+    "partTwo": {
+        "inspectionRequired": "Required"
+    },
+    "partThree": {},
+    "etag": "000000000008B0D8",
+    "riskDecisionLockingTime": "2024-09-24T08:00:00Z",
+    "isRiskDecisionLocked": true,
+    "chedTypeVersion": 1
+}

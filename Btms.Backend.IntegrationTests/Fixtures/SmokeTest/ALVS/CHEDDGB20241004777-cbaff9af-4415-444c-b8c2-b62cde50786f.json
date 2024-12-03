@@ -1,0 +1,53 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDSSIM",
+    "destinationSystem": "ALVS",
+    "correlationId": "000",
+    "serviceCallTimestamp": "2024-10-04T13:58:09.5864286Z"
+  },
+  "header": {
+    "entryReference": "CHEDDGB20241004777",
+    "entryVersionNumber": 2,
+    "previousVersionNumber": 1,
+    "declarationUCR": "SimCHEDD.GB.2024.1004777",
+    "declarationPartNumber": null,
+    "declarationType": null,
+    "arrivalDateTime": null,
+    "submitterTURN": null,
+    "declarantId": null,
+    "declarantName": "CDS_Simulator",
+    "dispatchCountryCode": null,
+    "goodsLocationCode": "BELBELGVM",
+    "masterUCR": "SimCHEDD.GB.2024.1004777"
+  },
+  "items": [
+    {
+      "clearanceRequestReference": null,
+      "itemNumber": 1,
+      "customsProcedureCode": null,
+      "taricCommodityCode": null,
+      "goodsDescription": "Human hair, unworked, whether or not washed or scoured; waste of human hair",
+      "consigneeId": null,
+      "consigneeName": null,
+      "itemNetMass": null,
+      "itemSupplementaryUnits": null,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": null,
+      "document": [
+        {
+          "documentCode": "N852",
+          "documentReference": "GBCHD2024.1004777",
+          "documentStatus": "P",
+          "documentControl": null,
+          "documentQuantity": 3
+        }
+      ],
+      "check": [
+        {
+          "checkCode": "H2019",
+          "departmentCode": "GB"
+        }
+      ]
+    }
+  ]
+}

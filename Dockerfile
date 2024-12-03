@@ -19,10 +19,10 @@ COPY . .
 WORKDIR "/src"
 
 # unit test and code coverage
-RUN dotnet test BtmsBackend.Test
+RUN dotnet test CdmsBackend.Test
 
 FROM build AS publish
-RUN dotnet publish BtmsBackend -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish CdmsBackend -c Release -o /app/publish /p:UseAppHost=false
 
 
 ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
@@ -32,4 +32,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 EXPOSE 8085
-ENTRYPOINT ["dotnet", "BtmsBackend.dll"]
+ENTRYPOINT ["dotnet", "CdmsBackend.dll"]

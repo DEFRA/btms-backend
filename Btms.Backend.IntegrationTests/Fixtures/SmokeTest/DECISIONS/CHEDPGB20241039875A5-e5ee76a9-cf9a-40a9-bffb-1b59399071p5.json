@@ -1,0 +1,27 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDS",
+    "destinationSystem": "ALVS",
+    "correlationId": "20",
+    "serviceCallTimestamp": 1619550176000
+  },
+  "header": {
+    "entryReference": "CHEDPGB20241039875A5",
+    "entryVersionNumber": 2
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "checks": [
+        {
+          "checkCode": "H234",
+          "departmentCode": "PHA",
+          "decisionValidUntil": null,
+          "decisionReasons": [
+            "A reason"
+          ]
+        }
+      ]
+    }
+  ]
+}
