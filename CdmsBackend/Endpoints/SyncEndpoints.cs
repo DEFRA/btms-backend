@@ -11,6 +11,7 @@ using CdmsBackend.Mediatr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static Cdms.Business.Commands.DownloadCommand;
 
 namespace CdmsBackend.Endpoints;
 
@@ -27,8 +28,8 @@ public static class SyncEndpoints
             app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
             app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
 
-            app.MapGet(BaseRoute + "/download/import-notifications", DownloadNotifications).AllowAnonymous();
-            app.MapGet(BaseRoute + "/download/clearance-requests", DownloadClearanceRequests).AllowAnonymous();
+            app.MapGet(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
+            app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
         }
 
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
@@ -55,16 +56,17 @@ public static class SyncEndpoints
         return Results.Ok();
     }
 
-    private static async Task<IResult> DownloadNotifications([FromServices] IMediator mediator, [FromQuery] string path, [FromQuery]SyncPeriod period)
+    private static IResult DownloadNotifications([FromServices] IWebHostEnvironment env, string id)
     {
-        var result = await mediator.Send(new DownloadCommand() { Type = typeof(ImportNotification), Path = path, SyncPeriod = period });
-        return Results.File(result.Zip, "application/zip", "notifications.zip");
+        var stream = File.OpenRead($"{System.IO.Path.Combine(env.ContentRootPath, id)}.zip");
+        return Results.File(stream, "application/zip", $"{id}.zip");
     }
 
-    private static async Task<IResult> DownloadClearanceRequests([FromServices] IMediator mediator, [FromQuery] string path, [FromQuery] SyncPeriod period)
+    private static async Task<IResult> GenerateDownload([FromServices] ICdmsMediator mediator, [FromQuery] SyncPeriod period)
     {
-        var result = await mediator.Send(new DownloadCommand() { Type = typeof(AlvsClearanceRequest), Path = path, SyncPeriod = period });
-        return Results.File(result.Zip, "application/zip", "clearancerequests.zip");
+        var command = new DownloadCommand() { SyncPeriod = period };
+        await mediator.SendJob(command);
+        return Results.Ok(command.JobId);
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)

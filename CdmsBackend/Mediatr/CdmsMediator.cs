@@ -30,6 +30,20 @@ namespace CdmsBackend.Mediatr
             });
         }
 
+        public async Task SendJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
+        {
+            var job = syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
+
+            await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (ct) =>
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                using var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client);
+                var m = scope.ServiceProvider.GetRequiredService<IMediator>();
+                await m.Send(request, job.CancellationToken);
+                job.Complete();
+            });
+        }
+
         Task<TResponse> ICdmsMediator.Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
         {
             return mediator.Send(request, cancellationToken);
