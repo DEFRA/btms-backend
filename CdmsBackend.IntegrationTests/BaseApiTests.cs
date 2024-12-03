@@ -105,8 +105,3 @@ namespace CdmsBackend.IntegrationTests
         }
     }
 }
-
-public class SyncJobResponse
-{
-    public SyncJobStatus Status { get; set; }
-}

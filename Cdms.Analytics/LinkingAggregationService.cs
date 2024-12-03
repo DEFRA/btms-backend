@@ -48,9 +48,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
             n.CreatedSource >= from && n.CreatedSource < to;
 
         string CreateDatasetName(BsonDocument b) => GetLinkedName(b["_id"]["linked"].ToBoolean());
-
-        // DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
-
+        
         return GetMovementAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$createdSource", aggregateBy);
     }
 
@@ -97,9 +95,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
             n.CreatedSource >= from && n.CreatedSource < to;
 
         string CreateDatasetName(BsonDocument b) => GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!);
-
-        // DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
-
+        
         return GetImportNotificationAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$createdSource", aggregateBy);
     }
 
@@ -116,9 +112,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
             n.PartOne!.ArrivesAt >= from && n.PartOne!.ArrivesAt < to;
 
         string CreateDatasetName(BsonDocument b) => $"{b["_id"]["importNotificationType"].ToString()!} {(b["_id"]["linked"].ToBoolean() ? "Linked" : "Not Linked")}";
-
-        // DateTime AggregateDateCreator(BsonValue b) => b["dateToUse"].ToUniversalTime();
-
+        
         return GetImportNotificationAggregate(dateRange, CreateDatasetName, matchFilter, AggregateDateCreator, "$partOne.arrivesAt", aggregateBy);
     }
 
@@ -194,7 +188,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
             .OrderBy(d => d.Name)
             .ToArray();
         
-        logger.LogDebug("Aggregated Data {result}", mongoResult.ToList().ToJsonString());
+        logger.LogDebug("Aggregated Data {Result}", mongoResult.ToList().ToJsonString());
         
         return Task.FromResult(mongoResult);
     }
@@ -241,7 +235,7 @@ public class LinkingAggregationService(IMongoDbContext context, ILogger<LinkingA
             .OrderBy(d => d.Name)
             .ToArray();
         
-        logger.LogDebug("Aggregated Data {result}", mongoResult.ToList().ToJsonString());
+        logger.LogDebug("Aggregated Data {Result}", mongoResult.ToList().ToJsonString());
         
         return Task.FromResult(mongoResult);
     }

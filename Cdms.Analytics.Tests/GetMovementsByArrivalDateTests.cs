@@ -21,7 +21,7 @@ public class GetMovementsByArrivalDateTests(
 
         testOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Select(r => r.Name).Order().Should().Equal(["Linked", "Not Linked"]);
+        result.Select(r => r.Name).Order().Should().Equal("Linked", "Not Linked");
 
         result[0].Periods[0].Period.Should().BeOnOrAfter(DateTime.Today);
         result[0].Periods.Count.Should().Be(72);

@@ -13,21 +13,20 @@ namespace CdmsBackend.Mediatr
         ISyncJobStore syncJobStore)
         : ICdmsMediator
     {
-        internal static readonly AssemblyName AssemblyName = typeof(CdmsMediator).Assembly.GetName();
         internal static readonly string ActivitySourceName = "Cdms";
         internal static readonly ActivitySource ActivitySource = new(ActivitySourceName, "1.0");
         public const string ActivityName = "CdmsMediator.Queue.Background";
 
         public async Task SendSyncJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
         {
-            syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
+            var job = syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
             
-            await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (stoppingToken) =>
+            await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (ct) =>
             {
                 using var scope = serviceScopeFactory.CreateScope();
                 using var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client);
                 var m = scope.ServiceProvider.GetRequiredService<IMediator>();
-                await m.Send(request, stoppingToken);
+                await m.Send(request, job.CancellationToken);
             });
         }
 

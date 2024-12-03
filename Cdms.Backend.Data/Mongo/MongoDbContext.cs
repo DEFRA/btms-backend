@@ -30,7 +30,7 @@ public class MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactor
     {
         var collections = await (await Database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken);
 
-        foreach (var collection in collections)
+        foreach (var collection in collections.Where(collection => collection["name"] != "system.profile"))
         {
             await Database.DropCollectionAsync(collection["name"].ToString(), cancellationToken);
         }

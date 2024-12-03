@@ -1,7 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Cdms.SyncJob;
 
-public class SyncJob(Guid id, string timespan, string resource) : ISyncJob
+public class SyncJob(Guid id, string timespan, string resource) : ISyncJob, IDisposable
 {
+    private readonly CancellationTokenSource source = new ();
+    private bool disposed;
     private int blobsRead;
     private int blobsPublished;
     private int blobsFailed;
@@ -25,12 +29,17 @@ public class SyncJob(Guid id, string timespan, string resource) : ISyncJob
 
     public int MessagesFailed => messagesFailed;
 
+    [JsonIgnore]
+    public CancellationToken CancellationToken => source.Token;
+
 
 
     public DateTime QueuedOn { get; } = DateTime.UtcNow;
     public DateTime StartedOn { get; private set; }
 
     public DateTime? CompletedOn { get; private set; }
+
+    public DateTime? CancelledOn { get; private set; }
 
     public TimeSpan RunTime
     {
@@ -75,8 +84,11 @@ public class SyncJob(Guid id, string timespan, string resource) : ISyncJob
 
     public void Start()
     {
-        Status = SyncJobStatus.Running;
-        StartedOn = DateTime.UtcNow;
+        if (Status == SyncJobStatus.Pending)
+        {
+            Status = SyncJobStatus.Running;
+            StartedOn = DateTime.UtcNow;
+        }
     }
 
     public void Complete()
@@ -85,11 +97,40 @@ public class SyncJob(Guid id, string timespan, string resource) : ISyncJob
         CompletedOn = DateTime.UtcNow;
     }
 
+    public void Cancel()
+    {
+        if ((int)Status < 2)
+        {
+            source.Cancel();
+            Status = SyncJobStatus.Cancelled;
+            CancelledOn = DateTime.UtcNow;
+        }
+    }
+
     private void TryComplete()
     {
         if (readingBlobsFinished && messagesProcessed - blobsPublished == 0)
         {
             Complete();
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Releases the unmanaged resources used by the <see cref="CancellationTokenSource" /> class and optionally releases the managed resources.
+    /// </summary>
+    /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing && !disposed)
+        {
+            source.Dispose();
+            disposed = true;
         }
     }
 }

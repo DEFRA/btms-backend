@@ -27,7 +27,7 @@ public class SyncGmrsCommand : SyncCommand
                 ? businessOptions.Value.DmpBlobRootFolder
                 : request.RootFolder;
             await SyncBlobPaths<SearchGmrsForDeclarationIdsResponse>(request.SyncPeriod, "GMR", request.JobId,
-                $"{rootFolder}/GVMSAPIRESPONSE");
+                cancellationToken, $"{rootFolder}/GVMSAPIRESPONSE");
         }
     }
 

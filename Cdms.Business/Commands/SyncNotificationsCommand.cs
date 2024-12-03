@@ -38,6 +38,7 @@ namespace Cdms.Business.Commands
                 {
                     await SyncBlobs<Types.Ipaffs.ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
                         request.JobId,
+                        cancellationToken,
                         request.BlobFiles.Select(x => $"{rootFolder}/IPAFFS/{x}").ToArray());
                     return;
                 }
@@ -51,6 +52,7 @@ namespace Cdms.Business.Commands
 
                 await SyncBlobPaths<Types.Ipaffs.ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
                     request.JobId,
+                    cancellationToken,
                     chedTypesToSync.ToArray());
             }
 

@@ -27,7 +27,7 @@ public class SyncDecisionsCommand : SyncCommand
                 ? businessOptions.Value.DmpBlobRootFolder
                 : request.RootFolder;
             await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "DECISIONS", request.JobId,
-                $"{rootFolder}/DECISIONS");
+                cancellationToken,$"{rootFolder}/DECISIONS");
         }
     }
 

@@ -1,10 +1,8 @@
-using Cdms.Business;
 using Cdms.Business.Commands;
 using Cdms.Consumers.MemoryQueue;
 using Cdms.SyncJob;
 using CdmsBackend.Config;
 using CdmsBackend.Mediatr;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -31,7 +29,8 @@ public static class SyncEndpoints
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/clear", ClearSyncJobs).AllowAnonymous();
 		app.MapGet(BaseRoute + "/jobs/{jobId}", GetSyncJob).AllowAnonymous();
-    }
+		app.MapGet(BaseRoute + "/jobs/{jobId}/cancel", CancelSyncJob).AllowAnonymous();
+	}
 
     internal static async Task<IResult> InitialiseEnvironment(IHost app, SyncPeriod period)
     {
@@ -41,8 +40,8 @@ public static class SyncEndpoints
         await ClearSyncJobs(store);
         await GetSyncNotifications(mediator, period);
         await GetSyncClearanceRequests(mediator, period);
-        // await GetSyncDecisions(mediator, period);
-        // await GetSyncGmrs(mediator, period);
+        //// await GetSyncDecisions(mediator, period);
+        //// await GetSyncGmrs(mediator, period);
 
         return Results.Ok();
     }
@@ -63,7 +62,19 @@ public static class SyncEndpoints
         return Task.FromResult(Results.Ok(store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId))));
     }
 
-    private static Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
+	private static Task<IResult> CancelSyncJob([FromServices] ISyncJobStore store, string jobId)
+	{
+		var job = store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId));
+
+		if (job is null)
+		{
+			return Task.FromResult(Results.NoContent());
+		}
+		job.Cancel();
+		return Task.FromResult(Results.Ok());
+	}
+
+	private static Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
     {
        return Task.FromResult(queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
             ? Results.Ok(queueStatsMonitor.GetAll())
@@ -117,13 +128,13 @@ public static class SyncEndpoints
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
-    private static async Task<IResult> GetSyncDecisions(
-        [FromServices] ICdmsMediator mediator,
-        SyncPeriod syncPeriod)
-    {
-        SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod };
-        return await SyncDecisions(mediator, command);
-    }
+    ////private static async Task<IResult> GetSyncDecisions(
+    ////    [FromServices] ICdmsMediator mediator,
+    ////    SyncPeriod syncPeriod)
+    ////{
+    ////    SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod };
+    ////    return await SyncDecisions(mediator, command);
+    ////}
 
     private static async Task<IResult> SyncDecisions([FromServices] ICdmsMediator mediator,
         [FromBody] SyncDecisionsCommand command)

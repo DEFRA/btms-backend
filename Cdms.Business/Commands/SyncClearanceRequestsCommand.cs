@@ -27,7 +27,7 @@ public class SyncClearanceRequestsCommand : SyncCommand
             var rootFolder = string.IsNullOrEmpty(request.RootFolder)
                 ? businessOptions.Value.DmpBlobRootFolder
                 : request.RootFolder;
-            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "ALVS", request.JobId, $"{rootFolder}/ALVS");
+            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "ALVS", request.JobId, cancellationToken,$"{rootFolder}/ALVS");
         }
     }
 

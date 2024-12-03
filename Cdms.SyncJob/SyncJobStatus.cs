@@ -4,5 +4,6 @@ public enum SyncJobStatus
 {
     Pending,
     Running,
-    Completed
+    Completed,
+    Cancelled
 }
