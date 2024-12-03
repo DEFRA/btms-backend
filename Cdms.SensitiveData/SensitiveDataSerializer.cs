@@ -48,7 +48,12 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
 
     public string RedactRawJson(string json, Type type)
     {
+        if (options.Value.Include)
+        {
+            return json;
+        }
         var sensitiveFields = SensitiveFieldsProvider.Get(type);
+       
         var jObject = JObject.Parse(json);
 
         var fields = jObject.Flatten();
@@ -57,7 +62,10 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         {
             if (fields.TryGetValue(field, out var value))
             {
-                fields[field] = options.Value.Getter(value.ToString()!);
+                if (!options.Value.Include)
+                {
+                    fields[field] = options.Value.Getter(value.ToString()!);
+                }
             }
             else
             {
@@ -65,7 +73,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
                 {
                     var key = fields.Keys.ElementAt(i);
                     var replaced = Regex.Replace(key, "\\[.*?\\]", "", RegexOptions.NonBacktracking);
-                    if (replaced == field && fields.TryGetValue(key, out var v))
+                    if (replaced == field && fields.TryGetValue(key, out var v) && !options.Value.Include)
                     {
                         fields[key] = options.Value.Getter(v.ToString()!);
                     }
