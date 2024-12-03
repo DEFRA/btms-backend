@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 
 namespace Cdms.SensitiveData;
@@ -57,23 +58,7 @@ public static class SensitiveFieldsProvider
             }
             else
             {
-                Type elementType = null!;
-
-                //is a complex type of list of complex type
-                if (property.PropertyType.IsArray)
-                {
-                    elementType = property.PropertyType.GetElementType()!;
-                }
-                else if (property.PropertyType.IsGenericType)
-                {
-                    elementType = property.PropertyType.GetGenericArguments()[0];
-
-                }
-                else if (property.PropertyType.IsClass)
-                {
-                    elementType = property.PropertyType;
-
-                }
+                Type elementType = GetElementType(property)!;
 
                 if (elementType != null && elementType.Namespace != "System")
                 {
@@ -83,5 +68,25 @@ public static class SensitiveFieldsProvider
         }
 
         return list;
+    }
+
+    private static Type? GetElementType(PropertyInfo property)
+    {
+        if (property.PropertyType.IsArray)
+        {
+            return property.PropertyType.GetElementType()!;
+        }
+        else if (property.PropertyType.IsGenericType)
+        {
+            return property.PropertyType.GetGenericArguments()[0];
+
+        }
+        else if (property.PropertyType.IsClass)
+        {
+            return property.PropertyType;
+
+        }
+
+        return default;
     }
 }

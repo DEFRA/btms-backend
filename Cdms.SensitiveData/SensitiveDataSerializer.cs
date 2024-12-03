@@ -64,7 +64,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
                 for (int i = 0; i < fields.Keys.Count; i++)
                 {
                     var key = fields.Keys.ElementAt(i);
-                    var replaced = Regex.Replace(key, "\\[.*?\\]", "");
+                    var replaced = Regex.Replace(key, "\\[.*?\\]", "", RegexOptions.NonBacktracking);
                     if (replaced == field && fields.TryGetValue(key, out var v))
                     {
                         fields[key] = options.Value.Getter(v.ToString()!);

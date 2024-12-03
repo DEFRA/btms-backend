@@ -33,7 +33,7 @@ public class DownloadCommand : IRequest<DownloadCommand.Result>
             string rootFolder = System.IO.Path.Combine(env.ContentRootPath, subFolder);
             Directory.CreateDirectory(rootFolder);
             ParallelOptions options = new() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = 10 };
-            var result = blobService.GetResourcesAsync($"{request.Path}{GetPeriodPath(request.SyncPeriod)}", cancellationToken);
+            var result = blobService.GetResourcesAsync($"{request.Path}{request.SyncPeriod.GetPeriodPath()}", cancellationToken);
 
             //Write local files
             await Parallel.ForEachAsync(result, options, async (item, token) =>
@@ -53,30 +53,6 @@ public class DownloadCommand : IRequest<DownloadCommand.Result>
             return commandResult;
         }
 
-
-    private static string GetPeriodPath(SyncPeriod period)
-        {
-            if (period == SyncPeriod.LastMonth)
-            {
-                return DateTime.Today.AddMonths(-1).ToString("/yyyy/MM/");
-            }
-            else if (period == SyncPeriod.ThisMonth)
-            {
-                return DateTime.Today.ToString("/yyyy/MM/");
-            }
-            else if (period == SyncPeriod.Today)
-            {
-                return DateTime.Today.ToString("/yyyy/MM/dd/");
-            }
-            else if (period == SyncPeriod.All)
-            {
-                return "/";
-            }
-            else
-            {
-                throw new ArgumentException($"Unexpected SyncPeriod {period}");
-            }
-        }
     }
 
     public record Result(byte[] Zip);

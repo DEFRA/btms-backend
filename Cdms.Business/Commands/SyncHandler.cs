@@ -103,7 +103,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         protected async Task SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic, SyncJob.SyncJob job,
             CancellationToken cancellationToken)
         {
-            var result = blobService.GetResourcesAsync($"{path}{GetPeriodPath(period)}", cancellationToken);
+            var result = blobService.GetResourcesAsync($"{path}{period.GetPeriodPath()}", cancellationToken);
 
             await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (item, token) =>
             {
@@ -182,32 +182,6 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                     syncMetrics.SyncCompleted<T>(path, topic, timer);
                     logger.BlobFinished(job.JobId.ToString(), item.Name);
                 }
-            }
-        }
-
-
-
-        private static string GetPeriodPath(SyncPeriod period)
-        {
-            if (period == SyncPeriod.LastMonth)
-            {
-                return DateTime.Today.AddMonths(-1).ToString("/yyyy/MM/");
-            }
-            else if (period == SyncPeriod.ThisMonth)
-            {
-                return DateTime.Today.ToString("/yyyy/MM/");
-            }
-            else if (period == SyncPeriod.Today)
-            {
-                return DateTime.Today.ToString("/yyyy/MM/dd/");
-            }
-            else if (period == SyncPeriod.All)
-            {
-                return "/";
-            }
-            else
-            {
-                throw new ArgumentException($"Unexpected SyncPeriod {period}");
             }
         }
     }
