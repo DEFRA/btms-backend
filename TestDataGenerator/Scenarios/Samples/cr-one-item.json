@@ -1,0 +1,52 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDSSIM",
+    "destinationSystem": "ALVS",
+    "correlationId": "000",
+    "serviceCallTimestamp": "2024-10-03T13:53:49.1868768Z"
+  },
+  "header": {
+    "entryReference": null,
+    "entryVersionNumber": 2,
+    "previousVersionNumber": 1,
+    "declarationUCR": null,
+    "declarationPartNumber": null,
+    "declarationType": null,
+    "arrivalDateTime": null,
+    "submitterTURN": null,
+    "declarantId": null,
+    "declarantName": "CDS_Simulator",
+    "dispatchCountryCode": null,
+    "goodsLocationCode": null,
+    "masterUCR": null
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "customsProcedureCode": null,
+      "taricCommodityCode": null,
+      "goodsDescription": null,
+      "consigneeId": null,
+      "consigneeName": null,
+      "itemNetMass": null,
+      "itemSupplementaryUnits": null,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": null,
+      "document": [
+        {
+          "documentCode": "C640",
+          "documentReference": null,
+          "documentStatus": "P",
+          "documentControl": null,
+          "documentQuantity": 3
+        }
+      ],
+      "check": [
+        {
+          "checkCode": "H2019",
+          "departmentCode": "GB"
+        }
+      ]
+    }
+  ]
+}

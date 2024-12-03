@@ -1,0 +1,316 @@
+{
+  "referenceNumber": null,
+  "externalReferences": [
+    {
+      "system": "NCTS",
+      "reference": "24GB123456789AB012",
+      "exactMatch": true,
+      "verifiedByImporter": true,
+      "verifiedByInspector": false
+    }
+  ],
+  "version": 5,
+  "lastUpdated": null,
+  "lastUpdatedBy": {
+    "displayName": "Mark Admin-Tester",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "type": "CVEDP",
+  "status": "SUBMITTED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "REENFORCED_CHECK",
+        "exitRiskDecision": "INCONCLUSIVE",
+        "uniqueId": "9f16a281-8629-41dd-b3bd-e59975910aca"
+      }
+    ],
+    "assessmentDateTime": "2024-11-08T08:22:52.702425171"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Low",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-11-08T08:22:27.587"
+  },
+  "isHighRiskEuImport": true,
+  "partOne": {
+    "personResponsible": {
+      "name": "Performance Tester",
+      "companyId": "25b79d6b-6646-e911-a96b-000d3a28d891",
+      "companyName": "Happy Valley_14143510048",
+      "address": [
+        "DEPARTMENT FOR ENVIRONMENT FOOD & RURAL AFFAIRS (D E F R A), HORNBEAM HOUSE",
+        "ELECTRA WAY",
+        "CHESHIRE EAST",
+        "CREWE",
+        "CW1 6GJ"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "0788976546",
+      "email": "TIC94587_3So@defratest.org.uk",
+      "contactId": "ab7b426a-6646-e911-a96f-000d3a28da35"
+    },
+    "consignor": {
+      "id": "cf596bdc-4f1b-4300-bacf-b1d0e5d5d0ea",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "perf-consignor-company-name",
+      "address": {
+        "addressLine1": "perf-consignor-address-line-1",
+        "city": "perf-consignor-city",
+        "postalZipCode": "AB1 1AB",
+        "countryISOCode": "AF",
+        "telephone": "0123456789",
+        "email": "perf@test.com"
+      },
+      "tracesId": 10130964
+    },
+    "consignee": {
+      "id": "6a7b7d73-c2a1-4bd2-abda-766df1f5a82f",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "perf-consignee-company-name",
+      "address": {
+        "addressLine1": "perf-consignor-address-line-1",
+        "city": "perf-consignee-city",
+        "postalZipCode": "AB1 1AB",
+        "countryISOCode": "AF",
+        "telephone": "0123456789",
+        "email": "perf@test.com"
+      },
+      "tracesId": 10130965
+    },
+    "importer": {
+      "id": "6a7b7d73-c2a1-4bd2-abda-766df1f5a82f",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "perf-consignee-company-name",
+      "address": {
+        "addressLine1": "perf-consignor-address-line-1",
+        "city": "perf-consignee-city",
+        "postalZipCode": "AB1 1AB",
+        "countryISOCode": "AF",
+        "telephone": "0123456789",
+        "email": "perf@test.com"
+      },
+      "tracesId": 10130965
+    },
+    "placeOfDestination": {
+      "id": "6a7b7d73-c2a1-4bd2-abda-766df1f5a82f",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "perf-consignee-company-name",
+      "address": {
+        "addressLine1": "perf-consignor-address-line-1",
+        "city": "perf-consignee-city",
+        "postalZipCode": "AB1 1AB",
+        "countryISOCode": "AF",
+        "telephone": "0123456789",
+        "email": "perf@test.com"
+      },
+      "tracesId": 10130965
+    },
+    "commodities": {
+      "totalGrossWeight": 2,
+      "totalNetWeight": 1,
+      "numberOfPackages": 1,
+      "temperature": "Chilled",
+      "commodityComplement": [
+        {
+          "commodityID": "02042210",
+          "commodityDescription": "Short forequarters",
+          "complementID": 1,
+          "complementName": "Ovis aries",
+          "speciesID": "167258",
+          "speciesName": "Ovis aries",
+          "speciesTypeName": "Domestic",
+          "speciesType": "16",
+          "speciesClass": "167258",
+          "speciesNomination": "Ovis aries"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "9f16a281-8629-41dd-b3bd-e59975910aca",
+          "complementID": 1,
+          "speciesID": "167258",
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "1"
+            },
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "type_package",
+              "data": "Bale"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "AT",
+      "isLowRiskArticle72Country": false,
+      "consignedCountry": "AT",
+      "totalGrossVolume": 2,
+      "totalGrossVolumeUnit": "litres"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "exitBIP": "GBFXT1",
+      "thirdCountry": "DZ",
+      "transitThirdCountries": [
+        "AS"
+      ],
+      "purposeGroup": "For Transit to 3rd Country",
+      "estimatedArrivalDateAtPortOfExit": null,
+      "estimatedArrivalTimeAtPortOfExit": null
+    },
+    "pointOfEntry": "GBPBY017",
+    "arrivalDate": null,
+    "arrivalTime": null,
+    "transporter": {
+      "id": "9d151269-fd63-46ff-ae39-121a6f847944",
+      "type": "private transporter",
+      "status": "nonapproved",
+      "companyName": "perf-transporter-company-name",
+      "address": {
+        "addressLine1": "perf-transporter-address-line-1",
+        "city": "perf-transporter-city",
+        "postalZipCode": "AB1 1AB",
+        "countryISOCode": "AF",
+        "telephone": "0123456789",
+        "email": "perf@test.com"
+      },
+      "tracesId": 10130966
+    },
+    "transporterDetailsRequired": true,
+    "meansOfTransport": {
+      "id": "perf-identification",
+      "type": "Aeroplane",
+      "document": "perf-document"
+    },
+    "meansOfTransportFromEntryPoint": {
+      "id": "perf-identification",
+      "type": "Aeroplane",
+      "document": "perf-document"
+    },
+    "departureDate": "2024-12-31",
+    "departureTime": "12:00:00",
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "11b4e363-8839-ccf7-d0ca-7dc35cf50b6e",
+          "name": "Cashmere Fibere Afghan Ltd",
+          "country": "AF",
+          "types": [
+            "Category 3"
+          ],
+          "approvalNumber": "AF 0023",
+          "section": "Other facility for the collection or handling of animal by-products(unprocessed or untreated materials)"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "billOfLading",
+          "documentReference": "perf-document-number",
+          "documentIssueDate": "2024-01-01"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "local-reference-number",
+    "sealsContainers": [
+      {
+        "sealNumber": "1",
+        "containerNumber": "1",
+        "officialSeal": false
+      }
+    ],
+    "submissionDate": "2024-11-08T08:25:18.409312817Z",
+    "submittedBy": {
+      "displayName": "Mark Admin-Tester",
+      "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBBRS",
+    "portOfExit": "GBFXT",
+    "contactDetails": {
+      "name": "percy inspector",
+      "telephone": "020 8225 7295",
+      "email": "defratestbip@anthunt3.33mail.com"
+    },
+    "nominatedContacts": [
+      {
+        "name": "mo green",
+        "telephone": "0207 555 9675",
+        "email": "mo@green.com"
+      }
+    ],
+    "isGVMSRoute": false,
+    "provideCtcMrn": "YES"
+  },
+  "partTwo": {
+    "decision": {
+      "decision": "Acceptable for Transit",
+      "transitExitBip": "GBFXT1",
+      "transitThirdCountry": "AS",
+      "transitDestinationThirdCountry": "DZ"
+    },
+    "consignmentCheck": {},
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable",
+        "message": "What is the decision for this consignment"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/physicalcheckdone",
+        "message": "Physical check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/documentcheckresult",
+        "message": "Documentary check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/laboratorytestsrequired",
+        "message": "Are laboratory tests required"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/identitycheckdone",
+        "message": "Identity check"
+      }
+    ],
+    "inspectionRequired": "Required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/documentcheckresult",
+      "message": "Documentary check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/identitycheckdone",
+      "message": "Identity check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/physicalcheckdone",
+      "message": "Physical check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/laboratorytestsrequired",
+      "message": "Are laboratory tests required"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable",
+      "message": "What is the decision for this consignment"
+    }
+  ],
+  "etag": "00000000000C61A5",
+  "riskDecisionLockingTime": "2024-12-31T10:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 1
+}

@@ -1,0 +1,67 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDS",
+    "destinationSystem": "ALVS",
+    "correlationId": "20",
+    "serviceCallTimestamp": 1619550176000
+  },
+  "header": {
+    "entryReference": "CHEDPGB20241039875A5",
+    "entryVersionNumber": 2,
+    "previousVersionNumber": 1,
+    "declarationUCR": "1GB782435121000-000000001079849",
+    "declarationPartNumber": null,
+    "declarationType": "F",
+    "arrivalDateTime": "202309100911",
+    "submitterTURN": "GB363127805000",
+    "declarantId": "GB363127805000",
+    "declarantName": "GB363127805000",
+    "dispatchCountryCode": "GB",
+    "goodsLocationCode": "BELBELGVM",
+    "masterUCR": null
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "customsProcedureCode": "4000000",
+      "taricCommodityCode": "0204221000",
+      "goodsDescription": "LAMB",
+      "consigneeId": "GB782435121000",
+      "consigneeName": "GB782435121000",
+      "itemNetMass": 14910.75,
+      "itemSupplementaryUnits": 0,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": "NZ",
+      "documents": [
+        {
+          "documentCode": "N853",
+          "documentReference": "GBCVD2024.1039875",
+          "documentStatus": "AE",
+          "documentControl": "P",
+          "documentQuantity": null
+        }
+      ]
+    },
+    {
+      "itemNumber": 2,
+      "customsProcedureCode": "4000000",
+      "taricCommodityCode": "0201300000",
+      "goodsDescription": "LAMB",
+      "consigneeId": "GB782435121000",
+      "consigneeName": "GB782435121000",
+      "itemNetMass": 14910.75,
+      "itemSupplementaryUnits": 0,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": "NZ",
+      "documents": [
+        {
+          "documentCode": "N853",
+          "documentReference": "GBCVD2024.1039875",
+          "documentStatus": "AE",
+          "documentControl": "P",
+          "documentQuantity": null
+        }
+      ]
+    }
+  ]
+}

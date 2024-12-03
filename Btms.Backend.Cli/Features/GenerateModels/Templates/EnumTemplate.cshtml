@@ -1,0 +1,27 @@
+@using RazorLight
+@model Btms.Backend.Cli.Features.GenerateModels.DescriptorModel.EnumDescriptor
+@inherits RazorLight.TemplatePage<Btms.Backend.Cli.Features.GenerateModels.DescriptorModel.EnumDescriptor>
+
+using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
+
+namespace @Model.SourceNamespace;
+
+[JsonConverter(typeof(JsonStringEnumMemberConverter))]
+public enum @Model.GetEnumName()
+{
+@foreach(var item in Model.Values)
+{
+
+	<text>
+		[EnumMember(Value = "@item.Value")]
+		@item.GetCSharpValue(),
+	</text>
+	
+}
+
+}
+
+
