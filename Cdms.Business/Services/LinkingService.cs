@@ -19,10 +19,10 @@ public static partial class LinkingServiceLogging
     [LoggerMessage(Level = LogLevel.Error, Message = "Linking Failed for {ContextType} - {MatchIdentifier}")]
     internal static partial void LinkingFailed(this ILogger logger, Exception exception, string contextType, string matchIdentifier);
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Linking Finished for {ContextType} - {MatchIdentifier}")]
+    [LoggerMessage(Level = LogLevel.Information, Message = "Linking Not Found for {ContextType} - {MatchIdentifier}")]
     internal static partial void LinkNotFound(this ILogger logger, string contextType, string matchIdentifier);
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Linking Finished for {ContextType} - {MatchIdentifier} - {MovementsCount} Movements and {NotificationsCount} Notifications")]
+    [LoggerMessage(Level = LogLevel.Information, Message = "Link Found for {ContextType} - {MatchIdentifier} - {MovementsCount} Movements and {NotificationsCount} Notifications")]
     internal static partial void LinkFound(this ILogger logger, string contextType, string matchIdentifier, int movementsCount, int notificationsCount);
 
      [LoggerMessage(Level = LogLevel.Information, Message = "Linking Not attempted for {ContextType} - {MatchIdentifier}")]
