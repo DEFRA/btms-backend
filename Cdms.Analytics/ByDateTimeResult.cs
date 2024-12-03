@@ -3,7 +3,6 @@ namespace Cdms.Analytics;
 public class ByDateTimeResult
 {
     public DateTime Period { get; set; }
-    // public Dictionary<string, string> BucketVariables { get; set; } = [];
     public int Value { get; set; }
 }
 

@@ -1,4 +1,5 @@
 using Cdms.Model;
+using Cdms.Types.Ipaffs.V1.Extensions;
 using Cdms.Types.Alvs;
 using Cdms.Types.Ipaffs;
 
@@ -10,7 +11,7 @@ public static class DataHelpers
     {
         var dateString = notification.LastUpdated!.Value.ToString("yyyy/MM/dd");
 
-        return $"{rootPath}/IPAFFS/{notification.ImportNotificationType!.Value.ConvertToChedType()}/{dateString}/{notification.ReferenceNumber!.Replace(".", "_")}-{Guid.NewGuid()}.json";
+        return $"{rootPath}/IPAFFS/{notification.ImportNotificationType!.Value.AsString()}/{dateString}/{notification.ReferenceNumber!.Replace(".", "_")}-{Guid.NewGuid()}.json";
     }
 
     internal static string DateRef(this DateTime created)
@@ -44,7 +45,7 @@ public static class DataHelpers
     internal static string GenerateReferenceNumber(ImportNotificationTypeEnum chedType, int scenario,
         DateTime created, int item)
     {
-        var prefix = chedType.ConvertToChedType();
+        var prefix = chedType.AsString();
 
         if (item > 999999) throw new ArgumentException("Currently only deals with max 100,000 items");
 

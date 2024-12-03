@@ -14,8 +14,8 @@ public class GetMovementsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        var result = (await aggregationTestFixture.LinkingAggregationService
-            .MovementsByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
+        var result = (await aggregationTestFixture.MovementsAggregationService
+            .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -30,10 +30,37 @@ public class GetMovementsByCreatedDateTests(
     }
     
     [Fact]
+    public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
+    {
+        DateTime from = DateTime.MaxValue.AddDays(-1);
+        DateTime to = DateTime.MaxValue;
+
+        var result = (await aggregationTestFixture.MovementsAggregationService
+            .ByCreated(from, to, AggregationPeriod.Hour))
+            .ToList();
+
+        testOutputHelper.WriteLine(result.ToJsonString());
+
+        result.Count.Should().Be(2);
+        
+        result.Select(r => r.Name).Should().Equal("Linked", "Not Linked");
+
+        result.Should().AllSatisfy(r =>
+        {
+            r.Periods.Should().AllSatisfy(p =>
+            {
+                p.Period.Should().BeOnOrAfter(from);
+                p.Period.Should().BeOnOrBefore(to);
+            });
+            r.Periods.Count.Should().Be(24);
+        });
+    }
+    
+    [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        var result = (await aggregationTestFixture.LinkingAggregationService
-            .MovementsByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
+        var result = (await aggregationTestFixture.MovementsAggregationService
+                .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());

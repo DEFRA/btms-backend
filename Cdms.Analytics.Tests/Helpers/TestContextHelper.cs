@@ -1,4 +1,5 @@
 using Cdms.Backend.Data.Extensions;
+using Cdms.Analytics.Extensions;
 using Cdms.Business.Extensions;
 using Cdms.Consumers.Extensions;
 using Cdms.SyncJob.Extensions;
@@ -35,7 +36,7 @@ public static class TestContextHelper
             .ConfigureAppConfiguration(c => c.AddInMemoryCollection(configurationValues!))
             .ConfigureServices((hostContext, s) =>
             {
-                s.AddScoped<ILinkingAggregationService, LinkingAggregationService>();
+                s.AddAnalyticsServices(hostContext.Configuration);
                 s.ConfigureTestGenerationServices();
                 s.AddMongoDbContext(hostContext.Configuration);
                 s.AddBusinessServices(hostContext.Configuration);

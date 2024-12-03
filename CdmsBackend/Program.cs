@@ -1,4 +1,4 @@
-using Cdms.Analytics;
+using Cdms.Analytics.Extensions;
 using Cdms.Backend.Data.Healthcheck;
 using Cdms.BlobService;
 using Cdms.Business.Extensions;
@@ -36,6 +36,8 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Environment = System.Environment;
+
+using OpenTelemetry.Extensions.Hosting;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -111,19 +113,18 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 					"Microsoft.AspNetCore.Hosting",
 					"Microsoft.AspNetCore.Server.Kestrel",
 					"System.Net.Http",
-					MetricNames.MeterName);
-		});
-
-	builder.Services.AddOpenTelemetry()
-		.WithTracing(tracing =>
+					MetricNames.MeterName,
+                    AnalyticsMetricNames.MeterName)
+                .AddPrometheusExporter();
+		})
+        .WithTracing(tracing =>
 		{
 			tracing.AddAspNetCoreInstrumentation()
 				.AddHttpClientInstrumentation()
 				.AddSource(MetricNames.MeterName)
 				.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
-		});
-
-	builder.Services.AddOpenTelemetry().UseOtlpExporter();
+		})
+        .UseOtlpExporter();
 
 	static void ConfigureJsonApiOptions(JsonApiOptions options)
 	{
@@ -147,7 +148,8 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Services.AddScoped(typeof(IResourceReadRepository<,>), typeof(MongoRepository<,>));
 	builder.Services.AddScoped(typeof(IResourceWriteRepository<,>), typeof(MongoRepository<,>));
 	builder.Services.AddScoped(typeof(IResourceRepository<,>), typeof(MongoRepository<,>));
-	builder.Services.AddScoped<ILinkingAggregationService, LinkingAggregationService>();
+
+    builder.Services.AddAnalyticsServices(builder.Configuration);
 }
 
 [ExcludeFromCodeCoverage]
@@ -220,14 +222,13 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
 	var app = builder.Build();
 
-
 	app.UseEmfExporter();
 	app.UseAuthentication();
 	app.UseAuthorization();
 	app.UseJsonApi();
 	app.MapControllers().RequireAuthorization();
-
-	var dotnetHealthEndpoint = "/health-dotnet";
+    
+    var dotnetHealthEndpoint = "/health-dotnet";
 	app.MapGet("/health", GetStatus).AllowAnonymous();
 	app.MapHealthChecks(dotnetHealthEndpoint,
 		new HealthCheckOptions()
@@ -241,7 +242,12 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 	app.UseManagementEndpoints(options);
 	app.UseDiagnosticEndpoints(options);
 	app.UseAnalyticsEndpoints();
-
+    
+    if (builder.Environment.IsDevelopment())
+    {
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
+    }
+    
 	return app;
 }
 

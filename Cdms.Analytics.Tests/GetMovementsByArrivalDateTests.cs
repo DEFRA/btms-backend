@@ -15,8 +15,8 @@ public class GetMovementsByArrivalDateTests(
     public async Task WhenCalledNext72Hours_ReturnExpectedAggregation()
     {
 
-        var result = (await aggregationTestFixture.LinkingAggregationService
-            .MovementsByArrival(DateTime.Now.CurrentHour(), DateTime.Now.CurrentHour().AddDays(3), AggregationPeriod.Hour))
+        var result = (await aggregationTestFixture.MovementsAggregationService
+            .ByArrival(DateTime.Now.CurrentHour(), DateTime.Now.CurrentHour().AddDays(3), AggregationPeriod.Hour))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -30,8 +30,8 @@ public class GetMovementsByArrivalDateTests(
     [Fact]
     public async Task WhenCalledNextMonth_ReturnExpectedAggregation()
     {
-        var result = (await aggregationTestFixture.LinkingAggregationService
-            .MovementsByArrival(DateTime.Today, DateTime.Today.MonthLater()))
+        var result = (await aggregationTestFixture.MovementsAggregationService
+            .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());

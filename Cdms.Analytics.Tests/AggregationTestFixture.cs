@@ -11,7 +11,8 @@ public class AggregationTestFixture : IDisposable
 #pragma warning restore S3881
 {
     public IHost App;
-    public ILinkingAggregationService LinkingAggregationService;
+    public IImportNotificationsAggregationService ImportNotificationsAggregationService;
+    public IMovementsAggregationService MovementsAggregationService;
 
     public IMongoDbContext MongoDbContext;
     public AggregationTestFixture()
@@ -22,7 +23,8 @@ public class AggregationTestFixture : IDisposable
         var rootScope = App.Services.CreateScope();
 
         MongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        LinkingAggregationService = rootScope.ServiceProvider.GetRequiredService<ILinkingAggregationService>();
+        ImportNotificationsAggregationService = rootScope.ServiceProvider.GetRequiredService<IImportNotificationsAggregationService>();
+        MovementsAggregationService = rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>();
         
         MongoDbContext.ResetCollections().GetAwaiter().GetResult();
 
