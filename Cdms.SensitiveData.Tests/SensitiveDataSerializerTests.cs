@@ -87,7 +87,7 @@ public class SensitiveDataSerializerTests
         var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
         // ACT
-        var result = serializer.RedactRawJson<SimpleClass>(json);
+        var result = serializer.RedactRawJson(json, typeof(SimpleClass));
 
         // ASSERT
         var resultClass = JsonSerializer.Deserialize<SimpleClass>(result, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });

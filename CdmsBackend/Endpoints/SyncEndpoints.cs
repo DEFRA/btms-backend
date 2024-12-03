@@ -1,8 +1,14 @@
+using System.IO.Compression;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Cdms.Business.Commands;
 using Cdms.Consumers.MemoryQueue;
 using Cdms.SyncJob;
+using Cdms.Types.Alvs;
+using Cdms.Types.Ipaffs;
 using CdmsBackend.Config;
 using CdmsBackend.Mediatr;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -20,6 +26,9 @@ public static class SyncEndpoints
             app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
             app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
             app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
+
+            app.MapGet(BaseRoute + "/download/import-notifications", DownloadNotifications).AllowAnonymous();
+            app.MapGet(BaseRoute + "/download/clearance-requests", DownloadClearanceRequests).AllowAnonymous();
         }
 
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
@@ -44,6 +53,18 @@ public static class SyncEndpoints
         //// await GetSyncGmrs(mediator, period);
 
         return Results.Ok();
+    }
+
+    private static async Task<IResult> DownloadNotifications([FromServices] IMediator mediator, [FromQuery] string path, [FromQuery]SyncPeriod period)
+    {
+        var result = await mediator.Send(new DownloadCommand() { Type = typeof(ImportNotification), Path = path, SyncPeriod = period });
+        return Results.File(result.Zip, "application/zip", "notifications.zip");
+    }
+
+    private static async Task<IResult> DownloadClearanceRequests([FromServices] IMediator mediator, [FromQuery] string path, [FromQuery] SyncPeriod period)
+    {
+        var result = await mediator.Send(new DownloadCommand() { Type = typeof(AlvsClearanceRequest), Path = path, SyncPeriod = period });
+        return Results.File(result.Zip, "application/zip", "clearancerequests.zip");
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)

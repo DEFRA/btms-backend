@@ -6,6 +6,6 @@ public interface ISensitiveDataSerializer
 {
     public T Deserialize<T>(string json, Action<JsonSerializerOptions> optionsOverride = null!);
 
-    string RedactRawJson<T>(string json);
+    string RedactRawJson(string json, Type type);
 }
 

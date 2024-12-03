@@ -25,6 +25,23 @@ public static class SensitiveFieldsProvider
        
     }
 
+    public static List<string> Get(Type type)
+    {
+        lock (cacheLock)
+        {
+            if (cache.TryGetValue(type, out var value))
+            {
+                return value;
+            }
+
+            var list = GetSensitiveFields(string.Empty, type);
+            cache.Add(type, list);
+            return list;
+        }
+
+
+    }
+
     private static List<string> GetSensitiveFields(string root, Type type)
     {
         var namingPolicy = JsonNamingPolicy.CamelCase;

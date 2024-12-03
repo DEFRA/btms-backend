@@ -46,9 +46,9 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
        
     }
 
-    public string RedactRawJson<T>(string json)
+    public string RedactRawJson(string json, Type type)
     {
-        var sensitiveFields = SensitiveFieldsProvider.Get<T>();
+        var sensitiveFields = SensitiveFieldsProvider.Get(type);
         var jObject = JObject.Parse(json);
 
         var fields = jObject.Flatten();
