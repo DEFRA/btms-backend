@@ -37,7 +37,7 @@ dotnet test
 
 Run CDP-Deployments application:
 ```bash
-dotnet run --project BtmsBackend --launch-profile Development
+dotnet run --project Btms.Backend --launch-profile Development
 ```
 
 ### SonarCloud
