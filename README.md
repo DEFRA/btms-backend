@@ -1,4 +1,4 @@
-# cdms-backend
+# BTMS Backend
 
 Core delivery C# ASP.NET backend template.
 
@@ -37,7 +37,7 @@ dotnet test
 
 Run CDP-Deployments application:
 ```bash
-dotnet run --project CdmsBackend --launch-profile Development
+dotnet run --project BtmsBackend --launch-profile Development
 ```
 
 ### SonarCloud
