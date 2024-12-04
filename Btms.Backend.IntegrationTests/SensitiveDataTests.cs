@@ -1,4 +1,6 @@
 using System.Text.Json.Nodes;
+using Btms.Backend.IntegrationTests.Helpers;
+using Btms.BlobService;
 using Btms.SensitiveData;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -8,13 +10,15 @@ using Xunit;
 
 namespace Btms.Backend.IntegrationTests;
 
+
 public class SensitiveDataTests
 {
     [Fact]
     public void WhenIncludeSensitiveData_RedactedShouldBeSameAsJson()
     {
+        var filePath = "../../../Fixtures/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
         string json =
-            File.ReadAllText(Path.GetFullPath("..\\..\\..\\Fixtures\\SmokeTest\\IPAFFS\\CHEDA\\CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json"));
+            File.ReadAllText(filePath);
                 
         SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = true };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
@@ -28,8 +32,9 @@ public class SensitiveDataTests
     [Fact]
     public void WhenIncludeSensitiveData_RedactedShouldBeDifferentJson()
     {
+        var filePath = "../../../Fixtures/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
         string json =
-            File.ReadAllText(Path.GetFullPath("..\\..\\..\\Fixtures\\SmokeTest\\IPAFFS\\CHEDA\\CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json"));
+            File.ReadAllText(filePath);
 
         SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = false };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
