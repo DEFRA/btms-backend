@@ -35,6 +35,7 @@ namespace Btms.Backend.Mediatr
 
             await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (ct) =>
             {
+                job.Start();
                 using var scope = serviceScopeFactory.CreateScope();
                 using var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client);
                 var m = scope.ServiceProvider.GetRequiredService<IMediator>();
