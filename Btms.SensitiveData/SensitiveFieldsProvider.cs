@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Btms.SensitiveData;
 
@@ -49,8 +50,10 @@ public static class SensitiveFieldsProvider
         var list = new List<string>();
         foreach (var property in type.GetProperties())
         {
+            var jsonPropertyNameAttribute = property.GetCustomAttribute<JsonPropertyNameAttribute>();
+            var propertyName = jsonPropertyNameAttribute != null ? jsonPropertyNameAttribute.Name : property.Name;
             string currentPath;
-            currentPath = string.IsNullOrEmpty(root) ? $"{namingPolicy.ConvertName(property.Name)}" : $"{namingPolicy.ConvertName(root)}.{namingPolicy.ConvertName(property.Name)}";
+            currentPath = string.IsNullOrEmpty(root) ? $"{namingPolicy.ConvertName(propertyName)}" : $"{namingPolicy.ConvertName(root)}.{namingPolicy.ConvertName(propertyName)}";
 
             if (property.CustomAttributes.Any(x => x.AttributeType == typeof(SensitiveDataAttribute)))
             {
