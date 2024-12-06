@@ -1,19 +1,22 @@
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using System.Collections.Generic;
+using Btms.Model;
 using MongoDB.Bson;
 namespace Btms.Analytics.Extensions;
+
+public class AnalyticsException(string message, Exception inner) : Exception(message, inner);
 
 public static class AnalyticsMetricNames
 {
     public const string MeterName = "Btms.Backend.Analytics";
-    public const string MetricPrefix = "btms.service.analytics";
+    public const string MetricPrefix = "Btms.service.analytics";
 
     public static class CommonTags
     {
-        public const string Service = "btms.service.anayltics";
-        public const string ExceptionType = "btms.exception_type";
-        public const string MessageType = "btms.message_type";
+        public const string Service = "Btms.service.anayltics";
+        public const string ExceptionType = "Btms.exception_type";
+        public const string MessageType = "Btms.message_type";
     }
 }
 
@@ -39,4 +42,15 @@ public static class AnalyticsHelpers
 
     internal static readonly Comparer<ByDateTimeResult>? byDateTimeResultComparer = Comparer<ByDateTimeResult>.Create((d1, d2) => d1.Period.CompareTo(d2.Period));
     
+    public static string[] GetImportNotificationSegments()
+    {
+        return ModelHelpers.GetChedTypes()
+            .SelectMany(chedType => new string[] { $"{chedType} Linked", $"{chedType} Not Linked" })
+            .ToArray();
+    }
+
+    public static string[] GetMovementSegments()
+    {
+        return new string[] { "Linked", "Not Linked" };
+    }
 }

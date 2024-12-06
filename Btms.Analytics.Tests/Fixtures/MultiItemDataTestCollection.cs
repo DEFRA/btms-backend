@@ -1,9 +1,9 @@
 using Xunit;
 
-namespace Btms.Analytics.Tests;
+namespace Btms.Analytics.Tests.Fixtures;
 
-[CollectionDefinition("Aggregation Test collection")]
-public class AggregationTestCollection : ICollectionFixture<AggregationTestFixture>
+[CollectionDefinition(nameof(MultiItemDataTestCollection))]
+public class MultiItemDataTestCollection : ICollectionFixture<MultiItemDataTestFixture>
 {
     // This class has no code, and is never created. Its purpose is simply
     // to be the place to apply [CollectionDefinition] and all the

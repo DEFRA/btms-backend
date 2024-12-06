@@ -1,23 +1,22 @@
-using Btms.Analytics;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
+using Btms.Analytics.Tests.Fixtures;
 
 namespace Btms.Analytics.Tests;
 
-[Collection("Aggregation Test collection")]
-public class GetImportNotificationsByCreatedDateTests(
-    AggregationTestFixture aggregationTestFixture,
+[Collection(nameof(BasicSampleDataTestCollection))]
+public class ImportNotificationsByCreatedDateTests(
+    BasicSampleDataTestFixture basicSampleDataTestFixture,
     ITestOutputHelper testOutputHelper)
 {
     
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        var result = (await aggregationTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(),AggregationPeriod.Hour))
             .ToList();
 
@@ -35,7 +34,7 @@ public class GetImportNotificationsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        var result = (await aggregationTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
             .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .ToList();
 
@@ -62,7 +61,7 @@ public class GetImportNotificationsByCreatedDateTests(
         DateTime from = DateTime.MaxValue.AddDays(-1);
         DateTime to = DateTime.MaxValue;
 
-        var result = (await aggregationTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
                 .ByCreated(from, to, AggregationPeriod.Hour))
             .ToList();
 
