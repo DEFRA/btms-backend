@@ -6,6 +6,7 @@ using Btms.Types.Ipaffs.Mapping;
 using SlimMessageBus;
 using System.Diagnostics.CodeAnalysis;
 using Btms.Consumers.Extensions;
+using Force.DeepCloner;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Consumers
@@ -34,11 +35,13 @@ namespace Btms.Consumers
                 
 
                 var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber!);
+                Model.Ipaffs.ImportNotification persistedNotification = null!;
                 if (existingNotification is not null)
                 {
                     if (internalNotification.UpdatedSource.TrimMicroseconds() >
                         existingNotification.UpdatedSource.TrimMicroseconds())
                     {
+                        persistedNotification = existingNotification.DeepClone();
                         internalNotification.AuditEntries = existingNotification.AuditEntries;
                         internalNotification.CreatedSource = existingNotification.CreatedSource;
                         internalNotification.Update(BuildNormalizedIpaffsPath(auditId!), existingNotification);
@@ -48,15 +51,17 @@ namespace Btms.Consumers
                     {
                         logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.ReferenceNumber!);
                         Context.Skipped();
+                        return;
                     }
                 }
                 else
                 {
                     internalNotification.Create(BuildNormalizedIpaffsPath(auditId!));
                     await dbContext.Notifications.Insert(internalNotification);
+                    persistedNotification = internalNotification!;
                 }
 
-                var linkContext = new ImportNotificationLinkContext(internalNotification, existingNotification);
+                var linkContext = new ImportNotificationLinkContext(persistedNotification, existingNotification);
                 var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
             }
         }

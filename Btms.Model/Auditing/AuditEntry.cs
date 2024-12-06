@@ -149,7 +149,7 @@ public class AuditEntry
                         value = operation.Value.GetValue<string>();
                         break;
                     case JsonValueKind.Number:
-                        value = operation.Value.GetValue<long>();
+                        value = operation.Value.GetValue<double>();
                         break;
                     case JsonValueKind.True:
                     case JsonValueKind.False:
