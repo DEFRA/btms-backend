@@ -115,6 +115,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
             catch (Exception e)
             {
+                // No Exception is logged at this point, as its logged further up the stack
                 metrics.Faulted(e);
                 throw new LinkException(e);
             }

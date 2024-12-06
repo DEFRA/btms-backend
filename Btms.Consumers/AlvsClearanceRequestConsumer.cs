@@ -40,11 +40,10 @@ namespace Btms.Consumers
 
                 if (existingMovement is not null)
                 {
-                    persistedMovement = existingMovement.DeepClone();
                     if (movement.ClearanceRequests[0].Header?.EntryVersionNumber >
                         existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
                     {
-                        ////movement.AuditEntries = existingMovement.AuditEntries;
+                        persistedMovement = existingMovement.DeepClone();
                         var auditEntry = AuditEntry.CreateUpdated(existingMovement.ClearanceRequests[0],
                             movement.ClearanceRequests[0],
                             BuildNormalizedAlvsPath(auditId!),
@@ -68,6 +67,7 @@ namespace Btms.Consumers
                     {
                         logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.Header?.EntryReference!);
                         Context.Skipped();
+                        return;
                     }
                 }
                 else

@@ -38,10 +38,10 @@ namespace Btms.Consumers
                 Model.Ipaffs.ImportNotification persistedNotification = null!;
                 if (existingNotification is not null)
                 {
-                    persistedNotification = existingNotification.DeepClone();
                     if (internalNotification.UpdatedSource.TrimMicroseconds() >
                         existingNotification.UpdatedSource.TrimMicroseconds())
                     {
+                        persistedNotification = existingNotification.DeepClone();
                         internalNotification.AuditEntries = existingNotification.AuditEntries;
                         internalNotification.CreatedSource = existingNotification.CreatedSource;
                         internalNotification.Update(BuildNormalizedIpaffsPath(auditId!), existingNotification);
@@ -51,6 +51,7 @@ namespace Btms.Consumers
                     {
                         logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.ReferenceNumber!);
                         Context.Skipped();
+                        return;
                     }
                 }
                 else
