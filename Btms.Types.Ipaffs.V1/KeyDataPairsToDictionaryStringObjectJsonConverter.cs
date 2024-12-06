@@ -53,24 +53,29 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
 
             if (propertyName == "key")
             {
-                //get key value
-                reader.Read();
-                var key = ExtractValue(ref reader, options);
-
-                reader.Read();
-                object? value = null;
-                if (reader.TokenType != JsonTokenType.EndObject)
-                {
-                    reader.Read();
-                    value = ExtractValue(ref reader, options);
-                }
-
-
-                dictionary.Add(key?.ToString()!, value);
+                ReadEntry(ref reader, options, dictionary);
             }
         }
 
         return dictionary;
+    }
+
+    private void ReadEntry(ref Utf8JsonReader reader, JsonSerializerOptions options, Dictionary<string, object?> dictionary)
+    {
+        //get key value
+        reader.Read();
+        var key = ExtractValue(ref reader, options);
+
+        reader.Read();
+        object? value = null;
+        if (reader.TokenType != JsonTokenType.EndObject)
+        {
+            reader.Read();
+            value = ExtractValue(ref reader, options);
+        }
+
+
+        dictionary.Add(key?.ToString()!, value);
     }
 
     public override void Write(
