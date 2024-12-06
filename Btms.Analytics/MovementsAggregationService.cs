@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Data.Common;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using Btms.Analytics.Extensions;
+using System.Text.RegularExpressions;
 using Btms.Backend.Data;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
@@ -10,6 +11,8 @@ using Btms.Model;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
+
+using Btms.Analytics.Extensions;
 
 namespace Btms.Analytics;
 
@@ -23,7 +26,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="to">Time period to search to (exclusive)</param>
     /// <param name="aggregateBy">Aggregate by day/hour</param>
     /// <returns></returns>
-    public Task<Dataset[]> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset[]> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -42,7 +45,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="to">Time period to search to (exclusive)</param>
     /// <param name="aggregateBy">Aggregate by day/hour</param>
     /// <returns></returns>
-    public Task<Dataset[]> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset[]> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -54,7 +57,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$arrivesAt", aggregateBy);
     }
 
-    public Task<PieChartDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Movements
@@ -63,13 +66,120 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Key), g => g.Count);
             
-        return Task.FromResult(new PieChartDataset()
+        return Task.FromResult(new SingeSeriesDataset()
         {
-            Values =  new string[] { "Linked", "Not Linked" }.ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
+            Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
+
+    public Task<MultiSeriesDataset[]> ByItemCount(DateTime from, DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(m => new { Linked = m.Relationships.Notifications.Data.Count > 0, Items = m.Items.Count })
+            .GroupBy(g => g.Key.Linked);
+
+        var mongoResult = mongoQuery
+            .Execute(logger)
+            .SelectMany(g => g.Select(l => new
+            {
+                Linked = g.Key, 
+                ItemCount = l.Key.Items,
+                Count = l.Count()
+            }))
+            .ToList();
+            
+        var dictionary = mongoResult
+            .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), ItemCount = g.ItemCount }, g => g.Count);
+            
+        var maxCount = mongoResult
+            .Max(r => r.Count);
+
+        return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
+            .Select(title => new MultiSeriesDataset(title, "Item Count") {
+                Results = Enumerable.Range(0, maxCount + 1)
+                    .Select(i => new ByNumericDimensionResult()
+                    {
+                        Dimension = i,
+                        Value = dictionary!.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
+                    }).ToList()
+            })
+            .ToArray()    
+        );
+    }
     
-    private Task<Dataset[]> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
+    public Task<MultiSeriesDataset[]> ByUniqueDocumentReferenceCount(DateTime from, DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(m => new
+            {
+                Linked = m.Relationships.Notifications.Data.Count > 0,
+                DocumentReferenceCount = m.Items
+                    .SelectMany(i => i.Documents == null ? new string[] {} : i.Documents.Select(d => d.DocumentReference))
+                    .Distinct()
+                    .Count()
+            })
+            .GroupBy(g => g.Key.Linked);
+
+        var mongoResult = mongoQuery
+            .Execute(logger)
+            .SelectMany(g => g.Select(l => new
+                {
+                    Linked = g.Key,
+                    DocumentReferenceCount = l.Key.DocumentReferenceCount,
+                    MovementCount = l.Count()
+                }))
+            .ToList();
+        
+        var dictionary = mongoResult
+            .ToDictionary(
+                g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), DocumentReferenceCount = g.DocumentReferenceCount },
+                g => g.MovementCount)!;
+
+        var maxReferences = mongoResult.Max(r => r.DocumentReferenceCount);
+        
+        return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
+            .Select(title => new MultiSeriesDataset(title, "Document Reference Count") {
+                Results = Enumerable.Range(0, maxReferences + 1)
+                    .Select(i => new ByNumericDimensionResult()
+                    {
+                        Dimension = i,
+                        Value = dictionary!.GetValueOrDefault(new { Title=title, DocumentReferenceCount = i }, 0)
+                    }).ToList()
+            })
+            .ToArray()    
+        );
+    }
+
+    public Task<SingeSeriesDataset> UniqueDocumentReferenceByMovementCount(DateTime from, DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
+            .SelectMany(m => m.Items.Select(i => new { Item = i, MovementId = m.Id }))
+            .SelectMany(i => i.Item.Documents!.Select(d =>
+                new { MovementId = i.MovementId, DocumentReference = d.DocumentReference }))
+            .Distinct()
+            .GroupBy(d => d.DocumentReference)
+            .Select(d => new { DocumentReference = d.Key, MovementCount = d.Count() })
+            .GroupBy(d => d.MovementCount)
+            .Select(d => new { MovementCount = d.Key, DocumentReferenceCount = d.Count() });
+            
+            var mongoResult = mongoQuery
+                .Execute(logger)
+                .ToDictionary(
+                    r =>r.MovementCount.ToString(),
+                    r=> r.DocumentReferenceCount);
+
+            var result = new SingeSeriesDataset() { Values = mongoResult };
+            
+            return Task.FromResult(result);
+    }
+
+    private Task<MultiSeriesDatetimeDataset[]> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
         var truncateBy = aggregateBy == AggregationPeriod.Hour ? "hour" : "day";
         
@@ -85,9 +195,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Movements
             .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
 
-        var output = new string[] { "Linked", "Not Linked" }
+        var output = AnalyticsHelpers.GetMovementSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))
-            .AsOrderedArray();
+            .AsOrderedArray(m => m.Name);
         
         logger.LogDebug("Aggregated Data {result}", output.ToList().ToJsonString());
         

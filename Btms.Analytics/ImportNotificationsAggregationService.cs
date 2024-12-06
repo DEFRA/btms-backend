@@ -1,7 +1,6 @@
 using System.Collections;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
@@ -11,11 +10,14 @@ using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
+using Btms.Analytics.Extensions;
+using MongoDB.Driver.Linq;
+
 namespace Btms.Analytics;
 
 public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger) : IImportNotificationsAggregationService
 {
-    public Task<Dataset[]> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset[]> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -28,7 +30,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
-    public Task<Dataset[]> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset[]> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -41,7 +43,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
     }
     
-    public Task<PieChartDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Notifications
@@ -51,20 +53,67 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()!),
                 g => g.Count);
 
-        return Task.FromResult(new PieChartDataset()
+        return Task.FromResult(new SingeSeriesDataset()
         {
-            Values = GetSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
+            Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
 
-    private static string[] GetSegments()
+    public Task<MultiSeriesDataset[]> ByCommodityCount(DateTime from, DateTime to)
     {
-        return ModelHelpers.GetChedTypes()
-            .SelectMany(chedType => new string[] { $"{chedType} Linked", $"{chedType} Not Linked" })
-            .ToArray();
+        var query = context
+            .Notifications
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(n => new
+            {
+                ImportNotificationType = n.ImportNotificationType!.Value,
+                Linked = n.Relationships.Movements.Data.Count > 0,
+                CommodityCount = n.Commodities.Count()
+            })
+            .Select(g => new { g.Key, Count = g.Count() });
+
+        var result = query
+            .Execute(logger)
+            .GroupBy(r => new { r.Key.ImportNotificationType, r.Key.Linked })
+            .ToList();
+        
+        var maxCommodities = result.Max(r => r.Max(i => i.Key.CommodityCount));
+        
+        var list = result
+            .SelectMany(g =>
+                g.Select(r =>
+                    new {
+                        Title = AnalyticsHelpers.GetLinkedName(g.Key.Linked, g.Key.ImportNotificationType.AsString()!),
+                        r.Key.CommodityCount,
+                        NotificationCount = r.Count
+                    })
+            )
+            .ToList();
+
+        var asDictionary = list
+            .ToDictionary(
+                g => new { g.Title, g.CommodityCount },
+                g => g.NotificationCount);
+        
+        
+        return Task.FromResult(
+            AnalyticsHelpers.GetImportNotificationSegments()
+                .Select(title => new MultiSeriesDataset(title, "ItemCount")
+                {
+                    // Results = asDictionary.AsResultList(title, maxCommodities)
+                    Results = Enumerable.Range(0, maxCommodities)
+                        .Select(i => new ByNumericDimensionResult()
+                        {
+                            Dimension = i,
+                            Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
+                        }).ToList()
+                }
+                )
+                .AsOrderedArray(d => d.Name)
+            );
     }
 
-    private Task<Dataset[]> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
+    private Task<MultiSeriesDatetimeDataset[]> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
         var truncateBy = aggregateBy == AggregationPeriod.Hour ? "hour" : "day";
         
@@ -80,9 +129,9 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Notifications
             .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
         
-        var output = GetSegments()
+        var output = AnalyticsHelpers.GetImportNotificationSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))
-            .AsOrderedArray();
+            .AsOrderedArray(d => d.Name);
         
         logger.LogDebug("Aggregated Data {result}", output.ToList().ToJsonString());
         

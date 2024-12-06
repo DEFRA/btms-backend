@@ -3,11 +3,13 @@ using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
+using Btms.Analytics.Tests.Fixtures;
+
 namespace Btms.Analytics.Tests;
 
-[Collection("Aggregation Test collection")]
-public class GetImportNotificationsByArrivalDateTests(
-    AggregationTestFixture aggregationTestFixture,
+[Collection(nameof(BasicSampleDataTestCollection))]
+public class ImportNotificationsByArrivalDateTests(
+    BasicSampleDataTestFixture basicSampleDataTestFixture,
     ITestOutputHelper testOutputHelper)
 {
     
@@ -16,7 +18,7 @@ public class GetImportNotificationsByArrivalDateTests(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         
-        var result = (await aggregationTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
             .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .ToList();
 

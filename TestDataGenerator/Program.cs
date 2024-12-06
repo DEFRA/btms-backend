@@ -101,7 +101,8 @@ class Program
                 {
                     app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5, 7),
                     app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(5, 7),
-                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(15, 7)
+                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(15, 7),
+                    app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(15, 7)
                 }
             },
             new
