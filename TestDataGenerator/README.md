@@ -1,4 +1,4 @@
-# CDMS Test Data Generator
+# Btms Test Data Generator
 
 This test generator allows us to manage sets of test data for different uses, and store them, either in blob storage or
 locally.

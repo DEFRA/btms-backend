@@ -1,12 +1,17 @@
+using System.Collections;
+using System.Linq.Expressions;
 using Btms.Backend.Data;
 using Btms.Model.Data;
+using Btms.Model.Extensions;
 using Btms.Model.Ipaffs;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics.Extensions;
 
@@ -28,7 +33,7 @@ public static class AnalyticsExtensions
         return services;
     }
 
-    public static string MetricsKey(this Dataset ds)
+    public static string MetricsKey(this MultiSeriesDatetimeDataset ds)
     {
         return ds.Name.Replace(" ", "-").ToLower();
     }
@@ -64,10 +69,10 @@ public static class AnalyticsExtensions
             : [];
     }
 
-    public static Dataset AsDataset(this Dictionary<string, BsonDocument> records, DateTime[] dateRange, string title)
+    public static MultiSeriesDatetimeDataset AsDataset(this Dictionary<string, BsonDocument> records, DateTime[] dateRange, string title)
     {
         var dates = records.GetNamedSetAsDict(title);
-        return new Dataset(title)
+        return new MultiSeriesDatetimeDataset(title)
         {
             Periods = dateRange
                 .Select(resultDate =>
@@ -80,11 +85,64 @@ public static class AnalyticsExtensions
         };
     }
 
-    public static Dataset[] AsOrderedArray(this IEnumerable<Dataset> en)
+    public static T[] AsOrderedArray<T, TKey>(this IEnumerable<T> en, Func<T, TKey> keySelector)
     {
         return en
-            .OrderBy(d => d.Name)
+            .OrderBy(keySelector)
             .ToArray();
     }
 
+    internal static IEnumerable<IGrouping<TKey, TSource>> Execute<TSource, TKey>(this IQueryable<IGrouping<TKey, TSource>> source, ILogger logger)
+    {
+        
+        try
+        {
+            var aggregatedData = source.ToList();
+            return aggregatedData;
+        }
+        catch(Exception ex)
+        {
+            logger.LogError(ex, "Error querying Mongo : {message}", ex.Message);
+            throw new AnalyticsException("Error querying Mongo", ex);
+        }
+        finally 
+        {
+            logger.LogExecutedMongoString(source);
+        }
+    }
+    
+    internal static IEnumerable<TSource> Execute<TSource>(
+        this IQueryable<TSource> source, ILogger logger) 
+    {
+        
+        try
+        {
+            var aggregatedData = source.ToList();
+            return aggregatedData;
+        }
+        catch(Exception ex)
+        {
+            logger.LogError(ex, "Error querying Mongo : {message}", ex.Message);
+            throw new AnalyticsException("Error querying Mongo", ex);
+        }
+        finally 
+        {
+            logger.LogExecutedMongoString(source);
+        }
+    }
+
+    /// <summary>
+    /// Gets the executed query details to allow issues to be reproduced
+    /// I'm sure this could be made cleaner but should do for now.
+    /// </summary>
+    /// <param name="logger">Where to write the log</param>
+    /// <param name="source">A mongo query that has already executed</param>
+    private static void LogExecutedMongoString(this ILogger logger, IQueryable source)
+    {
+        var stages = ((IMongoQueryProvider)source.Provider).LoggedStages;
+
+        var query = "[" + String.Join(",", stages.Select(s => s.ToString()).ToArray()) +"]";
+        
+        logger.LogInformation(query);
+    }
 }

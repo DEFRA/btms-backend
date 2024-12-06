@@ -67,12 +67,26 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     public ClearanceRequestBuilder<T> WithItem(string documentCode, string commodityCode, string description,
         int netWeight)
     {
-        return Do(x =>
+        return Do(cr =>
         {
-            x.Items![0].TaricCommodityCode = commodityCode;
-            x.Items![0].GoodsDescription = description;
-            x.Items![0].ItemNetMass = netWeight;
-            x.Items![0].Documents![0].DocumentCode = documentCode;
+            cr.Items![0].TaricCommodityCode = commodityCode;
+            cr.Items![0].GoodsDescription = description;
+            cr.Items![0].ItemNetMass = netWeight;
+            cr.Items![0].Documents![0].DocumentCode = documentCode;
+        });
+    }
+    
+    public ClearanceRequestBuilder<T> WithRandomItems(int min, int max)
+    {
+        var commodityCount = CreateRandomInt(min, max);
+
+        return Do(cr =>
+        {
+            var items = Enumerable.Range(0, commodityCount)
+                .Select(_ => cr.Items![0])
+                .ToArray();
+
+            cr.Items = items;
         });
     }
 

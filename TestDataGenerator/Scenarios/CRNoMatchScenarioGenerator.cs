@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios;
 
-public class CRNoMatchScenarioGenerator(ILogger<CRNoMatchScenarioGenerator> logger) : ScenarioGenerator
+public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -13,6 +13,7 @@ public class CRNoMatchScenarioGenerator(ILogger<CRNoMatchScenarioGenerator> logg
             .WithEntryDate(entryDate)
             .WithArrivalDateTimeOffset(DateTime.Today.ToDate(), DateTime.Now.ToTime())
             .WithReferenceNumber(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item))
+            .WithRandomItems(10, 100)
             .ValidateAndBuild();
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);

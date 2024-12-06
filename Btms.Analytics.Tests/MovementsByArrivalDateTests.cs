@@ -1,22 +1,23 @@
-using Btms.Analytics;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
+using Btms.Analytics.Tests.Fixtures;
+
 namespace Btms.Analytics.Tests;
 
-[Collection("Aggregation Test collection")]
-public class GetMovementsByArrivalDateTests(
-    AggregationTestFixture aggregationTestFixture,
+[Collection(nameof(BasicSampleDataTestCollection))]
+public class MovementsByArrivalDateTests(
+    BasicSampleDataTestFixture basicSampleDataTestFixture,
     ITestOutputHelper testOutputHelper) {
     
     [Fact]
     public async Task WhenCalledNext72Hours_ReturnExpectedAggregation()
     {
 
-        var result = (await aggregationTestFixture.MovementsAggregationService
+        var result = (await basicSampleDataTestFixture.MovementsAggregationService
             .ByArrival(DateTime.Now.CurrentHour(), DateTime.Now.CurrentHour().AddDays(3), AggregationPeriod.Hour))
             .ToList();
 
@@ -31,7 +32,7 @@ public class GetMovementsByArrivalDateTests(
     [Fact]
     public async Task WhenCalledNextMonth_ReturnExpectedAggregation()
     {
-        var result = (await aggregationTestFixture.MovementsAggregationService
+        var result = (await basicSampleDataTestFixture.MovementsAggregationService
             .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .ToList();
 
