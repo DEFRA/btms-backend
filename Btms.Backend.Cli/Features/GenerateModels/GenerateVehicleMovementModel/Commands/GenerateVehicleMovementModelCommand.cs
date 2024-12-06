@@ -31,7 +31,7 @@ namespace Btms.Backend.Cli.Features.GenerateModels.GenerateVehicleMovementModel.
                 using var streamReader =
                     new StreamReader(
 #pragma warning disable S1075
-                        "D:\\repos\\esynergy\\btms-backend\\btmsBackend.Cli\\Features\\GenerateModels\\GenerateVehicleMovementModel\\Goods-Vehicle-Movement-Search-1.0-Open-API-Spec.yaml");
+                        "D:\\repos\\esynergy\\btms-backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateVehicleMovementModel\\Goods-Vehicle-Movement-Search-1.0-Open-API-Spec.yaml");
 #pragma warning restore S1075
                 var reader = new OpenApiStreamReader();
                 var document = reader.Read(streamReader.BaseStream, out var diagnostic);
