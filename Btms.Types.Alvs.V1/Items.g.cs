@@ -94,7 +94,7 @@ public partial class Items  //
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("document")]
+    [JsonPropertyName("documents")]
     public Document[]? Documents { get; set; }
 
 	

@@ -53,7 +53,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             return new LinkResult(LinkState.NotLinked);
                         }
 
-                        result = await FindMovementLinks(movementLinkContext.ReceivedMovement, cancellationToken);
+                        result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
                         break;
                     case ImportNotificationLinkContext notificationLinkContext:
                         if (!ShouldLink(notificationLinkContext))
@@ -62,7 +62,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             return new LinkResult(LinkState.NotLinked);
                         }
 
-                        result = await FindImportNotificationLinks(notificationLinkContext.ReceivedImportNotification,
+                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
                             cancellationToken);
                         break;
                     default: throw new ArgumentException("context type not supported");
@@ -115,7 +115,6 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
             catch (Exception e)
             {
-                logger.LinkingFailed(e, linkContext.GetType().Name, linkContext.GetIdentifiers());
                 metrics.Faulted(e);
                 throw new LinkException(e);
             }
@@ -137,7 +136,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
         if (movContext.ExistingMovement is null) return true;
 
         var existingItems = movContext.ExistingMovement.Items is null ? [] : movContext.ExistingMovement.Items;
-        var receivedItems = movContext.ReceivedMovement.Items is null ? [] : movContext.ReceivedMovement.Items;
+        var receivedItems = movContext.PersistedMovement.Items is null ? [] : movContext.PersistedMovement.Items;
 
         // Diff movements for fields of interest
         var existingDocs = existingItems
@@ -169,7 +168,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 c.CommodityId,
                 c.CommodityDescription
             }).ToList();
-        var receivedCommodities = notifContext.ReceivedImportNotification.Commodities?
+        var receivedCommodities = notifContext.PersistedImportNotification.Commodities?
             .Select(c => new
             {
                 c.CommodityId,

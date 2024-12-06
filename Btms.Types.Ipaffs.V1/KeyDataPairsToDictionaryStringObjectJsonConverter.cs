@@ -58,11 +58,15 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
                 var key = ExtractValue(ref reader, options);
 
                 reader.Read();
-                reader.Read();
-                var v = ExtractValue(ref reader, options);
+                object? value = null;
+                if (reader.TokenType != JsonTokenType.EndObject)
+                {
+                    reader.Read();
+                    value = ExtractValue(ref reader, options);
+                }
 
 
-                dictionary.Add(key?.ToString()!, v);
+                dictionary.Add(key?.ToString()!, value);
             }
         }
 

@@ -6,6 +6,7 @@ using Btms.Types.Ipaffs.Mapping;
 using SlimMessageBus;
 using System.Diagnostics.CodeAnalysis;
 using Btms.Consumers.Extensions;
+using Force.DeepCloner;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Consumers
@@ -34,8 +35,10 @@ namespace Btms.Consumers
                 
 
                 var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber!);
+                Model.Ipaffs.ImportNotification persistedNotification = null!;
                 if (existingNotification is not null)
                 {
+                    persistedNotification = existingNotification.DeepClone();
                     if (internalNotification.UpdatedSource.TrimMicroseconds() >
                         existingNotification.UpdatedSource.TrimMicroseconds())
                     {
@@ -54,9 +57,10 @@ namespace Btms.Consumers
                 {
                     internalNotification.Create(BuildNormalizedIpaffsPath(auditId!));
                     await dbContext.Notifications.Insert(internalNotification);
+                    persistedNotification = internalNotification!;
                 }
 
-                var linkContext = new ImportNotificationLinkContext(internalNotification, existingNotification);
+                var linkContext = new ImportNotificationLinkContext(persistedNotification, existingNotification);
                 var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
             }
         }

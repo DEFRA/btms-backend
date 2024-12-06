@@ -71,7 +71,10 @@ public class Movement : IMongoIdentifiable, IDataEntity
                 {
                     foreach (var itemDocument in item.Documents!)
                     {
-                        list.Add(MatchIdentifier.FromCds(itemDocument.DocumentReference!).Identifier);
+                        if (MatchIdentifier.TryFromCds(itemDocument.DocumentReference!, out var identifier))
+                        {
+                            list.Add(identifier.Identifier);
+                        }
                     }
                 }
 
@@ -79,6 +82,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
             }
 
             return matchReferences;
+           
         }
         set => matchReferences = value;
     }
