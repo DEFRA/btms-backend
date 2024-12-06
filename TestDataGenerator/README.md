@@ -22,10 +22,6 @@ az storage blob directory upload -c dmp-data-1001 -d --account-name snddmpinfdl1
 TestDataGenerator/.test-data-generator/GENERATED-LOADTEST --recursive
 
 az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s
-<<<<<<< HEAD
-TestDataGenerator/.test-data-generator/GENERATED-LOADTEST --destination-path GENERATED-LOADTEST
-=======
 TestDataGenerator/.test-data-generator/GENERATED-LOADTEST-90Dx10k --destination-path GENERATED-LOADTEST-90Dx10k
->>>>>>> c84d4f8 (fixed up test data generator warnings)
-az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s
+~~~~az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s
 TestDataGenerator/.test-data-generator/GENERATED-LOADTEST-BASIC --destination-path GENERATED-LOADTEST-BASIC
