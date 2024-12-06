@@ -48,7 +48,7 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
 
         if ((existingItem._Etag ?? "") != etag)
         {
-            throw new ConcurrencyException("Concurrency Error, change this to a Concurrency exception");
+            throw new ConcurrencyException(item.Id!, etag);
         }
 
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;

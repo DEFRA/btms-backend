@@ -18,7 +18,7 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
         
         if (retryCount > 5)
         {
-            logger.LogError(exception, "Error Consuming Message Retry count {RetryCount} - {Record}", retryCount, message?.ToJson());
+            logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
             return ConsumerErrorHandlerResult.Failure;
         }
 

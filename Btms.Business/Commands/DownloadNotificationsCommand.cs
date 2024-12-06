@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Btms.SyncJob;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
+using Microsoft.Extensions.Hosting;
 
 namespace Btms.Business.Commands;
 
@@ -27,7 +28,7 @@ public class DownloadCommand : IRequest, ISyncJob
     public string Timespan { get; } = null!;
     public string Resource { get; } = null!;
 
-    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IWebHostEnvironment env) : IRequestHandler<DownloadCommand>
+    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env) : IRequestHandler<DownloadCommand>
     {
 
         public async Task Handle(DownloadCommand request, CancellationToken cancellationToken)

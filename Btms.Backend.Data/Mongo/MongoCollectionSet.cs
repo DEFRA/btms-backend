@@ -50,6 +50,7 @@ namespace Btms.Backend.Data.Mongo
         public async Task Update(T item, string etag, IMongoDbTransaction transaction = null!,
             CancellationToken cancellationToken = default)
         {
+            ArgumentNullException.ThrowIfNull(etag);
             var builder = Builders<T>.Filter;
 
             var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
@@ -66,7 +67,7 @@ namespace Btms.Backend.Data.Mongo
 
             if (updateResult.ModifiedCount == 0)
             {
-                throw new ConcurrencyException("Concurrency Error, change this to a Concurrency exception");
+                throw new ConcurrencyException(item.Id!, etag);
             }
         }
 

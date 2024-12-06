@@ -50,4 +50,18 @@ public struct MatchIdentifier(string identifier)
 
         return new MatchIdentifier(identifier);
     }
+
+    public static bool TryFromCds(string reference, out MatchIdentifier matchIdentifier)
+    {
+        try
+        {
+            matchIdentifier = MatchIdentifier.FromCds(reference);
+            return true;
+        }
+        catch (Exception)
+        {
+            matchIdentifier = default;
+            return false;
+        }
+    }
 }

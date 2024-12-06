@@ -38,7 +38,7 @@ public static class ConsumerContextExtensions
 
     public static void Skipped(this IConsumerContext consumerContext)
     {
-        consumerContext.Properties.Add(MessageBusHeaders.Skipped, true);
+        consumerContext.Properties.TryAdd(MessageBusHeaders.Skipped, true);
     }
 
     public static bool WasSkipped(this IConsumerContext consumerContext)

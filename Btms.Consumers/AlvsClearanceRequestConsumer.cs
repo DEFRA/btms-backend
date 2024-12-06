@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 using System.Diagnostics.CodeAnalysis;
 using Btms.Consumers.Extensions;
+using Force.DeepCloner;
 using Items = Btms.Model.Alvs.Items;
 
 namespace Btms.Consumers
@@ -35,13 +36,14 @@ namespace Btms.Consumers
                 var internalClearanceRequest = AlvsClearanceRequestMapper.Map(message);
                 var movement = BuildMovement(internalClearanceRequest);
                 var existingMovement = await dbContext.Movements.Find(movement.Id!);
+                Movement persistedMovement = null!;
 
                 if (existingMovement is not null)
                 {
                     if (movement.ClearanceRequests[0].Header?.EntryVersionNumber >
                         existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
                     {
-                        movement.AuditEntries = existingMovement.AuditEntries;
+                        persistedMovement = existingMovement.DeepClone();
                         var auditEntry = AuditEntry.CreateUpdated(existingMovement.ClearanceRequests[0],
                             movement.ClearanceRequests[0],
                             BuildNormalizedAlvsPath(auditId!),
@@ -65,10 +67,12 @@ namespace Btms.Consumers
                     {
                         logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.Header?.EntryReference!);
                         Context.Skipped();
+                        return;
                     }
                 }
                 else
                 {
+                    persistedMovement = movement!;
                     var auditEntry = AuditEntry.CreateCreatedEntry(
                         movement.ClearanceRequests[0],
                         BuildNormalizedAlvsPath(auditId!),
@@ -78,7 +82,8 @@ namespace Btms.Consumers
                     await dbContext.Movements.Insert(movement);
                 }
 
-                var linkContext = new MovementLinkContext(movement, existingMovement);
+                //This should be existing, pre update (may need to clone)
+                var linkContext = new MovementLinkContext(persistedMovement, existingMovement);
                 var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
             }
         }
