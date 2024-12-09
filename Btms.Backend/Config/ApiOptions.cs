@@ -16,7 +16,8 @@ public class ApiOptions
 	// This is used by the azure library when connecting to auth related services
 	// when connecting to blob storage
 	[ConfigurationKeyName("HTTPS_PROXY")]
-	public string? HttpsProxy => CdpHttpsProxy?.Contains("://") == true ? CdpHttpsProxy[(CdpHttpsProxy.IndexOf("://", StringComparison.Ordinal) + 3)..] : null;
+    public string? HttpsProxy { get; set; }
+	// public string? HttpsProxy => CdpHttpsProxy?.Contains("://") == true ? CdpHttpsProxy[(CdpHttpsProxy.IndexOf("://", StringComparison.Ordinal) + 3)..] : null;
 
 	public Dictionary<string, string?> Credentials { get; set; } = [];
 

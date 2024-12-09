@@ -35,6 +35,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
+using Btms.Azure.Extensions;
 using Environment = System.Environment;
 
 using OpenTelemetry.Extensions.Hosting;
@@ -101,6 +102,9 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	// calls outside the platform should be done using the named 'proxy' http client.
 	builder.Services.AddHttpProxyClient();
 
+    // The azure client has it's own way of proxying :|
+    builder.Services.AddMsalHttpProxyClient(Proxy.ConfigurePrimaryHttpMessageHandler);
+        
 	builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 	// This uses grafana for metrics and tracing and works with the local docker compose setup as well as in CDP
