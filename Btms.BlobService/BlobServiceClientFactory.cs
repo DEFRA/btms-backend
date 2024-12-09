@@ -6,10 +6,11 @@ using Microsoft.Extensions.Options;
 namespace Btms.BlobService;
 
 public class BlobServiceClientFactory(
+    IServiceProvider serviceProvider, 
     IOptions<BlobServiceOptions> options,
     ILogger<BlobServiceClientFactory> logger,
     IHttpClientFactory? clientFactory = null)
-    : AzureService(logger, options.Value, clientFactory), IBlobServiceClientFactory
+    : AzureService(serviceProvider, logger, options.Value, clientFactory), IBlobServiceClientFactory
 {
     public BlobServiceClient CreateBlobServiceClient(int timeout = default, int retries = default)
     {

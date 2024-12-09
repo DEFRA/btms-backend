@@ -22,12 +22,12 @@ public static class Proxy
     public static void AddHttpProxyClient(this IServiceCollection services)
     {
         // Some .net connections use this http client
-        services.AddHttpClient(ProxyClient).ConfigurePrimaryHttpMessageHandler(sp =>
-        {
-            var options = sp.GetRequiredService<IOptions<ApiOptions>>();
-            var proxy = sp.GetRequiredService<IWebProxy>();
-            return CreateHttpClientHandler(proxy, options.Value.CdpHttpsProxy!);
-        });
+        services.AddHttpClient(ProxyClient).ConfigurePrimaryHttpMessageHandler(ConfigurePrimaryHttpMessageHandler);
+        // {
+        //     var options = sp.GetRequiredService<IOptions<ApiOptions>>();
+        //     var proxy = sp.GetRequiredService<IWebProxy>();
+        //     return CreateHttpClientHandler(proxy, options.Value.CdpHttpsProxy!);
+        // });
 
         // Others, including the Azure SDK, rely on this, falling back to HTTPS_PROXY.
         // HTTPS_PROXY if used must not include the protocol
@@ -37,6 +37,13 @@ public static class Proxy
             var logger = sp.GetRequiredService<ILoggerFactory>().CreateLogger(ProxyClient);
             return CreateProxy(options.Value.CdpHttpsProxy, logger);
         });
+    }
+
+    public static HttpClientHandler ConfigurePrimaryHttpMessageHandler(IServiceProvider sp)
+    {
+        var options = sp.GetRequiredService<IOptions<ApiOptions>>();
+        var proxy = sp.GetRequiredService<IWebProxy>();
+        return CreateHttpClientHandler(proxy, options.Value.CdpHttpsProxy!);
     }
 
     public static HttpClientHandler CreateHttpClientHandler(IWebProxy proxy, string proxyUri)
