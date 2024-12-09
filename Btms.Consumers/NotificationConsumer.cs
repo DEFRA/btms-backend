@@ -1,76 +1,46 @@
-using Btms.Backend.Data;
 using Btms.Business.Services;
-using Btms.Common.Extensions;
 using Btms.Types.Ipaffs;
-using Btms.Types.Ipaffs.Mapping;
 using SlimMessageBus;
-using System.Diagnostics.CodeAnalysis;
 using Btms.Consumers.Extensions;
-using Force.DeepCloner;
 using Microsoft.Extensions.Logging;
+using Btms.Business.Pipelines.PreProcessing;
 
 namespace Btms.Consumers
 {
-    internal class NotificationConsumer(IMongoDbContext dbContext, ILinkingService linkingService, ILogger<NotificationConsumer> logger)
+    internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService, ILogger<NotificationConsumer> logger)
         : IConsumer<ImportNotification>, IConsumerWithContext
     {
-        private ILinkingService linkingService { get; } = linkingService;
-
-        [SuppressMessage("SonarLint", "S1481",
-            Justification =
-                "LinkResult variable is unused until matching and decisions are implemented")]
         public async Task OnHandle(ImportNotification message)
         {
-            var auditId = Context.Headers["messageId"].ToString();
-            logger.ConsumerStarted(Context.GetJobId()!, auditId!, GetType().Name, message.ReferenceNumber!);
-            using (logger.BeginScope(new List<KeyValuePair<string, object>>
-                   {
-                       new("JobId", Context.GetJobId()!),
-                       new("MessageId", auditId!),
-                       new("Consumer", GetType().Name),
-                       new("Identifier", message.ReferenceNumber!),
-                   }))
+            var messageId = Context.GetMessageId();
+            using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.ReferenceNumber!))
             {
-                var internalNotification = message.MapWithTransform();
-                
+                var preProcessingResult = await preProcessor.Process(new PreProcessingContext<ImportNotification>(message, messageId));
 
-                var existingNotification = await dbContext.Notifications.Find(message.ReferenceNumber!);
-                Model.Ipaffs.ImportNotification persistedNotification = null!;
-                if (existingNotification is not null)
+                if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
                 {
-                    if (internalNotification.UpdatedSource.TrimMicroseconds() >
-                        existingNotification.UpdatedSource.TrimMicroseconds())
-                    {
-                        persistedNotification = existingNotification.DeepClone();
-                        internalNotification.AuditEntries = existingNotification.AuditEntries;
-                        internalNotification.CreatedSource = existingNotification.CreatedSource;
-                        internalNotification.Update(BuildNormalizedIpaffsPath(auditId!), existingNotification);
-                        await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
-                    }
-                    else
-                    {
-                        logger.MessageSkipped(Context.GetJobId()!, auditId!, GetType().Name, message.ReferenceNumber!);
-                        Context.Skipped();
-                        return;
-                    }
+                    Context.Skipped();
                 }
                 else
                 {
-                    internalNotification.Create(BuildNormalizedIpaffsPath(auditId!));
-                    await dbContext.Notifications.Insert(internalNotification);
-                    persistedNotification = internalNotification!;
+                    Context.PreProcessed();
                 }
 
-                var linkContext = new ImportNotificationLinkContext(persistedNotification, existingNotification);
-                var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
+                if (preProcessingResult.IsCreatedOrChanged())
+                {
+                    var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record!,
+                        preProcessingResult.ChangeSet);
+                    var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
+
+                    if (linkResult.Outcome == LinkOutcome.Linked)
+                    {
+                        Context.Linked();
+                    }
+                }
+
             }
         }
 
         public IConsumerContext Context { get; set; } = null!;
-
-        private static string BuildNormalizedIpaffsPath(string fullPath)
-        {
-            return fullPath.Replace("RAW/IPAFFS/", "");
-        }
     }
 }

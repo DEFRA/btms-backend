@@ -1,6 +1,6 @@
 namespace Btms.Business.Services;
 
-public enum LinkState
+public enum LinkOutcome
 {
     Linked,
     NotLinked

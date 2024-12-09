@@ -9,9 +9,12 @@ using Btms.BlobService.Extensions;
 using Btms.Common.Extensions;
 using Btms.Metrics.Extensions;
 using Btms.SensitiveData;
+using Btms.Types.Ipaffs;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Btms.Business.Pipelines.PreProcessing;
+using Btms.Types.Alvs;
 
 namespace Btms.Business.Extensions
 {
@@ -58,6 +61,9 @@ namespace Btms.Business.Extensions
             });
 
             services.AddScoped<ILinkingService, LinkingService>();
+
+            services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
+            services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
 
             return services;
         }

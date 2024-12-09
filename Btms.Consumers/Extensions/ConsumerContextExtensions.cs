@@ -26,6 +26,16 @@ public static class ConsumerContextExtensions
         return null;
     }
 
+    public static string GetMessageId(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Headers.TryGetValue(MessageBusHeaders.MessageId, out var value))
+        {
+            return value.ToString()!;
+        }
+
+        return string.Empty;
+    }
+
     public static ActivityContext GetActivityContext(this IConsumerContext consumerContext)
     {
         if (consumerContext.Properties.TryGetValue(MessageBusHeaders.TraceParent, out var value))
@@ -39,6 +49,36 @@ public static class ConsumerContextExtensions
     public static void Skipped(this IConsumerContext consumerContext)
     {
         consumerContext.Properties.TryAdd(MessageBusHeaders.Skipped, true);
+    }
+
+    public static void PreProcessed(this IConsumerContext consumerContext)
+    {
+        consumerContext.Properties.TryAdd(MessageBusHeaders.PreProcessed, true);
+    }
+
+    public static bool IsPreProcessed(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.PreProcessed, out var value))
+        {
+            return (bool)value;
+        }
+
+        return false;
+    }
+
+    public static void Linked(this IConsumerContext consumerContext)
+    {
+        consumerContext.Properties.TryAdd(MessageBusHeaders.Linked, true);
+    }
+
+    public static bool IsLinked(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.Linked, out var value))
+        {
+            return (bool)value;
+        }
+
+        return false;
     }
 
     public static bool WasSkipped(this IConsumerContext consumerContext)

@@ -1,6 +1,10 @@
+using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services;
-using Btms.Consumers;
+using Btms.Consumers.Extensions;
+using Btms.Model;
+using Btms.Model.Auditing;
 using Btms.Types.Alvs;
+using Btms.Types.Alvs.Mapping;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
@@ -10,18 +14,30 @@ using Xunit;
 
 namespace Btms.Consumers.Tests
 {
-    public class ClearanceRequestConsumerTests : ConsumerTests
+    public class ClearanceRequestConsumerTests
     {
-        [Fact]
-        public async Task WhenNotificationNotExists_ThenShouldBeCreated()
+        [Theory]
+        [InlineData(PreProcessingOutcome.New)]
+        [InlineData(PreProcessingOutcome.Skipped)]
+        [InlineData(PreProcessingOutcome.Changed)]
+        [InlineData(PreProcessingOutcome.AlreadyProcessed)]
+        public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsLinked_ThenLinkShouldNotBeRun(PreProcessingOutcome outcome)
         {
             // ARRANGE
             var clearanceRequest = CreateAlvsClearanceRequest();
-            var dbContext = CreateDbContext();
+            var movement =
+                MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
+
+            movement.Update(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
+
             var mockLinkingService = Substitute.For<ILinkingService>();
+            var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
+
+            preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
+                .Returns(Task.FromResult(new PreProcessingResult<Movement>(outcome, movement, null)));
 
             var consumer =
-                new AlvsClearanceRequestConsumer(dbContext, mockLinkingService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>()
@@ -34,10 +50,48 @@ namespace Btms.Consumers.Tests
             await consumer.OnHandle(clearanceRequest);
 
             // ASSERT
-            var savedMovement = await dbContext.Movements.Find(clearanceRequest!.Header!.EntryReference!);
-            savedMovement.Should().NotBeNull();
-            savedMovement.AuditEntries.Count.Should().Be(1);
-            savedMovement.AuditEntries[0].Status.Should().Be("Created");
+            consumer.Context.IsLinked().Should().BeFalse();
+
+            await mockLinkingService.DidNotReceive().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Fact]
+        public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsCreated_ThenLinkShouldBeRun()
+        {
+            // ARRANGE
+            var clearanceRequest = CreateAlvsClearanceRequest();
+            var movement =
+                MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
+
+            movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now));
+
+            var mockLinkingService = Substitute.For<ILinkingService>();
+            var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
+
+            mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)));
+
+            preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
+                .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
+
+            var consumer =
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
+            consumer.Context = new ConsumerContext()
+            {
+                Headers = new Dictionary<string, object>()
+                {
+                    { "messageId", clearanceRequest!.Header!.EntryReference! }
+                }
+            };
+
+            // ACT
+            await consumer.OnHandle(clearanceRequest);
+
+            // ASSERT
+            consumer.Context.IsPreProcessed().Should().BeTrue();
+            consumer.Context.IsLinked().Should().BeTrue();
+
+            await mockLinkingService.Received().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
         }
 
         private static AlvsClearanceRequest CreateAlvsClearanceRequest()
