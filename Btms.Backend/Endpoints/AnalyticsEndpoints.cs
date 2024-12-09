@@ -49,9 +49,6 @@ public static class AnalyticsEndpoints
         var movementsLinkingByCreated = await movementsService
             .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today);
 
-        var movementsLinkingByArrival = await movementsService
-            .ByArrival(DateTime.Today.MonthAgo(), DateTime.Today.MonthLater());
-
         var lastMonthMovementsByStatus = await movementsService
             .ByStatus(DateTime.Today.MonthAgo(), DateTime.Now);
 
@@ -76,8 +73,6 @@ public static class AnalyticsEndpoints
             last24HoursMovementsLinkingByCreated,
             last24HoursImportNotificationsLinkingByCreated,
             movementsLinkingByCreated,
-            movementsLinkingByArrival,
-            lastMonthImportNotificationsByTypeAndStatus,
             lastMonthMovementsByStatus,
             lastMonthMovementsByItemCount,
             lastMonthImportNotificationsByCommodityCount,

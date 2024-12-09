@@ -38,25 +38,6 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
-    /// <summary>
-    /// Aggregates movements by arrival date and returns counts by date period. Could be refactored to use a generic/interface in time
-    /// </summary>
-    /// <param name="from">Time period to search from (inclusive)</param>
-    /// <param name="to">Time period to search to (exclusive)</param>
-    /// <param name="aggregateBy">Aggregate by day/hour</param>
-    /// <returns></returns>
-    public Task<MultiSeriesDatetimeDataset[]> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
-    {
-        var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
-        
-        Expression<Func<Movement, bool>> matchFilter = n =>
-            n.CreatedSource >= from && n.CreatedSource < to;
-
-        string CreateDatasetName(BsonDocument b) => AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean());
-
-        return Aggregate(dateRange, CreateDatasetName, matchFilter, "$arrivesAt", aggregateBy);
-    }
-
     public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
