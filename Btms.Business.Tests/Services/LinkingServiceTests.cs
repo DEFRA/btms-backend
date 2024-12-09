@@ -2,14 +2,15 @@ using Btms.Backend.Data;
 using Btms.Backend.Data.InMemory;
 using Btms.Business.Services;
 using Btms.Metrics;
-using Btms.Model;
 using Btms.Model.Alvs;
+using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 using Document = Btms.Model.Alvs.Document;
 using Items = Btms.Model.Alvs.Items;
+using Movement = Btms.Model.Movement;
 
 namespace Btms.Business.Tests.Services;
 
@@ -49,7 +50,7 @@ public class LinkingServiceTests
 
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -68,7 +69,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.NotLinked);
+        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(0);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -87,7 +88,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.NotLinked);
+        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(0);
         linkResult.Movements.Count.Should().Be(0);
     }
@@ -106,7 +107,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -125,7 +126,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(2);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -142,7 +143,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.NotLinked);
+        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(0);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -161,7 +162,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -180,7 +181,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(2);
     }
@@ -199,7 +200,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.NotLinked);
+        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(0);
     }
@@ -218,7 +219,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.NotLinked);
+        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(0);
         linkResult.Movements.Count.Should().Be(0);
     }
@@ -237,7 +238,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(4);
     }
@@ -256,7 +257,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.Linked);
+        linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
@@ -273,7 +274,7 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.State.Should().Be(LinkState.NotLinked);
+        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(0);
     }
@@ -309,8 +310,9 @@ public class LinkingServiceTests
                         : [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
                 }).ToList()
             } : null;
-        
-        var output = LinkContext.ForMovement(mov, existingMovement);
+
+        var changeSet = mov.GenerateChangeSet(existingMovement);
+        var output = LinkContext.ForMovement(mov, createExistingMovement ? changeSet : null);
         
         return output;
     }
@@ -348,7 +350,8 @@ public class LinkingServiceTests
             }
             : null;
 
-        var output = LinkContext.ForImportNotification(notification, existingNotification);
+        var changeSet = notification.GenerateChangeSet(existingNotification);
+        var output = LinkContext.ForImportNotification(notification, createExistingNotification ? changeSet : null);
 
         return output;
     }

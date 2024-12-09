@@ -6,16 +6,19 @@ using System.Text.Json.Serialization;
 using Btms.Model.Auditing;
 using Btms.Model.Data;
 using Btms.Model.Relationships;
+using Btms.Model.ChangeLog;
 
 namespace Btms.Model.Ipaffs;
 
 [Resource(PublicName = "import-notifications")]
-public partial class ImportNotification : IMongoIdentifiable, IDataEntity
+public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAuditable
 {
     private string? matchReference;
 
     //// This field is used by the jsonapi-consumer to control the correct casing in the type field
-    [JsonIgnore] public string Type { get; set; } = "import-notification";
+    [JsonIgnore]
+    [ChangeSetIgnore]
+    public string Type { get; set; } = "import-notification";
 
     //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     [JsonIgnore]
@@ -26,10 +29,16 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         set => ReferenceNumber = value;
     }
 
+    [ChangeSetIgnore]
     public string _Etag { get; set; } = default!;
     [Attr] public DateTime? CreatedSource { get; set; }
-    [Attr] public DateTime Created { get; set; }
-    [Attr] public DateTime Updated { get; set; }
+
+    [Attr]
+    [ChangeSetIgnore] public DateTime Created { get; set; }
+    
+    [Attr]
+    [ChangeSetIgnore]
+    public DateTime Updated { get; set; }
 
     [BsonIgnore]
     [NotMapped]
@@ -63,15 +72,10 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     // They are removed from the document that is sent to the client by the JsonApiResourceDefinition OnApplySparseFieldSet
     // mechanism
 
-    /// <summary>
-    /// Tracks the last time the record was changed
-    /// </summary>
-    [Attr]
-    [BsonElement("_ts")]
-    public DateTime _Ts { get; set; }
 
     [Attr]
     [BsonElement("_pointOfEntry")]
+    [ChangeSetIgnore]
     public string _PointOfEntry
     {
         get => PartOne?.PointOfEntry!;
@@ -86,6 +90,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
 
     [Attr]
     [BsonElement("_pointOfEntryControlPoint")]
+    [ChangeSetIgnore]
     public string _PointOfEntryControlPoint
     {
         get => PartOne?.PointOfEntryControlPoint!;
@@ -99,6 +104,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     }
 
     [BsonElement("_matchReferences")]
+    [ChangeSetIgnore]
     public string _MatchReference
     {
         get
@@ -140,7 +146,6 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
     public void Changed(AuditEntry auditEntry)
     {
         this.AuditEntries.Add(auditEntry);
-        _Ts = DateTime.UtcNow;
     }
 
     public void Create(string auditId)
@@ -162,13 +167,17 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity
         this.Changed(auditEntry);
     }
 
-    public void Update(string auditId, ImportNotification previous)
+    public void Update(string auditId, ChangeSet changeSet)
     {
-        var auditEntry = AuditEntry.CreateUpdated(previous,
-            this,
+        var auditEntry = AuditEntry.CreateUpdated(changeSet,
             auditId,
             this.Version.GetValueOrDefault(),
             this.UpdatedSource);
         this.Changed(auditEntry);
+    }
+
+    public AuditEntry GetLatestAuditEntry()
+    {
+        return this.AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
     }
 }

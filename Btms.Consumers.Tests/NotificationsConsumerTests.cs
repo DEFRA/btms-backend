@@ -1,5 +1,8 @@
+using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services;
 using Btms.Consumers;
+using Btms.Consumers.Extensions;
+using Btms.Model.Auditing;
 using Btms.Types.Ipaffs;
 using Btms.Types.Ipaffs.Mapping;
 using FluentAssertions;
@@ -13,15 +16,24 @@ namespace Btms.Consumers.Tests
 {
     public class NotificationsConsumerTests : ConsumerTests
     {
-        [Fact]
-        public async Task WhenNotificationNotExists_ThenShouldBeCreated()
+        [Theory]
+        [InlineData(PreProcessingOutcome.New)]
+        [InlineData(PreProcessingOutcome.Skipped)]
+        [InlineData(PreProcessingOutcome.Changed)]
+        [InlineData(PreProcessingOutcome.AlreadyProcessed)]
+        public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsLinked_ThenLinkShouldNotBeRun(PreProcessingOutcome outcome)
         {
             // ARRANGE
             var notification = CreateImportNotification();
-            var dbContext = CreateDbContext();
+            var modelNotification = notification.MapWithTransform();
+            modelNotification.Changed(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
             var mockLinkingService = Substitute.For<ILinkingService>();
+            var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
 
-            var consumer = new NotificationConsumer(dbContext, mockLinkingService, NullLogger<NotificationConsumer>.Instance);
+            preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
+                .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
+
+            var consumer = new NotificationConsumer(preProcessor, mockLinkingService, NullLogger<NotificationConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }
@@ -31,24 +43,29 @@ namespace Btms.Consumers.Tests
             await consumer.OnHandle(notification);
 
             // ASSERT
-            var savedNotification = await dbContext.Notifications.Find(notification!.ReferenceNumber!);
-            savedNotification.Should().NotBeNull();
-            savedNotification.AuditEntries.Count.Should().Be(1);
-            savedNotification.AuditEntries[0].Status.Should().Be("Created");
+            consumer.Context.IsLinked().Should().BeFalse();
+
+            await mockLinkingService.DidNotReceive().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
         }
 
         [Fact]
-        public async Task WhenNotificationExists_AndLastUpdatedIsNewer_ThenShouldBeUpdated()
+        public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsCreated_ThenLinkShouldBeRun()
         {
             // ARRANGE
             var notification = CreateImportNotification();
-            var dbContext = CreateDbContext();
-            await dbContext.Notifications.Insert(notification.MapWithTransform());
-            notification.LastUpdated = notification.LastUpdated?.AddHours(1);
+            var modelNotification = notification.MapWithTransform();
+            modelNotification.Changed(AuditEntry.CreateCreatedEntry(modelNotification, "Test", 1, DateTime.Now));
             var mockLinkingService = Substitute.For<ILinkingService>();
+            var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
+
+            mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)));
+
+            preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
+                .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(PreProcessingOutcome.New, modelNotification, null)));
 
 
-            var consumer = new NotificationConsumer(dbContext, mockLinkingService, NullLogger<NotificationConsumer>.Instance);
+            var consumer = new NotificationConsumer(preProcessor, mockLinkingService, NullLogger<NotificationConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }
@@ -58,10 +75,10 @@ namespace Btms.Consumers.Tests
             await consumer.OnHandle(notification);
 
             // ASSERT
-            var savedNotification = await dbContext.Notifications.Find(notification!.ReferenceNumber!);
-            savedNotification.Should().NotBeNull();
-            savedNotification.AuditEntries.Count.Should().Be(1);
-            savedNotification.AuditEntries[0].Status.Should().Be("Updated");
+            consumer.Context.IsPreProcessed().Should().BeTrue();
+            consumer.Context.IsLinked().Should().BeTrue();
+
+            await mockLinkingService.Received().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
         }
 
         private static ImportNotification CreateImportNotification()
