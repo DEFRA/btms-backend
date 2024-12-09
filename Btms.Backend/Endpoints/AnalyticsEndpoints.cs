@@ -77,6 +77,7 @@ public static class AnalyticsEndpoints
             lastMonthMovementsByItemCount,
             lastMonthImportNotificationsByCommodityCount,
             lastMonthMovementsByUniqueDocumentReferenceCount,
+            lastMonthImportNotificationsByTypeAndStatus,
             lastMonthUniqueDocumentReferenceByMovementCount
         });
     }
