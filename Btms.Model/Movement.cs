@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Btms.Model.Alvs;
 using Btms.Model.Auditing;
+using Btms.Model.ChangeLog;
 using Btms.Model.Data;
 using Btms.Model.Relationships;
 
@@ -15,11 +16,12 @@ namespace Btms.Model;
 // https://eaflood.atlassian.net/wiki/spaces/TRADE/pages/5104664583/PHA+Port+Health+Authority+Integration+Data+Schema
 
 [Resource]
-public class Movement : IMongoIdentifiable, IDataEntity
+public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 {
     private List<string> matchReferences = [];
 
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
+    [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
 
     [Attr] public List<Alvs.AlvsClearanceRequest> ClearanceRequests { get; set; } = default!;
@@ -52,7 +54,9 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [Attr] public string GoodsLocationCode { get; set; } = default!;
 
-    [Attr] public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
+    [Attr] 
+    [ChangeSetIgnore]
+    public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
 
     [Attr]
     [JsonPropertyName("relationships")]
@@ -60,6 +64,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
 
     [BsonElement("_matchReferences")]
+    [ChangeSetIgnore]
     public List<string> _MatchReferences
     {
         get
@@ -156,6 +161,7 @@ public class Movement : IMongoIdentifiable, IDataEntity
 
     [BsonIgnore]
     [NotMapped]
+    [ChangeSetIgnore]
     public string? StringId
     {
         get => Id;
@@ -171,7 +177,18 @@ public class Movement : IMongoIdentifiable, IDataEntity
     [BsonId]
     public string? Id { get; set; } = null!;
 
+    [ChangeSetIgnore]
     public string _Etag { get; set; } = null!;
-    [Attr] public DateTime Created { get; set; }
-    [Attr] public DateTime Updated { get; set; }
+
+    [Attr]
+    [ChangeSetIgnore]
+    public DateTime Created { get; set; }
+
+    [Attr]
+    [ChangeSetIgnore] 
+    public DateTime Updated { get; set; }
+    public AuditEntry GetLatestAuditEntry()
+    {
+        return this.AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
+    }
 }

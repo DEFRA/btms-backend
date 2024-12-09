@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Btms.Model.ChangeLog;
 using Btms.Model.Extensions;
 using Json.Patch;
 
@@ -21,6 +22,21 @@ public class AuditEntry
 
     public List<AuditDiffEntry> Diff { get; set; } = new();
 
+    public bool IsCreatedOrUpdated()
+    {
+        return IsCreated() || IsUpdated();
+    }
+
+    public bool IsCreated()
+    {
+        return this.Status == "Created";
+    }
+
+    public bool IsUpdated()
+    {
+        return this.Status == "Created";
+    }
+
 
     public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated,
         string lastUpdatedBy, string status)
@@ -34,6 +50,26 @@ public class AuditEntry
     public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated)
     {
         return Create(previous, current, id, version, lastUpdated, CreatedBySystem, "Updated");
+    }
+
+    public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated)
+    {
+        var auditEntry = new AuditEntry()
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = lastUpdated,
+            CreatedBy = CreatedBySystem,
+            CreatedLocal = DateTime.UtcNow,
+            Status = "Updated"
+        };
+
+        foreach (var operation in changeSet.JsonPatch.Operations)
+        {
+            auditEntry.Diff.Add(AuditDiffEntry.Internal(operation));
+        }
+        
+        return auditEntry;
     }
 
     public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated)

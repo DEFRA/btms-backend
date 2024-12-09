@@ -1,9 +1,13 @@
+using System.Text.RegularExpressions;
 using Btms.Backend.Data;
 using Btms.Backend.Data.Extensions;
+using Btms.Common.Extensions;
 using Btms.Metrics;
 using Btms.Model;
+using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
+using Json.Patch;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Services;
@@ -47,19 +51,19 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 switch (linkContext)
                 {
                     case MovementLinkContext movementLinkContext:
-                        if (!ShouldLink(movementLinkContext))
+                        if (!ShouldLinkMovement(movementLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
-                            return new LinkResult(LinkState.NotLinked);
+                            return new LinkResult(LinkOutcome.NotLinked);
                         }
 
                         result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
                         break;
                     case ImportNotificationLinkContext notificationLinkContext:
-                        if (!ShouldLink(notificationLinkContext))
+                        if (!ShouldLink(notificationLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
-                            return new LinkResult(LinkState.NotLinked);
+                            return new LinkResult(LinkOutcome.NotLinked);
                         }
 
                         result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
@@ -69,7 +73,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 }
 
 
-                if (result.State == LinkState.NotLinked)
+                if (result.Outcome == LinkOutcome.NotLinked)
                 {
                     logger.LinkNotFound(linkContext.GetType().Name, linkContext.GetIdentifiers());
                     return result;
@@ -132,65 +136,21 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
         return result;
     }
 
-    private static bool ShouldLink(MovementLinkContext movContext)
+    private static bool ShouldLinkMovement(ChangeSet? changeSet)
     {
-        if (movContext.ExistingMovement is null) return true;
-
-        var existingItems = movContext.ExistingMovement.Items is null ? [] : movContext.ExistingMovement.Items;
-        var receivedItems = movContext.PersistedMovement.Items is null ? [] : movContext.PersistedMovement.Items;
-
-        // Diff movements for fields of interest
-        var existingDocs = existingItems
-            .SelectMany(x => x.Documents ?? [])
-            .Select(d => d.DocumentReference
-            ).ToList();
-
-        var receivedDocs = receivedItems
-            .SelectMany(x => x.Documents ?? [])
-            .Select(d => d.DocumentReference).ToList();
-
-        if (existingDocs.Count != receivedDocs.Count ||
-            !existingDocs.TrueForAll(receivedDocs.Contains))
-        {
-            // Delta in received Docs
-            return true;
-        }
-
-        return false;
+        return changeSet is null || changeSet.HasDocumentsChanged();
     }
 
-    private static bool ShouldLink(ImportNotificationLinkContext notifContext)
+    private static bool ShouldLink(ChangeSet? changeSet)
     {
-        if (notifContext.ExistingImportNotification is null) return true;
-
-        var existingCommodities = notifContext.ExistingImportNotification.Commodities?
-            .Select(c => new
-            {
-                c.CommodityId,
-                c.CommodityDescription
-            }).ToList();
-        var receivedCommodities = notifContext.PersistedImportNotification.Commodities?
-            .Select(c => new
-            {
-                c.CommodityId,
-                c.CommodityDescription
-            }).ToList();
-
-        if (existingCommodities?.Count != receivedCommodities?.Count ||
-            existingCommodities?.TrueForAll(receivedCommodities!.Contains) != true)
-        {
-            // Delta in received Commodities
-            return true;
-        }
-
-        return false;
+        return changeSet is null || changeSet.HasCommoditiesChanged();
     }
 
     private async Task<LinkResult> FindMovementLinks(Movement movement, CancellationToken cancellationToken)
     {
         var notifications = await dbContext.Notifications.Where(x => movement._MatchReferences.Contains(x._MatchReference)).ToListAsync(cancellationToken: cancellationToken);
 
-        return new LinkResult(notifications.Any() ? LinkState.Linked : LinkState.NotLinked)
+        return new LinkResult(notifications.Any() ? LinkOutcome.Linked : LinkOutcome.NotLinked)
         {
             Movements = [movement],
             Notifications = notifications
@@ -201,10 +161,39 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
     {
         var movements = await dbContext.Movements.Where(x => x._MatchReferences.Contains(importNotification._MatchReference)).ToListAsync(cancellationToken);
 
-        return new LinkResult(movements.Any() ? LinkState.Linked : LinkState.NotLinked)
+        return new LinkResult(movements.Any() ? LinkOutcome.Linked : LinkOutcome.NotLinked)
         {
             Movements = movements,
             Notifications = [importNotification]
         };
+    }
+}
+
+public static partial class LinkingChangeSetExtensions
+{
+    [GeneratedRegex("Commodities\\/\\d\\/CommodityId", RegexOptions.IgnoreCase)]
+    private static partial Regex CommodityIdRegex();
+
+    [GeneratedRegex("Commodities\\/\\d", RegexOptions.IgnoreCase)]
+    private static partial Regex CommodityRegex();
+
+    [GeneratedRegex("Items\\/\\d", RegexOptions.IgnoreCase)]
+    private static partial Regex ItemsRegex();
+
+    [GeneratedRegex("Items\\/\\d\\/Documents\\/\\d", RegexOptions.IgnoreCase)]
+    private static partial Regex DocumentsRegex();
+
+    public static bool HasCommoditiesChanged(this ChangeSet changeSet)
+    {
+        return changeSet.JsonPatch.Operations
+            .Any(x => CommodityIdRegex().IsMatch(x.Path.ToString())
+                      || CommodityRegex().IsMatch(x.Path.ToString()));
+    }
+
+    public static bool HasDocumentsChanged(this ChangeSet changeSet)
+    {
+        return changeSet.JsonPatch.Operations
+            .Any(x => ItemsRegex().IsMatch(x.Path.ToString())
+                      || DocumentsRegex().IsMatch(x.Path.ToString()));
     }
 }
