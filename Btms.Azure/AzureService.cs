@@ -4,10 +4,12 @@ using Azure.Core.Diagnostics;
 using Azure.Core.Pipeline;
 using Azure.Identity;
 using Btms.Azure.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 
 namespace Btms.Azure;
+
 
 public abstract class AzureService
 {
@@ -15,7 +17,7 @@ public abstract class AzureService
     protected readonly HttpClientTransport? Transport;
     protected readonly ILogger Logger;
 
-    protected AzureService(ILogger logger, IAzureConfig config, IHttpClientFactory? clientFactory = null)
+    protected AzureService(IServiceProvider serviceProvider, ILogger logger, IAzureConfig config, IHttpClientFactory? clientFactory = null)
     {
         Logger = logger;
         using AzureEventSourceListener listener = AzureEventSourceListener.CreateConsoleLogger(EventLevel.Verbose);
@@ -25,16 +27,9 @@ public abstract class AzureService
             logger.LogDebug("Creating azure credentials based on config vars for {AzureClientId}",
                 config.AzureClientId);
             
-            var httpClientFactory = serviceProvider.GetRequiredService<MsalHttpClientFactoryAdapter>();
-
-            var app = PublicClientApplicationBuilder.Create("<yourClientId>")
-                // [...] Your MSAL app setup
-                .WithHttpClientFactory(httpClientFactory)
-                .Build();
-            
             Credentials =
-                new ClientSecretCredential(config.AzureTenantId, config.AzureClientId, config.AzureClientSecret);
-
+                new ConfidentialClientApplicationTokenCredential(serviceProvider, config);
+            
             logger.LogDebug("Created azure credentials");
         }
         else

@@ -10,7 +10,7 @@ namespace Btms.Azure.Extensions;
 /// <summary>
 /// The Azure SDK doesn't use the CDP proxied Http Client by default, so previously we used the HTTPS_CLIENT env var to
 /// send the requests via CDPs squid proxy. This code is intended to use the http client we already setup that uses the proxy
-/// when the CDP_HTTPS_PROXY is set.
+/// when the CDP_HTTPS_PROXY env var is set.
 /// Code borrowed from https://anthonysimmon.com/overriding-msal-httpclient-with-ihttpclientfactory/
 /// </summary>
 /// <param name="httpClientFactory"></param>
