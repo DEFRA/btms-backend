@@ -1,16 +1,14 @@
 using System.Text.RegularExpressions;
 using Btms.Backend.Data;
 using Btms.Backend.Data.Extensions;
-using Btms.Common.Extensions;
 using Btms.Metrics;
 using Btms.Model;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
-using Json.Patch;
 using Microsoft.Extensions.Logging;
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public static partial class LinkingServiceLogging
 {
