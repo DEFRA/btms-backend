@@ -18,7 +18,6 @@ internal class GmrConsumer(IMongoDbContext dbContext)
             var auditId = Context.Headers["messageId"].ToString();
             if (existingGmr is null)
             {
-
                 var auditEntry =
                     AuditEntry.CreateCreatedEntry(internalGmr, auditId!, 1, gmr.UpdatedSource);
                 internalGmr.AuditEntries.Add(auditEntry);

@@ -47,7 +47,6 @@ public class GmrTests :
     [Fact]
     public void FetchSingleGmrTest()
     {
-
         //Act
         var jsonClientResponse = client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 

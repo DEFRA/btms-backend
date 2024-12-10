@@ -23,7 +23,6 @@ internal class GenerateAlvsModelCommand : IRequest
 
     public class Handler : AsyncRequestHandler<GenerateAlvsModelCommand>
     {
-           
         protected override async Task Handle(GenerateAlvsModelCommand request, CancellationToken cancellationToken)
         {
 #pragma warning disable S1075
@@ -80,7 +79,6 @@ internal class GenerateAlvsModelCommand : IRequest
                         classNamePrefix: ClassNamePrefix);
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }
-
 
             }
         }

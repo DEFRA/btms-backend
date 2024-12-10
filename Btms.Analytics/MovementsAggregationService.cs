@@ -11,7 +11,6 @@ namespace Btms.Analytics;
 
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
-    
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>

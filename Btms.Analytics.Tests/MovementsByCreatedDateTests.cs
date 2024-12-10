@@ -10,8 +10,8 @@ namespace Btms.Analytics.Tests;
 [Collection(nameof(BasicSampleDataTestCollection))]
 public class MovementsByCreatedDateTests(
     BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper) {
-    
+    ITestOutputHelper testOutputHelper) 
+{
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
