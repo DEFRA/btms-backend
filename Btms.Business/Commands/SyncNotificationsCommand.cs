@@ -1,3 +1,4 @@
+using Azure.Core;
 using Btms.BlobService;
 using Btms.Metrics;
 using Btms.SensitiveData;
@@ -7,60 +8,61 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SlimMessageBus;
 
-namespace Btms.Business.Commands;
-
-public class SyncNotificationsCommand : SyncCommand
+namespace Btms.Business.Commands
 {
-    public string[] ChedTypes { get; set; } = [];
-    public override string Resource => "ImportNotification";
-
-    public string[] BlobFiles { get; set; } = [];
-
-
-    internal class Handler(
-        SyncMetrics syncMetrics,
-        IPublishBus bus,
-        ILogger<SyncNotificationsCommand> logger,
-        ISensitiveDataSerializer sensitiveDataSerializer,
-        IBlobService blobService,
-        IOptions<BusinessOptions> businessOptions,
-        ISyncJobStore syncJobStore)
-        : Handler<SyncNotificationsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
-            blobService, syncJobStore)
+    public class SyncNotificationsCommand : SyncCommand
     {
-        public override async Task Handle(SyncNotificationsCommand request, CancellationToken cancellationToken)
-        {
-            var rootFolder = string.IsNullOrEmpty(request.RootFolder)
-                ? businessOptions.Value.DmpBlobRootFolder
-                : request.RootFolder;
+        public string[] ChedTypes { get; set; } = [];
+        public override string Resource => "ImportNotification";
 
-            if (request.BlobFiles.Any())
+        public string[] BlobFiles { get; set; } = [];
+
+
+        internal class Handler(
+            SyncMetrics syncMetrics,
+            IPublishBus bus,
+            ILogger<SyncNotificationsCommand> logger,
+            ISensitiveDataSerializer sensitiveDataSerializer,
+            IBlobService blobService,
+            IOptions<BusinessOptions> businessOptions,
+            ISyncJobStore syncJobStore)
+            : Handler<SyncNotificationsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
+                blobService, businessOptions, syncJobStore)
+        {
+            public override async Task Handle(SyncNotificationsCommand request, CancellationToken cancellationToken)
             {
-                await SyncBlobs<ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
+                var rootFolder = string.IsNullOrEmpty(request.RootFolder)
+                    ? Options.DmpBlobRootFolder
+                    : request.RootFolder;
+
+                if (request.BlobFiles.Any())
+                {
+                    await SyncBlobs<ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
+                        request.JobId,
+                        cancellationToken,
+                        request.BlobFiles.Select(x => $"{rootFolder}/IPAFFS/{x}").ToArray());
+                    return;
+                }
+
+                var chedTypesToSync = new List<string>();
+
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDA");
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDD");
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDP");
+                AddIf(chedTypesToSync, request, rootFolder, "CHEDPP");
+
+                await SyncBlobPaths<ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
                     request.JobId,
                     cancellationToken,
-                    request.BlobFiles.Select(x => $"{rootFolder}/IPAFFS/{x}").ToArray());
-                return;
+                    chedTypesToSync.ToArray());
             }
 
-            var chedTypesToSync = new List<string>();
-
-            AddIf(chedTypesToSync, request, rootFolder, "CHEDA");
-            AddIf(chedTypesToSync, request, rootFolder, "CHEDD");
-            AddIf(chedTypesToSync, request, rootFolder, "CHEDP");
-            AddIf(chedTypesToSync, request, rootFolder, "CHEDPP");
-
-            await SyncBlobPaths<ImportNotification>(request.SyncPeriod, "NOTIFICATIONS",
-                request.JobId,
-                cancellationToken,
-                chedTypesToSync.ToArray());
-        }
-
-        private static void AddIf(List<string> chedTypesToSync, SyncNotificationsCommand request, string rootFolder, string chedType)
-        {
-            if (!request.ChedTypes.Any() || request.ChedTypes.Contains(chedType))
+            private static void AddIf(List<string> chedTypesToSync, SyncNotificationsCommand request, string rootFolder, string chedType)
             {
-                chedTypesToSync.Add($"{rootFolder}/IPAFFS/{chedType}");
+                if (!request.ChedTypes.Any() || request.ChedTypes.Contains(chedType))
+                {
+                    chedTypesToSync.Add($"{rootFolder}/IPAFFS/{chedType}");
+                }
             }
         }
     }
