@@ -8,7 +8,7 @@ using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
 using Microsoft.Extensions.Logging;
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public static partial class LinkingServiceLogging
 {

@@ -35,4 +35,8 @@
     <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Matching\" />
+  </ItemGroup>
+
 </Project>

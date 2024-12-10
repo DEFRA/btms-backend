@@ -1,5 +1,5 @@
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public interface ILinkingService
 {

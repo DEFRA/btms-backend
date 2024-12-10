@@ -1,6 +1,6 @@
 using Btms.Backend.Data;
 using Btms.Backend.Data.InMemory;
-using Btms.Business.Services;
+using Btms.Business.Services.Linking;
 using Btms.Metrics;
 using Btms.Model.Alvs;
 using Btms.Model.ChangeLog;
@@ -12,7 +12,7 @@ using Document = Btms.Model.Alvs.Document;
 using Items = Btms.Model.Alvs.Items;
 using Movement = Btms.Model.Movement;
 
-namespace Btms.Business.Tests.Services;
+namespace Btms.Business.Tests.Services.Linking;
 
 public class LinkingServiceTests
 {
