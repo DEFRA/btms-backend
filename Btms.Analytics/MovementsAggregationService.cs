@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Btms.Analytics;
 
@@ -52,17 +53,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .GroupBy(m => new { Linked = m.Relationships.Notifications.Data.Count > 0, Items = m.Items.Count })
-            .GroupBy(g => g.Key.Linked);
-
+            .GroupBy(m => new { Linked = m.Relationships.Notifications.Data.Count > 0, ItemCount = m.Items.Count })
+            .Select(g => new { g.Key.Linked, g.Key.ItemCount, Count = g.Count() });
+            
         var mongoResult = mongoQuery
             .Execute(logger)
-            .SelectMany(g => g.Select(l => new
-            {
-                Linked = g.Key, 
-                ItemCount = l.Key.Items,
-                Count = l.Count()
-            }))
             .ToList();
             
         var dictionary = mongoResult
