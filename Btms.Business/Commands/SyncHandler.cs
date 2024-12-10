@@ -6,6 +6,7 @@ using SlimMessageBus;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Btms.Metrics;
+using Microsoft.Extensions.Options;
 using IRequest = MediatR.IRequest;
 
 namespace Btms.Business.Commands;
@@ -51,12 +52,14 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         ILogger<T> logger,
         ISensitiveDataSerializer sensitiveDataSerializer,
         IBlobService blobService,
+        IOptions<BusinessOptions> options,
         ISyncJobStore syncJobStore)
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
-        private readonly int maxDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
-
+        // private readonly int defaultDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
+        protected readonly BusinessOptions Options = options.Value; 
+        
         public const string ActivityName = "Btms.ProcessBlob";
 
         public abstract Task Handle(T request, CancellationToken cancellationToken);
@@ -65,20 +68,21 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         {
             var job = syncJobStore.GetJob(jobId);
             job?.Start();
+            var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobPaths);
             using (logger.BeginScope(new List<KeyValuePair<string, object>>
                    {
                        new("JobId", job?.JobId!),
                        new("SyncPeriod", period.ToString()),
-                       new("Parallelism", maxDegreeOfParallelism),
+                       new("Parallelism", degreeOfParallelism),
                        new("ProcessorCount", Environment.ProcessorCount),
                        new("Command", typeof(T).Name),
                    }))
             {
-                logger.SyncStarted(job?.JobId.ToString()!, period.ToString(), maxDegreeOfParallelism, Environment.ProcessorCount, typeof(T).Name);
+                logger.SyncStarted(job?.JobId.ToString()!, period.ToString(), degreeOfParallelism, Environment.ProcessorCount, typeof(T).Name);
                 try
                 {
                     await Parallel.ForEachAsync(paths,
-                        new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism },
+                        new ParallelOptions() { MaxDegreeOfParallelism = degreeOfParallelism },
                         async (path, token) =>
                         {
                             using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("SyncPath", path), }))
@@ -104,8 +108,9 @@ public abstract class SyncCommand() : IRequest, ISyncJob
             CancellationToken cancellationToken)
         {
             var result = blobService.GetResourcesAsync($"{path}{period.GetPeriodPath()}", cancellationToken);
+            var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
 
-            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (item, token) =>
+            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, token) =>
             {
                 await SyncBlob<TRequest>(path, topic, item, job, cancellationToken);
             });
@@ -115,8 +120,10 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         protected async Task SyncBlobs<TRequest>(SyncPeriod period, string topic, Guid jobId, CancellationToken cancellationToken, params string[] paths)
         {
             var job = syncJobStore.GetJob(jobId);
+            var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
+
             job?.Start();
-            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={MaxDegreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), maxDegreeOfParallelism, Environment.ProcessorCount);
+            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={degreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), degreeOfParallelism, Environment.ProcessorCount);
             try
             {
                 foreach (var path in paths)

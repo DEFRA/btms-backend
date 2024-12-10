@@ -27,12 +27,12 @@ namespace Btms.Business.Commands
             IOptions<BusinessOptions> businessOptions,
             ISyncJobStore syncJobStore)
             : SyncCommand.Handler<SyncNotificationsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
-                blobService, syncJobStore)
+                blobService, businessOptions, syncJobStore)
         {
             public override async Task Handle(SyncNotificationsCommand request, CancellationToken cancellationToken)
             {
                 var rootFolder = string.IsNullOrEmpty(request.RootFolder)
-                    ? businessOptions.Value.DmpBlobRootFolder
+                    ? Options.DmpBlobRootFolder
                     : request.RootFolder;
 
                 if (request.BlobFiles.Any())
