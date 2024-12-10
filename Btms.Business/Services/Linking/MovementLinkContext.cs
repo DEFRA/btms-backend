@@ -1,7 +1,7 @@
 using Btms.Model;
 using Btms.Model.ChangeLog;
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public record MovementLinkContext(Movement PersistedMovement, ChangeSet? ChangeSet) : LinkContext
 {

@@ -1,9 +1,9 @@
-using Btms.Business.Services;
 using Btms.Types.Ipaffs;
 using SlimMessageBus;
 using Btms.Consumers.Extensions;
 using Microsoft.Extensions.Logging;
 using Btms.Business.Pipelines.PreProcessing;
+using Btms.Business.Services.Linking;
 
 namespace Btms.Consumers
 {
