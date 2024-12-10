@@ -1,7 +1,7 @@
 using Btms.Model;
 using Btms.Model.Ipaffs;
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public class LinkResult(LinkOutcome state)
 {

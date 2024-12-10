@@ -2,7 +2,7 @@ using Btms.Model;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public abstract record LinkContext
 {
