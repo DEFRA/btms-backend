@@ -19,15 +19,14 @@ public class SyncClearanceRequestsCommand : SyncCommand
         IBlobService blobService,
         IOptions<BusinessOptions> businessOptions,
         ISyncJobStore syncJobStore)
-        : Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
-            blobService, syncJobStore)
+        : Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
     {
         public override async Task Handle(SyncClearanceRequestsCommand request, CancellationToken cancellationToken)
         {
             var rootFolder = string.IsNullOrEmpty(request.RootFolder)
-                ? businessOptions.Value.DmpBlobRootFolder
+                ? Options.DmpBlobRootFolder
                 : request.RootFolder;
-            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "ALVS", request.JobId, cancellationToken,$"{rootFolder}/ALVS");
+            await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "CLEARANCEREQUESTS", request.JobId, cancellationToken,$"{rootFolder}/ALVS");
         }
     }
 

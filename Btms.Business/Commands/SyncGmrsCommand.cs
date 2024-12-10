@@ -19,12 +19,12 @@ public class SyncGmrsCommand : SyncCommand
         IBlobService blobService,
         IOptions<BusinessOptions> businessOptions,
         ISyncJobStore syncJobStore)
-        : Handler<SyncGmrsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, syncJobStore)
+        : Handler<SyncGmrsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
     {
         public override async Task Handle(SyncGmrsCommand request, CancellationToken cancellationToken)
         {
             var rootFolder = string.IsNullOrEmpty(request.RootFolder)
-                ? businessOptions.Value.DmpBlobRootFolder
+                ? Options.DmpBlobRootFolder
                 : request.RootFolder;
             await SyncBlobPaths<SearchGmrsForDeclarationIdsResponse>(request.SyncPeriod, "GMR", request.JobId,
                 cancellationToken, $"{rootFolder}/GVMSAPIRESPONSE");

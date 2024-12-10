@@ -19,12 +19,12 @@ public class SyncDecisionsCommand : SyncCommand
         IBlobService blobService,
         IOptions<BusinessOptions> businessOptions,
         ISyncJobStore syncJobStore)
-        : Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, syncJobStore)
+        : Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
     {
         public override async Task Handle(SyncDecisionsCommand request, CancellationToken cancellationToken)
         {
             var rootFolder = string.IsNullOrEmpty(request.RootFolder)
-                ? businessOptions.Value.DmpBlobRootFolder
+                ? Options.DmpBlobRootFolder
                 : request.RootFolder;
             await SyncBlobPaths<AlvsClearanceRequest>(request.SyncPeriod, "DECISIONS", request.JobId,
                 cancellationToken,$"{rootFolder}/DECISIONS");
