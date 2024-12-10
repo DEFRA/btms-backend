@@ -92,17 +92,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     .Distinct()
                     .Count()
             })
-            .GroupBy(g => g.Key.Linked);
-
-        var mongoResult = mongoQuery
-            .Execute(logger)
-            .SelectMany(g => g.Select(l => new
-                {
-                    Linked = g.Key,
-                    l.Key.DocumentReferenceCount,
-                    MovementCount = l.Count()
-                }))
-            .ToList();
+            .Select(g => new { g.Key.Linked, g.Key.DocumentReferenceCount, MovementCount = g.Count() });
+            
+        var mongoResult = mongoQuery.Execute(logger).ToList();
         
         var dictionary = mongoResult
             .ToDictionary(
