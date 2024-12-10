@@ -1,4 +1,3 @@
-using Azure.Core;
 using Btms.BlobService;
 using Btms.Metrics;
 using Btms.SensitiveData;

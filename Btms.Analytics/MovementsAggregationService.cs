@@ -1,11 +1,11 @@
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
 using Btms.Model.Extensions;
 using Btms.Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Btms.Analytics.Extensions;
 
 namespace Btms.Analytics;
 

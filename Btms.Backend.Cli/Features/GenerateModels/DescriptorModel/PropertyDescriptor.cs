@@ -63,9 +63,9 @@ public class PropertyDescriptor
 
     public bool MappingInline { get; set; }
 
-    public bool ExcludedFromInternal { get; set; } = false;
+    public bool ExcludedFromInternal { get; set; }
 
-    public bool ExcludedFromSource { get; set; } = false;
+    public bool ExcludedFromSource { get; set; }
 
     public void OverrideType(string type)
     {

@@ -79,7 +79,6 @@ internal class GenerateAlvsModelCommand : IRequest
                         classNamePrefix: ClassNamePrefix);
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }
-
             }
         }
 
