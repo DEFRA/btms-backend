@@ -2,7 +2,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ImportNotificationWithTransformMapper
 {
-    public static Btms.Model.Ipaffs.ImportNotification MapWithTransform(this Types.Ipaffs.ImportNotification from)
+    public static Btms.Model.Ipaffs.ImportNotification MapWithTransform(this ImportNotification? from)
     {
         if (from is null)
         {
@@ -21,13 +21,13 @@ public static class ImportNotificationWithTransformMapper
             return "netWeight";
         }
 
-        var pascal = input.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries)
+        var pascal = input.Split(["_"], StringSplitOptions.RemoveEmptyEntries)
             .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1))
             .Aggregate(string.Empty, (s1, s2) => s1 + s2);
         return char.ToLower(pascal[0]) + pascal[1..];
     }
 
-    private static IDictionary<string, object> FromSnakeCase(this IDictionary<string, object> input)
+    private static IDictionary<string, object> FromSnakeCase(this IDictionary<string, object>? input)
     {
         if (input == null)
         {
@@ -41,15 +41,15 @@ public static class ImportNotificationWithTransformMapper
     private static void Map(ImportNotification from, Btms.Model.Ipaffs.ImportNotification to)
     {
         to.CreatedSource = from.LastUpdated;
-        var commodities = from?.PartOne!.Commodities;
+        var commodities = from.PartOne!.Commodities;
 
         if (commodities?.CommodityComplements?.Length == 1)
         {
-            commodities!.CommodityComplements[0].AdditionalData =
-                commodities!.ComplementParameterSets![0].KeyDataPairs!.FromSnakeCase();
-            if (from?.RiskAssessment != null)
+            commodities.CommodityComplements[0].AdditionalData =
+                commodities.ComplementParameterSets![0].KeyDataPairs!.FromSnakeCase();
+            if (from.RiskAssessment != null)
             {
-                commodities!.CommodityComplements[0].RiskAssesment = from?.RiskAssessment.CommodityResults![0];
+                commodities.CommodityComplements[0].RiskAssesment = from.RiskAssessment.CommodityResults![0];
             }
         }
         else
@@ -60,31 +60,31 @@ public static class ImportNotificationWithTransformMapper
 
             foreach (var commoditiesCommodityComplement in commodities!.ComplementParameterSets!)
             {
-                complementParameters[commoditiesCommodityComplement!.ComplementId!.Value!] =
+                complementParameters[commoditiesCommodityComplement.ComplementId!.Value] =
                     commoditiesCommodityComplement;
             }
 
-            if (from?.RiskAssessment != null)
+            if (from.RiskAssessment != null)
             {
-                foreach (var commoditiesRa in from?.RiskAssessment.CommodityResults!)
+                foreach (var commoditiesRa in from.RiskAssessment.CommodityResults!)
                 {
                     complementRiskAssesments[commoditiesRa.UniqueId!] = commoditiesRa;
                 }
             }
 
-            if (from?.PartTwo?.CommodityChecks != null)
+            if (from.PartTwo?.CommodityChecks != null)
             {
-                foreach (var commodityCheck in from?.PartTwo.CommodityChecks!)
+                foreach (var commodityCheck in from.PartTwo.CommodityChecks!)
                 {
                     commodityChecks[commodityCheck.UniqueComplementId!] = commodityCheck.Checks!;
                 }
             }
 
-            if (commodities!.CommodityComplements is not null)
+            if (commodities.CommodityComplements is not null)
             {
-                foreach (var commodity in commodities!.CommodityComplements)
+                foreach (var commodity in commodities.CommodityComplements)
                 {
-                    var parameters = complementParameters[commodity.ComplementId!.Value!];
+                    var parameters = complementParameters[commodity.ComplementId!.Value];
                     commodity.AdditionalData = parameters.KeyDataPairs!.FromSnakeCase();
 
                     if (complementRiskAssesments.Any() &&

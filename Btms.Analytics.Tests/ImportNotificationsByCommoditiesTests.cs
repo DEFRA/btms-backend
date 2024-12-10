@@ -20,7 +20,7 @@ public class ImportNotificationsByCommoditiesTests(
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await multiItemDataTestFixture.ImportNotificationsAggregationService
             .ByCommodityCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
-            .ToList();;
+            .ToList();
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         

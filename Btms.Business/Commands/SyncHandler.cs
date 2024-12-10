@@ -33,7 +33,7 @@ internal static partial class SyncHandlerLogging
     internal static partial void BlobFailed(this ILogger logger, Exception exception, string jobId, string blobPath);
 }
 
-public abstract class SyncCommand() : IRequest, ISyncJob
+public abstract class SyncCommand : IRequest, ISyncJob
 {
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
     public SyncPeriod SyncPeriod { get; set; }
@@ -43,7 +43,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
     public Guid JobId { get; set; } = Guid.NewGuid();
     public string Timespan => SyncPeriod.ToString();
     public abstract string Resource { get; }
-    public string Description => $"{GetType().Name} for {this.SyncPeriod}";
+    public string Description => $"{GetType().Name} for {SyncPeriod}";
 
     internal abstract class Handler<T>(
         SyncMetrics syncMetrics,
@@ -78,8 +78,8 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                 try
                 {
                     await Parallel.ForEachAsync(paths,
-                        new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism },
-                        async (path, token) =>
+                        new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism },
+                        async (path, _) =>
                         {
                             using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("SyncPath", path), }))
                             {
@@ -105,7 +105,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
         {
             var result = blobService.GetResourcesAsync($"{path}{period.GetPeriodPath()}", cancellationToken);
 
-            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (item, token) =>
+            await Parallel.ForEachAsync(result, new ParallelOptions { CancellationToken = cancellationToken, MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (item, _) =>
             {
                 await SyncBlob<TRequest>(path, topic, item, job, cancellationToken);
             });
@@ -123,7 +123,7 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                 {
                     if (job?.Status != SyncJobStatus.Cancelled)
                     {
-                        await SyncBlob<TRequest>(path, topic, new BtmsBlobItem() { Name = path }, job!, cancellationToken);
+                        await SyncBlob<TRequest>(path, topic, new BtmsBlobItem { Name = path }, job!, cancellationToken);
                     }
                 }
 
@@ -149,11 +149,11 @@ public abstract class SyncCommand() : IRequest, ISyncJob
                     logger.BlobStarted(job.JobId.ToString(), item.Name);
                     syncMetrics.SyncStarted<T>(path, topic);
                     using (var activity = BtmsDiagnostics.ActivitySource.StartActivity(name: ActivityName,
-                               kind: ActivityKind.Client, tags: new TagList() { { "blob.name", item.Name } }))
+                               kind: ActivityKind.Client, tags: new TagList { { "blob.name", item.Name } }))
                     {
                         var blobContent = await blobService.GetResource(item, cancellationToken);
                         var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
-                        var headers = new Dictionary<string, object>()
+                        var headers = new Dictionary<string, object>
                         {
                             { "messageId", item.Name.TrimStart(path.ToCharArray()) }, { "jobId", job.JobId }
                         };

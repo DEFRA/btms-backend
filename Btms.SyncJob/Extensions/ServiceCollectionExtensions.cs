@@ -1,14 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Btms.SyncJob.Extensions
-{
-    public static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddSyncJob(this IServiceCollection services)
-        {
-            services.AddSingleton<ISyncJobStore, SyncJobStore>();
+namespace Btms.SyncJob.Extensions;
 
-            return services;
-        }
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddSyncJob(this IServiceCollection services)
+    {
+        services.AddSingleton<ISyncJobStore, SyncJobStore>();
+
+        return services;
     }
 }

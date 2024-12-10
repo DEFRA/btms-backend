@@ -16,56 +16,55 @@ using Microsoft.Extensions.DependencyInjection;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Types.Alvs;
 
-namespace Btms.Business.Extensions
+namespace Btms.Business.Extensions;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddBusinessServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        public static IServiceCollection AddBusinessServices(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddBtmsMetrics();
-            services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
-            services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
+        services.AddBtmsMetrics();
+        services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
+        services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
             
-            services.AddMongoDbContext(configuration);
-            services.AddBlobStorage(configuration);
-            services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
-            services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
+        services.AddMongoDbContext(configuration);
+        services.AddBlobStorage(configuration);
+        services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
+        services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SyncNotificationsCommand>());
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SyncNotificationsCommand>());
 
-            // hard code list for now, get via config -> reflection later
-            List<Type> rules = new List<Type>
-            {
-                typeof(Level1Rule8),
-                typeof(Level1Rule4),
-                typeof(Level1Rule2),
-                typeof(Level1Rule1),
-                typeof(Level1RuleZ)
-            };
+        // hard code list for now, get via config -> reflection later
+        List<Type> rules =
+        [
+            typeof(Level1Rule8),
+            typeof(Level1Rule4),
+            typeof(Level1Rule2),
+            typeof(Level1Rule1),
+            typeof(Level1RuleZ)
+        ];
 
-            // Add matching pipelines
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(typeof(PipelineResult).Assembly);
-                cfg.AddRequestPreProcessor<MatchPreProcess>();
-                cfg.AddRequestPostProcessor<MatchPostProcess>();
+        // Add matching pipelines
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(PipelineResult).Assembly);
+            cfg.AddRequestPreProcessor<MatchPreProcess>();
+            cfg.AddRequestPostProcessor<MatchPostProcess>();
                 
-                foreach (var rule in rules)
-                {
+            foreach (var rule in rules)
+            {
                     
-                    cfg.AddBehavior(typeof(IPipelineBehavior<MatchRequest, PipelineResult>), rule);
-                }
+                cfg.AddBehavior(typeof(IPipelineBehavior<MatchRequest, PipelineResult>), rule);
+            }
 
-                cfg.AddBehavior<IPipelineBehavior<MatchRequest, PipelineResult>, MatchTerminatePipeline>();
-            });
+            cfg.AddBehavior<IPipelineBehavior<MatchRequest, PipelineResult>, MatchTerminatePipeline>();
+        });
 
-            services.AddScoped<ILinkingService, LinkingService>();
+        services.AddScoped<ILinkingService, LinkingService>();
 
-            services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
-            services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
+        services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
+        services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
 
-            return services;
-        }
+        return services;
     }
 }

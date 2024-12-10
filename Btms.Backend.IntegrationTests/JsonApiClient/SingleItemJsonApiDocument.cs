@@ -7,7 +7,7 @@ public class SingleItemJsonApiDocument : JsonApiDocument<ResourceObject>
 {
     public T GetResourceObject<T>()
     {
-        return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(this.Data.Attributes, jsonSerializerOptions),
-            jsonSerializerOptions)!;
+        return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(Data.Attributes, JsonSerializerOptions),
+            JsonSerializerOptions)!;
     }
 }

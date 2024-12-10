@@ -7,7 +7,7 @@ public class ChangeSetTypeInfoResolver : DefaultJsonTypeInfoResolver
 {
     public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
     {
-        JsonTypeInfo typeInfo = base.GetTypeInfo(type, options);
+        var typeInfo = base.GetTypeInfo(type, options);
 
         if (typeInfo.Kind == JsonTypeInfoKind.Object)
         {
@@ -15,7 +15,7 @@ public class ChangeSetTypeInfoResolver : DefaultJsonTypeInfoResolver
             {
                 if (property.AttributeProvider!.GetCustomAttributes(typeof(ChangeSetIgnoreAttribute), false).Any())
                 {
-                    property.ShouldSerialize = (o, o1) => false;
+                    property.ShouldSerialize = (_, _) => false;
                 }
             }
         }

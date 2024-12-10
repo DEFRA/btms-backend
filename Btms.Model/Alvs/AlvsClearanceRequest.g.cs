@@ -24,7 +24,7 @@ public partial class AlvsClearanceRequest  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public ServiceHeader? ServiceHeader { get; set; }
@@ -32,7 +32,7 @@ public partial class AlvsClearanceRequest  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Header? Header { get; set; }
@@ -40,7 +40,7 @@ public partial class AlvsClearanceRequest  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Items[]? Items { get; set; }

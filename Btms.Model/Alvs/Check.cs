@@ -23,7 +23,7 @@ public partial class Check  //
 {
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [JsonPropertyName("decisionCode")]
     public string? DecisionCode { get; set; }
@@ -31,7 +31,7 @@ public partial class Check  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [JsonPropertyName("decisionsValidUntil")]
     public DateTime? DecisionsValidUntil { get; set; }

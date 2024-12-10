@@ -1,14 +1,8 @@
-using System.Collections;
-using System.Data.Common;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using Btms.Backend.Data;
-using Btms.Common.Extensions;
 using Btms.Model.Extensions;
-using Btms.Model.Ipaffs;
 using Btms.Model;
-using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -47,7 +41,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Key), g => g.Count);
             
-        return Task.FromResult(new SingeSeriesDataset()
+        return Task.FromResult(new SingeSeriesDataset
         {
             Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
@@ -72,7 +66,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .ToList();
             
         var dictionary = mongoResult
-            .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), ItemCount = g.ItemCount }, g => g.Count);
+            .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.ItemCount }, g => g.Count);
             
         var maxCount = mongoResult
             .Max(r => r.Count);
@@ -80,10 +74,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
             .Select(title => new MultiSeriesDataset(title, "Item Count") {
                 Results = Enumerable.Range(0, maxCount + 1)
-                    .Select(i => new ByNumericDimensionResult()
+                    .Select(i => new ByNumericDimensionResult
                     {
                         Dimension = i,
-                        Value = dictionary!.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
+                        Value = dictionary.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
                     }).ToList()
             })
             .ToArray()    
@@ -110,25 +104,25 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .SelectMany(g => g.Select(l => new
                 {
                     Linked = g.Key,
-                    DocumentReferenceCount = l.Key.DocumentReferenceCount,
+                    l.Key.DocumentReferenceCount,
                     MovementCount = l.Count()
                 }))
             .ToList();
         
         var dictionary = mongoResult
             .ToDictionary(
-                g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), DocumentReferenceCount = g.DocumentReferenceCount },
-                g => g.MovementCount)!;
+                g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.DocumentReferenceCount },
+                g => g.MovementCount);
 
         var maxReferences = mongoResult.Max(r => r.DocumentReferenceCount);
         
         return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
             .Select(title => new MultiSeriesDataset(title, "Document Reference Count") {
                 Results = Enumerable.Range(0, maxReferences + 1)
-                    .Select(i => new ByNumericDimensionResult()
+                    .Select(i => new ByNumericDimensionResult
                     {
                         Dimension = i,
-                        Value = dictionary!.GetValueOrDefault(new { Title=title, DocumentReferenceCount = i }, 0)
+                        Value = dictionary.GetValueOrDefault(new { Title=title, DocumentReferenceCount = i }, 0)
                     }).ToList()
             })
             .ToArray()    
@@ -142,7 +136,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
             .SelectMany(m => m.Items.Select(i => new { Item = i, MovementId = m.Id }))
             .SelectMany(i => i.Item.Documents!.Select(d =>
-                new { MovementId = i.MovementId, DocumentReference = d.DocumentReference }))
+                new { i.MovementId, d.DocumentReference }))
             .Distinct()
             .GroupBy(d => d.DocumentReference)
             .Select(d => new { DocumentReference = d.Key, MovementCount = d.Count() })
@@ -155,7 +149,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     r =>r.MovementCount.ToString(),
                     r=> r.DocumentReferenceCount);
 
-            var result = new SingeSeriesDataset() { Values = mongoResult };
+            var result = new SingeSeriesDataset { Values = mongoResult };
             
             return Task.FromResult(result);
     }
@@ -180,7 +174,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(title => mongoResult.AsDataset(dateRange, title))
             .AsOrderedArray(m => m.Name);
         
-        logger.LogDebug("Aggregated Data {result}", output.ToList().ToJsonString());
+        logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
         
         return Task.FromResult(output);
     }

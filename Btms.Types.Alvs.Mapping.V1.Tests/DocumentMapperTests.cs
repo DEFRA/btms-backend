@@ -1,6 +1,4 @@
 using AutoBogus;
-using Btms.Types.Alvs;
-using Btms.Types.Alvs.Mapping;
 using FluentAssertions;
 using Xunit;
 

@@ -14,7 +14,7 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
                 value.Enqueue();
                 return value;
 
-            }, (s, stats) =>
+            }, (_, stats) =>
             {
                 stats.Enqueue();
                 return stats;
@@ -30,7 +30,7 @@ public class MemoryQueueStatsMonitor : IMemoryQueueStatsMonitor
                 value.Dequeue();
                 return value;
 
-            }, (s, stats) =>
+            }, (_, stats) =>
             {
                 stats.Dequeue();
                 return stats;

@@ -6,13 +6,13 @@ namespace Btms.SensitiveData;
 
 public static class SensitiveFieldsProvider
 {
-    private static Dictionary<Type, List<string>> cache = new();
-    private static readonly object cacheLock = new ();
+    private static Dictionary<Type, List<string>> _cache = new();
+    private static readonly object CacheLock = new ();
     public static List<string> Get<T>()
     {
-        lock (cacheLock)
+        lock (CacheLock)
         {
-            if (cache.TryGetValue(typeof(T), out var value))
+            if (_cache.TryGetValue(typeof(T), out var value))
             {
                 return value;
             }
@@ -20,7 +20,7 @@ public static class SensitiveFieldsProvider
             var type = typeof(T);
 
             var list = GetSensitiveFields(string.Empty, type);
-            cache.Add(typeof(T), list);
+            _cache.Add(typeof(T), list);
             return list;
         }
 
@@ -29,15 +29,15 @@ public static class SensitiveFieldsProvider
 
     public static List<string> Get(Type type)
     {
-        lock (cacheLock)
+        lock (CacheLock)
         {
-            if (cache.TryGetValue(type, out var value))
+            if (_cache.TryGetValue(type, out var value))
             {
                 return value;
             }
 
             var list = GetSensitiveFields(string.Empty, type);
-            cache.Add(type, list);
+            _cache.Add(type, list);
             return list;
         }
 
@@ -61,11 +61,11 @@ public static class SensitiveFieldsProvider
             }
             else
             {
-                Type elementType = GetElementType(property)!;
+                var elementType = GetElementType(property);
 
                 if (elementType != null && elementType.Namespace != "System")
                 {
-                    list.AddRange(GetSensitiveFields($"{currentPath}", elementType!));
+                    list.AddRange(GetSensitiveFields($"{currentPath}", elementType));
                 }
             }
         }

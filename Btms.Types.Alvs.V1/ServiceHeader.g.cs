@@ -24,28 +24,28 @@ public partial class ServiceHeader  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("sourceSystem")]
     public string? SourceSystem { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("destinationSystem")]
     public string? DestinationSystem { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("correlationId")]
     public string? CorrelationId { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("serviceCallTimestamp")]
     [JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]
     public DateTime? ServiceCallTimestamp { get; set; }

@@ -19,7 +19,7 @@ public class ApiOptionsTest
     [Fact]
     public void ShouldFailIfCdsProxyDoesntHaveProtocol()
     {
-        var c = new ApiOptions() { CdpHttpsProxy = "aaa" };
+        var c = new ApiOptions { CdpHttpsProxy = "aaa" };
         
         validator.Validate("", c).Failed.Should().BeTrue();
     }

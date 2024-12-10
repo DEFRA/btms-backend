@@ -1,5 +1,4 @@
 using Btms.Analytics;
-using Btms.Analytics.Extensions;
 using Btms.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 

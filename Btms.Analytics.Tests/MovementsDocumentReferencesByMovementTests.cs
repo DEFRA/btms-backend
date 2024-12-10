@@ -1,5 +1,4 @@
 using Btms.Common.Extensions;
-using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 

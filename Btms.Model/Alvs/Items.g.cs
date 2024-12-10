@@ -24,7 +24,7 @@ public partial class Items  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public int? ItemNumber { get; set; }
@@ -32,7 +32,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? CustomsProcedureCode { get; set; }
@@ -40,7 +40,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? TaricCommodityCode { get; set; }
@@ -48,7 +48,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? GoodsDescription { get; set; }
@@ -56,7 +56,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? ConsigneeId { get; set; }
@@ -64,7 +64,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? ConsigneeName { get; set; }
@@ -72,7 +72,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public decimal? ItemNetMass { get; set; }
@@ -80,7 +80,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public decimal? ItemSupplementaryUnits { get; set; }
@@ -88,7 +88,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public decimal? ItemThirdQuantity { get; set; }
@@ -96,7 +96,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? ItemOriginCountryCode { get; set; }
@@ -104,7 +104,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Document[]? Documents { get; set; }
@@ -112,7 +112,7 @@ public partial class Items  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Check[]? Checks { get; set; }

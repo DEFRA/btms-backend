@@ -1,17 +1,10 @@
-using System.IO.Compression;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using Btms.Backend.Config;
 using Btms.Backend.Mediatr;
 using Btms.Business.Commands;
 using Btms.Consumers.MemoryQueue;
 using Btms.SyncJob;
-using Btms.Types.Alvs;
-using Btms.Types.Ipaffs;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using static Btms.Business.Commands.DownloadCommand;
 
 namespace Btms.Backend.Endpoints;
 
@@ -58,13 +51,13 @@ public static class SyncEndpoints
 
     private static IResult DownloadNotifications([FromServices] IWebHostEnvironment env, string id)
     {
-        var stream = File.OpenRead($"{System.IO.Path.Combine(env.ContentRootPath, id)}.zip");
+        var stream = File.OpenRead($"{Path.Combine(env.ContentRootPath, id)}.zip");
         return Results.File(stream, "application/zip", $"{id}.zip");
     }
 
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromQuery] SyncPeriod period)
     {
-        var command = new DownloadCommand() { SyncPeriod = period };
+        var command = new DownloadCommand { SyncPeriod = period };
         await mediator.SendJob(command);
         return Results.Ok(command.JobId);
     }
