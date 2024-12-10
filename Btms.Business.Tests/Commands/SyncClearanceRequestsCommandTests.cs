@@ -25,7 +25,6 @@ public class SyncClearanceRequestsCommandTests(ITestOutputHelper outputHelper)
         var jobStore = new SyncJobStore();
         jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "ClearanceRequests");
 
-
         var bus = Substitute.For<IPublishBus>();
         var blob = Substitute.For<IBlobService>();
         blob.GetResourcesAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
@@ -35,7 +34,6 @@ public class SyncClearanceRequestsCommandTests(ITestOutputHelper outputHelper)
 
         blob.GetResource(Arg.Any<IBlobItem>(), Arg.Any<CancellationToken>())
             .Returns(clearanceRequest.ToJsonString());
-
 
         var handler = new SyncClearanceRequestsCommand.Handler(
             new SyncMetrics(new DummyMeterFactory()),

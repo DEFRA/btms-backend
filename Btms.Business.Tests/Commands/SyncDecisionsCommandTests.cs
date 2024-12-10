@@ -35,7 +35,6 @@ public class SyncDecisionsCommandTests(ITestOutputHelper outputHelper)
         blob.GetResource(Arg.Any<IBlobItem>(), Arg.Any<CancellationToken>())
             .Returns(clearanceRequest.ToJsonString());
 
-
         var handler = new SyncDecisionsCommand.Handler(
             new SyncMetrics(new DummyMeterFactory()),
             bus,

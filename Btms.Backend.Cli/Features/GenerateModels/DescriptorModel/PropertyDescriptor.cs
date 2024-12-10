@@ -61,7 +61,6 @@ public class PropertyDescriptor
 
     public string Mapper { get; set; } = null!;
 
-
     public bool MappingInline { get; set; }
 
     public bool ExcludedFromInternal { get; set; } = false;
@@ -87,7 +86,6 @@ public class PropertyDescriptor
 
             return $"{_classNamePrefix}{SourceName.Dehumanize()}";
         }
-
 
         if (_isArray)
         {
@@ -116,7 +114,6 @@ public class PropertyDescriptor
             return $"{_classNamePrefix}{InternalName.Dehumanize()}";
         }
 
-
         if (_isArray)
         {
             n = n.Pluralize();
@@ -138,7 +135,6 @@ public class PropertyDescriptor
         {
             return t;
         }
-
 
         if (_isReferenceType && !Type.Equals("Result") && !Type.Equals("Unit") && !Type.Equals("string") &&
             !Type.Equals("InspectionRequired"))

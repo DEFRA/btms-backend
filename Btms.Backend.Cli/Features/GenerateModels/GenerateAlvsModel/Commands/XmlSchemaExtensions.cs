@@ -20,10 +20,8 @@ public static class XmlSchemaExtensions
         return string.Empty;
     }
 
-
     public static string GetSchemaType(this XmlSchemaElement schemaElement)
     {
-
         if (schemaElement.SchemaType is not null)
         {
             if (schemaElement.SchemaType is XmlSchemaSimpleType { Content: XmlSchemaSimpleTypeRestriction simpleTypeRestriction })
@@ -65,7 +63,6 @@ public static class XmlSchemaExtensions
                 {
                     return complexType.Name!;
                 }
-
 
             }
         }
