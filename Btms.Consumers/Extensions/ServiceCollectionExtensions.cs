@@ -24,7 +24,7 @@ namespace Btms.Consumers.Extensions
             
             var consumerOpts = configuration
                 .GetSection(ConsumerOptions.SectionName)
-                .Get<ConsumerOptions>()!; // ?? new ConsumerOptions();
+                .Get<ConsumerOptions>() ?? new ConsumerOptions();
 
             // services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
             //
@@ -56,24 +56,24 @@ namespace Btms.Consumers.Extensions
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {
-                                x.Instances(consumerOpts.GetInMemoryInstances("NOTIFICATIONS"));
+                                x.Instances(consumerOpts.InMemoryNotifications);
                                 x.Topic("NOTIFICATIONS").WithConsumer<NotificationConsumer>();
                             })
                             .Produce<SearchGmrsForDeclarationIdsResponse>(x => x.DefaultTopic("GMR"))
                             .Consume<SearchGmrsForDeclarationIdsResponse>(x =>
                             {
-                                x.Instances(consumerOpts.GetInMemoryInstances("GMR"));
+                                x.Instances(consumerOpts.InMemoryGmrs);
                                 x.Topic("GMR").WithConsumer<GmrConsumer>();
                             })
                             .Produce<AlvsClearanceRequest>(x => x.DefaultTopic(nameof(AlvsClearanceRequest)))
                             .Consume<AlvsClearanceRequest>(x =>
                             {
-                                x.Instances(consumerOpts.GetInMemoryInstances("ALVS"));
-                                x.Topic("ALVS").WithConsumer<AlvsClearanceRequestConsumer>();
+                                x.Instances(consumerOpts.InMemoryClearanceRequests);
+                                x.Topic("CLEARANCEREQUESTS").WithConsumer<AlvsClearanceRequestConsumer>();
                             })
                             .Consume<AlvsClearanceRequest>(x =>
                             {
-                                x.Instances(consumerOpts.GetInMemoryInstances("DECISIONS"));
+                                x.Instances(consumerOpts.InMemoryDecisions);
                                 x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
                             });
                     });

@@ -7,19 +7,9 @@ public class ConsumerOptions
 {
     public const string SectionName = nameof(ConsumerOptions);
 
-    public Dictionary<string, int> InMemoryInstances = [];
-
-    public int InMemoryNotifications = 2;
-    // public int InMemoryNotifications = 2; 
-
-    public int GetInMemoryInstances(string topic, int defaultInstances = 2)
-    {
-        return InMemoryInstances.GetValueOrDefault("NOTIFICATIONS", defaultInstances);
-    }
-    // public int GetInstanceCount(string bus, string topic, int defaultInstances = 2)
-    // {
-    //     if (!Instances.TryGetValue(bus, out var instance)) return defaultInstances;
-    //     
-    //     return instance.GetValueOrDefault(topic, defaultInstances);
-    // }
+    public int InMemoryNotifications { get; set; } = 2;
+    public int InMemoryGmrs { get; set; } = 2;
+    public int InMemoryClearanceRequests { get; set; } = 2;
+    public int InMemoryDecisions { get; set; } = 2;
+    
 }
