@@ -24,7 +24,7 @@ public partial class AlvsClearanceRequestPost  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? XmlSchemaVersion { get; set; }
@@ -32,7 +32,7 @@ public partial class AlvsClearanceRequestPost  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? UserIdentification { get; set; }
@@ -40,7 +40,7 @@ public partial class AlvsClearanceRequestPost  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? UserPassword { get; set; }
@@ -48,7 +48,7 @@ public partial class AlvsClearanceRequestPost  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public DateTime? SentOn { get; set; }
@@ -56,7 +56,7 @@ public partial class AlvsClearanceRequestPost  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public AlvsClearanceRequest? AlvsClearanceRequest { get; set; }

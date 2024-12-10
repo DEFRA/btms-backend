@@ -24,7 +24,7 @@ public partial class Check  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? CheckCode { get; set; }
@@ -32,7 +32,7 @@ public partial class Check  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DepartmentCode { get; set; }

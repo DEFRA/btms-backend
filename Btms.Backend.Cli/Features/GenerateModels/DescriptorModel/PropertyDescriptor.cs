@@ -1,165 +1,161 @@
 using System.Diagnostics;
 using Humanizer;
 
-namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel
+namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
+
+[DebuggerDisplay("{SourceName}")]
+public class PropertyDescriptor
 {
-    [DebuggerDisplay("{SourceName}")]
-    public class PropertyDescriptor
+    private readonly bool _isReferenceType;
+
+    private readonly bool _isArray;
+
+    private readonly string _classNamePrefix;
+    private bool _typeOverridden;
+
+    public PropertyDescriptor(string sourceName, string type, string description, bool isReferenceType,
+        bool isArray, string classNamePrefix)
+        : this(sourceName, sourceName, type, description, isReferenceType, isArray, classNamePrefix)
     {
-        private readonly bool _isReferenceType;
+    }
 
-        private readonly bool _isArray;
+    public PropertyDescriptor(string sourceName, string internalName, string type, string description,
+        bool isReferenceType, bool isArray, string classNamePrefix)
+    {
+        SourceName = sourceName;
+        InternalName = internalName;
 
-        private readonly string _classNamePrefix;
-        private bool _typeOverridden;
+        _isReferenceType = isReferenceType;
+        _isArray = isArray;
+        _classNamePrefix = classNamePrefix;
+        Type = type;
+        Description = description;
+        IsReferenceType = isReferenceType;
+        IsArray = isArray;
+        SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
+        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]"];
 
-        public PropertyDescriptor(string sourceName, string type, string description, bool isReferenceType,
-            bool isArray, string classNamePrefix)
-            : this(sourceName, sourceName, type, description, isReferenceType, isArray, classNamePrefix)
+        if (type.EndsWith("Enum"))
         {
+            InternalAttributes.Add(
+                "[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]");
+        }
+    }
+    public string SourceName { get; set; }
+
+    public string InternalName { get; set; }
+
+    public string Type { get; set; }
+
+    public string Description { get; set; }
+
+    public List<string> SourceAttributes { get; set; }
+
+    public List<string> InternalAttributes { get; set; }
+
+    public bool IsReferenceType { get; set; }
+
+    public bool IsNullable { get; set; }
+
+    public bool IsArray { get; set; }
+
+    public string Mapper { get; set; } = null!;
+
+
+    public bool MappingInline { get; set; }
+
+    public bool ExcludedFromInternal { get; set; } = false;
+
+    public bool ExcludedFromSource { get; set; } = false;
+
+    public void OverrideType(string type)
+    {
+        Type = type;
+        _typeOverridden = true;
+    }
+
+    public string GetSourcePropertyName()
+    {
+        var n = SourceName.Dehumanize();
+        if (SourceName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
+            SourceName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (SourceName.StartsWith(_classNamePrefix))
+            {
+                return $"{SourceName.Dehumanize()}";
+            }
+
+            return $"{_classNamePrefix}{SourceName.Dehumanize()}";
         }
 
-        public PropertyDescriptor(string sourceName, string internalName, string type, string description,
-            bool isReferenceType, bool isArray, string classNamePrefix)
+
+        if (_isArray)
         {
-            SourceName = sourceName;
-            InternalName = internalName;
-
-            _isReferenceType = isReferenceType;
-            _isArray = isArray;
-            _classNamePrefix = classNamePrefix;
-            Type = type;
-            Description = description;
-            IsReferenceType = isReferenceType;
-            IsArray = isArray;
-            SourceAttributes = new List<string>() { $"[JsonPropertyName(\"{sourceName}\")]" };
-            InternalAttributes = new List<string>()
-            {
-                "[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]"
-            };
-
-            if (type.EndsWith("Enum"))
-            {
-                InternalAttributes.Add(
-                    "[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]");
-            }
-        }
-        public string SourceName { get; set; }
-
-        public string InternalName { get; set; }
-
-        public string Type { get; set; }
-
-        public string Description { get; set; }
-
-        public List<string> SourceAttributes { get; set; } = new();
-
-        public List<string> InternalAttributes { get; set; } = new();
-
-        public bool IsReferenceType { get; set; }
-
-        public bool IsNullable { get; set; }
-
-        public bool IsArray { get; set; }
-
-        public string Mapper { get; set; } = null!;
-
-
-        public bool MappingInline { get; set; }
-
-        public bool ExcludedFromInternal { get; set; } = false;
-
-        public bool ExcludedFromSource { get; set; } = false;
-
-        public void OverrideType(string type)
-        {
-            Type = type;
-            _typeOverridden = true;
+            n = n.Pluralize();
         }
 
-        public string GetSourcePropertyName()
+        if (n.Contains("ID", StringComparison.CurrentCulture))
         {
-            var n = SourceName.Dehumanize();
-            if (SourceName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
-                SourceName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (SourceName.StartsWith(_classNamePrefix))
-                {
-                    return $"{SourceName.Dehumanize()}";
-                }
-
-                return $"{_classNamePrefix}{SourceName.Dehumanize()}";
-            }
-
-
-            if (_isArray)
-            {
-                n = n.Pluralize();
-            }
-
-            if (n.Contains("ID", StringComparison.CurrentCulture))
-            {
-                n = n.Replace("ID", "Id");
-            }
-
-            return n;
+            n = n.Replace("ID", "Id");
         }
 
-        public string GetInternalPropertyName()
+        return n;
+    }
+
+    public string GetInternalPropertyName()
+    {
+        var n = InternalName.Dehumanize();
+        if (InternalName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
+            InternalName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            var n = InternalName.Dehumanize();
-            if (InternalName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
-                InternalName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
+            if (InternalName.StartsWith(_classNamePrefix))
             {
-                if (InternalName.StartsWith(_classNamePrefix))
-                {
-                    return $"{InternalName.Dehumanize()}";
-                }
-
-                return $"{_classNamePrefix}{InternalName.Dehumanize()}";
+                return $"{InternalName.Dehumanize()}";
             }
 
-
-            if (_isArray)
-            {
-                n = n.Pluralize();
-            }
-
-            if (n.Contains("ID", StringComparison.CurrentCulture))
-            {
-                n = n.Replace("ID", "Id");
-            }
-
-            return n;
+            return $"{_classNamePrefix}{InternalName.Dehumanize()}";
         }
 
-        public string GetPropertyType()
+
+        if (_isArray)
         {
-            var t = Type;
+            n = n.Pluralize();
+        }
 
-            if (_typeOverridden)
-            {
-                return t;
-            }
+        if (n.Contains("ID", StringComparison.CurrentCulture))
+        {
+            n = n.Replace("ID", "Id");
+        }
 
+        return n;
+    }
 
-            if (_isReferenceType && !Type.Equals("Result") && !Type.Equals("Unit") && !Type.Equals("string") &&
-                !Type.Equals("InspectionRequired"))
-            {
-                t = ClassDescriptor.BuildClassName(Type, _classNamePrefix);
-            }
+    public string GetPropertyType()
+    {
+        var t = Type;
 
-            if (IsArray && !t.Contains("[]"))
-            {
-                t = $"{t}[]";
-            }
-
+        if (_typeOverridden)
+        {
             return t;
         }
 
-        public string GetPropertyTypeName()
+
+        if (_isReferenceType && !Type.Equals("Result") && !Type.Equals("Unit") && !Type.Equals("string") &&
+            !Type.Equals("InspectionRequired"))
         {
-            return GetPropertyType().Replace("[]", "");
+            t = ClassDescriptor.BuildClassName(Type, _classNamePrefix);
         }
+
+        if (IsArray && !t.Contains("[]"))
+        {
+            t = $"{t}[]";
+        }
+
+        return t;
+    }
+
+    public string GetPropertyTypeName()
+    {
+        return GetPropertyType().Replace("[]", "");
     }
 }

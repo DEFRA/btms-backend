@@ -1,4 +1,3 @@
-#nullable enable
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -81,7 +80,7 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
     public override void Write(
         Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
     {
-        var list = value.Select(x => new KeyDataPair() { Key = x.Key, Data = x.Value?.ToString() });
+        var list = value.Select(x => new KeyDataPair { Key = x.Key, Data = x.Value?.ToString() });
         JsonSerializer.Serialize(writer, list, options);
     }
 

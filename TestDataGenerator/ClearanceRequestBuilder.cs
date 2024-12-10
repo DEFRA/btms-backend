@@ -10,7 +10,7 @@ public class ClearanceRequestBuilder(string file) : ClearanceRequestBuilder<Alvs
 public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>>
     where T : AlvsClearanceRequest, new()
 {
-    private ClearanceRequestBuilder() : base()
+    private ClearanceRequestBuilder()
     {
     }
 
@@ -52,8 +52,8 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 
         int maxHoursOffset = 12, int maxMinsOffset = 30)
     {
-        DateOnly d = date ?? DateTime.Today.ToDate();
-        TimeOnly t = time ?? DateTime.Now.ToTime();
+        var d = date ?? DateTime.Today.ToDate();
+        var t = time ?? DateTime.Now.ToTime();
         var hoursOffset = CreateRandomInt(maxHoursOffset * -1, maxHoursOffset);
         var minsOffset = CreateRandomInt(maxMinsOffset * -1, maxMinsOffset);
 

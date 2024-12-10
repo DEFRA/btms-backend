@@ -1,7 +1,5 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using Btms.Common;
-using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
 using Btms.Metrics;
 using SlimMessageBus;
@@ -13,7 +11,7 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
 {
     public const string ActivityName = "Btms.Consumer";
     public const string TimeInQueueActivityName = "Btms.TimeInQueue";
-    private static readonly ConcurrentDictionary<TMessage, DateTime> messageQueueTimes = new();
+    private static readonly ConcurrentDictionary<TMessage, DateTime> MessageQueueTimes = new();
     public async Task<object> OnHandle(TMessage message, Func<Task<object>> next, IConsumerContext context)
     {
         var timer = Stopwatch.StartNew();
@@ -30,7 +28,7 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
 
             var activityContext = context.GetActivityContext();
 
-            if (messageQueueTimes.TryGetValue(message, out var dateTime))
+            if (MessageQueueTimes.TryGetValue(message, out var dateTime))
             {
                 int msInQueue;
                 using (var activity = BtmsDiagnostics.ActivitySource.CreateActivity(TimeInQueueActivityName,
@@ -42,13 +40,13 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
                     activity?.SetEndTime(deQueueTime);
                     msInQueue = deQueueTime.Subtract(dateTime).Milliseconds;
                     queueMetrics.TimeSpentInQueue(msInQueue, context.Path);
-                    messageQueueTimes.Remove(message, out var _);
+                    MessageQueueTimes.Remove(message, out var _);
 
                 }
             }
 
             queueMetrics.Outgoing(queueName: context.Path);
-            using (var activity = BtmsDiagnostics.ActivitySource.StartActivity(ActivityName, parentContext: activityContext, kind: ActivityKind.Client))
+            using (BtmsDiagnostics.ActivitySource.StartActivity(ActivityName, parentContext: activityContext, kind: ActivityKind.Client))
             {
                 var result = await next();
                 if (context.WasSkipped())
@@ -73,7 +71,7 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
     public Task OnHandle(TMessage message, Func<Task> next, IProducerContext context)
     {
         queueMetrics.Incoming(context.Path);
-        messageQueueTimes.TryAdd(message, DateTime.UtcNow);
+        MessageQueueTimes.TryAdd(message, DateTime.UtcNow);
         return next();
     }
 }

@@ -12,7 +12,7 @@ public sealed class RelationshipLinks
 
     public static RelationshipLinks CreateForMovement(Movement movement)
     {
-        return new RelationshipLinks()
+        return new RelationshipLinks
         {
             Self = LinksBuilder.Movement.BuildSelfMovementLink(movement.Id!),
             Related = LinksBuilder.Movement.BuildRelatedMovementLink(movement.Id!)
@@ -21,7 +21,7 @@ public sealed class RelationshipLinks
 
     public static RelationshipLinks CreateForNotification(ImportNotification notification)
     {
-        return new RelationshipLinks()
+        return new RelationshipLinks
         {
             Self = LinksBuilder.Notification.BuildSelfNotificationLink(notification.Id!),
             Related = LinksBuilder.Notification.BuildRelatedMovementLink(notification.Id!)

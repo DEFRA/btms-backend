@@ -7,7 +7,7 @@ namespace Btms.Backend.IntegrationTests.JsonApiClient;
 
 public abstract class JsonApiDocument<T>
 {
-    protected JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+    protected JsonSerializerOptions JsonSerializerOptions = new()
     {
         Converters = { new SingleOrManyDataConverterFactory() },
         PropertyNameCaseInsensitive = true,

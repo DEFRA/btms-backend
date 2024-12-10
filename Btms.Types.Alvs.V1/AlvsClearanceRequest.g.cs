@@ -23,21 +23,21 @@ public partial class AlvsClearanceRequest  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("serviceHeader")]
     public ServiceHeader? ServiceHeader { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("header")]
     public Header? Header { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("items")]
     public Items[]? Items { get; set; }
 

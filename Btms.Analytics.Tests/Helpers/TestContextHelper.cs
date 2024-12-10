@@ -17,7 +17,7 @@ namespace Btms.Analytics.Tests.Helpers;
 
 public static class TestContextHelper
 {
-    public static IHostBuilder CreateBuilder<T>(ITestOutputHelper testOutputHelper = null!)
+    public static IHostBuilder CreateBuilder<T>(ITestOutputHelper? testOutputHelper = null)
     {
         var builder = Host.CreateDefaultBuilder();
 

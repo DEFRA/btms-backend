@@ -1,6 +1,3 @@
-
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,15 +11,6 @@ public interface IValidatingOptions
 
 public static class OptionsExtensions
 {
-    
-    private static OptionsBuilder<TOptions> BtmsValidation<TOptions>(this OptionsBuilder<TOptions>  options) where TOptions : class, IValidatingOptions
-    {
-        return options
-            .ValidateDataAnnotations()
-            .Validate(o => o.Validate())
-            .ValidateOnStart();
-    }
-
     public static OptionsBuilder<TOptions> BtmsAddOptions<TOptions, TValidator>(this IServiceCollection services,
         IConfiguration configuration, string section)
         where TOptions : class where TValidator : class, IValidateOptions<TOptions>

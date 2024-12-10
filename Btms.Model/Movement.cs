@@ -24,9 +24,9 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
 
-    [Attr] public List<Alvs.AlvsClearanceRequest> ClearanceRequests { get; set; } = default!;
+    [Attr] public required List<AlvsClearanceRequest> ClearanceRequests { get; set; }
 
-    [Attr] public List<Alvs.AlvsClearanceRequest> Decisions { get; set; } = default!;
+    [Attr] public List<AlvsClearanceRequest>? Decisions { get; set; }
 
     [Attr] public List<Items> Items { get; set; } = [];
 
@@ -56,15 +56,17 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     [Attr] 
     [ChangeSetIgnore]
-    public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
+    public List<AuditEntry> AuditEntries { get; set; } = new();
 
     [Attr]
     [JsonPropertyName("relationships")]
-    public MovementTdmRelationships Relationships { get; set; } = new MovementTdmRelationships();
+    public MovementTdmRelationships Relationships { get; set; } = new();
+
 
 
     [BsonElement("_matchReferences")]
     [ChangeSetIgnore]
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public List<string> _MatchReferences
     {
         get
@@ -94,7 +96,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     public void AddRelationship(TdmRelationshipObject relationship)
     {
-        bool linked = false;
+        var linked = false;
         Relationships.Notifications.Links ??= relationship.Links;
 
         var dataItems = relationship.Data.Where(dataItem =>
@@ -114,13 +116,13 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
         if (linked)
         {
-            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
+            AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
         }
     }
 
     public void Update(AuditEntry auditEntry)
     {
-        this.AuditEntries.Add(auditEntry);
+        AuditEntries.Add(auditEntry);
         matchReferences = [];
     }
 
@@ -129,7 +131,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         var before = this.ToJsonString();
         foreach (var item in clearanceRequest.Items!)
         {
-            var existingItem = this.Items.Find(x => x.ItemNumber == item.ItemNumber);
+            var existingItem = Items.Find(x => x.ItemNumber == item.ItemNumber);
 
             if (existingItem is not null)
             {
@@ -148,7 +150,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         {
             Decisions ??= new List<AlvsClearanceRequest>();
             Decisions.Add(clearanceRequest);
-            this.Update(auditEntry);
+            Update(auditEntry);
         }
 
         return auditEntry.Diff.Any();
@@ -175,9 +177,10 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     [Attr]
     [BsonId]
-    public string? Id { get; set; } = null!;
+    public string? Id { get; set; }
 
     [ChangeSetIgnore]
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _Etag { get; set; } = null!;
 
     [Attr]
@@ -189,6 +192,6 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     public DateTime Updated { get; set; }
     public AuditEntry GetLatestAuditEntry()
     {
-        return this.AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
+        return AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
     }
 }

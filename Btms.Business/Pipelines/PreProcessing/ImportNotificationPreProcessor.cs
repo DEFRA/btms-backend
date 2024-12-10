@@ -12,8 +12,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
     public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(PreProcessingContext<ImportNotification> preProcessingContext)
     {
         var internalNotification = preProcessingContext.Message.MapWithTransform();
-        var existingNotification =
-            await dbContext.Notifications.Find(preProcessingContext.Message.ReferenceNumber!);
+        var existingNotification = await dbContext.Notifications.Find(preProcessingContext.Message.ReferenceNumber!);
 
         if (existingNotification is null)
         {
@@ -43,7 +42,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             return PreProcessResult.AlreadyProcessed(existingNotification);
         }
         
-        logger.MessageSkipped(preProcessingContext.MessageId!, preProcessingContext.Message.ReferenceNumber!);
+        logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.ReferenceNumber!);
         return PreProcessResult.Skipped(existingNotification);
         
     }

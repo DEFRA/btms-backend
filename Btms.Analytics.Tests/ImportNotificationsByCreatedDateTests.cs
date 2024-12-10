@@ -58,8 +58,8 @@ public class ImportNotificationsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
-        DateTime from = DateTime.MaxValue.AddDays(-1);
-        DateTime to = DateTime.MaxValue;
+        var from = DateTime.MaxValue.AddDays(-1);
+        var to = DateTime.MaxValue;
 
         var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
                 .ByCreated(from, to, AggregationPeriod.Hour))

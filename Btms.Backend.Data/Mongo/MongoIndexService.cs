@@ -29,7 +29,7 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
         try
         {
             var indexModel = new CreateIndexModel<T>(keys,
-                new CreateIndexOptions()
+                new CreateIndexOptions
                 {
                     Name = name,
                     Background = true,

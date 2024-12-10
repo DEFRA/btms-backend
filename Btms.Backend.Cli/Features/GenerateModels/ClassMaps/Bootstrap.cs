@@ -1,12 +1,9 @@
-using SharpYaml.Serialization;
-using System.Text.Json;
 using Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 using Btms.Backend.Cli.Features.GenerateModels.GenerateIpaffsModel.Builders;
-using Newtonsoft.Json.Serialization;
 
 namespace Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 
-static class Bootstrap
+internal static class Bootstrap
 {
     public static void GeneratorClassMaps()
     {

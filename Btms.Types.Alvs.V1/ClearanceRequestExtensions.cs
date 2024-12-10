@@ -26,20 +26,20 @@ public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
             }
         }
 
-        var s_epoch = DateTime.UnixEpoch;
+        var epoch = DateTime.UnixEpoch;
 
         // 1723127967 - DEV
         // 1712851200000 - SND
         if (number > 10000000000)
         {
-            return s_epoch.AddMilliseconds(number);
+            return epoch.AddMilliseconds(number);
         }
         else if (number > 0)
         {
-            return s_epoch.AddSeconds(number);
+            return epoch.AddSeconds(number);
         }
 
-        return s_epoch;
+        return epoch;
     }
 
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)

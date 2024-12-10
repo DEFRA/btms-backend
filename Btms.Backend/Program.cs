@@ -38,8 +38,6 @@ using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 
-using OpenTelemetry.Extensions.Hosting;
-
 //-------- Configure the WebApplication builder------------------//
 
 var app = CreateWebApplication(args);
@@ -235,7 +233,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     var dotnetHealthEndpoint = "/health-dotnet";
 	app.MapGet("/health", GetStatus).AllowAnonymous();
 	app.MapHealthChecks(dotnetHealthEndpoint,
-		new HealthCheckOptions()
+		new HealthCheckOptions
 		{
 			Predicate = _ => true,
 			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

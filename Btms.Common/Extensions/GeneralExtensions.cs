@@ -12,7 +12,7 @@ public static class GeneralExtensions
     
     public static bool HasValue<T>(this T? val)
     {
-        return !object.Equals(val, default(T));
+        return !Equals(val, default(T));
     }
     
     public static void AssertHasValue<T>(this T? val, string message = "Missing value")

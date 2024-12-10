@@ -24,49 +24,49 @@ public partial class Header  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("entryReference")]
     public string? EntryReference { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("entryVersionNumber")]
     public int? EntryVersionNumber { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("previousVersionNumber")]
     public int? PreviousVersionNumber { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("declarationUCR")]
     public string? DeclarationUcr { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("declarationPartNumber")]
     public string? DeclarationPartNumber { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("declarationType")]
     public string? DeclarationType { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("arrivalDateTime")]
     [JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]
     public DateTime? ArrivalDateTime { get; set; }
@@ -74,42 +74,42 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("submitterTURN")]
     public string? SubmitterTurn { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("declarantId")]
     public string? DeclarantId { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("declarantName")]
     public string? DeclarantName { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("dispatchCountryCode")]
     public string? DispatchCountryCode { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("goodsLocationCode")]
     public string? GoodsLocationCode { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("masterUCR")]
     public string? MasterUcr { get; set; }
 
