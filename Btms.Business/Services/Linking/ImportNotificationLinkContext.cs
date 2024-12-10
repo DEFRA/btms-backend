@@ -1,7 +1,7 @@
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 
-namespace Btms.Business.Services;
+namespace Btms.Business.Services.Linking;
 
 public record ImportNotificationLinkContext(ImportNotification PersistedImportNotification, ChangeSet? ChangeSet) : LinkContext
 {

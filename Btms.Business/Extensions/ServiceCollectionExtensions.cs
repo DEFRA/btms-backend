@@ -2,7 +2,6 @@ using Btms.Business.Commands;
 using Btms.Business.Pipelines;
 using Btms.Business.Pipelines.Matching;
 using Btms.Business.Pipelines.Matching.Rules;
-using Btms.Business.Services;
 using Btms.Backend.Data.Extensions;
 using Btms.BlobService;
 using Btms.BlobService.Extensions;
@@ -14,6 +13,8 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Btms.Business.Pipelines.PreProcessing;
+using Btms.Business.Services.Decisions;
+using Btms.Business.Services.Linking;
 using Btms.Types.Alvs;
 
 namespace Btms.Business.Extensions;
@@ -61,6 +62,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ILinkingService, LinkingService>();
+        services.AddScoped<IDecisionService, DecisionService>();
 
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
         services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
