@@ -72,7 +72,10 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .GroupBy(r => new { r.Key.ImportNotificationType, r.Key.Linked })
             .ToList();
         
-        var maxCommodities = result.Max(r => r.Max(i => i.Key.CommodityCount));
+        // var maxCommodities = result.Max(r => r.Max(i => i.Key.CommodityCount));
+        
+        var maxCommodities = result.Count > 0 ?
+            result.Max(r => r.Any() ? r.Max(i => i.Key.CommodityCount) : 0) : 0;
         
         var list = result
             .SelectMany(g =>

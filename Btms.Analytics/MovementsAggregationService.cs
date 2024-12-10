@@ -68,8 +68,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var dictionary = mongoResult
             .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.ItemCount }, g => g.Count);
             
-        var maxCount = mongoResult
-            .Max(r => r.Count);
+        var maxCount = mongoResult.Count > 0 ?
+            mongoResult.Max(r => r.Count) : 0;
 
         return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
             .Select(title => new MultiSeriesDataset(title, "Item Count") {
@@ -114,7 +114,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.DocumentReferenceCount },
                 g => g.MovementCount);
 
-        var maxReferences = mongoResult.Max(r => r.DocumentReferenceCount);
+        var maxReferences = mongoResult.Count > 0 ?
+            mongoResult.Max(r => r.DocumentReferenceCount) : 0;
         
         return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
             .Select(title => new MultiSeriesDataset(title, "Document Reference Count") {
