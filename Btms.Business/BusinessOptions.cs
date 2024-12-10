@@ -9,4 +9,5 @@ public class BusinessOptions
 
     [Required] public string DmpBlobRootFolder { get; set; } = "RAW";
     
+    public Dictionary<string, int>? MaxDegreeOfParallelism { get; set; }
 }
