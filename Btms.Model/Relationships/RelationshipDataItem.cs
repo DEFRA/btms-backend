@@ -8,11 +8,11 @@ public sealed class RelationshipDataItem
 {
     [Attr] public bool? Matched { get; set; }
 
-    [Attr] public string Type { get; set; } = default!;
+    [Attr] public string? Type { get; set; }
 
-    [Attr] public string Id { get; set; } = default!;
+    [Attr] public string? Id { get; set; }
 
-    [Attr] public ResourceLink Links { get; set; } = default!;
+    [Attr] public ResourceLink? Links { get; set; }
 
     [Attr] public int? SourceItem { get; set; }
 
@@ -43,7 +43,7 @@ public sealed class RelationshipDataItem
             meta.Add("matchingLevel", MatchingLevel);
         }
 
-        if (!string.IsNullOrEmpty(Links.Self))
+        if (!string.IsNullOrEmpty(Links?.Self))
         {
             meta.Add("self", Links.Self);
         }
