@@ -3,6 +3,7 @@ using Xunit;
 
 namespace Btms.Business.Tests.Services.Decisions.Finders;
 
+// ReSharper disable once InconsistentNaming
 public class ChedPPDecisionFinderTests
 {
     [Fact]

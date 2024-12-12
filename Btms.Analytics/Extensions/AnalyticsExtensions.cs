@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Linq.Expressions;
 using Btms.Backend.Data;
 using Btms.Model.Data;
-using Btms.Model.Extensions;
-using Btms.Model.Ipaffs;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,7 +12,7 @@ namespace Btms.Analytics.Extensions;
 
 public static class AnalyticsExtensions
 {
-    private static readonly bool enableMetrics = true;
+    private static readonly bool EnableMetrics = true;
     public static IServiceCollection AddAnalyticsServices(this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -25,7 +20,7 @@ public static class AnalyticsExtensions
         services.AddScoped<IMovementsAggregationService, MovementsAggregationService>();
 
         // To revisit in future 
-        if (enableMetrics)
+        if (EnableMetrics)
         {
             services.TryAddScoped<ImportNotificationMetrics>();    
         }
@@ -76,11 +71,11 @@ public static class AnalyticsExtensions
         {
             Periods = dateRange
                 .Select(resultDate =>
-                    new ByDateTimeResult()
+                    new ByDateTimeResult
                     {
                         Period = resultDate, Value = dates.GetValueOrDefault(resultDate, 0)
                     })
-                .Order(AnalyticsHelpers.byDateTimeResultComparer)
+                .Order(AnalyticsHelpers.ByDateTimeResultComparer)
                 .ToList()
         };
     }
@@ -102,7 +97,7 @@ public static class AnalyticsExtensions
         }
         catch(Exception ex)
         {
-            logger.LogError(ex, "Error querying Mongo : {message}", ex.Message);
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
         finally 
@@ -122,7 +117,7 @@ public static class AnalyticsExtensions
         }
         catch(Exception ex)
         {
-            logger.LogError(ex, "Error querying Mongo : {message}", ex.Message);
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
         finally 
@@ -141,8 +136,6 @@ public static class AnalyticsExtensions
     {
         var stages = ((IMongoQueryProvider)source.Provider).LoggedStages;
 
-        var query = "[" + String.Join(",", stages.Select(s => s.ToString()).ToArray()) +"]";
-        
-        logger.LogInformation(query);
+        logger.LogInformation("[{Query}]", string.Join(",", stages.Select(s => s.ToString()).ToArray()));
     }
 }

@@ -19,7 +19,7 @@ public class SyncDecisionsCommand : SyncCommand
         IBlobService blobService,
         IOptions<BusinessOptions> businessOptions,
         ISyncJobStore syncJobStore)
-        : SyncCommand.Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
+        : Handler<SyncDecisionsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
     {
         public override async Task Handle(SyncDecisionsCommand request, CancellationToken cancellationToken)
         {

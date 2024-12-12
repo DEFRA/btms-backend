@@ -1,16 +1,15 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Text;
-using Btms.Common;
 
 namespace Btms.Metrics;
 
 public class SyncMetrics
 {
-    readonly Histogram<double> syncDuration;
-    readonly Counter<long> syncTotal;
-    readonly Counter<long> syncFaultTotal;
-    readonly Counter<long> syncInProgress;
+    private readonly Histogram<double> syncDuration;
+    private readonly Counter<long> syncTotal;
+    private readonly Counter<long> syncFaultTotal;
+    private readonly Counter<long> syncInProgress;
 
     public SyncMetrics(IMeterFactory meterFactory)
     {

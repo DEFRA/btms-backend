@@ -10,8 +10,8 @@ namespace Btms.Analytics.Tests;
 [Collection(nameof(BasicSampleDataTestCollection))]
 public class MovementsByCreatedDateTests(
     BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper) {
-    
+    ITestOutputHelper testOutputHelper) 
+{
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
@@ -33,8 +33,8 @@ public class MovementsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
-        DateTime from = DateTime.MaxValue.AddDays(-1);
-        DateTime to = DateTime.MaxValue;
+        var from = DateTime.MaxValue.AddDays(-1);
+        var to = DateTime.MaxValue;
 
         var result = (await basicSampleDataTestFixture.MovementsAggregationService
             .ByCreated(from, to, AggregationPeriod.Hour))

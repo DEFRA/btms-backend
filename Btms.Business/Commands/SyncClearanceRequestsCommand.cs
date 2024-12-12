@@ -19,8 +19,7 @@ public class SyncClearanceRequestsCommand : SyncCommand
         IBlobService blobService,
         IOptions<BusinessOptions> businessOptions,
         ISyncJobStore syncJobStore)
-        : SyncCommand.Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
-            blobService, businessOptions, syncJobStore)
+        : Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
     {
         public override async Task Handle(SyncClearanceRequestsCommand request, CancellationToken cancellationToken)
         {

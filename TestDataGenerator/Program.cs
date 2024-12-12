@@ -1,5 +1,3 @@
-using Btms.BlobService;
-using Btms.Common.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,12 +5,11 @@ using Microsoft.Extensions.Logging;
 using TestDataGenerator.Config;
 using TestDataGenerator.Scenarios;
 using Btms.BlobService.Extensions;
-using Microsoft.Extensions.Options;
 using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
 
-class Program
+internal class Program
 {
     private static async Task Main(string[] args)
     {
@@ -139,7 +136,7 @@ class Program
 
         foreach (var dataset in setsToRun)
         {
-            logger.LogInformation("{scenariosCount} scenario(s) configured", dataset.Scenarios.Count());
+            logger.LogInformation("{ScenariosCount} scenario(s) configured", dataset.Scenarios.Count());
 
             await generator.Cleardown(dataset.RootPath);
 
@@ -149,7 +146,7 @@ class Program
                 scenario++;
             }
 
-            logger.LogInformation("{dataset} Done", dataset.Dataset);
+            logger.LogInformation("{Dataset} Done", dataset.Dataset);
         }
 
         logger.LogInformation("Done");

@@ -1,7 +1,7 @@
-#nullable enable
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+// ReSharper disable once CheckNamespace
 namespace Btms.Types.Ipaffs;
 
 public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<Dictionary<string, object?>>
@@ -81,7 +81,7 @@ public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<D
     public override void Write(
         Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
     {
-        var list = value.Select(x => new KeyDataPair() { Key = x.Key, Data = x.Value?.ToString() });
+        var list = value.Select(x => new KeyDataPair { Key = x.Key, Data = x.Value?.ToString() });
         JsonSerializer.Serialize(writer, list, options);
     }
 

@@ -17,6 +17,7 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
 {
     [JsonIgnore] public string Type { get; set; } = "gmrs";
 
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _Etag { get; set; } = default!;
     [Attr] public DateTime? CreatedSource { get; set; }
     [Attr] public DateTime Created { get; set; }
@@ -40,9 +41,9 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
     // [Attr]
     public string? LocalId { get; set; }
 
-    [Attr] public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
+    [Attr] public List<AuditEntry> AuditEntries { get; set; } = new();
 
     [Attr]
     [JsonPropertyName("relationships")]
-    public GmrRelationships Relationships { get; set; } = new GmrRelationships();
+    public GmrRelationships Relationships { get; set; } = new();
 }

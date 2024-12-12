@@ -16,11 +16,11 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
 
     public async Task Generate(int scenario, ScenarioConfig config, string rootPath)
     {
-        int days = config.CreationDateRange;
-        int count = config.Count;
-        ScenarioGenerator generator = config.Generator;
+        var days = config.CreationDateRange;
+        var count = config.Count;
+        var generator = config.Generator;
         
-        logger.LogInformation("Generating {Count}x{Days} {Generator}.", count, days, generator);
+        logger.LogInformation("Generating {Count}x{Days} {@Generator}", count, days, generator);
 
         for (var d = -days + 1; d <= 0; d++)
         {

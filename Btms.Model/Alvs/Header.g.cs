@@ -24,7 +24,7 @@ public partial class Header  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? EntryReference { get; set; }
@@ -32,7 +32,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public int? EntryVersionNumber { get; set; }
@@ -40,7 +40,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public int? PreviousVersionNumber { get; set; }
@@ -48,7 +48,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DeclarationUcr { get; set; }
@@ -56,7 +56,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DeclarationPartNumber { get; set; }
@@ -64,7 +64,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DeclarationType { get; set; }
@@ -72,7 +72,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public DateTime? ArrivesAt { get; set; }
@@ -80,7 +80,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? SubmitterTurn { get; set; }
@@ -88,7 +88,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DeclarantId { get; set; }
@@ -96,7 +96,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DeclarantName { get; set; }
@@ -104,7 +104,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DispatchCountryCode { get; set; }
@@ -112,7 +112,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? GoodsLocationCode { get; set; }
@@ -120,7 +120,7 @@ public partial class Header  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? MasterUcr { get; set; }

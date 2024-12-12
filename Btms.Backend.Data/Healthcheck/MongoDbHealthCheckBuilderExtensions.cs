@@ -1,4 +1,3 @@
-using Btms.Backend.Data.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -10,7 +9,7 @@ namespace Btms.Backend.Data.Healthcheck;
 /// </summary>
 public static class MongoDbHealthCheckBuilderExtensions
 {
-    private const string NAME = "mongodb";
+    private const string Name = "mongodb";
 
     public static IHealthChecksBuilder AddMongoDb(
         this IHealthChecksBuilder builder,
@@ -20,7 +19,7 @@ public static class MongoDbHealthCheckBuilderExtensions
         TimeSpan? timeout = default)
     {
         return builder.Add(new HealthCheckRegistration(
-            name ?? NAME,
+            name ?? Name,
             sp =>
             {
                 var options = sp.GetService<IOptions<MongoDbOptions>>();

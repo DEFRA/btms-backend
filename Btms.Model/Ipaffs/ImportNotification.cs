@@ -30,7 +30,9 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     }
 
     [ChangeSetIgnore]
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _Etag { get; set; } = default!;
+    
     [Attr] public DateTime? CreatedSource { get; set; }
 
     [Attr]
@@ -55,11 +57,11 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     // [Attr]
     public string? LocalId { get; set; } = default!;
 
-    [Attr] public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
+    [Attr] public List<AuditEntry> AuditEntries { get; set; } = new();
 
     [Attr]
     [JsonPropertyName("relationships")]
-    public NotificationTdmRelationships Relationships { get; set; } = new NotificationTdmRelationships();
+    public NotificationTdmRelationships Relationships { get; set; } = new();
 
     [Attr] public Commodities CommoditiesSummary { get; set; } = default!;
 
@@ -76,6 +78,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     [Attr]
     [BsonElement("_pointOfEntry")]
     [ChangeSetIgnore]
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _PointOfEntry
     {
         get => PartOne?.PointOfEntry!;
@@ -91,6 +94,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     [Attr]
     [BsonElement("_pointOfEntryControlPoint")]
     [ChangeSetIgnore]
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _PointOfEntryControlPoint
     {
         get => PartOne?.PointOfEntryControlPoint!;
@@ -105,6 +109,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
     [BsonElement("_matchReferences")]
     [ChangeSetIgnore]
+    // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _MatchReference
     {
         get
@@ -122,7 +127,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
     public void AddRelationship(TdmRelationshipObject relationship)
     {
-        bool linked = false;
+        var linked = false;
         Relationships.Movements.Links ??= relationship.Links;
 
         var dataItems = relationship.Data.Where(dataItem =>
@@ -139,13 +144,13 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
         if (linked)
         {
-            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, Version.GetValueOrDefault(), UpdatedSource));
+            AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
         }
     }
 
     public void Changed(AuditEntry auditEntry)
     {
-        this.AuditEntries.Add(auditEntry);
+        AuditEntries.Add(auditEntry);
     }
 
     public void Create(string auditId)
@@ -153,9 +158,9 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         var auditEntry = AuditEntry.CreateCreatedEntry(
             this,
             auditId,
-            this.Version.GetValueOrDefault(),
-            this.UpdatedSource);
-        this.Changed(auditEntry);
+            Version.GetValueOrDefault(),
+            UpdatedSource);
+        Changed(auditEntry);
     }
 
     public void Skipped(string auditId, int version)
@@ -163,21 +168,21 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         var auditEntry = AuditEntry.CreateSkippedVersion(
             auditId,
             version,
-            this.UpdatedSource);
-        this.Changed(auditEntry);
+            UpdatedSource);
+        Changed(auditEntry);
     }
 
     public void Update(string auditId, ChangeSet changeSet)
     {
         var auditEntry = AuditEntry.CreateUpdated(changeSet,
             auditId,
-            this.Version.GetValueOrDefault(),
-            this.UpdatedSource);
-        this.Changed(auditEntry);
+            Version.GetValueOrDefault(),
+            UpdatedSource);
+        Changed(auditEntry);
     }
 
     public AuditEntry GetLatestAuditEntry()
     {
-        return this.AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
+        return AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
     }
 }

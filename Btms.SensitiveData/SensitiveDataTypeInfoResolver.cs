@@ -7,7 +7,7 @@ public class SensitiveDataTypeInfoResolver(SensitiveDataOptions sensitiveDataOpt
 {
     public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
     {
-        JsonTypeInfo typeInfo = base.GetTypeInfo(type, options);
+        var typeInfo = base.GetTypeInfo(type, options);
 
         if (typeInfo.Kind == JsonTypeInfoKind.Object)
         {

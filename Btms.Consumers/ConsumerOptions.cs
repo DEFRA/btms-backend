@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using Btms.Azure;
-
 namespace Btms.Consumers;
 
 public class ConsumerOptions

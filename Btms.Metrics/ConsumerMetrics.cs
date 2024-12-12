@@ -1,18 +1,17 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Text;
-using Btms.Common;
 
 namespace Btms.Metrics;
 
 public class ConsumerMetrics
 {
-    readonly Histogram<double> consumeDuration;
-    readonly Counter<long> consumeTotal;
-    readonly Counter<long> consumeFaultTotal;
-    readonly Counter<long> consumerInProgress;
-    readonly Counter<long> consumeRetryTotal;
-    readonly Counter<long> skippedTotal;
+    private readonly Histogram<double> consumeDuration;
+    private readonly Counter<long> consumeTotal;
+    private readonly Counter<long> consumeFaultTotal;
+    private readonly Counter<long> consumerInProgress;
+    private readonly Counter<long> consumeRetryTotal;
+    private readonly Counter<long> skippedTotal;
 
     public ConsumerMetrics(IMeterFactory meterFactory)
     {

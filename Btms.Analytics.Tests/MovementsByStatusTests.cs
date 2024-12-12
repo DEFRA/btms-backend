@@ -12,7 +12,6 @@ public class MovementsByStatusTests(
     BasicSampleDataTestFixture basicSampleDataTestFixture,
     ITestOutputHelper testOutputHelper)
 {
-    
     [Fact]
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {

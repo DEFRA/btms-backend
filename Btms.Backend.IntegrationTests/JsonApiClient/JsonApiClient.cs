@@ -10,18 +10,18 @@ namespace Btms.Backend.IntegrationTests.JsonApiClient;
 
 public class JsonApiClient(HttpClient client)
 {
-    static string strContentType = "application/vnd.api+json";
+    private static readonly string StringContentType = "application/vnd.api+json";
 
-    static MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue(strContentType);
+    private static readonly MediaTypeWithQualityHeaderValue ContentType = new(StringContentType);
 
 
     public ManyItemsJsonApiDocument Get(
         string path,
-        Dictionary<string, string> query = null!,
-        Dictionary<string, string> headers = null!,
-        IList<string> relations = null!)
+        Dictionary<string, string>? query = null,
+        Dictionary<string, string>? headers = null,
+        IList<string>? relations = null)
     {
-        client.DefaultRequestHeaders.Accept.Add(contentType);
+        client.DefaultRequestHeaders.Accept.Add(ContentType);
 
         if (headers != null)
         {
@@ -34,7 +34,7 @@ public class JsonApiClient(HttpClient client)
             }
         }
 
-        string uri = $"/{path}";
+        var uri = $"/{path}";
 
         if (relations != null)
         {
@@ -46,7 +46,7 @@ public class JsonApiClient(HttpClient client)
             uri = QueryHelpers.AddQueryString(uri, query!);
         }
 
-        HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
+        var responseMessage = client.GetAsync(uri).Result;
 
         responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
 
@@ -54,7 +54,7 @@ public class JsonApiClient(HttpClient client)
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
         return JsonSerializer.Deserialize<ManyItemsJsonApiDocument>(s,
-            new JsonSerializerOptions()
+            new JsonSerializerOptions
             {
                 Converters = { new SingleOrManyDataConverterFactory() },
                 PropertyNameCaseInsensitive = true
@@ -63,11 +63,11 @@ public class JsonApiClient(HttpClient client)
 
     public SingleItemJsonApiDocument GetById(string id,
         string path,
-        Dictionary<string, string> query = null!,
-        Dictionary<string, string> headers = null!,
-        IList<string> relations = null!)
+        Dictionary<string, string>? query = null,
+        Dictionary<string, string>? headers = null,
+        IList<string>? relations = null)
     {
-        client.DefaultRequestHeaders.Accept.Add(contentType);
+        client.DefaultRequestHeaders.Accept.Add(ContentType);
 
         if (headers != null)
         {
@@ -80,7 +80,7 @@ public class JsonApiClient(HttpClient client)
             }
         }
 
-        string uri = $"/{path}/{id}";
+        var uri = $"/{path}/{id}";
 
         if (relations != null)
         {
@@ -92,14 +92,14 @@ public class JsonApiClient(HttpClient client)
             uri = QueryHelpers.AddQueryString(uri, query!);
         }
 
-        HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
+        var responseMessage = client.GetAsync(uri).Result;
 
         responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
 
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
         return JsonSerializer.Deserialize<SingleItemJsonApiDocument>(s,
-            new JsonSerializerOptions()
+            new JsonSerializerOptions
             {
                 Converters = { new SingleOrManyDataConverterFactory() },
                 PropertyNameCaseInsensitive = true

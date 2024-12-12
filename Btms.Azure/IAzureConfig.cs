@@ -1,9 +1,8 @@
-namespace Btms.Azure
+namespace Btms.Azure;
+
+public interface IAzureConfig
 {
-    public interface IAzureConfig
-    {
-        public string? AzureClientId { get; }
-        public string? AzureTenantId { get; }
-        public string? AzureClientSecret { get; }
-    }
+    public string? AzureClientId { get; }
+    public string? AzureTenantId { get; }
+    public string? AzureClientSecret { get; }
 }

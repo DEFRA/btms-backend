@@ -11,7 +11,7 @@ public class MatchPreProcessTests
     {
         // Arrange
         var sut = new MatchPreProcess();
-        var request = new MatchRequest(new MatchContext()
+        var request = new MatchRequest(new MatchContext
         {
             MatchReference = "ABC123"
         });

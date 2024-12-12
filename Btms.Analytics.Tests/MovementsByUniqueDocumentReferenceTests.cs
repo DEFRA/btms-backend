@@ -20,7 +20,7 @@ public class MovementsByUniqueDocumentReferenceTests(
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await multiItemDataTestFixture.MovementsAggregationService
             .ByUniqueDocumentReferenceCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
-            .ToList();;
+            .ToList();
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         

@@ -1,6 +1,5 @@
 using Btms.BlobService;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using TestDataGenerator.Scenarios;
 

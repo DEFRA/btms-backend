@@ -1,6 +1,5 @@
 using Btms.Common.Extensions;
 using Btms.Types.Ipaffs;
-using Json.Patch;
 using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
@@ -31,7 +30,7 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>
     where T : ImportNotification, new()
 {
-    protected ImportNotificationBuilder() : base()
+    protected ImportNotificationBuilder()
     {
     }
 

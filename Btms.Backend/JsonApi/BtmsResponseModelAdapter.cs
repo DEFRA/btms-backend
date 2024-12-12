@@ -63,7 +63,7 @@ public class BtmsResponseModelAdapter(
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             List<ResourceIdentifierObject> list = relationship.Item2.Data.Select(item =>
-                    new ResourceIdentifierObject()
+                    new ResourceIdentifierObject
                     {
                         Type = item.Type, Id = item.Id, Meta = item.ToDictionary(),
                     })
@@ -73,19 +73,16 @@ public class BtmsResponseModelAdapter(
 
             var meta = new Dictionary<string, object?>();
 
-            if (relationship.Item2.Matched.HasValue)
-            {
-                meta.Add("matched", relationship.Item2.Matched);
-            }
+            meta.Add("matched", relationship.Item2.Matched);
 
             resourceObject.Relationships.Add(relationship.Item1,
-                new RelationshipObject()
+                new RelationshipObject
                 {
                     Meta = meta,
-                    Links = new RelationshipLinks()
+                    Links = new RelationshipLinks
                     {
                         Self = relationship.Item2.Links?.Self,
-                        Related = relationship.Item2?.Links?.Related
+                        Related = relationship.Item2.Links?.Related
                     },
                     Data = new SingleOrManyData<ResourceIdentifierObject>(list)
                 });

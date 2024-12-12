@@ -1,4 +1,3 @@
-using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
@@ -10,7 +9,7 @@ namespace Btms.Consumers.Interceptors;
 public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger)
     : IMemoryConsumerErrorHandler<T>
 {
-    private async Task<ConsumerErrorHandlerResult> AttemptRetry(T message, IConsumerContext consumerContext,
+    private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
         Func<Task<object>> retry, Exception exception)
     {
         consumerContext.IncrementRetryAttempt();
@@ -30,7 +29,7 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
         }
         catch (Exception e)
         {
-            await AttemptRetry(message, consumerContext, retry, e);
+            await AttemptRetry(consumerContext, retry, e);
         }
 
         return ConsumerErrorHandlerResult.Success;
@@ -44,6 +43,6 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
             consumerContext.Properties.Add(MessageBusHeaders.RetryCount, 0);
         }
 
-        return AttemptRetry(message, consumerContext, retry, exception);
+        return AttemptRetry(consumerContext, retry, exception);
     }
 }

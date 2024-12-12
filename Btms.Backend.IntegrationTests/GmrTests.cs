@@ -17,17 +17,14 @@ public class GmrTests :
     IClassFixture<IntegrationTestsApplicationFactory>, IAsyncLifetime
 {
     private readonly HttpClient client;
-    private readonly IntegrationTestsApplicationFactory factory;
 
     public GmrTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
     {
-        this.factory = factory;
-        this.factory.TestOutputHelper = testOutputHelper;
-        this.factory.DatabaseName = "GmrTests";
-        client =
-            this.factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        string credentials = "IntTest:Password";
-        byte[] credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
+        factory.TestOutputHelper = testOutputHelper;
+        factory.DatabaseName = "GmrTests";
+        client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var credentials = "IntTest:Password";
+        var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
         var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
@@ -37,7 +34,7 @@ public class GmrTests :
     {
         await IntegrationTestsApplicationFactory.ClearDb(client);
 
-        await MakeSyncGmrsRequest(new SyncGmrsCommand()
+        await MakeSyncGmrsRequest(new SyncGmrsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -50,7 +47,6 @@ public class GmrTests :
     [Fact]
     public void FetchSingleGmrTest()
     {
-
         //Act
         var jsonClientResponse = client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
@@ -58,7 +54,7 @@ public class GmrTests :
         jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
         jsonClientResponse.Data.Relationships?["customs"]?.Links?.Related.Should().Be("/api/import-notifications/:id");
 
-        jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0]?.Id.Should().Be("56GB123456789AB043");
+        jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Id.Should().Be("56GB123456789AB043");
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
     }
 

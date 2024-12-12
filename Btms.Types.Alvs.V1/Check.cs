@@ -22,14 +22,14 @@ public partial class Check  //
 {
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("decisionCode")]
     public string? DecisionCode { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("decisionsValidUntil")]
     public DateTime? DecisionsValidUntil { get; set; }
 
