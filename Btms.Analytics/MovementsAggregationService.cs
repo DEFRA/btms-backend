@@ -6,6 +6,8 @@ using Btms.Model.Extensions;
 using Btms.Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Btms.Analytics.Extensions;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Btms.Analytics;
 
