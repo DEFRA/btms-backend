@@ -20,7 +20,6 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         if (existingMovement is null)
         {
             ArgumentNullException.ThrowIfNull(movement);
-            ArgumentNullException.ThrowIfNull(movement);
             var auditEntry = AuditEntry.CreateCreatedEntry(
                 movement.ClearanceRequests[0],
                 preProcessingContext.MessageId,
