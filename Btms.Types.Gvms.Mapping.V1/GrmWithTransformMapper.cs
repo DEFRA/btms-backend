@@ -1,6 +1,7 @@
 using Btms.Model.Extensions;
 using Btms.Model.Relationships;
 
+// ReSharper disable once CheckNamespace
 namespace Btms.Types.Gvms.Mapping;
 
 public static class GrmWithTransformMapper
