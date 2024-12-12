@@ -39,8 +39,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
                 x.Header!.EntryReference = id.AsCdsEntryReference();
                 x.Header!.DeclarationUcr = id.AsCdsDeclarationUcr();
                 x.Header!.MasterUcr = id.AsCdsMasterUcr();
-                Array.ForEach(x.Items!, i =>
-                    Array.ForEach(i.Documents!, d => d.DocumentReference = clearanceRequestDocumentReference));
+                Array.ForEach(x.Items!, i => Array.ForEach(i.Documents ?? [], d => d.DocumentReference = clearanceRequestDocumentReference));
             });
     }
 
@@ -72,7 +71,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Items![0].TaricCommodityCode = commodityCode;
             cr.Items![0].GoodsDescription = description;
             cr.Items![0].ItemNetMass = netWeight;
-            cr.Items![0].Documents![0].DocumentCode = documentCode;
+            if (cr.Items![0].Documents != null) cr.Items![0].Documents![0].DocumentCode = documentCode;
         });
     }
     
@@ -114,7 +113,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing");
             cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
 
-            Array.ForEach(cr.Items!, i => Array.ForEach(i.Documents!, d => d.DocumentReference.AssertHasValue()));
+            Array.ForEach(cr.Items!, i => Array.ForEach(i.Documents ?? [], d => d.DocumentReference.AssertHasValue()));
         });
     }
 }

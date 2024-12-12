@@ -16,11 +16,9 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
-        Expression<Func<ImportNotification, bool>> matchFilter = n =>
-            n.CreatedSource >= from && n.CreatedSource < to;
+        Expression<Func<ImportNotification, bool>> matchFilter = n => n.CreatedSource >= from && n.CreatedSource < to;
 
-        string CreateDatasetName(BsonDocument b) =>
-            AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
+        string CreateDatasetName(BsonDocument b) => AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
 
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }

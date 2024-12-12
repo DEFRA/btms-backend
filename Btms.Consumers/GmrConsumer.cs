@@ -14,18 +14,19 @@ internal class GmrConsumer(IMongoDbContext dbContext)
         foreach (var gmr in message.Gmrs!)
         {
             var internalGmr = GrmWithTransformMapper.MapWithTransform(gmr);
+            if (internalGmr == null) return;
             var existingGmr = await dbContext.Gmrs.Find(internalGmr.Id!);
             var auditId = Context.Headers["messageId"].ToString();
             if (existingGmr is null)
             {
                 var auditEntry =
-                    AuditEntry.CreateCreatedEntry(internalGmr, auditId!, 1, gmr.UpdatedSource);
+                    AuditEntry.CreateCreatedEntry(internalGmr, auditId!, 1, gmr.LastUpdated);
                 internalGmr.AuditEntries.Add(auditEntry);
                 await dbContext.Gmrs.Insert(internalGmr);
             }
             else
             {
-                if (gmr.UpdatedSource > existingGmr.UpdatedSource)
+                if (gmr.LastUpdated > existingGmr.LastUpdated)
                 {
                     internalGmr.AuditEntries = existingGmr.AuditEntries;
                     var auditEntry = AuditEntry.CreateUpdated(
@@ -33,7 +34,7 @@ internal class GmrConsumer(IMongoDbContext dbContext)
                         current: internalGmr,
                         id: auditId!,
                         version: internalGmr.AuditEntries.Count + 1,
-                        lastUpdated: gmr.UpdatedSource);
+                        lastUpdated: gmr.LastUpdated);
                     internalGmr.AuditEntries.Add(auditEntry);
                     await dbContext.Gmrs.Update(internalGmr, existingGmr._Etag);
                 }

@@ -25,8 +25,9 @@ public class ClearanceRequestConsumerTests
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
-        var movement =
-            MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
+        var alvsClearanceRequest = AlvsClearanceRequestMapper.Map(clearanceRequest);
+        ArgumentNullException.ThrowIfNull(alvsClearanceRequest);
+        var movement = MovementPreProcessor.BuildMovement(alvsClearanceRequest);
 
         movement.Update(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
 
@@ -60,8 +61,9 @@ public class ClearanceRequestConsumerTests
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
-        var movement =
-            MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
+        var alvsClearanceRequest = AlvsClearanceRequestMapper.Map(clearanceRequest);
+        ArgumentNullException.ThrowIfNull(alvsClearanceRequest);
+        var movement = MovementPreProcessor.BuildMovement(alvsClearanceRequest);
 
         movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now));
 

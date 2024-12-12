@@ -14,8 +14,7 @@ public class ServiceHeaderMapperTests
 
         var mappedValue = ServiceHeaderMapper.Map(sourceValue);
 
-
-        mappedValue.ServiceCalled.Should().Be(sourceValue.ServiceCallTimestamp);
+        mappedValue!.ServiceCalled.Should().Be(sourceValue.ServiceCallTimestamp);
         mappedValue.CorrelationId.Should().Be(sourceValue.CorrelationId);
         mappedValue.DestinationSystem.Should().Be(sourceValue.DestinationSystem);
         mappedValue.SourceSystem.Should().Be(sourceValue.SourceSystem);

@@ -6,8 +6,7 @@ namespace TestDataGenerator;
 
 public abstract class ScenarioGenerator
 {
-    private readonly string _fullFolder =
-        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
+    private readonly string _fullFolder = $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
 
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 

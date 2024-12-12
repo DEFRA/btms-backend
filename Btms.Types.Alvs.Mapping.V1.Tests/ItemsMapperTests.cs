@@ -15,7 +15,7 @@ public class ItemsMapperTests
         var mappedValue = ItemsMapper.Map(sourceValue);
 
 
-        mappedValue.ItemNumber.Should().Be(sourceValue.ItemNumber);
+        mappedValue!.ItemNumber.Should().Be(sourceValue.ItemNumber);
         mappedValue.CustomsProcedureCode.Should().Be(sourceValue.CustomsProcedureCode);
         mappedValue.TaricCommodityCode.Should().Be(sourceValue.TaricCommodityCode);
         mappedValue.GoodsDescription.Should().Be(sourceValue.GoodsDescription);

@@ -15,7 +15,7 @@ public class DocumentMapperTests
         var mappedValue = DocumentMapper.Map(sourceValue);
 
 
-        mappedValue.DocumentReference.Should().Be(sourceValue.DocumentReference);
+        mappedValue!.DocumentReference.Should().Be(sourceValue.DocumentReference);
         mappedValue.DocumentCode.Should().Be(sourceValue.DocumentCode);
         mappedValue.DocumentControl.Should().Be(sourceValue.DocumentControl);
         mappedValue.DocumentQuantity.Should().Be(sourceValue.DocumentQuantity);

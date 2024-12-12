@@ -541,7 +541,7 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 20,
-              "description": "There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number.\n"
+              "description": "There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number."
             },
             "shipName": {
               "type": "string",

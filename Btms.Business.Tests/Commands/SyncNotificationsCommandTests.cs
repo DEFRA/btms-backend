@@ -59,7 +59,7 @@ public class SyncNotificationsCommandTests(ITestOutputHelper outputHelper)
         return ImportNotificationBuilder.Default()
             .Do(x =>
             {
-                foreach (var parameterSet in x.PartOne!.Commodities!.ComplementParameterSets!)
+                foreach (var parameterSet in x.PartOne?.Commodities?.ComplementParameterSets!)
                 {
                     parameterSet.KeyDataPairs = null;
                 }

@@ -12,6 +12,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
     public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(PreProcessingContext<ImportNotification> preProcessingContext)
     {
         var internalNotification = preProcessingContext.Message.MapWithTransform();
+        ArgumentNullException.ThrowIfNull(internalNotification, nameof(internalNotification));
         var existingNotification = await dbContext.Notifications.Find(preProcessingContext.Message.ReferenceNumber!);
 
         if (existingNotification is null)
@@ -20,10 +21,8 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             await dbContext.Notifications.Insert(internalNotification);
             return PreProcessResult.New(internalNotification);
         }
-
         
-        if (internalNotification.UpdatedSource.TrimMicroseconds() >
-            existingNotification.UpdatedSource.TrimMicroseconds())
+        if (internalNotification.LastUpdated.TrimMicroseconds() > existingNotification.LastUpdated.TrimMicroseconds())
         {
             internalNotification.AuditEntries = existingNotification.AuditEntries;
             internalNotification.CreatedSource = existingNotification.CreatedSource;
@@ -36,14 +35,12 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             return PreProcessResult.Changed(internalNotification, changeSet);
         }
         
-        if (internalNotification.UpdatedSource.TrimMicroseconds() ==
-                 existingNotification.UpdatedSource.TrimMicroseconds())
+        if (internalNotification.LastUpdated.TrimMicroseconds() == existingNotification.LastUpdated.TrimMicroseconds())
         {
             return PreProcessResult.AlreadyProcessed(existingNotification);
         }
         
         logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.ReferenceNumber!);
         return PreProcessResult.Skipped(existingNotification);
-        
     }
 }

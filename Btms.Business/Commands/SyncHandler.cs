@@ -109,7 +109,11 @@ public abstract class SyncCommand : IRequest, ISyncJob
             var result = blobService.GetResourcesAsync($"{path}{period.GetPeriodPath()}", cancellationToken);
             var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
 
+<<<<<<< Updated upstream
             await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, _) =>
+=======
+            await Parallel.ForEachAsync(result, new ParallelOptions { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, _) =>
+>>>>>>> Stashed changes
             {
                 await SyncBlob<TRequest>(path, topic, item, job, cancellationToken);
             });
@@ -143,8 +147,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
             }
         }
 
-        private async Task SyncBlob<TRequest>(string path, string topic, IBlobItem item, SyncJob.SyncJob job,
-            CancellationToken cancellationToken)
+        private async Task SyncBlob<TRequest>(string path, string topic, IBlobItem item, SyncJob.SyncJob job, CancellationToken cancellationToken)
         {
             var timer = Stopwatch.StartNew();
             using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("BlobPath", item.Name), }))

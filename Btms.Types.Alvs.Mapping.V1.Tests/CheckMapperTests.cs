@@ -15,7 +15,7 @@ public class CheckMapperTests
         var mappedValue = CheckMapper.Map(sourceValue);
 
 
-        mappedValue.CheckCode.Should().Be(sourceValue.CheckCode);
+        mappedValue!.CheckCode.Should().Be(sourceValue.CheckCode);
         mappedValue.DepartmentCode.Should().Be(sourceValue.DepartmentCode);
     }
 }

@@ -11,6 +11,7 @@ namespace Btms.Analytics;
 
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
+    
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>
@@ -39,7 +40,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Key), g => g.Count);
             
-        return Task.FromResult(new SingeSeriesDataset
+        return Task.FromResult(new SingeSeriesDataset()
         {
             Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
@@ -60,8 +61,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var dictionary = mongoResult
             .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.ItemCount }, g => g.Count);
             
-        var maxCount = mongoResult.Count > 0 ?
-            mongoResult.Max(r => r.Count) : 0;
+        var maxCount = mongoResult.Count > 0 ? mongoResult.Max(r => r.Count) : 0;
 
         return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
             .Select(title => new MultiSeriesDataset(title, "Item Count") {
@@ -104,7 +104,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
             .Select(title => new MultiSeriesDataset(title, "Document Reference Count") {
                 Results = Enumerable.Range(0, maxReferences + 1)
-                    .Select(i => new ByNumericDimensionResult
+                    .Select(i => new ByNumericDimensionResult()
                     {
                         Dimension = i,
                         Value = dictionary.GetValueOrDefault(new { Title=title, DocumentReferenceCount = i }, 0)
@@ -134,7 +134,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     r =>r.MovementCount.ToString(),
                     r=> r.DocumentReferenceCount);
 
-            var result = new SingeSeriesDataset { Values = mongoResult };
+            var result = new SingeSeriesDataset() { Values = mongoResult };
             
             return Task.FromResult(result);
     }

@@ -3,12 +3,9 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ImportNotificationWithTransformMapper
 {
-    public static Btms.Model.Ipaffs.ImportNotification MapWithTransform(this ImportNotification? from)
+    public static Btms.Model.Ipaffs.ImportNotification? MapWithTransform(this ImportNotification? from)
     {
-        if (from is null)
-        {
-            return default!;
-        }
+        if (from is null) return default;
 
         var notification = ImportNotificationMapper.Map(from);
         Map(from, notification);
@@ -17,10 +14,7 @@ public static class ImportNotificationWithTransformMapper
 
     private static string FromSnakeCase(this string input)
     {
-        if (input == "netweight")
-        {
-            return "netWeight";
-        }
+        if (input == "netweight") return "netWeight";
 
         var pascal = input.Split(["_"], StringSplitOptions.RemoveEmptyEntries)
             .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1))
@@ -30,27 +24,30 @@ public static class ImportNotificationWithTransformMapper
 
     private static IDictionary<string, object> FromSnakeCase(this IDictionary<string, object>? input)
     {
-        if (input == null)
-        {
-            return new Dictionary<string, object>();
-        }
+        if (input == null) return new Dictionary<string, object>();
 
         return input.ToDictionary(mc => mc.Key.FromSnakeCase(),
             mc => mc.Value);
     }
 
-    private static void Map(ImportNotification from, Btms.Model.Ipaffs.ImportNotification to)
+    private static void Map(ImportNotification from, Btms.Model.Ipaffs.ImportNotification? to)
     {
+        if (to is null) return;
+
         to.CreatedSource = from.LastUpdated;
         var commodities = from.PartOne!.Commodities;
 
         if (commodities?.CommodityComplements?.Length == 1)
         {
-            commodities.CommodityComplements[0].AdditionalData =
-                commodities.ComplementParameterSets![0].KeyDataPairs!.FromSnakeCase();
+            var commodityComplement = commodities.CommodityComplements?[0];
+            if (commodityComplement == null) return;
+            var complementParameterSet = commodities.ComplementParameterSets?[0];
+            if (complementParameterSet == null) return;
+            commodityComplement.AdditionalData =
+                complementParameterSet.KeyDataPairs!.FromSnakeCase();
             if (from.RiskAssessment != null)
             {
-                commodities.CommodityComplements[0].RiskAssesment = from.RiskAssessment.CommodityResults![0];
+                commodityComplement.RiskAssesment = from.RiskAssessment.CommodityResults![0];
             }
         }
         else
@@ -61,15 +58,16 @@ public static class ImportNotificationWithTransformMapper
 
             foreach (var commoditiesCommodityComplement in commodities!.ComplementParameterSets!)
             {
-                complementParameters[commoditiesCommodityComplement.ComplementId!.Value] =
-                    commoditiesCommodityComplement;
+                if (commoditiesCommodityComplement.ComplementId != null)
+                    complementParameters[commoditiesCommodityComplement.ComplementId.Value] =
+                        commoditiesCommodityComplement;
             }
 
             if (from.RiskAssessment != null)
             {
                 foreach (var commoditiesRa in from.RiskAssessment.CommodityResults!)
                 {
-                    complementRiskAssesments[commoditiesRa.UniqueId!] = commoditiesRa;
+                    if (commoditiesRa.UniqueId != null) complementRiskAssesments[commoditiesRa.UniqueId] = commoditiesRa;
                 }
             }
 
@@ -77,7 +75,7 @@ public static class ImportNotificationWithTransformMapper
             {
                 foreach (var commodityCheck in from.PartTwo.CommodityChecks!)
                 {
-                    commodityChecks[commodityCheck.UniqueComplementId!] = commodityCheck.Checks!;
+                    if (commodityCheck.UniqueComplementId != null) commodityChecks[commodityCheck.UniqueComplementId] = commodityCheck.Checks!;
                 }
             }
 
@@ -85,21 +83,24 @@ public static class ImportNotificationWithTransformMapper
             {
                 foreach (var commodity in commodities.CommodityComplements)
                 {
-                    var parameters = complementParameters[commodity.ComplementId!.Value];
-                    commodity.AdditionalData = parameters.KeyDataPairs!.FromSnakeCase();
-
-                    if (complementRiskAssesments.Any() &&
-                        parameters.UniqueComplementId is not null &&
-                        complementRiskAssesments.ContainsKey(parameters.UniqueComplementId))
+                    if (commodity.ComplementId != null)
                     {
-                        commodity.RiskAssesment = complementRiskAssesments[parameters.UniqueComplementId!];
-                    }
+                        var parameters = complementParameters[commodity.ComplementId.Value];
+                        commodity.AdditionalData = parameters.KeyDataPairs!.FromSnakeCase();
 
-                    if (commodityChecks.Any() &&
-                        parameters.UniqueComplementId is not null &&
-                        commodityChecks.ContainsKey(parameters.UniqueComplementId))
-                    {
-                        commodity.Checks = commodityChecks[parameters.UniqueComplementId!];
+                        if (complementRiskAssesments.Any() &&
+                            parameters.UniqueComplementId is not null &&
+                            complementRiskAssesments.ContainsKey(parameters.UniqueComplementId))
+                        {
+                            commodity.RiskAssesment = complementRiskAssesments[parameters.UniqueComplementId!];
+                        }
+
+                        if (commodityChecks.Any() &&
+                            parameters.UniqueComplementId is not null &&
+                            commodityChecks.ContainsKey(parameters.UniqueComplementId))
+                        {
+                            commodity.Checks = commodityChecks[parameters.UniqueComplementId!];
+                        }
                     }
                 }
             }

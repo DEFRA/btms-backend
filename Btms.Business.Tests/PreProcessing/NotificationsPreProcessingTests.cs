@@ -37,7 +37,7 @@ public class NotificationsPreProcessingTests
         // ARRANGE
         var notification = CreateImportNotification();
         var dbContext = new MemoryMongoDbContext();
-        await dbContext.Notifications.Insert(notification.MapWithTransform());
+        await dbContext.Notifications.Insert(notification.MapWithTransform()!);
         notification.LastUpdated = notification.LastUpdated?.AddHours(1);
         var preProcessor = new ImportNotificationPreProcessor(dbContext, NullLogger<ImportNotificationPreProcessor>.Instance);
            

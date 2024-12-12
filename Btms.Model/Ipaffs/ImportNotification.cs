@@ -63,7 +63,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     [JsonPropertyName("relationships")]
     public NotificationTdmRelationships Relationships { get; set; } = new();
 
-    [Attr] public Commodities CommoditiesSummary { get; set; } = default!;
+    [Attr] public Commodities? CommoditiesSummary { get; set; } = default!;
 
     [Attr] public CommodityComplement[] Commodities { get; set; } = default!;
 
@@ -144,7 +144,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
         if (linked)
         {
-            AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
+            AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault(), LastUpdated));
         }
     }
 
@@ -159,7 +159,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             this,
             auditId,
             Version.GetValueOrDefault(),
-            UpdatedSource);
+            LastUpdated);
         Changed(auditEntry);
     }
 
@@ -168,7 +168,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         var auditEntry = AuditEntry.CreateSkippedVersion(
             auditId,
             version,
-            UpdatedSource);
+            LastUpdated);
         Changed(auditEntry);
     }
 
@@ -177,7 +177,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         var auditEntry = AuditEntry.CreateUpdated(changeSet,
             auditId,
             Version.GetValueOrDefault(),
-            UpdatedSource);
+            LastUpdated);
         Changed(auditEntry);
     }
 

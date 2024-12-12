@@ -91,16 +91,21 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return Do(n =>
         {
-            n.PartOne!.Commodities!.TotalNetWeight = netWeight;
-            n.PartOne!.Commodities!.TotalGrossWeight = netWeight;
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesId = "000";
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesClass = "XXXX";
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesName = "XXXX";
-            n.PartOne!.Commodities!.CommodityComplements![0].CommodityDescription = description;
-            n.PartOne!.Commodities!.CommodityComplements![0].ComplementName = "XXXX";
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesNomination = "XXXX";
-            n.PartOne!.Commodities!.ComplementParameterSets![0].SpeciesId = "000";
-            n.PartOne!.Commodities!.ComplementParameterSets![0].KeyDataPairs!["netweight"] = netWeight;
+            if (n.PartOne?.Commodities == null) return;
+            n.PartOne.Commodities.TotalNetWeight = netWeight;
+            n.PartOne.Commodities.TotalGrossWeight = netWeight;
+            var commodityComplement = n.PartOne.Commodities.CommodityComplements?[0];
+            if (commodityComplement == null) return;
+            commodityComplement.SpeciesId = "000";
+            commodityComplement.SpeciesClass = "XXXX";
+            commodityComplement.SpeciesName = "XXXX";
+            commodityComplement.CommodityDescription = description;
+            commodityComplement.ComplementName = "XXXX";
+            commodityComplement.SpeciesNomination = "XXXX";
+            var complementParameterSet = n.PartOne.Commodities.ComplementParameterSets?[0];
+            if (complementParameterSet == null) return;
+            complementParameterSet.SpeciesId = "000";
+            complementParameterSet.KeyDataPairs!["netweight"] = netWeight;
         });
     }
 

@@ -14,19 +14,19 @@ internal class GenerateAlvsModelCommand : IRequest
     public const string ClassNamePrefix = "";
 
     //[Option('o', "sourceOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string SourceOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Alvs.V1\\";
+    public string SourceOutputPath { get; set; } = $"{RootPaths.TypesPartialFolder}.Alvs.V1{Path.DirectorySeparatorChar}";
 
     // [Option('i', "internalOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string InternalOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Model\\Alvs\\";
+    public string InternalOutputPath { get; set; } = Path.Combine(RootPaths.ModelFolder, $"Alvs{Path.DirectorySeparatorChar}");
 
-    public string MappingOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Alvs.Mapping.V1\\";
+    public string MappingOutputPath { get; set; } = $"{RootPaths.TypesPartialFolder}.Alvs.Mapping.V1{Path.DirectorySeparatorChar}";
 
     public class Handler : AsyncRequestHandler<GenerateAlvsModelCommand>
     {
         protected override async Task Handle(GenerateAlvsModelCommand request, CancellationToken cancellationToken)
         {
 #pragma warning disable S1075
-            var reader = new XmlTextReader("D:\\repos\\esynergy\\Btms-Backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateAlvsModel\\sendALVSClearanceRequest.xsd");
+            var reader = new XmlTextReader(Path.Combine(RootPaths.BackendCliFolder, "Features", "GenerateModels", "GenerateAlvsModel", "sendALVSClearanceRequest.xsd"));
 #pragma warning restore S1075
             var schema = XmlSchema.Read(reader, ValidationCallback!)!;
 

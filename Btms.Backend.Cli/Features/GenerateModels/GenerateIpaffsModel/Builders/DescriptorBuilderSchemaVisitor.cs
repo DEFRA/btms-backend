@@ -158,7 +158,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
     {
         if (context.JsonSchema.IsEnum())
         {
-            OnEnum(context.CSharpDescriptor, context.JsonSchema, null!, context.Key);
+            OnEnum(context.CSharpDescriptor, context.JsonSchema, null, context.Key);
 
         }
         else if (context.JsonSchema.IsClass())
@@ -177,14 +177,13 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
         }
     }
 
-    private void OnEnum(CSharpDescriptor cSharpDescriptor, JsonSchema schema, ClassDescriptor classDescriptor, string name)
+    private void OnEnum(CSharpDescriptor cSharpDescriptor, JsonSchema schema, ClassDescriptor? classDescriptor, string name)
     {
         var enumKeyword = schema.GetKeyword<EnumKeyword>();
 
-        if (enumKeyword is not null)
+        if (enumKeyword is not null && classDescriptor is not null)
         {
-            var values = enumKeyword.Values.Select(x => new EnumDescriptor.EnumValueDescriptor(x!.ToString()))
-                .ToList();
+            var values = enumKeyword.Values.Select(x => new EnumDescriptor.EnumValueDescriptor(x!.ToString())).ToList();
             cSharpDescriptor.AddEnumDescriptor(new EnumDescriptor(name, classDescriptor.Name, IpaffsDescriptorBuilder.SourceNamespace, IpaffsDescriptorBuilder.InternalNamespace, IpaffsDescriptorBuilder.ClassNamePrefix) { Values = values });
         }
     }

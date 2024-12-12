@@ -9,10 +9,35 @@ using SlimMessageBus;
 
 namespace Btms.Business.Commands
 {
+<<<<<<< Updated upstream
     public class SyncNotificationsCommand : SyncCommand
     {
         public string[] ChedTypes { get; set; } = [];
         public override string Resource => "ImportNotification";
+=======
+    public string[] ChedTypes { get; set; } = [];
+    public override string Resource => "ImportNotification";
+
+    public string[] BlobFiles { get; set; } = [];
+
+
+    internal class Handler(
+        SyncMetrics syncMetrics,
+        IPublishBus bus,
+        ILogger<SyncNotificationsCommand> logger,
+        ISensitiveDataSerializer sensitiveDataSerializer,
+        IBlobService blobService,
+        IOptions<BusinessOptions> businessOptions,
+        ISyncJobStore syncJobStore)
+        : Handler<SyncNotificationsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
+            blobService, businessOptions, syncJobStore)
+    {
+        public override async Task Handle(SyncNotificationsCommand request, CancellationToken cancellationToken)
+        {
+            var rootFolder = string.IsNullOrEmpty(request.RootFolder)
+                ? Options.DmpBlobRootFolder
+                : request.RootFolder;
+>>>>>>> Stashed changes
 
         public string[] BlobFiles { get; set; } = [];
 

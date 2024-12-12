@@ -14,6 +14,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
     {
 
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
+        ArgumentNullException.ThrowIfNull(internalClearanceRequest);
         var movement = BuildMovement(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(movement.Id!);
 

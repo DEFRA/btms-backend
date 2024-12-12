@@ -19,7 +19,12 @@ public class SyncClearanceRequestsCommand : SyncCommand
         IBlobService blobService,
         IOptions<BusinessOptions> businessOptions,
         ISyncJobStore syncJobStore)
+<<<<<<< Updated upstream
         : Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
+=======
+        : Handler<SyncClearanceRequestsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
+            blobService, businessOptions, syncJobStore)
+>>>>>>> Stashed changes
     {
         public override async Task Handle(SyncClearanceRequestsCommand request, CancellationToken cancellationToken)
         {

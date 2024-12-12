@@ -16,7 +16,8 @@ public class DecisionsConsumer(IMongoDbContext dbContext)
         if (existingMovement != null)
         {
             var auditId = Context.Headers["messageId"].ToString();
-            var merged = existingMovement.MergeDecision(auditId!, internalClearanceRequest);
+            if (auditId == null || internalClearanceRequest == null) return;
+            var merged = existingMovement.MergeDecision(auditId, internalClearanceRequest);
             if (merged)
             {
                 await dbContext.Movements.Update(existingMovement, existingMovement._Etag);

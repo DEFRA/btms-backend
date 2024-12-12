@@ -14,7 +14,7 @@ public class HeaderMapperTests
 
         var mappedHeader = HeaderMapper.Map(sourceHeader);
 
-        mappedHeader.EntryReference.Should().Be(sourceHeader.EntryReference);
+        mappedHeader!.EntryReference.Should().Be(sourceHeader.EntryReference);
         mappedHeader.EntryVersionNumber.Should().Be(sourceHeader.EntryVersionNumber);
         mappedHeader.PreviousVersionNumber.Should().Be(sourceHeader.PreviousVersionNumber);
         mappedHeader.DeclarationUcr.Should().Be(sourceHeader.DeclarationUcr);
