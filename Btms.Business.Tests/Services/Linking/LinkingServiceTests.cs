@@ -16,7 +16,7 @@ namespace Btms.Business.Tests.Services.Linking;
 
 public class LinkingServiceTests
 {
-    private static readonly Random random = new ();
+    private static readonly Random Random = new ();
     private readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
     private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
@@ -295,7 +295,8 @@ public class LinkingServiceTests
             Items = chedReferences.Select(x => new Items
             {
                 Documents = [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
-            }).ToList()
+            }).ToList(),
+            ClearanceRequests = new()
         };
 
         var existingMovement = createExistingMovement ? 
@@ -308,7 +309,8 @@ public class LinkingServiceTests
                     Documents = fieldsOfInterest
                         ? []
                         : [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
-                }).ToList()
+                }).ToList(),
+                ClearanceRequests = new()
             } : null;
 
 

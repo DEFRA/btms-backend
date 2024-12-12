@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+// ReSharper disable once CheckNamespace
 namespace Btms.Types.Ipaffs;
 
 public class KeyDataPairsToDictionaryStringObjectJsonConverter : JsonConverter<Dictionary<string, object?>>

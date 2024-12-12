@@ -1,4 +1,3 @@
-using System.Configuration;
 using Btms.Common.Extensions;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
@@ -7,7 +6,6 @@ using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Interceptor;
 using SlimMessageBus.Host.Memory;

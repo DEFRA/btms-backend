@@ -109,7 +109,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
             var result = blobService.GetResourcesAsync($"{path}{period.GetPeriodPath()}", cancellationToken);
             var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
 
-            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, token) =>
+            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, _) =>
             {
                 await SyncBlob<TRequest>(path, topic, item, job, cancellationToken);
             });
@@ -121,7 +121,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
             var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
 
             job?.Start();
-            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={degreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), degreeOfParallelism, Environment.ProcessorCount);
+            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={DegreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), degreeOfParallelism, Environment.ProcessorCount);
             try
             {
                 foreach (var path in paths)
