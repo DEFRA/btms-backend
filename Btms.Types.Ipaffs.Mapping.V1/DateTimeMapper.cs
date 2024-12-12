@@ -1,3 +1,4 @@
+// ReSharper disable once CheckNamespace
 namespace Btms.Types.Ipaffs.Mapping;
 
 public static class DateTimeMapper

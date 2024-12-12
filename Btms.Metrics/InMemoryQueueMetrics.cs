@@ -1,16 +1,14 @@
-using System;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
-using System.IO;
 using SlimMessageBus.Host;
 
 namespace Btms.Metrics;
 
 public class InMemoryQueueMetrics
 {
-    readonly Histogram<int> timeInQueue;
-    readonly Counter<long> incomingCountMetric;
-    readonly Counter<long> outgoingCountMetric;
+    private readonly Histogram<int> timeInQueue;
+    private readonly Counter<long> incomingCountMetric;
+    private readonly Counter<long> outgoingCountMetric;
     private long queueCount;
     private readonly int noOfQueues;
 

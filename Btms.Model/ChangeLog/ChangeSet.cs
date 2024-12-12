@@ -8,7 +8,7 @@ namespace Btms.Model.ChangeLog;
 
 public class ChangeSet(JsonPatch jsonPatch)
 {
-    private static JsonSerializerOptions jsonOptions = new JsonSerializerOptions()
+    private static JsonSerializerOptions _jsonOptions = new()
     {
         TypeInfoResolver = new ChangeSetTypeInfoResolver(),
         PropertyNameCaseInsensitive = true,
@@ -19,8 +19,8 @@ public class ChangeSet(JsonPatch jsonPatch)
 
     public static ChangeSet CreateChangeSet<T>(T current, T previous)
     {
-        var previousNode = JsonNode.Parse(previous.ToJsonString(jsonOptions));
-        var currentNode = JsonNode.Parse(current.ToJsonString(jsonOptions));
+        var previousNode = JsonNode.Parse(previous.ToJsonString(_jsonOptions));
+        var currentNode = JsonNode.Parse(current.ToJsonString(_jsonOptions));
         var diff = previousNode.CreatePatch(currentNode);
 
         //exclude fields from patch, like _ts, audit entries etc

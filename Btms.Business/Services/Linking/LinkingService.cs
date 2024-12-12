@@ -87,7 +87,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 {
                     foreach (var movement in result.Movements)
                     {
-                        notification.AddRelationship(new TdmRelationshipObject()
+                        notification.AddRelationship(new TdmRelationshipObject
                         {
                             Links = RelationshipLinks.CreateForNotification(notification),
                             Data =
@@ -97,7 +97,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             ]
                         });
 
-                        movement.AddRelationship(new TdmRelationshipObject()
+                        movement.AddRelationship(new TdmRelationshipObject
                         {
                             Links = RelationshipLinks.CreateForMovement(movement),
                             Data =

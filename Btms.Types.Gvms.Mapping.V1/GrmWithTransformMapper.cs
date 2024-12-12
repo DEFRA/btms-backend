@@ -1,11 +1,12 @@
 using Btms.Model.Extensions;
 using Btms.Model.Relationships;
 
+// ReSharper disable once CheckNamespace
 namespace Btms.Types.Gvms.Mapping;
 
 public static class GrmWithTransformMapper
 {
-    public static Btms.Model.Gvms.Gmr MapWithTransform(Btms.Types.Gvms.Gmr from)
+    public static Btms.Model.Gvms.Gmr MapWithTransform(Gmr? from)
     {
         if (from is null)
         {
@@ -22,14 +23,14 @@ public static class GrmWithTransformMapper
         to.CreatedSource = from.UpdatedSource;
         if (from.Declarations?.Customs is not null)
         {
-            to.Relationships.Customs = new TdmRelationshipObject()
+            to.Relationships.Customs = new TdmRelationshipObject
             {
-                Links = new RelationshipLinks()
+                Links = new RelationshipLinks
                 {
                     Self = LinksBuilder.Gmr.BuildSelfRelationshipCustomsLink(":id"),
                     Related = LinksBuilder.Gmr.BuildRelatedCustomsLink(":id"),
                 },
-                Data = from.Declarations.Customs.Select(x => new RelationshipDataItem()
+                Data = from.Declarations.Customs.Select(x => new RelationshipDataItem
                 {
                     Id = x.Id!,
                     Type = "import-notifications"
@@ -39,14 +40,14 @@ public static class GrmWithTransformMapper
 
         if (from.Declarations?.Transits is not null)
         {
-            to.Relationships.Transits = new TdmRelationshipObject()
+            to.Relationships.Transits = new TdmRelationshipObject
             {
-                Links = new RelationshipLinks()
+                Links = new RelationshipLinks
                 {
                     Self = LinksBuilder.Gmr.BuildSelfRelationshipTransitsLink(":id"),
                     Related = LinksBuilder.Gmr.BuildRelatedTransitLink(":id"),
                 },
-                Data = from.Declarations.Transits.Select(x => new RelationshipDataItem()
+                Data = from.Declarations.Transits.Select(x => new RelationshipDataItem
                 {
                     Id = x.Id!,
                     Type = "movement"

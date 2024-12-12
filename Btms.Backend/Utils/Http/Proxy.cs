@@ -1,5 +1,4 @@
 using System.Net;
-using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Config;
 using Microsoft.Extensions.Options;
@@ -46,7 +45,7 @@ public static class Proxy
         return CreateHttpClientHandler(proxy, options.Value.CdpHttpsProxy!);
     }
 
-    public static HttpClientHandler CreateHttpClientHandler(IWebProxy proxy, string proxyUri)
+    public static HttpClientHandler CreateHttpClientHandler(IWebProxy proxy, string? proxyUri)
     {
         return new HttpClientHandler { Proxy = proxy, UseProxy = proxyUri != null };
     }

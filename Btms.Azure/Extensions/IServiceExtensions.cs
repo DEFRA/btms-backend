@@ -1,8 +1,6 @@
 
 using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 
 namespace Btms.Azure.Extensions;
@@ -22,7 +20,7 @@ public class MsalHttpClientFactoryAdapter(IHttpClientFactory httpClientFactory) 
     }
 }
 
-public static class IServiceExtensions
+public static class ServiceExtensions
 {
     public static void AddMsalHttpProxyClient(this IServiceCollection services, Func<IServiceProvider, HttpClientHandler> configurePrimaryHttpMessageHandler)
     {

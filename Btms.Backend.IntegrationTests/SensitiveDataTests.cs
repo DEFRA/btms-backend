@@ -1,6 +1,4 @@
 using System.Text.Json.Nodes;
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.BlobService;
 using Btms.SensitiveData;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -17,10 +15,10 @@ public class SensitiveDataTests
     public void WhenIncludeSensitiveData_RedactedShouldBeSameAsJson()
     {
         var filePath = "../../../Fixtures/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
-        string json =
+        var json =
             File.ReadAllText(filePath);
                 
-        SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = true };
+        var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = true };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
         var result = serializer.RedactRawJson(json, typeof(ImportNotification));
@@ -33,10 +31,10 @@ public class SensitiveDataTests
     public void WhenIncludeSensitiveData_RedactedShouldBeDifferentJson()
     {
         var filePath = "../../../Fixtures/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
-        string json =
+        var json =
             File.ReadAllText(filePath);
 
-        SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = false };
+        var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = false };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
         var result = serializer.RedactRawJson(json, typeof(ImportNotification));

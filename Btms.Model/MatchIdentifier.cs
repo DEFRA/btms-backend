@@ -1,5 +1,3 @@
-using Btms.Model.Ipaffs;
-
 namespace Btms.Model;
 
 public struct MatchIdentifier(string identifier)
@@ -55,7 +53,7 @@ public struct MatchIdentifier(string identifier)
     {
         try
         {
-            matchIdentifier = MatchIdentifier.FromCds(reference);
+            matchIdentifier = FromCds(reference);
             return true;
         }
         catch (Exception)

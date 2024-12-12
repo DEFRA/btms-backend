@@ -1,20 +1,19 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Btms.Model.Extensions
+namespace Btms.Model.Extensions;
+
+public static class JsonExtensions
 {
-    public static class JsonExtensions
+    private static readonly JsonSerializerOptions Default = new()
     {
-        private static readonly JsonSerializerOptions Default = new()
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-        };
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
 
-        public static string ToJsonString<T>(this T value, JsonSerializerOptions? options = null)
-        {
-            if (value is string s) return s;
+    public static string ToJsonString<T>(this T value, JsonSerializerOptions? options = null)
+    {
+        if (value is string s) return s;
 
-            return JsonSerializer.Serialize(value, options ?? Default);
-        }
+        return JsonSerializer.Serialize(value, options ?? Default);
     }
 }

@@ -5,9 +5,9 @@ namespace Btms.Metrics;
 
 public class LinkingMetrics
 {
-    readonly Histogram<double> duration;
-    readonly Counter<long> total;
-    readonly Counter<long> faulted;
+    private readonly Histogram<double> duration;
+    private readonly Counter<long> total;
+    private readonly Counter<long> faulted;
 
     public LinkingMetrics(IMeterFactory meterFactory)
     {

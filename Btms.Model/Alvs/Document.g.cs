@@ -24,7 +24,7 @@ public partial class Document  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DocumentCode { get; set; }
@@ -32,7 +32,7 @@ public partial class Document  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DocumentReference { get; set; }
@@ -40,7 +40,7 @@ public partial class Document  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DocumentStatus { get; set; }
@@ -48,7 +48,7 @@ public partial class Document  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? DocumentControl { get; set; }
@@ -56,7 +56,7 @@ public partial class Document  //
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public decimal? DocumentQuantity { get; set; }

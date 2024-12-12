@@ -23,14 +23,14 @@ public partial class Check  //
 
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("checkCode")]
     public string? CheckCode { get; set; }
 
 	
     /// <summary>
     /// 
-    /// </summary
+    /// </summary>
     [JsonPropertyName("departmentCode")]
     public string? DepartmentCode { get; set; }
 

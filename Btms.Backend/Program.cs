@@ -38,13 +38,10 @@ using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 
-using OpenTelemetry.Extensions.Hosting;
-
 //-------- Configure the WebApplication builder------------------//
 
 var app = CreateWebApplication(args);
 await app.RunAsync();
-
 
 [ExcludeFromCodeCoverage]
 static WebApplication CreateWebApplication(string[] args)
@@ -87,7 +84,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 			builder.Configuration.Bind(options);
 			builder.Configuration.GetSection("AuthKeyStore").Bind(options);
 		});
-
 
 	// Load certificates into Trust Store - Note must happen before Mongo and Http client connections
 	builder.Services.AddCustomTrustStore(logger);
@@ -235,7 +231,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     var dotnetHealthEndpoint = "/health-dotnet";
 	app.MapGet("/health", GetStatus).AllowAnonymous();
 	app.MapHealthChecks(dotnetHealthEndpoint,
-		new HealthCheckOptions()
+		new HealthCheckOptions
 		{
 			Predicate = _ => true,
 			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

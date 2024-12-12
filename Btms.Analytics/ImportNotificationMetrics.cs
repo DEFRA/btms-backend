@@ -1,16 +1,7 @@
-
-
-using System.Diagnostics;
 using System.Diagnostics.Metrics;
-using System.Runtime.InteropServices.JavaScript;
-using System.Text;
-using Btms.Common;
-using Btms.Metrics;
 using Btms.Analytics.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model;
-using Btms.Model.Extensions;
-using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Analytics;
@@ -22,7 +13,7 @@ namespace Btms.Analytics;
 public class ImportNotificationMetrics
 {
     private readonly IImportNotificationsAggregationService _importService;
-    private readonly Dictionary<string, Instrument> _metrics = new Dictionary<string, Instrument>();
+    private readonly Dictionary<string, Instrument> _metrics = new();
     private readonly ILogger<ImportNotificationMetrics> _logger;
     
     private void Add(Instrument i)
@@ -59,12 +50,12 @@ public class ImportNotificationMetrics
                 }
                 else
                 {
-                    _logger.LogWarning("Unexpected type of instrument {type} for metric {name}", instrument.GetType(), key);
+                    _logger.LogWarning("Unexpected type of instrument {Type} for metric {Name}", instrument.GetType(), key);
                 }
             }
             else
             {
-                _logger.LogWarning("No instrument present for metric {name}", key);
+                _logger.LogWarning("No instrument present for metric {Name}", key);
             }
         }
     }

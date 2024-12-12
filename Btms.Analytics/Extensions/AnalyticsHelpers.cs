@@ -1,6 +1,3 @@
-using Btms.Common.Extensions;
-using Btms.Model.Extensions;
-using System.Collections.Generic;
 using Btms.Model;
 using MongoDB.Bson;
 namespace Btms.Analytics.Extensions;
@@ -40,17 +37,17 @@ public static class AnalyticsHelpers
         .Select(offset => from.Increment(offset, aggregateBy)) // from.AddDays(offset))
         .ToArray(); 
 
-    internal static readonly Comparer<ByDateTimeResult>? byDateTimeResultComparer = Comparer<ByDateTimeResult>.Create((d1, d2) => d1.Period.CompareTo(d2.Period));
+    internal static readonly Comparer<ByDateTimeResult>? ByDateTimeResultComparer = Comparer<ByDateTimeResult>.Create((d1, d2) => d1.Period.CompareTo(d2.Period));
     
     public static string[] GetImportNotificationSegments()
     {
         return ModelHelpers.GetChedTypes()
-            .SelectMany(chedType => new string[] { $"{chedType} Linked", $"{chedType} Not Linked" })
+            .SelectMany(chedType => new[] { $"{chedType} Linked", $"{chedType} Not Linked" })
             .ToArray();
     }
 
     public static string[] GetMovementSegments()
     {
-        return new string[] { "Linked", "Not Linked" };
+        return ["Linked", "Not Linked"];
     }
 }

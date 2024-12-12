@@ -1,10 +1,9 @@
-using Btms.Common;
 using Btms.Metrics;
 using System.Diagnostics;
 
 namespace Btms.Backend.BackgroundTaskQueue;
 
-internal class QueueHostedService : Microsoft.Extensions.Hosting.BackgroundService
+internal class QueueHostedService : BackgroundService
 {
     public const string ActivityName = "Btms.Job.Run";
     private readonly ILogger<QueueHostedService> _logger;
@@ -30,21 +29,21 @@ internal class QueueHostedService : Microsoft.Extensions.Hosting.BackgroundServi
         {
             var workItem = await TaskQueue.DequeueAsync(stoppingToken);
 
-            ThreadPool.QueueUserWorkItem(state =>
+            ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
                 {
-                    _logger.LogInformation("Starting execution of {workItem}...", nameof(workItem));
-                    using (var activity = BtmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
+                    _logger.LogInformation("Starting execution of {WorkItem}...", nameof(workItem));
+                    using (BtmsDiagnostics.ActivitySource.StartActivity(ActivityName, ActivityKind.Client))
                     {
                         workItem(stoppingToken).GetAwaiter().GetResult();
                     }
 
-                    _logger.LogInformation("Execution of {workItem} completed!!!", nameof(workItem));
+                    _logger.LogInformation("Execution of {WorkItem} completed!!!", nameof(workItem));
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error occured executing {workItem}", nameof(workItem));
+                    _logger.LogError(ex, "Error occured executing {WorkItem}", nameof(workItem));
                 }
             });
 

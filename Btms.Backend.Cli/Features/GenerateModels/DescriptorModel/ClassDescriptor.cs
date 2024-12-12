@@ -42,7 +42,7 @@ public class ClassDescriptor(string name, string sourceNamespace, string interna
         return $"{InternalNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
     }
 
-    public static string BuildClassName(string name, string classNamePrefix, bool isResource = false)
+    public static string BuildClassName(string name, string? classNamePrefix, bool isResource = false)
     {
         if (classNamePrefix != null && name.StartsWith(classNamePrefix))
         {

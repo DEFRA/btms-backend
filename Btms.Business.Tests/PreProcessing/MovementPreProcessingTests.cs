@@ -25,10 +25,10 @@ public class MovementPreProcessingTests
 
         // ASSERT
         preProcessingResult.Outcome.Should().Be(PreProcessingOutcome.New);
-        var savedMovement = await dbContext.Movements.Find(clearanceRequest!.Header!.EntryReference!);
+        var savedMovement = await dbContext.Movements.Find(clearanceRequest.Header!.EntryReference!);
         savedMovement.Should().NotBeNull();
-        savedMovement.AuditEntries.Count.Should().Be(1);
-        savedMovement.AuditEntries[0].Status.Should().Be("Created");
+        savedMovement?.AuditEntries.Count.Should().Be(1);
+        savedMovement?.AuditEntries[0].Status.Should().Be("Created");
     }
 
     private static AlvsClearanceRequest CreateAlvsClearanceRequest()
