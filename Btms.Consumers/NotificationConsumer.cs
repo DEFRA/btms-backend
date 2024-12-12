@@ -3,11 +3,14 @@ using SlimMessageBus;
 using Btms.Consumers.Extensions;
 using Microsoft.Extensions.Logging;
 using Btms.Business.Pipelines.PreProcessing;
+using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 
 namespace Btms.Consumers
 {
-    internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService, ILogger<NotificationConsumer> logger)
+    internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService, 
+        IDecisionService decisionService,
+        ILogger<NotificationConsumer> logger)
         : IConsumer<ImportNotification>, IConsumerWithContext
     {
         public async Task OnHandle(ImportNotification message)
@@ -35,6 +38,8 @@ namespace Btms.Consumers
                     if (linkResult.Outcome == LinkOutcome.Linked)
                     {
                         Context.Linked();
+
+                        await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
                     }
                 }
 

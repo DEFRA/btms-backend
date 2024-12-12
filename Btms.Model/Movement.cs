@@ -36,6 +36,8 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     [Attr] public string EntryReference { get; set; } = default!;
 
+    [Attr] public int EntryVersionNumber { get; set; } = default!;
+
     [Attr] public string MasterUcr { get; set; } = default!;
 
     [Attr] public int? DeclarationPartNumber { get; set; }
@@ -72,15 +74,10 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             if (!matchReferences.Any())
             {
                 var list = new HashSet<string>();
-                foreach (var item in Items.Where(x => x.Documents != null))
+
+                foreach (var identifier in Items.SelectMany(item => item.GetIdentifiers()))
                 {
-                    foreach (var itemDocument in item.Documents!)
-                    {
-                        if (MatchIdentifier.TryFromCds(itemDocument.DocumentReference!, out var identifier))
-                        {
-                            list.Add(identifier.Identifier);
-                        }
-                    }
+                    list.Add(identifier);
                 }
 
                 matchReferences = list.ToList();

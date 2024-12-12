@@ -1,4 +1,5 @@
 using Btms.Business.Pipelines.PreProcessing;
+using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Consumers.Extensions;
 using Btms.Model;
@@ -31,13 +32,14 @@ namespace Btms.Consumers.Tests
             movement.Update(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
 
             var mockLinkingService = Substitute.For<ILinkingService>();
+            var decisionService = Substitute.For<IDecisionService>();
             var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
 
             preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
                 .Returns(Task.FromResult(new PreProcessingResult<Movement>(outcome, movement, null)));
 
             var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, decisionService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>()
@@ -66,6 +68,7 @@ namespace Btms.Consumers.Tests
             movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now));
 
             var mockLinkingService = Substitute.For<ILinkingService>();
+            var decisionService = Substitute.For<IDecisionService>();
             var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
 
             mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
@@ -75,7 +78,7 @@ namespace Btms.Consumers.Tests
                 .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
 
             var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, decisionService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>()

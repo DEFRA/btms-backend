@@ -8,12 +8,12 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
+using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
-using Btms.Types.Alvs.V1;
 
 
-namespace Btms.Types.Alvs;
+namespace Btms.Model.Alvs;
 
 /// <summary>
 /// 
@@ -25,100 +25,106 @@ public partial class Header  //
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("entryReference")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? EntryReference { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("entryVersionNumber")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public int? EntryVersionNumber { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("previousVersionNumber")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public int? PreviousVersionNumber { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("declarationUCR")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? DeclarationUcr { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("declarationPartNumber")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? DeclarationPartNumber { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("declarationType")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? DeclarationType { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("arrivalDateTime")]
-    [JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]
-    public DateTime? ArrivalDateTime { get; set; }
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public DateTime? ArrivesAt { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("submitterTURN")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? SubmitterTurn { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("declarantId")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? DeclarantId { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("declarantName")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? DeclarantName { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("dispatchCountryCode")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? DispatchCountryCode { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("goodsLocationCode")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? GoodsLocationCode { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary
-    [JsonPropertyName("masterUCR")]
+    [Attr]
+    [System.ComponentModel.Description("")]
     public string? MasterUcr { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary
-    [JsonPropertyName("decisionNumber")]
-    public int? DecisionNumber { get; set; }
-
-}
+	}
 
 

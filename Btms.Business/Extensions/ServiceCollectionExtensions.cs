@@ -63,6 +63,8 @@ namespace Btms.Business.Extensions
 
             services.AddScoped<ILinkingService, LinkingService>();
             services.AddScoped<IDecisionService, DecisionService>();
+            services.AddScoped<IDecisionMessageBuilder, DecisionMessageBuilder>();
+            services.AddSingleton<IMessageNumberProvider, MemoryMessageNumberProvider>();
 
             services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
             services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();

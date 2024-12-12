@@ -11,5 +11,6 @@ public enum DecisionCode
     N02,
     N03,
     N04,
-    N07
+    N07,
+    X00
 }
