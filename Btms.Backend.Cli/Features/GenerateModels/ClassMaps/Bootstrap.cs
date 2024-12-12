@@ -57,6 +57,15 @@ internal static class Bootstrap
 
     public static void RegisterIpaffsClassMaps()
     {
+        GeneratorClassMap.RegisterClassMap("ContactDetails",
+            map =>
+            {
+                map.MapProperty("name").IsSensitive();
+                map.MapProperty("telephone").IsSensitive();
+                map.MapProperty("email").IsSensitive();
+                map.MapProperty("agent").IsSensitive();
+            });
+
         GeneratorClassMap.RegisterClassMap("Decision",
             map =>
             {
