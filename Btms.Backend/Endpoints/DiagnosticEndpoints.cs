@@ -39,9 +39,9 @@ public static class DiagnosticEndpoints
 
         if (healthReport.Status == HealthStatus.Healthy)
         {
-            return Results.Ok(healthReport);
+            return Results.Ok(new { healthReport.Status });
         }
-        return Results.Conflict(healthReport);
+        return Results.Conflict(new { Status = healthReport.Status, Description = healthReport.Entries.FirstOrDefault().Value.Exception?.Message});
 
     }
 }
