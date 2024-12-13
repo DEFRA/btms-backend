@@ -1,4 +1,6 @@
 
+using System.Net;
+using Btms.Backend.Asb;
 using Btms.Backend.Config;
 using Btms.BlobService;
 using Btms.Common.Extensions;
@@ -32,14 +34,14 @@ public static class DiagnosticEndpoints
         return Results.Conflict(result);
     }
 
-    private static async Task<IResult> GetAzureServiceBusDiagnosticAsync(IOptions<ServiceBusOptions> serviceBusOptions)
+    private static async Task<IResult> GetAzureServiceBusDiagnosticAsync(IOptions<ServiceBusOptions> serviceBusOptions, IWebProxy proxy)
     {
         var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(serviceBusOptions.Value.Topic, serviceBusOptions.Value.Subscription)
         {
             ConnectionString = serviceBusOptions.Value.ConnectionString
         };
 
-        var healthCheck =  new AzureServiceBusSubscriptionHealthCheck(options);
+        var healthCheck =  new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(proxy));
         var result = await healthCheck.CheckHealthAsync(new HealthCheckContext());
         
         if (result.Status == HealthStatus.Healthy)
