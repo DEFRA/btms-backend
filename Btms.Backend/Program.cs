@@ -78,7 +78,11 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 			.AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 	}
 
-	builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
+    builder.Services
+        .AddOptions<ServiceBusOptions>()
+        .Bind(builder.Configuration.GetSection(ServiceBusOptions.SectionName));
+
+builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
 		.PostConfigure(options =>
 		{
 			builder.Configuration.Bind(options);
@@ -214,7 +218,13 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
 {
 	builder.Services.AddHealthChecks()
 		.AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient(5, 1), timeout: TimeSpan.FromSeconds(15))
-		.AddMongoDb(timeout: TimeSpan.FromSeconds(15));
+		.AddMongoDb(timeout: TimeSpan.FromSeconds(15))
+        .AddAzureServiceBusSubscription(
+            sp => sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.ConnectionString,
+            sp => sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.Topic,
+            sp => sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.Subscription,
+            configure: options => options.UsePeekMode = true,
+            timeout: TimeSpan.FromSeconds(15));
 }
 
 [ExcludeFromCodeCoverage]
