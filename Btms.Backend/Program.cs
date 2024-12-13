@@ -81,7 +81,8 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
     builder.Services
         .AddOptions<ServiceBusOptions>()
-        .Bind(builder.Configuration.GetSection(ServiceBusOptions.SectionName));
+        .Bind(builder.Configuration.GetSection(ServiceBusOptions.SectionName))
+        .ValidateDataAnnotations();
 
 builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
 		.PostConfigure(options =>
