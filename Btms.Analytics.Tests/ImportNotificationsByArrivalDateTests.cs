@@ -20,6 +20,7 @@ public class ImportNotificationsByArrivalDateTests(
         
         var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
             .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine($"{result.Count} aggregated items found");

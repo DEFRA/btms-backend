@@ -18,6 +18,7 @@ public class ImportNotificationsByCreatedDateTests(
     {
         var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(),AggregationPeriod.Hour))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -36,6 +37,7 @@ public class ImportNotificationsByCreatedDateTests(
     {
         var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
             .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -63,6 +65,7 @@ public class ImportNotificationsByCreatedDateTests(
 
         var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
                 .ByCreated(from, to, AggregationPeriod.Hour))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());

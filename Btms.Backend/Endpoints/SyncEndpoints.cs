@@ -27,6 +27,7 @@ public static class SyncEndpoints
 
         app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
         app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
+        app.MapGet(BaseRoute + "/decisions/", GetSyncDecisions).AllowAnonymous();
         app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
@@ -144,13 +145,13 @@ public static class SyncEndpoints
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
-    ////private static async Task<IResult> GetSyncDecisions(
-    ////    [FromServices] IBtmsMediator mediator,
-    ////    SyncPeriod syncPeriod)
-    ////{
-    ////    SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod };
-    ////    return await SyncDecisions(mediator, command);
-    ////}
+    private static async Task<IResult> GetSyncDecisions(
+        [FromServices] IBtmsMediator mediator,
+        SyncPeriod syncPeriod)
+    {
+        SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod };
+        return await SyncDecisions(mediator, command);
+    }
 
     private static async Task<IResult> SyncDecisions([FromServices] IBtmsMediator mediator,
         [FromBody] SyncDecisionsCommand command)

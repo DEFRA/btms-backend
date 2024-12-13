@@ -28,7 +28,7 @@ public static class AnalyticsExtensions
         return services;
     }
 
-    public static string MetricsKey(this MultiSeriesDatetimeDataset ds)
+    public static string MetricsKey(this DatetimeSeries ds)
     {
         return ds.Name.Replace(" ", "-").ToLower();
     }
@@ -64,17 +64,15 @@ public static class AnalyticsExtensions
             : [];
     }
 
-    public static MultiSeriesDatetimeDataset AsDataset(this Dictionary<string, BsonDocument> records, DateTime[] dateRange, string title)
+    public static DatetimeSeries AsDataset(this Dictionary<string, BsonDocument> records, DateTime[] dateRange,
+        string title)
     {
         var dates = records.GetNamedSetAsDict(title);
-        return new MultiSeriesDatetimeDataset(title)
+        return new DatetimeSeries(title)
         {
             Periods = dateRange
                 .Select(resultDate =>
-                    new ByDateTimeResult
-                    {
-                        Period = resultDate, Value = dates.GetValueOrDefault(resultDate, 0)
-                    })
+                    new ByDateTimeResult { Period = resultDate, Value = dates.GetValueOrDefault(resultDate, 0) })
                 .Order(AnalyticsHelpers.ByDateTimeResultComparer)
                 .ToList()
         };
@@ -137,5 +135,11 @@ public static class AnalyticsExtensions
         var stages = ((IMongoQueryProvider)source.Provider).LoggedStages;
 
         logger.LogInformation("[{Query}]", string.Join(",", stages.Select(s => s.ToString()).ToArray()));
+    }
+
+    public static Task<IDataset> AsIDataset(this Task<MultiSeriesDatetimeDataset> ms)
+    {
+        ms.Wait();
+        return Task.FromResult((IDataset)ms.Result);
     }
 }
