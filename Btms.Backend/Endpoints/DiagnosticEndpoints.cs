@@ -1,4 +1,3 @@
-
 using System.Net;
 using Btms.Backend.Asb;
 using Btms.Backend.Config;
@@ -23,31 +22,26 @@ public static class DiagnosticEndpoints
             app.MapGet(BaseRoute + "/asb", GetAzureServiceBusDiagnosticAsync).AllowAnonymous();
         }
     }
-    
+
     private static async Task<IResult> GetBlobDiagnosticAsync(IBlobService service)
     {
         var result = await service.CheckBlobAsync(5, 1);
         if (result.Success)
         {
-            return Results.Ok(result);    
+            return Results.Ok(result);
         }
         return Results.Conflict(result);
     }
 
-    private static async Task<IResult> GetAzureServiceBusDiagnosticAsync(IOptions<ServiceBusOptions> serviceBusOptions, IWebProxy proxy)
+    private static async Task<IResult> GetAzureServiceBusDiagnosticAsync(HealthCheckService healthCheckService)
     {
-        var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(serviceBusOptions.Value.Topic, serviceBusOptions.Value.Subscription)
-        {
-            ConnectionString = serviceBusOptions.Value.ConnectionString
-        };
+        var healthReport = await healthCheckService.CheckHealthAsync(x => x.Name == "azuresubscription");
 
-        var healthCheck =  new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(proxy));
-        var result = await healthCheck.CheckHealthAsync(new HealthCheckContext());
-        
-        if (result.Status == HealthStatus.Healthy)
+        if (healthReport.Status == HealthStatus.Healthy)
         {
-            return Results.Ok(result);
+            return Results.Ok(healthReport);
         }
-        return Results.Conflict(result);
+        return Results.Conflict(healthReport);
+
     }
 }
