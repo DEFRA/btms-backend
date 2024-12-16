@@ -35,7 +35,7 @@ public partial class Items  //
 
     public void MergeChecks(Items decisionItems)
     {
-        var checks = this.Checks?.ToList();
+        var checks = Checks?.ToList();
         if (checks == null)
         {
             checks = new List<Check>();
@@ -57,7 +57,7 @@ public partial class Items  //
             }
         }
 
-        this.Checks = checks.ToArray();
+        Checks = checks.ToArray();
     }
 
 }

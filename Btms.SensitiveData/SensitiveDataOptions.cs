@@ -10,12 +10,12 @@ public class SensitiveDataOptions
 
     public Func<string, string> Getter { get; set; } = Sha256;
 
-    static string Sha256(string input)
+    private static string Sha256(string input)
     {
         var crypt = SHA256.Create();
-        StringBuilder hash = new StringBuilder();
-        byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(input));
-        foreach (byte theByte in crypto)
+        var hash = new StringBuilder();
+        var crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(input));
+        foreach (var theByte in crypto)
         {
             hash.Append(theByte.ToString("x2"));
         }

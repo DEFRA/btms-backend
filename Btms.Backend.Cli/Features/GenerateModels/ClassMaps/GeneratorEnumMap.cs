@@ -4,7 +4,7 @@ namespace Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 
 internal class GeneratorEnumMap
 {
-    private static readonly Dictionary<string, GeneratorEnumMap> classMaps = new Dictionary<string, GeneratorEnumMap>();
+    private static readonly Dictionary<string, GeneratorEnumMap> ClassMaps = new();
 
    
     public GeneratorEnumMap(string className, Action<GeneratorEnumMap> classMapInitializer)
@@ -15,8 +15,8 @@ internal class GeneratorEnumMap
 
     public string Name { get; set; }
 
-    public List<EnumDescriptor.EnumValueDescriptor> EnumValues = new List<EnumDescriptor.EnumValueDescriptor>();
-    public List<string> EnumValuesToRemove = new List<string>();
+    public List<EnumDescriptor.EnumValueDescriptor> EnumValues = new();
+    public List<string> EnumValuesToRemove = new();
     public List<(string OldValue, string NewValue)> EnumValuesToRename = new ();
 
     public GeneratorEnumMap AddEnumValue(string value)
@@ -40,13 +40,13 @@ internal class GeneratorEnumMap
     public static GeneratorEnumMap RegisterEnumMap(string name, Action<GeneratorEnumMap> classMapInitializer)
     {
         var classMap = new GeneratorEnumMap(name, classMapInitializer);
-        classMaps.Add(classMap.Name, classMap);
+        ClassMaps.Add(classMap.Name, classMap);
         return classMap;
     }
 
-    public static GeneratorEnumMap LookupEnumMap(string name)
+    public static GeneratorEnumMap? LookupEnumMap(string name)
     {
-        classMaps.TryGetValue(name, out var classMap);
-        return classMap!;
+        ClassMaps.TryGetValue(name, out var classMap);
+        return classMap;
     }
 }

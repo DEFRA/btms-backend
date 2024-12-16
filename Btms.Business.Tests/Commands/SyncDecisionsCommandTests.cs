@@ -5,7 +5,6 @@ using Btms.Model.Extensions;
 using Btms.SensitiveData;
 using Btms.SyncJob;
 using Btms.Types.Alvs;
-using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -29,13 +28,10 @@ namespace Btms.Business.Tests.Commands
             var bus = Substitute.For<IPublishBus>();
             var blob = Substitute.For<IBlobService>();
             blob.GetResourcesAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
-                .Returns(
-                    new TestBlobItem(clearanceRequest!.Header!.EntryReference!, clearanceRequest.ToJsonString())
-                        .ToAsyncEnumerator());
+                .Returns(new TestBlobItem(clearanceRequest.Header!.EntryReference!, clearanceRequest.ToJsonString()).ToAsyncEnumerator());
 
             blob.GetResource(Arg.Any<IBlobItem>(), Arg.Any<CancellationToken>())
                 .Returns(clearanceRequest.ToJsonString());
-
 
             var handler = new SyncDecisionsCommand.Handler(
                 new SyncMetrics(new DummyMeterFactory()),

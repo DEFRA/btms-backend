@@ -1,17 +1,12 @@
-using System.Collections;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Backend.Data;
-using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model.Ipaffs;
-using Btms.Model;
-using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
-using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -25,7 +20,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             n.CreatedSource >= from && n.CreatedSource < to;
 
         string CreateDatasetName(BsonDocument b) =>
-            AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString()!);
+            AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
 
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
@@ -38,7 +33,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             n.PartOne!.ArrivesAt >= from && n.PartOne!.ArrivesAt < to;
 
         string CreateDatasetName(BsonDocument b) =>
-            AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString()!);
+            AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
 
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
     }
@@ -50,10 +45,10 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
             .GroupBy(n => new { n.ImportNotificationType, Linked = n.Relationships.Movements.Data.Count > 0 })
             .Select(g => new { g.Key.Linked, g.Key.ImportNotificationType, Count = g.Count() })
-            .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()!),
+            .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()),
                 g => g.Count);
 
-        return Task.FromResult(new SingeSeriesDataset()
+        return Task.FromResult(new SingeSeriesDataset
         {
             Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
@@ -86,7 +81,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .SelectMany(g =>
                 g.Select(r =>
                     new {
-                        Title = AnalyticsHelpers.GetLinkedName(g.Key.Linked, g.Key.ImportNotificationType.AsString()!),
+                        Title = AnalyticsHelpers.GetLinkedName(g.Key.Linked, g.Key.ImportNotificationType.AsString()),
                         r.Key.CommodityCount,
                         NotificationCount = r.Count
                     })
@@ -105,7 +100,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                 {
                     // Results = asDictionary.AsResultList(title, maxCommodities)
                     Results = Enumerable.Range(0, maxCommodities)
-                        .Select(i => new ByNumericDimensionResult()
+                        .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,
                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
@@ -136,7 +131,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Select(title => mongoResult.AsDataset(dateRange, title))
             .AsOrderedArray(d => d.Name);
         
-        logger.LogDebug("Aggregated Data {result}", output.ToList().ToJsonString());
+        logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
         
         return Task.FromResult(output);
     }

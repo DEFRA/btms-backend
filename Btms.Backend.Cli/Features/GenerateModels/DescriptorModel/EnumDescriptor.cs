@@ -6,7 +6,7 @@ namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 [DebuggerDisplay("{Name}")]
 public class EnumDescriptor(string name, string parentName, string sourceNamespace, string internalNamespace, string classNamePrefix)
 {
-    private const string suffix = "Enum";
+    private const string Suffix = "Enum";
 
     public string Name { get; set; } = name;
 
@@ -86,9 +86,9 @@ public class EnumDescriptor(string name, string parentName, string sourceNamespa
     {
         if (string.IsNullOrEmpty(parentName))
         {
-            return $"{classNamePrefix}{name.Dehumanize()}{suffix}";
+            return $"{classNamePrefix}{name.Dehumanize()}{Suffix}";
         }
 
-        return $"{classNamePrefix}{parentName}{name.Dehumanize()}{suffix}";
+        return $"{classNamePrefix}{parentName}{name.Dehumanize()}{Suffix}";
     }
 }

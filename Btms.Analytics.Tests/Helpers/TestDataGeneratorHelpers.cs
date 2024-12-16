@@ -1,6 +1,4 @@
-using System.Collections;
 using Btms.Consumers;
-using Btms.Model.Extensions;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,14 +13,14 @@ namespace Btms.Analytics.Tests.Helpers;
 
 public static class TestDataGeneratorHelpers
 {
-    private static int scenarioIndex = 0;
+    private static int _scenarioIndex;
     
     public static async Task<IHost> PushToConsumers(this IHost app, ScenarioConfig scenario)
     {
         var generatorResults = app.Generate(scenario);
-        scenarioIndex++;
+        _scenarioIndex++;
         
-        var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
+        app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         
         foreach (var generatorResult in generatorResults)
         {
@@ -31,9 +29,9 @@ public static class TestDataGeneratorHelpers
                 var scope = app.Services.CreateScope();
                 var consumer = (AlvsClearanceRequestConsumer)scope.ServiceProvider.GetRequiredService<IConsumer<AlvsClearanceRequest>>();
         
-                consumer.Context = new ConsumerContext()
+                consumer.Context = new ConsumerContext
                 {
-                    Headers = new Dictionary<string, object>() { { "messageId", cr!.Header!.EntryReference! } }
+                    Headers = new Dictionary<string, object> { { "messageId", cr.Header!.EntryReference! } }
                 };
             
                 await consumer.OnHandle(cr);
@@ -44,9 +42,9 @@ public static class TestDataGeneratorHelpers
                 var scope = app.Services.CreateScope();
                 var consumer = (NotificationConsumer)scope.ServiceProvider.GetRequiredService<IConsumer<ImportNotification>>();
         
-                consumer.Context = new ConsumerContext()
+                consumer.Context = new ConsumerContext
                 {
-                    Headers = new Dictionary<string, object>() { { "messageId", n!.ReferenceNumber! } }
+                    Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
                 };
             
                 await consumer.OnHandle(n);
@@ -63,7 +61,7 @@ public static class TestDataGeneratorHelpers
         var count = scenario.Count;
         var generator = scenario.Generator;
         
-        logger.LogInformation("Generating {Count}x{Days} {Generator}.", count, days, generator);
+        logger.LogInformation("Generating {Count}x{Days} {@Generator}", count, days, generator);
         var results = new List<ScenarioGenerator.GeneratorResult>();
         
         for (var d = -days + 1; d <= 0; d++)
@@ -75,7 +73,7 @@ public static class TestDataGeneratorHelpers
             {
                 logger.LogInformation("Generating item {I}", i);
 
-                results.Add(generator.Generate(scenarioIndex, i, entryDate, scenario));
+                results.Add(generator.Generate(_scenarioIndex, i, entryDate, scenario));
             }
         }
 

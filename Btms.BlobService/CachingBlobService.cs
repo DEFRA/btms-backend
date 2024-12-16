@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -29,16 +28,16 @@ public class CachingBlobService(
 
         if (Directory.Exists(path))
         {
-            logger.LogInformation("Folder {Path} exists, looking for files.", path);  
-           foreach (string f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
+            logger.LogInformation("Folder {Path} exists, looking for files", path);  
+           foreach (var f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
            {
                var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}/{options.Value.CachePath}", f);
                  logger.LogInformation("Found file {RelativePath}", relativePath);
-                 yield return await Task.FromResult(new BtmsBlobItem() { Name = relativePath });
+                 yield return await Task.FromResult(new BtmsBlobItem { Name = relativePath });
             }           
         }
         else{
-            logger.LogWarning("Cannot scan folder {Path} as it doesn't exist.", path);    
+            logger.LogWarning("Cannot scan folder {Path} as it doesn't exist", path);    
         }
     }
 
@@ -56,7 +55,7 @@ public class CachingBlobService(
         return true;
     }
     
-    private async Task<bool> CreateBlobAsync(IBlobItem item)
+    private async Task CreateBlobAsync(IBlobItem item)
     {
         var fullPath = Path.GetFullPath($"{options.Value.CachePath}/{item.Name}");
         
@@ -65,8 +64,6 @@ public class CachingBlobService(
 
         logger.LogInformation("Create file {FullPath}", fullPath);
         await File.WriteAllTextAsync(fullPath, item.Content);
-
-        return true;
     }
     
     public Task<bool> CleanAsync(string prefix)

@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
 namespace Btms.Consumers;
 

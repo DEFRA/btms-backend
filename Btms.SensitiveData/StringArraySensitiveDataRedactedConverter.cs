@@ -30,7 +30,7 @@ public class StringArraySensitiveDataRedactedConverter(SensitiveDataOptions sens
                 throw new JsonException();
             }
 
-            string? value = sensitiveDataOptions.Getter(reader.GetString()!);
+            var value = sensitiveDataOptions.Getter(reader.GetString()!);
 
             items.Add(value);
         }

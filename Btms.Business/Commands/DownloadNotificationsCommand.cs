@@ -1,17 +1,9 @@
-using System.Dynamic;
-using System.IO;
 using System.IO.Compression;
 using System.Text.Json.Serialization;
-using Bogus;
 using Btms.BlobService;
-using System.Threading;
 using MediatR;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using SharpCompress.Writers;
 using Btms.SensitiveData;
 using Btms.Types.Ipaffs;
-using Microsoft.AspNetCore.Hosting;
 using Btms.SyncJob;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
@@ -21,7 +13,7 @@ namespace Btms.Business.Commands;
 
 public class DownloadCommand : IRequest, ISyncJob
 {
-    [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
+    [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
     public SyncPeriod SyncPeriod { get; set; }
 
     public Guid JobId { get; } = Guid.NewGuid();
@@ -33,8 +25,8 @@ public class DownloadCommand : IRequest, ISyncJob
 
         public async Task Handle(DownloadCommand request, CancellationToken cancellationToken)
         {
-            string subFolder = $"temp\\{request.JobId}";
-            string rootFolder = Path.Combine(env.ContentRootPath, subFolder);
+            var subFolder = $"temp\\{request.JobId}";
+            var rootFolder = Path.Combine(env.ContentRootPath, subFolder);
             Directory.CreateDirectory(rootFolder);
 
             await Download(request, rootFolder, "RAW/IPAFFS/CHEDA", typeof(ImportNotification), cancellationToken);
@@ -60,12 +52,12 @@ public class DownloadCommand : IRequest, ISyncJob
             var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPath()}", cancellationToken);
 
             //Write local files
-            await Parallel.ForEachAsync(result, options, async (item, token) =>
+            await Parallel.ForEachAsync(result, options, async (item, _) =>
             {
                 var blobContent = await blobService.GetResource(item, cancellationToken);
-                string redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
-                var filename = System.IO.Path.Combine(rootFolder, item.Name.Replace('/', System.IO.Path.DirectorySeparatorChar));
-                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filename)!);
+                var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
+                var filename = Path.Combine(rootFolder, item.Name.Replace('/', Path.DirectorySeparatorChar));
+                Directory.CreateDirectory(Path.GetDirectoryName(filename)!);
                 await File.WriteAllTextAsync(filename, redactedContent, cancellationToken);
             });
         }

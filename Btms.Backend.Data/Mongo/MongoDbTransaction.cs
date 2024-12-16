@@ -4,16 +4,18 @@ namespace Btms.Backend.Data.Mongo;
 
 public class MongoDbTransaction(IClientSessionHandle session) : IMongoDbTransaction
 {
-    public IClientSessionHandle Session { get; private set; } = session;
+    public IClientSessionHandle? Session { get; private set; } = session;
 
     public async Task CommitTransaction(CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(Session);
         await Session.CommitTransactionAsync(cancellationToken: cancellationToken);
         Session = null!;
     }
 
     public async Task RollbackTransaction(CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(Session);
         await Session.AbortTransactionAsync(cancellationToken);
         Session = null!;
     }

@@ -1,4 +1,3 @@
-using Amazon.Runtime.Internal.Util;
 using Btms.Backend.Utils.Http;
 using Microsoft.Extensions.Logging.Abstractions;
 using FluentAssertions;
@@ -22,7 +21,7 @@ public class ProxyTest
 
         Proxy.ConfigureProxy(proxy, proxyUri, NullLogger.Instance);
 
-        var credentials = proxy.Credentials?.GetCredential(new System.Uri(proxyUri), "Basic");
+        var credentials = proxy.Credentials?.GetCredential(new Uri(proxyUri), "Basic");
 
         credentials?.UserName.Should().Be("user");
         credentials?.Password.Should().Be("password");

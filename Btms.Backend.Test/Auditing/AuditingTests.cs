@@ -13,8 +13,8 @@ public class AuditingTests
     [Fact]
     public void CreateAuditWhenDifferentIsDouble()
     {
-        var previous = new TestClassOne() { NumberValue = 1.2 };
-        var current = new TestClassOne() { NumberValue = 2.2 };
+        var previous = new TestClassOne { NumberValue = 1.2 };
+        var current = new TestClassOne { NumberValue = 2.2 };
         var auditEntry = AuditEntry.CreateUpdated(previous, current, "testid", 1, DateTime.UtcNow);
 
         auditEntry.Should().NotBeNull();
@@ -29,8 +29,8 @@ public class AuditingTests
     [Fact]
     public void CreateAuditWhenDifferentIsInt()
     {
-        var previous = new TestClassOne() { NumberValue = 1 };
-        var current = new TestClassOne() { NumberValue = 2 };
+        var previous = new TestClassOne { NumberValue = 1 };
+        var current = new TestClassOne { NumberValue = 2 };
         var auditEntry = AuditEntry.CreateUpdated(previous, current, "testid", 1, DateTime.UtcNow);
 
         auditEntry.Should().NotBeNull();

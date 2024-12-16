@@ -26,9 +26,9 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public Type ElementType => EntityQueryable.ElementType;
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;
-    public Task<T> Find(string id)
+    public Task<T?> Find(string id)
     {
-        return Task.FromResult(data.Find(x => x.Id == id))!;
+        return Task.FromResult(data.Find(x => x.Id == id));
     }
 
     public Task Insert(T item, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default)
@@ -46,13 +46,13 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         var existingItem = data.Find(x => x.Id == item.Id);
         if (existingItem == null) return Task.CompletedTask;
 
-        if ((existingItem._Etag ?? "") != etag)
+        if ((existingItem._Etag) != etag)
         {
             throw new ConcurrencyException(item.Id!, etag);
         }
 
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        data[data.IndexOf(existingItem!)] = item;
+        data[data.IndexOf(existingItem)] = item;
         return Task.CompletedTask;
     }
 

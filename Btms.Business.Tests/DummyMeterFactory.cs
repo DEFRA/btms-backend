@@ -4,7 +4,7 @@ namespace Btms.Business.Tests;
 
 internal sealed class DummyMeterFactory : IMeterFactory
 {
-    public Meter Create(MeterOptions options) => new Meter(options);
+    public Meter Create(MeterOptions options) => new(options);
 
     public void Dispose()
     {

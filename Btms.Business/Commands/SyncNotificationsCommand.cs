@@ -1,4 +1,3 @@
-using Azure.Core;
 using Btms.BlobService;
 using Btms.Metrics;
 using Btms.SensitiveData;
@@ -26,8 +25,7 @@ namespace Btms.Business.Commands
             IBlobService blobService,
             IOptions<BusinessOptions> businessOptions,
             ISyncJobStore syncJobStore)
-            : SyncCommand.Handler<SyncNotificationsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer,
-                blobService, businessOptions, syncJobStore)
+            : Handler<SyncNotificationsCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
         {
             public override async Task Handle(SyncNotificationsCommand request, CancellationToken cancellationToken)
             {

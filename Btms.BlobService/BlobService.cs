@@ -1,10 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using Btms.Azure;
 using Microsoft.Extensions.Logging;
-using System.IO;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Options;
 
@@ -33,7 +30,7 @@ public class BlobService(
     
     public async Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default)
     {
-        Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}. timeout={Timeout}, retries={Retries}.",
+        Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}. timeout={Timeout}, retries={Retries}",
             uri, options.Value.DmpBlobContainer, timeout, retries);
         
         try
@@ -44,13 +41,13 @@ public class BlobService(
             var folders = containerClient.GetBlobsByHierarchyAsync(prefix: "RAW/", delimiter: "/");
 
             var itemCount = 0;
-            await foreach (BlobHierarchyItem blobItem in folders)
+            await foreach (var blobItem in folders)
             {
                 Logger.LogInformation("\t{Prefix}", blobItem.Prefix);
                 itemCount++;
             }
 
-            return new Status()
+            return new Status
             {
                 Success = true, Description = $"Connected. {itemCount} blob folders found in RAW"
             };
@@ -58,7 +55,7 @@ public class BlobService(
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error loading files");
-            return new Status() { Success = false, Description = ex.Message };
+            return new Status { Success = false, Description = ex.Message };
         }
 
     }
@@ -78,17 +75,17 @@ public class BlobService(
         var files = containerClient.GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
 
 
-        await foreach (BlobItem item in files)
+        await foreach (var item in files)
         {
             if (item.Properties.ContentLength is not 0)
             {
                 yield return
-                    new BtmsBlobItem() { Name = item.Name };
+                    new BtmsBlobItem { Name = item.Name };
                 itemCount++;
             }
         }
 
-        Logger.LogDebug("GetResourcesAsync {ItemCount} blobs found.", itemCount);
+        Logger.LogDebug("GetResourcesAsync {ItemCount} blobs found", itemCount);
     }
 
     public async Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)

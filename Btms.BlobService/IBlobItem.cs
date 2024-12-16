@@ -1,5 +1,3 @@
-using Azure.Storage.Blobs;
-
 namespace Btms.BlobService;
 
 public interface IBlobItem

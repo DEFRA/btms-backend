@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 Bootstrap.GeneratorClassMaps();
 var builder = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((hostContext, services) =>
+    .ConfigureServices((_, services) =>
     {
         services.AddLogging(configure => configure.AddConsole().SetMinimumLevel(LogLevel.Warning));
         services.AddTransient<App>();
@@ -37,7 +37,7 @@ using var serviceScope = host.Services.CreateScope();
 
 namespace Btms.Backend.Cli
 {
-    class App(IMediator mediator)
+    internal class App(IMediator mediator)
     {
         public Task Run(string[] args)
         {

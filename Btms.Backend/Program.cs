@@ -37,14 +37,12 @@ using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
-
-using OpenTelemetry.Extensions.Hosting;
+using Btms.Backend.Asb;
 
 //-------- Configure the WebApplication builder------------------//
 
 var app = CreateWebApplication(args);
 await app.RunAsync();
-
 
 [ExcludeFromCodeCoverage]
 static WebApplication CreateWebApplication(string[] args)
@@ -81,13 +79,17 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 			.AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 	}
 
-	builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
+    builder.Services
+        .AddOptions<ServiceBusOptions>()
+        .Bind(builder.Configuration.GetSection(ServiceBusOptions.SectionName))
+        .ValidateDataAnnotations();
+
+builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
 		.PostConfigure(options =>
 		{
 			builder.Configuration.Bind(options);
 			builder.Configuration.GetSection("AuthKeyStore").Bind(options);
 		});
-
 
 	// Load certificates into Trust Store - Note must happen before Mongo and Http client connections
 	builder.Services.AddCustomTrustStore(logger);
@@ -218,7 +220,8 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
 {
 	builder.Services.AddHealthChecks()
 		.AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient(5, 1), timeout: TimeSpan.FromSeconds(15))
-		.AddMongoDb(timeout: TimeSpan.FromSeconds(15));
+		.AddMongoDb(timeout: TimeSpan.FromSeconds(15))
+        .AddBtmsAzureServiceBusSubscription(TimeSpan.FromSeconds(15));
 }
 
 [ExcludeFromCodeCoverage]
@@ -235,7 +238,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     var dotnetHealthEndpoint = "/health-dotnet";
 	app.MapGet("/health", GetStatus).AllowAnonymous();
 	app.MapHealthChecks(dotnetHealthEndpoint,
-		new HealthCheckOptions()
+		new HealthCheckOptions
 		{
 			Predicate = _ => true,
 			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

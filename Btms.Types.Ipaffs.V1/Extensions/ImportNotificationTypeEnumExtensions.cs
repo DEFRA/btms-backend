@@ -1,5 +1,3 @@
-using Btms.Types.Ipaffs;
-
 namespace Btms.Types.Ipaffs.V1.Extensions;
 
 public static class ImportNotificationTypeEnumExtensions

@@ -6,8 +6,6 @@ using MongoDB.Driver;
 using System.Collections;
 using Btms.Backend.Config;
 using Btms.Business.Commands;
-using Btms.SyncJob;
-using Btms.Backend.Mediatr;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Btms.Backend.Endpoints;
@@ -28,7 +26,7 @@ public static class ManagementEndpoints
 		}
 	}
 
-	private static string[] KeysToRedact = [
+	private static string[] _keysToRedact = [
 		"Mongo__DatabaseUri",
 		"MONGO_URI"
 	];
@@ -38,7 +36,7 @@ public static class ManagementEndpoints
 		return key.StartsWith("AZURE") ||
 			   key.StartsWith("BlobServiceOptions__Azure") ||
 			   key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
-			   KeysToRedact.Contains(key);
+			   _keysToRedact.Contains(key);
 	}
 
 	private const string Redacted = "--redacted--";
@@ -46,7 +44,7 @@ public static class ManagementEndpoints
 	private static DictionaryEntry Redact(DictionaryEntry d)
 	{
 
-		object? value = d.Value;
+		var value = d.Value;
 
 		try
 		{
@@ -65,8 +63,6 @@ public static class ManagementEndpoints
 				case string s when RedactKeys(s):
 					value = Redacted;
 					break;
-				default:
-					break;
 			}
 		}
 		catch (Exception)
@@ -74,7 +70,7 @@ public static class ManagementEndpoints
 			value = Redacted;
 		}
 
-		return new DictionaryEntry() { Key = d.Key, Value = value };
+		return new DictionaryEntry { Key = d.Key, Value = value };
 	}
 
     private static async Task<IResult> Initialise(
@@ -116,7 +112,7 @@ public static class ManagementEndpoints
 					indexes = GetIndexes(db, c["name"].ToString()!)
 				});
 
-		return Results.Ok(new { collections = collections });
+		return Results.Ok(new { collections });
 	}
 
 	private static async Task<IResult> DropCollectionsAsync(IMongoDbContext context)

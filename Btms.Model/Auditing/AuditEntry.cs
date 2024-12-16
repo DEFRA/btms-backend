@@ -16,7 +16,7 @@ public class AuditEntry
 
     public DateTime? CreatedSource { get; set; }
 
-    public DateTime CreatedLocal { get; set; } = System.DateTime.UtcNow;
+    public DateTime CreatedLocal { get; set; } = DateTime.UtcNow;
 
     public string Status { get; set; } = default!;
 
@@ -29,12 +29,12 @@ public class AuditEntry
 
     public bool IsCreated()
     {
-        return this.Status == "Created";
+        return Status == "Created";
     }
 
     public bool IsUpdated()
     {
-        return this.Status == "Created";
+        return Status == "Created";
     }
 
 
@@ -54,7 +54,7 @@ public class AuditEntry
 
     public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated)
     {
-        var auditEntry = new AuditEntry()
+        var auditEntry = new AuditEntry
         {
             Id = id,
             Version = version,
@@ -74,7 +74,7 @@ public class AuditEntry
 
     public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated)
     {
-        return new AuditEntry()
+        return new AuditEntry
         {
             Id = id,
             Version = version,
@@ -87,7 +87,7 @@ public class AuditEntry
 
     public static AuditEntry CreateSkippedVersion(string id, int version, DateTime? lastUpdated)
     {
-        return new AuditEntry()
+        return new AuditEntry
         {
             Id = id,
             Version = version,
@@ -100,7 +100,7 @@ public class AuditEntry
 
     public static AuditEntry CreateLinked(string id, int version, DateTime? lastUpdated)
     {
-        return new AuditEntry()
+        return new AuditEntry
         {
             Id = id,
             Version = version,
@@ -113,7 +113,7 @@ public class AuditEntry
 
     public static AuditEntry CreateMatch(string id, int version, DateTime? lastUpdated)
     {
-        return new AuditEntry()
+        return new AuditEntry
         {
             Id = id,
             Version = version,
@@ -143,7 +143,7 @@ public class AuditEntry
     {
         var diff = previous.CreatePatch(current);
 
-        var auditEntry = new AuditEntry()
+        var auditEntry = new AuditEntry
         {
             Id = id,
             Version = version,
@@ -204,7 +204,7 @@ public class AuditEntry
                 }
             }
 
-            return new AuditEntry.AuditDiffEntry()
+            return new AuditDiffEntry
             {
                 Path = operation.Path.ToString(), Op = operation.Op.ToString(), Value = value
             };

@@ -14,11 +14,9 @@ namespace Btms.Azure;
 /// - The ClientSecretCredential has an internal constructor accepting MsalConfidentialClient but nothing seems to use it
 /// - MsalConfidentialClient is itself internal 
 /// </summary>
-/// <param name="token"></param>
-/// <param name="expiresOn"></param>
 public class ConfidentialClientApplicationTokenCredential : TokenCredential
 {
-    private readonly string[] _scopes =  { "https://storage.azure.com/.default" };
+    private readonly string[] _scopes = ["https://storage.azure.com/.default"];
     
     private readonly IConfidentialClientApplication _app;
     public ConfidentialClientApplicationTokenCredential(IServiceProvider serviceProvider, IAzureConfig config)

@@ -16,7 +16,7 @@ namespace Btms.Business.Tests.Services.Linking;
 
 public class LinkingServiceTests
 {
-    private static readonly Random random = new ();
+    private static readonly Random Random = new ();
     private readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
     private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
@@ -287,29 +287,32 @@ public class LinkingServiceTests
             .Select(x => x != null ? x._MatchReference : $"{GenerateRandomReference()}")
             .Select(y => int.Parse(y)).ToList();
         
-        var mov = new Movement()
+        var mov = new Movement
         {
             Id = entryReference,
             EntryReference = entryReference,
             _Etag = etag,
-            Items = chedReferences.Select(x => new Items()
+            Items = chedReferences.Select(x => new Items
             {
                 Documents = [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
-            }).ToList()
+            }).ToList(),
+            ClearanceRequests = new()
         };
 
         var existingMovement = createExistingMovement ? 
-            new Movement()
+            new Movement
             {
                 Id = entryReference,
                 EntryReference = entryReference,
-                Items = chedReferences.Select(x => new Items()
+                Items = chedReferences.Select(x => new Items
                 {
                     Documents = fieldsOfInterest
                         ? []
                         : [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
-                }).ToList()
+                }).ToList(),
+                ClearanceRequests = new()
             } : null;
+
 
         var changeSet = mov.GenerateChangeSet(existingMovement);
         var output = LinkContext.ForMovement(mov, createExistingMovement ? changeSet : null);
@@ -320,7 +323,7 @@ public class LinkingServiceTests
     private ImportNotificationLinkContext CreateNotificationContext(ImportNotification? ched,
         bool createExistingNotification, bool fieldsOfInterest)
     {
-        int chedReference = ched != null ? int.Parse(ched._MatchReference) : GenerateRandomReference();
+        var chedReference = ched != null ? int.Parse(ched._MatchReference) : GenerateRandomReference();
         var etag = ched != null ? ched._Etag : string.Empty;
 
         return CreateNotificationContext(chedReference, etag, createExistingNotification, fieldsOfInterest);
@@ -328,7 +331,7 @@ public class LinkingServiceTests
     
     private ImportNotificationLinkContext CreateNotificationContext(int chedReference, string etag, bool createExistingNotification, bool fieldsOfInterest)
     {
-        var notification = new ImportNotification()
+        var notification = new ImportNotification
         {
             Id = GenerateNotificationReference(chedReference),
             Updated = DateTime.UtcNow,
@@ -342,7 +345,7 @@ public class LinkingServiceTests
             : [new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }];
 
         var existingNotification = createExistingNotification
-            ? new ImportNotification()
+            ? new ImportNotification
             {
                 Id = GenerateNotificationReference(chedReference),
                 Updated = DateTime.UtcNow,
@@ -366,10 +369,10 @@ public class LinkingServiceTests
             .Range(0, unMatchedChedsPerMovement)
             .Select(_ => GenerateRandomReference()).ToList();
         
-        for (int i = 0; i < chedCount; i++)
+        for (var i = 0; i < chedCount; i++)
         {
             var matchingRef = GenerateRandomReference();
-            var ched = new ImportNotification()
+            var ched = new ImportNotification
             {
                 Updated = DateTime.UtcNow.AddHours(-1),
                 ReferenceNumber = GenerateNotificationReference(matchingRef),
@@ -381,10 +384,10 @@ public class LinkingServiceTests
             await dbContext.Notifications.Insert(ched);
         }
 
-        for (int i = 0; i < movementCount; i++)
+        for (var i = 0; i < movementCount; i++)
         {
             var entryRef = $"TESTREF{GenerateRandomReference()}";
-            var mov = new Movement()
+            var mov = new Movement
             {
                 Id = entryRef,
                 EntryReference = entryRef,
@@ -400,17 +403,17 @@ public class LinkingServiceTests
             
             movements.Add(mov);
             
-            for (int j = 0; j < matchedChedsPerMovement; j++)
+            for (var j = 0; j < matchedChedsPerMovement; j++)
             {
                 var matchRef = cheds[j]._MatchReference;
                 var refNo = int.Parse(matchRef);
                 
                 mov.Items.Add(
-                    new Items()
+                    new Items
                     {
                         Documents =
                         [
-                            new Document() { DocumentReference = GenerateDocumentReference(refNo) }
+                            new Document { DocumentReference = GenerateDocumentReference(refNo) }
                         ]
                     });
             }
@@ -418,11 +421,11 @@ public class LinkingServiceTests
             foreach (var refNo in unmatchedChedRefs)
             {
                 mov.Items.Add(
-                    new Items()
+                    new Items
                     {
                         Documents =
                         [
-                            new Document() { DocumentReference = GenerateDocumentReference(refNo) }
+                            new Document { DocumentReference = GenerateDocumentReference(refNo) }
                         ]
                     });
             }
@@ -435,11 +438,11 @@ public class LinkingServiceTests
     
     private static int GenerateRandomReference()
     {
-        string intString = "1";
+        var intString = "1";
         
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
-            intString += random.Next(9).ToString();
+            intString += Random.Next(9).ToString();
         }
         
         return int.Parse(intString);

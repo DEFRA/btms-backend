@@ -1,5 +1,4 @@
 using System.Text.Json;
-using Btms.SensitiveData;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -13,16 +12,15 @@ public class SensitiveDataSerializerTests
     public void WhenDoNotIncludeSensitiveData_ThenDataShouldBeRedacted()
     {
         // ARRANGE
-        SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = false };
+        var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = false };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
-        var simpleClass = new SimpleClass()
+        var simpleClass = new SimpleClass
         {
             SimpleStringOne = "Test String One",
             SimpleStringTwo = "Test String Two",
-            SimpleStringArrayOne =
-                new[] { "Test String Array One Item One", "Test String Array One Item Two" },
-            SimpleStringArrayTwo = new[] { "Test String Array Two Item One", "Test String Array Two Item Two" }
+            SimpleStringArrayOne = ["Test String Array One Item One", "Test String Array One Item Two"],
+            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"]
         };
 
         var json = JsonSerializer.Serialize(simpleClass);
@@ -43,16 +41,16 @@ public class SensitiveDataSerializerTests
     public void WhenIncludeSensitiveData_ThenDataShouldNotBeRedacted()
     {
         // ARRANGE
-        SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = true };
+        var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = true };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
-        var simpleClass = new SimpleClass()
+        var simpleClass = new SimpleClass
         {
             SimpleStringOne = "Test String One",
             SimpleStringTwo = "Test String Two",
             SimpleStringArrayOne =
-                new[] { "Test String Array One Item One", "Test String Array One Item Two" },
-            SimpleStringArrayTwo = new[] { "Test String Array Two Item One", "Test String Array Two Item Two" }
+                ["Test String Array One Item One", "Test String Array One Item Two"],
+            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"]
         };
 
         var json = JsonSerializer.Serialize(simpleClass);
@@ -73,25 +71,25 @@ public class SensitiveDataSerializerTests
     public void WhenDoNotIncludeSensitiveData_AndRequestForRawJson_ThenDataShouldBeRedacted()
     {
         // ARRANGE
-        SensitiveDataOptions options = new SensitiveDataOptions { Getter = s => "TestRedacted", Include = false };
+        var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = false };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 
-        var simpleClass = new SimpleClass()
+        var simpleClass = new SimpleClass
         {
             SimpleStringOne = "Test String One",
             SimpleStringTwo = "Test String Two",
             SimpleStringArrayOne =
-                new[] { "Test String Array One Item One", "Test String Array One Item Two" },
-            SimpleStringArrayTwo = new[] { "Test String Array Two Item One", "Test String Array Two Item Two" }
+                ["Test String Array One Item One", "Test String Array One Item Two"],
+            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"]
         };
 
-        var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+        var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
         // ACT
         var result = serializer.RedactRawJson(json, typeof(SimpleClass));
 
         // ASSERT
-        var resultClass = JsonSerializer.Deserialize<SimpleClass>(result, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        var resultClass = JsonSerializer.Deserialize<SimpleClass>(result, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         resultClass?.SimpleStringOne.Should().Be("TestRedacted");
         resultClass?.SimpleStringTwo.Should().Be("Test String Two");
         resultClass?.SimpleStringArrayOne[0].Should().Be("TestRedacted");
