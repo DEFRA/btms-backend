@@ -35,6 +35,7 @@ public class ClearanceRequestConsumerTests
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
             var matchingService = Substitute.For<IMatchingService>();
+            var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
 
         preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(outcome, movement, null)));
@@ -71,6 +72,7 @@ public class ClearanceRequestConsumerTests
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
             var matchingService = Substitute.For<IMatchingService>();
+            var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
 
         mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)));
