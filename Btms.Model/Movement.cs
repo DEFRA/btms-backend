@@ -123,7 +123,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     public bool MergeDecision(string path, AlvsClearanceRequest clearanceRequest)
     {
-        if (clearanceRequest.ServiceHeader?.SourceSystem == "Btms")
+        if (clearanceRequest.ServiceHeader?.SourceSystem == "BTMS")
         {
             foreach (var item in clearanceRequest.Items!)
             {
