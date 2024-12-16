@@ -113,6 +113,12 @@ public partial class Header  //
     [JsonPropertyName("masterUCR")]
     public string? MasterUcr { get; set; }
 
-	}
+    /// <summary>
+    /// 
+    /// </summary
+    [JsonPropertyName("decisionNumber")]
+    public int? DecisionNumber { get; set; }
+
+}
 
 

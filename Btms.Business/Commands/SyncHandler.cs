@@ -57,7 +57,6 @@ public abstract class SyncCommand : IRequest, ISyncJob
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
-        // private readonly int defaultDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
         protected readonly BusinessOptions Options = options.Value; 
         
         public const string ActivityName = "Btms.ProcessBlob";

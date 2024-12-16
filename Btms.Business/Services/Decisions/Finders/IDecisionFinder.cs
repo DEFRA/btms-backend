@@ -4,5 +4,5 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public interface IDecisionFinder
 {
-    DecisionResult FindDecision(ImportNotification notification);
+    DecisionFinderResult FindDecision(ImportNotification notification);
 }

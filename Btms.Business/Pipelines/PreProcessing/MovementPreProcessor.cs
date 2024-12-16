@@ -71,6 +71,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             CreatedSource = request.ServiceHeader?.ServiceCalled,
             ArrivesAt = request.Header.ArrivesAt,
             EntryReference = request.Header.EntryReference!,
+            EntryVersionNumber = request.Header.EntryVersionNumber.GetValueOrDefault(),
             MasterUcr = request.Header.MasterUcr!,
             DeclarationType = request.Header.DeclarationType!,
             SubmitterTurn = request.Header.SubmitterTurn!,

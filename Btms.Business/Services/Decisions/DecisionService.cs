@@ -1,58 +1,70 @@
 using Btms.Business.Services.Decisions.Finders;
 using Btms.Model.Ipaffs;
+using SlimMessageBus;
 
 namespace Btms.Business.Services.Decisions;
 
-public class DecisionService : IDecisionService
+public class DecisionService(IPublishBus bus) : IDecisionService
 {
-    public async Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
+
+    public async Task<DecisionResult> Process(DecisionContext decisionContext, CancellationToken cancellationToken)
     {
-        // Validate and prerequisite checks
-        
-        var decisions = decisionContext.Notifications.Select(x => (x.Id, GetDecision(x))).ToList();
-        
-        foreach (var movement in decisionContext.Movements)
+        var decisionResult = await DeriveDecision(decisionContext);
+
+        var messages = await DecisionMessageBuilder.Build(decisionContext, decisionResult);
+
+        foreach (var message in messages)
         {
-            // Generate list matched items -> decisions
-            
-            foreach (var item in movement.Items)
+            var headers = new Dictionary<string, object>()
             {
-                // check decisions list for match reference, if no match then drop out with "no-match"
-                
-            }
-            
-            // Return decision based on prioritisation from confluence
+                { "messageId", Guid.NewGuid() }
+            };
+            await bus.Publish(message, "DECISIONS", headers: headers, cancellationToken: cancellationToken);
         }
-        
-        await Task.CompletedTask;
-        return new DecisionResult(DecisionCode.N02);
+
+        return decisionResult;
     }
 
-    private DecisionResult GetDecision(ImportNotification notification)
+    private static Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
+    {
+        var decisionsResult = new DecisionResult();
+        if (decisionContext.GenerateNoMatch)
+        {
+            foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
+            {
+                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference,
+                    DecisionCode.X00);
+            }
+        }
+
+        ////Not part of no matches, and the finders haven't been implemented yet, so leaving this commented out for the moment
+        ////foreach (var match in decisionContext.MatchingResult.Matches)
+        ////{
+        ////    var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+        ////    var decisionCode = GetDecision(n);
+        ////    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode);
+        ////}
+
+        return Task.FromResult(decisionsResult);
+    }
+
+    
+#pragma warning disable S1144
+    private static DecisionFinderResult GetDecision(ImportNotification notification)
+#pragma warning restore S1144
     {
         // get decision finder - fold IUU stuff into the decision finder for fish?
-        IDecisionFinder finder;
-        switch (notification.ImportNotificationType)
+        IDecisionFinder finder = notification.ImportNotificationType switch
         {
-            case ImportNotificationTypeEnum.Ced:
-                finder = new ChedDDecisionFinder();
-                break;
-            
-            case ImportNotificationTypeEnum.Cveda:
-                finder = new  ChedADecisionFinder();
-                break;
+            ImportNotificationTypeEnum.Ced => new ChedDDecisionFinder(),
+            ImportNotificationTypeEnum.Cveda => new ChedADecisionFinder(),
+            ImportNotificationTypeEnum.Cvedp => new ChedPDecisionFinder(),
+            ImportNotificationTypeEnum.Chedpp => new ChedPPDecisionFinder(),
+            _ => throw new InvalidOperationException("Invalid ImportNotificationType")
+        };
 
-            case ImportNotificationTypeEnum.Cvedp:
-                finder = new  ChedPDecisionFinder();
-                break;
-
-            case ImportNotificationTypeEnum.Chedpp:
-                finder = new  ChedPPDecisionFinder();
-                break;
-
-            default: throw new InvalidOperationException("Invalid ImportNotificationType");
-        }
-        
         return finder.FindDecision(notification);
     }
+
+
 }

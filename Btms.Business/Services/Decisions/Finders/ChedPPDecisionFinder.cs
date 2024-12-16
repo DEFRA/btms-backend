@@ -5,7 +5,7 @@ namespace Btms.Business.Services.Decisions.Finders;
 // ReSharper disable once InconsistentNaming
 public class ChedPPDecisionFinder : IDecisionFinder
 {
-    public DecisionResult FindDecision(ImportNotification notification)
+    public DecisionFinderResult FindDecision(ImportNotification notification)
     {
         throw new NotImplementedException();
     }
