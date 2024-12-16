@@ -1,19 +1,17 @@
-using System.Diagnostics;
 using Btms.Business.Services.Decisions.Finders;
-using Btms.Model;
 using Btms.Model.Ipaffs;
 using SlimMessageBus;
 
 namespace Btms.Business.Services.Decisions;
 
-public class DecisionService(IDecisionMessageBuilder messageBuilder, IPublishBus bus) : IDecisionService
+public class DecisionService(IPublishBus bus) : IDecisionService
 {
 
     public async Task<DecisionResult> Process(DecisionContext decisionContext, CancellationToken cancellationToken)
     {
         var decisionResult = await DeriveDecision(decisionContext);
 
-        var messages = await messageBuilder.Build(decisionResult);
+        var messages = await DecisionMessageBuilder.Build(decisionContext, decisionResult);
 
         foreach (var message in messages)
         {
@@ -29,41 +27,24 @@ public class DecisionService(IDecisionMessageBuilder messageBuilder, IPublishBus
 
     private static Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
-        var decisionResult = new DecisionResult();
-        foreach (var movement in decisionContext.Movements)
+        var decisionsResult = new DecisionResult();
+        if (decisionContext.GenerateNoMatch)
         {
-            var movementDecisionResult = decisionResult.AddDecision(movement.EntryReference, movement.EntryVersionNumber);
-            
-            foreach (var item in movement.Items)
+            foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
             {
-                if (item.Documents == null) continue;
-
-                var itemDecisionResult = movementDecisionResult.AddDecision(item);
-                foreach (var document in item.Documents)
-                {
-                    Debug.Assert(document.DocumentReference != null);
-                    var notification = decisionContext.Notifications.Find(x =>
-                        x._MatchReference == MatchIdentifier.FromCds(document.DocumentReference).Identifier);
-
-                    if (notification is null)
-                    {
-                        if (decisionContext.GenerateNoMatch)
-                        {
-                            itemDecisionResult.AddDecision(document, DecisionCode.X00);
-                        }
-                    }
-                    else
-                    {
-                        var decision = GetDecision(notification);
-                        Console.WriteLine(decision);
-                        ////itemDecisionResult.AddDecision(document, decision.DecisionCode);
-                    }
-                }
+                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference,
+                    DecisionCode.X00);
             }
         }
 
-        return Task.FromResult(decisionResult);
-        
+        foreach (var match in decisionContext.MatchingResult.Matches)
+        {
+            var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+            var decisionCode = GetDecision(n);
+            decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode);
+        }
+
+        return Task.FromResult(decisionsResult);
     }
 
     private static DecisionFinderResult GetDecision(ImportNotification notification)
@@ -81,5 +62,5 @@ public class DecisionService(IDecisionMessageBuilder messageBuilder, IPublishBus
         return finder.FindDecision(notification);
     }
 
-    
+
 }

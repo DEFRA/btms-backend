@@ -123,32 +123,30 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     public bool MergeDecision(string path, AlvsClearanceRequest clearanceRequest)
     {
-        var before = this.ToJsonString();
-        foreach (var item in clearanceRequest.Items!)
+        if (clearanceRequest.ServiceHeader?.SourceSystem == "Btms")
         {
-            var existingItem = this.Items.Find(x => x.ItemNumber == item.ItemNumber);
-
-            if (existingItem is not null)
+            foreach (var item in clearanceRequest.Items!)
             {
-                existingItem.MergeChecks(item);
+                var existingItem = this.Items.Find(x => x.ItemNumber == item.ItemNumber);
+
+                if (existingItem is not null)
+                {
+                    existingItem.MergeChecks(item);
+                }
             }
         }
 
-        var after = this.ToJsonString();
-
-        var auditEntry = AuditEntry.CreateDecision(before, after,
+        var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),
             clearanceRequest.Header!.EntryVersionNumber.GetValueOrDefault(),
             clearanceRequest.ServiceHeader!.ServiceCalled,
             clearanceRequest.Header.DeclarantName!);
-        if (auditEntry.Diff.Any())
-        {
-            Decisions ??= new List<AlvsClearanceRequest>();
-            Decisions.Add(clearanceRequest);
-            this.Update(auditEntry);
-        }
 
-        return auditEntry.Diff.Any();
+        Decisions ??= [];
+        Decisions.Add(clearanceRequest);
+        this.Update(auditEntry);
+
+        return true;
     }
 
     private static string BuildNormalizedDecisionPath(string fullPath)

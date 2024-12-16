@@ -1,6 +1,7 @@
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
+using Btms.Business.Services.Matching;
 using Btms.Consumers.Extensions;
 using Btms.Model.Auditing;
 using Btms.Types.Ipaffs;
@@ -29,12 +30,13 @@ namespace Btms.Consumers.Tests
             modelNotification.Changed(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
             var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
+            var matchingService = Substitute.For<IMatchingService>();
             var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
 
             preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
                 .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
-            var consumer = new NotificationConsumer(preProcessor, mockLinkingService, decisionService, NullLogger<NotificationConsumer>.Instance);
+            var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, NullLogger<NotificationConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }
@@ -58,6 +60,7 @@ namespace Btms.Consumers.Tests
             modelNotification.Changed(AuditEntry.CreateCreatedEntry(modelNotification, "Test", 1, DateTime.Now));
             var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
+            var matchingService = Substitute.For<IMatchingService>();
             var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
 
             mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
@@ -67,7 +70,7 @@ namespace Btms.Consumers.Tests
                 .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(PreProcessingOutcome.New, modelNotification, null)));
 
 
-            var consumer = new NotificationConsumer(preProcessor, mockLinkingService, decisionService, NullLogger<NotificationConsumer>.Instance);
+            var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, NullLogger<NotificationConsumer>.Instance);
             consumer.Context = new ConsumerContext()
             {
                 Headers = new Dictionary<string, object>() { { "messageId", notification!.ReferenceNumber! } }

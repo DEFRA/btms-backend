@@ -102,7 +102,7 @@ public static class AnalyticsExtensions
         }
         catch(Exception ex)
         {
-            logger.LogError(ex, "Error querying Mongo : {message}", ex.Message);
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
         finally 
@@ -122,7 +122,7 @@ public static class AnalyticsExtensions
         }
         catch(Exception ex)
         {
-            logger.LogError(ex, "Error querying Mongo : {message}", ex.Message);
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
         finally 

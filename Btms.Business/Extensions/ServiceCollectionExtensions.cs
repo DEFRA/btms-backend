@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
+using Btms.Business.Services.Matching;
 using Btms.Types.Alvs;
 
 namespace Btms.Business.Extensions
@@ -63,8 +64,7 @@ namespace Btms.Business.Extensions
 
             services.AddScoped<ILinkingService, LinkingService>();
             services.AddScoped<IDecisionService, DecisionService>();
-            services.AddScoped<IDecisionMessageBuilder, DecisionMessageBuilder>();
-            services.AddSingleton<IMessageNumberProvider, MemoryMessageNumberProvider>();
+            services.AddScoped<IMatchingService, MatchingService>();
 
             services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
             services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();

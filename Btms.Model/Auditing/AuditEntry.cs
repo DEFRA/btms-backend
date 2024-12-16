@@ -124,13 +124,18 @@ public class AuditEntry
         };
     }
 
-    public static AuditEntry CreateDecision(string previous, string current, string id, int version,
+    public static AuditEntry CreateDecision(string id, int version,
         DateTime? lastUpdated, string lastUpdatedBy)
     {
-        var node1 = JsonNode.Parse(previous);
-        var node2 = JsonNode.Parse(current);
-
-        return CreateInternal(node1!, node2!, id, version, lastUpdated, "Decision");
+        return new AuditEntry()
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = lastUpdated,
+            CreatedBy = CreatedBySystem,
+            CreatedLocal = DateTime.UtcNow,
+            Status = "Decision"
+        };
     }
 
     private static AuditEntry CreateInternal(JsonNode previous, JsonNode current, string id, int version,

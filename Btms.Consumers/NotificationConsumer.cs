@@ -5,10 +5,12 @@ using Microsoft.Extensions.Logging;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
+using Btms.Business.Services.Matching;
 
 namespace Btms.Consumers
 {
-    internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService, 
+    internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService,
+        IMatchingService matchingService,
         IDecisionService decisionService,
         ILogger<NotificationConsumer> logger)
         : IConsumer<ImportNotification>, IConsumerWithContext
@@ -38,9 +40,12 @@ namespace Btms.Consumers
                     if (linkResult.Outcome == LinkOutcome.Linked)
                     {
                         Context.Linked();
-
-                        await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
                     }
+
+                    var matchResult = await matchingService.Process(
+                        new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
+
+                    await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
                 }
 
             }

@@ -26,11 +26,6 @@ namespace Btms.Consumers.Extensions
                 .GetSection(ConsumerOptions.SectionName)
                 .Get<ConsumerOptions>() ?? new ConsumerOptions();
 
-            // services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
-            //
-            // var consumerOpts = services.GetRequiredService<IOptions<ConsumerOptions>>();
-                
-
             services.AddBtmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsInterceptor<>));

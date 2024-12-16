@@ -72,7 +72,7 @@ public class CachingBlobService(
     public Task<bool> CleanAsync(string prefix)
     {
         var fullPath = Path.GetFullPath($"{options.Value.CachePath}/{prefix}");
-        logger.LogInformation("Clearing local storage {path}", fullPath);
+        logger.LogInformation("Clearing local storage {Path}", fullPath);
         
         try
         {

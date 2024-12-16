@@ -1,52 +1,34 @@
+using Btms.Model;
+using Btms.Model.Ipaffs;
 using Btms.Types.Alvs;
 
 namespace Btms.Business.Services.Decisions;
 
-public interface IMessageNumberProvider
+public static class DecisionMessageBuilder
 {
-    Task<int> Next(string entryReference);
-}
-
-public class MemoryMessageNumberProvider : IMessageNumberProvider
-{
-    private readonly Dictionary<string, int> _sequenceNumbers = new Dictionary<string, int>();
-    public Task<int> Next(string entryReference)
-    {
-        if (_sequenceNumbers.TryGetValue(entryReference, out var value))
-        {
-            _sequenceNumbers[entryReference] = value + 1;
-        }
-        else
-        {
-            _sequenceNumbers[entryReference] = 1;
-        }
-
-        return Task.FromResult(_sequenceNumbers[entryReference]);
-    }
-}
-
-public class DecisionMessageBuilder(IMessageNumberProvider messageNumberProvider) : IDecisionMessageBuilder
-{
-    public async Task<List<AlvsClearanceRequest>> Build(DecisionResult decisionResult)
+    public static Task<List<AlvsClearanceRequest>> Build(DecisionContext decisionContext, DecisionResult decisionResult)
     {
         var list = new List<AlvsClearanceRequest>();
-        foreach (var decision in decisionResult.MovementDecisions)
+
+        var movements = decisionResult.Decisions.GroupBy(x => x.MovementId).ToList();
+
+        foreach (var movementGroup in movements)
         {
-            var messageNumber = await messageNumberProvider.Next(decision.EntryReference);
+            var movement = decisionContext.Movements.First(x => x.Id == movementGroup.Key);
+            var messageNumber = movement is { Decisions: null } ? 1 : movement.Decisions.Count + 1;
             var decisionMessage = new AlvsClearanceRequest()
             {
                 ServiceHeader = BuildServiceHeader(),
-                Header = BuildHeader(decision, messageNumber),
-                Items = BuildItems(decision).ToArray()
+                Header = BuildHeader(movement, messageNumber),
+                Items = BuildItems(movement, movementGroup).ToArray()
             };
-
             list.Add(decisionMessage);
         }
 
-        return list;
+        return Task.FromResult(list);
     }
 
-    private ServiceHeader BuildServiceHeader()
+    private static ServiceHeader BuildServiceHeader()
     {
         return new ServiceHeader()
         {
@@ -57,41 +39,77 @@ public class DecisionMessageBuilder(IMessageNumberProvider messageNumberProvider
         };
     }
 
-    private Header BuildHeader(MovementDecisionResult decision, int messageNumber)
+    private static Header BuildHeader(Movement movement, int messageNumber)
     {
         return new Header()
         {
-            EntryReference = decision.EntryReference, EntryVersionNumber = decision.EntryVersion,
+            EntryReference = movement.EntryReference,
+            EntryVersionNumber = movement.EntryVersionNumber,
             DecisionNumber = messageNumber
         };
     }
 
 
-    private IEnumerable<Check> BuildChecks(ItemDecisionResult itemDecision)
+   
+
+    private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementGroup)
     {
-        if (itemDecision.Item.Checks != null)
+        var itemGroups = movementGroup.GroupBy(x => x.ItemNumber);
+        foreach (var itemGroup in itemGroups)
         {
-            foreach (var itemCheck in itemDecision.Item.Checks)
+            var item = movement.Items.First(x => x.ItemNumber == itemGroup.Key);
+            yield return new Items()
             {
+                ItemNumber = itemGroup.Key,
+                Checks = BuildChecks(item, itemGroup).ToArray()
+            };
+        }
+    }
+
+    private static IEnumerable<Check> BuildChecks(Model.Alvs.Items item, IGrouping<int, DocumentDecisionResult> itemsGroup)
+    {
+        if (item.Checks != null)
+        {
+            foreach (var itemCheck in item.Checks)
+            {
+                var decisionCode = itemsGroup.Max(x => x.DecisionCode);
                 yield return new Check()
                 {
                     CheckCode = itemCheck.CheckCode,
-                    DecisionCode = itemDecision.GetDecisionCode().ToString(),
-                    DecisionReasons = itemDecision.GetDecisionReasons()
+                    DecisionCode = itemsGroup.Max(x => x.DecisionCode).ToString(),
+                    DecisionReasons = BuildDecisionReasons(item, decisionCode)
                 };
             }
         }
     }
 
-    private IEnumerable<Items> BuildItems(MovementDecisionResult movementDecision)
+    public static string[] BuildDecisionReasons(Model.Alvs.Items item, DecisionCode decisionCode)
     {
-        foreach (var itemDecision in movementDecision.ItemDecisions)
+        switch (decisionCode)
         {
-            yield return new Items()
-            {
-                ItemNumber = itemDecision.Item.ItemNumber,
-                Checks = BuildChecks(itemDecision).ToArray()
-            };
+            case DecisionCode.X00:
+                var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
+                var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
+                return
+                [
+                    $"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration."
+                ];
         }
+
+        return [];
+    }
+
+    private static string MapToChedType(string documentCode)
+    {
+        return documentCode switch
+        {
+            "N002" or "N851" or "9115" => ImportNotificationTypeEnum.Chedpp.ToString(),
+            "N852" or "C678" => ImportNotificationTypeEnum.Ced.ToString(),
+            "C640" => ImportNotificationTypeEnum.Cveda.ToString(),
+            "C641" or "C673" or "N853" => ImportNotificationTypeEnum.Cvedp.ToString(),
+            _ => throw new ArgumentOutOfRangeException(nameof(documentCode), documentCode, null)
+        };
+
+
     }
 }
