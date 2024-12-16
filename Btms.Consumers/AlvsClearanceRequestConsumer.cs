@@ -3,11 +3,16 @@ using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 using Btms.Consumers.Extensions;
 using Btms.Business.Pipelines.PreProcessing;
+using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
+using Btms.Business.Services.Matching;
 
 namespace Btms.Consumers;
 
-internal class AlvsClearanceRequestConsumer(IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor, ILinkingService linkingService, ILogger<AlvsClearanceRequestConsumer> logger)
+    internal class AlvsClearanceRequestConsumer(IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor, ILinkingService linkingService,
+        IMatchingService matchingService,
+        IDecisionService decisionService, 
+        ILogger<AlvsClearanceRequestConsumer> logger)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
     public async Task OnHandle(AlvsClearanceRequest message)
@@ -36,6 +41,11 @@ internal class AlvsClearanceRequestConsumer(IPreProcessor<AlvsClearanceRequest, 
                 {
                     Context.Linked();
                 }
+
+                    var matchResult = await matchingService.Process(
+                        new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
+
+                    await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true), Context.CancellationToken);
             }
         }
     }

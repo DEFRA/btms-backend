@@ -37,6 +37,25 @@ public partial class Check  //
     [System.ComponentModel.Description("")]
     public string? DepartmentCode { get; set; }
 
-	}
+    /// <summary>
+    /// 
+    /// </summary>
+    [Attr]
+    [JsonPropertyName("decisionCode")]
+    public string? DecisionCode { get; set; }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Attr]
+    [JsonPropertyName("decisionsValidUntil")]
+    public DateTime? DecisionsValidUntil { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionReasons")]
+    public string[]? DecisionReasons { get; set; }
+
+}
 
 

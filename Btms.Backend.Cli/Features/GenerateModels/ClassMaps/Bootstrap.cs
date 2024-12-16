@@ -22,9 +22,35 @@ internal static class Bootstrap
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
+
+            map.AddProperty(new PropertyDescriptor("decisionNumber", "decisionNumber", "int",
+                "", false, false,
+                IpaffsDescriptorBuilder.ClassNamePrefix));
         });
 
-        
+
+
+        GeneratorClassMap.RegisterClassMap("Check", map =>
+        {
+            map.AddProperty(new PropertyDescriptor("decisionCode", "decisionCode", "string",
+                "", false, false,
+                IpaffsDescriptorBuilder.ClassNamePrefix));
+
+            map.AddProperty(new PropertyDescriptor("decisionsValidUntil", "decisionsValidUntil", "DateTime",
+                "", false, false,
+                IpaffsDescriptorBuilder.ClassNamePrefix));
+
+            map.AddProperty(new PropertyDescriptor("decisionReasons", "decisionReasons", "string",
+                "", false, true,
+                IpaffsDescriptorBuilder.ClassNamePrefix));
+
+
+            map.MapProperty("MasterUCR").SetName("MasterUcr");
+            map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
+            map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
+        });
+
+
         GeneratorClassMap.RegisterClassMap("ServiceHeader",
             map => { map.MapProperty("ServiceCallTimestamp").IsDateTime().SetInternalName("ServiceCalled"); });
 

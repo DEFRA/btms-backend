@@ -4,11 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Btms.Common.Extensions;
 
-public interface IValidatingOptions
-{
-    public bool Validate();
-}
-
 public static class OptionsExtensions
 {
     public static OptionsBuilder<TOptions> BtmsAddOptions<TOptions, TValidator>(this IServiceCollection services,

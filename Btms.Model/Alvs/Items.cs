@@ -16,9 +16,22 @@ namespace Btms.Model.Alvs;
 /// </summary>
 public partial class Items  //
 {
+    public List<string> GetIdentifiers()
+    {
+        var list = new HashSet<string>();
+        if (Documents != null)
+        {
+            foreach (var itemDocument in Documents)
+            {
+                if (MatchIdentifier.TryFromCds(itemDocument.DocumentReference!, out var identifier))
+                {
+                    list.Add(identifier.Identifier);
+                }
+            }
+        }
 
-
-   
+        return list.ToList();
+    }
 
     public void MergeChecks(Items decisionItems)
     {

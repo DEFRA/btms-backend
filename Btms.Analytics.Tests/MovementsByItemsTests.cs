@@ -24,13 +24,13 @@ public class MovementsByItemsTests(
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
-        result.Count().Should().Be(2);
+        result.Count.Should().Be(2);
         result.Select(r => r.Name).Order().Should().Equal("Linked", "Not Linked");
         
         result.Should().AllSatisfy(r =>
         {
             r.Dimension.Should().Be("Item Count");
-            r.Results.Count().Should().NotBe(0);
+            r.Results.Count.Should().NotBe(0);
         });
         
         result.Should().HaveResults();
