@@ -37,17 +37,21 @@ public class DecisionService(IPublishBus bus) : IDecisionService
             }
         }
 
-        foreach (var match in decisionContext.MatchingResult.Matches)
-        {
-            var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
-            var decisionCode = GetDecision(n);
-            decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode);
-        }
+        ////Not part of no matches, and the finders haven't been implemented yet, so leaving this commented out for the moment
+        ////foreach (var match in decisionContext.MatchingResult.Matches)
+        ////{
+        ////    var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+        ////    var decisionCode = GetDecision(n);
+        ////    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode);
+        ////}
 
         return Task.FromResult(decisionsResult);
     }
 
+    
+#pragma warning disable S1144
     private static DecisionFinderResult GetDecision(ImportNotification notification)
+#pragma warning restore S1144
     {
         // get decision finder - fold IUU stuff into the decision finder for fish?
         IDecisionFinder finder = notification.ImportNotificationType switch
