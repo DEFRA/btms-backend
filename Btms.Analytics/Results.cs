@@ -16,25 +16,45 @@ public class ByNumericDimensionResult
     public int Value { get; set; }
 }
 
-public class SingeSeriesDataset : IDataset
-{
-    public IDictionary<string, int> Values { get; set; } = new Dictionary<string, int>();
-}
-
-public class TypeMappingConverter<TType, TImplementation> : JsonConverter<TType>
-    where TImplementation : TType
+/// <summary>
+/// Serialise the derived types of IDataset
+/// </summary>
+/// <typeparam name="TType"></typeparam>
+public class ResultTypeMappingConverter<TType> : JsonConverter<TType> where TType : IDataset
 {
     [return: MaybeNull]
     public override TType Read(
         ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        JsonSerializer.Deserialize<TImplementation>(ref reader, options);
+        throw new NotImplementedException();
 
-    public override void Write(
-        Utf8JsonWriter writer, TType value, JsonSerializerOptions options) =>
-        JsonSerializer.Serialize(writer, (TImplementation)value!, options);
+    public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
+    {
+        if (value is MultiSeriesDatetimeDataset)
+        {
+            JsonSerializer.Serialize(writer, value as MultiSeriesDatetimeDataset, options);
+        }
+        else if (value is MultiSeriesDataset)
+        {
+            JsonSerializer.Serialize(writer, value as MultiSeriesDataset, options);
+        }
+        else if (value is SingleSeriesDataset)
+        {
+            JsonSerializer.Serialize(writer, value as SingleSeriesDataset, options);
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 
+// A marker interface to identify things we want to be able to return from the analytics API
 public interface IDataset;
+
+public class SingleSeriesDataset : IDataset
+{
+    public IDictionary<string, int> Values { get; set; } = new Dictionary<string, int>();
+}
 
 public class MultiSeriesDatetimeDataset : IDataset
 {

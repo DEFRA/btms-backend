@@ -38,7 +38,9 @@ public static class AnalyticsEndpoints
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 Converters = 
                 {
-                    new TypeMappingConverter<IDataset, MultiSeriesDatetimeDataset>() 
+                    new ResultTypeMappingConverter<IDataset>(),
+                    // new ResultTypeMappingConverter<IDataset, MultiSeriesDataset>(),
+                    // new ResultTypeMappingConverter<IDataset, SingleSeriesDataset>() 
                 }
             };
         

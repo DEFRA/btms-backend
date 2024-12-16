@@ -30,7 +30,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
-    public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Movements
@@ -39,7 +39,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Key), g => g.Count);
             
-        return Task.FromResult(new SingeSeriesDataset
+        return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
@@ -122,7 +122,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
 
-    public Task<SingeSeriesDataset> UniqueDocumentReferenceByMovementCount(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> UniqueDocumentReferenceByMovementCount(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -142,7 +142,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     r =>r.MovementCount.ToString(),
                     r=> r.DocumentReferenceCount);
 
-            var result = new SingeSeriesDataset { Values = mongoResult };
+            var result = new SingleSeriesDataset { Values = mongoResult };
             
             return Task.FromResult(result);
     }

@@ -142,4 +142,16 @@ public static class AnalyticsExtensions
         ms.Wait();
         return Task.FromResult((IDataset)ms.Result);
     }
+
+    public static Task<IDataset> AsIDataset(this Task<MultiSeriesDataset> ms)
+    {
+        ms.Wait();
+        return Task.FromResult((IDataset)ms.Result);
+    }
+
+    public static Task<IDataset> AsIDataset(this Task<SingleSeriesDataset> ms)
+    {
+        ms.Wait();
+        return Task.FromResult((IDataset)ms.Result);
+    }
 }

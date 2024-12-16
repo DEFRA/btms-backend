@@ -6,7 +6,7 @@ public static class TestAssertionExtensions
     {
         return new MultiSeriesDatasetAssertions(instance);
     }
-    public static SingleSeriesDatasetAssertions Should(this SingeSeriesDataset? instance)
+    public static SingleSeriesDatasetAssertions Should(this SingleSeriesDataset? instance)
     {
         return new SingleSeriesDatasetAssertions(instance);
     }

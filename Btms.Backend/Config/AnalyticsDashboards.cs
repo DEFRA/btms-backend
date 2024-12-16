@@ -20,100 +20,75 @@ public static class AnalyticsDashboards
                 "importNotificationLinkingByCreated",
                 () => importService.ByCreated(DateTime.Today.MonthAgo(), DateTime.Today).AsIDataset()
             },
-            // {
-            //     "importNotificationLinkingByArrival",
-            //     () => importService.ByArrival(DateTime.Today.MonthAgo(), DateTime.Today.MonthLater())
-            // }
+            {
+                "importNotificationLinkingByArrival",
+                () => importService.ByArrival(DateTime.Today.MonthAgo(), DateTime.Today.MonthLater()).AsIDataset()
+            },
+            {
+                "last7DaysImportNotificationsLinkingStatus",
+                () => importService.ByStatus(DateTime.Today.WeekAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "last24HoursImportNotificationsLinkingStatus",
+                () => importService.ByStatus(DateTime.Now.Yesterday(), DateTime.Now).AsIDataset()
+            },
+            {
+                "last24HoursImportNotificationsLinkingByCreated",
+                () => importService
+                    .ByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour)
+                    .AsIDataset()
+            },
+            {
+                "lastMonthImportNotificationsByTypeAndStatus",
+                () => importService.ByStatus(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "last24HoursMovementsLinkingByCreated",
+                () => movementsService.ByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour).AsIDataset()
+            },
+            {
+                "movementsLinkingByCreated",
+                () => movementsService.ByCreated(DateTime.Today.MonthAgo(), DateTime.Today).AsIDataset()
+            },
+            {
+                "lastMonthMovementsByStatus",
+                () => movementsService.ByStatus(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "lastMonthMovementsByItemCount",
+                () => movementsService.ByItemCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "lastMonthMovementsByUniqueDocumentReferenceCount",
+                () => movementsService.ByUniqueDocumentReferenceCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "lastMonthUniqueDocumentReferenceByMovementCount",
+                () => movementsService.UniqueDocumentReferenceByMovementCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "lastMonthImportNotificationsByCommodityCount",
+                () => importService.ByCommodityCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            }
         };
-        //
-        // var chartsToReturn = chartsToRender.Length == 0 
-        //     ? charts
-        //     : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key));
-        //
-        // var tasks = chartsToReturn
-        //     .Select(c => c.Value());
+        
+        var chartsToReturn = chartsToRender.Length == 0
+            ? charts
+            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key));
+            
+        var taskList = chartsToReturn.Select(r => new KeyValuePair<string, Task<IDataset>>(key:r.Key, value: r.Value()));
+        
+        await Task.WhenAll(taskList.Select(r => r.Value));
 
-        // var results = await Task.WhenAll(tasks.ToArray());
-            // .ToList()
+        var output = taskList
+            // .Select(t => t.Value.Result)
+            .ToDictionary(t => t.Key, t => t.Value.Result);
+        
+        logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
 
-        var f = charts["importNotificationLinkingByCreated"];
-        var importNotificationLinkingByCreated = await f();
-
-        logger.LogInformation("Results found {0}, {1} Series", importNotificationLinkingByCreated, ((MultiSeriesDatetimeDataset)importNotificationLinkingByCreated).Series.Count);
-        return new Dictionary<string, IDataset>()
-        {
-            { "importNotificationLinkingByCreated", importNotificationLinkingByCreated }
-        };
-        // return new Dictionary<string, IDataset>()
-        // {
-        //     { "importNotificationLinkingByCreated", importNotificationLinkingByCreated }
-        // };
-        // return new { importNotificationLinkingByCreated, importNotificationLinkingByCreated };
-        // return await Task.FromResult(Results.Ok(
-        //     importNotificationLinkingByCreated
-        // ));
-
-        // return await Task.FromResult(Results.Ok(new {
-        //     importNotificationLinkingByCreated
-        // }));
-        // var chartTasks = 
-        // var output = Parallel.ForEachAsync(chartsToReturn, async (keyValuePair, token) => await keyValuePair.Value());
-        // var output = Parallel.ForEach(chartsToReturn, (keyValuePair, token) => keyValuePair.Value());
-        // return await Task.Run(() =>  //Parallel.ForEach(chartsToReturn, () =>
-        // {
-        //     Console.WriteLine("Testing");
-        // }));
-
-        // return await Task.Run(() => Console.WriteLine("Testing"));
-
-        // return Task.WaitAll(chartsToReturn.Select(keyValuePair => keyValuePair.Value()));
-        // foreach (var keyValuePair in chartsToReturn)
-        // {
-        //     if (!(chartsToRender.Length == 0) || chartsToRender.Contains(keyValuePair.Key))
-        //     {
-        //         var result = keyValuePair.Value();
-        //     }
-        // }
-
+        return output;
+        
         // return output.ToList();
-
-        // var importNotificationLinkingByCreated = await importService
-        //     .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today);
-        //
-        // var importNotificationLinkingByArrival = await importService
-        //     .ByArrival(DateTime.Today.MonthAgo(), DateTime.Today.MonthLater());
-
-        // var last7DaysImportNotificationsLinkingStatus = await importService
-        //     .ByStatus(DateTime.Today.WeekAgo(), DateTime.Now);
-        //
-        // var last24HoursImportNotificationsLinkingStatus = await importService
-        //     .ByStatus(DateTime.Now.Yesterday(), DateTime.Now);
-        //
-        // var last24HoursImportNotificationsLinkingByCreated = await importService
-        //     .ByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour);
-        //
-        // var lastMonthImportNotificationsByTypeAndStatus = await importService
-        //     .ByStatus(DateTime.Today.MonthAgo(), DateTime.Now);
-        //
-        // var last24HoursMovementsLinkingByCreated = await movementsService
-        //     .ByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour);
-        //
-        // var movementsLinkingByCreated = await movementsService
-        //     .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today);
-        //
-        // var lastMonthMovementsByStatus = await movementsService
-        //     .ByStatus(DateTime.Today.MonthAgo(), DateTime.Now);
-        //
-        // var lastMonthMovementsByItemCount = await movementsService
-        //     .ByItemCount(DateTime.Today.MonthAgo(), DateTime.Now);
-        //
-        // var lastMonthMovementsByUniqueDocumentReferenceCount = await movementsService
-        //     .ByUniqueDocumentReferenceCount(DateTime.Today.MonthAgo(), DateTime.Now);
-        //
-        // var lastMonthUniqueDocumentReferenceByMovementCount = await movementsService
-        //     .UniqueDocumentReferenceByMovementCount(DateTime.Today.MonthAgo(), DateTime.Now);
-        //
-        // var lastMonthImportNotificationsByCommodityCount = await importService
-        //     .ByCommodityCount(DateTime.Today.MonthAgo(), DateTime.Now);
+        
     }
 }

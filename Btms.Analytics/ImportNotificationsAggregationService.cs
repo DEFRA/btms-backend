@@ -38,7 +38,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
     }
     
-    public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Notifications
@@ -48,7 +48,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()),
                 g => g.Count);
 
-        return Task.FromResult(new SingeSeriesDataset
+        return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
