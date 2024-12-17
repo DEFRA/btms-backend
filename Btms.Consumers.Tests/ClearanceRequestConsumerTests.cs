@@ -30,7 +30,7 @@ public class ClearanceRequestConsumerTests
         var movement =
             MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
 
-        movement.Update(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
+        movement.Update(AuditEntry.CreateLinked("Test", 1));
 
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
@@ -67,7 +67,7 @@ public class ClearanceRequestConsumerTests
         var movement =
             MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
 
-        movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now));
+        movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now, AuditEntry.CreatedByCds));
 
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();

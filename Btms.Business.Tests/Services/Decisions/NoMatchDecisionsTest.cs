@@ -49,9 +49,9 @@ public class NoMatchDecisionsTest
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
-        return generatorResult.ClearanceRequests.Select(x =>
+        return generatorResult.Select(x =>
         {
-            var internalClearanceRequest = AlvsClearanceRequestMapper.Map(x);
+            var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
             return MovementPreProcessor.BuildMovement(internalClearanceRequest);
         }).ToList();
     }

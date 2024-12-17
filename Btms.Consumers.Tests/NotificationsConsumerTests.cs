@@ -27,7 +27,7 @@ public class NotificationsConsumerTests : ConsumerTests
         // ARRANGE
         var notification = CreateImportNotification();
         var modelNotification = notification.MapWithTransform();
-        modelNotification.Changed(AuditEntry.CreateLinked("Test", 1, DateTime.Now));
+        modelNotification.Changed(AuditEntry.CreateLinked("Test", 1));
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
             var matchingService = Substitute.For<IMatchingService>();
@@ -57,7 +57,7 @@ public class NotificationsConsumerTests : ConsumerTests
         // ARRANGE
         var notification = CreateImportNotification();
         var modelNotification = notification.MapWithTransform();
-        modelNotification.Changed(AuditEntry.CreateCreatedEntry(modelNotification, "Test", 1, DateTime.Now));
+        modelNotification.Changed(AuditEntry.CreateCreatedEntry(modelNotification, "Test", 1, DateTime.Now, AuditEntry.CreatedByIpaffs));
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
             var matchingService = Substitute.For<IMatchingService>();
