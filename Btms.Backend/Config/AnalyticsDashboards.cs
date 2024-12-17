@@ -81,14 +81,11 @@ public static class AnalyticsDashboards
         await Task.WhenAll(taskList.Select(r => r.Value));
 
         var output = taskList
-            // .Select(t => t.Value.Result)
             .ToDictionary(t => t.Key, t => t.Value.Result);
         
         logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
 
         return output;
-        
-        // return output.ToList();
         
     }
 }

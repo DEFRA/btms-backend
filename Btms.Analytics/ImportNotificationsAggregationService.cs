@@ -72,8 +72,6 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .GroupBy(r => new { r.Key.ImportNotificationType, r.Key.Linked })
             .ToList();
         
-        // var maxCommodities = result.Max(r => r.Max(i => i.Key.CommodityCount));
-        
         var maxCommodities = result.Count > 0 ?
             result.Max(r => r.Any() ? r.Max(i => i.Key.CommodityCount) : 0) : 0;
         
@@ -107,32 +105,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                         }).ToList()
                 })
                 .ToList()
-            // .AsOrderedArray(d => d.Name)
-                
         });
-        
-        // return Task.FromResult(
-        //     AnalyticsHelpers.GetImportNotificationSegments()
-        //         .Select(title => new MultiSeriesDataset(title, "ItemCount")
-        //         {
-        //             // Results = asDictionary.AsResultList(title, maxCommodities)
-        //             Series = 
-        //             [
-        //                 new Series()
-        //                 {
-        //                     Results = Enumerable.Range(0, maxCommodities)
-        //                         .Select(i => new ByNumericDimensionResult
-        //                         {
-        //                             Dimension = i,
-        //                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
-        //                         }).ToList()
-        //                 }
-        //             ]
-        //             
-        //         }
-        //         )
-        //         .AsOrderedArray(d => d.Name)
-        //     );
     }
 
     private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
