@@ -1,3 +1,4 @@
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Ipaffs.V1.Extensions;
 using Btms.Types.Alvs;
@@ -37,9 +38,10 @@ public static class DataHelpers
     internal static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
     {
         var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
-
+        var subPath = clearanceRequest.Header!.DecisionNumber.HasValue() ? "DECISIONS" : "ALVS";
+        
         return
-            $"{rootPath}/ALVS/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
+            $"{rootPath}/{subPath}/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
 
     internal static string AsCdsEntryReference(this MatchIdentifier identifier)

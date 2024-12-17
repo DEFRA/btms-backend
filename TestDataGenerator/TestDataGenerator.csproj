@@ -45,11 +45,13 @@
     <Content Include="Scenarios\Samples\cr-one-item.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Remove="Properties\local.env"/>
-    <Content Include="Properties\local.env">
+    <None Update="Properties\local.env">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Update="Scenarios\Samples\chedp-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\decision-one-item.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

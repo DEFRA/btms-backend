@@ -26,7 +26,14 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
-        return new GeneratorResult([clearanceRequest, notification]);
-        // return new GeneratorResult { ClearanceRequests = [clearanceRequest], ImportNotifications = [notification] };
+        var alvsDecision = GetDecisionBuilder("decision-one-item")
+            .WithEntryDate(entryDate.AddHours(1))
+            .WithReferenceNumber(notification.ReferenceNumber!)
+            .WithItemAndCheck(1, "H222", "H01")
+            .ValidateAndBuild();
+        
+        logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
+        
+        return new GeneratorResult([clearanceRequest, notification, alvsDecision]);
     }
 }

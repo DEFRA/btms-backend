@@ -31,6 +31,14 @@ public abstract class ScenarioGenerator
         return builder;
     }
 
+    internal DecisionBuilder GetDecisionBuilder(string file)
+    {
+        var fullPath = $"{_fullFolder}/{file}.json";
+        var builder = new DecisionBuilder(fullPath);
+
+        return builder;
+    }
+
     /// <summary>
     /// A class to hold a list of message types we support. Would be nice to use something
     /// other than object :|
