@@ -14,7 +14,7 @@ public class AuditEntry
     public const string CreatedByCds = "Cds";
     public const string CreatedByGvms = "Gvms";
     public string Id { get; set; } = default!;
-    public int Version { get; set; }
+    public int? Version { get; set; }
 
     public string CreatedBy { get; set; } = default!;
 
