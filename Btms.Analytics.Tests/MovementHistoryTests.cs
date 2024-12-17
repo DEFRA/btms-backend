@@ -20,9 +20,19 @@ public class MovementHistoryTests(
         var result = await multiItemDataTestFixture.MovementsAggregationService
             .GetHistory("23GB9999001215000001");
 
-        testOutputHelper.WriteLine("{0} history items found", result.Items.Count());
+        testOutputHelper.WriteLine("{0} history items found", result!.Items.Count());
         
         result.Items.Should().HasValue();
         result.Items.Select(a => a.AuditEntry.CreatedSource).Should().BeInAscendingOrder();
+    }
+    
+    [Fact]
+    public async Task WhenCalled_ReturnsNoHistory()
+    {
+        testOutputHelper.WriteLine("Querying for history");
+        var result = await multiItemDataTestFixture.MovementsAggregationService
+            .GetHistory("");
+
+        result.Should().BeNull();
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
+using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
@@ -148,12 +149,17 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             return Task.FromResult(result);
     }
 
-    public async Task<EntityDataset<AuditHistory>> GetHistory(string movementId)
+    public async Task<EntityDataset<AuditHistory>?> GetHistory(string movementId)
     {
         var movement = await context
             .Movements
             .Find(movementId);
 
+        if (!movement.HasValue())
+        {
+            return null;
+        }
+        
         var notificationIds = movement!.Relationships.Notifications.Data.Select(n => n.Id);
 
         var notificationEntries = context.Notifications
@@ -201,5 +207,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
         
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
+    }
+
+    public Task<MultiSeriesDataset> ByDecision(DateTime from, DateTime to)
+    {
+        throw new NotImplementedException();
     }
 }
