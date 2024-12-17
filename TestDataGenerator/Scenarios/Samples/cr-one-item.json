@@ -41,7 +41,7 @@
           "documentQuantity": 3
         }
       ],
-      "check": [
+      "checks": [
         {
           "checkCode": "H2019",
           "departmentCode": "GB"

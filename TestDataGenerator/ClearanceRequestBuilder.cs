@@ -68,7 +68,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     }
 
     public ClearanceRequestBuilder<T> WithItem(string documentCode, string commodityCode, string description,
-        int netWeight)
+        int netWeight, string checkCode = "H2019")
     {
         return Do(cr =>
         {
@@ -76,6 +76,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Items![0].GoodsDescription = description;
             cr.Items![0].ItemNetMass = netWeight;
             cr.Items![0].Documents![0].DocumentCode = documentCode;
+            cr.Items![0].Checks![0].CheckCode = checkCode;
         });
     }
     
