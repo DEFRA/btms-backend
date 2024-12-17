@@ -25,6 +25,7 @@ public partial class NominatedContact  //
         /// Name of nominated contact
         /// </summary>
     [JsonPropertyName("name")]
+    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 	
@@ -32,6 +33,7 @@ public partial class NominatedContact  //
         /// Email address of nominated contact
         /// </summary>
     [JsonPropertyName("email")]
+    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 	
@@ -39,6 +41,7 @@ public partial class NominatedContact  //
         /// Telephone number of nominated contact
         /// </summary>
     [JsonPropertyName("telephone")]
+    [Btms.SensitiveData.SensitiveData]
     public string? Telephone { get; set; }
 
 	}
