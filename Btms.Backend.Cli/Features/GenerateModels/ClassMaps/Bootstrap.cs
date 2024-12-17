@@ -245,7 +245,23 @@ internal static class Bootstrap
             map.MapProperty("email").IsSensitive();
             map.MapProperty("ukTelephone").IsSensitive();
             map.MapProperty("telephone").IsSensitive();
-            map.MapProperty("countryISOCode").SetName("countryIsoCode");
+            map.MapProperty("countryISOCode").SetName("countryIsoCode").IsSensitive();
+        });
+
+        GeneratorClassMap.RegisterClassMap("OfficialInspector", map =>
+        {
+            map.MapProperty("firstName").IsSensitive();
+            map.MapProperty("lastName").IsSensitive();
+            map.MapProperty("email").IsSensitive();
+            map.MapProperty("phone").IsSensitive();
+            map.MapProperty("fax").IsSensitive();
+        });
+
+        GeneratorClassMap.RegisterClassMap("NominatedContact", map =>
+        {
+            map.MapProperty("name").IsSensitive();
+            map.MapProperty("email").IsSensitive();
+            map.MapProperty("telephone").IsSensitive();
         });
 
 
