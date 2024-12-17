@@ -88,6 +88,7 @@ public partial class Address  //
         /// country 2-digits ISO code
         /// </summary>
     [JsonPropertyName("countryISOCode")]
+    [Btms.SensitiveData.SensitiveData]
     public string? CountryIsoCode { get; set; }
 
 	
