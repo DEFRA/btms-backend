@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Btms.Model.Auditing;
 
 namespace Btms.Analytics;
 
@@ -54,6 +55,18 @@ public interface IDataset;
 public class SingleSeriesDataset : IDataset
 {
     public IDictionary<string, int> Values { get; set; } = new Dictionary<string, int>();
+}
+
+public class AuditHistory(AuditEntry auditEntry, string resourceType, string resourceId)
+{
+    public AuditEntry AuditEntry { get; set; } = auditEntry;
+    public string ResourceType { get; set; } = resourceType;
+    public string ResourceId { get; set; } = resourceId;
+}
+
+public class EntityDataset<T>(IEnumerable<T> items) : IDataset
+{
+    public IEnumerable<T> Items { get; set; } = items;
 }
 
 public class MultiSeriesDatetimeDataset : IDataset

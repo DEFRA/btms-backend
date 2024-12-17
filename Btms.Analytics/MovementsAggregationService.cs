@@ -4,6 +4,7 @@ using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
 using Btms.Model.Extensions;
 using Btms.Model;
+using Btms.Model.Auditing;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -145,6 +146,31 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             var result = new SingleSeriesDataset { Values = mongoResult };
             
             return Task.FromResult(result);
+    }
+
+    public async Task<EntityDataset<AuditHistory>> GetHistory(string movementId)
+    {
+        var movement = await context
+            .Movements
+            .Find(movementId);
+
+        var notificationIds = movement!.Relationships.Notifications.Data.Select(n => n.Id);
+
+        var notificationEntries = context.Notifications
+            .Where(n => notificationIds.Contains(n.Id))
+            .SelectMany(n => n.AuditEntries
+                .Select(a => 
+                    new AuditHistory(a, $"ImportNotification", n.Id!)
+                )
+            );
+        
+        var entries = movement!.AuditEntries
+            .Select(a => new AuditHistory(a, "Movement", movementId))
+            .Concat(notificationEntries);
+
+        entries = entries.OrderBy(a => a.AuditEntry.CreatedSource);
+        
+        return new EntityDataset<AuditHistory>(entries);
     }
 
     public Task<MultiSeriesDataset> ByCheck(DateTime from, DateTime to)

@@ -87,7 +87,6 @@ public static class AnalyticsExtensions
 
     internal static IEnumerable<IGrouping<TKey, TSource>> Execute<TSource, TKey>(this IQueryable<IGrouping<TKey, TSource>> source, ILogger logger)
     {
-        
         try
         {
             var aggregatedData = source.ToList();

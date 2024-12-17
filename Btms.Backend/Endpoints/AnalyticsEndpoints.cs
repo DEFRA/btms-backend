@@ -16,7 +16,18 @@ public static class AnalyticsEndpoints
     {
         app.MapGet(BaseRoute + "/dashboard", GetDashboard).AllowAnonymous();
         app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState).AllowAnonymous();
+        app.MapGet(BaseRoute + "/timeline", Timeline).AllowAnonymous();
     }
+    private static async Task<IResult> Timeline(
+        [FromServices] IImportNotificationsAggregationService importService,
+        [FromServices] IMovementsAggregationService movementsService,
+        [FromQuery] string movementId)
+    {
+
+
+        return TypedResults.Json(await movementsService.GetHistory(movementId));
+    }
+    
     private static async Task<IResult> RecordCurrentState(
         [FromServices] ImportNotificationMetrics importNotificationMetrics)
     {
@@ -38,9 +49,7 @@ public static class AnalyticsEndpoints
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 Converters = 
                 {
-                    new ResultTypeMappingConverter<IDataset>(),
-                    // new ResultTypeMappingConverter<IDataset, MultiSeriesDataset>(),
-                    // new ResultTypeMappingConverter<IDataset, SingleSeriesDataset>() 
+                    new ResultTypeMappingConverter<IDataset>() 
                 }
             };
         
