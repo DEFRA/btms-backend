@@ -18,6 +18,7 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
-        return new GeneratorResult { ClearanceRequests = [clearanceRequest], ImportNotifications = [] };
+        return new GeneratorResult([clearanceRequest]);
+        // return new GeneratorResult { ClearanceRequests = [clearanceRequest], ImportNotifications = [] };
     }
 }

@@ -13,41 +13,57 @@ namespace Btms.Analytics.Tests.Helpers;
 
 public static class TestDataGeneratorHelpers
 {
-    private static int _scenarioIndex;
+    private static int scenarioIndex;
     
     public static async Task<IHost> PushToConsumers(this IHost app, ScenarioConfig scenario)
     {
         var generatorResults = app.Generate(scenario);
-        _scenarioIndex++;
+        scenarioIndex++;
         
         app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         
         foreach (var generatorResult in generatorResults)
         {
-            foreach (var cr in generatorResult.ClearanceRequests)
+            foreach (var message in generatorResult)
             {
                 var scope = app.Services.CreateScope();
-                var consumer = (AlvsClearanceRequestConsumer)scope.ServiceProvider.GetRequiredService<IConsumer<AlvsClearanceRequest>>();
-        
-                consumer.Context = new ConsumerContext
+                
+                switch (message)
                 {
-                    Headers = new Dictionary<string, object> { { "messageId", cr.Header!.EntryReference! } }
-                };
-            
-                await consumer.OnHandle(cr);
-            }
+                    case null:
+                        throw new ArgumentNullException();
+                    
+                    case ImportNotification n:
+                        
+                        var notificationConsumer = (NotificationConsumer)scope
+                            .ServiceProvider
+                            .GetRequiredService<IConsumer<ImportNotification>>();
         
-            foreach (var n in generatorResult.ImportNotifications)
-            {
-                var scope = app.Services.CreateScope();
-                var consumer = (NotificationConsumer)scope.ServiceProvider.GetRequiredService<IConsumer<ImportNotification>>();
-        
-                consumer.Context = new ConsumerContext
-                {
-                    Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
-                };
+                        notificationConsumer.Context = new ConsumerContext
+                        {
+                            Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
+                        };
             
-                await consumer.OnHandle(n);
+                        await notificationConsumer.OnHandle(n);
+                        break;
+                    
+                    case AlvsClearanceRequest cr:
+                        
+                        var alvsConsumer = (AlvsClearanceRequestConsumer)scope
+                            .ServiceProvider
+                            .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
+                        
+                        alvsConsumer.Context = new ConsumerContext
+                        {
+                            Headers = new Dictionary<string, object> { { "messageId", cr.Header!.EntryReference! } }
+                        };
+            
+                        await alvsConsumer.OnHandle(cr);
+                        break;
+                        
+                    default:
+                        throw new ArgumentException($"Unexpected type {message.GetType().Name}");
+                }
             }
         }
 
@@ -73,7 +89,7 @@ public static class TestDataGeneratorHelpers
             {
                 logger.LogInformation("Generating item {I}", i);
 
-                results.Add(generator.Generate(_scenarioIndex, i, entryDate, scenario));
+                results.Add(generator.Generate(scenarioIndex, i, entryDate, scenario));
             }
         }
 

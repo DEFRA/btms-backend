@@ -25,7 +25,8 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .ValidateAndBuild();
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
-
-        return new GeneratorResult { ClearanceRequests = [clearanceRequest], ImportNotifications = [notification] };
+        
+        return new GeneratorResult([clearanceRequest, notification]);
+        // return new GeneratorResult { ClearanceRequests = [clearanceRequest], ImportNotifications = [notification] };
     }
 }

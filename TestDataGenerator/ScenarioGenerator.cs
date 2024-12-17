@@ -1,3 +1,7 @@
+using System.Collections;
+using AutoFixture;
+using Btms.Common.Extensions;
+using Btms.Model;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using TestDataGenerator.Scenarios;
@@ -27,9 +31,49 @@ public abstract class ScenarioGenerator
         return builder;
     }
 
-    public class GeneratorResult
+    /// <summary>
+    /// A class to hold a list of message types we support. Would be nice to use something
+    /// other than object :|
+    /// </summary>
+    public class GeneratorResult : IEnumerable<object>
     {
-        public ImportNotification[] ImportNotifications { get; set; } = default!;
-        public AlvsClearanceRequest[] ClearanceRequests { get; set; } = default!;
+        public GeneratorResult(object[] initial)
+        {
+            foreach (var o in initial)
+            {
+                if (o is ImportNotification || o is AlvsClearanceRequest)
+                {
+                    Messages.Add(o);
+                }
+                else
+                {
+                    throw new Exception("Unexpected type");
+                }
+                
+            }
+        }
+
+        private List<object> Messages { get; set; } = new List<object>();
+
+        public void Add(ImportNotification[] importNotifications)
+        {
+            Messages.AddRange(importNotifications);
+        }
+        
+        public void Add(AlvsClearanceRequest[] clearanceRequests)
+        {
+            Messages.AddRange(clearanceRequests);
+        }
+
+        IEnumerator<object> IEnumerable<object>.GetEnumerator()
+        {
+            return Messages.GetEnumerator();
+        }
+        
+        public int Count => Messages.Count;
+        public IEnumerator GetEnumerator()
+        {
+            return Messages.GetEnumerator();
+        }
     }
 }

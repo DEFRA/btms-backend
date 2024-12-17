@@ -7,6 +7,21 @@ namespace TestDataGenerator.Helpers;
 
 public static class DataHelpers
 {
+    internal static string BlobPath(this object resource, string rootPath)
+    {
+        switch (resource)
+        {
+            case null:
+                throw new ArgumentNullException();
+            case ImportNotification n:
+                return n.BlobPath(rootPath);
+            case AlvsClearanceRequest cr:
+                return cr.BlobPath(rootPath);
+            default:
+                throw new InvalidDataException($"Unexpected type {resource.GetType().Name}");
+        }
+    }
+    
     internal static string BlobPath(this ImportNotification notification, string rootPath)
     {
         var dateString = notification.LastUpdated!.Value.ToString("yyyy/MM/dd");

@@ -16,6 +16,7 @@ public class ChedANoMatchScenarioGenerator(ILogger<ChedANoMatchScenarioGenerator
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
-        return new GeneratorResult { ClearanceRequests = [], ImportNotifications = [notification] };
+        return new GeneratorResult([notification]);
+        // return new GeneratorResult { ClearanceRequests = [], ImportNotifications = [notification] };
     }
 }
