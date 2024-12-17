@@ -29,13 +29,16 @@ public class MultiItemDataTestFixture : IDisposable
         {
             _mongoDbContext.ResetCollections().GetAwaiter().GetResult();
         
-            app.PushToConsumers(app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
-                .GetAwaiter().GetResult();
-        
-            app.PushToConsumers(app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
-                .GetAwaiter().GetResult();
-        
-            app.PushToConsumers(app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            // app.PushToConsumers(app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            //     .GetAwaiter().GetResult();
+            //
+            // app.PushToConsumers(app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            //     .GetAwaiter().GetResult();
+            //
+            // app.PushToConsumers(app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            //     .GetAwaiter().GetResult();
+            
+            app.PushToConsumers(app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
         }
     }

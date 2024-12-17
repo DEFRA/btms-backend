@@ -1,3 +1,4 @@
+using Btms.Common.Extensions;
 using Btms.Consumers;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
@@ -48,17 +49,42 @@ public static class TestDataGeneratorHelpers
                         break;
                     
                     case AlvsClearanceRequest cr:
-                        
-                        var alvsConsumer = (AlvsClearanceRequestConsumer)scope
-                            .ServiceProvider
-                            .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
-                        
-                        alvsConsumer.Context = new ConsumerContext
+
+                        if (cr.Header!.DecisionNumber.HasValue())
                         {
-                            Headers = new Dictionary<string, object> { { "messageId", cr.Header!.EntryReference! } }
-                        };
-            
-                        await alvsConsumer.OnHandle(cr);
+                            // throw new ArgumentException("How do we get the DecisionsConsumer?");
+                            
+                            var decisionsConsumer = (DecisionsConsumer)scope
+                                .ServiceProvider
+                                .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
+                            
+                            decisionsConsumer.Context = new ConsumerContext
+                            {
+                                Headers = new Dictionary<string, object>
+                                {
+                                    { "messageId", cr.Header!.EntryReference! }
+                                }
+                            };
+                            
+                            await decisionsConsumer.OnHandle(cr);
+                        }
+                        else
+                        {
+                            var alvsConsumer = (AlvsClearanceRequestConsumer)scope
+                                .ServiceProvider
+                                .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
+
+                            alvsConsumer.Context = new ConsumerContext
+                            {
+                                Headers = new Dictionary<string, object>
+                                {
+                                    { "messageId", cr.Header!.EntryReference! }
+                                }
+                            };
+
+                            await alvsConsumer.OnHandle(cr);
+                        }
+                        
                         break;
                         
                     default:

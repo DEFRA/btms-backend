@@ -216,15 +216,18 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
             .SelectMany(m => m.Decisions.Select(d => new { Decision = d, Movement = m }))
             .SelectMany(m => m.Decision.Items!.Select(i => new { Decision = m.Decision, Movement = m.Movement, Item = i }))
-            // .SelectMany(m => m.Item.Checks!.Select(c => new
-            // {
-            //     CheckCode = c.CheckCode, DecisionCode = c.DecisionCode,
-            //     DecisionEntryReference = m.Decision.Header!.EntryReference,
-            //     DecisionEntryVersionNumber = m.Decision.Header!.EntryVersionNumber,
-            //     Movement = m.Movement.EntryReference, MovementVersion = m.Movement.EntryVersionNumber,
-            //     ItemNumber = m.Item.ItemNumber
-            // }))
-            .Take(5)
+            .SelectMany(m => m.Item.Checks!.Select(c => new
+            {
+                CheckCode = c.CheckCode, DecisionCode = c.DecisionCode,
+                DecisionSourceSystem = m.Decision.ServiceHeader!.SourceSystem,
+                DecisionEntryReference = m.Decision.Header!.EntryReference,
+                DecisionEntryVersionNumber = m.Decision.Header!.EntryVersionNumber,
+                Movement = m.Movement.EntryReference, MovementVersion = m.Movement.EntryVersionNumber,
+                HasLinks = m.Movement.Relationships.Notifications.Data.Count > 0,
+                ItemNumber = m.Item.ItemNumber
+            }))
+            .GroupBy(m => new { m.HasLinks, m.DecisionSourceSystem, m.DecisionCode})
+            .Select(m => new { m.Key.HasLinks, m.Key.DecisionSourceSystem, m.Key.DecisionCode, Count = m.Count()})
             .ToList();
         
         logger.LogInformation("Found {0} items", mongoQuery.Count);
