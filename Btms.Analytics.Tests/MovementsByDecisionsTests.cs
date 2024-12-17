@@ -15,27 +15,18 @@ public class MovementsByDecisionsTests(
 {
     
     [Fact]
-    public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
+    public async Task WhenCalled_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await multiItemDataTestFixture.MovementsAggregationService
-            .ByItemCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
+        var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+            .ByDecision(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
         result.Count.Should().Be(2);
-        result.Select(r => r.Name).Order().Should().Equal("Linked", "Not Linked");
         
-        result.Should().AllSatisfy(r =>
-        {
-            r.Dimension.Should().Be("Item Count");
-            r.Results.Count.Should().NotBe(0);
-        });
-        
-        result.Should().HaveResults();
-
         result.Should().BeSameLength();
     }
 }

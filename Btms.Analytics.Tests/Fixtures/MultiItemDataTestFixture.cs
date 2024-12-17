@@ -1,7 +1,9 @@
 using Btms.Analytics.Tests.Helpers;
 using Btms.Backend.Data;
+using MartinCostello.Logging.XUnit;
 using Microsoft.Extensions.DependencyInjection;
 using TestDataGenerator.Scenarios;
+using Xunit.Abstractions;
 
 namespace Btms.Analytics.Tests.Fixtures;
 
@@ -9,27 +11,23 @@ namespace Btms.Analytics.Tests.Fixtures;
 public class MultiItemDataTestFixture : IDisposable
 #pragma warning restore S3881
 {
-    public readonly IImportNotificationsAggregationService ImportNotificationsAggregationService;
-    public readonly IMovementsAggregationService MovementsAggregationService;
-
-    public IMongoDbContext MongoDbContext;
+    private readonly IMongoDbContext _mongoDbContext;
+    private readonly IServiceScope _rootScope;
     public MultiItemDataTestFixture()
     {
         var builder = TestContextHelper.CreateBuilder<MultiItemDataTestFixture>();
 
         var app = builder.Build();
-        var rootScope = app.Services.CreateScope();
+        _rootScope = app.Services.CreateScope();
 
-        MongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        ImportNotificationsAggregationService = rootScope.ServiceProvider.GetRequiredService<IImportNotificationsAggregationService>();
-        MovementsAggregationService = rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>();
+        _mongoDbContext = _rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
         
         // Would like to pick this up from env/config/DB state
         var insertToMongo = true;
         
         if (insertToMongo)
         {
-            MongoDbContext.ResetCollections().GetAwaiter().GetResult();
+            _mongoDbContext.ResetCollections().GetAwaiter().GetResult();
         
             app.PushToConsumers(app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
@@ -41,6 +39,20 @@ public class MultiItemDataTestFixture : IDisposable
                 .GetAwaiter().GetResult();
         }
     }
+    
+    public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
+    {
+        var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
+        return new ImportNotificationsAggregationService(_mongoDbContext, logger);   
+    }
+    
+    public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)
+    {
+        var logger = testOutputHelper.GetLogger<MovementsAggregationService>();
+        // return _rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>(); 
+        return new MovementsAggregationService(_mongoDbContext, logger);
+    }
+    
 
     public void Dispose()
     {

@@ -16,7 +16,7 @@ public class ImportNotificationsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(),AggregationPeriod.Hour))
             .Series
             .ToList();
@@ -35,7 +35,7 @@ public class ImportNotificationsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
@@ -63,7 +63,7 @@ public class ImportNotificationsByCreatedDateTests(
         var from = DateTime.MaxValue.AddDays(-1);
         var to = DateTime.MaxValue;
 
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
                 .ByCreated(from, to, AggregationPeriod.Hour))
             .Series
             .ToList();

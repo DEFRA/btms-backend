@@ -3,6 +3,7 @@ using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestDataGenerator.Scenarios;
+using Xunit.Abstractions;
 
 namespace Btms.Analytics.Tests.Fixtures;
 
@@ -11,10 +12,10 @@ public class BasicSampleDataTestFixture : IDisposable
 #pragma warning restore S3881
 {
     public IHost App;
-    public IImportNotificationsAggregationService ImportNotificationsAggregationService;
-    public IMovementsAggregationService MovementsAggregationService;
+    // public IImportNotificationsAggregationService ImportNotificationsAggregationService;
+    // public IMovementsAggregationService MovementsAggregationService;
 
-    public IMongoDbContext MongoDbContext;
+    private readonly IMongoDbContext _mongoDbContext;
     public BasicSampleDataTestFixture()
     {
         var builder = TestContextHelper.CreateBuilder<BasicSampleDataTestFixture>();
@@ -22,16 +23,16 @@ public class BasicSampleDataTestFixture : IDisposable
         App = builder.Build();
         var rootScope = App.Services.CreateScope();
 
-        MongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        ImportNotificationsAggregationService = rootScope.ServiceProvider.GetRequiredService<IImportNotificationsAggregationService>();
-        MovementsAggregationService = rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>();
+        _mongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
+        // ImportNotificationsAggregationService = rootScope.ServiceProvider.GetRequiredService<IImportNotificationsAggregationService>();
+        // MovementsAggregationService = rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>();
         
         // Would like to pick this up from env/config/DB state
         var insertToMongo = true;
 
         if (insertToMongo)
         {
-            MongoDbContext.ResetCollections().GetAwaiter().GetResult();
+            _mongoDbContext.ResetCollections().GetAwaiter().GetResult();
 
             // Ensure we have some data scenarios around 24/48 hour tests
             App.PushToConsumers(App.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
@@ -57,6 +58,19 @@ public class BasicSampleDataTestFixture : IDisposable
             App.PushToConsumers(App.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
         }
+    }
+    
+    
+    public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
+    {
+        var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
+        return new ImportNotificationsAggregationService(_mongoDbContext, logger);   
+    }
+    
+    public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)
+    {
+        var logger = testOutputHelper.GetLogger<MovementsAggregationService>();
+        return new MovementsAggregationService(_mongoDbContext, logger);
     }
 
     public void Dispose()

@@ -17,7 +17,8 @@ public class MovementHistoryTests(
     public async Task WhenCalled_ReturnsHistory()
     {
         testOutputHelper.WriteLine("Querying for history");
-        var result = await multiItemDataTestFixture.MovementsAggregationService
+        var result = await multiItemDataTestFixture
+            .GetMovementsAggregationService(testOutputHelper)
             .GetHistory("23GB9999001215000001");
 
         testOutputHelper.WriteLine("{0} history items found", result!.Items.Count());
@@ -30,7 +31,7 @@ public class MovementHistoryTests(
     public async Task WhenCalled_ReturnsNoHistory()
     {
         testOutputHelper.WriteLine("Querying for history");
-        var result = await multiItemDataTestFixture.MovementsAggregationService
+        var result = await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
             .GetHistory("");
 
         result.Should().BeNull();

@@ -18,7 +18,7 @@ public class MovementsByUniqueDocumentReferenceTests(
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await multiItemDataTestFixture.MovementsAggregationService
+        var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
             .ByUniqueDocumentReferenceCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();

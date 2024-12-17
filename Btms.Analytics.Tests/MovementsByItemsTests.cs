@@ -18,7 +18,7 @@ public class MovementsByItemsTests(
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await multiItemDataTestFixture.MovementsAggregationService
+        var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
             .ByItemCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
