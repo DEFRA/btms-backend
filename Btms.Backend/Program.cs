@@ -38,6 +38,7 @@ using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 using Btms.Backend.Asb;
+using Btms.Common;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -229,6 +230,9 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 {
 	var app = builder.Build();
 
+    // Allows us to make a global logger factory available for use where we can't get it from DI, e.g. from static functions 
+    ApplicationLogging.LoggerFactory = app.Services.GetService<ILoggerFactory>();
+        
 	app.UseEmfExporter();
 	app.UseAuthentication();
 	app.UseAuthorization();

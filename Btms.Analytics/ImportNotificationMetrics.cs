@@ -39,14 +39,14 @@ public class ImportNotificationMetrics
     {
         var metrics = await _importService.ByCreated(DateTime.Today, DateTime.Now.NextHour());
         
-        foreach (var dataset in metrics)
+        foreach (var series in metrics.Series)
         {
-            var key = $"{AnalyticsMetricNames.MetricPrefix}.import-notifications.{dataset.MetricsKey()}.count";
+            var key = $"{AnalyticsMetricNames.MetricPrefix}.import-notifications.{series.MetricsKey()}.count";
             if (_metrics.TryGetValue(key, out var instrument))
             {
                 if (instrument is Gauge<int> g)
                 {
-                    g.Record(dataset.Periods[0].Value);
+                    g.Record(series.Periods[0].Value);
                 }
                 else
                 {

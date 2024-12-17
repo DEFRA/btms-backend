@@ -17,6 +17,7 @@ public class MovementsByCreatedDateTests(
     {
         var result = (await basicSampleDataTestFixture.MovementsAggregationService
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -38,6 +39,7 @@ public class MovementsByCreatedDateTests(
 
         var result = (await basicSampleDataTestFixture.MovementsAggregationService
             .ByCreated(from, to, AggregationPeriod.Hour))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());
@@ -62,6 +64,7 @@ public class MovementsByCreatedDateTests(
     {
         var result = (await basicSampleDataTestFixture.MovementsAggregationService
                 .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine(result.ToJsonString());

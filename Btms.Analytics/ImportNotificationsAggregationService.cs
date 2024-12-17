@@ -12,7 +12,7 @@ namespace Btms.Analytics;
 
 public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger) : IImportNotificationsAggregationService
 {
-    public Task<MultiSeriesDatetimeDataset[]> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -25,7 +25,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
-    public Task<MultiSeriesDatetimeDataset[]> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -38,7 +38,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
     }
     
-    public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Notifications
@@ -48,13 +48,13 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()),
                 g => g.Count);
 
-        return Task.FromResult(new SingeSeriesDataset
+        return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
 
-    public Task<MultiSeriesDataset[]> ByCommodityCount(DateTime from, DateTime to)
+    public Task<MultiSeriesDataset> ByCommodityCount(DateTime from, DateTime to)
     {
         var query = context
             .Notifications
@@ -71,8 +71,6 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Execute(logger)
             .GroupBy(r => new { r.Key.ImportNotificationType, r.Key.Linked })
             .ToList();
-        
-        // var maxCommodities = result.Max(r => r.Max(i => i.Key.CommodityCount));
         
         var maxCommodities = result.Count > 0 ?
             result.Max(r => r.Any() ? r.Max(i => i.Key.CommodityCount) : 0) : 0;
@@ -94,24 +92,23 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                 g => g.NotificationCount);
         
         
-        return Task.FromResult(
-            AnalyticsHelpers.GetImportNotificationSegments()
-                .Select(title => new MultiSeriesDataset(title, "ItemCount")
+        return Task.FromResult(new MultiSeriesDataset()
+        {
+            Series = AnalyticsHelpers.GetImportNotificationSegments()
+                .Select(title => new Series(title, "ItemCount")
                 {
-                    // Results = asDictionary.AsResultList(title, maxCommodities)
                     Results = Enumerable.Range(0, maxCommodities)
                         .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,
                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
                         }).ToList()
-                }
-                )
-                .AsOrderedArray(d => d.Name)
-            );
+                })
+                .ToList()
+        });
     }
 
-    private Task<MultiSeriesDatetimeDataset[]> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
+    private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
         var truncateBy = aggregateBy == AggregationPeriod.Hour ? "hour" : "day";
         
@@ -133,6 +130,6 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         
         logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
         
-        return Task.FromResult(output);
+        return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
 }

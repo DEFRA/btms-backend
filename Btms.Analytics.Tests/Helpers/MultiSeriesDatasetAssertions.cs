@@ -3,8 +3,8 @@ using FluentAssertions.Collections;
 
 namespace Btms.Analytics.Tests.Helpers;
 
-public class MultiSeriesDatasetAssertions(List<MultiSeriesDataset>? test)
-    : GenericCollectionAssertions<MultiSeriesDataset>(test)
+public class MultiSeriesDatasetAssertions(List<Series>? test)
+    : GenericCollectionAssertions<Series>(test)
 {
     [CustomAssertion]
     public void BeSameLength(string because = "", params object[] becauseArgs)
