@@ -2,7 +2,7 @@ using FluentAssertions;
 
 namespace Btms.Analytics.Tests.Helpers;
 
-public class SingleSeriesDatasetAssertions(SingeSeriesDataset? test)
+public class SingleSeriesDatasetAssertions(SingleSeriesDataset? test)
 {   
     [CustomAssertion]
     public void HaveResults(string because = "", params object[] becauseArgs)

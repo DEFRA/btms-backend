@@ -4,6 +4,7 @@ using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
 using Btms.Model.Extensions;
 using Btms.Model;
+using Btms.Model.Auditing;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -18,7 +19,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="to">Time period to search to (exclusive)</param>
     /// <param name="aggregateBy">Aggregate by day/hour</param>
     /// <returns></returns>
-    public Task<MultiSeriesDatetimeDataset[]> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
         
@@ -30,7 +31,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
-    public Task<SingeSeriesDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to)
     {
         var data = context
             .Movements
@@ -39,13 +40,13 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Key), g => g.Count);
             
-        return Task.FromResult(new SingeSeriesDataset
+        return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
 
-    public Task<MultiSeriesDataset[]> ByItemCount(DateTime from, DateTime to)
+    public Task<MultiSeriesDataset> ByItemCount(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -63,20 +64,24 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var maxCount = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.Count) : 0;
 
-        return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
-            .Select(title => new MultiSeriesDataset(title, "Item Count") {
-                Results = Enumerable.Range(0, maxCount + 1)
-                    .Select(i => new ByNumericDimensionResult
+        return Task.FromResult(new MultiSeriesDataset()
+        {
+            Series = AnalyticsHelpers.GetMovementSegments()
+                .Select(title => new Series(title, "Item Count")
                     {
-                        Dimension = i,
-                        Value = dictionary.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
-                    }).ToList()
-            })
-            .ToArray()    
-        );
+                        Results = Enumerable.Range(0, maxCount + 1)
+                            .Select(i => new ByNumericDimensionResult
+                            {
+                                Dimension = i,
+                                Value = dictionary.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
+                            }).ToList()
+                    }
+                )
+                .ToList()    
+        });
     }
     
-    public Task<MultiSeriesDataset[]> ByUniqueDocumentReferenceCount(DateTime from, DateTime to)
+    public Task<MultiSeriesDataset> ByUniqueDocumentReferenceCount(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -100,21 +105,25 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         var maxReferences = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.DocumentReferenceCount) : 0;
-        
-        return Task.FromResult(AnalyticsHelpers.GetMovementSegments()
-            .Select(title => new MultiSeriesDataset(title, "Document Reference Count") {
-                Results = Enumerable.Range(0, maxReferences + 1)
-                    .Select(i => new ByNumericDimensionResult
-                    {
-                        Dimension = i,
-                        Value = dictionary.GetValueOrDefault(new { Title=title, DocumentReferenceCount = i }, 0)
-                    }).ToList()
-            })
-            .ToArray()    
-        );
+
+        return Task.FromResult(new MultiSeriesDataset()
+        {
+            Series = AnalyticsHelpers.GetMovementSegments()
+                .Select(title => new Series(title, "Document Reference Count")
+                {
+                    Results = Enumerable.Range(0, maxReferences + 1)
+                        .Select(i => new ByNumericDimensionResult
+                        {
+                            Dimension = i,
+                            Value = dictionary.GetValueOrDefault(new { Title = title, DocumentReferenceCount = i },
+                                0)
+                        }).ToList()
+                })
+                .ToList()
+        });
     }
 
-    public Task<SingeSeriesDataset> UniqueDocumentReferenceByMovementCount(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> UniqueDocumentReferenceByMovementCount(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -134,12 +143,42 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     r =>r.MovementCount.ToString(),
                     r=> r.DocumentReferenceCount);
 
-            var result = new SingeSeriesDataset { Values = mongoResult };
+            var result = new SingleSeriesDataset { Values = mongoResult };
             
             return Task.FromResult(result);
     }
 
-    private Task<MultiSeriesDatetimeDataset[]> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
+    public async Task<EntityDataset<AuditHistory>> GetHistory(string movementId)
+    {
+        var movement = await context
+            .Movements
+            .Find(movementId);
+
+        var notificationIds = movement!.Relationships.Notifications.Data.Select(n => n.Id);
+
+        var notificationEntries = context.Notifications
+            .Where(n => notificationIds.Contains(n.Id))
+            .SelectMany(n => n.AuditEntries
+                .Select(a => 
+                    new AuditHistory(a, $"ImportNotification", n.Id!)
+                )
+            );
+        
+        var entries = movement!.AuditEntries
+            .Select(a => new AuditHistory(a, "Movement", movementId))
+            .Concat(notificationEntries);
+
+        entries = entries.OrderBy(a => a.AuditEntry.CreatedSource);
+        
+        return new EntityDataset<AuditHistory>(entries);
+    }
+
+    public Task<MultiSeriesDataset> ByCheck(DateTime from, DateTime to)
+    {
+        return Task.FromResult(new MultiSeriesDataset() );
+    }
+
+    private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
         var truncateBy = aggregateBy == AggregationPeriod.Hour ? "hour" : "day";
         
@@ -161,6 +200,6 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         
         logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
         
-        return Task.FromResult(output);
+        return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
 }

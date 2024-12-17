@@ -20,6 +20,7 @@ public class MovementsByItemsTests(
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await multiItemDataTestFixture.MovementsAggregationService
             .ByItemCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
+            .Series
             .ToList();
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
