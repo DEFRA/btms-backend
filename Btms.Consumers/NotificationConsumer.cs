@@ -42,10 +42,10 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
 
-                    var matchResult = await matchingService.Process(
-                        new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
+                var matchResult = await matchingService.Process(
+                    new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
-                    await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
+                await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
             }
 
         }

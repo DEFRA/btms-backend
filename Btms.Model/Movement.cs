@@ -111,7 +111,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
         if (linked)
         {
-            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
+            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1));
         }
     }
 
@@ -140,7 +140,8 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             BuildNormalizedDecisionPath(path),
             clearanceRequest.Header!.EntryVersionNumber.GetValueOrDefault(),
             clearanceRequest.ServiceHeader!.ServiceCalled,
-            clearanceRequest.Header.DeclarantName!);
+            clearanceRequest.Header.DeclarantName!,
+            clearanceRequest.ServiceHeader?.SourceSystem != "BTMS");
 
         Decisions ??= [];
         Decisions.Add(clearanceRequest);

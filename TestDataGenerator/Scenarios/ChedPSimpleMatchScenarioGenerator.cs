@@ -27,7 +27,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
         var alvsDecision = GetDecisionBuilder("decision-one-item")
-            .WithEntryDate(entryDate.AddHours(1))
+            .WithEntryDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1))
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithItemAndCheck(1, "H222", "H01")
             .ValidateAndBuild();
