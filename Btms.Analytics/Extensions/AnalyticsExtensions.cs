@@ -136,21 +136,21 @@ public static class AnalyticsExtensions
         logger.LogInformation("[{Query}]", string.Join(",", stages.Select(s => s.ToString()).ToArray()));
     }
 
-    public static Task<IDataset> AsIDataset(this Task<MultiSeriesDatetimeDataset> ms)
+    public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDatetimeDataset> ms)
     {
-        ms.Wait();
-        return Task.FromResult((IDataset)ms.Result);
+        await ms;
+        return (IDataset)ms.Result;
     }
 
-    public static Task<IDataset> AsIDataset(this Task<MultiSeriesDataset> ms)
+    public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDataset> ms)
     {
-        ms.Wait();
-        return Task.FromResult((IDataset)ms.Result);
+        await ms;
+        return (IDataset)ms.Result;
     }
 
-    public static Task<IDataset> AsIDataset(this Task<SingleSeriesDataset> ms)
+    public static async Task<IDataset> AsIDataset(this Task<SingleSeriesDataset> ms)
     {
-        ms.Wait();
-        return Task.FromResult((IDataset)ms.Result);
+        await ms;
+        return (IDataset)ms.Result;
     }
 }
