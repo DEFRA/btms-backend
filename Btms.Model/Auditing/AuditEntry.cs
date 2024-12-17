@@ -25,6 +25,8 @@ public class AuditEntry
     public string Status { get; set; } = default!;
 
     public List<AuditDiffEntry> Diff { get; set; } = new();
+    
+    public Dictionary<string, Dictionary<string, string>> Context { get; set; } = new();
 
     public bool IsCreatedOrUpdated()
     {
@@ -108,7 +110,6 @@ public class AuditEntry
         return new AuditEntry
         {
             Id = id,
-            Version = version,
             CreatedSource = t,
             CreatedBy = CreatedBySystem,
             CreatedLocal = t,
@@ -122,7 +123,6 @@ public class AuditEntry
         return new AuditEntry
         {
             Id = id,
-            Version = version,
             CreatedSource = t,
             CreatedBy = CreatedBySystem,
             CreatedLocal = t,
@@ -131,16 +131,17 @@ public class AuditEntry
     }
 
     public static AuditEntry CreateDecision(string id, int version,
-        DateTime? lastUpdated, string lastUpdatedBy, bool isAlvs)
+        DateTime? lastUpdated, string lastUpdatedBy, Dictionary<string, Dictionary<string, string>> context, bool isAlvs)
     {
         return new AuditEntry()
         {
             Id = id,
-            Version = version,
             CreatedSource = lastUpdated,
             CreatedBy = isAlvs ? CreatedByAlvs : CreatedBySystem,
             CreatedLocal = DateTime.UtcNow,
-            Status = "Decision"
+            Status = "Decision",
+            Context = context
+            
         };
     }
 

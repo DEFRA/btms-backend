@@ -21,6 +21,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
             .WithEntryDate(entryDate)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumber(notification.ReferenceNumber!)
+            .WithEntryVersionNumber(1)
             .WithItem("N853", "16041421", "Tuna ROW CHEDP", 900)
             .ValidateAndBuild();
 
@@ -29,6 +30,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
         var alvsDecision = GetDecisionBuilder("decision-one-item")
             .WithEntryDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1))
             .WithReferenceNumber(notification.ReferenceNumber!)
+            .WithEntryVersionNumber(1)
             .WithItemAndCheck(1, "H222", "H01")
             .ValidateAndBuild();
         

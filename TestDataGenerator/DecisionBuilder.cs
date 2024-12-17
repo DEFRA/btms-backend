@@ -48,6 +48,10 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     {
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime());
     }
+    public DecisionBuilder<T> WithEntryVersionNumber(int version)
+    {
+        return Do(x => x.Header!.EntryVersionNumber = version);
+    }
 
     public DecisionBuilder<T> WithItemAndCheck(int item, string checkCode, string decisionCode)
     {

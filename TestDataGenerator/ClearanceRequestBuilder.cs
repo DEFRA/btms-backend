@@ -48,7 +48,10 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime());
     }
-
+    public ClearanceRequestBuilder<T> WithEntryVersionNumber(int version)
+    {
+        return Do(x => x.Header!.EntryVersionNumber = version);
+    }
     public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 
         int maxHoursOffset = 12, int maxMinsOffset = 30)
     {
