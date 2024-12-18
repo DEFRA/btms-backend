@@ -35,7 +35,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
             .ValidateAndBuild();
         
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
-        
+
         return new GeneratorResult([clearanceRequest, notification, alvsDecision]);
     }
 }

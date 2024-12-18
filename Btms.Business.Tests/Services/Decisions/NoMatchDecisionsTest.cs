@@ -9,21 +9,48 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using SlimMessageBus;
+using TestDataGenerator;
 using TestDataGenerator.Scenarios;
 using Xunit;
+using Check = Btms.Model.Alvs.Check;
+using Decision = Btms.Model.Ipaffs.Decision;
 
 namespace Btms.Business.Tests.Services.Decisions;
 
 public class NoMatchDecisionsTest
 {
     [Fact]
+    public async Task WhenClearanceRequest_HasNotMatch_AndNoChecks_ThenNoDecisionShouldBeGenerated()
+    {
+        // Arrange
+        var movements = GenerateMovements(false);
+        var publishBus = Substitute.For<IPublishBus>();
+
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
+
+        var matchingResult = new MatchingResult();
+        matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
+
+        // Act
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, true), CancellationToken.None);
+
+        // Assert
+        decisionResult.Should().NotBeNull();
+        decisionResult.Decisions.Count.Should().Be(0);
+        await publishBus.Received(0).Publish(Arg.Any<Decision>(), Arg.Any<string>(),
+            Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
+        await Task.CompletedTask;
+    }
+
+    [Fact]
     public async Task WhenClearanceRequest_HasNotMatch_ThenDecisionCodeShouldBeNoMatch()
     {
         // Arrange
-        var movements = GenerateMovements();
+        var movements = GenerateMovements(true);
+        movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
         var publishBus = Substitute.For<IPublishBus>();
 
-        var sut = new DecisionService(publishBus);
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
@@ -41,10 +68,14 @@ public class NoMatchDecisionsTest
         await Task.CompletedTask;
     }
 
-    private static List<Movement> GenerateMovements()
+    // CrNoMatchNoChecksScenarioGenerator
+    // CrNoMatchScenarioGenerator
+    private static List<Movement> GenerateMovements(bool hasChecks)
     {
-        CrNoMatchScenarioGenerator generator =
-        new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
+        ScenarioGenerator generator = hasChecks
+            ? new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance)
+            : new CrNoMatchNoChecksScenarioGenerator(NullLogger<CrNoMatchNoChecksScenarioGenerator>.Instance);
+            
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);

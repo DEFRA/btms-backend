@@ -59,15 +59,19 @@ public static class ImportNotificationWithTransformMapper
             var complementRiskAssesments = new Dictionary<string, CommodityRiskResult>();
             var commodityChecks = new Dictionary<string, InspectionCheck[]>();
 
-            foreach (var commoditiesCommodityComplement in commodities!.ComplementParameterSets!)
+            if (commodities?.ComplementParameterSets != null)
             {
-                complementParameters[commoditiesCommodityComplement.ComplementId!.Value] =
-                    commoditiesCommodityComplement;
+                foreach (var commoditiesCommodityComplement in commodities.ComplementParameterSets)
+                {
+                    complementParameters[commoditiesCommodityComplement.ComplementId!.Value] =
+                        commoditiesCommodityComplement;
+                }
             }
 
-            if (from.RiskAssessment != null)
+            
+            if (from.RiskAssessment?.CommodityResults != null)
             {
-                foreach (var commoditiesRa in from.RiskAssessment.CommodityResults!)
+                foreach (var commoditiesRa in from.RiskAssessment.CommodityResults)
                 {
                     complementRiskAssesments[commoditiesRa.UniqueId!] = commoditiesRa;
                 }
@@ -81,7 +85,7 @@ public static class ImportNotificationWithTransformMapper
                 }
             }
 
-            if (commodities.CommodityComplements is not null)
+            if (commodities?.CommodityComplements is not null)
             {
                 foreach (var commodity in commodities.CommodityComplements)
                 {
@@ -105,7 +109,10 @@ public static class ImportNotificationWithTransformMapper
             }
         }
 
-        to.CommoditiesSummary = CommoditiesMapper.Map(commodities);
-        to.Commodities = commodities.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray()!;
+        if (commodities != null)
+        {
+            to.CommoditiesSummary = CommoditiesMapper.Map(commodities);
+            to.Commodities = commodities.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray()!;
+        }
     }
 }
