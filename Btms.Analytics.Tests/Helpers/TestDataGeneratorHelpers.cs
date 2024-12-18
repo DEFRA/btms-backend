@@ -2,6 +2,7 @@ using Btms.Common.Extensions;
 using Btms.Consumers;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
+using Btms.SyncJob.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,19 +10,18 @@ using SlimMessageBus;
 using SlimMessageBus.Host;
 using TestDataGenerator;
 using TestDataGenerator.Scenarios;
-
 namespace Btms.Analytics.Tests.Helpers;
 
 public static class TestDataGeneratorHelpers
 {
     private static int scenarioIndex;
     
-    public static async Task<IHost> PushToConsumers(this IHost app, ScenarioConfig scenario)
+    public static async Task<IHost> PushToConsumers(this IHost app, ILogger logger, ScenarioConfig scenario)
     {
-        var generatorResults = app.Generate(scenario);
+        var generatorResults = app.Generate(logger, scenario);
         scenarioIndex++;
         
-        app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
+        // var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         var bus = app.Services.GetRequiredService<IPublishBus>();
         
         foreach (var generatorResult in generatorResults)
@@ -31,7 +31,6 @@ public static class TestDataGeneratorHelpers
                 var scope = app.Services.CreateScope();
                 var topic = string.Empty;
                 var headers = new Dictionary<string, object>();
-
 
                 switch (message)
                 {
@@ -52,6 +51,7 @@ public static class TestDataGeneratorHelpers
                         throw new ArgumentException($"Unexpected type {message.GetType().Name}");
                 }
 
+                logger.LogInformation("Published message {0} to topic {1}", message, topic);
                 await bus.Publish(message, topic, headers);
             }
         }
@@ -59,9 +59,9 @@ public static class TestDataGeneratorHelpers
         return app;
     } 
     
-    private static ScenarioGenerator.GeneratorResult[] Generate(this IHost app, ScenarioConfig scenario)
+    private static ScenarioGenerator.GeneratorResult[] Generate(this IHost app, ILogger logger, ScenarioConfig scenario)
     {
-        var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
+        // var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         var days = scenario.CreationDateRange;
         var count = scenario.Count;
         var generator = scenario.Generator;

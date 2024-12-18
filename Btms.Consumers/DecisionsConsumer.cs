@@ -6,11 +6,11 @@ using SlimMessageBus;
 namespace Btms.Consumers;
 
 public class DecisionsConsumer(IMongoDbContext dbContext)
-    : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
+    : IConsumer<Decision>, IConsumerWithContext
 {
-    public async Task OnHandle(AlvsClearanceRequest message)
+    public async Task OnHandle(Decision message)
     {
-        var internalClearanceRequest = AlvsClearanceRequestMapper.Map(message);
+        var internalClearanceRequest = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
 
         if (existingMovement != null)
