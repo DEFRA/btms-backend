@@ -12,6 +12,7 @@ using SlimMessageBus;
 using TestDataGenerator.Scenarios;
 using Xunit;
 using Check = Btms.Model.Alvs.Check;
+using Decision = Btms.Model.Ipaffs.Decision;
 
 namespace Btms.Business.Tests.Services.Decisions;
 
@@ -35,7 +36,7 @@ public class NoMatchDecisionsTest
         // Assert
         decisionResult.Should().NotBeNull();
         decisionResult.Decisions.Count.Should().Be(0);
-        await publishBus.Received(0).Publish(Arg.Any<AlvsClearanceRequest>(), Arg.Any<string>(),
+        await publishBus.Received(0).Publish(Arg.Any<Decision>(), Arg.Any<string>(),
             Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         await Task.CompletedTask;
     }

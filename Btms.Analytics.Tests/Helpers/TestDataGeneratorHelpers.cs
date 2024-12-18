@@ -53,6 +53,12 @@ public static class TestDataGeneratorHelpers
                         break;
                     
                     case Decision d:
+                        // This sleep is to allow the system to settle, and have made any links & decisions
+                        // Before sending in a decision and causing a concurrency issue
+                        // Ideally we want to switch to pushing to the bus, rather than directly to the consumer
+                        // so we get the concurrency protection.
+                        
+                        Thread.Sleep(1000);
                         
                         var decisionConsumer = (DecisionsConsumer)scope
                             .ServiceProvider
