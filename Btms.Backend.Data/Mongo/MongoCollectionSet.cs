@@ -38,7 +38,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
 
     public async Task<T?> Find(Expression<Func<T, bool>> query)
     {
-        return await EntityQueryable.SingleOrDefaultAsync(query);
+        return await EntityQueryable.FirstOrDefaultAsync(query);
     }
 
     public Task Insert(T item, IMongoDbTransaction? transaction, CancellationToken cancellationToken = default)

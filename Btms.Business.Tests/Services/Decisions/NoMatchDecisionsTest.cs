@@ -36,7 +36,7 @@ public class NoMatchDecisionsTest
         decisionResult.Decisions.Count.Should().Be(1);
         decisionResult.Decisions[0].DecisionCode.Should().Be(DecisionCode.X00);
         
-        await publishBus.Received().Publish(Arg.Any<AlvsClearanceRequest>(), Arg.Any<string>(),
+        await publishBus.Received().Publish(Arg.Any<Types.Alvs.Decision>(), Arg.Any<string>(),
             Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         await Task.CompletedTask;
     }
