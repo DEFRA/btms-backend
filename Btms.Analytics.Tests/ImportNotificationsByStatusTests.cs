@@ -17,7 +17,7 @@ public class ImportNotificationsByStatusTests(
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByStatus(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
@@ -29,7 +29,7 @@ public class ImportNotificationsByStatusTests(
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByStatus(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
@@ -44,7 +44,7 @@ public class ImportNotificationsByStatusTests(
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByStatus(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");

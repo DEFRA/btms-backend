@@ -44,11 +44,19 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             });
     }
 
-    public ClearanceRequestBuilder<T> WithEntryDate(DateTime entryDate)
+    public ClearanceRequestBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
-        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime());
+        var entry = randomTime ?
+            // We don't want documents created in the future!
+            entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
+            : entryDate;
+        
+        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
     }
-
+    public ClearanceRequestBuilder<T> WithEntryVersionNumber(int version)
+    {
+        return Do(x => x.Header!.EntryVersionNumber = version);
+    }
     public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 
         int maxHoursOffset = 12, int maxMinsOffset = 30)
     {
@@ -65,7 +73,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     }
 
     public ClearanceRequestBuilder<T> WithItem(string documentCode, string commodityCode, string description,
-        int netWeight)
+        int netWeight, string checkCode = "H2019")
     {
         return Do(cr =>
         {
@@ -73,6 +81,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Items![0].GoodsDescription = description;
             cr.Items![0].ItemNetMass = netWeight;
             cr.Items![0].Documents![0].DocumentCode = documentCode;
+            cr.Items![0].Checks![0].CheckCode = checkCode;
         });
     }
     

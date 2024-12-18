@@ -25,3 +25,11 @@ TestDataGenerator/.test-data-generator/GENERATED-LOADTEST-90Dx10k --destination-
 
 az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s TestDataGenerator/.test-data-generator/GENERATED-LOADTEST-BASIC --destination-path GENERATED-LOADTEST-BASIC
 az storage blob upload-batch -d dmp-data-1001 --account-name snddmpinfdl1001 -s TestDataGenerator/.test-data-generator/PRODREDACTED-20241204 --destination-path PRODREDACTED-20241204
+
+
+az storage blob directory list -c dmp-data-1001 -d  --account-name snddmpinfdl1001
+
+az storage fs directory list -f dmp-data-1001 -d --account-name snddmpinfdl1001
+
+
+az storage fs directory download -f dmp-data-1001 -s "PRODREDACTED-20241204" -d "TestDataGenerator/.test-data-generator" --recursive --account-name snddmpinfdl1001

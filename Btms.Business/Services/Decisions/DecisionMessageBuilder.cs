@@ -1,14 +1,15 @@
 using Btms.Model;
 using Btms.Model.Ipaffs;
 using Btms.Types.Alvs;
+using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Business.Services.Decisions;
 
 public static class DecisionMessageBuilder
 {
-    public static Task<List<AlvsClearanceRequest>> Build(DecisionContext decisionContext, DecisionResult decisionResult)
+    public static Task<List<Decision>> Build(DecisionContext decisionContext, DecisionResult decisionResult)
     {
-        var list = new List<AlvsClearanceRequest>();
+        var list = new List<Decision>();
 
         var movements = decisionResult.Decisions.GroupBy(x => x.MovementId).ToList();
 
@@ -16,7 +17,7 @@ public static class DecisionMessageBuilder
         {
             var movement = decisionContext.Movements.First(x => x.Id == movementGroup.Key);
             var messageNumber = movement is { Decisions: null } ? 1 : movement.Decisions.Count + 1;
-            var decisionMessage = new AlvsClearanceRequest()
+            var decisionMessage = new Decision()
             {
                 ServiceHeader = BuildServiceHeader(),
                 Header = BuildHeader(movement, messageNumber),
@@ -48,10 +49,7 @@ public static class DecisionMessageBuilder
             DecisionNumber = messageNumber
         };
     }
-
-
-   
-
+    
     private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementGroup)
     {
         var itemGroups = movementGroup.GroupBy(x => x.ItemNumber);

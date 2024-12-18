@@ -39,7 +39,7 @@ public class ImportNotificationBuilderTests
     {
         var date = DateTime.Today.AddDays(-5);
         var builder = ImportNotificationBuilder.Default();
-        builder.WithEntryDate(date);
+        builder.WithCreationDate(date);
 
         var notification = builder.Build();
         notification.LastUpdated.ToDate().Should().Be(date.ToDate());

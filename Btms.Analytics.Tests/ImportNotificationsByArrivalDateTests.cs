@@ -18,7 +18,7 @@ public class ImportNotificationsByArrivalDateTests(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         
-        var result = (await basicSampleDataTestFixture.ImportNotificationsAggregationService
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .Series
             .ToList();

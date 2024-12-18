@@ -8,9 +8,13 @@ namespace Btms.Model.Auditing;
 
 public class AuditEntry
 {
-    private const string CreatedBySystem = "System";
+    public const string CreatedBySystem = "Btms";
+    public const string CreatedByIpaffs = "Ipaffs";
+    public const string CreatedByAlvs = "Alvs";
+    public const string CreatedByCds = "Cds";
+    public const string CreatedByGvms = "Gvms";
     public string Id { get; set; } = default!;
-    public int Version { get; set; }
+    public int? Version { get; set; }
 
     public string CreatedBy { get; set; } = default!;
 
@@ -21,6 +25,8 @@ public class AuditEntry
     public string Status { get; set; } = default!;
 
     public List<AuditDiffEntry> Diff { get; set; } = new();
+    
+    public Dictionary<string, Dictionary<string, string>> Context { get; set; } = new();
 
     public bool IsCreatedOrUpdated()
     {
@@ -39,27 +45,27 @@ public class AuditEntry
 
 
     public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated,
-        string lastUpdatedBy, string status)
+        string lastUpdatedBy, string status, string source)
     {
         var node1 = JsonNode.Parse(previous.ToJsonString());
         var node2 = JsonNode.Parse(current.ToJsonString());
 
-        return CreateInternal(node1!, node2!, id, version, lastUpdated, status);
+        return CreateInternal(node1!, node2!, id, version, lastUpdated, status, source);
     }
 
-    public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated)
+    public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated, string source)
     {
-        return Create(previous, current, id, version, lastUpdated, CreatedBySystem, "Updated");
+        return Create(previous, current, id, version, lastUpdated, CreatedBySystem, "Updated", source);
     }
 
-    public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated)
+    public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, string source)
     {
         var auditEntry = new AuditEntry
         {
             Id = id,
             Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = source,
             CreatedLocal = DateTime.UtcNow,
             Status = "Updated"
         };
@@ -72,74 +78,75 @@ public class AuditEntry
         return auditEntry;
     }
 
-    public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated)
+    public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated, string source)
     {
         return new AuditEntry
         {
             Id = id,
             Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = source,
             CreatedLocal = DateTime.UtcNow,
             Status = "Created"
         };
     }
 
-    public static AuditEntry CreateSkippedVersion(string id, int version, DateTime? lastUpdated)
+    public static AuditEntry CreateSkippedVersion(string id, int version, DateTime? lastUpdated, string source)
     {
         return new AuditEntry
         {
             Id = id,
             Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = source,
             CreatedLocal = DateTime.UtcNow,
             Status = "Updated"
         };
     }
 
-    public static AuditEntry CreateLinked(string id, int version, DateTime? lastUpdated)
+    public static AuditEntry CreateLinked(string id, int version)
     {
+        var t = DateTime.UtcNow;
         return new AuditEntry
         {
             Id = id,
-            Version = version,
-            CreatedSource = lastUpdated,
+            CreatedSource = t,
             CreatedBy = CreatedBySystem,
-            CreatedLocal = DateTime.UtcNow,
+            CreatedLocal = t,
             Status = "Linked"
         };
     }
 
-    public static AuditEntry CreateMatch(string id, int version, DateTime? lastUpdated)
+    public static AuditEntry CreateMatch(string id, int version)
     {
+        var t = DateTime.UtcNow;
         return new AuditEntry
         {
             Id = id,
-            Version = version,
-            CreatedSource = lastUpdated,
+            CreatedSource = t,
             CreatedBy = CreatedBySystem,
-            CreatedLocal = DateTime.UtcNow,
+            CreatedLocal = t,
             Status = "Matched"
         };
     }
 
     public static AuditEntry CreateDecision(string id, int version,
-        DateTime? lastUpdated, string lastUpdatedBy)
+        DateTime? lastUpdated, string lastUpdatedBy, Dictionary<string, Dictionary<string, string>> context, bool isAlvs)
     {
         return new AuditEntry()
         {
             Id = id,
-            Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = isAlvs ? CreatedByAlvs : CreatedBySystem,
             CreatedLocal = DateTime.UtcNow,
-            Status = "Decision"
+            Status = "Decision",
+            Context = context
+            
         };
     }
 
     private static AuditEntry CreateInternal(JsonNode previous, JsonNode current, string id, int version,
-        DateTime? lastUpdated, string status)
+        DateTime? lastUpdated, string status, string source)
     {
         var diff = previous.CreatePatch(current);
 
@@ -148,7 +155,7 @@ public class AuditEntry
             Id = id,
             Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = source,
             CreatedLocal = DateTime.UtcNow,
             Status = status
         };

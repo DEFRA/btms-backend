@@ -1,7 +1,9 @@
 using Btms.Analytics.Tests.Helpers;
 using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TestDataGenerator.Scenarios;
+using Xunit.Abstractions;
 
 namespace Btms.Analytics.Tests.Fixtures;
 
@@ -9,20 +11,20 @@ namespace Btms.Analytics.Tests.Fixtures;
 public class MultiItemDataTestFixture : IDisposable
 #pragma warning restore S3881
 {
-    public readonly IImportNotificationsAggregationService ImportNotificationsAggregationService;
-    public readonly IMovementsAggregationService MovementsAggregationService;
+    public readonly IMongoDbContext MongoDbContext;
+    private readonly IServiceScope _rootScope;
+    private readonly ILogger<MultiItemDataTestFixture> _logger;
 
-    public IMongoDbContext MongoDbContext;
-    public MultiItemDataTestFixture()
+    public MultiItemDataTestFixture(IMessageSink messageSink)
     {
+        _logger = messageSink.ToLogger<MultiItemDataTestFixture>();
+        
         var builder = TestContextHelper.CreateBuilder<MultiItemDataTestFixture>();
 
         var app = builder.Build();
-        var rootScope = app.Services.CreateScope();
+        _rootScope = app.Services.CreateScope();
 
-        MongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        ImportNotificationsAggregationService = rootScope.ServiceProvider.GetRequiredService<IImportNotificationsAggregationService>();
-        MovementsAggregationService = rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>();
+        MongoDbContext = _rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
         
         // Would like to pick this up from env/config/DB state
         var insertToMongo = true;
@@ -31,16 +33,33 @@ public class MultiItemDataTestFixture : IDisposable
         {
             MongoDbContext.ResetCollections().GetAwaiter().GetResult();
         
-            app.PushToConsumers(app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
-        
-            app.PushToConsumers(app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
-        
-            app.PushToConsumers(app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+                .GetAwaiter().GetResult();
+            
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
         }
     }
+    
+    public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
+    {
+        var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
+        return new ImportNotificationsAggregationService(MongoDbContext, logger);   
+    }
+    
+    public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)
+    {
+        var logger = testOutputHelper.GetLogger<MovementsAggregationService>();
+        // return _rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>(); 
+        return new MovementsAggregationService(MongoDbContext, logger);
+    }
+    
 
     public void Dispose()
     {

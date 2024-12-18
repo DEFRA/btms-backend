@@ -13,7 +13,7 @@ public class CachingBlobService(
 {
     public Task<Status> CheckBlobAsync(int timeout = default, int retries = default)
     {
-        return blobService.CheckBlobAsync();
+        return blobService.CheckBlobAsync(timeout, retries);
     }
 
     public Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default)
@@ -23,29 +23,52 @@ public class CachingBlobService(
 
     public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var path = Path.GetFullPath($"{options.Value.CachePath}/{prefix}");
-        logger.LogInformation("Scanning disk {Path}", path);
-
-        if (Directory.Exists(path))
+        if (!options.Value.CacheReadEnabled)
         {
-            logger.LogInformation("Folder {Path} exists, looking for files", path);  
-           foreach (var f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
-           {
-               var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}/{options.Value.CachePath}", f);
-                 logger.LogInformation("Found file {RelativePath}", relativePath);
-                 yield return await Task.FromResult(new BtmsBlobItem { Name = relativePath });
-            }           
+            await foreach (var blobItem in blobService.GetResourcesAsync(prefix, cancellationToken))
+            {
+                yield return blobItem;
+            }
         }
-        else{
-            logger.LogWarning("Cannot scan folder {Path} as it doesn't exist", path);    
+        else
+        {
+            var path = Path.GetFullPath($"{options.Value.CachePath}/{prefix}");
+            logger.LogInformation("Scanning disk {Path}", path);
+
+            if (Directory.Exists(path))
+            {
+                logger.LogInformation("Folder {Path} exists, looking for files", path);  
+                foreach (var f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
+                {
+                    var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}/{options.Value.CachePath}", f);
+                    logger.LogInformation("Found file {RelativePath}", relativePath);
+                    yield return await Task.FromResult(new BtmsBlobItem { Name = relativePath });
+                }           
+            }
+            else{
+                logger.LogWarning("Cannot scan folder {Path} as it doesn't exist", path);    
+            }
         }
     }
 
-    public Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)
+    public async Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)
     {
+        if (!options.Value.CacheReadEnabled)
+        {
+            var blob =blobService.GetResource(item, cancellationToken);
+
+            if (options.Value.CacheWriteEnabled)
+            {
+                item.Content = blob.Result;
+                await CreateBlobAsync(item);
+            }
+
+            return blob.Result;
+        }
+
         var filePath = $"{options.Value.CachePath}/{item.Name}";
         logger.LogInformation("GetResource {FilePath}", filePath);
-        return Task.Run(() => File.ReadAllText(filePath), cancellationToken);
+        return File.ReadAllText(filePath);
     }
     
     public async Task<bool> CreateBlobsAsync(IBlobItem[] items)

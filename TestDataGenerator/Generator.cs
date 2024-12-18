@@ -41,17 +41,18 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
     private async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result, string rootPath)
     {
         logger.LogInformation(
-            "Uploading {ImportNotificationsLength} Notification(s) and {ClearanceRequestsLength} Clearance Request(s) to blob storage",
-            result.ImportNotifications.Length, result.ClearanceRequests.Length);
+            "Uploading {Count} messages to blob storage",
+            result.Count);
+        
+        var blobs = result.Select(r => new BtmsBlobItem
+        {
+            Name = r.BlobPath(rootPath), Content = JsonSerializer.Serialize(r)
+        });
 
-        var importNotificationBlobItems = result.ImportNotifications.Select(n =>
-            new BtmsBlobItem { Name = n.BlobPath(rootPath), Content = JsonSerializer.Serialize(n) });
-
-        var alvsClearanceRequestBlobItems = result.ClearanceRequests.Select(cr =>
-            new BtmsBlobItem { Name = cr.BlobPath(rootPath), Content = JsonSerializer.Serialize(cr) });
-
-        var success = await blobService.CreateBlobsAsync(importNotificationBlobItems
-            .Concat(alvsClearanceRequestBlobItems).ToArray<IBlobItem>());
+        var success = await blobService.CreateBlobsAsync(blobs.ToArray<IBlobItem>());
+        
+        // var success = await blobService.CreateBlobsAsync(importNotificationBlobItems
+        //     .Concat(alvsClearanceRequestBlobItems).ToArray<IBlobItem>());
 
         return success;
     }

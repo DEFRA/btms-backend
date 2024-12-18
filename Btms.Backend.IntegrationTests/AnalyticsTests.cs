@@ -94,8 +94,6 @@ public class AnalyticsTests(IntegrationTestsApplicationFactory factory, ITestOut
         
         var responseDictionary = await response.ToJsonDictionary();
         
-        responseDictionary.Count.Should().Be(13);
-        
         responseDictionary.Keys.Take(2).Should().Equal(
             "importNotificationLinkingByCreated",
             "importNotificationLinkingByArrival");

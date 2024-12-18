@@ -45,7 +45,7 @@ namespace Btms.Business.Tests.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // ASSERT
-            await bus.Received(1).Publish(Arg.Any<AlvsClearanceRequest>(), "DECISIONS",
+            await bus.Received(1).Publish(Arg.Any<Decision>(), "DECISIONS",
                 Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         }
     }

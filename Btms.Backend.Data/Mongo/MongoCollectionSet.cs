@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Btms.Backend.Data.Mongo;
 
@@ -33,6 +34,11 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     public async Task<T?> Find(string id)
     {
         return await EntityQueryable.SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<T?> Find(Expression<Func<T, bool>> query)
+    {
+        return await EntityQueryable.FirstOrDefaultAsync(query);
     }
 
     public Task Insert(T item, IMongoDbTransaction? transaction, CancellationToken cancellationToken = default)

@@ -2,6 +2,7 @@ using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Matching;
 using Btms.Model;
 using Btms.Model.Ipaffs;
+using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using Btms.Types.Ipaffs.Mapping;
 using FluentAssertions;
@@ -52,9 +53,9 @@ public class MatchingServiceTests
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
-        return generatorResult.ClearanceRequests.Select(x =>
+        return generatorResult.Select(x =>
         {
-            var internalClearanceRequest = AlvsClearanceRequestMapper.Map(x);
+            var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
             return MovementPreProcessor.BuildMovement(internalClearanceRequest);
         }).ToList();
     }
@@ -67,15 +68,31 @@ public class MatchingServiceTests
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
-        var movements = generatorResult.ClearanceRequests.Select(x =>
-        {
-            var internalClearanceRequest = AlvsClearanceRequestMapper.Map(x);
-            return MovementPreProcessor.BuildMovement(internalClearanceRequest);
-        }).ToList();
+        var messages = generatorResult.Aggregate(
+            new { Notifications = new List<ImportNotification>(), Movements = new List<Movement>(), }, (memo, x) =>
+            {
+                switch (x)
+                {
+                    case null:
+                        throw new ArgumentNullException();
 
-        var notifications = generatorResult.ImportNotifications.Select(ImportNotificationMapper.Map).ToList();
+                    case Btms.Types.Ipaffs.ImportNotification n:
+                        var internalNotification = ImportNotificationMapper.Map(n);
+                        memo.Notifications.Add(internalNotification);
+                        break;
+                    case AlvsClearanceRequest cr:
 
-        return new ValueTuple<List<ImportNotification>, List<Movement>>(notifications, movements);
+                        var internalClearanceRequest = AlvsClearanceRequestMapper.Map(cr);
+                        memo.Movements.Add(MovementPreProcessor.BuildMovement(internalClearanceRequest));
+                        break;
+                    default:
+                        throw new ArgumentException($"Unexpected type {x.GetType().Name}");
+                }
+
+                return memo;
+            });
+
+        return new ValueTuple<List<ImportNotification>, List<Movement>>(messages.Notifications, messages.Movements);
     }
 
     

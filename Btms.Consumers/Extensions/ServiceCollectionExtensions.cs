@@ -10,6 +10,7 @@ using SlimMessageBus.Host;
 using SlimMessageBus.Host.Interceptor;
 using SlimMessageBus.Host.Memory;
 using AlvsClearanceRequest = Btms.Types.Alvs.AlvsClearanceRequest;
+using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Consumers.Extensions
 {
@@ -41,7 +42,7 @@ namespace Btms.Consumers.Extensions
                     {
                         cbb.WithProviderMemory(cfg =>
                             {
-                                cfg.EnableBlockingPublish = false;
+                                cfg.EnableBlockingPublish = consumerOpts.EnableBlockingPublish;
                                 cfg.EnableMessageHeaders = true;
                             })
                             .AddServicesFromAssemblyContaining<NotificationConsumer>(
@@ -64,7 +65,8 @@ namespace Btms.Consumers.Extensions
                                 x.Instances(consumerOpts.InMemoryClearanceRequests);
                                 x.Topic("CLEARANCEREQUESTS").WithConsumer<AlvsClearanceRequestConsumer>();
                             })
-                            .Consume<AlvsClearanceRequest>(x =>
+                            .Produce<Decision>(x => x.DefaultTopic(nameof(Decision)))
+                            .Consume<Decision>(x =>
                             {
                                 x.Instances(consumerOpts.InMemoryDecisions);
                                 x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();

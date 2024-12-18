@@ -31,6 +31,11 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         return Task.FromResult(data.Find(x => x.Id == id));
     }
 
+    public Task<T?> Find(Expression<Func<T, bool>> query)
+    {
+        return Task.FromResult(data.Find(i => query.Compile()(i)));
+    }
+
     public Task Insert(T item, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default)
     {
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;

@@ -24,7 +24,8 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
                 movement.ClearanceRequests[0],
                 preProcessingContext.MessageId,
                 movement.ClearanceRequests[0].Header?.EntryVersionNumber.GetValueOrDefault() ?? -1,
-                movement.UpdatedSource);
+                movement.UpdatedSource,
+                AuditEntry.CreatedByCds);
             movement.Update(auditEntry);
             await dbContext.Movements.Insert(movement);
             return PreProcessResult.New(movement);
@@ -38,7 +39,8 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             var auditEntry = AuditEntry.CreateUpdated(changeSet,
                 preProcessingContext.MessageId,
                 movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
-                movement.UpdatedSource);
+                movement.UpdatedSource,
+                AuditEntry.CreatedByCds);
             movement.Update(auditEntry);
 
             existingMovement.ClearanceRequests.RemoveAll(x =>

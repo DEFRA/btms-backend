@@ -68,9 +68,14 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.ReferenceNumber = DataHelpers.GenerateReferenceNumber(chedType, scenario, created, item));
     }
 
-    public ImportNotificationBuilder<T> WithEntryDate(DateTime entryDate)
+    public ImportNotificationBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
-        return Do(x => x.LastUpdated = entryDate.RandomTime());
+        var entry = randomTime ?
+            // We don't want documents created in the future!
+            entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
+            : entryDate;
+        
+        return Do(x => x.LastUpdated = entry);
     }
 
     public ImportNotificationBuilder<T> WithRandomArrivalDateTime(int maxDays, int maxHours=6)

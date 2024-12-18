@@ -18,7 +18,7 @@ public class ImportNotificationsByCommoditiesTests(
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await multiItemDataTestFixture.ImportNotificationsAggregationService
+        var result = (await multiItemDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
             .ByCommodityCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
