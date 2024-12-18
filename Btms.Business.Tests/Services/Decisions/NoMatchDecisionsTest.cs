@@ -9,6 +9,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using SlimMessageBus;
+using TestDataGenerator;
 using TestDataGenerator.Scenarios;
 using Xunit;
 using Check = Btms.Model.Alvs.Check;
@@ -22,7 +23,7 @@ public class NoMatchDecisionsTest
     public async Task WhenClearanceRequest_HasNotMatch_AndNoChecks_ThenNoDecisionShouldBeGenerated()
     {
         // Arrange
-        var movements = GenerateMovements();
+        var movements = GenerateMovements(false);
         var publishBus = Substitute.For<IPublishBus>();
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
@@ -45,7 +46,7 @@ public class NoMatchDecisionsTest
     public async Task WhenClearanceRequest_HasNotMatch_ThenDecisionCodeShouldBeNoMatch()
     {
         // Arrange
-        var movements = GenerateMovements();
+        var movements = GenerateMovements(true);
         movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
         var publishBus = Substitute.For<IPublishBus>();
 
@@ -67,10 +68,14 @@ public class NoMatchDecisionsTest
         await Task.CompletedTask;
     }
 
-    private static List<Movement> GenerateMovements()
+    // CrNoMatchNoChecksScenarioGenerator
+    // CrNoMatchScenarioGenerator
+    private static List<Movement> GenerateMovements(bool hasChecks)
     {
-        CrNoMatchScenarioGenerator generator =
-        new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
+        ScenarioGenerator generator = hasChecks
+            ? new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance)
+            : new CrNoMatchNoChecksScenarioGenerator(NullLogger<CrNoMatchNoChecksScenarioGenerator>.Instance);
+            
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
