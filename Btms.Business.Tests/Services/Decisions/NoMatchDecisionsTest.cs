@@ -11,16 +11,41 @@ using NSubstitute;
 using SlimMessageBus;
 using TestDataGenerator.Scenarios;
 using Xunit;
+using Check = Btms.Model.Alvs.Check;
 
 namespace Btms.Business.Tests.Services.Decisions;
 
 public class NoMatchDecisionsTest
 {
     [Fact]
+    public async Task WhenClearanceRequest_HasNotMatch_AndNoChecks_ThenNoDecisionShouldBeGenerated()
+    {
+        // Arrange
+        var movements = GenerateMovements();
+        var publishBus = Substitute.For<IPublishBus>();
+
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
+
+        var matchingResult = new MatchingResult();
+        matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
+
+        // Act
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, true), CancellationToken.None);
+
+        // Assert
+        decisionResult.Should().NotBeNull();
+        decisionResult.Decisions.Count.Should().Be(0);
+        await publishBus.Received(0).Publish(Arg.Any<AlvsClearanceRequest>(), Arg.Any<string>(),
+            Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
+        await Task.CompletedTask;
+    }
+
+    [Fact]
     public async Task WhenClearanceRequest_HasNotMatch_ThenDecisionCodeShouldBeNoMatch()
     {
         // Arrange
         var movements = GenerateMovements();
+        movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
         var publishBus = Substitute.For<IPublishBus>();
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);

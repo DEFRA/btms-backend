@@ -33,16 +33,27 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus) :
         {
             foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
             {
-                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference,
-                    DecisionCode.X00);
+                var checks = decisionContext.Movements.First(x => x.Id == noMatch.MovementId).Items
+                    .First(x => x.ItemNumber == noMatch.ItemNumber).Checks;
+                if (checks != null && checks.Any())
+                {
+                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference,
+                        DecisionCode.X00);
+                }
             }
         }
 
         foreach (var match in decisionContext.MatchingResult.Matches)
         {
-            var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
-            var decisionCode = GetDecision(n);
-            decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode);
+            var checks = decisionContext.Movements.First(x => x.Id == match.MovementId).Items
+                .First(x => x.ItemNumber == match.ItemNumber).Checks;
+            if (checks != null && checks.Any())
+            {
+                var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+                var decisionCode = GetDecision(n);
+                decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference,
+                    decisionCode.DecisionCode);
+            }
         }
 
         return Task.FromResult(decisionsResult);
