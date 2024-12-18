@@ -23,7 +23,7 @@ public class NoMatchDecisionsTest
         var movements = GenerateMovements();
         var publishBus = Substitute.For<IPublishBus>();
 
-        var sut = new DecisionService(publishBus);
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
