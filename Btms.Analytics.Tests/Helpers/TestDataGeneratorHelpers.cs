@@ -22,6 +22,7 @@ public static class TestDataGeneratorHelpers
         scenarioIndex++;
         
         app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
+        var bus = app.Services.GetRequiredService<IPublishBus>();
         
         foreach (var generatorResult in generatorResults)
         {
@@ -35,56 +36,28 @@ public static class TestDataGeneratorHelpers
                         throw new ArgumentNullException();
                     
                     case ImportNotification n:
-                        
-                        var notificationConsumer = (NotificationConsumer)scope
-                            .ServiceProvider
-                            .GetRequiredService<IConsumer<ImportNotification>>();
-        
-                        notificationConsumer.Context = new ConsumerContext
+
+                        var headers = new Dictionary<string, object>()
                         {
-                            Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
+                            { "messageId", n.ReferenceNumber! }
                         };
-            
-                        await notificationConsumer.OnHandle(n);
+
+                        
+                        await bus.Publish(n, "NOTIFICATIONS", headers);
                         break;
                     
                     case AlvsClearanceRequest cr:
 
-                        if (cr.Header!.DecisionNumber.HasValue())
-                        {
-                            // throw new ArgumentException("How do we get the DecisionsConsumer?");
-                            
-                            var decisionsConsumer = (DecisionsConsumer)scope
-                                .ServiceProvider
-                                .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
-                            
-                            decisionsConsumer.Context = new ConsumerContext
-                            {
-                                Headers = new Dictionary<string, object>
-                                {
-                                    { "messageId", cr.Header!.EntryReference! }
-                                }
-                            };
-                            
-                            await decisionsConsumer.OnHandle(cr);
-                        }
-                        else
-                        {
-                            var alvsConsumer = (AlvsClearanceRequestConsumer)scope
-                                .ServiceProvider
-                                .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
+                        var topic = cr.Header!.DecisionNumber.HasValue() ? "DECISIONS" : "CLEARANCEREQUESTS";
 
-                            alvsConsumer.Context = new ConsumerContext
-                            {
-                                Headers = new Dictionary<string, object>
-                                {
-                                    { "messageId", cr.Header!.EntryReference! }
-                                }
-                            };
+                        var crHeaders = new Dictionary<string, object>()
+                        {
+                            { "messageId", cr.Header!.EntryReference! }
+                        };
 
-                            await alvsConsumer.OnHandle(cr);
-                        }
-                        
+
+                        await bus.Publish(cr, topic, crHeaders);
+
                         break;
                         
                     default:
