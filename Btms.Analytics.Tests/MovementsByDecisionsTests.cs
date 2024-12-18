@@ -20,13 +20,13 @@ public class MovementsByDecisionsTests(
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
             .ByDecision(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
-            .Series
+            .Values
             .ToList();
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
-        result.Count.Should().Be(2);
-        
-        result.Should().BeSameLength();
+        result.Count.Should().Be(3);
+        result.Select(r => r.Key).Order().Should()
+            .Equal("ALVS Linked : H01", "BTMS Linked : X00", "BTMS Not Linked : X00");
     }
 }
