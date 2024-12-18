@@ -2,6 +2,8 @@ namespace Btms.Business.Services.Decisions;
 
 public enum DecisionCode
 {
+    H01,
+    H02,
     E03,
     C03,
     C05,

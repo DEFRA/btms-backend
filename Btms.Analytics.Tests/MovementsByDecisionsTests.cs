@@ -25,8 +25,8 @@ public class MovementsByDecisionsTests(
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
-        result.Count.Should().Be(3);
+        result.Count.Should().Be(4);
         result.Select(r => r.Key).Order().Should()
-            .Equal("ALVS Linked : H01", "BTMS Linked : X00", "BTMS Not Linked : X00");
+            .Equal("ALVS Linked : H01", "BTMS Linked : C03", "BTMS Linked : X00", "BTMS Not Linked : X00");
     }
 }

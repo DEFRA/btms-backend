@@ -85,6 +85,19 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         });
     }
     
+    public ClearanceRequestBuilder<T> WithItemNoChecks(string documentCode, string commodityCode, string description,
+        int netWeight)
+    {
+        return Do(cr =>
+        {
+            cr.Items![0].TaricCommodityCode = commodityCode;
+            cr.Items![0].GoodsDescription = description;
+            cr.Items![0].ItemNetMass = netWeight;
+            cr.Items![0].Documents![0].DocumentCode = documentCode;
+            cr.Items![0].Checks = [];
+        });
+    }
+    
     public ClearanceRequestBuilder<T> WithRandomItems(int min, int max)
     {
         var commodityCount = CreateRandomInt(min, max);

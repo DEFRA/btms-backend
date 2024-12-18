@@ -7,6 +7,11 @@ public class ChedPPDecisionFinder : IDecisionFinder
 {
     public DecisionFinderResult FindDecision(ImportNotification notification)
     {
-        throw new NotImplementedException();
+        if (notification.TryGetHoldDecision(out var code))
+        {
+            return new DecisionFinderResult(code!.Value);
+        }
+
+        return new DecisionFinderResult(DecisionCode.X00);
     }
 }
