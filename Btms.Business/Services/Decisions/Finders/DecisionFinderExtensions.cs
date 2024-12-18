@@ -27,4 +27,11 @@ internal static class DecisionFinderExtensions
         decisionCode = null;
         return false;
     }
+
+    public static bool HasChecks(this DecisionContext decisionContext, string movementId, int itemNumber)
+    {
+        var checks = decisionContext.Movements.First(x => x.Id == movementId).Items
+            .First(x => x.ItemNumber == itemNumber).Checks;
+        return checks != null && checks.Any();
+    }
 }

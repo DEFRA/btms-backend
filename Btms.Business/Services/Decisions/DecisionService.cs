@@ -33,9 +33,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus) :
         {
             foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
             {
-                var checks = decisionContext.Movements.First(x => x.Id == noMatch.MovementId).Items
-                    .First(x => x.ItemNumber == noMatch.ItemNumber).Checks;
-                if (checks != null && checks.Any())
+                if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
                 {
                     decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference,
                         DecisionCode.X00);
@@ -45,9 +43,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus) :
 
         foreach (var match in decisionContext.MatchingResult.Matches)
         {
-            var checks = decisionContext.Movements.First(x => x.Id == match.MovementId).Items
-                .First(x => x.ItemNumber == match.ItemNumber).Checks;
-            if (checks != null && checks.Any())
+            if (decisionContext.HasChecks(match.MovementId, match.ItemNumber))
             {
                 var n = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
                 var decisionCode = GetDecision(n);
