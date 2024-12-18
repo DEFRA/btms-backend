@@ -20,7 +20,7 @@ public class ClearanceRequestBuilderTests
     {
         var date = DateTime.Today.AddDays(-5);
         var builder = ClearanceRequestBuilder.Default();
-        builder.WithEntryDate(date);
+        builder.WithCreationDate(date);
 
         var cr = builder.Build();
         cr.ServiceHeader!.ServiceCallTimestamp.ToDate().Should().Be(date.ToDate());

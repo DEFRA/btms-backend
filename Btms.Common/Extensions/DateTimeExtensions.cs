@@ -69,9 +69,10 @@ public static class DateTimeExtensions
         return Random.Shared.Next(min, max);
     }
     
-    public static DateTime RandomTime(this DateTime dt)
+    public static DateTime RandomTime(this DateTime dt, int maxHour = 23)
     {
-        return new DateTime(dt.Year, dt.Month, dt.Day, CreateRandomInt(0,23), CreateRandomInt(0, 60), CreateRandomInt(0, 60), dt.Kind);
+        return new DateTime(dt.Year, dt.Month, dt.Day, 
+            CreateRandomInt(0, maxHour), CreateRandomInt(0, 60), CreateRandomInt(0, 60), dt.Kind);
     }
     
     public static DateOnly ToDate(this DateTime val)

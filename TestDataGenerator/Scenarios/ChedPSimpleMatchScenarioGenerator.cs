@@ -8,7 +8,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         var notification = GetNotificationBuilder("chedp-one-commodity")
-            .WithEntryDate(entryDate)
+            .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithCommodity("1604142800", "Skipjack Tuna", 300)
@@ -18,7 +18,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
             notification.ReferenceNumber);
 
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
-            .WithEntryDate(entryDate)
+            .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
@@ -28,7 +28,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
         var alvsDecision = GetDecisionBuilder("decision-one-item")
-            .WithEntryDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1))
+            .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
             .WithItemAndCheck(1, "H222", "H01")

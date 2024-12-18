@@ -44,9 +44,14 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
         return Do(x => x.Header!.DecisionNumber = number);
     }
 
-    public DecisionBuilder<T> WithEntryDate(DateTime entryDate)
+    public DecisionBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
-        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime());
+        var entry = randomTime ?
+            // We don't want documents created in the future!
+            entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
+            : entryDate;
+        
+        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
     }
     public DecisionBuilder<T> WithEntryVersionNumber(int version)
     {

@@ -10,7 +10,7 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
-            .WithEntryDate(entryDate)
+            .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(DateTime.Today.ToDate(), DateTime.Now.ToTime())
             .WithReferenceNumber(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item))
             .WithRandomItems(10, 100)
