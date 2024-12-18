@@ -31,17 +31,14 @@ public static class TestDataGeneratorHelpers
             foreach (var message in generatorResult)
             {
                 var scope = app.Services.CreateScope();
-                // var topic = string.Empty;
-                // var headers = new Dictionary<string, object>();
-
+                
                 switch (message)
                 {
                     case null:
                         throw new ArgumentNullException();
                     
                     case ImportNotification n:
-                        // topic = "NOTIFICATIONS";
-                        // headers.Add("messageId", n.ReferenceNumber!);
+                        
                         var notificationConsumer = (NotificationConsumer)scope
                             .ServiceProvider
                             .GetRequiredService<IConsumer<ImportNotification>>();
@@ -88,8 +85,6 @@ public static class TestDataGeneratorHelpers
                     default:
                         throw new ArgumentException($"Unexpected type {message.GetType().Name}");
                 }
-
-                // await bus.Publish(message, topic, headers);
             }
         }
 
@@ -98,7 +93,6 @@ public static class TestDataGeneratorHelpers
     
     private static ScenarioGenerator.GeneratorResult[] Generate(this IHost app, ILogger logger, ScenarioConfig scenario)
     {
-        // var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         var days = scenario.CreationDateRange;
         var count = scenario.Count;
         var generator = scenario.Generator;

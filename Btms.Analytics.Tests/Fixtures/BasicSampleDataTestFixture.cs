@@ -13,9 +13,7 @@ public class BasicSampleDataTestFixture : IDisposable
 #pragma warning restore S3881
 {
     public IHost App;
-    // public IImportNotificationsAggregationService ImportNotificationsAggregationService;
-    // public IMovementsAggregationService MovementsAggregationService;
-
+    
     private readonly IMongoDbContext _mongoDbContext;
     private readonly ILogger<MultiItemDataTestFixture> _logger;
     public BasicSampleDataTestFixture(IMessageSink messageSink)
@@ -28,8 +26,6 @@ public class BasicSampleDataTestFixture : IDisposable
         var rootScope = App.Services.CreateScope();
 
         _mongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        // ImportNotificationsAggregationService = rootScope.ServiceProvider.GetRequiredService<IImportNotificationsAggregationService>();
-        // MovementsAggregationService = rootScope.ServiceProvider.GetRequiredService<IMovementsAggregationService>();
         
         // Would like to pick this up from env/config/DB state
         var insertToMongo = true;

@@ -1,8 +1,5 @@
-using Bogus;
 using Btms.Analytics.Tests.Helpers;
 using Btms.Backend.Data;
-using Btms.SyncJob.Extensions;
-using MartinCostello.Logging.XUnit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Scenarios;
@@ -47,10 +44,6 @@ public class MultiItemDataTestFixture : IDisposable
             
             app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
-            
-            
-
-            // var result = app.Services.WaitOnAllJobs(_logger).GetAwaiter().GetResult();
         }
     }
     
