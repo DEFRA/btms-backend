@@ -29,40 +29,30 @@ public static class TestDataGeneratorHelpers
             foreach (var message in generatorResult)
             {
                 var scope = app.Services.CreateScope();
-                
+                var topic = string.Empty;
+                var headers = new Dictionary<string, object>();
+
+
                 switch (message)
                 {
                     case null:
                         throw new ArgumentNullException();
                     
                     case ImportNotification n:
-
-                        var headers = new Dictionary<string, object>()
-                        {
-                            { "messageId", n.ReferenceNumber! }
-                        };
-
-                        
-                        await bus.Publish(n, "NOTIFICATIONS", headers);
+                        topic = "NOTIFICATIONS";
+                        headers.Add("messageId", n.ReferenceNumber!);
                         break;
                     
                     case AlvsClearanceRequest cr:
-
-                        var topic = cr.Header!.DecisionNumber.HasValue() ? "DECISIONS" : "CLEARANCEREQUESTS";
-
-                        var crHeaders = new Dictionary<string, object>()
-                        {
-                            { "messageId", cr.Header!.EntryReference! }
-                        };
-
-
-                        await bus.Publish(cr, topic, crHeaders);
-
+                        topic = cr.Header!.DecisionNumber.HasValue() ? "DECISIONS" : "CLEARANCEREQUESTS";
+                        headers.Add("messageId", cr.Header!.EntryReference!);
                         break;
                         
                     default:
                         throw new ArgumentException($"Unexpected type {message.GetType().Name}");
                 }
+
+                await bus.Publish(message, topic, headers);
             }
         }
 
