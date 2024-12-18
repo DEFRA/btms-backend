@@ -66,7 +66,11 @@ internal class Program
             {
                 Dataset = "LoadTest-One",
                 RootPath = "GENERATED-LOADTEST-ONE",
-                Scenarios = new[] { app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 3) }
+                Scenarios = new[]
+                {
+                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
+                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1)
+                }
             },
             new
             {

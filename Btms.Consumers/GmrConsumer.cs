@@ -19,7 +19,7 @@ internal class GmrConsumer(IMongoDbContext dbContext)
             if (existingGmr is null)
             {
                 var auditEntry =
-                    AuditEntry.CreateCreatedEntry(internalGmr, auditId!, 1, gmr.UpdatedSource);
+                    AuditEntry.CreateCreatedEntry(internalGmr, auditId!, 1, gmr.UpdatedSource, AuditEntry.CreatedByGvms);
                 internalGmr.AuditEntries.Add(auditEntry);
                 await dbContext.Gmrs.Insert(internalGmr);
             }
@@ -33,7 +33,8 @@ internal class GmrConsumer(IMongoDbContext dbContext)
                         current: internalGmr,
                         id: auditId!,
                         version: internalGmr.AuditEntries.Count + 1,
-                        lastUpdated: gmr.UpdatedSource);
+                        lastUpdated: gmr.UpdatedSource, 
+                        AuditEntry.CreatedByGvms);
                     internalGmr.AuditEntries.Add(auditEntry);
                     await dbContext.Gmrs.Update(internalGmr, existingGmr._Etag);
                 }

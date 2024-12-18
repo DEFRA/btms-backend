@@ -44,6 +44,6 @@ public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
 
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue(new DateTimeOffset(value).ToUnixTimeMilliseconds().ToString());
+        writer.WriteNumberValue(new DateTimeOffset(value).ToUnixTimeMilliseconds());
     }
 }

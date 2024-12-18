@@ -1,3 +1,4 @@
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Ipaffs.V1.Extensions;
 using Btms.Types.Alvs;
@@ -7,6 +8,21 @@ namespace TestDataGenerator.Helpers;
 
 public static class DataHelpers
 {
+    internal static string BlobPath(this object resource, string rootPath)
+    {
+        switch (resource)
+        {
+            case null:
+                throw new ArgumentNullException();
+            case ImportNotification n:
+                return n.BlobPath(rootPath);
+            case AlvsClearanceRequest cr:
+                return cr.BlobPath(rootPath);
+            default:
+                throw new InvalidDataException($"Unexpected type {resource.GetType().Name}");
+        }
+    }
+    
     internal static string BlobPath(this ImportNotification notification, string rootPath)
     {
         var dateString = notification.LastUpdated!.Value.ToString("yyyy/MM/dd");
@@ -22,9 +38,10 @@ public static class DataHelpers
     internal static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
     {
         var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
-
+        var subPath = clearanceRequest.Header!.DecisionNumber.HasValue() ? "DECISIONS" : "ALVS";
+        
         return
-            $"{rootPath}/ALVS/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
+            $"{rootPath}/{subPath}/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
 
     internal static string AsCdsEntryReference(this MatchIdentifier identifier)

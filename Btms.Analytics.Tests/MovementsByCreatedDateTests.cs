@@ -15,7 +15,7 @@ public class MovementsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.MovementsAggregationService
+        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
             .Series
             .ToList();
@@ -37,7 +37,7 @@ public class MovementsByCreatedDateTests(
         var from = DateTime.MaxValue.AddDays(-1);
         var to = DateTime.MaxValue;
 
-        var result = (await basicSampleDataTestFixture.MovementsAggregationService
+        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
             .ByCreated(from, to, AggregationPeriod.Hour))
             .Series
             .ToList();
@@ -62,7 +62,7 @@ public class MovementsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.MovementsAggregationService
+        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
                 .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();

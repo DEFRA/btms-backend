@@ -144,7 +144,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
         if (linked)
         {
-            AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
+            AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault()));
         }
     }
 
@@ -159,7 +159,8 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             this,
             auditId,
             Version.GetValueOrDefault(),
-            UpdatedSource);
+            UpdatedSource,
+            AuditEntry.CreatedByIpaffs);
         Changed(auditEntry);
     }
 
@@ -168,7 +169,8 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         var auditEntry = AuditEntry.CreateSkippedVersion(
             auditId,
             version,
-            UpdatedSource);
+            UpdatedSource,
+            AuditEntry.CreatedByIpaffs);
         Changed(auditEntry);
     }
 
@@ -177,7 +179,8 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         var auditEntry = AuditEntry.CreateUpdated(changeSet,
             auditId,
             Version.GetValueOrDefault(),
-            UpdatedSource);
+            UpdatedSource,
+            AuditEntry.CreatedByIpaffs);
         Changed(auditEntry);
     }
 

@@ -9,33 +9,24 @@ using Btms.Analytics.Tests.Helpers;
 namespace Btms.Analytics.Tests;
 
 [Collection(nameof(MultiItemDataTestCollection))]
-public class MovementsByItemsTests(
+public class MovementsByDecisionsTests(
     MultiItemDataTestFixture multiItemDataTestFixture,
     ITestOutputHelper testOutputHelper)
 {
     
     [Fact]
-    public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
+    public async Task WhenCalled_ReturnExpectedAggregation()
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
-            .ByItemCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
-            .Series
+            .ByDecision(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
+            .Values
             .ToList();
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
-        result.Count.Should().Be(2);
-        result.Select(r => r.Name).Order().Should().Equal("Linked", "Not Linked");
-        
-        result.Should().AllSatisfy(r =>
-        {
-            r.Dimension.Should().Be("Item Count");
-            r.Results.Count.Should().NotBe(0);
-        });
-        
-        result.Should().HaveResults();
-
-        result.Should().BeSameLength();
+        result.Count.Should().Be(3);
+        result.Select(r => r.Key).Order().Should()
+            .Equal("ALVS Linked : H01", "BTMS Linked : X00", "BTMS Not Linked : X00");
     }
 }

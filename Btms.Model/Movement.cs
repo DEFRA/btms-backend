@@ -111,7 +111,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
         if (linked)
         {
-            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
+            AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1));
         }
     }
 
@@ -136,11 +136,23 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             }
         }
 
+        var decisionAuditContext = new Dictionary<string, Dictionary<string, string>>();
+        decisionAuditContext.Add("movements", new Dictionary<string, string>()
+        {
+            { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.EntryVersionNumber!.ToString()! }
+        });
+        decisionAuditContext.Add("importNotifications", new Dictionary<string, string>()
+        {
+            { "todo", "todo" }
+        });
+        
         var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),
             clearanceRequest.Header!.EntryVersionNumber.GetValueOrDefault(),
             clearanceRequest.ServiceHeader!.ServiceCalled,
-            clearanceRequest.Header.DeclarantName!);
+            clearanceRequest.Header.DeclarantName!,
+            decisionAuditContext,
+            clearanceRequest.ServiceHeader?.SourceSystem != "BTMS");
 
         Decisions ??= [];
         Decisions.Add(clearanceRequest);

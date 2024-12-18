@@ -15,7 +15,7 @@ public class AuditingTests
     {
         var previous = new TestClassOne { NumberValue = 1.2 };
         var current = new TestClassOne { NumberValue = 2.2 };
-        var auditEntry = AuditEntry.CreateUpdated(previous, current, "testid", 1, DateTime.UtcNow);
+        var auditEntry = AuditEntry.CreateUpdated(previous, current, "testid", 1, DateTime.UtcNow, AuditEntry.CreatedByIpaffs);
 
         auditEntry.Should().NotBeNull();
         auditEntry.Diff.Count.Should().Be(1);
@@ -31,7 +31,7 @@ public class AuditingTests
     {
         var previous = new TestClassOne { NumberValue = 1 };
         var current = new TestClassOne { NumberValue = 2 };
-        var auditEntry = AuditEntry.CreateUpdated(previous, current, "testid", 1, DateTime.UtcNow);
+        var auditEntry = AuditEntry.CreateUpdated(previous, current, "testid", 1, DateTime.UtcNow,AuditEntry.CreatedByIpaffs);
 
         auditEntry.Should().NotBeNull();
         auditEntry.Diff.Count.Should().Be(1);

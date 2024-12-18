@@ -16,16 +16,21 @@ public static class AnalyticsEndpoints
     {
         app.MapGet(BaseRoute + "/dashboard", GetDashboard).AllowAnonymous();
         app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState).AllowAnonymous();
-        app.MapGet(BaseRoute + "/timeline", Timeline).AllowAnonymous();
+        app.MapGet(BaseRoute + "/timeline", Timeline);
     }
     private static async Task<IResult> Timeline(
         [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
         [FromQuery] string movementId)
     {
+        var result = await movementsService.GetHistory(movementId);
 
+        if (result.HasValue())
+        {
+            return TypedResults.Json(result);
+        }
 
-        return TypedResults.Json(await movementsService.GetHistory(movementId));
+        return Results.NotFound();
     }
     
     private static async Task<IResult> RecordCurrentState(
