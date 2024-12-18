@@ -7,8 +7,6 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        // TODO : get a good 'pair' of notification and cr as the source templates
-
         var notification = GetNotificationBuilder("cheda-one-commodity")
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)

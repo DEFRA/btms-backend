@@ -10,6 +10,8 @@ using SlimMessageBus;
 using SlimMessageBus.Host;
 using TestDataGenerator;
 using TestDataGenerator.Scenarios;
+using Decision = Btms.Types.Alvs.Decision;
+
 namespace Btms.Analytics.Tests.Helpers;
 
 public static class TestDataGeneratorHelpers
@@ -29,8 +31,8 @@ public static class TestDataGeneratorHelpers
             foreach (var message in generatorResult)
             {
                 var scope = app.Services.CreateScope();
-                var topic = string.Empty;
-                var headers = new Dictionary<string, object>();
+                // var topic = string.Empty;
+                // var headers = new Dictionary<string, object>();
 
                 switch (message)
                 {
@@ -38,21 +40,56 @@ public static class TestDataGeneratorHelpers
                         throw new ArgumentNullException();
                     
                     case ImportNotification n:
-                        topic = "NOTIFICATIONS";
-                        headers.Add("messageId", n.ReferenceNumber!);
+                        // topic = "NOTIFICATIONS";
+                        // headers.Add("messageId", n.ReferenceNumber!);
+                        var notificationConsumer = (NotificationConsumer)scope
+                            .ServiceProvider
+                            .GetRequiredService<IConsumer<ImportNotification>>();
+
+                        notificationConsumer.Context = new ConsumerContext
+                        {
+                            Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
+                        };
+                        
+                        await notificationConsumer.OnHandle(n);
+                        logger.LogInformation("Sent notification {0} to consumer", n.ReferenceNumber!);
+                        break;
+                    
+                    case Decision d:
+                        
+                        var decisionConsumer = (DecisionsConsumer)scope
+                            .ServiceProvider
+                            .GetRequiredService<IConsumer<Decision>>();
+
+                        decisionConsumer.Context = new ConsumerContext
+                        {
+                            Headers = new Dictionary<string, object> { { "messageId", d.Header!.EntryReference! } }
+                        };
+                        
+                        await decisionConsumer.OnHandle(d);
+                        logger.LogInformation("Sent decision {0} to consumer", d.Header!.EntryReference!);
                         break;
                     
                     case AlvsClearanceRequest cr:
-                        topic = cr.Header!.DecisionNumber.HasValue() ? "DECISIONS" : "CLEARANCEREQUESTS";
-                        headers.Add("messageId", cr.Header!.EntryReference!);
+                        
+                        var crConsumer = (AlvsClearanceRequestConsumer)scope
+                            .ServiceProvider
+                            .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
+                        
+                        crConsumer.Context = new ConsumerContext
+                        {
+                            Headers = new Dictionary<string, object> { { "messageId", cr.Header!.EntryReference! } }
+                        };
+                        
+                        await crConsumer.OnHandle(cr);
+                        logger.LogInformation("Semt cr {0} to consumer", cr.Header!.EntryReference!);
                         break;
                         
                     default:
                         throw new ArgumentException($"Unexpected type {message.GetType().Name}");
                 }
 
-                logger.LogInformation("Published message {0} to topic {1}", message, topic);
-                await bus.Publish(message, topic, headers);
+                // await bus.Publish(message, topic, headers);
             }
         }
 

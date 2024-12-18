@@ -14,7 +14,7 @@ public class MovementHistoryTests(
     ITestOutputHelper testOutputHelper)
 {
     [Fact]
-    public async Task WhenCalled_ReturnsHistory()
+    public async Task WhenCalledWithAMovementThatHasADecision_ReturnsHistory()
     {
         testOutputHelper.WriteLine("Find a suitable Movement with history");
         var movement = await multiItemDataTestFixture.MongoDbContext.Movements.Find(
@@ -36,7 +36,7 @@ public class MovementHistoryTests(
     }
     
     [Fact]
-    public async Task WhenCalled_ReturnsNoHistory()
+    public async Task WhenCalledWithAFakeMovementID_ReturnsNoHistory()
     {
         testOutputHelper.WriteLine("Querying for history");
         var result = await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)

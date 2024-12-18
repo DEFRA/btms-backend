@@ -5,6 +5,7 @@ using Btms.Model;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using TestDataGenerator.Scenarios;
+using Decision = Btms.Types.Alvs.Decision;
 
 namespace TestDataGenerator;
 
@@ -49,13 +50,13 @@ public abstract class ScenarioGenerator
         {
             foreach (var o in initial)
             {
-                if (o is ImportNotification || o is AlvsClearanceRequest)
+                if (o is ImportNotification || o is AlvsClearanceRequest || o is Decision)
                 {
                     Messages.Add(o);
                 }
                 else
                 {
-                    throw new Exception("Unexpected type");
+                    throw new Exception($"Unexpected GeneratorResult type {o.GetType().Name}");
                 }
                 
             }
@@ -71,6 +72,11 @@ public abstract class ScenarioGenerator
         public void Add(AlvsClearanceRequest[] clearanceRequests)
         {
             Messages.AddRange(clearanceRequests);
+        }
+        
+        public void Add(Btms.Types.Alvs.Decision[] decisions)
+        {
+            Messages.AddRange(decisions);
         }
 
         IEnumerator<object> IEnumerable<object>.GetEnumerator()

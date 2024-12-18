@@ -5,10 +5,10 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
 
-public class DecisionBuilder(string file) : DecisionBuilder<AlvsClearanceRequest>(file);
+public class DecisionBuilder(string file) : DecisionBuilder<Btms.Types.Alvs.Decision>(file);
 
 public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
-    where T : AlvsClearanceRequest, new()
+    where T : Decision, new()
 {
     private DecisionBuilder()
     {

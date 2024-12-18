@@ -36,14 +36,14 @@ public class MultiItemDataTestFixture : IDisposable
         {
             MongoDbContext.ResetCollections().GetAwaiter().GetResult();
         
-            // app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
-            //     .GetAwaiter().GetResult();
-            //
-            // app.PushToConsumers(_logger, app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
-            //     .GetAwaiter().GetResult();
-            //
-            // app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
-            //     .GetAwaiter().GetResult();
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 3, arrivalDateRange: 0))
+                .GetAwaiter().GetResult();
+            
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+                .GetAwaiter().GetResult();
+            
+            app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+                .GetAwaiter().GetResult();
             
             app.PushToConsumers(_logger, app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
