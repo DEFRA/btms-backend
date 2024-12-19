@@ -13,6 +13,12 @@ public class ByDateTimeResult
 
 public interface IDimensionResult;
 
+public class TabularDimensionRow<TColumn> where TColumn : IDimensionResult
+{
+    public required string Key { get; set; }
+    public required List<TColumn> Columns { get; set; }
+}
+
 public class ByNumericDimensionResult : IDimensionResult
 {
     public int Dimension { get; set; }

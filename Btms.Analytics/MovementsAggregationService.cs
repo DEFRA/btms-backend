@@ -8,6 +8,7 @@ using Btms.Model;
 using Btms.Model.Auditing;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -213,7 +214,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
 
-    public Task<MultiSeriesDataset> ByDecision(DateTime from, DateTime to)
+    public Task<TabularDataset<ByNameDimensionResult>> ByDecision(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -233,49 +234,129 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 HasLinks = m.Movement.Relationships.Notifications.Data.Count > 0,
                 ItemNumber = m.Item.ItemNumber
             }))
-            .GroupBy(m => new
-            {
-                m.HasLinks, m.DecisionSourceSystem, m.DecisionCode
-            })
-            
-            .Select(g => new { g.Key.DecisionSourceSystem, g.Key.DecisionCode, g.Key.HasLinks, Count = g.Count()})
-            
-            .GroupBy(m => new { m.DecisionSourceSystem, m.HasLinks })
-            
-            // For debugging
-            // .Select(g => new { g.Key.DecisionSourceSystem, Count = g.Count()})
-            // .Select(g => new { g.Key.DecisionSourceSystem, Decisions = g.Select(v => v.DecisionCode ) })
-            
-            .Select(m => new { m.Key.DecisionSourceSystem, m.Key.HasLinks, Decisions = m.Select(v => new { v.DecisionCode, Count = v.Count }) })
-            .Execute(logger)
-            .ToList();
-        
-        logger.LogInformation("Found {0} items", mongoQuery.Count);
-        logger.LogInformation(mongoQuery.ToJsonString());
-
-        return Task.FromResult(new MultiSeriesDataset()
-        {
-            // Series = new List<Series>() {}
-            Series = mongoQuery.Select(a =>
-                new Series()
+            .GroupBy(m => new { m.DecisionSourceSystem, m.DecisionCode })
+            .ExecuteAsDictionary(logger,
+                g => new
                 {
-                    Name = $"{ a.DecisionSourceSystem } : { ( a.HasLinks ? "Linked" : "Not Linked" ) }",
-                    Dimension = "DecisionCount",
-                    Results = a.Decisions.Select(d => new ByNameDimensionResult()
+                    DecisionSourceSystem = g.Key.DecisionSourceSystem!,
+                    DecisionCode = g.Key.DecisionCode!
+                },
+                g => g.Count());
+
+        logger.LogInformation("Found {0} items", mongoQuery.Count);
+        
+        var series = new[]
+        {
+            new { System = "ALVS" },
+            new { System = "BTMS" }
+        };
+
+        var totals = series
+            .Select(s => new {
+                System = s.System,
+                Total = mongoQuery
+                    .Where(a => a.Key.DecisionSourceSystem == s.System)
+                    .Sum(a => a.Value)
+            });
+
+        var decisionCodes = mongoQuery
+            .Select(d => d.Key.DecisionCode)
+            .Order()
+            .Distinct();
+
+        var result = new TabularDataset<ByNameDimensionResult>()
+        {
+            Rows = decisionCodes.Select(d => new TabularDimensionRow<ByNameDimensionResult>()
+            {
+                Key = d,
+                Columns = series.Select(s =>
+                    new ByNameDimensionResult()
                     {
-                        Name = d.DecisionCode!,
-                        Value = d.Count
-                    })
-                    .OrderBy(r => r.Name)
-                    .ToList<IDimensionResult>()
+                        Name = s.System,
+                        Value = mongoQuery.GetValueOrDefault(new
+                        {
+                            DecisionSourceSystem = s.System, DecisionCode = d
+                        }, 0)
+                    }
+                ).ToList()
+            }).ToList()
+        };
+        
+        result.Rows.Add(new TabularDimensionRow<ByNameDimensionResult>()
+        {
+            Key = "Total",
+            Columns = totals
+                .Select(t => new ByNameDimensionResult()
+                {
+                    Name = t.System, Value = t.Total
                 }).ToList()
-                // new Series("Testing 12", "Decisions")).ToList()
-            //     .ToDictionary(
-            // Values = mongoQuery
-            //     .ToDictionary(
-            //         r => $"{ r.DecisionSourceSystem } { ( r.HasLinks ? "Linked" : "Not Linked" ) } : { r.DecisionCode }",
-            //         r => r.Count
-            //     )
+            
         });
+            
+        return Task.FromResult(result);
+    }
+    
+    public Task<TabularDataset<ByNameDimensionResult>> ByDecisionAndLinkStatus(DateTime from, DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
+            .SelectMany(m => m.Decisions.Select(d => new { Decision = d, Movement = m }))
+            .SelectMany(m =>
+                m.Decision.Items!.Select(i => new { Decision = m.Decision, Movement = m.Movement, Item = i }))
+            .SelectMany(m => m.Item.Checks!.Select(c => new
+            {
+                CheckCode = c.CheckCode,
+                DecisionCode = c.DecisionCode,
+                DecisionSourceSystem = m.Decision.ServiceHeader!.SourceSystem,
+                DecisionEntryReference = m.Decision.Header!.EntryReference,
+                DecisionEntryVersionNumber = m.Decision.Header!.EntryVersionNumber,
+                Movement = m.Movement.EntryReference,
+                MovementVersion = m.Movement.EntryVersionNumber,
+                HasLinks = m.Movement.Relationships.Notifications.Data.Count > 0,
+                ItemNumber = m.Item.ItemNumber
+            }))
+            .GroupBy(m => new { m.HasLinks, m.DecisionSourceSystem, m.DecisionCode })
+            .ExecuteAsDictionary(logger,
+                g => new
+                {
+                    DecisionSourceSystem = g.Key.DecisionSourceSystem!,
+                    DecisionCode = g.Key.DecisionCode!,
+                    g.Key.HasLinks
+                },
+                g => g.Count());
+
+        logger.LogInformation("Found {0} items", mongoQuery.Count);
+        
+        var series = new[]
+        {
+            new { System = "ALVS", Linked = true }, new { System = "ALVS", Linked = false },
+            new { System = "BTMS", Linked = true }, new { System = "BTMS", Linked = false }
+        };
+
+        var decisionCodes = mongoQuery
+            .Select(d => d.Key.DecisionCode)
+            .Order()
+            .Distinct();
+
+        var result = new TabularDataset<ByNameDimensionResult>()
+        {
+            Rows = decisionCodes.Select(d => new TabularDimensionRow<ByNameDimensionResult>()
+            {
+                Key = d,
+                Columns = series.Select(s =>
+                    new ByNameDimensionResult()
+                    {
+                        Name = $"{ s.System } : { ( s.Linked ? "Linked" : "Not Linked" ) }",
+                        Value = mongoQuery.GetValueOrDefault(new
+                        {
+                            DecisionSourceSystem = s.System, DecisionCode = d, HasLinks = s.Linked
+                        }, 0)
+                    }
+                ).ToList()
+            }).ToList()
+        };
+            
+        return Task.FromResult(result);
     }
 }

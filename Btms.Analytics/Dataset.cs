@@ -18,6 +18,11 @@ public class SingleSeriesDataset : IDataset
     public IDictionary<string, int> Values { get; set; } = new Dictionary<string, int>();
 }
 
+public class TabularDataset<TColumn> : IDataset where TColumn : IDimensionResult
+{
+    public required List<TabularDimensionRow<TColumn>> Rows { get; set; }
+}
+
 public class EntityDataset<T>(IEnumerable<T> items) : IDataset
 {
     public IEnumerable<T> Items { get; set; } = items;
@@ -52,6 +57,10 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         else if (value is SingleSeriesDataset)
         {
             JsonSerializer.Serialize(writer, value as SingleSeriesDataset, options);
+        }
+        else if (value is TabularDataset<ByNameDimensionResult>)
+        {
+            JsonSerializer.Serialize(writer, value as TabularDataset<ByNameDimensionResult>, options);
         }
         else
         {

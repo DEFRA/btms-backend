@@ -85,6 +85,16 @@ public static class AnalyticsExtensions
             .ToArray();
     }
 
+    /// <summary>
+    /// Gives us an opportunity to hook into the mongo execution and
+    /// grab the query as a string after it's been executed
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="logger"></param>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="AnalyticsException"></exception>
     internal static IEnumerable<IGrouping<TKey, TSource>> Execute<TSource, TKey>(this IQueryable<IGrouping<TKey, TSource>> source, ILogger logger)
     {
         try
@@ -100,6 +110,43 @@ public static class AnalyticsExtensions
         finally 
         {
             logger.LogExecutedMongoString(source);
+        }
+    }
+    
+    /// <summary>
+    /// Gives us an opportunity to hook into the mongo execution and
+    /// grab the query as a string after it's been executed 
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="logger"></param>
+    /// <param name="keySelector"></param>
+    /// <param name="elementSelector"></param>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TElement"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="AnalyticsException"></exception>
+    public static Dictionary<TKey, TElement> ExecuteAsDictionary<TSource, TKey, TElement>(
+        this IEnumerable<TSource> source,
+        ILogger logger,
+        Func<TSource, TKey> keySelector,
+        Func<TSource, TElement> elementSelector)
+        where TKey : notnull
+    {
+        try
+        {
+            var aggregatedData = source
+                .ToDictionary(keySelector, elementSelector);
+            return aggregatedData;
+        }
+        catch(Exception ex)
+        {
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
+            throw new AnalyticsException("Error querying Mongo", ex);
+        }
+        finally 
+        {
+            logger.LogExecutedMongoString((IQueryable)source);
         }
     }
     
@@ -143,6 +190,12 @@ public static class AnalyticsExtensions
     }
 
     public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDataset> ms)
+    {
+        await ms;
+        return (IDataset)ms.Result;
+    }
+    
+    public static async Task<IDataset> AsIDataset(this Task<TabularDataset<ByNameDimensionResult>> ms)
     {
         await ms;
         return (IDataset)ms.Result;
