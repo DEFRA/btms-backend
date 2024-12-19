@@ -73,6 +73,10 @@ public static class AnalyticsDashboards
             {
                 "lastMonthDecisionsByStatus",
                 () => movementsService.ByDecision(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "importNotificationVersionsByVersionCount",
+                () => importService.ByVersionCount(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
             }
         };
         

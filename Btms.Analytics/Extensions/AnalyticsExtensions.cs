@@ -132,10 +132,10 @@ public static class AnalyticsExtensions
     private static void LogExecutedMongoString(this ILogger logger, IQueryable source)
     {
         var stages = ((IMongoQueryProvider)source.Provider).LoggedStages;
-
-        logger.LogInformation("[{Query}]", string.Join(",", stages.Select(s => s.ToString()).ToArray()));
+        var query = string.Join(",", stages.Select(s => s.ToString()).ToArray());
+        logger.LogInformation("[{Query}]", query);
     }
-
+    
     public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDatetimeDataset> ms)
     {
         await ms;
