@@ -8,6 +8,7 @@ using Btms.Model;
 using Btms.Model.Auditing;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -68,14 +69,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDataset()
         {
             Series = AnalyticsHelpers.GetMovementSegments()
-                .Select(title => new Series(title, "Item Count")
+                .Select(title => new Series()
                     {
+                        Name = title,
+                        Dimension = "Item Count",
                         Results = Enumerable.Range(0, maxCount + 1)
                             .Select(i => new ByNumericDimensionResult
                             {
                                 Dimension = i,
                                 Value = dictionary.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
-                            }).ToList()
+                            }).ToList<IDimensionResult>()
                     }
                 )
                 .ToList()    
@@ -110,15 +113,17 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDataset()
         {
             Series = AnalyticsHelpers.GetMovementSegments()
-                .Select(title => new Series(title, "Document Reference Count")
+                .Select(title => new Series()
                 {
+                    Name = title,
+                    Dimension = "Document Reference Count",
                     Results = Enumerable.Range(0, maxReferences + 1)
                         .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,
                             Value = dictionary.GetValueOrDefault(new { Title = title, DocumentReferenceCount = i },
                                 0)
-                        }).ToList()
+                        }).ToList<IDimensionResult>()
                 })
                 .ToList()
         });
@@ -209,7 +214,89 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
 
-    public Task<SingleSeriesDataset> ByDecision(DateTime from, DateTime to)
+    public Task<TabularDataset<ByNameDimensionResult>> ByDecision(DateTime from, DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
+            .SelectMany(m => m.Decisions.Select(d => new { Decision = d, Movement = m }))
+            .SelectMany(m =>
+                m.Decision.Items!.Select(i => new { Decision = m.Decision, Movement = m.Movement, Item = i }))
+            .SelectMany(m => m.Item.Checks!.Select(c => new
+            {
+                CheckCode = c.CheckCode,
+                DecisionCode = c.DecisionCode,
+                DecisionSourceSystem = m.Decision.ServiceHeader!.SourceSystem,
+                DecisionEntryReference = m.Decision.Header!.EntryReference,
+                DecisionEntryVersionNumber = m.Decision.Header!.EntryVersionNumber,
+                Movement = m.Movement.EntryReference,
+                MovementVersion = m.Movement.EntryVersionNumber,
+                HasLinks = m.Movement.Relationships.Notifications.Data.Count > 0,
+                ItemNumber = m.Item.ItemNumber
+            }))
+            .GroupBy(m => new { m.DecisionSourceSystem, m.DecisionCode })
+            .ExecuteAsDictionary(logger,
+                g => new
+                {
+                    DecisionSourceSystem = g.Key.DecisionSourceSystem!,
+                    DecisionCode = g.Key.DecisionCode!
+                },
+                g => g.Count());
+
+        logger.LogInformation("Found {0} items", mongoQuery.Count);
+        
+        var series = new[]
+        {
+            new { System = "ALVS" },
+            new { System = "BTMS" }
+        };
+
+        var totals = series
+            .Select(s => new {
+                System = s.System,
+                Total = mongoQuery
+                    .Where(a => a.Key.DecisionSourceSystem == s.System)
+                    .Sum(a => a.Value)
+            });
+
+        var decisionCodes = mongoQuery
+            .Select(d => d.Key.DecisionCode)
+            .Order()
+            .Distinct();
+
+        var result = new TabularDataset<ByNameDimensionResult>()
+        {
+            Rows = decisionCodes.Select(d => new TabularDimensionRow<ByNameDimensionResult>()
+            {
+                Key = d,
+                Columns = series.Select(s =>
+                    new ByNameDimensionResult()
+                    {
+                        Name = s.System,
+                        Value = mongoQuery.GetValueOrDefault(new
+                        {
+                            DecisionSourceSystem = s.System, DecisionCode = d
+                        }, 0)
+                    }
+                ).ToList()
+            }).ToList()
+        };
+        
+        result.Rows.Add(new TabularDimensionRow<ByNameDimensionResult>()
+        {
+            Key = "Total",
+            Columns = totals
+                .Select(t => new ByNameDimensionResult()
+                {
+                    Name = t.System, Value = t.Total
+                }).ToList()
+            
+        });
+            
+        return Task.FromResult(result);
+    }
+    
+    public Task<TabularDataset<ByNameDimensionResult>> ByDecisionAndLinkStatus(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -230,19 +317,46 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 ItemNumber = m.Item.ItemNumber
             }))
             .GroupBy(m => new { m.HasLinks, m.DecisionSourceSystem, m.DecisionCode })
-            .Select(m => new { m.Key.HasLinks, m.Key.DecisionSourceSystem, m.Key.DecisionCode, Count = m.Count() })
-            .ToList();
-        
-        logger.LogInformation("Found {0} items", mongoQuery.Count);
-        logger.LogInformation(mongoQuery.ToJsonString());
+            .ExecuteAsDictionary(logger,
+                g => new
+                {
+                    DecisionSourceSystem = g.Key.DecisionSourceSystem!,
+                    DecisionCode = g.Key.DecisionCode!,
+                    g.Key.HasLinks
+                },
+                g => g.Count());
 
-        return Task.FromResult(new SingleSeriesDataset()
+        logger.LogInformation("Found {0} items", mongoQuery.Count);
+        
+        var series = new[]
         {
-            Values = mongoQuery
-                .ToDictionary(
-                    r => $"{ r.DecisionSourceSystem } { ( r.HasLinks ? "Linked" : "Not Linked" ) } : { r.DecisionCode }",
-                    r => r.Count
-                )
-        });
+            new { System = "ALVS", Linked = true }, new { System = "ALVS", Linked = false },
+            new { System = "BTMS", Linked = true }, new { System = "BTMS", Linked = false }
+        };
+
+        var decisionCodes = mongoQuery
+            .Select(d => d.Key.DecisionCode)
+            .Order()
+            .Distinct();
+
+        var result = new TabularDataset<ByNameDimensionResult>()
+        {
+            Rows = decisionCodes.Select(d => new TabularDimensionRow<ByNameDimensionResult>()
+            {
+                Key = d,
+                Columns = series.Select(s =>
+                    new ByNameDimensionResult()
+                    {
+                        Name = $"{ s.System } : { ( s.Linked ? "Linked" : "Not Linked" ) }",
+                        Value = mongoQuery.GetValueOrDefault(new
+                        {
+                            DecisionSourceSystem = s.System, DecisionCode = d, HasLinks = s.Linked
+                        }, 0)
+                    }
+                ).ToList()
+            }).ToList()
+        };
+            
+        return Task.FromResult(result);
     }
 }
