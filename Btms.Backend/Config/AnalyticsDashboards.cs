@@ -71,7 +71,7 @@ public static class AnalyticsDashboards
                 () => importService.ByCommodityCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
             },
             {
-                "lastMonthDecisionsByStatus",
+                "lastMonthsDecisionsByDecisionCode",
                 () => movementsService.ByDecision(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
             },
             {

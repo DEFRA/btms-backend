@@ -99,14 +99,16 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Task.FromResult(new MultiSeriesDataset()
         {
             Series = AnalyticsHelpers.GetImportNotificationSegments()
-                .Select(title => new Series(title, "ItemCount")
+                .Select(title => new Series()
                 {
+                    Name = title,
+                    Dimension = "ItemCount",
                     Results = Enumerable.Range(0, maxCommodities)
                         .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,
                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
-                        }).ToList()
+                        }).ToList<IDimensionResult>()
                 })
                 .ToList()
         });
