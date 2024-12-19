@@ -34,11 +34,17 @@ using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 using Btms.Backend.Asb;
+using Btms.Backend.OpenApi;
 using Btms.Common;
+using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -65,6 +71,25 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	{
 		options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 	});
+    builder.Services.ConfigureHttpJsonOptions(options =>
+    {
+        options.SerializerOptions.PropertyNameCaseInsensitive = true;
+        options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.SerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+        options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+    // This is needed for Swashbuckle and Minimal APIs
+    builder.Services.Configure<JsonOptions>(options =>
+    {
+        options.SerializerOptions.PropertyNameCaseInsensitive = true;
+        options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.SerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+        options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+    builder.Services.TryAddTransient<ISerializerDataContractResolver>(sp => new JsonSerializerDataContractResolver(
+        sp.GetRequiredService<IOptions<JsonOptions>>().Value.SerializerOptions
+    ));
+    // /This is needed for Swashbuckle and Minimal APIs
 
 	builder.Services.AddSingleton<IBtmsMediator, BtmsMediator>();
 	builder.Services.AddSyncJob();
@@ -157,6 +182,16 @@ builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Config
 	builder.Services.AddScoped(typeof(IResourceRepository<,>), typeof(MongoRepository<,>));
 
     builder.Services.AddAnalyticsServices(builder.Configuration);
+    
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("public-v0.1", new OpenApiInfo { Title = "CDMS Public API", Version = "v0.1" });
+        c.DocumentFilter<DocumentFilter>();
+        c.SchemaFilter<SchemaFilter>();
+        // c.UseInlineDefinitionsForEnums();
+        c.UseAllOfToExtendReferenceSchemas();
+    });
 }
 
 [ExcludeFromCodeCoverage]
@@ -232,7 +267,12 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 
     // Allows us to make a global logger factory available for use where we can't get it from DI, e.g. from static functions 
     ApplicationLogging.LoggerFactory = app.Services.GetService<ILoggerFactory>();
-        
+    
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/public-v0.1/swagger.json", "public");
+    });
 	app.UseEmfExporter();
 	app.UseAuthentication();
 	app.UseAuthorization();
