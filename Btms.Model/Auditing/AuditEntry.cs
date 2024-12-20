@@ -120,6 +120,19 @@ public class AuditEntry
             Status = "Linked"
         };
     }
+    
+    public static AuditEntry CreateUnlinked(string id, int version, DateTime? lastUpdated)
+    {
+        return new AuditEntry
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = lastUpdated,
+            CreatedBy = CreatedBySystem,
+            CreatedLocal = DateTime.UtcNow,
+            Status = "Unlinked"
+        };
+    }
 
     public static AuditEntry CreateMatch(string id, int version)
     {
