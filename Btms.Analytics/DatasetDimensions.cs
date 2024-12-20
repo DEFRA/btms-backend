@@ -11,6 +11,20 @@ public class ByDateTimeResult
     public int Value { get; set; }
 }
 
+public class ExceptionResult : IDimensionResult
+{
+    public required string Id { get; set; }
+    public required string Resource { get; set; }
+    public required DateTime UpdatedSource { get; set; }
+    public required DateTime Updated { get; set; }
+    
+    public required int ItemCount { get; set; }
+    public required int MaxEntryVersion { get; set; }
+    public required int MaxDecisionNumber { get; set; }
+    public required int LinkedCheds { get; set; }
+    public required string Reason { get; set; }
+}
+
 public interface IDimensionResult;
 
 public class TabularDimensionRow<TColumn> where TColumn : IDimensionResult
@@ -28,6 +42,12 @@ public class ByNumericDimensionResult : IDimensionResult
 public class ByNameDimensionResult : IDimensionResult
 {
     public required string Name { get; set; }
+    public int Value { get; set; }
+}
+
+public class StringBucketDimensionResult : IDimensionResult
+{
+    public required Dictionary<string,string> Fields { get; set; }
     public int Value { get; set; }
 }
 
@@ -67,6 +87,10 @@ public class DimensionResultTypeMappingConverter<TType> : JsonConverter<TType> w
         if (value is ByNumericDimensionResult)
         {
             JsonSerializer.Serialize(writer, value as ByNumericDimensionResult, options);
+        }
+        else if (value is ByNameDimensionResult)
+        {
+            JsonSerializer.Serialize(writer, value as ByNameDimensionResult, options);
         }
         else if (value is ByNameDimensionResult)
         {

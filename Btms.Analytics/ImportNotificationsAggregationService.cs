@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
+using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -114,17 +115,21 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         });
     }
 
-    public Task<MultiSeriesDatetimeDataset> ByVersionCount(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to)
     {
-        var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
-        
-        Expression<Func<ImportNotification, bool>> matchFilter = n =>
-            n.CreatedSource >= from && n.CreatedSource < to;
+        var data = context
+            .Notifications
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(n => new { MaxVersion =
+                n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
+            })
+            .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
+            .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
 
-        string CreateDatasetName(BsonDocument b) =>
-            AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
-
-        return AggregateByLinkedAndNotificationType(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
+        return Task.FromResult(new SingleSeriesDataset
+        {
+            Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
+        });
     }
 
     private Task<MultiSeriesDatetimeDataset> AggregateByLinkedAndNotificationType(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)

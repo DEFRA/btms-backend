@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Btms.Backend.Data;
 using Btms.Model.Data;
 using Microsoft.Extensions.Configuration;
@@ -115,6 +116,35 @@ public static class AnalyticsExtensions
     
     /// <summary>
     /// Gives us an opportunity to hook into the mongo execution and
+    /// grab the query as a string after it's been executed
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="logger"></param>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="AnalyticsException"></exception>
+    internal static IEnumerable<TSource> Execute<TSource>(this IAggregateFluent<TSource> source, ILogger logger)
+    {
+        try
+        {
+            var aggregatedData = source.ToList();
+            return aggregatedData;
+        }
+        catch(Exception ex)
+        {
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
+            throw new AnalyticsException("Error querying Mongo", ex);
+        }
+        finally
+        {
+            logger.LogInformation("Query from IAggregateFluent");
+            // logger.LogExecutedMongoString((IQueryable)source);
+        }
+    }
+    
+    /// <summary>
+    /// Gives us an opportunity to hook into the mongo execution and
     /// grab the query as a string after it's been executed 
     /// </summary>
     /// <param name="source"></param>
@@ -137,6 +167,42 @@ public static class AnalyticsExtensions
         {
             var aggregatedData = source
                 .ToDictionary(keySelector, elementSelector);
+            return aggregatedData;
+        }
+        catch(Exception ex)
+        {
+            logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
+            throw new AnalyticsException("Error querying Mongo", ex);
+        }
+        finally 
+        {
+            logger.LogExecutedMongoString((IQueryable)source);
+        }
+    }
+    /// <summary>
+    /// Gives us an opportunity to hook into the mongo execution and
+    /// grab the query as a string after it's been executed 
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="logger"></param>
+    /// <param name="keySelector"></param>
+    /// <param name="elementSelector"></param>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TElement"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="AnalyticsException"></exception>
+    public static ImmutableSortedDictionary<TKey, TElement> ExecuteAsSortedDictionary<TSource, TKey, TElement>(
+        this IEnumerable<TSource> source,
+        ILogger logger,
+        Func<TSource, TKey> keySelector,
+        Func<TSource, TElement> elementSelector)
+        where TKey : notnull
+    {
+        try
+        {
+            var aggregatedData = source
+                .ToImmutableSortedDictionary(keySelector, elementSelector);
             return aggregatedData;
         }
         catch(Exception ex)
@@ -202,6 +268,14 @@ public static class AnalyticsExtensions
     }
 
     public static async Task<IDataset> AsIDataset(this Task<SingleSeriesDataset> ms)
+    {
+        await ms;
+        return (IDataset)ms.Result;
+    }
+    
+    public static async Task<IDataset> AsIDataset<TSummary,TResult>(this Task<SummarisedDataset<TSummary, TResult>> ms)
+        where TResult : IDimensionResult
+        where TSummary : IDimensionResult
     {
         await ms;
         return (IDataset)ms.Result;

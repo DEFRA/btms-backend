@@ -17,6 +17,7 @@ public static class AnalyticsEndpoints
         app.MapGet(BaseRoute + "/dashboard", GetDashboard).AllowAnonymous();
         app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState).AllowAnonymous();
         app.MapGet(BaseRoute + "/timeline", Timeline);
+        app.MapGet(BaseRoute + "/exceptions", Exceptions);
     }
     private static async Task<IResult> Timeline(
         [FromServices] IImportNotificationsAggregationService importService,
@@ -24,6 +25,19 @@ public static class AnalyticsEndpoints
         [FromQuery] string movementId)
     {
         var result = await movementsService.GetHistory(movementId);
+
+        if (result.HasValue())
+        {
+            return TypedResults.Json(result);
+        }
+
+        return Results.NotFound();
+    }
+    private static async Task<IResult> Exceptions(
+        [FromServices] IMovementsAggregationService movementsService)
+    {
+        var result
+            = await movementsService.GetExceptions(DateTime.MinValue, DateTime.Today);
 
         if (result.HasValue())
         {

@@ -7,6 +7,14 @@ namespace Btms.Analytics;
 // A marker interface to identify things we want to be able to return from the analytics API
 public interface IDataset;
 
+public class SummarisedDataset<TSummary, TResult> : IDataset
+    where TResult : IDimensionResult
+    where TSummary : IDimensionResult
+{
+    public required List<TSummary> Summary { get; set; }
+    public required List<TResult> Result { get; set; }
+    
+}
 
 public class MultiSeriesDataset : IDataset
 {
@@ -61,6 +69,10 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         else if (value is TabularDataset<ByNameDimensionResult>)
         {
             JsonSerializer.Serialize(writer, value as TabularDataset<ByNameDimensionResult>, options);
+        }
+        else if (value is SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>)
+        {
+            JsonSerializer.Serialize(writer, value as SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>, options);
         }
         else
         {
