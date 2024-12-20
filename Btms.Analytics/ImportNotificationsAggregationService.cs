@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
+using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -22,7 +23,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         string CreateDatasetName(BsonDocument b) =>
             AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
 
-        return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
+        return AggregateByLinkedAndNotificationType(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
     public Task<MultiSeriesDatetimeDataset> ByArrival(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
@@ -35,7 +36,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         string CreateDatasetName(BsonDocument b) =>
             AnalyticsHelpers.GetLinkedName(b["_id"]["linked"].ToBoolean(), b["_id"]["importNotificationType"].ToString()!.FromImportNotificationTypeEnumString());
 
-        return Aggregate(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
+        return AggregateByLinkedAndNotificationType(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
     }
     
     public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to)
@@ -63,7 +64,11 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             {
                 ImportNotificationType = n.ImportNotificationType!.Value,
                 Linked = n.Relationships.Movements.Data.Count > 0,
-                CommodityCount = n.Commodities.Count()
+                
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+                // This is not nullable, but is being represented as null in mongo and so this linq
+                // query needs to consider the null
+                CommodityCount = n.Commodities == null ? 0 : n.Commodities.Count()
             })
             .Select(g => new { g.Key, Count = g.Count() });
 
@@ -95,20 +100,39 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return Task.FromResult(new MultiSeriesDataset()
         {
             Series = AnalyticsHelpers.GetImportNotificationSegments()
-                .Select(title => new Series(title, "ItemCount")
+                .Select(title => new Series()
                 {
+                    Name = title,
+                    Dimension = "ItemCount",
                     Results = Enumerable.Range(0, maxCommodities)
                         .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,
                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
-                        }).ToList()
+                        }).ToList<IDimensionResult>()
                 })
                 .ToList()
         });
     }
 
-    private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to)
+    {
+        var data = context
+            .Notifications
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(n => new { MaxVersion =
+                n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
+            })
+            .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
+            .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
+
+        return Task.FromResult(new SingleSeriesDataset
+        {
+            Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
+        });
+    }
+
+    private Task<MultiSeriesDatetimeDataset> AggregateByLinkedAndNotificationType(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<ImportNotification, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
         var truncateBy = aggregateBy == AggregationPeriod.Hour ? "hour" : "day";
         

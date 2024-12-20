@@ -71,8 +71,20 @@ public static class AnalyticsDashboards
                 () => importService.ByCommodityCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
             },
             {
-                "lastMonthDecisionsByStatus",
+                "lastMonthsDecisionsByDecisionCode",
                 () => movementsService.ByDecision(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "allImportNotificationsByVersion",
+                () => importService.ByMaxVersion(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
+            },
+            {
+                "allMovementsByMaxEntryVersion",
+                () => movementsService.ByMaxVersion(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
+            },
+            {
+                "allMovementsByMaxDecisionNumber",
+                () => movementsService.ByMaxDecisionNumber(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
             }
         };
         
