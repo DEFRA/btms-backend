@@ -195,7 +195,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
                 .Select(ic =>
                 {
                     var decisionCode = btmsChecks == null ? null : btmsChecks!.GetValueOrDefault((ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), null);
-                    return new AlvsDecisionItem()
+                    return new ItemCheck()
                     {
                         ItemNumber = ic.Item!.ItemNumber!.Value,
                         CheckCode = ic.Check!.CheckCode!,
@@ -205,10 +205,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
                 })
                 .ToList()
         };
-
-        alvsDecision.Context.AlvsAllNoMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('N'));
-        alvsDecision.Context.AlvsAnyNoMatch = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('N'));
-
+        
         if (btmsDecision != null)
         {
             CompareDecisions(alvsDecision, btmsDecision);
@@ -219,6 +216,32 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     
     private void CompareDecisions(AlvsDecision alvsDecision, CdsClearanceRequest btmsDecision)
     {
+        alvsDecision.Context.AlvsAllNoMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.AlvsAnyNoMatch = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.AlvsAllRefuse = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.AlvsAnyRefuse = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.AlvsAllRelease = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.AlvsAnyRelease = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.AlvsAllHold = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('H'));
+        alvsDecision.Context.AlvsAnyHold = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('H'));
+
+        alvsDecision.Context.BtmsAllNoMatch = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.BtmsAnyNoMatch = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.BtmsAllRefuse = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.BtmsAnyRefuse = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.BtmsAllRelease = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.BtmsAnyRelease = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.BtmsAllHold = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('H'));
+        alvsDecision.Context.BtmsAnyHold = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('H'));
+
         var pairStatus = "Investigation Needed";
         
         if (alvsDecision.Context.BtmsDecisionNumber == 0)
@@ -244,7 +267,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             }
         }
         
-        alvsDecision.Context.PairStatus = pairStatus;
+        alvsDecision.Context.DecisionStatus = pairStatus;
     }
 
     public bool MergeDecision(string path, CdsClearanceRequest clearanceRequest)

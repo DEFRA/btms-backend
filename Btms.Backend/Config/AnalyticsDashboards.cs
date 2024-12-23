@@ -12,7 +12,12 @@ public static class AnalyticsDashboards
         ILogger logger,
         IImportNotificationsAggregationService importService,
         IMovementsAggregationService movementsService,
-        string[] chartsToRender)
+        string[] chartsToRender,
+        string[] chedTypes,
+        string? countryOfOrigin,
+        DateTime? dateFrom,
+        DateTime? dateTo
+        )
     {
         var charts = new Dictionary<string, Func<Task<IDataset>>>
         {
@@ -72,7 +77,7 @@ public static class AnalyticsDashboards
             },
             {
                 "lastMonthsDecisionsByDecisionCode",
-                () => movementsService.ByDecision(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+                () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
             },
             {
                 "allImportNotificationsByVersion",
@@ -94,6 +99,8 @@ public static class AnalyticsDashboards
             
         var taskList = chartsToReturn.Select(r => new KeyValuePair<string, Task<IDataset>>(key:r.Key, value: r.Value()));
         
+        // TODO - have just noticed this executes each chart twice
+        // once during Task.WhenAll and again on the following line - revisit
         await Task.WhenAll(taskList.Select(r => r.Value));
 
         var output = taskList

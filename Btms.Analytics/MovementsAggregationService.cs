@@ -318,7 +318,66 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <returns></returns>
-    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to)
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
+        DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
+            .SelectMany(m => m.AlvsDecisions.Select(
+                d => new {Decision = d, Movement = m } ))
+            .SelectMany(d => d.Decision.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
+            .GroupBy(d => new
+            {
+                d.Decision.Context.DecisionStatus,
+                d.Check.CheckCode,
+                d.Check.AlvsDecisionCode,
+                d.Check.BtmsDecisionCode
+            })
+            .Select(g => new
+            {
+                g.Key, Count = g.Count()
+            })
+            .Execute(logger);
+        
+        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+        
+        
+        // Works
+        var summary = new SingleSeriesDataset() {
+            Values = mongoQuery
+                .GroupBy(q => q.Key.DecisionStatus ?? "TBC")
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Sum(k => k.Count)
+                )
+        };
+
+        var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
+        {
+            Summary = summary,
+            Result = mongoQuery.Select(a => new StringBucketDimensionResult()
+                {
+                    Fields = new Dictionary<string, string>()
+                    {
+                        { "Classification", a.Key.DecisionStatus ?? "TBC" },
+                        { "CheckCode", a.Key.CheckCode! },
+                        { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
+                        { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
+                    },
+                    Value = a.Count
+                })
+                .OrderBy(r => r.Value)
+                .Reverse()
+                .ToList()
+        };
+        
+            return Task.FromResult(r);
+        
+        // return DefaultSummarisedBucketResult();
+    }
+    
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecisionComplex(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -481,6 +540,18 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             [
                 new TabularDimensionRow<ByNameDimensionResult>() { Key = "", Columns = [] }
             ]
+        });
+    }
+
+    private static Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> DefaultSummarisedBucketResult()
+    {
+        return Task.FromResult(new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
+        {
+            Summary = new SingleSeriesDataset()
+            {
+                Values = new Dictionary<string, int>()
+            },
+            Result = []
         });
     }
 
