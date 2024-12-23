@@ -19,7 +19,7 @@ public class MultiSeriesDatasetAssertions(List<Series>? test)
     [CustomAssertion]
     public void HaveResults(string because = "", params object[] becauseArgs)
     {
-        test!.Sum(d => d.Results.Sum(r => r.Value))
+        test!.Sum(d => d.Results.Sum(r => ((ByNumericDimensionResult)r).Value))
             .Should().BeGreaterThan(0);
     }
 }

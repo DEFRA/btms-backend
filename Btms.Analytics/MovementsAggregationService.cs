@@ -5,9 +5,12 @@ using Btms.Backend.Data;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model;
+using Btms.Model.Alvs;
 using Btms.Model.Auditing;
+using Btms.Model.Ipaffs;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -68,14 +71,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDataset()
         {
             Series = AnalyticsHelpers.GetMovementSegments()
-                .Select(title => new Series(title, "Item Count")
+                .Select(title => new Series()
                     {
+                        Name = title,
+                        Dimension = "Item Count",
                         Results = Enumerable.Range(0, maxCount + 1)
                             .Select(i => new ByNumericDimensionResult
                             {
                                 Dimension = i,
                                 Value = dictionary.GetValueOrDefault(new { Title=title, ItemCount = i }, 0)
-                            }).ToList()
+                            }).ToList<IDimensionResult>()
                     }
                 )
                 .ToList()    
@@ -110,15 +115,17 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDataset()
         {
             Series = AnalyticsHelpers.GetMovementSegments()
-                .Select(title => new Series(title, "Document Reference Count")
+                .Select(title => new Series()
                 {
+                    Name = title,
+                    Dimension = "Document Reference Count",
                     Results = Enumerable.Range(0, maxReferences + 1)
                         .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,
                             Value = dictionary.GetValueOrDefault(new { Title = title, DocumentReferenceCount = i },
                                 0)
-                        }).ToList()
+                        }).ToList<IDimensionResult>()
                 })
                 .ToList()
         });
@@ -179,6 +186,102 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return new EntityDataset<AuditHistory>(entries);
     }
 
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to)
+    {
+        var data = context
+            .Movements
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(n => new { MaxVersion =
+                n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber )
+            })
+            .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
+            .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
+
+        return Task.FromResult(new SingleSeriesDataset
+        {
+            Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
+        });
+    }
+    
+    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to)
+    {
+        var data = context
+            .Movements
+            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .GroupBy(n => new { MaxVersion =
+                n.Decisions.Max(a => a.Header!.DecisionNumber )
+            })
+            .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
+            .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
+
+        return Task.FromResult(new SingleSeriesDataset
+        {
+            Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
+        });
+    }
+
+    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to)
+    {
+        var mongoQuery = context
+            .Movements
+            .Select(m => new
+            {
+                Id = m.Id,
+                UpdatedSource = m.UpdatedSource,
+                Updated = m.Updated,
+                MaxDecisionNumber = m.Decisions.Max(d => d.Header!.DecisionNumber) ?? 0,
+                MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
+                LinkedCheds = m.Relationships.Notifications.Data.Count,
+                ItemCount = m.Items.Count
+                
+            })
+            .Select(m => new
+            {
+                Id = m.Id,
+                UpdatedSource = m.UpdatedSource,
+                Updated = m.Updated,
+                MaxDecisionNumber = m.MaxDecisionNumber,
+                MaxEntryVersion = m.MaxEntryVersion,
+                LinkedCheds = m.LinkedCheds,
+                ItemCount = m.ItemCount,
+                Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount
+            })
+            .OrderBy(a => -a.Total)
+            .Take(10)
+            .Execute(logger);
+
+        var result = mongoQuery.Select(r =>
+            new ExceptionResult()
+            {
+                Resource = "Movement",
+                Id = r.Id!,
+                UpdatedSource = r.UpdatedSource!.Value,
+                Updated = r.Updated,
+                ItemCount = r.ItemCount,
+                MaxEntryVersion = r.MaxEntryVersion,
+                MaxDecisionNumber = r.MaxDecisionNumber,
+                LinkedCheds = r.LinkedCheds,
+                Reason = "High Number Of Messages"
+            }).ToList();
+        // var result = new TabularDataset<ByNameDimensionResult>()
+        // {
+        //     Rows = mongoQuery.Select(r =>
+        //         new TabularDimensionRow<ByNameDimensionResult>()
+        //         {
+        //             Key = r.Id!, Columns =
+        //             [
+        //                 new ByNameDimensionResult() { Name = "ItemCount", Value = r.ItemCount },
+        //                 new ByNameDimensionResult() { Name = "MaxEntryVersion", Value = r.MaxEntryVersion },
+        //                 new ByNameDimensionResult() { Name = "MaxDecisionNumber", Value = r.MaxDecisionNumber },
+        //                 new ByNameDimensionResult() { Name = "LinkedCheds", Value = r.LinkedCheds }
+        //             ]
+        //         }
+        //     ).ToList()
+        // };
+            
+        return Task.FromResult(result);
+    }
+
     public Task<MultiSeriesDataset> ByCheck(DateTime from, DateTime to)
     {
         return Task.FromResult(new MultiSeriesDataset() );
@@ -209,40 +312,176 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
 
-    public Task<SingleSeriesDataset> ByDecision(DateTime from, DateTime to)
+    /// <summary>
+    /// Finds the most recent decision from Alvs and BTMS
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <returns></returns>
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
+            // .Aggregate()
             .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
-            .SelectMany(m => m.Decisions.Select(d => new { Decision = d, Movement = m }))
-            .SelectMany(m =>
-                m.Decision.Items!.Select(i => new { Decision = m.Decision, Movement = m.Movement, Item = i }))
-            .SelectMany(m => m.Item.Checks!.Select(c => new
+            .Select(m => new
             {
-                CheckCode = c.CheckCode,
-                DecisionCode = c.DecisionCode,
-                DecisionSourceSystem = m.Decision.ServiceHeader!.SourceSystem,
-                DecisionEntryReference = m.Decision.Header!.EntryReference,
-                DecisionEntryVersionNumber = m.Decision.Header!.EntryVersionNumber,
-                Movement = m.Movement.EntryReference,
-                MovementVersion = m.Movement.EntryVersionNumber,
-                HasLinks = m.Movement.Relationships.Notifications.Data.Count > 0,
-                ItemNumber = m.Item.ItemNumber
-            }))
-            .GroupBy(m => new { m.HasLinks, m.DecisionSourceSystem, m.DecisionCode })
-            .Select(m => new { m.Key.HasLinks, m.Key.DecisionSourceSystem, m.Key.DecisionCode, Count = m.Count() })
-            .ToList();
-        
-        logger.LogInformation("Found {0} items", mongoQuery.Count);
-        logger.LogInformation(mongoQuery.ToJsonString());
-
-        return Task.FromResult(new SingleSeriesDataset()
-        {
-            Values = mongoQuery
-                .ToDictionary(
-                    r => $"{ r.DecisionSourceSystem } { ( r.HasLinks ? "Linked" : "Not Linked" ) } : { r.DecisionCode }",
-                    r => r.Count
+                MovementInfo = new
+                {
+                    Id = m.Id,
+                    UpdatedSource = m.UpdatedSource,
+                    Updated = m.Updated,
+                    Movement = m
+                },
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+                // Get the most recent decision record from both systems
+                AlvsDecision = (m.Decisions == null
+                    ? null
+                    : m.Decisions
+                        .Where(d => d.ServiceHeader!.SourceSystem == "ALVS")
+                        .OrderBy(d => d.ServiceHeader!.ServiceCalled)
+                        .Reverse()
+                        .FirstOrDefault())
+                           // Creates a default item & check so we don't lose
+                           // it in the selectmany below
+                           ?? new AlvsClearanceRequest()
+                            {
+                                Items = new []
+                                {
+                                    new Items()
+                                    {
+                                        Checks = new []
+                                        {
+                                            new Check()
+                                            {
+                                                CheckCode = "XXX",
+                                                DecisionCode = "XXX"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                BtmsDecision = m.Decisions == null
+                    ? null
+                    : m.Decisions
+                        .Where(d => d.ServiceHeader!.SourceSystem == "BTMS")
+                        .OrderBy(d => d.ServiceHeader!.ServiceCalled)
+                        .Reverse()
+                        .FirstOrDefault()
+            })
+            .SelectMany(m =>
+                m.AlvsDecision!.Items!
+                    .SelectMany(i =>
+                        (i.Checks
+                         ?? new[] { new Check() { CheckCode = "XXX", DecisionCode = "XXX" } })
+                            .Select(c =>
+                            new
+                            {
+                                m.MovementInfo,
+                                AlvsDecisionInfo = c.CheckCode == "XXX" ? null : new
+                                {
+                                    Decision = m.AlvsDecision,
+                                    DecisionNumber = m.AlvsDecision!.Header!.DecisionNumber,
+                                    EntryVersion = m.AlvsDecision!.Header!.EntryVersionNumber,
+                                    ItemNumber = i.ItemNumber,
+                                    CheckCode = c.CheckCode,
+                                    DecisionCode = c.DecisionCode,
+                                },
+                                BtmsDecisionInfo = new
+                                {
+                                    Decision = m.BtmsDecision,
+                                    DecisionCode = m.BtmsDecision == null || m.BtmsDecision.Items == null
+                                        ? null
+                                        : m.BtmsDecision.Items!
+                                            .First(bi => bi.ItemNumber == i.ItemNumber)
+                                            .Checks!
+                                            .First(ch => ch.CheckCode == c.CheckCode)
+                                            .DecisionCode
+                                }
+                            }
+                        )
+                    )
+                    .Select(a => new
+                    {
+                        a.MovementInfo,
+                        a.AlvsDecisionInfo,
+                        a.BtmsDecisionInfo,
+                        Classification =
+                            a.BtmsDecisionInfo == null ? "Btms Decision Not Present" :
+                            a.AlvsDecisionInfo == null ? "Alvs Decision Not Present" :
+                            
+                            // TODO : we may want to try to consider clearance request version as well as the decision code
+                            a.BtmsDecisionInfo.DecisionCode == a.AlvsDecisionInfo.DecisionCode ? "Btms Made Same Decision As Alvs" :
+                            a.MovementInfo.Movement.Decisions
+                                .Any(d => d.Header!.DecisionNumber == 1) ? "Alvs Decision Version 1 Not Present" : 
+                            a.MovementInfo.Movement.ClearanceRequests
+                                .Any(d => d.Header!.EntryVersionNumber == 1) ? "Alvs Clearance Request Version 1 Not Present" : 
+                            a.AlvsDecisionInfo.DecisionNumber == 1 && a.AlvsDecisionInfo.EntryVersion == 1 ? "Single Entry And Decision Version" :
+                            a.BtmsDecisionInfo.DecisionCode != a.AlvsDecisionInfo.DecisionCode ? "Btms Made Different Decision To Alvs" :
+                            "Further Classification Needed"
+                            // "FurtherClassificationNeeded Check Code Is " + a.AlvsDecisionInfo.CheckCode
+                    })
                 )
+            
+            // .Where(m => m.AlvsDecisionInfo == null)
+            // .Where(m => m.AlvsDecision!.Items!.Any(i => i.Checks!.Any(c => c.CheckCode == "XXX")))
+            .GroupBy(check => new
+            {
+                check.Classification,
+                check.AlvsDecisionInfo!.CheckCode,
+                AlvsDecisionCode = check.AlvsDecisionInfo!.DecisionCode,
+                BtmsDecisionCode=check.BtmsDecisionInfo!.DecisionCode
+            })
+            .Select(g => new
+            {
+                g.Key, Count = g.Count()
+            })
+            
+            .Execute(logger);
+
+        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+
+        // Works
+        var summary = new SingleSeriesDataset() {
+            Values = mongoQuery
+                .GroupBy(q => q.Key.Classification)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Sum(k => k.Count)
+                )
+        };
+
+        var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
+        {
+            Summary = summary,
+            Result = mongoQuery.Select(a => new StringBucketDimensionResult()
+            {
+                Fields = new Dictionary<string, string>()
+                {
+                    { "Classification", a.Key.Classification },
+                    { "CheckCode", a.Key.CheckCode! },
+                    { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
+                    { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
+                },
+                Value = a.Count
+            })
+            .OrderBy(r => r.Value)
+            .Reverse()
+            .ToList()
+        };
+        
+        return Task.FromResult(r);
+    }
+
+    private static Task<TabularDataset<ByNameDimensionResult>> DefaultTabularDatasetByNameDimensionResult()
+    {
+        return Task.FromResult(new TabularDataset<ByNameDimensionResult>()
+        {
+            Rows =
+            [
+                new TabularDimensionRow<ByNameDimensionResult>() { Key = "", Columns = [] }
+            ]
         });
     }
+
 }

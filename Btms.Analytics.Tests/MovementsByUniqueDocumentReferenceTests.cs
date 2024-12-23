@@ -32,7 +32,7 @@ public class MovementsByUniqueDocumentReferenceTests(
         {
             d.Dimension.Should().Be("Document Reference Count");
             d.Results.Count().Should().NotBe(0);
-            d.Results.Sum(r => r.Value).Should().BeGreaterThan(0);
+            d.Results.Sum(r => ((ByNumericDimensionResult)r).Value).Should().BeGreaterThan(0);
         });
         
         result.Should().HaveResults();
