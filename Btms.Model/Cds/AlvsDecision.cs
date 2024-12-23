@@ -11,6 +11,7 @@
 using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
+using Btms.Model.Auditing;
 
 
 namespace Btms.Model.Cds;
@@ -37,15 +38,12 @@ public partial class AlvsDecisionItem
     public string? BtmsDecisionCode { get; set; }
 }
 
+
 /// <summary>
 /// 
 /// </summary>
-public partial class AlvsDecision  //
+public partial class DecisionContext : IAuditContext //
 {
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required CdsClearanceRequest Decision { get; set; }
-
     [Attr]
     [System.ComponentModel.Description("")]
     public int AlvsDecisionNumber { get; set; } = default;
@@ -68,12 +66,36 @@ public partial class AlvsDecision  //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public bool IsNoMatch { get; set; } = default;
+    public bool AlvsAllNoMatch { get; set; } = default;
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public bool BtmsDecisionMatched { get; set; } = default;
+    public bool AlvsAnyNoMatch { get; set; } = default;
     
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool DecisionMatched { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public required List<AlvsDecisionItem> Checks { get; set; }
+    
+}
+
+/// <summary>
+/// 
+/// </summary>
+public partial class AlvsDecision  //
+{
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required CdsClearanceRequest Decision { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required DecisionContext Context { get; set; }
+    
+    // TODO - should we put this into context, and so into audit log?
     [Attr]
     [System.ComponentModel.Description("")]
     public required List<AlvsDecisionItem> Checks { get; set; }

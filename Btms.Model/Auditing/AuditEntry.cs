@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Model.Extensions;
 using Json.Patch;
@@ -26,7 +27,9 @@ public class AuditEntry
 
     public List<AuditDiffEntry> Diff { get; set; } = new();
     
-    public Dictionary<string, Dictionary<string, string>> Context { get; set; } = new();
+    // TODO - getting a serialisation error when using IAuditContext
+    // But as we only do this for decisions ignoring! 
+    public DecisionContext? Context { get; set; }
 
     public bool IsCreatedOrUpdated()
     {
@@ -131,7 +134,7 @@ public class AuditEntry
     }
 
     public static AuditEntry CreateDecision(string id, int version,
-        DateTime? lastUpdated, string lastUpdatedBy, Dictionary<string, Dictionary<string, string>> context, bool isAlvs)
+        DateTime? lastUpdated, string lastUpdatedBy, DecisionContext context, bool isAlvs)
     {
         return new AuditEntry()
         {
@@ -141,7 +144,6 @@ public class AuditEntry
             CreatedLocal = DateTime.UtcNow,
             Status = "Decision",
             Context = context
-            
         };
     }
 
