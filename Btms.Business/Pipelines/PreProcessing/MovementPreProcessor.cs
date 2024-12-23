@@ -64,7 +64,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         
     }
 
-    public static Movement BuildMovement(Model.Alvs.AlvsClearanceRequest request)
+    public static Movement BuildMovement(Model.Cds.CdsClearanceRequest request)
     {
         return new Movement
         {

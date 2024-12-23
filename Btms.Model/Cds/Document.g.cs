@@ -13,12 +13,12 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Alvs;
+namespace Btms.Model.Cds;
 
 /// <summary>
 /// 
 /// </summary>
-public partial class ServiceHeader  //
+public partial class Document  //
 {
 
 
@@ -27,7 +27,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? SourceSystem { get; set; }
+    public string? DocumentCode { get; set; }
 
 	
     /// <summary>
@@ -35,7 +35,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DestinationSystem { get; set; }
+    public string? DocumentReference { get; set; }
 
 	
     /// <summary>
@@ -43,7 +43,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? CorrelationId { get; set; }
+    public string? DocumentStatus { get; set; }
 
 	
     /// <summary>
@@ -51,7 +51,15 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public DateTime? ServiceCalled { get; set; }
+    public string? DocumentControl { get; set; }
+
+	
+    /// <summary>
+    /// 
+    /// </summary>
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public decimal? DocumentQuantity { get; set; }
 
 	}
 

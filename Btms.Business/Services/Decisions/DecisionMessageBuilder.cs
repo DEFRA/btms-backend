@@ -64,7 +64,7 @@ public static class DecisionMessageBuilder
         }
     }
 
-    private static IEnumerable<Check> BuildChecks(Model.Alvs.Items item, IGrouping<int, DocumentDecisionResult> itemsGroup)
+    private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemsGroup)
     {
         if (item.Checks != null)
         {
@@ -81,7 +81,7 @@ public static class DecisionMessageBuilder
         }
     }
 
-    public static string[] BuildDecisionReasons(Model.Alvs.Items item, DecisionCode decisionCode)
+    public static string[] BuildDecisionReasons(Model.Cds.Items item, DecisionCode decisionCode)
     {
         switch (decisionCode)
         {

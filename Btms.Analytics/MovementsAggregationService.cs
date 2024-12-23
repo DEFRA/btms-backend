@@ -5,7 +5,7 @@ using Btms.Backend.Data;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model;
-using Btms.Model.Alvs;
+using Btms.Model.Cds;
 using Btms.Model.Auditing;
 using Btms.Model.Ipaffs;
 using MongoDB.Bson;
@@ -344,7 +344,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                         .FirstOrDefault())
                            // Creates a default item & check so we don't lose
                            // it in the selectmany below
-                           ?? new AlvsClearanceRequest()
+                           ?? new CdsClearanceRequest()
                             {
                                 Items = new []
                                 {

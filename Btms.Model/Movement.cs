@@ -4,7 +4,7 @@ using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Btms.Model.Alvs;
+using Btms.Model.Cds;
 using Btms.Model.Auditing;
 using Btms.Model.ChangeLog;
 using Btms.Model.Data;
@@ -24,9 +24,11 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
 
-    [Attr] public List<Alvs.AlvsClearanceRequest> ClearanceRequests { get; set; } = default!;
+    [Attr] public List<CdsClearanceRequest> ClearanceRequests { get; set; } = default!;
 
-    [Attr] public List<Alvs.AlvsClearanceRequest> Decisions { get; set; } = default!;
+    [Attr] public List<CdsClearanceRequest> Decisions { get; set; } = default!;
+
+    [Attr] public List<AlvsDecision> AlvsDecisions { get; set; } = new List<AlvsDecision>();
 
     [Attr] public List<Items> Items { get; set; } = [];
 
@@ -121,9 +123,15 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         matchReferences = [];
     }
 
-    public bool MergeDecision(string path, AlvsClearanceRequest clearanceRequest)
+    public bool MergeDecision(string path, CdsClearanceRequest clearanceRequest)
     {
-        if (clearanceRequest.ServiceHeader?.SourceSystem == "BTMS")
+        var sourceSystem = clearanceRequest.ServiceHeader?.SourceSystem;
+        var isAlvs = sourceSystem != "BTMS";
+        var isBtms = sourceSystem == "BTMS";
+        // CdsClearanceRequest? btmsDecision = null;
+        // AlvsDecision? alvsDecision = null;
+        
+        if (isBtms)
         {
             foreach (var item in clearanceRequest.Items!)
             {
@@ -134,6 +142,125 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
                     existingItem.MergeChecks(item);
                 }
             }
+
+            // btmsDecision = clearanceRequest;
+            
+            // This is an initial implementation - we want to be smarter about how we 'pair' things.
+            var alvsDecision = this.AlvsDecisions.Find(
+                d => d.EntryVersionNumber == EntryVersionNumber);
+            
+            if (alvsDecision != null)
+            {
+                var btmsChecks = this
+                    .Items!
+                    .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+                    .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
+
+                alvsDecision.Checks = alvsDecision
+                    .Checks
+                    .Select(c =>
+                    {
+                        var decisionCode = btmsChecks[(c.ItemNumber, c.CheckCode)];
+                        c.BtmsDecisionCode = decisionCode;
+                        return c;
+                    }).ToList();
+                
+                // TODO
+                alvsDecision.BtmsDecisionMatched = false;
+                alvsDecision.PairStatus = "TODO-BTMS";
+            }
+            
+            Decisions ??= [];
+            Decisions.Add(clearanceRequest);
+            
+        }
+        else if (isAlvs)
+        {
+            // This is an initial implementation - we want to be smarter about how we 'pair' things.
+            var btmsDecision = this.Decisions?
+                .Where(d => d.Header!.EntryVersionNumber == EntryVersionNumber)
+                .OrderBy(d => d.ServiceHeader!.ServiceCalled)
+                .Reverse()
+                .FirstOrDefault();
+
+            var btmsChecks = btmsDecision ?
+                .Items!
+                .SelectMany(i => i.Checks!.Select(c => new { Item = i!, Check = c }))
+                .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
+            
+            var alvsDecision = new AlvsDecision()
+            {
+                Decision = clearanceRequest,
+                AlvsDecisionNumber = clearanceRequest!.Header!.DecisionNumber!.Value,
+                BtmsDecisionNumber = btmsDecision == null ? 0 : btmsDecision!.Header!.DecisionNumber!.Value,
+                EntryVersionNumber = clearanceRequest!.Header!.EntryVersionNumber!.Value,
+                Checks = clearanceRequest
+                    .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+                    .Select(ic =>
+                    {
+                        var decisionCode = btmsChecks == null ? null : btmsChecks!.GetValueOrDefault((ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), null);
+                        return new AlvsDecisionItem()
+                        {
+                            ItemNumber = ic.Item!.ItemNumber!.Value,
+                            CheckCode = ic.Check!.CheckCode!,
+                            AlvsDecisionCode = ic.Check!.DecisionCode!,
+                            BtmsDecisionCode = decisionCode
+                        };
+                    })
+                    .ToList()
+            };
+
+            // Previous code from analytics
+            // a.BtmsDecisionInfo == null ? "Btms Decision Not Present" :
+            //     a.AlvsDecisionInfo == null ? "Alvs Decision Not Present" :
+            //                 
+            //     // TODO : we may want to try to consider clearance request version as well as the decision code
+            //     a.BtmsDecisionInfo.DecisionCode == a.AlvsDecisionInfo.DecisionCode ? "Btms Made Same Decision As Alvs" :
+            //     a.MovementInfo.Movement.Decisions
+            //         .Any(d => d.Header!.DecisionNumber == 1) ? "Alvs Decision Version 1 Not Present" : 
+            //     a.MovementInfo.Movement.ClearanceRequests
+            //         .Any(d => d.Header!.EntryVersionNumber == 1) ? "Alvs Clearance Request Version 1 Not Present" : 
+            //     a.AlvsDecisionInfo.DecisionNumber == 1 && a.AlvsDecisionInfo.EntryVersion == 1 ? "Single Entry And Decision Version" :
+            //     a.BtmsDecisionInfo.DecisionCode != a.AlvsDecisionInfo.DecisionCode ? "Btms Made Different Decision To Alvs" :
+            //     "Further Classification Needed"
+            //     
+            
+            var pairStatus = "Investigation Needed";
+            
+            if (alvsDecision.BtmsDecisionNumber == 0)
+            {
+                pairStatus = "Btms Decision Not Present";
+            }
+            else
+            {
+                var checksMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
+                
+                if (checksMatch)
+                {
+                    alvsDecision.BtmsDecisionMatched = true;
+                    pairStatus = "Btms Made Same Decision As Alvs";
+                }
+                else if (!this.ClearanceRequests.Exists(c => c.Header!.EntryVersionNumber == 1))
+                {
+                    pairStatus = "Alvs Clearance Request Version 1 Not Present";
+                }
+                else if (alvsDecision.Decision.Header!.DecisionNumber != 1 && !this.AlvsDecisions.Exists(c => c.AlvsDecisionNumber == 1))
+                {
+                    pairStatus = "Alvs Decision Version 1 Not Present";
+                }
+                
+
+            }
+            
+
+            alvsDecision.PairStatus = pairStatus;
+            // AlvsDecisions ??= [];
+            AlvsDecisions.Add(alvsDecision);
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Unexpected decision source system {clearanceRequest.ServiceHeader?.SourceSystem}");
         }
 
         var decisionAuditContext = new Dictionary<string, Dictionary<string, string>>();
@@ -157,9 +284,6 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             clearanceRequest.Header.DeclarantName!,
             decisionAuditContext,
             clearanceRequest.ServiceHeader?.SourceSystem != "BTMS");
-
-        Decisions ??= [];
-        Decisions.Add(clearanceRequest);
         this.Update(auditEntry);
 
         return true;
