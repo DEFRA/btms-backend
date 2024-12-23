@@ -34,10 +34,14 @@ public static class AnalyticsEndpoints
         return Results.NotFound();
     }
     private static async Task<IResult> Exceptions(
-        [FromServices] IMovementsAggregationService movementsService)
+        [FromServices] IMovementsAggregationService movementsService,
+        [FromQuery(Name = "chedType")] string[] chedTypes,
+        [FromQuery(Name = "country")] string? country,
+        [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
+        [FromQuery(Name = "dateTo")] DateTime? dateTo)
     {
         var result
-            = await movementsService.GetExceptions(DateTime.MinValue, DateTime.Today);
+            = await movementsService.GetExceptions(dateFrom ?? DateTime.MinValue, dateTo ?? DateTime.Today);
 
         if (result.HasValue())
         {
