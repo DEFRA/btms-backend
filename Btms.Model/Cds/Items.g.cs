@@ -13,12 +13,12 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Alvs;
+namespace Btms.Model.Cds;
 
 /// <summary>
 /// 
 /// </summary>
-public partial class Header  //
+public partial class Items  //
 {
 
 
@@ -27,7 +27,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? EntryReference { get; set; }
+    public int? ItemNumber { get; set; }
 
 	
     /// <summary>
@@ -35,7 +35,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public int? EntryVersionNumber { get; set; }
+    public string? CustomsProcedureCode { get; set; }
 
 	
     /// <summary>
@@ -43,7 +43,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public int? PreviousVersionNumber { get; set; }
+    public string? TaricCommodityCode { get; set; }
 
 	
     /// <summary>
@@ -51,7 +51,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DeclarationUcr { get; set; }
+    public string? GoodsDescription { get; set; }
 
 	
     /// <summary>
@@ -59,7 +59,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DeclarationPartNumber { get; set; }
+    public string? ConsigneeId { get; set; }
 
 	
     /// <summary>
@@ -67,7 +67,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DeclarationType { get; set; }
+    public string? ConsigneeName { get; set; }
 
 	
     /// <summary>
@@ -75,7 +75,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public DateTime? ArrivesAt { get; set; }
+    public decimal? ItemNetMass { get; set; }
 
 	
     /// <summary>
@@ -83,7 +83,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? SubmitterTurn { get; set; }
+    public decimal? ItemSupplementaryUnits { get; set; }
 
 	
     /// <summary>
@@ -91,7 +91,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DeclarantId { get; set; }
+    public decimal? ItemThirdQuantity { get; set; }
 
 	
     /// <summary>
@@ -99,7 +99,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DeclarantName { get; set; }
+    public string? ItemOriginCountryCode { get; set; }
 
 	
     /// <summary>
@@ -107,7 +107,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DispatchCountryCode { get; set; }
+    public Document[]? Documents { get; set; }
 
 	
     /// <summary>
@@ -115,23 +115,8 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? GoodsLocationCode { get; set; }
+    public Check[]? Checks { get; set; }
 
-	
-    /// <summary>
-    /// 
-    /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public string? MasterUcr { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public int? DecisionNumber { get; set; }
-
-}
+	}
 
 

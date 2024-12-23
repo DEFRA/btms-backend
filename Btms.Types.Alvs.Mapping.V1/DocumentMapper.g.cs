@@ -14,13 +14,13 @@ namespace Btms.Types.Alvs.Mapping;
 
 public static class DocumentMapper
 {
-	public static Btms.Model.Alvs.Document Map(Btms.Types.Alvs.Document from)
+	public static Btms.Model.Cds.Document Map(Btms.Types.Alvs.Document from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Btms.Model.Alvs.Document ();
+		var to = new Btms.Model.Cds.Document ();
 to.DocumentCode = from.DocumentCode;
             to.DocumentReference = from.DocumentReference;
             to.DocumentStatus = from.DocumentStatus;

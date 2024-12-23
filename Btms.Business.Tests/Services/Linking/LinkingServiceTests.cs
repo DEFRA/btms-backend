@@ -2,14 +2,14 @@ using Btms.Backend.Data;
 using Btms.Backend.Data.InMemory;
 using Btms.Business.Services.Linking;
 using Btms.Metrics;
-using Btms.Model.Alvs;
+using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
-using Document = Btms.Model.Alvs.Document;
-using Items = Btms.Model.Alvs.Items;
+using Document = Btms.Model.Cds.Document;
+using Items = Btms.Model.Cds.Items;
 using Movement = Btms.Model.Movement;
 
 namespace Btms.Business.Tests.Services.Linking;
@@ -393,7 +393,7 @@ public class LinkingServiceTests
                 EntryReference = entryRef,
                 ClearanceRequests =
                 [
-                    new AlvsClearanceRequest
+                    new CdsClearanceRequest
                     {
                         Header = new() { EntryReference = entryRef, EntryVersionNumber = 3, DeclarationType = "F" }
                     }

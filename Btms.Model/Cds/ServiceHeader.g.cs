@@ -13,12 +13,12 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Alvs;
+namespace Btms.Model.Cds;
 
 /// <summary>
 /// 
 /// </summary>
-public partial class AlvsClearanceRequest  //
+public partial class ServiceHeader  //
 {
 
 
@@ -27,7 +27,7 @@ public partial class AlvsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public ServiceHeader? ServiceHeader { get; set; }
+    public string? SourceSystem { get; set; }
 
 	
     /// <summary>
@@ -35,7 +35,7 @@ public partial class AlvsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Header? Header { get; set; }
+    public string? DestinationSystem { get; set; }
 
 	
     /// <summary>
@@ -43,7 +43,15 @@ public partial class AlvsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Items[]? Items { get; set; }
+    public string? CorrelationId { get; set; }
+
+	
+    /// <summary>
+    /// 
+    /// </summary>
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public DateTime? ServiceCalled { get; set; }
 
 	}
 

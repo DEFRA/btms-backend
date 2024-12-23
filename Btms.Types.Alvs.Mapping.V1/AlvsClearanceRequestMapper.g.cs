@@ -14,14 +14,14 @@ namespace Btms.Types.Alvs.Mapping;
 
 public static class AlvsClearanceRequestMapper
 {
-    public static Btms.Model.Alvs.AlvsClearanceRequest Map(Btms.Types.Alvs.AlvsClearanceRequest from)
+    public static Btms.Model.Cds.CdsClearanceRequest Map(Btms.Types.Alvs.AlvsClearanceRequest from)
     {
         if (from is null)
         {
             return default!;
         }
 
-        var to = new Btms.Model.Alvs.AlvsClearanceRequest();
+        var to = new Btms.Model.Cds.CdsClearanceRequest();
         to.ServiceHeader = ServiceHeaderMapper.Map(from?.ServiceHeader!);
         to.Header = HeaderMapper.Map(from?.Header!);
         to.Items = from?.Items?.Select(x => ItemsMapper.Map(x)).ToArray();
