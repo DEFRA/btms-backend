@@ -12,13 +12,11 @@ using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
 using Btms.Model.Auditing;
+using MongoDB.Bson.Serialization.Attributes;
 
 
 namespace Btms.Model.Cds;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class ItemCheck
 {
     [Attr]
@@ -38,10 +36,6 @@ public partial class ItemCheck
     public string? BtmsDecisionCode { get; set; }
 }
 
-
-/// <summary>
-/// 
-/// </summary>
 public partial class DecisionContext : IAuditContext //
 {
     [Attr]
@@ -67,6 +61,14 @@ public partial class DecisionContext : IAuditContext //
     [Attr]
     [System.ComponentModel.Description("")]
     public bool DecisionMatched { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool BtmsAllMatch { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool BtmsAnyMatch { get; set; } = default;
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -102,6 +104,14 @@ public partial class DecisionContext : IAuditContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
+    public bool AlvsAllMatch { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AlvsAnyMatch { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
     public bool AlvsAllNoMatch { get; set; } = default;
     
     [Attr]
@@ -134,9 +144,6 @@ public partial class DecisionContext : IAuditContext //
     
 }
 
-/// <summary>
-/// 
-/// </summary>
 public partial class AlvsDecision  //
 {
     [Attr]

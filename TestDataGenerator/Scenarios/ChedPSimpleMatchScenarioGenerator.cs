@@ -17,12 +17,17 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
+        // TODO - check with Matt what a sensible checkCode, decision & other fields we need to 
+        // implement a 'real world' test here
+        var checkCode = "H2019";
+        var decisionCode = "H01";
+
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
-            .WithItem("N853", "16041421", "Tuna ROW CHEDP", 900)
+            .WithItem("N853", "16041421", "Tuna ROW CHEDP", 900, checkCode)
             .ValidateAndBuild();
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
@@ -31,7 +36,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
-            .WithItemAndCheck(1, "H222", "H01")
+            .WithItemAndCheck(1, checkCode, decisionCode)
             .ValidateAndBuild();
         
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
