@@ -318,7 +318,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <returns></returns>
-    public Task<SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to)
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to)
     {
         var mongoQuery = context
             .Movements
@@ -407,15 +407,18 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                         a.AlvsDecisionInfo,
                         a.BtmsDecisionInfo,
                         Classification =
-                            a.BtmsDecisionInfo == null ? "BtmsDecisionMissing" :
-                            a.AlvsDecisionInfo == null ? "AlvsDecisionMissing" :
+                            a.BtmsDecisionInfo == null ? "Btms Decision Not Present" :
+                            a.AlvsDecisionInfo == null ? "Alvs Decision Not Present" :
+                            
+                            // TODO : we may want to try to consider clearance request version as well as the decision code
+                            a.BtmsDecisionInfo.DecisionCode == a.AlvsDecisionInfo.DecisionCode ? "Btms Made Same Decision As Alvs" :
                             a.MovementInfo.Movement.Decisions
-                                .Any(d => d.Header!.DecisionNumber == 1) ? "AlvsDecisionVersion1Missing" : 
+                                .Any(d => d.Header!.DecisionNumber == 1) ? "Alvs Decision Version 1 Not Present" : 
                             a.MovementInfo.Movement.ClearanceRequests
-                                .Any(d => d.Header!.EntryVersionNumber == 1) ? "AlvsClearanceRequestVersion1Missing" : 
-                            a.BtmsDecisionInfo.DecisionCode == a.AlvsDecisionInfo.DecisionCode ? "BtmsMadeSameDecisionAsAlvs" :
-                            a.AlvsDecisionInfo.DecisionNumber == 1 && a.AlvsDecisionInfo.EntryVersion == 1 ? "SingleEntryAndDecisionVersion" :
-                            "FurtherClassificationNeeded"
+                                .Any(d => d.Header!.EntryVersionNumber == 1) ? "Alvs Clearance Request Version 1 Not Present" : 
+                            a.AlvsDecisionInfo.DecisionNumber == 1 && a.AlvsDecisionInfo.EntryVersion == 1 ? "Single Entry And Decision Version" :
+                            a.BtmsDecisionInfo.DecisionCode != a.AlvsDecisionInfo.DecisionCode ? "Btms Made Different Decision To Alvs" :
+                            "Further Classification Needed"
                             // "FurtherClassificationNeeded Check Code Is " + a.AlvsDecisionInfo.CheckCode
                     })
                 )
@@ -439,17 +442,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
 
         // Works
-        var summary = mongoQuery
-            .GroupBy(q => q.Key.Classification)
-            .Select(g => new StringBucketDimensionResult()
-            {
-                Fields = new Dictionary<string, string>() {
-                    { "Classification", g.Key }
-                },
-                Value = g.Sum(k => k.Count)
-            }).ToList();
+        var summary = new SingleSeriesDataset() {
+            Values = mongoQuery
+                .GroupBy(q => q.Key.Classification)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Sum(k => k.Count)
+                )
+        };
 
-        var r = new SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>()
+        var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
         {
             Summary = summary,
             Result = mongoQuery.Select(a => new StringBucketDimensionResult()
@@ -462,7 +464,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
                 },
                 Value = a.Count
-            }).ToList()
+            })
+            .OrderBy(r => r.Value)
+            .Reverse()
+            .ToList()
         };
         
         return Task.FromResult(r);

@@ -11,7 +11,7 @@ public class SummarisedDataset<TSummary, TResult> : IDataset
     where TResult : IDimensionResult
     where TSummary : IDimensionResult
 {
-    public required List<TSummary> Summary { get; set; }
+    public required TSummary Summary { get; set; }
     public required List<TResult> Result { get; set; }
     
 }
@@ -21,7 +21,7 @@ public class MultiSeriesDataset : IDataset
     public List<Series> Series { get; set; } = [];
 }
 
-public class SingleSeriesDataset : IDataset
+public class SingleSeriesDataset : IDataset, IDimensionResult
 {
     public IDictionary<string, int> Values { get; set; } = new Dictionary<string, int>();
 }
@@ -70,9 +70,9 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         {
             JsonSerializer.Serialize(writer, value as TabularDataset<ByNameDimensionResult>, options);
         }
-        else if (value is SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>)
+        else if (value is SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>)
         {
-            JsonSerializer.Serialize(writer, value as SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>, options);
+            JsonSerializer.Serialize(writer, value as SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>, options);
         }
         else
         {

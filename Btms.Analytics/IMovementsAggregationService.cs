@@ -7,7 +7,7 @@ public interface IMovementsAggregationService
     public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day);
     public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to);
     public Task<MultiSeriesDataset> ByItemCount(DateTime from, DateTime to);
-    public Task<SummarisedDataset<StringBucketDimensionResult, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to);
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to);
     // public Task<TabularDataset<ByNameDimensionResult>> ByDecisionAndLinkStatus(DateTime from, DateTime to);
     public Task<MultiSeriesDataset> ByUniqueDocumentReferenceCount(DateTime from, DateTime to);
     public Task<SingleSeriesDataset> UniqueDocumentReferenceByMovementCount(DateTime from, DateTime to);
