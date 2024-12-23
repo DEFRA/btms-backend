@@ -4,6 +4,7 @@ using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Model.Extensions;
 using Json.Patch;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Btms.Model.Auditing;
 

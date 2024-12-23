@@ -64,8 +64,8 @@ internal class Program
             },
             new
             {
-                Dataset = "LoadTest-One",
-                RootPath = "GENERATED-LOADTEST-ONE",
+                Dataset = "One",
+                RootPath = "GENERATED-ONE",
                 Scenarios = new[]
                 {
                     app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
@@ -74,8 +74,8 @@ internal class Program
             },
             new
             {
-                Dataset = "LoadTest-Basic",
-                RootPath = "GENERATED-LOADTEST-BASIC",
+                Dataset = "Basic",
+                RootPath = "GENERATED-BASIC",
                 Scenarios = new[]
                 {
                     app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(3, 7),
@@ -116,6 +116,18 @@ internal class Program
                         app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5000, 90),
                         app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90),
                         app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(4900, 90)
+                    }
+            },
+            new
+            {
+                Dataset = "90Dx1",
+                RootPath = "GENERATED-90Dx1",
+                Scenarios =
+                    new[]
+                    {
+                        app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 90),
+                        app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(1, 90),
+                        app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 90)
                     }
             },
             new

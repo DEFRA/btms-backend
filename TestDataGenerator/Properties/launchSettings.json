@@ -12,9 +12,9 @@
         "AZURE_TENANT_ID": "c9d74090-b4e6-4b04-981d-e6757a160812"
       }
     },
-    "Generate LoadTest-One": {
+    "Generate One": {
       "commandName": "Project",
-      "commandLineArgs": "LoadTest-One",
+      "commandLineArgs": "One",
       "environmentVariables": {
         "DMP_ENVIRONMENT": "dev",
         "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",
@@ -23,9 +23,9 @@
         "AZURE_TENANT_ID": "c9d74090-b4e6-4b04-981d-e6757a160812"
       }
     },
-    "Generate LoadTest-Basic": {
+    "Generate Basic": {
       "commandName": "Project",
-      "commandLineArgs": "LoadTest-Basic",
+      "commandLineArgs": "Basic",
       "environmentVariables": {
         "DMP_ENVIRONMENT": "dev",
         "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",
@@ -48,6 +48,17 @@
     "Generate LoadTest-Full": {
       "commandName": "Project",
       "commandLineArgs": "LoadTest-90Dx10k",
+      "environmentVariables": {
+        "DMP_ENVIRONMENT": "dev",
+        "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",
+        "DMP_BLOB_STORAGE_NAME": "devdmpinfdl1001",
+        "DMP_SLOT": "1003",
+        "AZURE_TENANT_ID": "c9d74090-b4e6-4b04-981d-e6757a160812"
+      }
+    },
+    "Generate 90Dx1": {
+      "commandName": "Project",
+      "commandLineArgs": "90Dx1",
       "environmentVariables": {
         "DMP_ENVIRONMENT": "dev",
         "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",

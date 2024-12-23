@@ -72,7 +72,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
         jsonClientResponse.Data.Count.Should().Be(5);
     }
 
-    [Fact(Skip="Movement was refactored")]
+    [Fact(Skip="Unclear how Checks was being set as it's not present in the clearance request text file :|")]
     public async Task SyncDecisions()
     {
         //Arrange 

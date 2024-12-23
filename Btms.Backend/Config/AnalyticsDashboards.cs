@@ -14,7 +14,7 @@ public static class AnalyticsDashboards
         IMovementsAggregationService movementsService,
         string[] chartsToRender,
         string[] chedTypes,
-        string? countryOfOrigin,
+        string? country,
         DateTime? dateFrom,
         DateTime? dateTo
         )
@@ -76,20 +76,24 @@ public static class AnalyticsDashboards
                 () => importService.ByCommodityCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
             },
             {
-                "lastMonthsDecisionsByDecisionCode",
-                () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
+                "decisionsByDecisionCode",
+                () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, chedTypes, country).AsIDataset()
             },
             {
-                "allImportNotificationsByVersion",
-                () => importService.ByMaxVersion(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
+                "importNotificationsByVersion",
+                () => importService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
             },
             {
-                "allMovementsByMaxEntryVersion",
-                () => movementsService.ByMaxVersion(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
+                "movementsByMaxEntryVersion",
+                () => movementsService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
             },
             {
-                "allMovementsByMaxDecisionNumber",
-                () => movementsService.ByMaxDecisionNumber(DateTime.Today.AddMonths(-3), DateTime.Today).AsIDataset()
+                "movementsByMaxDecisionNumber",
+                () => movementsService.ByMaxDecisionNumber(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
+            },
+            {
+                "movementsExceptions",
+                () => movementsService.ExceptionSummary(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
             }
         };
         

@@ -29,7 +29,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     [Attr] public List<CdsClearanceRequest> Decisions { get; set; } = default!;
 
     [Attr] public List<AlvsDecision> AlvsDecisions { get; set; } = new List<AlvsDecision>();
-
+    
     [Attr] public List<Items> Items { get; set; } = [];
 
     [Attr]
@@ -216,6 +216,8 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     
     private void CompareDecisions(AlvsDecision alvsDecision, CdsClearanceRequest btmsDecision)
     {
+        alvsDecision.Context.AlvsAllMatch = alvsDecision.Checks.All(c => !c.AlvsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.AlvsAnyMatch = alvsDecision.Checks.Any(c => !c.AlvsDecisionCode.StartsWith('X'));
         alvsDecision.Context.AlvsAllNoMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('X'));
         alvsDecision.Context.AlvsAnyNoMatch = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('X'));
         alvsDecision.Context.AlvsAllRefuse = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('N'));
@@ -225,6 +227,10 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         alvsDecision.Context.AlvsAllHold = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('H'));
         alvsDecision.Context.AlvsAnyHold = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('H'));
 
+        alvsDecision.Context.BtmsAllMatch = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && !c.BtmsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.BtmsAnyMatch = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && !c.BtmsDecisionCode.StartsWith('X'));
         alvsDecision.Context.BtmsAllNoMatch = alvsDecision.Checks.All(
             c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
         alvsDecision.Context.BtmsAnyNoMatch = alvsDecision.Checks.Any(

@@ -115,11 +115,12 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         });
     }
 
-    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Notifications
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .Where(m => country == null || m.PartOne!.Route!.TransitingStates!.Contains(country))
             .GroupBy(n => new { MaxVersion =
                 n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
             })
