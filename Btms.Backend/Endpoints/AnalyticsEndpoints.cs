@@ -57,10 +57,17 @@ public static class AnalyticsEndpoints
     private static async Task<IResult> GetDashboard(
         [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
-        [FromQuery] string[] chartsToRender)
+        [FromQuery] string[] chartsToRender,
+        [FromQuery(Name = "chedType")] string[] chedTypes,
+        [FromQuery(Name = "coo")] string? countryOfOrigin,
+        [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
+        [FromQuery(Name = "dateTo")] DateTime? dateTo)
     {
         var logger = ApplicationLogging.CreateLogger("AnalyticsEndpoints");
-        var result = await AnalyticsDashboards.GetCharts(logger, importService, movementsService, chartsToRender); 
+        var result =
+            await AnalyticsDashboards.GetCharts(logger, importService, movementsService,
+                chartsToRender,
+                chedTypes, countryOfOrigin, dateFrom, dateTo); 
         
         var options =
             new JsonSerializerOptions 

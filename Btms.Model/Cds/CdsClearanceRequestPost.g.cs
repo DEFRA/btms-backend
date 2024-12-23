@@ -13,12 +13,12 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Alvs;
+namespace Btms.Model.Cds;
 
 /// <summary>
 /// Message sent to the server to send an ALVSClearanceRequest.
 /// </summary>
-public partial class AlvsClearanceRequestPost  //
+public partial class CdsClearanceRequestPost  //
 {
 
 
@@ -59,7 +59,7 @@ public partial class AlvsClearanceRequestPost  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public AlvsClearanceRequest? AlvsClearanceRequest { get; set; }
+    public CdsClearanceRequest? AlvsClearanceRequest { get; set; }
 
 	}
 

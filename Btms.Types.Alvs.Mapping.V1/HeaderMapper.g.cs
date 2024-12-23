@@ -14,13 +14,13 @@ namespace Btms.Types.Alvs.Mapping;
 
 public static class HeaderMapper
 {
-	public static Btms.Model.Alvs.Header Map(Btms.Types.Alvs.Header from)
+	public static Btms.Model.Cds.Header Map(Btms.Types.Alvs.Header from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Btms.Model.Alvs.Header ();
+		var to = new Btms.Model.Cds.Header ();
 to.EntryReference = from.EntryReference;
             to.EntryVersionNumber = from.EntryVersionNumber;
             to.PreviousVersionNumber = from.PreviousVersionNumber;

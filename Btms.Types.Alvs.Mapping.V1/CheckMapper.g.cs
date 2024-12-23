@@ -14,14 +14,14 @@ namespace Btms.Types.Alvs.Mapping;
 
 public static class CheckMapper
 {
-    public static Btms.Model.Alvs.Check Map(Btms.Types.Alvs.Check from)
+    public static Btms.Model.Cds.Check Map(Btms.Types.Alvs.Check from)
     {
         if (from is null)
         {
             return default!;
         }
 
-        var to = new Btms.Model.Alvs.Check();
+        var to = new Btms.Model.Cds.Check();
         to.CheckCode = from.CheckCode;
         to.DepartmentCode = from.DepartmentCode;
         to.DecisionCode = from.DecisionCode;

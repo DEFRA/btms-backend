@@ -4,7 +4,7 @@ using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Btms.Model.Alvs;
+using Btms.Model.Cds;
 using Btms.Model.Auditing;
 using Btms.Model.ChangeLog;
 using Btms.Model.Data;
@@ -24,9 +24,11 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
 
-    [Attr] public List<Alvs.AlvsClearanceRequest> ClearanceRequests { get; set; } = default!;
+    [Attr] public List<CdsClearanceRequest> ClearanceRequests { get; set; } = default!;
 
-    [Attr] public List<Alvs.AlvsClearanceRequest> Decisions { get; set; } = default!;
+    [Attr] public List<CdsClearanceRequest> Decisions { get; set; } = default!;
+
+    [Attr] public List<AlvsDecision> AlvsDecisions { get; set; } = new List<AlvsDecision>();
 
     [Attr] public List<Items> Items { get; set; } = [];
 
@@ -121,9 +123,163 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         matchReferences = [];
     }
 
-    public bool MergeDecision(string path, AlvsClearanceRequest clearanceRequest)
+    private DecisionContext FindAlvsPairAndUpdate(CdsClearanceRequest clearanceRequest)
     {
-        if (clearanceRequest.ServiceHeader?.SourceSystem == "BTMS")
+        // This is an initial implementation
+        // we want to be smarter about how we 'pair' things, considering the same version of the import notifications
+        // can a BTMS decision be 'paired' to multiple ALVS decisions?
+        
+        var alvsDecision = this.AlvsDecisions.Find(
+            d => d.Context.EntryVersionNumber == EntryVersionNumber);
+            
+        if (alvsDecision != null)
+        {
+            var btmsChecks = this
+                .Items!
+                .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+                .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
+
+            alvsDecision.Context.BtmsDecisionNumber = clearanceRequest.Header!.DecisionNumber!.Value;
+            alvsDecision.Context.Paired = true;
+            alvsDecision.Checks = alvsDecision
+                .Checks
+                .Select(c =>
+                {
+                    var decisionCode = btmsChecks[(c.ItemNumber, c.CheckCode)];
+                    c.BtmsDecisionCode = decisionCode;
+                    return c;
+                }).ToList();
+
+            CompareDecisions(alvsDecision, clearanceRequest);
+
+            return alvsDecision.Context;
+        }
+        
+        // I'm Sure there's a better way to do this!
+        return new DecisionContext()
+        {
+            EntryVersionNumber = clearanceRequest.Header!.EntryVersionNumber!.Value,
+            BtmsDecisionNumber = clearanceRequest.Header!.DecisionNumber!.Value
+        };
+    }
+    
+    private AlvsDecision FindBtmsPairAndUpdate(CdsClearanceRequest clearanceRequest)
+    {
+        // This is an initial implementation
+        // we want to be smarter about how we 'pair' things, considering the same version of the import notifications
+        // can a BTMS decision be 'paired' to multiple ALVS decisions?
+        var btmsDecision = this.Decisions?
+            .Where(d => 
+                d.Header!.EntryVersionNumber == EntryVersionNumber)
+            .OrderBy(d => d.ServiceHeader!.ServiceCalled)
+            .Reverse()
+            .FirstOrDefault();
+
+        var btmsChecks = btmsDecision ?
+            .Items!
+            .SelectMany(i => i.Checks!.Select(c => new { Item = i!, Check = c }))
+            .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
+        
+        var alvsDecision = new AlvsDecision()
+        {
+            Decision = clearanceRequest,
+            Context = new DecisionContext()
+            {
+                AlvsDecisionNumber = clearanceRequest!.Header!.DecisionNumber!.Value,
+                BtmsDecisionNumber = btmsDecision == null ? 0 : btmsDecision!.Header!.DecisionNumber!.Value,
+                EntryVersionNumber = clearanceRequest!.Header!.EntryVersionNumber!.Value,
+                Paired = btmsDecision != null
+            },
+            Checks = clearanceRequest
+                .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+                .Select(ic =>
+                {
+                    var decisionCode = btmsChecks == null ? null : btmsChecks!.GetValueOrDefault((ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), null);
+                    return new ItemCheck()
+                    {
+                        ItemNumber = ic.Item!.ItemNumber!.Value,
+                        CheckCode = ic.Check!.CheckCode!,
+                        AlvsDecisionCode = ic.Check!.DecisionCode!,
+                        BtmsDecisionCode = decisionCode
+                    };
+                })
+                .ToList()
+        };
+        
+        if (btmsDecision != null)
+        {
+            CompareDecisions(alvsDecision, btmsDecision);
+        }
+        
+        return alvsDecision;
+    }
+    
+    private void CompareDecisions(AlvsDecision alvsDecision, CdsClearanceRequest btmsDecision)
+    {
+        alvsDecision.Context.AlvsAllNoMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.AlvsAnyNoMatch = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.AlvsAllRefuse = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.AlvsAnyRefuse = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.AlvsAllRelease = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.AlvsAnyRelease = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.AlvsAllHold = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('H'));
+        alvsDecision.Context.AlvsAnyHold = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('H'));
+
+        alvsDecision.Context.BtmsAllNoMatch = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.BtmsAnyNoMatch = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
+        alvsDecision.Context.BtmsAllRefuse = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.BtmsAnyRefuse = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('N'));
+        alvsDecision.Context.BtmsAllRelease = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.BtmsAnyRelease = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('C'));
+        alvsDecision.Context.BtmsAllHold = alvsDecision.Checks.All(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('H'));
+        alvsDecision.Context.BtmsAnyHold = alvsDecision.Checks.Any(
+            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('H'));
+
+        var pairStatus = "Investigation Needed";
+        
+        if (alvsDecision.Context.BtmsDecisionNumber == 0)
+        {
+            pairStatus = "Btms Decision Not Present";
+        }
+        else
+        {
+            var checksMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
+            
+            if (checksMatch)
+            {
+                alvsDecision.Context.DecisionMatched = true;
+                pairStatus = "Btms Made Same Decision As Alvs";
+            }
+            else if (!this.ClearanceRequests.Exists(c => c.Header!.EntryVersionNumber == 1))
+            {
+                pairStatus = "Alvs Clearance Request Version 1 Not Present";
+            }
+            else if (alvsDecision.Decision.Header!.DecisionNumber != 1 && !this.AlvsDecisions.Exists(c => c.Context.AlvsDecisionNumber == 1))
+            {
+                pairStatus = "Alvs Decision Version 1 Not Present";
+            }
+        }
+        
+        alvsDecision.Context.DecisionStatus = pairStatus;
+    }
+
+    public bool MergeDecision(string path, CdsClearanceRequest clearanceRequest)
+    {
+        var sourceSystem = clearanceRequest.ServiceHeader?.SourceSystem;
+        var isAlvs = sourceSystem != "BTMS";
+        var isBtms = sourceSystem == "BTMS";
+        // CdsClearanceRequest? btmsDecision = null;
+        // AlvsDecision? alvsDecision = null;
+        DecisionContext context;
+        
+        if (isBtms)
         {
             foreach (var item in clearanceRequest.Items!)
             {
@@ -134,32 +290,48 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
                     existingItem.MergeChecks(item);
                 }
             }
+
+            context = FindAlvsPairAndUpdate(clearanceRequest);
+            
+            Decisions ??= [];
+            Decisions.Add(clearanceRequest);
+            
+        }
+        else if (isAlvs)
+        {
+            var alvsDecision = FindBtmsPairAndUpdate(clearanceRequest);
+            context = alvsDecision.Context;
+            
+            // AlvsDecisions ??= [];
+            AlvsDecisions.Add(alvsDecision);
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Unexpected decision source system {clearanceRequest.ServiceHeader?.SourceSystem}");
         }
 
-        var decisionAuditContext = new Dictionary<string, Dictionary<string, string>>();
-        decisionAuditContext.Add("clearanceRequests", new Dictionary<string, string>()
-        {
-            { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.EntryVersionNumber!.ToString()! }
-        });
-        decisionAuditContext.Add("decisions", new Dictionary<string, string>()
-        {
-            { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.DecisionNumber!.ToString()! }
-        });
-        decisionAuditContext.Add("importNotifications", new Dictionary<string, string>()
-        {
-            { "todo", "todo" }
-        });
-        
+        // var decisionAuditContext = new Dictionary<string, Dictionary<string, string>>();
+        // decisionAuditContext.Add("clearanceRequests", new Dictionary<string, string>()
+        // {
+        //     { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.EntryVersionNumber!.ToString()! }
+        // });
+        // decisionAuditContext.Add("decisions", new Dictionary<string, string>()
+        // {
+        //     { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.DecisionNumber!.ToString()! }
+        // });
+        // // decisionAuditContext.Add("importNotifications", new Dictionary<string, string>()
+        // // {
+        // //     { "todo", "todo" }
+        // // });
+        //
         var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),
             clearanceRequest.Header!.EntryVersionNumber.GetValueOrDefault(),
             clearanceRequest.ServiceHeader!.ServiceCalled,
             clearanceRequest.Header.DeclarantName!,
-            decisionAuditContext,
+            context,
             clearanceRequest.ServiceHeader?.SourceSystem != "BTMS");
-
-        Decisions ??= [];
-        Decisions.Add(clearanceRequest);
         this.Update(auditEntry);
 
         return true;

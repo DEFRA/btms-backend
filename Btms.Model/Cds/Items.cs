@@ -9,7 +9,7 @@
 #nullable enable
 
 
-namespace Btms.Model.Alvs;
+namespace Btms.Model.Cds;
 
 /// <summary>
 /// 

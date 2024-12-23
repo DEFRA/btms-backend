@@ -12,7 +12,7 @@ using SlimMessageBus;
 using TestDataGenerator;
 using TestDataGenerator.Scenarios;
 using Xunit;
-using Check = Btms.Model.Alvs.Check;
+using Check = Btms.Model.Cds.Check;
 using Decision = Btms.Model.Ipaffs.Decision;
 
 namespace Btms.Business.Tests.Services.Decisions;

@@ -13,12 +13,12 @@ using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Alvs;
+namespace Btms.Model.Cds;
 
 /// <summary>
 /// 
 /// </summary>
-public partial class Check  //
+public partial class CdsClearanceRequest  //
 {
 
 
@@ -27,7 +27,7 @@ public partial class Check  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? CheckCode { get; set; }
+    public ServiceHeader? ServiceHeader { get; set; }
 
 	
     /// <summary>
@@ -35,27 +35,16 @@ public partial class Check  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DepartmentCode { get; set; }
+    public Header? Header { get; set; }
 
+	
     /// <summary>
     /// 
     /// </summary>
     [Attr]
-    [JsonPropertyName("decisionCode")]
-    public string? DecisionCode { get; set; }
+    [System.ComponentModel.Description("")]
+    public Items[]? Items { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Attr]
-    [JsonPropertyName("decisionsValidUntil")]
-    public DateTime? DecisionsValidUntil { get; set; }
-
-    [Attr]
-    [JsonPropertyName("decisionReasons")]
-    public string[]? DecisionReasons { get; set; }
-
-}
+	}
 
 
