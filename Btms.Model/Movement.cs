@@ -137,9 +137,13 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         }
 
         var decisionAuditContext = new Dictionary<string, Dictionary<string, string>>();
-        decisionAuditContext.Add("movements", new Dictionary<string, string>()
+        decisionAuditContext.Add("clearanceRequests", new Dictionary<string, string>()
         {
             { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.EntryVersionNumber!.ToString()! }
+        });
+        decisionAuditContext.Add("decisions", new Dictionary<string, string>()
+        {
+            { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.DecisionNumber!.ToString()! }
         });
         decisionAuditContext.Add("importNotifications", new Dictionary<string, string>()
         {

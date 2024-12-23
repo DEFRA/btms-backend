@@ -9,7 +9,7 @@ using Btms.Analytics.Tests.Helpers;
 namespace Btms.Analytics.Tests;
 
 [Collection(nameof(MultiItemDataTestCollection))]
-public class MovementsByDecisionsTests(
+public class MovementsExceptionsTests(
     MultiItemDataTestFixture multiItemDataTestFixture,
     ITestOutputHelper testOutputHelper)
 {
