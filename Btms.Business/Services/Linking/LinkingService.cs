@@ -6,6 +6,7 @@ using Btms.Model;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
+using Json.Path;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Services.Linking;
@@ -54,6 +55,8 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
                             return new LinkResult(LinkOutcome.NotLinked);
                         }
+                        
+                        await CheckMovementForRemovedLinks(movementLinkContext, cancellationToken);
 
                         result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
                         break;
@@ -70,7 +73,6 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                     default: throw new ArgumentException("context type not supported");
                 }
 
-
                 if (result.Outcome == LinkOutcome.NotLinked)
                 {
                     logger.LinkNotFound(linkContext.GetType().Name, linkContext.GetIdentifiers());
@@ -83,9 +85,9 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 metrics.Linked<ImportNotification>(result.Notifications.Count);
 
                 using var transaction = await dbContext.StartTransaction(cancellationToken);
-                foreach (var notification in result.Notifications)
+                foreach (var movement in result.Movements)
                 {
-                    foreach (var movement in result.Movements)
+                    foreach (var notification in result.Notifications)
                     {
                         notification.AddRelationship(new TdmRelationshipObject
                         {
@@ -129,11 +131,50 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
         }
 
-       
-
         return result;
     }
 
+    private async Task CheckMovementForRemovedLinks(MovementLinkContext linkContext,
+        CancellationToken cancellationToken = default)
+    {            
+        var jp = JsonPath.Parse($"$.{nameof(Movement._MatchReferences)}");
+        var pathResult = jp.Evaluate(linkContext!.ChangeSet?.Previous);
+
+        var chedRefs = pathResult?.Matches?
+                            .Select(m => m.Value)?
+                            .SelectMany(x => x!.AsArray())
+                            .Select(x => $"{x!.AsValue()}").ToList();
+            
+        if (chedRefs?.Count > 0)
+        {
+            var removedRefs = chedRefs.Select(x => linkContext.PersistedMovement._MatchReferences.Contains(x) == false);
+            if (removedRefs.Any())
+            {
+                foreach (var chedRef in chedRefs)
+                {
+                    await RemoveMovementLinkFromNotification(linkContext.PersistedMovement.Id, chedRef, cancellationToken);
+                }
+            }
+        }
+    }
+
+    private async Task RemoveMovementLinkFromNotification(string? movementId, string chedRef, CancellationToken cancellationToken = default)
+    {
+        var notification = dbContext.Notifications.SingleOrDefault(x => x._MatchReference == chedRef);
+        
+        if (notification != null)
+        {
+            var relationshipLink = notification.Relationships.Movements.Data?
+                .SingleOrDefault(x => x.Id == movementId && x.Type == "movements");
+
+            if (relationshipLink != null)
+            {
+                notification.RemoveRelationship(relationshipLink);
+                await dbContext.Notifications.Update(notification, notification._Etag);
+            }
+        }
+    }
+    
     private static bool ShouldLinkMovement(ChangeSet? changeSet)
     {
         return changeSet is null || changeSet.HasDocumentsChanged();
@@ -193,5 +234,21 @@ public static partial class LinkingChangeSetExtensions
         return changeSet.JsonPatch.Operations
             .Any(x => ItemsRegex().IsMatch(x.Path.ToString())
                       || DocumentsRegex().IsMatch(x.Path.ToString()));
+    }
+    
+    public static bool LinksToRemove(this ChangeSet changeSet)
+    {
+        return changeSet.JsonPatch.Operations
+            .Any(x => ItemsRegex().IsMatch(x.Path.ToString())
+                      || DocumentsRegex().IsMatch(x.Path.ToString()));
+    }
+    
+    private static void TidyRemovedLinks(this MovementLinkContext linkContext)
+    {
+        var changeSet = linkContext.ChangeSet;
+        changeSet!.JsonPatch.Operations
+            .Any(x => ItemsRegex().IsMatch(x.Path.ToString())
+                      || DocumentsRegex().IsMatch(x.Path.ToString()));
+        bool derp = changeSet is null || changeSet.HasDocumentsChanged();
     }
 }
