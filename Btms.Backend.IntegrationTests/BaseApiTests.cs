@@ -19,9 +19,14 @@ namespace Btms.Backend.IntegrationTests;
 public abstract class BaseApiTests
 {
     protected readonly HttpClient Client;
-    protected readonly IntegrationTestsApplicationFactory Factory;
+    internal readonly IIntegrationTestsApplicationFactory Factory;
+    // protected readonly IntegrationTestsApplicationFactory Factory;
 
-    protected BaseApiTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    protected async Task ClearDb()
+    {
+        await Factory.ClearDb(Client);
+    }
+    protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
     {
         Factory = factory;
         Factory.TestOutputHelper = testOutputHelper;

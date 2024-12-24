@@ -12,7 +12,18 @@ using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
+public interface IIntegrationTestsApplicationFactory
+{
+    ITestOutputHelper TestOutputHelper { get; set; }
+    string DatabaseName { get; set; }
+
+    HttpClient CreateClient(WebApplicationFactoryClientOptions options);
+    HttpClient CreateClient();
+    IMongoDbContext GetDbContext();
+    Task ClearDb(HttpClient client);
+}
+
+public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
     // protected override Bef
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -61,16 +72,21 @@ public class IntegrationTestsApplicationFactory : WebApplicationFactory<Program>
         builder.UseEnvironment("Development");
     }
 
-    internal ITestOutputHelper TestOutputHelper { get; set; } = null!;
+    public ITestOutputHelper TestOutputHelper { get; set; } = null!;
 
-    internal string DatabaseName { get; set; } = null!;
+    public string DatabaseName { get; set; } = null!;
 
     public IMongoDbContext GetDbContext()
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
 
-    public static async Task ClearDb(HttpClient client)
+    // public new HttpClient CreateClient()
+    // {
+    //     throw new NotImplementedException();
+    // }
+
+    public async Task ClearDb(HttpClient client)
     {
         await client.GetAsync("mgmt/collections/drop");
     }

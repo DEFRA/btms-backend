@@ -15,11 +15,11 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicationFactory>
+public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
     private readonly JsonSerializerOptions jsonOptions;
 
-    public SmokeTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper) :base(factory, testOutputHelper)
+    public SmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) :base(factory, testOutputHelper)
     {
         jsonOptions = new JsonSerializerOptions();
         jsonOptions.Converters.Add(new JsonStringEnumConverter());
@@ -30,7 +30,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task CancelSyncJob()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
         var jobId = await StartJob(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
@@ -56,7 +56,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncNotifications()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
         await MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
@@ -76,7 +76,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncDecisions()
     {
         //Arrange 
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
         await SyncClearanceRequests();
         await MakeSyncDecisionsRequest(new SyncDecisionsCommand
         {
@@ -106,7 +106,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncClearanceRequests()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
 
         //Act
         await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
@@ -127,7 +127,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncGmrs()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
 
         //Act
         await MakeSyncGmrsRequest(new SyncGmrsCommand
