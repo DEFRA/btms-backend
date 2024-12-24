@@ -173,12 +173,12 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Where(n => notificationIds.Contains(n.Id))
             .SelectMany(n => n.AuditEntries
                 .Select(a => 
-                    new AuditHistory(a, $"ImportNotification", n.Id!)
+                    new AuditHistory(a, "ImportNotification", "import-notifications", n.Id!)
                 )
             );
         
         var entries = movement!.AuditEntries
-            .Select(a => new AuditHistory(a, "Movement", movementId))
+            .Select(a => new AuditHistory(a, "Movement", "movements", movementId))
             .Concat(notificationEntries);
 
         entries = entries.OrderBy(a => a.AuditEntry.CreatedSource);
@@ -329,165 +329,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 .ToList()
         };
         
-            return Task.FromResult(r);
-        
-        // return DefaultSummarisedBucketResult();
+        return Task.FromResult(r);
     }
-    
-    // public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecisionComplex(DateTime from, DateTime to)
-    // {
-    //     var mongoQuery = context
-    //         .Movements
-    //         // .Aggregate()
-    //         .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
-    //         .Select(m => new
-    //         {
-    //             MovementInfo = new
-    //             {
-    //                 Id = m.Id,
-    //                 UpdatedSource = m.UpdatedSource,
-    //                 Updated = m.Updated,
-    //                 Movement = m
-    //             },
-    //             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-    //             // Get the most recent decision record from both systems
-    //             AlvsDecision = (m.Decisions == null
-    //                 ? null
-    //                 : m.Decisions
-    //                     .Where(d => d.ServiceHeader!.SourceSystem == "ALVS")
-    //                     .OrderBy(d => d.ServiceHeader!.ServiceCalled)
-    //                     .Reverse()
-    //                     .FirstOrDefault())
-    //                        // Creates a default item & check so we don't lose
-    //                        // it in the selectmany below
-    //                        ?? new CdsClearanceRequest()
-    //                         {
-    //                             Items = new []
-    //                             {
-    //                                 new Items()
-    //                                 {
-    //                                     Checks = new []
-    //                                     {
-    //                                         new Check()
-    //                                         {
-    //                                             CheckCode = "XXX",
-    //                                             DecisionCode = "XXX"
-    //                                         }
-    //                                     }
-    //                                 }
-    //                             }
-    //                         },
-    //             BtmsDecision = m.Decisions == null
-    //                 ? null
-    //                 : m.Decisions
-    //                     .Where(d => d.ServiceHeader!.SourceSystem == "BTMS")
-    //                     .OrderBy(d => d.ServiceHeader!.ServiceCalled)
-    //                     .Reverse()
-    //                     .FirstOrDefault()
-    //         })
-    //         .SelectMany(m =>
-    //             m.AlvsDecision!.Items!
-    //                 .SelectMany(i =>
-    //                     (i.Checks
-    //                      ?? new[] { new Check() { CheckCode = "XXX", DecisionCode = "XXX" } })
-    //                         .Select(c =>
-    //                         new
-    //                         {
-    //                             m.MovementInfo,
-    //                             AlvsDecisionInfo = c.CheckCode == "XXX" ? null : new
-    //                             {
-    //                                 Decision = m.AlvsDecision,
-    //                                 DecisionNumber = m.AlvsDecision!.Header!.DecisionNumber,
-    //                                 EntryVersion = m.AlvsDecision!.Header!.EntryVersionNumber,
-    //                                 ItemNumber = i.ItemNumber,
-    //                                 CheckCode = c.CheckCode,
-    //                                 DecisionCode = c.DecisionCode,
-    //                             },
-    //                             BtmsDecisionInfo = new
-    //                             {
-    //                                 Decision = m.BtmsDecision,
-    //                                 DecisionCode = m.BtmsDecision == null || m.BtmsDecision.Items == null
-    //                                     ? null
-    //                                     : m.BtmsDecision.Items!
-    //                                         .First(bi => bi.ItemNumber == i.ItemNumber)
-    //                                         .Checks!
-    //                                         .First(ch => ch.CheckCode == c.CheckCode)
-    //                                         .DecisionCode
-    //                             }
-    //                         }
-    //                     )
-    //                 )
-    //                 .Select(a => new
-    //                 {
-    //                     a.MovementInfo,
-    //                     a.AlvsDecisionInfo,
-    //                     a.BtmsDecisionInfo,
-    //                     Classification =
-    //                         a.BtmsDecisionInfo == null ? "Btms Decision Not Present" :
-    //                         a.AlvsDecisionInfo == null ? "Alvs Decision Not Present" :
-    //                         
-    //                         // TODO : we may want to try to consider clearance request version as well as the decision code
-    //                         a.BtmsDecisionInfo.DecisionCode == a.AlvsDecisionInfo.DecisionCode ? "Btms Made Same Decision As Alvs" :
-    //                         a.MovementInfo.Movement.Decisions
-    //                             .Any(d => d.Header!.DecisionNumber == 1) ? "Alvs Decision Version 1 Not Present" : 
-    //                         a.MovementInfo.Movement.ClearanceRequests
-    //                             .Any(d => d.Header!.EntryVersionNumber == 1) ? "Alvs Clearance Request Version 1 Not Present" : 
-    //                         a.AlvsDecisionInfo.DecisionNumber == 1 && a.AlvsDecisionInfo.EntryVersion == 1 ? "Single Entry And Decision Version" :
-    //                         a.BtmsDecisionInfo.DecisionCode != a.AlvsDecisionInfo.DecisionCode ? "Btms Made Different Decision To Alvs" :
-    //                         "Further Classification Needed"
-    //                         // "FurtherClassificationNeeded Check Code Is " + a.AlvsDecisionInfo.CheckCode
-    //                 })
-    //             )
-    //         
-    //         // .Where(m => m.AlvsDecisionInfo == null)
-    //         // .Where(m => m.AlvsDecision!.Items!.Any(i => i.Checks!.Any(c => c.CheckCode == "XXX")))
-    //         .GroupBy(check => new
-    //         {
-    //             check.Classification,
-    //             check.AlvsDecisionInfo!.CheckCode,
-    //             AlvsDecisionCode = check.AlvsDecisionInfo!.DecisionCode,
-    //             BtmsDecisionCode=check.BtmsDecisionInfo!.DecisionCode
-    //         })
-    //         .Select(g => new
-    //         {
-    //             g.Key, Count = g.Count()
-    //         })
-    //         
-    //         .Execute(logger);
-    //
-    //     logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
-    //
-    //     // Works
-    //     var summary = new SingleSeriesDataset() {
-    //         Values = mongoQuery
-    //             .GroupBy(q => q.Key.Classification)
-    //             .ToDictionary(
-    //                 g => g.Key,
-    //                 g => g.Sum(k => k.Count)
-    //             )
-    //     };
-    //
-    //     var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
-    //     {
-    //         Summary = summary,
-    //         Result = mongoQuery.Select(a => new StringBucketDimensionResult()
-    //         {
-    //             Fields = new Dictionary<string, string>()
-    //             {
-    //                 { "Classification", a.Key.Classification },
-    //                 { "CheckCode", a.Key.CheckCode! },
-    //                 { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
-    //                 { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
-    //             },
-    //             Value = a.Count
-    //         })
-    //         .OrderBy(r => r.Value)
-    //         .Reverse()
-    //         .ToList()
-    //     };
-    //     
-    //     return Task.FromResult(r);
-    // }
 
     private static Task<TabularDataset<ByNameDimensionResult>> DefaultTabularDatasetByNameDimensionResult()
     {
