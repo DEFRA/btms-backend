@@ -20,6 +20,8 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             .Where(m => country == null || m.DispatchCountryCode == country )
             .Select(m => new
             {
+                // TODO - we should think about pre-calculating this stuff and storing it on the movement...
+
                 Id = m.Id,
                 UpdatedSource = m.UpdatedSource,
                 Updated = m.Updated,
@@ -28,7 +30,14 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
                 HasMatchDecisions = m.AlvsDecisions.Any(d => d.Context.AlvsAnyMatch),
-                HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0
+                DecisionMatched = !m.AlvsDecisions
+                    .OrderBy(d => d.Context.AlvsDecisionNumber)
+                    .Reverse()
+                    .First()
+                    .Context.DecisionMatched,
+                HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
+                ContiguousAlvsClearanceRequestVersionsFrom1 = 
+                    m.ClearanceRequests.Select(c => c.Header!.EntryVersionNumber)
             })
             .Select(m => new
             {
@@ -43,7 +52,9 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 HasNotificationRelationships = m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
                 // TODO - can we include CHED versions here too?
-                TotalDocumentVersions = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds
+                TotalDocumentVersions = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds,
+                DecisionMatched = m.DecisionMatched,
+                ContiguousAlvsClearanceRequestVersionsFrom1 = m.ContiguousAlvsClearanceRequestVersionsFrom1.Count() == m.MaxEntryVersion
             });
 
         var moreComplexMovementsQuery = simplifiedMovementView
@@ -51,7 +62,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
 
         if (summary)
         {
-            exceptionsSummary.Values.Add("complexMovement", moreComplexMovementsQuery.Count());
+            exceptionsSummary.Values.Add("Complex Movement", moreComplexMovementsQuery.Count());
         }
         else
         {
@@ -80,12 +91,12 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         
         if (summary)
         {
-            exceptionsSummary.Values.Add("alvsLinksButNotBtms", movementsWhereAlvsLinksButNotBtmsQuery.Count());
+            exceptionsSummary.Values.Add("Alvs has match decisions but no Btms links", movementsWhereAlvsLinksButNotBtmsQuery.Count());
         }
         else
         {
             exceptionsResult.AddRange(movementsWhereAlvsLinksButNotBtmsQuery
-                .OrderBy(a => -a.Total)
+                .OrderBy(a => a.Total)
                 .Take(10)
                 .Execute(logger)
                 .Select(r =>
@@ -99,7 +110,38 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                         MaxEntryVersion = r.MaxEntryVersion,
                         MaxDecisionNumber = r.MaxDecisionNumber,
                         LinkedCheds = r.LinkedCheds,
-                        Reason = "Alvs has match decisions but we don't have links"
+                        Reason = "Alvs has match decisions but no Btms links"
+                    })
+            );
+        }
+        
+        var movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery = simplifiedMovementView
+            .Where(r =>
+                r.ContiguousAlvsClearanceRequestVersionsFrom1 && r.DecisionMatched
+                && r.HasNotificationRelationships);
+        
+        if (summary)
+        {
+            exceptionsSummary.Values.Add("BTMS Links But Decision Wrong", movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery.Count());
+        }
+        else
+        {
+            exceptionsResult.AddRange(movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery
+                .OrderBy(a => a.Total)
+                .Take(10)
+                .Execute(logger)
+                .Select(r =>
+                    new ExceptionResult()
+                    {
+                        Resource = "Movement",
+                        Id = r.Id!,
+                        UpdatedSource = r.UpdatedSource!.Value,
+                        Updated = r.Updated,
+                        ItemCount = r.ItemCount,
+                        MaxEntryVersion = r.MaxEntryVersion,
+                        MaxDecisionNumber = r.MaxDecisionNumber,
+                        LinkedCheds = r.LinkedCheds,
+                        Reason = "BTMS Links But Decision Wrong"
                     })
             );
         }
