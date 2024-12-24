@@ -8,14 +8,14 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<IntegrationTestsApplicationFactory>
+public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
     [Fact]
     public async Task SyncClearanceRequests_WithNoReferencedNotifications_ShouldNotLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await Factory.ClearDb(Client);
 
         // Act
         await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
@@ -36,7 +36,7 @@ public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutpu
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
 
         // Act
         await MakeSyncNotificationsRequest(new SyncNotificationsCommand
@@ -61,7 +61,7 @@ public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutpu
     public async Task SyncNotifications_WithNoReferencedMovements_ShouldNotLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
             
         // Act
         await MakeSyncNotificationsRequest(new SyncNotificationsCommand
@@ -82,7 +82,7 @@ public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutpu
     public async Task SyncNotifications_WithReferencedMovements_ShouldLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
             
         // Act
         await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
