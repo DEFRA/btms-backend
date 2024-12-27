@@ -41,6 +41,7 @@ public class ChedPMultiStepScenarioGenerator(ILogger<ChedPMultiStepScenarioGener
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
+            .WithDecisionVersionNumber()
             .WithItemAndCheck(1, checkCode, decisionCode)
             .ValidateAndBuild();
         

@@ -29,7 +29,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
-                HasMatchDecisions = m.AlvsDecisionStatus == null && m.AlvsDecisionStatus!.Decisions.Any(d => d.Context.AlvsAnyMatch),
+                HasMatchDecisions = m.AlvsDecisionStatus.Context != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus.AnyMatch,
                 DecisionMatched = !m.AlvsDecisionStatus.Decisions
                     .OrderBy(d => d.Context.AlvsDecisionNumber)
                     .Reverse()

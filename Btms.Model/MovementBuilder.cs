@@ -327,39 +327,36 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
     private void CompareDecisions(AlvsDecision alvsDecision, CdsClearanceRequest btmsDecision)
     {
         GuardNullMovement();
+
+        alvsDecision.Context.AlvsCheckStatus = new StatusChecker()
+        {
+            AllMatch = alvsDecision.Checks.All(c => !c.AlvsDecisionCode.StartsWith('X')),
+            AnyMatch = alvsDecision.Checks.Any(c => !c.AlvsDecisionCode.StartsWith('X')),
+            AllNoMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('X')),
+            AnyNoMatch = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('X')),
+            AllRefuse = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('N')),
+            AnyRefuse = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('N')),
+            AllRelease = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('C')),
+            AnyRelease = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('C')),
+            AllHold = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('H')),
+            AnyHold = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('H'))
+        };
         
-        alvsDecision.Context.AlvsAllMatch = alvsDecision.Checks.All(c => !c.AlvsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.AlvsAnyMatch = alvsDecision.Checks.Any(c => !c.AlvsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.AlvsAllNoMatch = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.AlvsAnyNoMatch = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.AlvsAllRefuse = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('N'));
-        alvsDecision.Context.AlvsAnyRefuse = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('N'));
-        alvsDecision.Context.AlvsAllRelease = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('C'));
-        alvsDecision.Context.AlvsAnyRelease = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('C'));
-        alvsDecision.Context.AlvsAllHold = alvsDecision.Checks.All(c => c.AlvsDecisionCode.StartsWith('H'));
-        alvsDecision.Context.AlvsAnyHold = alvsDecision.Checks.Any(c => c.AlvsDecisionCode.StartsWith('H'));
-
-        alvsDecision.Context.BtmsAllMatch = alvsDecision.Checks.All(
-            c => c.BtmsDecisionCode != null && !c.BtmsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.BtmsAnyMatch = alvsDecision.Checks.Any(
-            c => c.BtmsDecisionCode != null && !c.BtmsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.BtmsAllNoMatch = alvsDecision.Checks.All(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.BtmsAnyNoMatch = alvsDecision.Checks.Any(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('X'));
-        alvsDecision.Context.BtmsAllRefuse = alvsDecision.Checks.All(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('N'));
-        alvsDecision.Context.BtmsAnyRefuse = alvsDecision.Checks.Any(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('N'));
-        alvsDecision.Context.BtmsAllRelease = alvsDecision.Checks.All(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('C'));
-        alvsDecision.Context.BtmsAnyRelease = alvsDecision.Checks.Any(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('C'));
-        alvsDecision.Context.BtmsAllHold = alvsDecision.Checks.All(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('H'));
-        alvsDecision.Context.BtmsAnyHold = alvsDecision.Checks.Any(
-            c => c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith('H'));
-
+        
+        alvsDecision.Context.BtmsCheckStatus = new StatusChecker()
+        {
+            AllMatch = alvsDecision.Checks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
+            AnyMatch = alvsDecision.Checks.Any(c => !(c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X'))),
+            AllNoMatch = alvsDecision.Checks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
+            AnyNoMatch = alvsDecision.Checks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
+            AllRefuse = alvsDecision.Checks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('N')),
+            AnyRefuse = alvsDecision.Checks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('N')),
+            AllRelease = alvsDecision.Checks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('C')),
+            AnyRelease = alvsDecision.Checks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('C')),
+            AllHold = alvsDecision.Checks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H')),
+            AnyHold = alvsDecision.Checks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H'))
+        };
+        
         var pairStatus = "Investigation Needed";
         
         if (alvsDecision.Context.BtmsDecisionNumber == 0)
