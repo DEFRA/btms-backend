@@ -1,5 +1,6 @@
 using Btms.Backend.Data;
 using Btms.Model;
+using Btms.Model.Cds;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using SlimMessageBus;
@@ -13,13 +14,15 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilder moveme
     {
         var internalClearanceRequest = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
-        
+
         if (existingMovement != null)
         {
             var auditId = Context.Headers["messageId"].ToString();
+            var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
+            
             movementBuilder = movementBuilder
                 .From(existingMovement!)
-                .MergeDecision(auditId!, internalClearanceRequest);
+                .MergeDecision(auditId!, internalClearanceRequest, notificationContext);
                 // .Build();
 
             // var merged = existingMovement.MergeDecision(auditId!, internalClearanceRequest);

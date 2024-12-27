@@ -3,17 +3,20 @@ using Microsoft.Extensions.Logging;
 
 namespace TestDataGenerator.Scenarios;
 
-public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioGenerator> logger) : ScenarioGenerator
+public class ChedPMultiStepScenarioGenerator(ILogger<ChedPMultiStepScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var notification = GetNotificationBuilder("chedp-one-commodity")
-            .WithCreationDate(entryDate)
+        var notificationBuilder = GetNotificationBuilder("chedp-one-commodity")
+            .WithCreationDate(entryDate.AddDays(-1))
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
-            .WithSimpleCommodity("1604142800", "Skipjack Tuna", 300)
-            .WithInspectionStatus("NOTREQUIRED") //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
-            .WithVersionNumber()
+            .WithNoCommodities()
+            .WithInspectionStatus(
+                "NOTREQUIRED") //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
+            .WithVersionNumber();
+            
+        var notification = notificationBuilder
             .ValidateAndBuild();
 
         logger.LogInformation("Created {NotificationReferenceNumber}", 
@@ -43,6 +46,18 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
         
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
 
-        return new GeneratorResult([clearanceRequest, notification, alvsDecision]);
+        var uniqueCommodityId = Guid.NewGuid();
+        
+        var updatedNotification = notificationBuilder
+            .WithCreationDate(entryDate)
+            .WithSimpleCommodity("1604142800", "Skipjack Tuna", 300, uniqueCommodityId)
+            .WithRiskAssesment(uniqueCommodityId, CommodityRiskResultRiskDecisionEnum.Notrequired)
+            .WithVersionNumber(2)
+            .Build();
+        
+        logger.LogInformation("Created version {Version} of notification {NotificationReferenceNumber}", 
+            notification.Version, notification.ReferenceNumber);
+
+        return new GeneratorResult([clearanceRequest, notification, alvsDecision, updatedNotification]);
     }
 }

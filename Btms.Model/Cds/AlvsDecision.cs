@@ -36,8 +36,23 @@ public partial class ItemCheck
     public string? BtmsDecisionCode { get; set; }
 }
 
+public class DecisionImportNotifications
+{
+    public required string Id { get; set; }
+    public required int? Version { get; set; }
+    public required DateTime Created { get; set; }
+    public required DateTime Updated { get; set; }
+    public required DateTime CreatedSource { get; set; }
+    public required DateTime UpdatedSource { get; set; }
+}
+
 public partial class DecisionContext : IAuditContext //
 {
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<DecisionImportNotifications>? ImportNotifications { get; set; }
+    
+    
     [Attr]
     [System.ComponentModel.Description("")]
     public int AlvsDecisionNumber { get; set; } = default;

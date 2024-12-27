@@ -89,7 +89,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
         return _movement.ClearanceRequests[^1].GenerateChangeSet(builder._movement.ClearanceRequests[0]);
     }
 
-    public MovementBuilder MergeDecision(string path, Model.Cds.CdsClearanceRequest clearanceRequest)
+    public MovementBuilder MergeDecision(string path, Model.Cds.CdsClearanceRequest clearanceRequest, List<DecisionImportNotifications>? notificationContext)
     {
         GuardNullMovement();
         
@@ -164,6 +164,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
         // //     { "todo", "todo" }
         // // });
         //
+        context.ImportNotifications = notificationContext;
         
         var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),
@@ -225,11 +226,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
         // This is an initial implementation
         // we want to be smarter about how we 'pair' things, considering the same version of the import notifications
         // can a BTMS decision be 'paired' to multiple ALVS decisions?
-        if (!_movement.HasValue())
-        {
-            throw new InvalidOperationException(
-                "Can't call this without first calling 'From' to initialise the builder.");
-        }
         
         var alvsDecision = _movement.AlvsDecisionStatus?.Decisions.Find(
             d => d.Context.EntryVersionNumber == _movement.EntryVersionNumber);

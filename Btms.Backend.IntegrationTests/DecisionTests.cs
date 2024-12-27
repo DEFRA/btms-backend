@@ -14,6 +14,7 @@ using Btms.Backend.IntegrationTests.Extensions;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
 using Btms.Model.Cds;
+using Btms.Model.Ipaffs;
 using Btms.Types.Alvs;
 using TestDataGenerator.Scenarios;
 using Json.More;
@@ -34,10 +35,14 @@ public class DecisionTests(TestDataGeneratorFactory factory, ITestOutputHelper t
         // Arrange
         var loadedData = await factory.GenerateAndLoadTestData(Client, "One");
         
-        var chedPMovement = loadedData.Single(d =>
+        var chedPMovement = (AlvsClearanceRequest)loadedData.Single(d =>
                 d is { generator: ChedPSimpleMatchScenarioGenerator, message: AlvsClearanceRequest })
-            .message as AlvsClearanceRequest;
+            .message;
         
+        var chedPNotification = (Types.Ipaffs.ImportNotification)loadedData.Single(d =>
+                d is { generator: ChedPSimpleMatchScenarioGenerator, message: Types.Ipaffs.ImportNotification })
+            .message;
+
         // Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById(chedPMovement!.Header!.EntryReference!, "api/movements");
         
@@ -64,7 +69,20 @@ public class DecisionTests(TestDataGeneratorFactory factory, ITestOutputHelper t
                 ("Btms", "Decision", 2),
                 ("Alvs", "Decision", 1)
             ]);
+
+        var decisionWithLinkAndContext = movement.AuditEntries
+            .Where(a => a.CreatedBy == "Btms" && a.Status == "Decision")
+            .MaxBy(a => a.Version)!;
+
+        decisionWithLinkAndContext.Context!.ImportNotifications
+            .Should().NotBeNull();
         
+        decisionWithLinkAndContext.Context!.ImportNotifications!
+            .Select(n => (n.Id, n.Version))
+            .Should().Equal([
+                ( chedPNotification.ReferenceNumber!, 1 )
+            ]);
+
         // TODO : for some reason whilst jsonClientResponse contains the notification relationship, movement doesn't!
         // movement.Relationships.Notifications.Data.Count.Should().Be(1);
     }

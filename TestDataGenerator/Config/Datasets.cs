@@ -44,8 +44,9 @@ public class Datasets(IHost app)
         RootPath = "GENERATED-ONE",
         Scenarios = new[]
         {
-            // app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
-            app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1)
+            app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
+            app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1),
+            app.CreateScenarioConfig<ChedPMultiStepScenarioGenerator>(1, 1)
         }
     };
 

@@ -1,15 +1,39 @@
+using Btms.BlobService;
 using Btms.BlobService.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using TestDataGenerator.Config;
 using TestDataGenerator.Helpers;
+using TestDataGenerator.Scenarios;
 
 namespace TestDataGenerator.Extensions;
 
 public static class BuilderExtensions
 {
+    public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
+    {
+        services.AddHttpClient();
+
+        services.AddSingleton<ChedASimpleMatchScenarioGenerator>();
+        services.AddSingleton<ChedAManyCommoditiesScenarioGenerator>();
+        services.AddSingleton<ChedPSimpleMatchScenarioGenerator>();
+        services.AddSingleton<ChedANoMatchScenarioGenerator>();
+        services.AddSingleton<CrNoMatchScenarioGenerator>();
+        services.AddSingleton<ChedPMultiStepScenarioGenerator>();
+                
+        var blobOptionsValidatorDescriptor = services.Where(d => 
+            d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>));
+
+        foreach (var serviceDescriptor in blobOptionsValidatorDescriptor.ToList())
+        {
+            services.Remove(serviceDescriptor);
+        }
+        
+        return services;
+    }
 
     private static (IConfigurationRoot, GeneratorConfig) GetConfig(string cachePath)
     {   

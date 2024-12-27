@@ -9,7 +9,7 @@ public abstract class BuilderBase<T, TBuilder>
     where TBuilder : BuilderBase<T, TBuilder> where T : new()
 {
     private IPostprocessComposer<T> _composer = null!;
-    private Fixture Fixture { get; set; } = null!;
+    protected Fixture Fixture { get; set; } = null!;
 
     protected BuilderBase()
     {

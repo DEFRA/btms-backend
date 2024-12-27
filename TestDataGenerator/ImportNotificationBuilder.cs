@@ -37,7 +37,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     protected ImportNotificationBuilder(string file) : base(file)
     {
     }
-
+    
     /// <summary>
     ///     Allows any customisations needed, such as removing problems with serialisation, e.g Do(n =>
     ///     Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
@@ -91,21 +91,82 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.PartOne!.ArrivalTime = dt.ToTime();
         });
     }
+    
+    
 
-    public ImportNotificationBuilder<T> WithCommodity(string commodityCode, string description, int netWeight)
+    public ImportNotificationBuilder<T> WithSimpleCommodity(string commodityCode, string description, int netWeight, Guid? uniqueComplementId = null)
     {
         return Do(n =>
         {
-            n.PartOne!.Commodities!.TotalNetWeight = netWeight;
-            n.PartOne!.Commodities!.TotalGrossWeight = netWeight;
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesId = "000";
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesClass = "XXXX";
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesName = "XXXX";
-            n.PartOne!.Commodities!.CommodityComplements![0].CommodityDescription = description;
-            n.PartOne!.Commodities!.CommodityComplements![0].ComplementName = "XXXX";
-            n.PartOne!.Commodities!.CommodityComplements![0].SpeciesNomination = "XXXX";
-            n.PartOne!.Commodities!.ComplementParameterSets![0].SpeciesId = "000";
-            n.PartOne!.Commodities!.ComplementParameterSets![0].KeyDataPairs!["netweight"] = netWeight;
+            n.PartOne!.Commodities = new Commodities()
+            {
+                CommodityComplements = [
+                    new CommodityComplement()
+                    {
+                        ComplementId = 1,
+                        SpeciesId = "000",
+                        SpeciesClass = "XXXX",
+                        SpeciesName = "XXXX",
+                        CommodityDescription = description,
+                        ComplementName = "XXXX",
+                        SpeciesNomination = "XXXX",
+                    }
+                ],
+                ComplementParameterSets = [
+                    new ComplementParameterSet()
+                    {
+                        UniqueComplementId = (uniqueComplementId ?? Guid.NewGuid()).ToString(),
+                        ComplementId = 1,
+                        SpeciesId = "000",
+                        KeyDataPairs = new Dictionary<string, object>()
+                        {
+                            { "netweight", netWeight }
+                        }
+                    }
+                ],
+                TotalNetWeight = netWeight,
+                TotalGrossWeight = netWeight,
+                
+            };
+            
+            // n.PartOne!.Commodities!.TotalNetWeight = netWeight;
+            // n.PartOne!.Commodities!.TotalGrossWeight = netWeight;
+            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesId = "000";
+            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesClass = "XXXX";
+            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesName = "XXXX";
+            // n.PartOne!.Commodities!.CommodityComplements![0].CommodityDescription = description;
+            // n.PartOne!.Commodities!.CommodityComplements![0].ComplementName = "XXXX";
+            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesNomination = "XXXX";
+            // n.PartOne!.Commodities!.ComplementParameterSets![0].SpeciesId = "000";
+            // n.PartOne!.Commodities!.ComplementParameterSets![0].KeyDataPairs!["netweight"] = netWeight;
+        });
+    }
+    
+    public ImportNotificationBuilder<T> WithNoCommodities()
+    {
+        return Do(n =>
+        {
+            n.RiskAssessment = null;
+            n.PartOne!.Commodities = null;
+        });
+    }
+    
+    public ImportNotificationBuilder<T> WithRiskAssesment(Guid uniqueComplementId, CommodityRiskResultRiskDecisionEnum riskDecision)
+    {
+        return Do(n =>
+        {
+            n.RiskAssessment = new RiskAssessmentResult()
+            {
+                CommodityResults = new []
+                {
+                    new CommodityRiskResult()
+                    {
+                        RiskDecision = riskDecision,
+                        UniqueId = uniqueComplementId.ToString()
+                    }
+                }
+            };
+
         });
     }
     
@@ -117,18 +178,26 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         });
     }
 
+    public ImportNotificationBuilder<T> WithVersionNumber(int version = 1)
+    {
+        return Do(x =>
+        {
+            x.Version = version;
+        });
+    }
     protected override ImportNotificationBuilder<T> Validate()
     {
         return Do(n =>
         {
             n.ReferenceNumber.AssertHasValue("Import Notification ReferenceNumber missing");
-            n.PartOne!.ArrivalDate.AssertHasValue("Import Notification ArrivalDate missing");
-            n.PartOne!.ArrivalTime.AssertHasValue("Import Notification ArrivalTime missing");
+            n.PartOne!.ArrivalDate.AssertHasValue("Import Notification PartOne ArrivalDate missing");
+            n.PartOne!.ArrivalTime.AssertHasValue("Import Notification PartOne ArrivalTime missing");
+            n.Version.AssertHasValue("Import Notification Version missing");
             
             // NB - this may not be correct...
             if (n.ImportNotificationType != ImportNotificationTypeEnum.Cveda)
             {
-                n.PartTwo!.InspectionRequired.AssertHasValue("Import Notification InspectionRequired missing");    
+                n.PartTwo!.InspectionRequired.AssertHasValue("Import Notification PartTwo InspectionRequired missing");    
             }
             
         });
