@@ -17,10 +17,10 @@ public interface IIntegrationTestsApplicationFactory
     ITestOutputHelper TestOutputHelper { get; set; }
     string DatabaseName { get; set; }
 
-    HttpClient CreateClient(WebApplicationFactoryClientOptions options);
-    HttpClient CreateClient();
+    BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options);
+    // BtmsClient CreateClient();
     IMongoDbContext GetDbContext();
-    Task ClearDb(HttpClient client);
+    // Task ClearDb(BtmsClient client);
 }
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
@@ -76,18 +76,23 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
     public string DatabaseName { get; set; } = null!;
 
+    public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
+    {
+        return new BtmsClient(base.CreateClient(options));
+    }
+
     public IMongoDbContext GetDbContext()
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
 
-    // public new HttpClient CreateClient()
+    // public new BtmsClient CreateClient()
     // {
-    //     throw new NotImplementedException();
+    //     return base.CreateClient()
     // }
 
-    public async Task ClearDb(HttpClient client)
-    {
-        await client.GetAsync("mgmt/collections/drop");
-    }
+    // public async Task ClearDb(BtmsClient client)
+    // {
+    //     await client.GetAsync("mgmt/collections/drop");
+    // }
 }

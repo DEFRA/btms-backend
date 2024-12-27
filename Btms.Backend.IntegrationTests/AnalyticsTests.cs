@@ -33,8 +33,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetIndividualMultiSeriesDatetimeChart()
     {
         //Act
-        var response = await Client.GetAsync(
-            "/analytics/dashboard?chartsToRender=importNotificationLinkingByCreated");
+        var response = await Client.GetAnalyticsDashboard("importNotificationLinkingByCreated");
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());
@@ -51,8 +50,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetIndividualMultiSeriesChart()
     {
         //Act
-        var response = await Client.GetAsync(
-            "/analytics/dashboard?chartsToRender=lastMonthMovementsByItemCount");
+        var response = await Client.GetAnalyticsDashboard("lastMonthMovementsByItemCount");
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());
@@ -69,8 +67,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetIndividualSingleSeriesChart()
     {
         //Act
-        var response = await Client.GetAsync(
-            "/analytics/dashboard?chartsToRender=last7DaysImportNotificationsLinkingStatus");
+        var response = await Client.GetAnalyticsDashboard("last7DaysImportNotificationsLinkingStatus");
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());
@@ -87,7 +84,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetAllCharts()
     {
         //Act
-        var response = await Client.GetAsync("/analytics/dashboard");
+        var response = await Client.GetAnalyticsDashboard();
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());

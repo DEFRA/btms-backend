@@ -31,23 +31,22 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     {
         //Arrange
         await base.ClearDb();
-        var jobId = await StartJob(new SyncNotificationsCommand
+        var (response, jobId) = await Client.StartJob(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
         }, "/sync/import-notifications");
 
         //Act
-        var cancelJobResponse = await Client.GetAsync($"/sync/jobs/{jobId}/cancel");
-
-
-
+        var cancelJobResponse = await Client.CancelJob(jobId);
+        
         // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         cancelJobResponse.IsSuccessStatusCode.Should().BeTrue(cancelJobResponse.StatusCode.ToString());
            
 
         // Check Api
-        var jobResponse = await Client.GetAsync($"/sync/jobs/{jobId}");
+        var jobResponse = await Client.GetJob(jobId);
         var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
         syncJob?.Status.Should().Be(SyncJobStatus.Cancelled);
     }
@@ -57,7 +56,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     {
         //Arrange
         await base.ClearDb();
-        await MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -78,7 +77,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         //Arrange 
         await base.ClearDb();
         await SyncClearanceRequests();
-        await MakeSyncDecisionsRequest(new SyncDecisionsCommand
+        await Client.MakeSyncDecisionsRequest(new SyncDecisionsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -109,7 +108,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         await base.ClearDb();
 
         //Act
-        await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
+        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -130,7 +129,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         await base.ClearDb();
 
         //Act
-        await MakeSyncGmrsRequest(new SyncGmrsCommand
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -144,17 +143,17 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         jsonClientResponse.Data.Count.Should().Be(3);
     }
 
-    private async Task<string?> StartJob<T>(T command, string uri)
-    {
-        var jsonData = JsonSerializer.Serialize(command);
-        HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-        //Act
-        var response = await Client.PostAsync(uri, content);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-
-        return Path.GetFileName(response.Headers.Location?.ToString());
-    }
+    // private async Task<string?> StartJob<T>(T command, string uri)
+    // {
+    //     var jsonData = JsonSerializer.Serialize(command);
+    //     HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+    //
+    //     //Act
+    //     var response = await Client.PostAsync(uri, content);
+    //
+    //     // Assert
+    //     response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+    //
+    //     return Path.GetFileName(response.Headers.Location?.ToString());
+    // }
 }

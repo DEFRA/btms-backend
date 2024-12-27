@@ -9,7 +9,7 @@ namespace TestDataGenerator;
 
 public class Generator(ILogger<Generator> logger, IBlobService blobService)
 {
-    internal async Task Cleardown(string rootPath)
+    public async Task Cleardown(string rootPath)
     {
         await blobService.CleanAsync($"{rootPath}/");
     }

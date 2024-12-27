@@ -16,27 +16,28 @@ namespace Btms.Backend.IntegrationTests;
 public class GmrTests :
     IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
-    private readonly HttpClient _client;
+    private readonly BtmsClient _client;
     private IIntegrationTestsApplicationFactory _factory;
 
     public GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
     {
         factory.TestOutputHelper = testOutputHelper;
         factory.DatabaseName = "GmrTests";
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        var credentials = "IntTest:Password";
-        var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
-        var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
-        _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
+        _client = factory.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        // _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        // var credentials = "IntTest:Password";
+        // var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
+        // var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
+        // _client.DefaultRequestHeaders.Authorization =
+        //     new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
         _factory = factory;
     }
 
     public async Task InitializeAsync()
     {
-        await _factory.ClearDb(_client);
+        await _client.ClearDb();
 
-        await MakeSyncGmrsRequest(new SyncGmrsCommand
+        await _client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -58,19 +59,6 @@ public class GmrTests :
 
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Id.Should().Be("56GB123456789AB043");
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
-    }
-
-    private Task<HttpResponseMessage> MakeSyncGmrsRequest(SyncGmrsCommand command)
-    {
-        return PostCommand(command, "/sync/gmrs");
-    }
-
-    private Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
-    {
-        var jsonData = JsonSerializer.Serialize(command);
-        HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-        return _client.PostAsync(uri, content);
     }
 
     public Task DisposeAsync()

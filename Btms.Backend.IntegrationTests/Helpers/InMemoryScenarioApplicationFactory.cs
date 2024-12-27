@@ -1,20 +1,43 @@
 using Btms.Backend.Data;
+using Btms.Backend.Data.Mongo;
 using Btms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using Serilog.Extensions.Logging;
+using TestDataGenerator.Scenarios;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public class ScenarioApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
+public class InMemoryScenarioApplicationFactory
+    : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
-    // protected override Bef
+    // private readonly ILogger<ScenarioApplicationFactory> _logger = messageSink.ToLogger<ScenarioApplicationFactory>();
+    // internal IWebHost? _app;
+    private IMongoDbContext? _mongoDbContext;
+
+    // internal async Task InsertScenario()
+    // {
+    //     var logger = new Logger<ChedPSimpleMatchScenarioGenerator>(new SerilogLoggerFactory());
+    //     var scenario = new ChedPSimpleMatchScenarioGenerator(logger);
+    //
+    //     return await Task.FromResult();
+    // }
+    // TODO : Make generic version work
+    // internal async Task InsertScenario<T>() where T : notnull, new
+    // {
+    //     var scenario = new T();
+    //     // var scenario = _app!.Services.GetRequiredService<T>();
+    //     await Task.FromResult("");
+    // }
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -47,18 +70,35 @@ public class ScenarioApplicationFactory : WebApplicationFactory<Program>, IInteg
                     var settings = MongoClientSettings.FromConnectionString(options.Value.DatabaseUri);
                     var client = new MongoClient(settings);
 
+                    // _mongoDbContext = client
                     var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
                     var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
-                    return client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
+                    var db = client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
+                   
+                    // TODO : Use our ILoggerFactory
+                    _mongoDbContext = new MongoDbContext(db, new SerilogLoggerFactory());
+                    return db;
                 });
 
                 services.AddLogging(lb => lb.AddXUnit(TestOutputHelper));
             });
 
         builder.UseEnvironment("Development");
+        
+        // _app = builder.Build();
+        // var rootScope = _app.Services.CreateScope();
+
+        
+        // _mongoDbContext = this.Services.GetRequiredService<IMongoDbContext>();
+        // using (var scope = this.Server.Host.Services.CreateScope())
+        // {
+        //     _mongoDbContext = scope.ServiceProvider.GetRequiredService<IMongoDbContext>();
+        // }
+        // 
+
     }
 
     public ITestOutputHelper TestOutputHelper { get; set; } = null!;
@@ -69,9 +109,14 @@ public class ScenarioApplicationFactory : WebApplicationFactory<Program>, IInteg
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
-
-    public async Task ClearDb(HttpClient client)
+    
+    public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
     {
-        await client.GetAsync("mgmt/collections/drop");
+        return new BtmsClient(base.CreateClient(options));
     }
+
+    // public async Task ClearDb(HttpClient client)
+    // {
+    //     await client.GetAsync("mgmt/collections/drop");
+    // }
 }

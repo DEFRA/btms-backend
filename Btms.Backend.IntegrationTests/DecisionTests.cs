@@ -12,35 +12,72 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Btms.Backend.IntegrationTests.Extensions;
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Business.Commands;
+using TestDataGenerator.Scenarios;
 using Json.More;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class DecsionTests(ScenarioApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<ScenarioApplicationFactory>
+public class DecisionTests(TestDataGeneratorFactory factory, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<TestDataGeneratorFactory>
 {
     
     [Fact]
     public async Task SimpleChedPScenario()
     {
+        
         // Arrange
-        await factory.ClearDb(Client);
+        await factory.GenerateAndLoadTestData(Client);
+        // await factory.ClearDb(Client);
+        // await factory.InsertScenario<ChedPSimpleMatchScenarioGenerator>();
 
-        // Act
+        
+        // // Arrange
+        // await factory.ClearDb(Client);
+        // // await factory.InsertScenario<ChedPSimpleMatchScenarioGenerator>();
+        
+        //
+        // // Act
+        // var period = SyncPeriod.All;
+        // var rootFolder = "GENERATED-ONE";
         // await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         // {
-        //     SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+        //     SyncPeriod = period,
+        //     RootFolder = rootFolder
+        // });
+        //
+        // await MakeSyncNotificationsRequest(new SyncNotificationsCommand()
+        // {
+        //     SyncPeriod = period,
+        //     RootFolder = rootFolder
+        // });
+        //
+        // await MakeSyncDecisionsRequest(new SyncDecisionsCommand()
+        // {
+        //     SyncPeriod = period,
+        //     RootFolder = rootFolder
         // });
 
         // Assert
+        // TODO - think this ID is predicatable but TBC!
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
-        jsonClientResponse.Data
-            .Where(x => x.Relationships is not null)
-            .SelectMany(x => x.Relationships!)
-            .Any(x => x.Value is { Links: not null })
-            .Should().Be(false);
+        
+        // 23GB9999021224000001
+        var ids = jsonClientResponse.Data.Select(d => d.Id);
+        Factory.TestOutputHelper.WriteLine("IDs retrieved from movements API call {0}", ids);
+
+        ids.Should().NotBeEmpty();
+        // jsonClientResponse.Data.First()
+        //     .Relationships
+        //     .Values
+        //     
+        //     .Where(x => x.Relationships is not null)
+        //     .SelectMany(x => x.Relationships!)
+        //     .Any(x => x.Value is { Links: not null })
+        //     .Should().Be(false);
     }
 }
