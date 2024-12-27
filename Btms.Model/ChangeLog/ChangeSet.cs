@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Btms.Model.Extensions;
 using Json.Patch;
+using Json.Path;
 
 namespace Btms.Model.ChangeLog;
 
@@ -29,5 +30,18 @@ public class ChangeSet(JsonPatch jsonPatch, JsonNode jsonNodePrevious)
         var operations = diff.Operations.Where(x => !x.Path.ToString().Contains("_ts"));
 
         return new ChangeSet(new JsonPatch(operations), previousNode!);
+    }
+    
+    public T? GetPreviousValue<T>(string path)
+    {
+        var jp = JsonPath.Parse($"$.{nameof(Movement._MatchReferences)}");
+        var pathResult = jp.Evaluate(Previous);
+
+        if (pathResult.Matches.Any())
+        {
+            return pathResult.Matches.First().Value.Deserialize<T>();
+        }
+
+        return default;
     }
 }

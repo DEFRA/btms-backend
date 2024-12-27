@@ -6,7 +6,6 @@ using Btms.Model;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
-using Json.Path;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Services.Linking;
@@ -136,32 +135,28 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
 
     private async Task CheckMovementForRemovedLinks(MovementLinkContext linkContext,
         CancellationToken cancellationToken = default)
-    {            
-        var jp = JsonPath.Parse($"$.{nameof(Movement._MatchReferences)}");
-        var pathResult = jp.Evaluate(linkContext!.ChangeSet?.Previous);
-
-        var chedRefs = pathResult?.Matches?
-                            .Select(m => m.Value)?
-                            .SelectMany(x => x!.AsArray())
-                            .Select(x => $"{x!.AsValue()}").ToList();
-            
+    {
+        var chedRefs = linkContext.ChangeSet?.GetPreviousValue<List<string>>($"$.{nameof(Movement._MatchReferences)}");
+        
         if (chedRefs?.Count > 0)
         {
-            var removedRefs = chedRefs.Select(x => linkContext.PersistedMovement._MatchReferences.Contains(x) == false);
+            var removedRefs = chedRefs.Except(linkContext.PersistedMovement._MatchReferences).ToList();
             if (removedRefs.Any())
             {
                 foreach (var chedRef in chedRefs)
                 {
-                    await RemoveMovementLinkFromNotification(linkContext.PersistedMovement.Id, chedRef, cancellationToken);
+                    await RemoveMovementLinkFromNotification(linkContext.PersistedMovement.Id, chedRef,
+                        cancellationToken);
                 }
             }
         }
     }
 
-    private async Task RemoveMovementLinkFromNotification(string? movementId, string chedRef, CancellationToken cancellationToken = default)
+    private async Task RemoveMovementLinkFromNotification(string? movementId, string chedRef,
+        CancellationToken cancellationToken = default)
     {
         var notification = dbContext.Notifications.SingleOrDefault(x => x._MatchReference == chedRef);
-        
+
         if (notification != null)
         {
             var relationshipLink = notification.Relationships.Movements.Data?
