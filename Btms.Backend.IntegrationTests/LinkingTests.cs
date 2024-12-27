@@ -8,17 +8,17 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<IntegrationTestsApplicationFactory>
+public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
     [Fact]
     public async Task SyncClearanceRequests_WithNoReferencedNotifications_ShouldNotLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await Client.ClearDb();
 
         // Act
-        await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
+        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
@@ -36,14 +36,14 @@ public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutpu
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
 
         // Act
-        await MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
-        await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
+        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
@@ -61,10 +61,10 @@ public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutpu
     public async Task SyncNotifications_WithNoReferencedMovements_ShouldNotLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
             
         // Act
-        await MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
@@ -82,14 +82,14 @@ public class LinkingTests(IntegrationTestsApplicationFactory factory, ITestOutpu
     public async Task SyncNotifications_WithReferencedMovements_ShouldLink()
     {
         // Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
             
         // Act
-        await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
+        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
-        await MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });

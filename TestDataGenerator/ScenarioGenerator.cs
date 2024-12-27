@@ -85,6 +85,7 @@ public abstract class ScenarioGenerator
         }
         
         public int Count => Messages.Count;
+        
         public IEnumerator GetEnumerator()
         {
             return Messages.GetEnumerator();

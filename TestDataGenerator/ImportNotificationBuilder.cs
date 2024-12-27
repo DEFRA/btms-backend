@@ -108,6 +108,14 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             n.PartOne!.Commodities!.ComplementParameterSets![0].KeyDataPairs!["netweight"] = netWeight;
         });
     }
+    
+    public ImportNotificationBuilder<T> WithInspectionStatus(string inspectionRequired = "Required")
+    {
+        return Do(x =>
+        {
+            x.PartTwo!.InspectionRequired = inspectionRequired;
+        });
+    }
 
     protected override ImportNotificationBuilder<T> Validate()
     {
@@ -116,6 +124,13 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             n.ReferenceNumber.AssertHasValue("Import Notification ReferenceNumber missing");
             n.PartOne!.ArrivalDate.AssertHasValue("Import Notification ArrivalDate missing");
             n.PartOne!.ArrivalTime.AssertHasValue("Import Notification ArrivalTime missing");
+            
+            // NB - this may not be correct...
+            if (n.ImportNotificationType != ImportNotificationTypeEnum.Cveda)
+            {
+                n.PartTwo!.InspectionRequired.AssertHasValue("Import Notification InspectionRequired missing");    
+            }
+            
         });
     }
 }

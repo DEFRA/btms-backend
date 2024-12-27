@@ -43,6 +43,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
     <ProjectReference Include="..\Btms.Backend\Btms.Backend.csproj" />
+    <ProjectReference Include="..\TestDataGenerator\TestDataGenerator.csproj" />
   </ItemGroup>
 
 </Project>

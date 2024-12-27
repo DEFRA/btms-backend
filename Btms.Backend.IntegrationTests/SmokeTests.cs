@@ -15,11 +15,11 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicationFactory>
+public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
     private readonly JsonSerializerOptions jsonOptions;
 
-    public SmokeTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper) :base(factory, testOutputHelper)
+    public SmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) :base(factory, testOutputHelper)
     {
         jsonOptions = new JsonSerializerOptions();
         jsonOptions.Converters.Add(new JsonStringEnumConverter());
@@ -30,24 +30,23 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task CancelSyncJob()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
-        var jobId = await StartJob(new SyncNotificationsCommand
+        await base.ClearDb();
+        var (response, jobId) = await Client.StartJob(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
         }, "/sync/import-notifications");
 
         //Act
-        var cancelJobResponse = await Client.GetAsync($"/sync/jobs/{jobId}/cancel");
-
-
-
+        var cancelJobResponse = await Client.CancelJob(jobId);
+        
         // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         cancelJobResponse.IsSuccessStatusCode.Should().BeTrue(cancelJobResponse.StatusCode.ToString());
            
 
         // Check Api
-        var jobResponse = await Client.GetAsync($"/sync/jobs/{jobId}");
+        var jobResponse = await Client.GetJob(jobId);
         var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
         syncJob?.Status.Should().Be(SyncJobStatus.Cancelled);
     }
@@ -56,8 +55,8 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncNotifications()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
-        await MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        await base.ClearDb();
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -76,9 +75,9 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncDecisions()
     {
         //Arrange 
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
         await SyncClearanceRequests();
-        await MakeSyncDecisionsRequest(new SyncDecisionsCommand
+        await Client.MakeSyncDecisionsRequest(new SyncDecisionsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -106,10 +105,10 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncClearanceRequests()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
 
         //Act
-        await MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
+        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -127,10 +126,10 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
     public async Task SyncGmrs()
     {
         //Arrange
-        await IntegrationTestsApplicationFactory.ClearDb(Client);
+        await base.ClearDb();
 
         //Act
-        await MakeSyncGmrsRequest(new SyncGmrsCommand
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -142,19 +141,5 @@ public class SmokeTests : BaseApiTests, IClassFixture<IntegrationTestsApplicatio
         // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/gmrs");
         jsonClientResponse.Data.Count.Should().Be(3);
-    }
-
-    private async Task<string?> StartJob<T>(T command, string uri)
-    {
-        var jsonData = JsonSerializer.Serialize(command);
-        HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-        //Act
-        var response = await Client.PostAsync(uri, content);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-
-        return Path.GetFileName(response.Headers.Location?.ToString());
     }
 }
