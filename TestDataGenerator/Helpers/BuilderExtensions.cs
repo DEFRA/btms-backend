@@ -1,5 +1,7 @@
 using Btms.BlobService;
+using Btms.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using TestDataGenerator.Scenarios;
 
@@ -17,8 +19,13 @@ public static class BuilderExtensions
         services.AddSingleton<ChedANoMatchScenarioGenerator>();
         services.AddSingleton<CrNoMatchScenarioGenerator>();
                 
-        var blobOptionsValidatorDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>))!;
-        services.Remove(blobOptionsValidatorDescriptor);
+        var blobOptionsValidatorDescriptor = services.Where(d => 
+            d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>));
+
+        foreach (var serviceDescriptor in blobOptionsValidatorDescriptor.ToList())
+        {
+            services.Remove(serviceDescriptor);
+        }
         
         return services;
     }

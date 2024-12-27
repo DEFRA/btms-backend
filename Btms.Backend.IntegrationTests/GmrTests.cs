@@ -14,27 +14,31 @@ namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
 public class GmrTests :
-    IClassFixture<IntegrationTestsApplicationFactory>, IAsyncLifetime
+    IClassFixture<Fixture>, IAsyncLifetime
 {
-    private readonly HttpClient client;
+    private readonly BtmsClient? _client;
+    private IIntegrationTestsFixture _fixture;
 
-    public GmrTests(IntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    public GmrTests(Fixture fixture, ITestOutputHelper testOutputHelper)
     {
-        factory.TestOutputHelper = testOutputHelper;
-        factory.DatabaseName = "GmrTests";
-        client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        var credentials = "IntTest:Password";
-        var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
-        var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
-        client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
+        fixture.TestOutputHelper = testOutputHelper;
+        fixture.DatabaseName = "GmrTests";
+        _client = new BtmsClient(null);
+        // _client = fixture.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        // _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        // var credentials = "IntTest:Password";
+        // var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
+        // var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
+        // _client.DefaultRequestHeaders.Authorization =
+        //     new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
+        _fixture = fixture;
     }
 
     public async Task InitializeAsync()
     {
-        await IntegrationTestsApplicationFactory.ClearDb(client);
+        await _client!.ClearDb();
 
-        await MakeSyncGmrsRequest(new SyncGmrsCommand
+        await _client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
@@ -48,7 +52,7 @@ public class GmrTests :
     public void FetchSingleGmrTest()
     {
         //Act
-        var jsonClientResponse = client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+        var jsonClientResponse = _client!.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         // Assert
         jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
@@ -56,19 +60,6 @@ public class GmrTests :
 
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Id.Should().Be("56GB123456789AB043");
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
-    }
-
-    private Task<HttpResponseMessage> MakeSyncGmrsRequest(SyncGmrsCommand command)
-    {
-        return PostCommand(command, "/sync/gmrs");
-    }
-
-    private Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
-    {
-        var jsonData = JsonSerializer.Serialize(command);
-        HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-        return client.PostAsync(uri, content);
     }
 
     public Task DisposeAsync()

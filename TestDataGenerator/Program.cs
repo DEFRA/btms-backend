@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using TestDataGenerator.Config;
 using TestDataGenerator.Scenarios;
 using Btms.BlobService.Extensions;
+using TestDataGenerator.Extensions;
 using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator;
@@ -13,140 +14,20 @@ internal class Program
 {
     private static async Task Main(string[] args)
     {
-        
-        // Any defaults for the test generation can be added here
-        var configurationValues = new Dictionary<string, string>
-        {
-            { "BlobServiceOptions:CachePath", "../../../.test-data-generator" },
-            { "BlobServiceOptions:CacheReadEnabled", "true" },
-            { "BlobServiceOptions:CacheWriteEnabled", "true" }
-        };
-        
-        var configuration = new ConfigurationBuilder()
-            .AddEnvironmentVariables()
-            .AddInMemoryCollection(configurationValues!)
-            .AddIniFile("Properties/local.env", true)
-            .Build();
-        
-        var generatorConfig = new GeneratorConfig(configuration);
-
         var builder = Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(builder =>
-            {
-                builder.Sources.Clear();
-                builder.AddConfiguration(configuration);
-            })
-            .ConfigureServices((_, services) =>
-            {
-                services.AddHttpClient();
-
-                services.AddSingleton<GeneratorConfig>(_ => generatorConfig);
-                services.AddBlobStorage(configuration);
-
-                services.AddTransient<Generator>();
-                
-                services.ConfigureTestGenerationServices();
-                
-            })
-            .AddLogging();
+            .ConfigureTestDataGenerator();
 
         var app = builder.Build();
         var generator = app.Services.GetRequiredService<Generator>();
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
-        var datasets = new[]
-        {
-            new
-            {
-                Dataset = "EndToEnd-IBM",
-                RootPath = "GENERATED-ENDTOEND-IBM",
-                Scenarios = new[] { app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1) }
-            },
-            new
-            {
-                Dataset = "One",
-                RootPath = "GENERATED-ONE",
-                Scenarios = new[]
-                {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
-                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1)
-                }
-            },
-            new
-            {
-                Dataset = "Basic",
-                RootPath = "GENERATED-BASIC",
-                Scenarios = new[]
-                {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(3, 7),
-                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(3, 7),
-                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(3, 7)
-                }
-            },
-            new
-            {
-                Dataset = "LoadTest",
-                RootPath = "GENERATED-LOADTEST",
-                Scenarios = new[]
-                {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(100, 90),
-                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90),
-                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(100, 90)
-                }
-            },
-            new
-            {
-                Dataset = "LoadTest-Condensed",
-                RootPath = "GENERATED-CONDENSED",
-                Scenarios = new[]
-                {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5, 7),
-                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(5, 7),
-                    app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(15, 7),
-                    app.CreateScenarioConfig<CrNoMatchScenarioGenerator>(15, 7)
-                }
-            },
-            new
-            {
-                Dataset = "LoadTest-90Dx10k",
-                RootPath = "GENERATED-LOADTEST-90Dx10k",
-                Scenarios =
-                    new[]
-                    {
-                        app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5000, 90),
-                        app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90),
-                        app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(4900, 90)
-                    }
-            },
-            new
-            {
-                Dataset = "90Dx1",
-                RootPath = "GENERATED-90Dx1",
-                Scenarios =
-                    new[]
-                    {
-                        app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 90),
-                        app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(1, 90),
-                        app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 90)
-                    }
-            },
-            new
-            {
-                Dataset = "PHA",
-                RootPath = "GENERATED-PHA",
-                Scenarios = new[]
-                {
-                    app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 30),
-                    app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 30)
-                }
-            }
-        };
+        var datasets = Datasets.GetDatasets(app);
 
         logger.LogInformation("{DatasetsCount} dataset(s) configured", datasets.Length);
 
-        var ds = args.Length > 0 ? args[0].Split(",") : ["LoadTest-One"];
+        var ds = args.Length > 0 ? args[0].Split(",") : ["One"];
         var setsToRun = datasets
-            .Where(d => ds.Contains(d.Dataset));
+            .Where(d => ds.Contains(d.Name));
 
         var scenario = 1;
 
@@ -162,7 +43,7 @@ internal class Program
                 scenario++;
             }
 
-            logger.LogInformation("{Dataset} Done", dataset.Dataset);
+            logger.LogInformation("{Dataset} Done", dataset.Name);
         }
 
         logger.LogInformation("Done");

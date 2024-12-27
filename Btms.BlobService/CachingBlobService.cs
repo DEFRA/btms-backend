@@ -32,6 +32,7 @@ public class CachingBlobService(
         }
         else
         {
+            var cachePath = Path.GetFullPath(options.Value.CachePath);
             var path = Path.GetFullPath($"{options.Value.CachePath}/{prefix}");
             logger.LogInformation("Scanning disk {Path}", path);
 
@@ -40,7 +41,7 @@ public class CachingBlobService(
                 logger.LogInformation("Folder {Path} exists, looking for files", path);  
                 foreach (var f in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
                 {
-                    var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}/{options.Value.CachePath}", f);
+                    var relativePath = Path.GetRelativePath(cachePath, f);
                     logger.LogInformation("Found file {RelativePath}", relativePath);
                     yield return await Task.FromResult(new BtmsBlobItem { Name = relativePath });
                 }           
