@@ -49,6 +49,7 @@ public class ChedPMultiStepScenarioGenerator(ILogger<ChedPMultiStepScenarioGener
         var uniqueCommodityId = Guid.NewGuid();
         
         var updatedNotification = notificationBuilder
+            .Clone()
             .WithCreationDate(entryDate)
             .WithSimpleCommodity("1604142800", "Skipjack Tuna", 300, uniqueCommodityId)
             .WithRiskAssesment(uniqueCommodityId, CommodityRiskResultRiskDecisionEnum.Notrequired)

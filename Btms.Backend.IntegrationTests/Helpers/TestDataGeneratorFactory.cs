@@ -18,6 +18,7 @@ using Xunit.Abstractions;
 
 using TestDataGenerator.Extensions;
 using Btms.Backend.IntegrationTests.Extensions;
+using Btms.Common.Extensions;
 using Xunit.Sdk;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
@@ -33,6 +34,9 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
     {
         return base.CreateWebHostBuilder();
     }
+    
+    // var loadedData = await factory.GenerateAndLoadTestData(Client, "One");
+
     
     // Create a 'Data Lake' like folder
     // Relative to the executing dll
@@ -108,6 +112,10 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
 
     public string DatabaseName { get; set; } = null!;
 
+    public List<(
+        ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
+        )>? LoadedData;
+        
     public IMongoDbContext GetDbContext()
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
@@ -118,14 +126,29 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
         return new BtmsClient(base.CreateClient(options));
     }
 
+    // public async Task<List<(
+    //     ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
+    //     )>>  GetCached()
+    // {
+    //     var client = new BtmsClient(this.CreateDefaultClient()); //  CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+    //     LoadedData = await GenerateAndLoadTestData(client, "One");
+    // }
+
     public async Task<List<(
         ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
         )>> GenerateAndLoadTestData(BtmsClient client, string datasetName = "One", SyncPeriod period = SyncPeriod.All)
     {
+        
+        // TODO : Naive caching implementation, improve
+        if (LoadedData.HasValue())
+        {
+            return LoadedData;
+        }
+        
         var testDataset = Dataset.Single(d => d.Name == datasetName);
 
         var rootFolder = testDataset.RootPath;
-        var output = await testDataset.Generate(TestGeneratorApp, TestOutputHelper);
+        LoadedData = await testDataset.Generate(TestGeneratorApp, TestOutputHelper);
         
         TestOutputHelper.WriteLine("Generated test data");
         
@@ -149,6 +172,6 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
             RootFolder = rootFolder
         });
 
-        return output;
+        return LoadedData;
     }
 }

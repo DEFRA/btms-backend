@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Btms.Common.Extensions;
 using Btms.Types.Ipaffs;
 using TestDataGenerator.Helpers;
@@ -36,6 +37,25 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
 
     protected ImportNotificationBuilder(string file) : base(file)
     {
+    }
+    
+    
+    public ImportNotificationBuilder<T> Clone()
+    {
+
+        var json = JsonSerializer.Serialize(this.Build());
+        
+        var builder =  new ImportNotificationBuilder<T>();
+        var n = JsonSerializer.Deserialize<T>(json)!;
+        builder.Setup(n);
+        
+        return builder;
+
+        // var n = JsonSerializer.Deserialize<T>(json)!;
+        //
+        // Setup(n);
+        //
+        // return (TBuilder)this;
     }
     
     /// <summary>
@@ -128,17 +148,6 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
                 TotalGrossWeight = netWeight,
                 
             };
-            
-            // n.PartOne!.Commodities!.TotalNetWeight = netWeight;
-            // n.PartOne!.Commodities!.TotalGrossWeight = netWeight;
-            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesId = "000";
-            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesClass = "XXXX";
-            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesName = "XXXX";
-            // n.PartOne!.Commodities!.CommodityComplements![0].CommodityDescription = description;
-            // n.PartOne!.Commodities!.CommodityComplements![0].ComplementName = "XXXX";
-            // n.PartOne!.Commodities!.CommodityComplements![0].SpeciesNomination = "XXXX";
-            // n.PartOne!.Commodities!.ComplementParameterSets![0].SpeciesId = "000";
-            // n.PartOne!.Commodities!.ComplementParameterSets![0].KeyDataPairs!["netweight"] = netWeight;
         });
     }
     
@@ -146,8 +155,9 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return Do(n =>
         {
+            
             n.RiskAssessment = null;
-            n.PartOne!.Commodities = null;
+            n.PartOne!.Commodities!.CommodityComplements = [];
         });
     }
     

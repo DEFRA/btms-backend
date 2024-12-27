@@ -1,7 +1,9 @@
 using System.Linq.Expressions;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using AutoFixture;
 using AutoFixture.Dsl;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace TestDataGenerator;
 
@@ -50,6 +52,11 @@ public abstract class BuilderBase<T, TBuilder>
     {
         return _composer.Create();
     }
+
+    // public T Create()
+    // {
+    //     return _composer.Create();
+    // }
     
     public T ValidateAndBuild()
     {
@@ -73,7 +80,7 @@ public abstract class BuilderBase<T, TBuilder>
     }
     protected abstract TBuilder Validate();
     
-    private void Setup(T? item = default)
+    protected void Setup(T? item = default)
     {
         Fixture = new Fixture();
 
