@@ -14,28 +14,29 @@ namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
 public class GmrTests :
-    IClassFixture<ApplicationFactory>, IAsyncLifetime
+    IClassFixture<Fixture>, IAsyncLifetime
 {
-    private readonly BtmsClient _client;
-    private IIntegrationTestsApplicationFactory _factory;
+    private readonly BtmsClient? _client;
+    private IIntegrationTestsFixture _fixture;
 
-    public GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    public GmrTests(Fixture fixture, ITestOutputHelper testOutputHelper)
     {
-        factory.TestOutputHelper = testOutputHelper;
-        factory.DatabaseName = "GmrTests";
-        _client = factory.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        fixture.TestOutputHelper = testOutputHelper;
+        fixture.DatabaseName = "GmrTests";
+        _client = new BtmsClient(null);
+        // _client = fixture.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         // _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         // var credentials = "IntTest:Password";
         // var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
         // var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
         // _client.DefaultRequestHeaders.Authorization =
         //     new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
-        _factory = factory;
+        _fixture = fixture;
     }
 
     public async Task InitializeAsync()
     {
-        await _client.ClearDb();
+        await _client!.ClearDb();
 
         await _client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
@@ -51,7 +52,7 @@ public class GmrTests :
     public void FetchSingleGmrTest()
     {
         //Act
-        var jsonClientResponse = _client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+        var jsonClientResponse = _client!.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         // Assert
         jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");

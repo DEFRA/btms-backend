@@ -8,8 +8,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
+public class LinkingTests(Fixture fixture, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(fixture, testOutputHelper), IClassFixture<Fixture>
 {
     [Fact]
     public async Task SyncClearanceRequests_WithNoReferencedNotifications_ShouldNotLink()
@@ -36,7 +36,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
         // Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
 
         // Act
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
@@ -61,7 +61,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncNotifications_WithNoReferencedMovements_ShouldNotLink()
     {
         // Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
             
         // Act
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
@@ -82,7 +82,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncNotifications_WithReferencedMovements_ShouldLink()
     {
         // Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
             
         // Act
         await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand

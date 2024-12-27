@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Business.Commands;
+using Btms.Common.Extensions;
 using Btms.SyncJob;
 using Elastic.CommonSchema;
 using FluentAssertions;
@@ -15,16 +16,21 @@ namespace Btms.Backend.IntegrationTests.Helpers;
 
 public class BtmsClient
 {
-    private HttpClient client;
+    private readonly HttpClient _client;
 
-    public BtmsClient(HttpClient aclient)
+    public BtmsClient(HttpClient? client)
     {
-        client = aclient;
+        if (!client.HasValue())
+        {
+            client = new HttpClient();
+        }
+        
+        _client = client;
         
         var credentials = "IntTest:Password";
         var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
         var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
-        client.DefaultRequestHeaders.Authorization =
+        _client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
     }
     private async Task WaitOnJobCompleting(Uri jobUri)
@@ -40,7 +46,7 @@ public class BtmsClient
             while (status != SyncJobStatus.Completed)
             {
                 await Task.Delay(200);
-                var jobResponse = await client.GetAsync(jobUri);
+                var jobResponse = await _client.GetAsync(jobUri);
                 var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
                 if (syncJob != null) status = syncJob.Status;
             }
@@ -80,23 +86,23 @@ public class BtmsClient
     
     public async Task ClearDb()
     {
-        await client.GetAsync("mgmt/collections/drop");
+        await _client.GetAsync("mgmt/collections/drop");
     }
 
     public Task<HttpResponseMessage> GetAnalyticsDashboard()
     {
-        return client.GetAsync(
+        return _client.GetAsync(
             $"/analytics/dashboard");
     }
     
     public Task<HttpResponseMessage> CancelJob(string? jobId)
     {
-        return client.GetAsync($"/sync/jobs/{jobId}/cancel");
+        return _client.GetAsync($"/sync/jobs/{jobId}/cancel");
     }
       
     public Task<HttpResponseMessage> GetJob(string? jobId)
     {
-        return client.GetAsync($"/sync/jobs/{jobId}");
+        return _client.GetAsync($"/sync/jobs/{jobId}");
     } 
     
     public async Task<(HttpResponseMessage, string?)> StartJob<T>(T command, string uri)
@@ -104,7 +110,7 @@ public class BtmsClient
         var jsonData = JsonSerializer.Serialize(command);
         HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var response = await client.PostAsync(uri, content);
+        var response = await _client.PostAsync(uri, content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
@@ -113,7 +119,7 @@ public class BtmsClient
     }
     public Task<HttpResponseMessage> GetAnalyticsDashboard(string charts)
     {
-        return client.GetAsync(
+        return _client.GetAsync(
             $"/analytics/dashboard?chartsToRender={charts}");
     }
     private async Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
@@ -122,7 +128,7 @@ public class BtmsClient
         HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
         //Act
-        var response = await client.PostAsync(uri, content);
+        var response = await _client.PostAsync(uri, content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
@@ -136,6 +142,6 @@ public class BtmsClient
     
     public JsonApiClient.JsonApiClient AsJsonApiClient()
     {
-        return new JsonApiClient.JsonApiClient(client);
+        return new JsonApiClient.JsonApiClient(_client);
     }
 }

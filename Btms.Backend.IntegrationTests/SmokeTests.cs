@@ -15,11 +15,11 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
+public class SmokeTests : BaseApiTests, IClassFixture<Fixture>
 {
     private readonly JsonSerializerOptions jsonOptions;
 
-    public SmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) :base(factory, testOutputHelper)
+    public SmokeTests(Fixture fixture, ITestOutputHelper testOutputHelper) :base(fixture, testOutputHelper)
     {
         jsonOptions = new JsonSerializerOptions();
         jsonOptions.Converters.Add(new JsonStringEnumConverter());
@@ -30,7 +30,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task CancelSyncJob()
     {
         //Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
         var (response, jobId) = await Client.StartJob(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
@@ -55,7 +55,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task SyncNotifications()
     {
         //Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
@@ -64,7 +64,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 
         // Assert
         // Check Db
-        Factory.GetDbContext().Notifications.Count().Should().Be(5);
+        _fixture.GetDbContext().Notifications.Count().Should().Be(5);
 
         // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
@@ -75,7 +75,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task SyncDecisions()
     {
         //Arrange 
-        await base.ClearDb();
+        await base.Client.ClearDb();
         await SyncClearanceRequests();
         await Client.MakeSyncDecisionsRequest(new SyncDecisionsCommand
         {
@@ -84,7 +84,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         });
 
         // Assert
-        var existingMovement = await Factory.GetDbContext().Movements.Find("CHEDPGB20241039875A5");
+        var existingMovement = await _fixture.GetDbContext().Movements.Find("CHEDPGB20241039875A5");
 
         existingMovement.Should().NotBeNull();
         existingMovement?.Items[0].Checks.Should().NotBeNull();
@@ -105,7 +105,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task SyncClearanceRequests()
     {
         //Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
 
         //Act
         await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
@@ -115,7 +115,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         });
 
         // Assert
-        Factory.GetDbContext().Movements.Count().Should().Be(5);
+        _fixture.GetDbContext().Movements.Count().Should().Be(5);
 
         // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
@@ -126,7 +126,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task SyncGmrs()
     {
         //Arrange
-        await base.ClearDb();
+        await base.Client.ClearDb();
 
         //Act
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
@@ -136,7 +136,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         });
 
         // Assert
-        Factory.GetDbContext().Gmrs.Count().Should().Be(3);
+        _fixture.GetDbContext().Gmrs.Count().Should().Be(3);
 
         // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/gmrs");

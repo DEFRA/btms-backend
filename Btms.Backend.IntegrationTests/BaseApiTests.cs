@@ -19,20 +19,21 @@ namespace Btms.Backend.IntegrationTests;
 public abstract class BaseApiTests
 {
     protected readonly BtmsClient Client;
-    internal readonly IIntegrationTestsApplicationFactory Factory;
+    internal readonly IIntegrationTestsFixture _fixture;
     // protected readonly IntegrationTestsApplicationFactory Factory;
     
-    protected async Task ClearDb()
+    // protected async Task ClearDb()
+    // {
+    //     await Client.ClearDb();
+    // }
+    public BaseApiTests(IIntegrationTestsFixture fixture, ITestOutputHelper testOutputHelper, string databaseName = "SmokeTests")
     {
-        await Client.ClearDb();
-    }
-    protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper, string databaseName = "SmokeTests")
-    {
-        Factory = factory;
-        Factory.TestOutputHelper = testOutputHelper;
-        Factory.DatabaseName = databaseName;
-        Client =
-            Factory.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        _fixture = fixture;
+        _fixture.TestOutputHelper = testOutputHelper;
+        _fixture.DatabaseName = databaseName;
+        Client = _fixture.BtmsClient!;
+        
+            // _fixture.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         
     }
 

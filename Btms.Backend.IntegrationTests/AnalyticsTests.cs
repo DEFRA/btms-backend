@@ -19,8 +19,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
+public class AnalyticsTests(Fixture fixture, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(fixture, testOutputHelper), IClassFixture<Fixture>
 {
     
     // private static void ShouldNotBeNull<T>([DoesNotReturnIf(true), NotNull] T? value)

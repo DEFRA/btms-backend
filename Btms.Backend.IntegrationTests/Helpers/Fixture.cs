@@ -12,19 +12,21 @@ using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public interface IIntegrationTestsApplicationFactory
+public interface IIntegrationTestsFixture
 {
     ITestOutputHelper TestOutputHelper { get; set; }
     string DatabaseName { get; set; }
 
-    BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options);
-    // BtmsClient CreateClient();
+    BtmsClient? BtmsClient { get; }
+    // BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options);
+    
     IMongoDbContext GetDbContext();
-    // Task ClearDb(BtmsClient client);
 }
 
-public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
+public class Fixture : WebApplicationFactory<Program>, IIntegrationTestsFixture
 {
+    public BtmsClient? BtmsClient { get; private set; }
+    
     // protected override Bef
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -70,16 +72,21 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
             });
 
         builder.UseEnvironment("Development");
+        
+        var options = new WebApplicationFactoryClientOptions { AllowAutoRedirect = false };
+        var httpClient = base.CreateClient(options);
+        
+        BtmsClient = new BtmsClient(httpClient);
     }
 
     public ITestOutputHelper TestOutputHelper { get; set; } = null!;
 
     public string DatabaseName { get; set; } = null!;
 
-    public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
-    {
-        return new BtmsClient(base.CreateClient(options));
-    }
+    // public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
+    // {
+    //     return new BtmsClient(base.CreateClient(options));
+    // }
 
     public IMongoDbContext GetDbContext()
     {

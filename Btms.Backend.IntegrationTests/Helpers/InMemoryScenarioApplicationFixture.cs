@@ -17,9 +17,14 @@ using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public class InMemoryScenarioApplicationFactory
-    : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
+/// <summary>
+/// This isn't currently used but the original plan was to feed things into the consumers direcly, in the desired sequence, rather than rely on the
+/// data lake sync. Needs further work as couldn't get hold of consumers...
+/// </summary>
+public class InMemoryScenarioApplicationFixture
+    : WebApplicationFactory<Program>, IIntegrationTestsFixture
 {
+    public BtmsClient? BtmsClient { get; private set; }
     // private readonly ILogger<ScenarioApplicationFactory> _logger = messageSink.ToLogger<ScenarioApplicationFactory>();
     // internal IWebHost? _app;
     private IMongoDbContext? _mongoDbContext;
@@ -88,17 +93,10 @@ public class InMemoryScenarioApplicationFactory
 
         builder.UseEnvironment("Development");
         
-        // _app = builder.Build();
-        // var rootScope = _app.Services.CreateScope();
-
+        var options = new WebApplicationFactoryClientOptions { AllowAutoRedirect = false };
+        var httpClient = base.CreateClient(options);
         
-        // _mongoDbContext = this.Services.GetRequiredService<IMongoDbContext>();
-        // using (var scope = this.Server.Host.Services.CreateScope())
-        // {
-        //     _mongoDbContext = scope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        // }
-        // 
-
+        BtmsClient = new BtmsClient(httpClient);
     }
 
     public ITestOutputHelper TestOutputHelper { get; set; } = null!;
