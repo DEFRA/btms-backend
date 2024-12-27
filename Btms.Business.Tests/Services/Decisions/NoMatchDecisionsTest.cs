@@ -79,11 +79,11 @@ public class NoMatchDecisionsTest
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
-
+        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
         return generatorResult.Select(x =>
         {
             var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
-            return MovementPreProcessor.BuildMovement(internalClearanceRequest);
+            return movementBuilder.From(internalClearanceRequest).Build();
         }).ToList();
     }
 }

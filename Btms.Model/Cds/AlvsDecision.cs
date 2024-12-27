@@ -144,6 +144,26 @@ public partial class DecisionContext : IAuditContext //
     
 }
 
+public partial class AlvsDecisionStatus  //
+{
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<AlvsDecision> Decisions { get; set; } = new List<AlvsDecision>();
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public string? DecisionStatus { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public DecisionContext? Context { get; set; } = default;
+    
+    // TODO - should we put the checks into context, and so into audit log?
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
+}
+
 public partial class AlvsDecision  //
 {
     [Attr]
@@ -154,7 +174,7 @@ public partial class AlvsDecision  //
     [System.ComponentModel.Description("")]
     public required DecisionContext Context { get; set; }
     
-    // TODO - should we put this into context, and so into audit log?
+    // TODO - should we put the checks into context, and so into audit log?
     [Attr]
     [System.ComponentModel.Description("")]
     public required List<ItemCheck> Checks { get; set; }

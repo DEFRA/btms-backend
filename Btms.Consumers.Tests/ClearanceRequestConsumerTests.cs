@@ -27,8 +27,9 @@ public class ClearanceRequestConsumerTests
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
+        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
         var movement =
-            MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
+            movementBuilder.From(AlvsClearanceRequestMapper.Map(clearanceRequest)).Build();
 
         movement.Update(AuditEntry.CreateLinked("Test", 1));
 
@@ -63,9 +64,11 @@ public class ClearanceRequestConsumerTests
     public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsCreated_ThenLinkShouldBeRun()
     {
         // ARRANGE
+        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
         var clearanceRequest = CreateAlvsClearanceRequest();
+        
         var movement =
-            MovementPreProcessor.BuildMovement(AlvsClearanceRequestMapper.Map(clearanceRequest));
+            movementBuilder.From(AlvsClearanceRequestMapper.Map(clearanceRequest)).Build();
 
         movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now, AuditEntry.CreatedByCds));
 

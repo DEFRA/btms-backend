@@ -4,11 +4,13 @@ using JsonApiDotNetCore.Resources.Annotations;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Btms.Common.Extensions;
 using Btms.Model.Cds;
 using Btms.Model.Auditing;
 using Btms.Model.ChangeLog;
 using Btms.Model.Data;
 using Btms.Model.Relationships;
+using Microsoft.Extensions.Logging;
 
 namespace Btms.Model;
 
@@ -28,7 +30,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     [Attr] public List<CdsClearanceRequest> Decisions { get; set; } = default!;
 
-    [Attr] public List<AlvsDecision> AlvsDecisions { get; set; } = new List<AlvsDecision>();
+    [Attr] public AlvsDecisionStatus AlvsDecisionStatus { get; set; } = new AlvsDecisionStatus();
     
     [Attr] public List<Items> Items { get; set; } = [];
 
@@ -129,7 +131,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         // we want to be smarter about how we 'pair' things, considering the same version of the import notifications
         // can a BTMS decision be 'paired' to multiple ALVS decisions?
         
-        var alvsDecision = this.AlvsDecisions.Find(
+        var alvsDecision = this.AlvsDecisionStatus?.Decisions.Find(
             d => d.Context.EntryVersionNumber == EntryVersionNumber);
             
         if (alvsDecision != null)
@@ -267,7 +269,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             {
                 pairStatus = "Alvs Clearance Request Version 1 Not Present";
             }
-            else if (alvsDecision.Decision.Header!.DecisionNumber != 1 && !this.AlvsDecisions.Exists(c => c.Context.AlvsDecisionNumber == 1))
+            else if (alvsDecision.Decision.Header!.DecisionNumber != 1 && (this.AlvsDecisionStatus == null || !this.AlvsDecisionStatus.Decisions.Exists(c => c.Context.AlvsDecisionNumber == 1)))
             {
                 pairStatus = "Alvs Decision Version 1 Not Present";
             }
@@ -307,9 +309,38 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         {
             var alvsDecision = FindBtmsPairAndUpdate(clearanceRequest);
             context = alvsDecision.Context;
+
+            if (AlvsDecisionStatus.Decisions.Count == 0 || ((alvsDecision.Context.AlvsDecisionNumber >= AlvsDecisionStatus.Context?.AlvsDecisionNumber) &&
+                     (alvsDecision.Context.BtmsDecisionNumber > AlvsDecisionStatus.Context?.BtmsDecisionNumber)) ||
+                    ((alvsDecision.Context.AlvsDecisionNumber > AlvsDecisionStatus.Context?.AlvsDecisionNumber) &&
+                     (alvsDecision.Context.BtmsDecisionNumber >= AlvsDecisionStatus.Context?.BtmsDecisionNumber)))
+            {
+                AlvsDecisionStatus.DecisionStatus = alvsDecision.Context.DecisionStatus!;
+                AlvsDecisionStatus.Context = alvsDecision.Context;
+                AlvsDecisionStatus.Checks = alvsDecision.Checks;
+            }
+            // else
+            // {
+            //     logger.LogWarning("Decision AlvsDecisionNumber {0}, BtmsDecisionNumber {1} received out of sequence, not updating top level status. Top level status currently AlvsDecisionNumber {2}, BtmsDecisionNumber {3}",
+            //         alvsDecision.Context.AlvsDecisionNumber, alvsDecision.Context.BtmsDecisionNumber,
+            //         AlvsDecisionStatus.Context?.AlvsDecisionNumber, AlvsDecisionStatus.Context?.BtmsDecisionNumber);
+            // }
+                
+            AlvsDecisionStatus.Decisions.Add(alvsDecision);
+            // }
+            // else 
+            // {
+            //     AlvsDecisionStatus = new AlvsDecisionStatus()
+            //     {
+            //         Decisions = [alvsDecision],
+            //         DecisionStatus = alvsDecision.Context.DecisionStatus!,
+            //         Context = alvsDecision.Context,
+            //         Checks = alvsDecision.Checks
+            //     };
+            // }
             
             // AlvsDecisions ??= [];
-            AlvsDecisions.Add(alvsDecision);
+            // AlvsDecisionStatus?.Decisions.Add(alvsDecision);
         }
         else
         {
@@ -333,7 +364,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         //
         var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),
-            clearanceRequest.Header!.EntryVersionNumber.GetValueOrDefault(),
+            clearanceRequest.Header!.DecisionNumber.GetValueOrDefault(),
             clearanceRequest.ServiceHeader!.ServiceCalled,
             clearanceRequest.Header.DeclarantName!,
             context,

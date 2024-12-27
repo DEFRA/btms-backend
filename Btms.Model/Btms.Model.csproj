@@ -15,4 +15,8 @@
     <PackageReference Include="JsonPatch.Net" Version="3.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
+  </ItemGroup>
+
 </Project>

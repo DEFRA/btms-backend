@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using Btms.Backend.IntegrationTests.Extensions;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
+using Btms.Model.Cds;
 using Btms.Types.Alvs;
 using TestDataGenerator.Scenarios;
 using Json.More;
@@ -46,9 +47,23 @@ public class DecisionTests(TestDataGeneratorFactory factory, ITestOutputHelper t
         
         var movement = jsonClientResponse.GetResourceObject<Movement>();
         movement.Decisions.Count.Should().Be(2);
-        movement.AlvsDecisions.Count.Should().Be(1);
+        movement.AlvsDecisionStatus.Decisions.Count.Should().Be(1);
         
-        movement.AlvsDecisions.First().Context.DecisionMatched.Should().BeTrue();
+        movement.AlvsDecisionStatus.Decisions
+            .First()
+            .Context.DecisionMatched
+            .Should().BeTrue();
+
+        movement.AuditEntries
+            .Select(a => (a.CreatedBy, a.Status, a.Version))
+            .Should()
+            .Equal([
+                ("Cds", "Created", 1),
+                ("Btms", "Decision", 1),
+                ("Btms", "Linked", null),
+                ("Btms", "Decision", 2),
+                ("Alvs", "Decision", 1)
+            ]);
         
         // TODO : for some reason whilst jsonClientResponse contains the notification relationship, movement doesn't!
         // movement.Relationships.Notifications.Data.Count.Should().Be(1);

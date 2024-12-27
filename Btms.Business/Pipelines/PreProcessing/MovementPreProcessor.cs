@@ -8,13 +8,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Pipelines.PreProcessing;
 
-public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger) : IPreProcessor<AlvsClearanceRequest, Movement>
+public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilder movementBuilder) : IPreProcessor<AlvsClearanceRequest, Movement>
 {
     public async Task<PreProcessingResult<Movement>> Process(PreProcessingContext<AlvsClearanceRequest> preProcessingContext)
     {
 
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
-        var movement = BuildMovement(internalClearanceRequest);
+        var movement = movementBuilder.From(internalClearanceRequest).Build();
         var existingMovement = await dbContext.Movements.Find(movement.Id!);
 
         if (existingMovement is null)
@@ -34,7 +34,6 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         if (movement.ClearanceRequests[^1].Header?.EntryVersionNumber > existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
         {
             var changeSet = movement.ClearanceRequests[^1].GenerateChangeSet(existingMovement.ClearanceRequests[0]);
-
 
             var auditEntry = AuditEntry.CreateUpdated(changeSet,
                 preProcessingContext.MessageId,
@@ -64,25 +63,25 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         
     }
 
-    public static Movement BuildMovement(Model.Cds.CdsClearanceRequest request)
-    {
-        return new Movement
-        {
-            Id = request.Header!.EntryReference,
-            UpdatedSource = request.ServiceHeader?.ServiceCalled,
-            CreatedSource = request.ServiceHeader?.ServiceCalled,
-            ArrivesAt = request.Header.ArrivesAt,
-            EntryReference = request.Header.EntryReference!,
-            EntryVersionNumber = request.Header.EntryVersionNumber.GetValueOrDefault(),
-            MasterUcr = request.Header.MasterUcr!,
-            DeclarationType = request.Header.DeclarationType!,
-            SubmitterTurn = request.Header.SubmitterTurn!,
-            DeclarantId = request.Header.DeclarantId!,
-            DeclarantName = request.Header.DeclarantName!,
-            DispatchCountryCode = request.Header.DispatchCountryCode!,
-            GoodsLocationCode = request.Header.GoodsLocationCode!,
-            ClearanceRequests = [request],
-            Items = request.Items?.Select(x => x).ToList()!,
-        };
-    }
+    // public static Movement BuildMovement(Model.Cds.CdsClearanceRequest request)
+    // {
+    //     // return new Movement()
+    //     // {
+    //     //     Id = request.Header!.EntryReference,
+    //     //     UpdatedSource = request.ServiceHeader?.ServiceCalled,
+    //     //     CreatedSource = request.ServiceHeader?.ServiceCalled,
+    //     //     ArrivesAt = request.Header.ArrivesAt,
+    //     //     EntryReference = request.Header.EntryReference!,
+    //     //     EntryVersionNumber = request.Header.EntryVersionNumber.GetValueOrDefault(),
+    //     //     MasterUcr = request.Header.MasterUcr!,
+    //     //     DeclarationType = request.Header.DeclarationType!,
+    //     //     SubmitterTurn = request.Header.SubmitterTurn!,
+    //     //     DeclarantId = request.Header.DeclarantId!,
+    //     //     DeclarantName = request.Header.DeclarantName!,
+    //     //     DispatchCountryCode = request.Header.DispatchCountryCode!,
+    //     //     GoodsLocationCode = request.Header.GoodsLocationCode!,
+    //     //     ClearanceRequests = [request],
+    //     //     Items = request.Items?.Select(x => x).ToList()!,
+    //     // };
+    // }
 }
