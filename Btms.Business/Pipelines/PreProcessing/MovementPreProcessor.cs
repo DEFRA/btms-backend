@@ -12,7 +12,6 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 {
     public async Task<PreProcessingResult<Movement>> Process(PreProcessingContext<AlvsClearanceRequest> preProcessingContext)
     {
-
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
         var movement = BuildMovement(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(movement.Id!);
@@ -34,7 +33,6 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         if (movement.ClearanceRequests[^1].Header?.EntryVersionNumber > existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
         {
             var changeSet = movement.ClearanceRequests[^1].GenerateChangeSet(existingMovement.ClearanceRequests[0]);
-
 
             var auditEntry = AuditEntry.CreateUpdated(changeSet,
                 preProcessingContext.MessageId,
@@ -61,7 +59,6 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
         logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.Header?.EntryReference!);
         return PreProcessResult.Skipped(existingMovement);
-        
     }
 
     public static Movement BuildMovement(Model.Cds.CdsClearanceRequest request)
