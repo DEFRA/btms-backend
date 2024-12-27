@@ -17,6 +17,8 @@ using TestDataGenerator.Config;
 using Xunit.Abstractions;
 
 using TestDataGenerator.Extensions;
+using Btms.Backend.IntegrationTests.Extensions;
+using Xunit.Sdk;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
@@ -38,7 +40,7 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
         Assembly.GetExecutingAssembly().Location);
 
     
-    private Datasets Datasets { get; set; }
+    private  Dataset[] Dataset { get; set; }
     private IHost TestGeneratorApp { get; set; }
 
     public TestDataGeneratorFactory()
@@ -52,7 +54,7 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
         generatorBuilder.ConfigureTestDataGenerator(CachePath);
         
         TestGeneratorApp = generatorBuilder.Build();
-        Datasets = new Datasets(TestGeneratorApp);
+        Dataset = Datasets.GetDatasets(TestGeneratorApp);
     }
 
     // TODO : Should we be using IHost / Builder rather than IWebHostBuilder
@@ -110,35 +112,20 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
-
-    // public async Task ClearDb(HttpClient client)
-    // {
-    //     await client.GetAsync("mgmt/collections/drop");
-    // }
     
     public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
     {
         return new BtmsClient(base.CreateClient(options));
     }
 
-    public async Task GenerateAndLoadTestData(BtmsClient client, string rootFolder = "GENERATED-ONE", SyncPeriod period = SyncPeriod.All)
+    public async Task<List<(
+        ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
+        )>> GenerateAndLoadTestData(BtmsClient client, string datasetName = "One", SyncPeriod period = SyncPeriod.All)
     {
-        var testDataset = Datasets.One;
-        var generator = TestGeneratorApp.Services.GetRequiredService<Generator>();
-        
-        TestOutputHelper.WriteLine("{0} scenario(s) configured", testDataset.Scenarios.Count());
+        var testDataset = Dataset.Single(d => d.Name == datasetName);
 
-        var scenario = 1;
-        
-        await generator.Cleardown(testDataset.RootPath);
-
-        foreach (var s in testDataset.Scenarios)
-        {
-            await generator.Generate(scenario, s, testDataset.RootPath);
-            scenario++;
-        }
-
-        TestOutputHelper.WriteLine("{0} Done", testDataset.Name);
+        var rootFolder = testDataset.RootPath;
+        var output = await testDataset.Generate(TestGeneratorApp, TestOutputHelper);
         
         TestOutputHelper.WriteLine("Generated test data");
         
@@ -161,5 +148,7 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
             SyncPeriod = period,
             RootFolder = rootFolder
         });
+
+        return output;
     }
 }

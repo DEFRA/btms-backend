@@ -14,14 +14,14 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         await blobService.CleanAsync($"{rootPath}/");
     }
 
-    public async Task Generate(int scenario, ScenarioConfig config, string rootPath)
+    public async Task<List<(ScenarioGenerator generator, int scenario, int dateOffset, int count, ScenarioGenerator.GeneratorResult result)>> Generate(int scenario, ScenarioConfig config, string rootPath)
     {
         var days = config.CreationDateRange;
         var count = config.Count;
         var generator = config.Generator;
         
         logger.LogInformation("Generating {Count}x{Days} {@Generator}", count, days, generator);
-
+        var output = new List<(ScenarioGenerator, int, int, int, ScenarioGenerator.GeneratorResult result)>();
         for (var d = -days + 1; d <= 0; d++)
         {
             logger.LogInformation("Generating day {D}", d);
@@ -34,8 +34,12 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
                 var generatorResult = generator.Generate(scenario, i, entryDate, config);
                 var uploadResult = await InsertToBlobStorage(generatorResult, rootPath);
                 if (!uploadResult) throw new AuthenticationException("Error uploading item. Probably auth.");
+                
+                output.Add((generator, scenario, d, i, generatorResult));
             }
         }
+
+        return output;
     }
 
     private async Task<bool> InsertToBlobStorage(ScenarioGenerator.GeneratorResult result, string rootPath)

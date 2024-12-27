@@ -12,29 +12,7 @@ public class Dataset
 }
 
 public class Datasets(IHost app)
-{
-    // private IHost _app;
-    // public Datasets(): this()
-    // {
-    //     // _app = app;
-    //     
-    //     Sets = new[]
-    //     {
-    //         EndToEndIbm,
-    //         One,
-    //         Basic,
-    //         LoadTest,
-    //         LoadTest90Dx1,
-    //         LoadTestCondensed,
-    //         LoadTest90Dx10k
-    //     };
-    // }
-
-    // public static readonly Dataset[] Sets = new []
-    // {
-    //     
-    // };
-    
+{   
     public static Dataset[] GetDatasets(IHost app)
     {
         var ds = new Datasets(app);
@@ -62,11 +40,11 @@ public class Datasets(IHost app)
     public readonly Dataset One = new()
     {
         Name = "One",
-        Description = "A dataset with a single example of each scenariog",
+        Description = "A dataset with a single example of each scenario",
         RootPath = "GENERATED-ONE",
         Scenarios = new[]
         {
-            app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
+            // app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 1),
             app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1)
         }
     };

@@ -142,18 +142,4 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/gmrs");
         jsonClientResponse.Data.Count.Should().Be(3);
     }
-
-    // private async Task<string?> StartJob<T>(T command, string uri)
-    // {
-    //     var jsonData = JsonSerializer.Serialize(command);
-    //     HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-    //
-    //     //Act
-    //     var response = await Client.PostAsync(uri, content);
-    //
-    //     // Assert
-    //     response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-    //
-    //     return Path.GetFileName(response.Headers.Location?.ToString());
-    // }
 }
