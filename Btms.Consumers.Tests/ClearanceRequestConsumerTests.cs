@@ -28,10 +28,12 @@ public class ClearanceRequestConsumerTests
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
         var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
-        var movement =
-            movementBuilder.From(AlvsClearanceRequestMapper.Map(clearanceRequest)).Build();
+        var mb =
+            movementBuilder.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
+            
+        movementBuilder.Update(AuditEntry.CreateLinked("Test", 1));
 
-        movement.Update(AuditEntry.CreateLinked("Test", 1));
+        var movement = mb.Build();
 
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
@@ -67,11 +69,13 @@ public class ClearanceRequestConsumerTests
         var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
         var clearanceRequest = CreateAlvsClearanceRequest();
         
-        var movement =
-            movementBuilder.From(AlvsClearanceRequestMapper.Map(clearanceRequest)).Build();
+        var mb =
+            movementBuilder.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
+            
+        mb.Update(mb.CreateAuditEntry("Test",  AuditEntry.CreatedByCds));
 
-        movement.Update(AuditEntry.CreateCreatedEntry(movement,"Test", 1, DateTime.Now, AuditEntry.CreatedByCds));
-
+        var movement = mb.Build();
+        
         var mockLinkingService = Substitute.For<ILinkingService>();
             var decisionService = Substitute.For<IDecisionService>();
             var matchingService = Substitute.For<IMatchingService>();
