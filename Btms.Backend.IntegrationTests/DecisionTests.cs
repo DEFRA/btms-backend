@@ -28,20 +28,29 @@ public class DecisionTests(TestDataGeneratorFactory factory, ITestOutputHelper t
 {
     
     [Fact]
-    public async Task SimpleChedPScenario()
+    public async Task SimpleChedPScenario_ShouldBeLinkedAndMatchDecision()
     {
-        // Act
+        // Arrange
         var loadedData = await factory.GenerateAndLoadTestData(Client, "One");
         
-
-        // Assert
-
         var chedPMovement = loadedData.Single(d =>
-            d is { generator: ChedPSimpleMatchScenarioGenerator, message: AlvsClearanceRequest })
+                d is { generator: ChedPSimpleMatchScenarioGenerator, message: AlvsClearanceRequest })
             .message as AlvsClearanceRequest;
         
+        // Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById(chedPMovement!.Header!.EntryReference!, "api/movements");
-
+        
+        // Assert
         jsonClientResponse.Should().NotBeNull();
+        jsonClientResponse.Data.Relationships!.Count.Should().Be(1);
+        
+        var movement = jsonClientResponse.GetResourceObject<Movement>();
+        movement.Decisions.Count.Should().Be(2);
+        movement.AlvsDecisions.Count.Should().Be(1);
+        
+        movement.AlvsDecisions.First().Context.DecisionMatched.Should().BeTrue();
+        
+        // TODO : for some reason whilst jsonClientResponse contains the notification relationship, movement doesn't!
+        // movement.Relationships.Notifications.Data.Count.Should().Be(1);
     }
 }
