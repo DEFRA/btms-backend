@@ -12,6 +12,7 @@ public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioG
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithCommodity("1604142800", "Skipjack Tuna", 300)
+            .WithInspectionStatus("NOTREQUIRED") //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
             .ValidateAndBuild();
 
         logger.LogInformation("Created {NotificationReferenceNumber}", 
