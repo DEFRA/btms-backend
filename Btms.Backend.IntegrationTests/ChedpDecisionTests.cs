@@ -25,8 +25,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class DecisionTests(TestDataGeneratorFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<TestDataGeneratorFactory>
+public class DecisionTests(InMemoryScenarioApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory>
 {
     
     [Fact]

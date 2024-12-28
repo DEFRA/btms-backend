@@ -19,6 +19,12 @@ using Xunit.Abstractions;
 using TestDataGenerator.Extensions;
 using Btms.Backend.IntegrationTests.Extensions;
 using Btms.Common.Extensions;
+using Btms.Consumers;
+using Btms.Consumers.Extensions;
+using Btms.Types.Ipaffs;
+using SlimMessageBus;
+using SlimMessageBus.Host;
+using TestDataGenerator.Scenarios;
 using Xunit.Sdk;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
@@ -48,8 +54,7 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
     private IHost TestGeneratorApp { get; set; }
 
     public TestDataGeneratorFactory()
-    {
-        
+    {   
         // Generate test data
         // TODO : Unsure if we should use a new app here or use the same one?...
         // But when we use the same one the config conflicts...       
@@ -126,14 +131,6 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
         return new BtmsClient(base.CreateClient(options));
     }
 
-    // public async Task<List<(
-    //     ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-    //     )>>  GetCached()
-    // {
-    //     var client = new BtmsClient(this.CreateDefaultClient()); //  CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-    //     LoadedData = await GenerateAndLoadTestData(client, "One");
-    // }
-
     public async Task<List<(
         ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
         )>> GenerateAndLoadTestData(BtmsClient client, string datasetName = "One", SyncPeriod period = SyncPeriod.All)
@@ -146,7 +143,7 @@ public class TestDataGeneratorFactory : WebApplicationFactory<Program>, IIntegra
         }
         
         var testDataset = Dataset.Single(d => d.Name == datasetName);
-
+        
         var rootFolder = testDataset.RootPath;
         LoadedData = await testDataset.Generate(TestGeneratorApp, TestOutputHelper);
         

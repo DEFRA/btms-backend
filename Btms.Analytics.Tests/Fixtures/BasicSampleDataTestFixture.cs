@@ -35,27 +35,27 @@ public class BasicSampleDataTestFixture : IDisposable
             _mongoDbContext.ResetCollections().GetAwaiter().GetResult();
 
             // Ensure we have some data scenarios around 24/48 hour tests
-            App.PushToConsumers(_logger, App.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
 
-            App.PushToConsumers(_logger, App.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 2))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 2))
                 .GetAwaiter().GetResult();
 
-            App.PushToConsumers(_logger, App.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
 
             // Create some more variable data over the rest of time
-            App.PushToConsumers(_logger, 
-                    App.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 7, arrivalDateRange: 10))
+            App.Services.GeneratorPushToConsumers(_logger, 
+                    App.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 7, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
-            App.PushToConsumers(_logger, App.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(5, 3, arrivalDateRange: 10))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(5, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
-            App.PushToConsumers(_logger, App.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
-            App.PushToConsumers(_logger, App.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
         }
     }
