@@ -23,6 +23,7 @@ public static class BuilderExtensions
         services.AddSingleton<ChedANoMatchScenarioGenerator>();
         services.AddSingleton<CrNoMatchScenarioGenerator>();
         services.AddSingleton<ChedPMultiStepScenarioGenerator>();
+        services.AddSingleton<AllChedsNoMatchScenarioGenerator>();
                 
         var blobOptionsValidatorDescriptor = services.Where(d => 
             d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>));

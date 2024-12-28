@@ -17,7 +17,7 @@ public static class ScenarioFactory
     public static ScenarioConfig CreateScenarioConfig<T>(this IHost app, int count, int creationDateRange, int arrivalDateRange = 30)
         where T : ScenarioGenerator
     {
-        if (count > 999999)
+        if (count > 100000)
             throw new ArgumentException(
                 "Currently only deals with max 100,000 items. Check ImportNotificationBuilder WithReferenceNumber.");
 
@@ -31,7 +31,7 @@ public static class ScenarioFactory
     public static ScenarioConfig CreateScenarioConfig<T>(T scenario, int count, int creationDateRange, int arrivalDateRange = 30)
         where T : ScenarioGenerator
     {
-        if (count > 999999)
+        if (count > 100000)
             throw new ArgumentException(
                 "Currently only deals with max 100,000 items. Check ImportNotificationBuilder WithReferenceNumber.");
 
