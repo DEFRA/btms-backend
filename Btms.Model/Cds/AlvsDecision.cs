@@ -36,8 +36,66 @@ public partial class ItemCheck
     public string? BtmsDecisionCode { get; set; }
 }
 
+public class DecisionImportNotifications
+{
+    public required string Id { get; set; }
+    public required int? Version { get; set; }
+    public required DateTime Created { get; set; }
+    public required DateTime Updated { get; set; }
+    public required DateTime CreatedSource { get; set; }
+    public required DateTime UpdatedSource { get; set; }
+}
+
+public class StatusChecker {
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AllMatch { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AnyMatch { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AllNoMatch { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AnyNoMatch { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AllHold { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AnyHold { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AllRefuse { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AnyRefuse { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AllRelease { get; set; }
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required bool AnyRelease { get; set; }
+}
+
 public partial class DecisionContext : IAuditContext //
 {
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<DecisionImportNotifications>? ImportNotifications { get; set; }
+    
+    
     [Attr]
     [System.ComponentModel.Description("")]
     public int AlvsDecisionNumber { get; set; } = default;
@@ -64,84 +122,72 @@ public partial class DecisionContext : IAuditContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public bool BtmsAllMatch { get; set; } = default;
+    public StatusChecker? AlvsCheckStatus { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public bool BtmsAnyMatch { get; set; } = default;
+    public StatusChecker? BtmsCheckStatus { get; set; }
+    
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAllMatch { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAnyMatch { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAllNoMatch { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAnyNoMatch { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAllHold { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAnyHold { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAllRefuse { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAnyRefuse { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAllRelease { get; set; } = default;
+    //
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public bool AlvsAnyRelease { get; set; } = default;
+    
+}
+
+public partial class AlvsDecisionStatus  //
+{
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<AlvsDecision> Decisions { get; set; } = new List<AlvsDecision>();
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public string? DecisionStatus { get; set; } = default;
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public bool BtmsAllNoMatch { get; set; } = default;
+    public DecisionContext? Context { get; set; } = default;
     
+    // TODO - should we put the checks into context, and so into audit log?
     [Attr]
     [System.ComponentModel.Description("")]
-    public bool BtmsAnyNoMatch { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool BtmsAllHold { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool BtmsAnyHold { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool BtmsAllRefuse { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool BtmsAnyRefuse { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool BtmsAllRelease { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool BtmsAnyRelease { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAllMatch { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAnyMatch { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAllNoMatch { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAnyNoMatch { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAllHold { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAnyHold { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAllRefuse { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAnyRefuse { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAllRelease { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool AlvsAnyRelease { get; set; } = default;
-    
+    public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
 }
 
 public partial class AlvsDecision  //
@@ -154,7 +200,7 @@ public partial class AlvsDecision  //
     [System.ComponentModel.Description("")]
     public required DecisionContext Context { get; set; }
     
-    // TODO - should we put this into context, and so into audit log?
+    // TODO - should we put the checks into context, and so into audit log?
     [Attr]
     [System.ComponentModel.Description("")]
     public required List<ItemCheck> Checks { get; set; }

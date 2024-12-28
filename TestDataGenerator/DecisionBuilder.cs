@@ -53,9 +53,13 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
         
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
     }
-    public DecisionBuilder<T> WithEntryVersionNumber(int version)
+    public DecisionBuilder<T> WithEntryVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.EntryVersionNumber = version);
+    }
+    public DecisionBuilder<T> WithDecisionVersionNumber(int version = 1)
+    {
+        return Do(x => x.Header!.DecisionNumber = version);
     }
 
     public DecisionBuilder<T> WithItemAndCheck(int item, string checkCode, string decisionCode)

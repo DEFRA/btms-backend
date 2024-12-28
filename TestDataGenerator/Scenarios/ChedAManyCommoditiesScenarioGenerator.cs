@@ -14,6 +14,7 @@ public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesS
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
             .WithRandomCommodities(10, 100)
             .WithInspectionStatus()
+            .WithVersionNumber()
             .ValidateAndBuild();
         
         logger.LogInformation("Created {NotificationReferenceNumber}", 

@@ -1,5 +1,6 @@
 using Btms.Backend.Data.InMemory;
 using Btms.Business.Pipelines.PreProcessing;
+using Btms.Model;
 using Btms.Types.Alvs;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -16,7 +17,7 @@ public class MovementPreProcessingTests
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
-        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance);
+        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilder(NullLogger<MovementBuilder>.Instance));
             
 
         // ACT

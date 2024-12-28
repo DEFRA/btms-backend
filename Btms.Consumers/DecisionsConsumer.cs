@@ -1,11 +1,13 @@
 using Btms.Backend.Data;
+using Btms.Model;
+using Btms.Model.Cds;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using SlimMessageBus;
 
 namespace Btms.Consumers;
 
-public class DecisionsConsumer(IMongoDbContext dbContext)
+public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilder movementBuilder)
     : IConsumer<Decision>, IConsumerWithContext
 {
     public async Task OnHandle(Decision message)
@@ -16,10 +18,17 @@ public class DecisionsConsumer(IMongoDbContext dbContext)
         if (existingMovement != null)
         {
             var auditId = Context.Headers["messageId"].ToString();
-            var merged = existingMovement.MergeDecision(auditId!, internalClearanceRequest);
-            if (merged)
+            var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
+            
+            movementBuilder = movementBuilder
+                .From(existingMovement!)
+                .MergeDecision(auditId!, internalClearanceRequest, notificationContext);
+                // .Build();
+
+            // var merged = existingMovement.MergeDecision(auditId!, internalClearanceRequest);
+            if (movementBuilder.HasChanges)
             {
-                await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
+                await dbContext.Movements.Update(movementBuilder.Build(), existingMovement._Etag);
             }
         }
     }

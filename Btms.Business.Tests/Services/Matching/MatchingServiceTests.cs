@@ -49,15 +49,18 @@ public class MatchingServiceTests
     {
         CrNoMatchScenarioGenerator generator =
             new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
+        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
-        return generatorResult.Select(x =>
-        {
-            var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
-            return MovementPreProcessor.BuildMovement(internalClearanceRequest);
-        }).ToList();
+        return generatorResult
+            .Select(x =>
+            {
+                var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
+                return movementBuilder.From(internalClearanceRequest).Build();
+            })
+            .ToList();
     }
 
     private static (List<ImportNotification> Notifications, List<Movement> Movements) GenerateSimpleMatch()
@@ -65,6 +68,7 @@ public class MatchingServiceTests
         ChedASimpleMatchScenarioGenerator generator =
             new ChedASimpleMatchScenarioGenerator(NullLogger<ChedASimpleMatchScenarioGenerator>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
+        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
@@ -83,7 +87,7 @@ public class MatchingServiceTests
                     case AlvsClearanceRequest cr:
 
                         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(cr);
-                        memo.Movements.Add(MovementPreProcessor.BuildMovement(internalClearanceRequest));
+                        memo.Movements.Add(movementBuilder.From(internalClearanceRequest).Build());
                         break;
                     default:
                         throw new ArgumentException($"Unexpected type {x.GetType().Name}");

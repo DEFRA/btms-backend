@@ -1,4 +1,5 @@
 using Btms.Business.Services.Decisions.Finders;
+using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
@@ -14,11 +15,25 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus) :
 
         var messages = await DecisionMessageBuilder.Build(decisionContext, decisionResult);
 
+        var a = new { A = "B" };
+        
         foreach (var message in messages)
         {
             var headers = new Dictionary<string, object>()
             {
-                { "messageId", Guid.NewGuid() }
+                { "messageId", Guid.NewGuid() },
+                { "notifications", decisionContext.Notifications!
+                    .Select(n => new DecisionImportNotifications()
+                    {
+                        Id = n.Id!,
+                        Version = n.Version,
+                        Created = n.Created,
+                        Updated = n.Updated,
+                        CreatedSource = n.CreatedSource!.Value,
+                        UpdatedSource = n.UpdatedSource!.Value!
+                        })
+                    .ToList()
+                },
             };
             await bus.Publish(message, "DECISIONS", headers: headers, cancellationToken: cancellationToken);
         }

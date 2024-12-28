@@ -39,10 +39,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var data = context
             .Movements
+            .Select(m => new { m.CreatedSource, IsLinked = m.Relationships.Notifications.Data.Count > 0 ? "Linked" : "Not Linked" })
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .GroupBy(m => m.Relationships.Notifications.Data.Count > 0)
+            .GroupBy(m => m.IsLinked)
             .Select(g => new { g.Key, Count = g.Count() })
-            .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Key), g => g.Count);
+            .ToDictionary(g => g.Key, g => g.Count);
             
         return Task.FromResult(new SingleSeriesDataset
         {
@@ -281,7 +282,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
-            .SelectMany(m => m.AlvsDecisions.Select(
+            .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
             .SelectMany(d => d.Decision.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
             .GroupBy(d => new
