@@ -11,6 +11,7 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
+            .WithVersionNumber()
             .ValidateAndBuild();
 
         logger.LogInformation("Created {NotificationReferenceNumber}", 

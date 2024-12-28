@@ -140,6 +140,7 @@ public class AuditEntry
         return new AuditEntry()
         {
             Id = id,
+            Version = version,
             CreatedSource = lastUpdated,
             CreatedBy = isAlvs ? CreatedByAlvs : CreatedBySystem,
             CreatedLocal = DateTime.UtcNow,
