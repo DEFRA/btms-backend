@@ -25,7 +25,8 @@ public class Datasets(IHost app)
             ds.LoadTest,
             ds.LoadTest90Dx1,
             ds.LoadTestCondensed,
-            ds.LoadTest90Dx10k
+            ds.LoadTest90Dx10k,
+            ds.AllChedNoMatch
         ];
     }
     
@@ -116,6 +117,14 @@ public class Datasets(IHost app)
                 app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(1, 90),
                 app.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 90)
             }
+    };
+
+    public readonly Dataset AllChedNoMatch = new()
+    {
+        Name = "All-CHED-No-Match",
+        Description = "LIM TODO",
+        RootPath = "GENERATED-ALL-CHED-NO-MATCH",
+        Scenarios = new[] { app.CreateScenarioConfig<AllChedsNoMatchScenarioGenerator>(1, 1) }
     };
 
     // public readonly Dataset Pha = new()
