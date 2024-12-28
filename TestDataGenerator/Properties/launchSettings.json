@@ -1,6 +1,17 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
+    "Generate All CHED no match": {
+      "commandName": "Project",
+      "commandLineArgs": "All-CHED-No-Match",
+      "environmentVariables": {
+        "DMP_ENVIRONMENT": "dev",
+        "DMP_SERVICE_BUS_NAME": "DEVTREINFSB1001",
+        "DMP_BLOB_STORAGE_NAME": "devdmpinfdl1001",
+        "DMP_SLOT": "1003",
+        "AZURE_TENANT_ID": "c9d74090-b4e6-4b04-981d-e6757a160812"
+      }
+    },
     "Generate EndToEnd-IBM": {
       "commandName": "Project",
       "commandLineArgs": "EndToEnd-IBM",
