@@ -42,12 +42,6 @@ public static class MessageRoutingExtensions
                     break;
 
                 case Decision d:
-                    // This sleep is to allow the system to settle, and have made any links & decisions
-                    // Before sending in a decision and causing a concurrency issue
-                    // Ideally we want to switch to pushing to the bus, rather than directly to the consumer
-                    // so we get the concurrency protection.
-
-                    Thread.Sleep(1000);
 
                     var decisionConsumer = (DecisionsConsumer)scope
                         .ServiceProvider
@@ -74,12 +68,19 @@ public static class MessageRoutingExtensions
                     };
 
                     await crConsumer.OnHandle(cr);
-                    logger.LogInformation("Semt cr {0} to consumer", cr.Header!.EntryReference!);
+                    logger.LogInformation("Sent cr {0} to consumer", cr.Header!.EntryReference!);
                     break;
 
                 default:
                     throw new ArgumentException($"Unexpected type {message.GetType().Name}");
             }
+            
+            // This sleep is to allow the system to settle, and have made any links & decisions
+            // Before sending in the next message and potentially causing a concurrency issue
+            // We may want to switch to pushing to the bus, rather than directly to the consumer
+            // so we get the concurrency protection.
+
+            Thread.Sleep(1000);
         }
     }
 }

@@ -33,3 +33,9 @@ az storage fs directory list -f dmp-data-1001 -d --account-name snddmpinfdl1001
 
 
 az storage fs directory download -f dmp-data-1001 -s "PRODREDACTED-20241204" -d "TestDataGenerator/.test-data-generator" --recursive --account-name snddmpinfdl1001
+
+## Generating a scenario given a resource ID:
+
+Copy all Movement files matching the ID into  
+
+find .test-data-generator/PRODREDACTED-202411/ALVS .test-data-generator/PRODREDACTED-202411/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBC4EB0D97OK4AR4 | xargs -I '{}' rsync -R '{}' ./Scenarios/SpecificFiles/DuplicateMovementItems-CDMS-211/

@@ -25,8 +25,9 @@ using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public class InMemoryScenarioApplicationFactory
+public class InMemoryScenarioApplicationFactory<T>
     : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
+    where T : ScenarioGenerator
 {
     // private readonly ILogger<ScenarioApplicationFactory> _logger = messageSink.ToLogger<ScenarioApplicationFactory>();
     // internal IWebHost? _app;
@@ -45,7 +46,7 @@ public class InMemoryScenarioApplicationFactory
         // But when we use the same one the config conflicts...       
 
         var generatorBuilder = new HostBuilder();
-        generatorBuilder.ConfigureTestDataGenerator();
+        generatorBuilder.ConfigureTestDataGenerator("Scenarios/Samples");
         
         TestGeneratorApp = generatorBuilder.Build();
         // Dataset = Datasets.GetDatasets(TestGeneratorApp);
@@ -72,7 +73,7 @@ public class InMemoryScenarioApplicationFactory
         var configurationValues = new Dictionary<string, string>
         {
             { "DisableLoadIniFile", "true" },
-            { "BlobServiceOptions:CachePath", "../../../Fixtures" },
+            { "BlobServiceOptions:CachePath", "Scenarios/Samples" },
             { "BlobServiceOptions:CacheReadEnabled", "true" },
             { "AuthKeyStore:Credentials:IntTest", "Password" }
         };
@@ -111,7 +112,7 @@ public class InMemoryScenarioApplicationFactory
                 });
 
                 services.AddLogging(lb => lb.AddXUnit(TestOutputHelper));
-                services.ConfigureTestGenerationServices();
+                // services.ConfigureTestGenerationServices();
             });
 
         builder.UseEnvironment("Development");
@@ -133,7 +134,7 @@ public class InMemoryScenarioApplicationFactory
 
     public async Task<List<(
         ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-        )>> GenerateAndLoadTestData(BtmsClient client, string datasetName = "One", SyncPeriod period = SyncPeriod.All)
+        )>> GenerateAndLoadTestData(BtmsClient client, SyncPeriod period = SyncPeriod.All)
     {
 
         // TODO : Naive caching implementation, improve
@@ -142,32 +143,15 @@ public class InMemoryScenarioApplicationFactory
             return LoadedData;
         }
 
+        await client.ClearDb();
+        
         LoadedData = new List<(ScenarioGenerator generator, int scenario, int dateOffset, int count, object message)>();
-        
-        // var consumer = (NotificationConsumer)this.Services
-        //     .GetRequiredService<IConsumer<ImportNotification>>();
-        
-        // var scope = this.Services.CreateScope();
-        //
-        // var notificationConsumer = (NotificationConsumer)scope
-        //     .ServiceProvider
-        //     .GetRequiredService<IConsumer<ImportNotification>>();
-        //
-        // notificationConsumer.Context = new ConsumerContext
-        // {
-        //     Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
-        // };
-        //                 
-        // await notificationConsumer.OnHandle(n);
-        // logger.LogInformation("Sent notification {0} to consumer", n.ReferenceNumber!);
-        
-        // var generator = this.Services.GetRequiredService<Generator>();
         
         // TODO: Need a logger
         var logger = NullLogger.Instance;
         
         var scenarioConfig =
-            this.Services.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0);
+            TestGeneratorApp.Services.CreateScenarioConfig<T>(1, 1, arrivalDateRange: 0);
 
         var generatorResults = scenarioConfig.Generate(logger, 0);
         foreach (var generatorResult in generatorResults)
@@ -180,11 +164,6 @@ public class InMemoryScenarioApplicationFactory
             
             LoadedData.AddRange(output);
         }
-        // var messages = scenario.Generator.Generate(0, 1, DateTime.Today, new ScenarioConfig()
-        // {
-        //     ArrivalDateRange = 1, Count = 1, CreationDateRange = 0, 
-        // })
-        // var generatorResult = await generator.Generate(scenario, s, dataset.RootPath);
 
 
         return LoadedData;

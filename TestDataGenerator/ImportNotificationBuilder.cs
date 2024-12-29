@@ -7,7 +7,7 @@ namespace TestDataGenerator;
 
 public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotification>
 {
-    private ImportNotificationBuilder()
+    private ImportNotificationBuilder(): base()
     {
     }
 
@@ -31,31 +31,26 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>
     where T : ImportNotification, new()
 {
-    protected ImportNotificationBuilder()
+    protected ImportNotificationBuilder(): base(GetInitialValues)
     {
     }
 
-    protected ImportNotificationBuilder(string file) : base(file)
+    protected ImportNotificationBuilder(string? file = null, string? itemJson = null) : base(GetInitialValues, file, itemJson)
     {
     }
     
-    
+    /// <summary>
+    /// build, serialise and then deserialise the object to break any byref type relationships
+    /// </summary>
+    /// <returns></returns>
     public ImportNotificationBuilder<T> Clone()
     {
 
         var json = JsonSerializer.Serialize(this.Build());
         
-        var builder =  new ImportNotificationBuilder<T>();
-        var n = JsonSerializer.Deserialize<T>(json)!;
-        builder.Setup(n);
+        var builder =  new ImportNotificationBuilder<T>(itemJson: json);
         
         return builder;
-
-        // var n = JsonSerializer.Deserialize<T>(json)!;
-        //
-        // Setup(n);
-        //
-        // return (TBuilder)this;
     }
     
     /// <summary>
@@ -211,5 +206,12 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             }
             
         });
+    }
+    
+    private static (DateTime? created, string? id) GetInitialValues(T message)
+    {
+        // var cr = (AlvsClearanceRequest)message;
+        return (message.LastUpdated, message.ReferenceNumber);
+        // throw new NotImplementedException();
     }
 }

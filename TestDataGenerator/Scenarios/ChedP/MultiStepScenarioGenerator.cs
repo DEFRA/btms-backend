@@ -1,9 +1,9 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
 
-namespace TestDataGenerator.Scenarios;
+namespace TestDataGenerator.Scenarios.ChedP;
 
-public class ChedPMultiStepScenarioGenerator(ILogger<ChedPMultiStepScenarioGenerator> logger) : ScenarioGenerator
+public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

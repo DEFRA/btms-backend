@@ -1,9 +1,9 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
 
-namespace TestDataGenerator.Scenarios;
+namespace TestDataGenerator.Scenarios.ChedP;
 
-public class ChedPSimpleMatchScenarioGenerator(ILogger<ChedPSimpleMatchScenarioGenerator> logger) : ScenarioGenerator
+public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

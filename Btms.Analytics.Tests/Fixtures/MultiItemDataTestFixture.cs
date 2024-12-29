@@ -42,7 +42,7 @@ public class MultiItemDataTestFixture : IDisposable
             app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
             
-            app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<ChedPSimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
+            app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
         }
     }
