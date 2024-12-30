@@ -1,30 +1,61 @@
 using Btms.BlobService;
 using Btms.BlobService.Extensions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using TestDataGenerator.Config;
-using TestDataGenerator.Helpers;
-using TestDataGenerator.Scenarios;
 
 namespace TestDataGenerator.Extensions;
 
 public static class BuilderExtensions
 {
+    public static object[] BuildAll(this IBaseBuilder[] builders)
+    {
+        var m = builders
+            .Select<IBaseBuilder,object>(b =>
+            {
+                switch (b)
+                {
+                    // TODO - if IBaseBuilder had the Build method this wouldn't
+                    // be necessary
+                    case ClearanceRequestBuilder builder:
+                        return builder.Build();
+                        
+                    case ImportNotificationBuilder builder:
+                        return builder.Build();
+                    
+                    case DecisionBuilder builder:
+                        return builder.Build();
+                    
+                    default:
+                        throw new InvalidDataException($"Unexpected type {b.GetType().Name}");
+                }
+                
+            });
+        
+        return m.ToArray();
+    }
+    
     public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
     {
         services.AddHttpClient();
+        
+        Type scenarionService = typeof(ScenarioGenerator);
 
-        services.AddSingleton<ChedASimpleMatchScenarioGenerator>();
-        services.AddSingleton<ChedAManyCommoditiesScenarioGenerator>();
-        services.AddSingleton<ChedPSimpleMatchScenarioGenerator>();
-        services.AddSingleton<ChedANoMatchScenarioGenerator>();
-        services.AddSingleton<CrNoMatchScenarioGenerator>();
-        services.AddSingleton<ChedPMultiStepScenarioGenerator>();
-        services.AddSingleton<AllChedsNoMatchScenarioGenerator>();
-                
+        // Find scenario generators and add them to the DI container
+
+        foreach (var type in AppDomain
+                     .CurrentDomain.GetAssemblies()
+                     .SelectMany(s => s.GetTypes())
+                     .Where(
+                         p => scenarionService.IsAssignableFrom(p)
+                              && !p.IsAbstract
+                              && p != scenarionService))
+        {
+            services.AddSingleton(type);
+        }
+
         var blobOptionsValidatorDescriptor = services.Where(d => 
             d.ServiceType == typeof(IValidateOptions<BlobServiceOptions>));
 
@@ -32,6 +63,7 @@ public static class BuilderExtensions
         {
             services.Remove(serviceDescriptor);
         }
+        
         
         return services;
     }
@@ -98,7 +130,13 @@ public static class BuilderExtensions
         
         hostBuilder
             .ConfigureAppConfiguration(builder => builder.ConfigureAppConfiguration(configuration))
-            .ConfigureServices((_, services) => services.ConfigureServices(configuration, generatorConfig))
+            .ConfigureServices((_, services) =>
+                {
+                    services.ConfigureServices(configuration, generatorConfig);
+                    // services.AddSingleton<IBlobService, CachingBlobService>();
+                    services.AddSingleton<CachingBlobService>();
+                }
+            )
             .AddLogging();
 
         return hostBuilder;

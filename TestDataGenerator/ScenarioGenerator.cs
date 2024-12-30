@@ -16,25 +16,25 @@ public abstract class ScenarioGenerator
 
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
-    internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file)
+    internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file, string fileExtension = ".json")
     {
-        var fullPath = $"{_fullFolder}/{file}.json";
+        var fullPath = $"{_fullFolder}/{file}{fileExtension}";
         var builder = ImportNotificationBuilder.FromFile(fullPath);
 
         return builder;
     }
 
-    internal ClearanceRequestBuilder GetClearanceRequestBuilder(string file)
+    internal ClearanceRequestBuilder GetClearanceRequestBuilder(string file, string fileExtension = ".json")
     {
-        var fullPath = $"{_fullFolder}/{file}.json";
+        var fullPath = $"{_fullFolder}/{file}{fileExtension}";
         var builder = new ClearanceRequestBuilder(fullPath);
 
         return builder;
     }
 
-    internal DecisionBuilder GetDecisionBuilder(string file)
+    internal DecisionBuilder GetDecisionBuilder(string file, string fileExtension = ".json")
     {
-        var fullPath = $"{_fullFolder}/{file}.json";
+        var fullPath = $"{_fullFolder}/{file}{fileExtension}";
         var builder = new DecisionBuilder(fullPath);
 
         return builder;

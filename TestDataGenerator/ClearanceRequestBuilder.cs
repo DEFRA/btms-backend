@@ -6,15 +6,20 @@ using TestDataGenerator.Helpers;
 namespace TestDataGenerator;
 
 public class ClearanceRequestBuilder(string file) : ClearanceRequestBuilder<AlvsClearanceRequest>(file);
+// {
+//     public DateTime Created => base.Created;
+//
+//     public string Id => base.Id;
+// }
 
 public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>>
     where T : AlvsClearanceRequest, new()
 {
-    private ClearanceRequestBuilder()
+    private ClearanceRequestBuilder(): base(GetInitialValues)
     {
     }
 
-    protected ClearanceRequestBuilder(string file) : base(file)
+    protected ClearanceRequestBuilder(string file) : base(GetInitialValues, file)
     {
     }
 
@@ -33,6 +38,8 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         var id = MatchIdentifier.FromNotification(chedReference);
         var clearanceRequestDocumentReference = id.AsCdsDocumentReference();
 
+        base.Id = id.AsCdsEntryReference();
+        
         return
             Do(x =>
             {
@@ -50,7 +57,8 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             // We don't want documents created in the future!
             entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
             : entryDate;
-        
+
+        base.Created = entry;
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
     }
     public ClearanceRequestBuilder<T> WithEntryVersionNumber(int version)
@@ -134,9 +142,16 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Header!.EntryReference.AssertHasValue("Clearance Request EntryReference missing");
             cr.Header!.DeclarationUcr.AssertHasValue("Clearance Request DeclarationUcr missing");
             cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing");
-            cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
+            // cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
 
             Array.ForEach(cr.Items!, i => Array.ForEach(i.Documents!, d => d.DocumentReference.AssertHasValue()));
         });
+    }
+
+    private static (DateTime? created, string? id) GetInitialValues(T message)
+    {
+        // var cr = (AlvsClearanceRequest)message;
+        return (message.ServiceHeader?.ServiceCallTimestamp, message.Header?.EntryReference);
+        // throw new NotImplementedException();
     }
 }
