@@ -15,10 +15,10 @@ public class EnsureDuplicateItemsAreNotCreatedTests(InMemoryScenarioApplicationF
     
     [Fact(Skip = "We're ending up with 2 items on the clearance request here.")]
     // [Fact]
-    public async Task ShouldNotCreateDuplicateItems()
+    public void ShouldNotCreateDuplicateItems()
     {
         // Arrange
-        var loadedData = await factory.GenerateAndLoadTestData(Client);
+        var loadedData = factory.LoadedData;
         
         var movementMessage = (AlvsClearanceRequest)loadedData.First(d =>
                 d is { message: AlvsClearanceRequest })

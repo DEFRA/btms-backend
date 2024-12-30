@@ -5,8 +5,10 @@ using Btms.BlobService;
 using Btms.Business.Commands;
 using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,47 +27,11 @@ using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public class InMemoryScenarioApplicationFactory<T>
-    : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
-    where T : ScenarioGenerator
+
+public class InMemoryApplicationFactory(string databaseName, ITestOutputHelper testOutputHelper ) : WebApplicationFactory<Program> 
 {
-    // private readonly ILogger<ScenarioApplicationFactory> _logger = messageSink.ToLogger<ScenarioApplicationFactory>();
-    // internal IWebHost? _app;
-    private IMongoDbContext? _mongoDbContext;
-
-    public List<(
-        ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-        )>? LoadedData;
+    private IMongoDbContext? mongoDbContext;
     
-    private IHost TestGeneratorApp { get; set; }
-    
-    public InMemoryScenarioApplicationFactory()
-    {   
-        // Generate test data
-        // TODO : Unsure if we should use a new app here or use the same one?...
-        // But when we use the same one the config conflicts...       
-
-        var generatorBuilder = new HostBuilder();
-        generatorBuilder.ConfigureTestDataGenerator("Scenarios/Samples");
-        
-        TestGeneratorApp = generatorBuilder.Build();
-        // Dataset = Datasets.GetDatasets(TestGeneratorApp);
-    }
-    
-    // internal async Task InsertScenario()
-    // {
-    //     var logger = new Logger<ChedPSimpleMatchScenarioGenerator>(new SerilogLoggerFactory());
-    //     var scenario = new ChedPSimpleMatchScenarioGenerator(logger);
-    //
-    //     return await Task.FromResult();
-    // }
-    // TODO : Make generic version work
-    // internal async Task InsertScenario<T>() where T : notnull, new
-    // {
-    //     var scenario = new T();
-    //     // var scenario = _app!.Services.GetRequiredService<T>();
-    //     await Task.FromResult("");
-    // }
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -103,19 +69,69 @@ public class InMemoryScenarioApplicationFactory<T>
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
-                    var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
+                    var dbName = string.IsNullOrEmpty(databaseName) ? Random.Shared.Next().ToString() : databaseName;
                     var db = client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
                    
                     // TODO : Use our ILoggerFactory
-                    _mongoDbContext = new MongoDbContext(db, new SerilogLoggerFactory());
+                    mongoDbContext = new MongoDbContext(db, new SerilogLoggerFactory());
                     return db;
                 });
 
-                services.AddLogging(lb => lb.AddXUnit(TestOutputHelper));
+                if (testOutputHelper.HasValue())
+                {
+                    services.AddLogging(lb => lb.AddXUnit(testOutputHelper));    
+                }
+                
                 // services.ConfigureTestGenerationServices();
             });
 
         builder.UseEnvironment("Development");
+    }
+
+    public (IMongoDbContext, BtmsClient) Start()
+    {
+        var builder = Host.CreateDefaultBuilder();
+        
+        var host = base
+            .CreateHost(builder);
+        
+        // Creating the client causes the 
+        var client = this.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var btmsClient = new BtmsClient(client);
+
+        return (mongoDbContext!, btmsClient);
+    }
+
+}
+
+public class InMemoryScenarioApplicationFactory<T>
+    : IIntegrationTestsApplicationFactory
+    where T : ScenarioGenerator
+{
+    private readonly IMongoDbContext _mongoDbContext;
+    private readonly BtmsClient _btmsClient;
+    
+    public List<(
+        ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
+        )> LoadedData;
+    
+    private IHost TestGeneratorApp { get; set; }
+    private InMemoryApplicationFactory WebApp { get; set; }
+    
+    public InMemoryScenarioApplicationFactory()
+    {   
+        // Generate test data
+        
+        var generatorBuilder = new HostBuilder();
+        generatorBuilder.ConfigureTestDataGenerator("Scenarios/Samples");
+        
+        TestGeneratorApp = generatorBuilder.Build();
+
+        var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
+        WebApp = new InMemoryApplicationFactory(dbName, TestOutputHelper);
+        (_mongoDbContext, _btmsClient) = WebApp.Start();
+
+        LoadedData = GenerateAndLoadTestData().GetAwaiter().GetResult();;
     }
 
     public ITestOutputHelper TestOutputHelper { get; set; } = null!;
@@ -124,26 +140,26 @@ public class InMemoryScenarioApplicationFactory<T>
 
     public IMongoDbContext GetDbContext()
     {
-        return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
+        return _mongoDbContext;
     }
     
     public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
     {
-        return new BtmsClient(base.CreateClient(options));
+        return _btmsClient;
     }
 
-    public async Task<List<(
+    private async Task<List<(
         ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-        )>> GenerateAndLoadTestData(BtmsClient client, SyncPeriod period = SyncPeriod.All)
+        )>> GenerateAndLoadTestData()
     {
 
         // TODO : Naive caching implementation, improve
-        if (LoadedData.HasValue())
-        {
-            return LoadedData;
-        }
+        // if (LoadedData.HasValue())
+        // {
+        //     return LoadedData;
+        // }
 
-        await client.ClearDb();
+        await _btmsClient.ClearDb();
         
         LoadedData = new List<(ScenarioGenerator generator, int scenario, int dateOffset, int count, object message)>();
         
@@ -156,7 +172,7 @@ public class InMemoryScenarioApplicationFactory<T>
         var generatorResults = scenarioConfig.Generate(logger, 0);
         foreach (var generatorResult in generatorResults)
         {
-            await this.Services.PushToConsumers(logger, generatorResult);
+            await WebApp.Services.PushToConsumers(logger, generatorResult);
             var output = generatorResult
                 // ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
                 .Select(r => (scenarioConfig.Generator, 0, 1, 1, r))
@@ -168,10 +184,4 @@ public class InMemoryScenarioApplicationFactory<T>
 
         return LoadedData;
     }
-
-    
-    // public async Task ClearDb(HttpClient client)
-    // {
-    //     await client.GetAsync("mgmt/collections/drop");
-    // }
 }

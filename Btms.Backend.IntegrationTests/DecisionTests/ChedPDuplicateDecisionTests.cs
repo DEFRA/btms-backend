@@ -32,10 +32,10 @@ public class ChedPDuplicateDecisionTests(InMemoryScenarioApplicationFactory<Dupl
     
     [Fact(Skip = "We currently import the duplicate alvs decision & store it on the movement")]
     // [Fact]
-    public async Task SimpleChedPScenario_ShouldBeLinkedAndMatchDecision()
+    public void SimpleChedPScenario_ShouldBeLinkedAndMatchDecision()
     {
         // Arrange
-        var loadedData = await factory.GenerateAndLoadTestData(Client);
+        var loadedData = factory.LoadedData;
         
         var chedPMovement = (AlvsClearanceRequest)loadedData.Single(d =>
                 d is { message: AlvsClearanceRequest })

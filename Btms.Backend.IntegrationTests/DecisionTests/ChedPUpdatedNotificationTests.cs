@@ -32,10 +32,10 @@ public class ChedPUpdatedNotificationTests(InMemoryScenarioApplicationFactory<Mu
     
     [Fact(Skip = "We're not currently re-linking when a new version of notification arrives it seems")]
     // [Fact]
-    public async Task MultipleNotificationVersionScenario_ShouldBeLinkedAndMatchDecision()
+    public void MultipleNotificationVersionScenario_ShouldBeLinkedAndMatchDecision()
     {
         // Arrange
-        var loadedData = await factory.GenerateAndLoadTestData(Client);
+        var loadedData = factory.LoadedData;
         
         var chedPMovement = (AlvsClearanceRequest)loadedData.Single(d =>
                 d is { generator: MultiStepScenarioGenerator, message: AlvsClearanceRequest })

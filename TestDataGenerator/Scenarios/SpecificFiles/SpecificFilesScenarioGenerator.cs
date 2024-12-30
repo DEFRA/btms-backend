@@ -7,8 +7,8 @@ namespace TestDataGenerator.Scenarios.SpecificFiles;
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger) : ScenarioGenerator
 {
-    private IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
-    private Regex regex = new (@"(202\d\/\d{2}\/\d{2})");
+    private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
+    private readonly Regex regex = new (@"(202\d\/\d{2}\/\d{2})");
     
     internal async Task<List<(string filePath, DateTime created, IBaseBuilder builder)>> GetBuilders(string path)
     {
