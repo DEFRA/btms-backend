@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Alvs;
@@ -19,7 +20,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
     }
 
-    protected ClearanceRequestBuilder(string file) : base(GetInitialValues, file)
+    protected ClearanceRequestBuilder(string? file = null, string? itemJson = null) : base(GetInitialValues, file, itemJson)
     {
     }
 
@@ -31,6 +32,21 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     public static ClearanceRequestBuilder<T> FromFile(string file)
     {
         return new ClearanceRequestBuilder<T>(file);
+    }
+    
+    
+    /// <summary>
+    /// build, serialise and then deserialise the object to break any byref type relationships
+    /// </summary>
+    /// <returns></returns>
+    public ClearanceRequestBuilder<T> Clone()
+    {
+
+        var json = JsonSerializer.Serialize(this.Build());
+        
+        var builder =  new ClearanceRequestBuilder<T>(itemJson: json);
+        
+        return builder;
     }
 
     public ClearanceRequestBuilder<T> WithReferenceNumber(string chedReference)
