@@ -18,19 +18,19 @@ public static class TestDataGeneratorHelpers
 {
     private static int scenarioIndex;
     
-    public static async Task<IHost> PushToConsumers(this IHost app, ILogger logger, ScenarioConfig scenario)
+    public static async Task<IServiceProvider> GeneratorPushToConsumers(this IServiceProvider sp, ILogger logger, ScenarioConfig scenario)
     {
-        var generatorResults = app.Generate(logger, scenario);
+        var generatorResults = scenario.Generate(logger, scenarioIndex);
         scenarioIndex++;
         
         // var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
-        var bus = app.Services.GetRequiredService<IPublishBus>();
+        // var bus = sp.GetRequiredService<IPublishBus>();
         
         foreach (var generatorResult in generatorResults)
         {
             foreach (var message in generatorResult)
             {
-                var scope = app.Services.CreateScope();
+                var scope = sp.CreateScope();
                 
                 switch (message)
                 {
@@ -94,31 +94,31 @@ public static class TestDataGeneratorHelpers
             }
         }
 
-        return app;
+        return sp;
     } 
     
-    private static ScenarioGenerator.GeneratorResult[] Generate(this IHost app, ILogger logger, ScenarioConfig scenario)
-    {
-        var days = scenario.CreationDateRange;
-        var count = scenario.Count;
-        var generator = scenario.Generator;
-        
-        logger.LogInformation("Generating {Count}x{Days} {@Generator}", count, days, generator);
-        var results = new List<ScenarioGenerator.GeneratorResult>();
-        
-        for (var d = -days + 1; d <= 0; d++)
-        {
-            logger.LogInformation("Generating day {D}", d);
-            var entryDate = DateTime.Today.AddDays(d);
-
-            for (var i = 0; i < count; i++)
-            {
-                logger.LogInformation("Generating item {I}", i);
-
-                results.Add(generator.Generate(scenarioIndex, i, entryDate, scenario));
-            }
-        }
-
-        return results.ToArray();
-    }
+    // public static ScenarioGenerator.GeneratorResult[] Generate(this IServiceProvider sp, scenarioIndex, ILogger logger, ScenarioConfig scenario)
+    // {
+    //     var days = scenario.CreationDateRange;
+    //     var count = scenario.Count;
+    //     var generator = scenario.Generator;
+    //     
+    //     logger.LogInformation("Generating {Count}x{Days} {@Generator}", count, days, generator);
+    //     var results = new List<ScenarioGenerator.GeneratorResult>();
+    //     
+    //     for (var d = -days + 1; d <= 0; d++)
+    //     {
+    //         logger.LogInformation("Generating day {D}", d);
+    //         var entryDate = DateTime.Today.AddDays(d);
+    //
+    //         for (var i = 0; i < count; i++)
+    //         {
+    //             logger.LogInformation("Generating item {I}", i);
+    //
+    //             results.Add(generator.Generate(scenarioIndex, i, entryDate, scenario));
+    //         }
+    //     }
+    //
+    //     return results.ToArray();
+    // }
 }
