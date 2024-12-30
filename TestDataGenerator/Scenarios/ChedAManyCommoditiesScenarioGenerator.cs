@@ -23,7 +23,7 @@ public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesS
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
-            .WithReferenceNumber(notification.ReferenceNumber!)
+            .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
             .ValidateAndBuild();
         
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);

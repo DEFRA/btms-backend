@@ -127,7 +127,7 @@ public class InMemoryScenarioApplicationFactory<T>
         
         TestGeneratorApp = generatorBuilder.Build();
 
-        var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
+        var dbName = string.IsNullOrEmpty(DatabaseName) ? typeof(T).Name : DatabaseName;
         WebApp = new InMemoryApplicationFactory(dbName, TestOutputHelper);
         (_mongoDbContext, _btmsClient) = WebApp.Start();
 

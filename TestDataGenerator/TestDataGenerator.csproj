@@ -56,22 +56,30 @@
     <None Update="Scenarios\Samples\decision-one-item.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Remove="Scenarios\Samples\chedd-one-commodity.json" />
-    <Content Include="Scenarios\Samples\chedd-one-commodity.json">
+    <None Update="Scenarios\Samples\chedd-one-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Scenarios\Samples\chedpp-multiple-commodity.json" />
-    <Content Include="Scenarios\Samples\chedpp-multiple-commodity.json">
+    </None>
+    <None Update="Scenarios\Samples\chedpp-multiple-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\01\24GBC4EB0D97OK4AR4-d728e21f-a12d-4d8f-aa49-f73b7c2f1065.json" />
-    <Content Include="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\01\24GBC4EB0D97OK4AR4-d728e21f-a12d-4d8f-aa49-f73b7c2f1065.json">
+    </None>
+    <None Update="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\01\24GBC4EB0D97OK4AR4-d728e21f-a12d-4d8f-aa49-f73b7c2f1065.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\08\24GBC4EB0D97OK4AR4-2ad7665a-0020-4e9f-8d3a-d2cfa830e4c1.json" />
-    <Content Include="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\08\24GBC4EB0D97OK4AR4-2ad7665a-0020-4e9f-8d3a-d2cfa830e4c1.json">
+    </None>
+    <None Update="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\08\24GBC4EB0D97OK4AR4-2ad7665a-0020-4e9f-8d3a-d2cfa830e4c1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Update="Scenarios\Samples\NoAuditLogForMovementUpdate\ALVS\2024\12\24\23GB9999011224000003-81940055-7a05-4a24-968f-3b791d275961.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\NoAuditLogForMovementUpdate\IPAFFS\CHEDP\2024\12\24\CHEDP_GB_2024_011224000001-ebcde21f-85d4-46ed-b44e-6c819b7d174d.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\NoAuditLogForMovementUpdate\IPAFFS\CHEDP\2024\12\26\CHEDP_GB_2024_031218000001-81b1a60c-5800-41eb-84fc-f73cb99585ef.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\NoAuditLogForMovementUpdate\IPAFFS\CHEDP\2024\12\26\CHEDP_GB_2024_031218000003-8fcd7903-ab05-4f75-be4f-444475fd80cd.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

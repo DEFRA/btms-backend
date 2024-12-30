@@ -12,7 +12,7 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(DateTime.Today.ToDate(), DateTime.Now.ToTime())
-            .WithReferenceNumber(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item))
+            .WithReferenceNumberOneToOne(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item))
             .WithRandomItems(10, 100)
             .ValidateAndBuild();
 
