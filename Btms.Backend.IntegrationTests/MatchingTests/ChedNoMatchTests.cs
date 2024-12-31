@@ -35,8 +35,6 @@ public class UnmatchedChedTests(
         var chedPImportNotification = Client.AsJsonApiClient().GetById(chedP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
         var chedPPImportNotification = Client.AsJsonApiClient().GetById(chedPP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
 
-        
-            
         // Assert
         chedAImportNotification.Relationships.Movements.Links.Should().BeNull();
         chedDImportNotification.Relationships.Movements.Links.Should().BeNull();
