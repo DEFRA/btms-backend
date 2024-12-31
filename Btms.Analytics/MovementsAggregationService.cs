@@ -187,7 +187,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return new EntityDataset<AuditHistory>(entries);
     }
 
-    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
@@ -205,12 +205,14 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
     
-    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .Where(m => country == null || m.DispatchCountryCode == country )
+            .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+                        && (country == null || m.DispatchCountryCode == country)
+                        && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
+            )
             .GroupBy(n => new { MaxVersion =
                 n.Decisions.Max(a => a.Header!.DecisionNumber )
             })
@@ -223,27 +225,23 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
 
-    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
-        var (_, result) = movementExceptions.GetAllExceptions(from, to, false, chedTypes, country);
+        var (_, result) = movementExceptions
+            .GetAllExceptions(from, to, false, chedTypes, country);
             
         return Task.FromResult(result);
     }
     
-    public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
-        var (summary, _) = movementExceptions.GetAllExceptions(from, to, true, chedTypes, country);
+        var (summary, _) = movementExceptions
+            .GetAllExceptions(from, to, true, chedTypes, country);
             
         return Task.FromResult(summary);
     }
-
-    // TODO : remove
-    // public Task<MultiSeriesDataset> ByCheck(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
-    // {
-    //     return Task.FromResult(new MultiSeriesDataset() );
-    // }
 
     private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
@@ -277,11 +275,14 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="to"></param>
     /// <returns></returns>
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
-        DateTime to, string[]? chedTypes = null, string? country = null)
+        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var mongoQuery = context
             .Movements
-            .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
+            .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+                        && (country == null || m.DispatchCountryCode == country)
+                        && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
+            )
             .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
             .SelectMany(d => d.Decision.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))

@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using TestDataGenerator.Scenarios.ChedP;
 using Xunit;
 using Xunit.Abstractions;
+using ImportNotification = Btms.Types.Ipaffs.ImportNotification;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
@@ -31,27 +32,32 @@ public class ChedPSimpleTests(InMemoryScenarioApplicationFactory<SimpleMatchScen
 {
     
     [Fact]
-    public void SimpleChedPScenario_ShouldBeLinkedAndMatchDecision()
+    public void ShouldBeLinked()
     {
-        // Arrange
-        var loadedData = factory.LoadedData;
-        
-        var chedPMovement = (AlvsClearanceRequest)loadedData.Single(d =>
-                d is { message: AlvsClearanceRequest })
-            .message;
-        
-        var chedPNotification = (Types.Ipaffs.ImportNotification)loadedData.Single(d =>
-                d is { message: Types.Ipaffs.ImportNotification })
-            .message;
-
         // Act
-        var jsonClientResponse = Client.AsJsonApiClient().GetById(chedPMovement!.Header!.EntryReference!, "api/movements");
+        var movementResource = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .Data
+            .Single()
+            .Relationships!.Count.Should().Be(1);
+    }
+    
+    [Fact]
+    public void ShouldHaveCorrectDecisions()
+    {
+        var chedPNotification = (Types.Ipaffs.ImportNotification)factory
+            .LoadedData
+            .Single(d =>
+                d is { message: Types.Ipaffs.ImportNotification }
+            )
+            .message;
         
         // Assert
-        jsonClientResponse.Should().NotBeNull();
-        jsonClientResponse.Data.Relationships!.Count.Should().Be(1);
+        var movement = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single();
         
-        var movement = jsonClientResponse.GetResourceObject<Movement>();
         movement.Decisions.Count.Should().Be(2);
         movement.AlvsDecisionStatus.Decisions.Count.Should().Be(1);
         
@@ -59,7 +65,32 @@ public class ChedPSimpleTests(InMemoryScenarioApplicationFactory<SimpleMatchScen
             .First()
             .Context.DecisionMatched
             .Should().BeTrue();
+        
+        var decisionWithLinkAndContext = movement.AuditEntries
+            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .MaxBy(a => a.Version)!;
+        
+        decisionWithLinkAndContext.Context!.ImportNotifications
+            .Should().NotBeNull();
+        
+        decisionWithLinkAndContext.Context!.ImportNotifications!
+            .Select(n => (n.Id, n.Version))
+            .Should()
+            .Equal([
+                ( chedPNotification.ReferenceNumber!, 1 )
+            ]);
+    }
 
+    [Fact]
+    public void ShouldHaveCorrectAuditTrail()
+    {
+        
+        // Assert
+        var movement = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single();
+        
         movement.AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
@@ -70,21 +101,58 @@ public class ChedPSimpleTests(InMemoryScenarioApplicationFactory<SimpleMatchScen
                 ("Btms", "Decision", 2),
                 ("Alvs", "Decision", 1)
             ]);
+    }
 
-        var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a.CreatedBy == "Btms" && a.Status == "Decision")
-            .MaxBy(a => a.Version)!;
-
-        decisionWithLinkAndContext.Context!.ImportNotifications
-            .Should().NotBeNull();
+    [Fact]
+    public void ShouldHaveDecisionMatched()
+    {
         
-        decisionWithLinkAndContext.Context!.ImportNotifications!
-            .Select(n => (n.Id, n.Version))
-            .Should().Equal([
-                ( chedPNotification.ReferenceNumber!, 1 )
-            ]);
+        // Assert
+        var movement = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single();
 
-        // TODO : for some reason whilst jsonClientResponse contains the notification relationship, movement doesn't!
-        // movement.Relationships.Notifications.Data.Count.Should().Be(1);
+        movement
+            .AlvsDecisionStatus
+            .Context!
+            .DecisionMatched
+            .Should()
+            .BeTrue();
+    }
+    
+    [Fact]
+    public void ShouldHaveChedType()
+    {
+        
+        // Assert
+        var movement = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single();
+       
+        movement
+            .AlvsDecisionStatus
+            .Context!
+            .ChedTypes
+            .Should()
+            .Equal(ImportNotificationTypeEnum.Cvedp);
+    }
+    
+    [Fact(Skip = "Relationships aren't being deserialised correctly")]
+    // TODO : for some reason whilst jsonClientResponse contains the notification relationship,
+    // but movement from .GetResourceObject(s)<Movement>();  doesn't!
+    public void ShouldHaveNotificationRelationships()
+    {
+        
+        // Assert
+        var movement = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single();
+
+        movement
+            .Relationships.Notifications.Data
+            .Should().NotBeEmpty();
     }
 }

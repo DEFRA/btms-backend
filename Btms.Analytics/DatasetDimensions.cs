@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Model.Auditing;
+using Btms.Model.Ipaffs;
 
 namespace Btms.Analytics;
 
@@ -19,6 +20,7 @@ public class ExceptionResult : IDimensionResult
     public required DateTime Updated { get; set; }
     
     public required int ItemCount { get; set; }
+    public required ImportNotificationTypeEnum[] ChedTypes { get; set; }
     public required int MaxEntryVersion { get; set; }
     public required int MaxDecisionNumber { get; set; }
     public required int LinkedCheds { get; set; }

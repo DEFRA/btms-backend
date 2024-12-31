@@ -4,8 +4,11 @@ using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Microsoft.Extensions.Logging;
+using Btms.Business.Extensions;
+using Btms.Model;
+using Btms.Model.Ipaffs;
 
-namespace Btms.Model;
+namespace Btms.Business.Builders;
 
 public class MovementBuilder(ILogger<MovementBuilder> logger)
 {
@@ -35,6 +38,10 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             Items = request.Items?.Select(x => x).ToList()!,
         };
         
+        _movement
+            .AlvsDecisionStatus.Context
+            .ChedTypes = GetChedTypes();
+        
         return this;
     }
 
@@ -43,6 +50,18 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
         HasChanges = true;
         _movement = movement;
         return this;
+    }
+
+    private ImportNotificationTypeEnum[] GetChedTypes()
+    {
+        return _movement!.Items?
+            .SelectMany(i => i.Documents!)
+            .Select(d =>
+                d.DocumentCode!.GetChedType()
+            )
+            .Where(ct => ct.HasValue())
+            .Select(ct => ct!.Value)
+            .ToArray()!;
     }
 
     public string Id
@@ -151,7 +170,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
         }
         
         context.ImportNotifications = notificationContext;
-        // context.ChedTypes = 
+        context.ChedTypes = GetChedTypes();
 
         var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),

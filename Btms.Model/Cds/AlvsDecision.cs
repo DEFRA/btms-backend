@@ -96,6 +96,9 @@ public partial class DecisionContext : IAuditContext //
     [System.ComponentModel.Description("")]
     public List<DecisionImportNotifications>? ImportNotifications { get; set; }
     
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ImportNotificationTypeEnum[]? ChedTypes { get; set; }
     
     [Attr]
@@ -143,7 +146,7 @@ public partial class AlvsDecisionStatus  //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public DecisionContext? Context { get; set; } = default;
+    public DecisionContext Context { get; set; } = new DecisionContext();
     
     // TODO - should we put the checks into context, and so into audit log?
     [Attr]
