@@ -26,7 +26,7 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
         /// </summary>
     [JsonPropertyName("id")]
     public int? IpaffsId { get; set; }
-
+    
 	
         /// <summary>
         /// The etag for this notification.
@@ -237,6 +237,6 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
     [JsonPropertyName("isGMRMatched")]
     public bool? IsGMRMatched { get; set; }
 
-	}
+}
 
 
