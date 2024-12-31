@@ -12,6 +12,7 @@ using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
 using Btms.Model.Auditing;
+using Btms.Model.Ipaffs;
 using MongoDB.Bson.Serialization.Attributes;
 
 
@@ -95,6 +96,7 @@ public partial class DecisionContext : IAuditContext //
     [System.ComponentModel.Description("")]
     public List<DecisionImportNotifications>? ImportNotifications { get; set; }
     
+    public ImportNotificationTypeEnum[]? ChedTypes { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -127,47 +129,6 @@ public partial class DecisionContext : IAuditContext //
     [Attr]
     [System.ComponentModel.Description("")]
     public StatusChecker? BtmsCheckStatus { get; set; }
-    
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAllMatch { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAnyMatch { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAllNoMatch { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAnyNoMatch { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAllHold { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAnyHold { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAllRefuse { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAnyRefuse { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAllRelease { get; set; } = default;
-    //
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public bool AlvsAnyRelease { get; set; } = default;
-    
 }
 
 public partial class AlvsDecisionStatus  //

@@ -12,7 +12,7 @@ public class CrNoMatchNoChecksScenarioGenerator(ILogger<CrNoMatchNoChecksScenari
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(DateTime.Today.ToDate(), DateTime.Now.ToTime())
-            .WithReferenceNumber(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item))
+            .WithReferenceNumberOneToOne(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item))
             .WithItemNoChecks("N853", "16041421", "Tuna ROW CHEDP", 900)
             .ValidateAndBuild();
 
