@@ -10,25 +10,25 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
     private readonly Regex regex = new (@"(202\d\/\d{2}\/\d{2})");
     
-    internal async Task<List<(string filePath, DateTime created, IBaseBuilder builder)>> GetBuilders(string path)
+    internal async Task<List<(string filePath, DateTime created, IBaseBuilder builder)>> GetBuilders(string scenarioPath)
     {
         var tokenSource = new CancellationTokenSource();
-        var clearanceRequestBlobs = blobService.GetResourcesAsync($"{path}/ALVS", tokenSource.Token);
+        var clearanceRequestBlobs = blobService.GetResourcesAsync($"{scenarioPath}/ALVS", tokenSource.Token);
 
-        var clearanceRequestList = await GetBuildersForFolder($"{path}/ALVS", GetClearanceRequestBuilder, tokenSource.Token);
-        // var notificationList = await GetBuildersForFolder($"{path}/IPAFFS", GetNotificationBuilder, tokenSource.Token);
-        // var decisionList = await GetBuildersForFolder($"{path}/DECISIONS", GetNotificationBuilder, tokenSource.Token);
+        var clearanceRequestList = await GetBuildersForFolder($"{scenarioPath}/ALVS", GetClearanceRequestBuilder, tokenSource.Token);
+        var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", GetNotificationBuilder, tokenSource.Token);
+        var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", GetNotificationBuilder, tokenSource.Token);
 
         return clearanceRequestList
-            // .Concat(notificationList)
-            // .Concat(decisionList)
+            .Concat(notificationList)
+            .Concat(decisionList)
             .OrderBy(b => b.created)
             .ToList();
     }
 
-    private async Task<List<(string file, DateTime created, IBaseBuilder builder)>> GetBuildersForFolder(string folder, Func<string,  string, IBaseBuilder> createBuilder, CancellationToken token)
+    private async Task<List<(string file, DateTime created, IBaseBuilder builder)>> GetBuildersForFolder(string scenarioFolder, Func<string,  string, IBaseBuilder> createBuilder, CancellationToken token)
     {
-        var blobs = blobService.GetResourcesAsync(folder, token);
+        var blobs = blobService.GetResourcesAsync(scenarioFolder, token);
 
         var list = new List<(string, DateTime, IBaseBuilder)>();
         
@@ -40,9 +40,6 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
                 throw new IOException("File path doesn't include a date in the expected format");
             }
             
-            // String part1 = m.Groups[1].Value;
-            // String part2 = m.Groups[2].Value;
-            // return true;
             logger.LogInformation("Found blob item {name}", blobItem.Name);
             var builder = createBuilder(blobItem.Name, "");
             list.Add((blobItem.Name, builder.Created!.Value, builder!));

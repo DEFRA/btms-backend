@@ -27,7 +27,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
-            .WithReferenceNumber(notification.ReferenceNumber!)
+            .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
             .WithItem("N853", "16041421", "Tuna ROW CHEDP", 900, checkCode)
             .ValidateAndBuild();

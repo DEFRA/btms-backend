@@ -49,7 +49,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         return builder;
     }
 
-    public ClearanceRequestBuilder<T> WithReferenceNumber(string chedReference)
+    public ClearanceRequestBuilder<T> WithReferenceNumberOneToOne(string chedReference)
     {
         var id = MatchIdentifier.FromNotification(chedReference);
         var clearanceRequestDocumentReference = id.AsCdsDocumentReference();
@@ -67,6 +67,11 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             });
     }
 
+    public ClearanceRequestBuilder<T> IncrementCreationDate(TimeSpan t)
+    {
+        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = x.ServiceHeader!.ServiceCallTimestamp!.Value.Add(t));
+    }
+    
     public ClearanceRequestBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
         var entry = randomTime ?
@@ -79,7 +84,24 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     }
     public ClearanceRequestBuilder<T> WithEntryVersionNumber(int version)
     {
-        return Do(x => x.Header!.EntryVersionNumber = version);
+        return Do(x =>
+        {
+            x.Header!.EntryVersionNumber = version;
+
+            if (version > 1)
+            {
+                x.Header!.PreviousVersionNumber = version - 1;
+            }
+        });
+    }
+    
+    public ClearanceRequestBuilder<T> IncrementEntryVersionNumber()
+    {
+        return Do(x =>
+        {
+            x.Header!.PreviousVersionNumber =  x.Header!.EntryVersionNumber;
+            x.Header!.EntryVersionNumber = x.Header!.EntryVersionNumber!.Value + 1;
+        });
     }
     public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 
         int maxHoursOffset = 12, int maxMinsOffset = 30)
@@ -108,6 +130,29 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Items![0].Checks![0].CheckCode = checkCode;
         });
     }
+
+    public ClearanceRequestBuilder<T> WithItemDocumentRef(string documentRef, int itemNumber = 0, int documentNumber = 0)
+    {
+        return Do(cr =>
+        {
+            cr.Items![itemNumber].Documents![documentNumber].DocumentReference = documentRef;
+        });
+    }
+
+    // public ClearanceRequestBuilder<T> WithMultipleIDocumentItems(string documentCode, string commodityCode, string description,
+    //     int netWeight, string[] documentRefs, string checkCode = "H2019")
+    // {
+    //     return Do(cr =>
+    //     {
+    //         cr.Items![0].TaricCommodityCode = commodityCode;
+    //         cr.Items![0].GoodsDescription = description;
+    //         cr.Items![0].ItemNetMass = netWeight;
+    //         cr.Items![0].Documents![0].DocumentCode = documentCode;
+    //         cr.Items![0].Documents![0].DocumentReference = documentRefs[0];
+    //         cr.Items![0].Checks![0].CheckCode = checkCode;
+    //         
+    //     });
+    // }
     
     public ClearanceRequestBuilder<T> WithItemNoChecks(string documentCode, string commodityCode, string description,
         int netWeight)

@@ -149,23 +149,10 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             throw new ArgumentException(
                 $"Unexpected decision source system {clearanceRequest.ServiceHeader?.SourceSystem}");
         }
-
-        // var decisionAuditContext = new Dictionary<string, Dictionary<string, string>>();
-        // decisionAuditContext.Add("clearanceRequests", new Dictionary<string, string>()
-        // {
-        //     { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.EntryVersionNumber!.ToString()! }
-        // });
-        // decisionAuditContext.Add("decisions", new Dictionary<string, string>()
-        // {
-        //     { clearanceRequest.Header!.EntryReference!, clearanceRequest.Header!.DecisionNumber!.ToString()! }
-        // });
-        // // decisionAuditContext.Add("importNotifications", new Dictionary<string, string>()
-        // // {
-        // //     { "todo", "todo" }
-        // // });
-        //
-        context.ImportNotifications = notificationContext;
         
+        context.ImportNotifications = notificationContext;
+        // context.ChedTypes = 
+
         var auditEntry = AuditEntry.CreateDecision(
             BuildNormalizedDecisionPath(path),
             clearanceRequest.Header!.DecisionNumber.GetValueOrDefault(),
