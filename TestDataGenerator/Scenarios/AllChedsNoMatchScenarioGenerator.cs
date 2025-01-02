@@ -11,6 +11,7 @@ public class AllChedsNoMatchScenarioGenerator(ILogger<AllChedsNoMatchScenarioGen
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
+            .WithVersionNumber()
             .ValidateAndBuild();
 
         logger.LogInformation("Created {NotificationReferenceNumber}", 
@@ -20,6 +21,7 @@ public class AllChedsNoMatchScenarioGenerator(ILogger<AllChedsNoMatchScenarioGen
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
+            .WithVersionNumber()
             .ValidateAndBuild();
         
         logger.LogInformation("Created {NotificationReferenceNumber}", 
@@ -29,6 +31,7 @@ public class AllChedsNoMatchScenarioGenerator(ILogger<AllChedsNoMatchScenarioGen
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Ced, scenario, entryDate, item)
+            .WithVersionNumber()
             .ValidateAndBuild();
         
         logger.LogInformation("Created {NotificationReferenceNumber}", 
@@ -38,6 +41,7 @@ public class AllChedsNoMatchScenarioGenerator(ILogger<AllChedsNoMatchScenarioGen
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, scenario, entryDate, item)
+            .WithVersionNumber()
             .ValidateAndBuild();
         
         logger.LogInformation("Created {NotificationReferenceNumber}", 

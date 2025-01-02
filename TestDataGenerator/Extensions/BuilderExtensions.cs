@@ -55,6 +55,17 @@ public static class BuilderExtensions
                      && !p.IsAbstract
                      && p != scenarioService);
     }
+
+    public static ServiceProvider GetDefaultServiceProvider()
+    {
+        var (configuration, _) = BuilderExtensions.GetConfig("Scenarios/Samples");
+        
+        return new ServiceCollection()
+            .AddBlobStorage(configuration)
+            .AddSingleton<CachingBlobService>()
+            .ConfigureTestGenerationServices()
+            .BuildServiceProvider();
+    }
     
     public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
     {
