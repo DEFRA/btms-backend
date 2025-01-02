@@ -191,8 +191,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var data = context
             .Movements
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .Where(m => country == null || m.DispatchCountryCode == country )
+            .Where(m => m.CreatedSource >= from && m.CreatedSource < to
+                    && (country == null || m.DispatchCountryCode == country)
+                    && (chedTypes == null || !chedTypes!.Any() || !m.AlvsDecisionStatus!.Context!.ChedTypes!.Any() ||
+                        m.AlvsDecisionStatus!.Context!.ChedTypes!.Any(c => chedTypes!.Contains(c))))
             .GroupBy(n => new { MaxVersion =
                 n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber )
             })

@@ -119,12 +119,19 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
     {
         var data = context
             .Notifications
-            // .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
             .Where(n => (n.CreatedSource >= from && n.CreatedSource < to)
                         && (country == null || n.PartOne!.Route!.TransitingStates!.Contains(country))
-                        && (chedTypes == null || n.ImportNotificationType == null || Array.IndexOf(chedTypes!, n.ImportNotificationType) > -1)
+             
+                        && (chedTypes == null || chedTypes!.Length == 0 || n.ImportNotificationType == null || chedTypes!.Contains(n.ImportNotificationType!.Value))
             )
-            // .Where(m => country == null || m.PartOne!.Route!.TransitingStates!.Contains(country))
+            
+            // .Select(n => new { Notification = n, IsChedTypeMatch = chedTypes == null || n.ImportNotificationType == null || Array.IndexOf(chedTypes!, n.ImportNotificationType) > -1 })
+            // .Where(n => (n.Notification.CreatedSource >= from && n.Notification.CreatedSource < to)
+            //             && (country == null || n.Notification.PartOne!.Route!.TransitingStates!.Contains(country))
+            //             && n.IsChedTypeMatch
+            // )
+            // .Select(n => n.Notification)
+
             .GroupBy(n => new { MaxVersion =
                 n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
             })

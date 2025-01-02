@@ -38,22 +38,29 @@ public static class BuilderExtensions
             .OrderBy(m => m.CreatedDate())
             .ToArray();
     }
+
+    /// <summary>
+    /// // Find all scenario generators
+    /// </summary>
+    /// <returns></returns>
+    public static IEnumerable<Type> GetAllScenarios()
+    {
+        Type scenarioService = typeof(ScenarioGenerator);
+
+        return AppDomain
+            .CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(
+                p => scenarioService.IsAssignableFrom(p)
+                     && !p.IsAbstract
+                     && p != scenarioService);
+    }
     
     public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
     {
         services.AddHttpClient();
         
-        Type scenarionService = typeof(ScenarioGenerator);
-
-        // Find scenario generators and add them to the DI container
-
-        foreach (var type in AppDomain
-                     .CurrentDomain.GetAssemblies()
-                     .SelectMany(s => s.GetTypes())
-                     .Where(
-                         p => scenarionService.IsAssignableFrom(p)
-                              && !p.IsAbstract
-                              && p != scenarionService))
+        foreach (var type in GetAllScenarios())
         {
             services.AddSingleton(type);
         }
