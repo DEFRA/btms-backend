@@ -5,6 +5,7 @@ using Btms.Business.Pipelines.Matching.Rules;
 using Btms.Backend.Data.Extensions;
 using Btms.BlobService;
 using Btms.BlobService.Extensions;
+using Btms.Business.Builders;
 using Btms.Common.Extensions;
 using Btms.Metrics.Extensions;
 using Btms.SensitiveData;

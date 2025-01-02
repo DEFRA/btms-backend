@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Btms.Backend.Data;
 using Btms.Backend.Data.Extensions;
+using Btms.Business.Extensions;
 using Btms.Metrics;
 using Btms.Model;
 using Btms.Model.ChangeLog;
@@ -106,6 +107,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                                     notification._MatchReference)
                             ]
                         });
+                        movement.AddLinkStatus();
 
                         await dbContext.Movements.Update(movement, movement._Etag, transaction, cancellationToken);
                         await dbContext.Notifications.Update(notification, notification._Etag, transaction,

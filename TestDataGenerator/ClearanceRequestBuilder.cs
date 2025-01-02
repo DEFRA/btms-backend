@@ -64,6 +64,11 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = x.ServiceHeader!.ServiceCallTimestamp!.Value.Add(t));
     }
+
+    public ClearanceRequestBuilder<T> WithDispatchCountryCode(string? countryCode)
+    {
+        return Do(x => x.Header!.DispatchCountryCode = countryCode);
+    }
     
     public ClearanceRequestBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {

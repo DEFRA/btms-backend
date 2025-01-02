@@ -47,56 +47,78 @@ public class DecisionImportNotifications
     public required DateTime UpdatedSource { get; set; }
 }
 
-public class StatusChecker {
+public class StatusChecker
+{
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AllMatch { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AnyMatch { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AllNoMatch { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AnyNoMatch { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AllHold { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AnyHold { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AllRefuse { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AnyRefuse { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AllRelease { get; set; } = default;
+        
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool AnyRelease { get; set; } = default;
+}
+
+public class MovementStatus
+{
+    public static MovementStatus Default()
+    {
+        return new MovementStatus() { ChedTypes = [] };
+    }
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AllMatch { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AnyMatch { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AllNoMatch { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AnyNoMatch { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AllHold { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AnyHold { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AllRefuse { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AnyRefuse { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AllRelease { get; set; }
-        
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool AnyRelease { get; set; }
-}
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public required ImportNotificationTypeEnum[]? ChedTypes { get; set; }
 
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public string LinkStatus { get; set; } = "Not Linked";
+
+}
 public partial class DecisionContext : IAuditContext //
 {
+    //TODO : Remove in favour of MovementStatus
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public ImportNotificationTypeEnum[]? ChedTypes { get; set; }
+    
     [Attr]
     [System.ComponentModel.Description("")]
     public List<DecisionImportNotifications>? ImportNotifications { get; set; }
-    
-    public ImportNotificationTypeEnum[]? ChedTypes { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -143,7 +165,7 @@ public partial class AlvsDecisionStatus  //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public DecisionContext? Context { get; set; } = default;
+    public DecisionContext Context { get; set; } = new DecisionContext();
     
     // TODO - should we put the checks into context, and so into audit log?
     [Attr]

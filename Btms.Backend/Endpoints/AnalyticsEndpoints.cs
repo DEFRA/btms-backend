@@ -4,6 +4,7 @@ using Btms.Backend.Config;
 using Btms.Common;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
+using Btms.Model.Ipaffs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Btms.Backend.Endpoints;
@@ -35,13 +36,13 @@ public static class AnalyticsEndpoints
     }
     private static async Task<IResult> Exceptions(
         [FromServices] IMovementsAggregationService movementsService,
-        [FromQuery(Name = "chedType")] string[] chedTypes,
+        [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "country")] string? country,
         [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
         [FromQuery(Name = "dateTo")] DateTime? dateTo)
     {
         var result
-            = await movementsService.GetExceptions(dateFrom ?? DateTime.MinValue, dateTo ?? DateTime.Today);
+            = await movementsService.GetExceptions(dateFrom ?? DateTime.MinValue, dateTo ?? DateTime.Today, chedTypes, country);
 
         if (result.HasValue())
         {
@@ -62,7 +63,7 @@ public static class AnalyticsEndpoints
         [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
         [FromQuery] string[] chartsToRender,
-        [FromQuery(Name = "chedType")] string[] chedTypes,
+        [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "coo")] string? countryOfOrigin,
         [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
         [FromQuery(Name = "dateTo")] DateTime? dateTo)

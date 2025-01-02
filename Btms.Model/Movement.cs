@@ -22,6 +22,10 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 {
     private List<string> matchReferences = [];
 
+    [ChangeSetIgnore] //TODO : should we ignore this or not?
+    [Attr] 
+    public required MovementStatus Status { get; set; }
+        
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
     [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
@@ -113,6 +117,10 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             .All(itemNumber =>
                 Relationships.Notifications.Data.Exists(x => x.Matched.GetValueOrDefault() && x.SourceItem == itemNumber));
 
+        //TODO : This would be the right time to call AddLinkStatus I think
+        // but relies on linking being moved into Business
+        // this.AddLinkStatus();
+        
         if (linked)
         {
             AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1));

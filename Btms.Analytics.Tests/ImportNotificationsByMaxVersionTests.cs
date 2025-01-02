@@ -4,11 +4,12 @@ using Xunit;
 using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
+using Btms.Model.Ipaffs;
 
 namespace Btms.Analytics.Tests;
 
 [Collection(nameof(BasicSampleDataTestCollection))]
-public class ImportNotificationsByVersionTests(
+public class ImportNotificationsByMaxVersionTests(
     BasicSampleDataTestFixture basicSampleDataTestFixture,
     ITestOutputHelper testOutputHelper)
 {
@@ -30,13 +31,11 @@ public class ImportNotificationsByVersionTests(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
-            .ByStatus(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(8);
-        result.Values.Keys.Order().Should().Equal(
-            "CHEDA Linked", "CHEDA Not Linked", "CHEDD Linked", "CHEDD Not Linked", "CHEDP Linked", "CHEDP Not Linked", "CHEDPP Linked", "CHEDPP Not Linked");
+        result.Values.Count.Should().Be(1);
 
     }
     
@@ -45,10 +44,34 @@ public class ImportNotificationsByVersionTests(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
-            .ByStatus(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
+            .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(8);
+        result.Values.Count.Should().Be(0);
+    }
+    
+    [Fact]
+    public async Task WhenCalledWithChedType_ReturnsResults()
+    {
+        testOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), chedTypes: [ImportNotificationTypeEnum.Cveda]));
+
+        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        
+        result.Values.Count.Should().Be(1);
+    }
+    
+    [Fact]
+    public async Task WhenCalledWithCountry_ReturnsResults()
+    {
+        testOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "AL"));
+
+        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        
+        result.Values.Count.Should().Be(1);
     }
 }

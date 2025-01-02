@@ -1,3 +1,5 @@
+using Btms.Business.Extensions;
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Ipaffs;
 using Btms.Types.Alvs;
@@ -99,15 +101,13 @@ public static class DecisionMessageBuilder
 
     private static string MapToChedType(string documentCode)
     {
-        return documentCode switch
+        var ct = documentCode.GetChedType();
+
+        if (!ct.HasValue())
         {
-            "N002" or "N851" or "9115" => ImportNotificationTypeEnum.Chedpp.ToString(),
-            "N852" or "C678" => ImportNotificationTypeEnum.Ced.ToString(),
-            "C640" => ImportNotificationTypeEnum.Cveda.ToString(),
-            "C641" or "C673" or "N853" => ImportNotificationTypeEnum.Cvedp.ToString(),
-            _ => throw new ArgumentOutOfRangeException(nameof(documentCode), documentCode, null)
-        };
+            throw new ArgumentOutOfRangeException(nameof(documentCode), documentCode, null);
+        }
 
-
+        return ct.ToString()!;
     }
 }
