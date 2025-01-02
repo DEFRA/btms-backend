@@ -1,32 +1,34 @@
-using Btms.Model;
-using FluentAssertions;
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Model;
 using Btms.Types.Alvs;
+using Btms.Types.Ipaffs;
+using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
+using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class ChedPDuplicateDecisionTests(InMemoryScenarioApplicationFactory<DuplicateDecisionScenarioGenerator> factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<DuplicateDecisionScenarioGenerator>>
-{
-    
-    [Fact(Skip = "We currently import the duplicate alvs decision & store it on the movement")]
-    // [Fact]
+public class ChedPDuplicateDecisionTests(ITestOutputHelper testOutputHelper, BackendFixture backendFixture, TestGeneratorFixture generatorFixture)
+    : BaseTest<SimpleMatchScenarioGenerator>(testOutputHelper, generatorFixture, backendFixture)
+{            
+    // [Fact(Skip = "We currently import the duplicate alvs decision & store it on the movement")]
+    [Fact]
     public void SimpleChedPScenario_ShouldBeLinkedAndMatchDecision()
     {
         // Arrange
-        var loadedData = factory.LoadedData;
+        var loadedData = LoadedData;
         
         var chedPMovement = (AlvsClearanceRequest)loadedData.Single(d =>
-                d is { message: AlvsClearanceRequest })
-            .message;
+                d is { Message: AlvsClearanceRequest })
+            .Message;
         
-        var chedPNotification = (Types.Ipaffs.ImportNotification)loadedData.Single(d =>
-                d is { message: Types.Ipaffs.ImportNotification })
-            .message;
+        var chedPNotification = (ImportNotification)loadedData.Single(d =>
+                d is { Message: ImportNotification })
+            .Message;
 
         // Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById(chedPMovement!.Header!.EntryReference!, "api/movements");

@@ -1,15 +1,10 @@
-using Btms.Analytics;
 using Btms.Backend.Data;
 using Btms.Backend.Data.Mongo;
 using Btms.BlobService;
-using Btms.Business.Commands;
 using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,16 +15,74 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using Serilog.Extensions.Logging;
 using TestDataGenerator;
-using TestDataGenerator.Config;
-using TestDataGenerator.Extensions;
-using TestDataGenerator.Scenarios;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit.Abstractions;
 
-namespace Btms.Backend.IntegrationTests.Helpers;
+namespace TestGenerator.IntegrationTesting.Backend.Fixtures;
+
+public class BackendFixture
+{
+    private IMongoDbContext _mongoDbContext;
+    public BtmsClient BtmsClient;
+    
+    // public List<GeneratedResult> LoadedData;
+    
+    // private IHost TestGeneratorApp { get; set; }
+    private BackendFactory WebApp { get; set; }
+    
+    public BackendFixture()
+    {   
+        // Generate test data
+        
+        // var generatorBuilder = new HostBuilder();
+        // generatorBuilder.ConfigureTestDataGenerator("Scenarios/Samples");
+        
+       // var dbName = typeof(T).Name;
+       
+    }
+
+    public void Init(string dbName)
+    {
+        WebApp = new BackendFactory(DatabaseName, TestOutputHelper);
+        (_mongoDbContext, BtmsClient) = WebApp.Start();
+    }
+
+    public ITestOutputHelper TestOutputHelper { get; set; } = null!;
+    public string DatabaseName { get; set; } = null!;
+
+    // public IMongoDbContext GetDbContext()
+    // {
+    //     return _mongoDbContext;
+    // }
+
+    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData)
+    {
+        await BtmsClient.ClearDb();
+        
+        // var data = new List<GeneratedResult>();
+        
+        // TODO: Need a logger
+        var logger = NullLogger.Instance;
+        
+        await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message));
+        
+        //
+        // foreach (var t in testData)
+        // {
+        //     
+        //     
+        //     // data.AddRange(t.GeneratorResult);
+        //     // var output = t.GeneratorResult
+        //     //     .Select(r => new  (generatorResult.Generator, 0, 1, 1, r))
+        //     //     .ToList();
+        //     
+        //     // LoadedData.AddRange(t.GeneratorResult);
+        // }
 
 
-public class InMemoryApplicationFactory(string databaseName, ITestOutputHelper testOutputHelper ) : WebApplicationFactory<Program> 
+        return testData;
+    }
+}
+public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper ) : WebApplicationFactory<Program> 
 {
     private IMongoDbContext? mongoDbContext;
     
@@ -70,8 +123,12 @@ public class InMemoryApplicationFactory(string databaseName, ITestOutputHelper t
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
-                    var dbName = string.IsNullOrEmpty(databaseName) ? Random.Shared.Next().ToString() : databaseName;
-                    var db = client.GetDatabase($"Btms_{dbName}");
+                    var dbName = string.IsNullOrEmpty(databaseName) ?
+                        Random.Shared.Next().ToString() :
+                        databaseName
+                            .Replace("ScenarioGenerator", "");
+                    
+                    var db = client.GetDatabase($"btms-{dbName}");
                    
                     // TODO : Use our ILoggerFactory
                     mongoDbContext = new MongoDbContext(db, new SerilogLoggerFactory());
@@ -101,86 +158,4 @@ public class InMemoryApplicationFactory(string databaseName, ITestOutputHelper t
         return (mongoDbContext!, btmsClient);
     }
 
-}
-
-public class InMemoryScenarioApplicationFactory<T>
-    : IIntegrationTestsApplicationFactory
-    where T : ScenarioGenerator
-{
-    private readonly IMongoDbContext _mongoDbContext;
-    private readonly BtmsClient _btmsClient;
-    
-    public List<(
-        ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-        )> LoadedData;
-    
-    private IHost TestGeneratorApp { get; set; }
-    private InMemoryApplicationFactory WebApp { get; set; }
-    
-    public InMemoryScenarioApplicationFactory()
-    {   
-        // Generate test data
-        
-        var generatorBuilder = new HostBuilder();
-        generatorBuilder.ConfigureTestDataGenerator("Scenarios/Samples");
-        
-        TestGeneratorApp = generatorBuilder.Build();
-
-        var dbName = string.IsNullOrEmpty(DatabaseName) ? typeof(T).Name : DatabaseName;
-        WebApp = new InMemoryApplicationFactory(dbName, TestOutputHelper);
-        (_mongoDbContext, _btmsClient) = WebApp.Start();
-
-        LoadedData = GenerateAndLoadTestData().GetAwaiter().GetResult();;
-    }
-
-    public ITestOutputHelper TestOutputHelper { get; set; } = null!;
-
-    public string DatabaseName { get; set; } = null!;
-
-    public IMongoDbContext GetDbContext()
-    {
-        return _mongoDbContext;
-    }
-    
-    public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
-    {
-        return _btmsClient;
-    }
-
-    private async Task<List<(
-        ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-        )>> GenerateAndLoadTestData()
-    {
-
-        // TODO : Naive caching implementation, improve
-        // if (LoadedData.HasValue())
-        // {
-        //     return LoadedData;
-        // }
-
-        await _btmsClient.ClearDb();
-        
-        LoadedData = new List<(ScenarioGenerator generator, int scenario, int dateOffset, int count, object message)>();
-        
-        // TODO: Need a logger
-        var logger = NullLogger.Instance;
-        
-        var scenarioConfig =
-            TestGeneratorApp.Services.CreateScenarioConfig<T>(1, 1, arrivalDateRange: 0);
-
-        var generatorResults = scenarioConfig.Generate(logger, 0);
-        foreach (var generatorResult in generatorResults)
-        {
-            await WebApp.Services.PushToConsumers(logger, generatorResult);
-            var output = generatorResult
-                // ScenarioGenerator generator, int scenario, int dateOffset, int count, object message
-                .Select(r => (scenarioConfig.Generator, 0, 1, 1, r))
-                .ToList();
-            
-            LoadedData.AddRange(output);
-        }
-
-
-        return LoadedData;
-    }
 }

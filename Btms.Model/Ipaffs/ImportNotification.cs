@@ -28,7 +28,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         get => ReferenceNumber!;
         set => ReferenceNumber = value;
     }
-
+    
     [ChangeSetIgnore]
     // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _Etag { get; set; } = default!;
