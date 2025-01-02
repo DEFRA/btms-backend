@@ -18,14 +18,11 @@ public interface IIntegrationTestsApplicationFactory
     string DatabaseName { get; set; }
 
     BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options);
-    // BtmsClient CreateClient();
     IMongoDbContext GetDbContext();
-    // Task ClearDb(BtmsClient client);
 }
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
-    // protected override Bef
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -85,14 +82,4 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
     {
         return Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
-
-    // public new BtmsClient CreateClient()
-    // {
-    //     return base.CreateClient()
-    // }
-
-    // public async Task ClearDb(BtmsClient client)
-    // {
-    //     await client.GetAsync("mgmt/collections/drop");
-    // }
 }

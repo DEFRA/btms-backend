@@ -12,7 +12,7 @@ public static class BuilderExtensions
 {
     public static object[] BuildAll(this IBaseBuilder[] builders)
     {
-        var m = builders
+        var messages = builders
             .Select<IBaseBuilder,object>(b =>
             {
                 switch (b)
@@ -34,7 +34,9 @@ public static class BuilderExtensions
                 
             });
         
-        return m.ToArray();
+        return messages
+            .OrderBy(m => m.CreatedDate())
+            .ToArray();
     }
     
     public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
@@ -68,7 +70,7 @@ public static class BuilderExtensions
         return services;
     }
 
-    private static (IConfigurationRoot, GeneratorConfig) GetConfig(string cachePath)
+    public static (IConfigurationRoot, GeneratorConfig) GetConfig(string cachePath = "../../../.test-data-generator")
     {   
         // Any defaults for the test generation can be added here
         var configurationValues = new Dictionary<string, string>
