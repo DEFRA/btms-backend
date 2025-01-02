@@ -171,7 +171,7 @@ public partial class PartTwo  //
         /// </summary>
     [Attr]
     [System.ComponentModel.Description("Inspection required")]
-    public string? InspectionRequired { get; set; }
+    public InspectionRequiredEnum? InspectionRequired { get; set; }
 
 	
         /// <summary>

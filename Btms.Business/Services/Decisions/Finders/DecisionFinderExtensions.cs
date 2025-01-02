@@ -9,13 +9,13 @@ internal static class DecisionFinderExtensions
         if (notification.Status == ImportNotificationStatusEnum.Submitted ||
             notification.Status == ImportNotificationStatusEnum.InProgress)
         {
-            if (notification.PartTwo?.InspectionRequired == "NOTREQUIRED" || notification.PartTwo?.InspectionRequired == "INCONCLUSIVE")
+            if (notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.NotRequired || notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.Inconclusive)
             {
                 decisionCode = DecisionCode.H01;
                 return true;
             }
             
-            if (notification.PartTwo?.InspectionRequired == "REQUIRED" || notification.RiskAssessment?.CommodityResults?.Any(x => x.HmiDecision == CommodityRiskResultHmiDecisionEnum.Required) is true
+            if (notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.Required || notification.RiskAssessment?.CommodityResults?.Any(x => x.HmiDecision == CommodityRiskResultHmiDecisionEnum.Required) is true
                                                                        || notification.RiskAssessment?.CommodityResults?.Any(x => x.PhsiDecision == CommodityRiskResultPhsiDecisionEnum.Required) is true)
             {
                 decisionCode = DecisionCode.H02;

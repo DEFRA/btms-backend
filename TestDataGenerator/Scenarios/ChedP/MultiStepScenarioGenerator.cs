@@ -12,8 +12,7 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithNoCommodities()
-            .WithInspectionStatus(
-                "NOTREQUIRED") //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
+            .WithInspectionStatus(InspectionRequiredEnum.NotRequired) //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
             .WithVersionNumber();
             
         var notification = notificationBuilder

@@ -175,7 +175,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         });
     }
     
-    public ImportNotificationBuilder<T> WithInspectionStatus(string inspectionRequired = "Required")
+    public ImportNotificationBuilder<T> WithInspectionStatus(InspectionRequiredEnum inspectionRequired = InspectionRequiredEnum.Required)
     {
         return Do(x =>
         {
