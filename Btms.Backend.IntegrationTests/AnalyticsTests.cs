@@ -23,12 +23,6 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
     
-    // private static void ShouldNotBeNull<T>([DoesNotReturnIf(true), NotNull] T? value)
-    // {
-    //     // throw if null
-    //     value.Should().NotBeNull();
-    // }
-    
     [Fact]
     public async Task GetIndividualMultiSeriesDatetimeChart()
     {

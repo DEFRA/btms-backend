@@ -81,8 +81,6 @@ public class InMemoryApplicationFactory(string databaseName, ITestOutputHelper t
                 {
                     services.AddLogging(lb => lb.AddXUnit(testOutputHelper));    
                 }
-                
-                // services.ConfigureTestGenerationServices();
             });
 
         builder.UseEnvironment("Development");

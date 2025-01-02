@@ -82,5 +82,17 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Scenarios\Samples\DuplicateMovementItems-CDMS-211\IPAFFS\CHEDD\2024\11\01\CHEDD_GB_2024_5071194-188263a6-7f21-47aa-a6c0-686106f06777.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\DuplicateMovementItems-CDMS-211\DECISIONS\2024\11\01\24GBC4EB0D97OK4AR4-7bd73e1e-b810-42d0-b54b-0065c4a87aaf.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\DuplicateMovementItems-CDMS-211\DECISIONS\2024\11\08\24GBC4EB0D97OK4AR4-188e9eb5-bb13-44e1-877c-464e132619bd.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>
