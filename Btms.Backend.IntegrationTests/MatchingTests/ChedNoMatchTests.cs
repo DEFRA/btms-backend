@@ -30,15 +30,17 @@ public class UnmatchedChedTests(
         
 
         // // Act
-        var chedAImportNotification = Client.AsJsonApiClient().GetById(chedA.ReferenceNumber!, "api/import-notifications");
-        var chedDImportNotification = Client.AsJsonApiClient().GetById(chedD.ReferenceNumber!, "api/import-notifications");
-        var chedPImportNotification = Client.AsJsonApiClient().GetById(chedP.ReferenceNumber!, "api/import-notifications");
-        var chedPPImportNotification = Client.AsJsonApiClient().GetById(chedPP.ReferenceNumber!, "api/import-notifications");
+        var chedAImportNotification = Client.AsJsonApiClient().GetById(chedA.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedDImportNotification = Client.AsJsonApiClient().GetById(chedD.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedPImportNotification = Client.AsJsonApiClient().GetById(chedP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedPPImportNotification = Client.AsJsonApiClient().GetById(chedPP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
 
+        
+            
         // Assert
-        (chedAImportNotification.Data.Relationships!["movements"]!.Meta?["matched"]!).ToString()!.Should().Be("False");
-        (chedDImportNotification.Data.Relationships!["movements"]!.Meta?["matched"]!).ToString()!.Should().Be("False");
-        (chedPImportNotification.Data.Relationships!["movements"]!.Meta?["matched"]!).ToString()!.Should().Be("False");
-        (chedPPImportNotification.Data.Relationships!["movements"]!.Meta?["matched"]!).ToString()!.Should().Be("False");
+        chedAImportNotification.Relationships.Movements.Links.Should().BeNull();
+        chedDImportNotification.Relationships.Movements.Links.Should().BeNull();
+        chedPImportNotification.Relationships.Movements.Links.Should().BeNull();
+        chedPPImportNotification.Relationships.Movements.Links.Should().BeNull();
     }
 }
