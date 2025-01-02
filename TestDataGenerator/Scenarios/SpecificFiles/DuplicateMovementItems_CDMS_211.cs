@@ -15,7 +15,8 @@ public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<Duplic
         var messages = builders
             .Select(b => b.builder)
             .ToArray()
-            .BuildAll();
+            .BuildAll()
+            .ToArray();
         
         return new GeneratorResult(messages);
     }

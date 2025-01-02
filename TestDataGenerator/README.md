@@ -19,7 +19,7 @@ find .test-data-generator/PRODREDACTED-202411/ALVS .test-data-generator/PRODREDA
 
 Copy all Movement files matching the ID into
 
-find .test-data-generator/PRODREDACTED-202411/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 5071194 | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/DuplicateMovementItems-CDMS-211/
+find .test-data-generator/PRODREDACTED-202411/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5071194\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/DuplicateMovementItems-CDMS-211/
 
 ## Interacting with blob storage to push generated datasets
 

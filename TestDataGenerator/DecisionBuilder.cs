@@ -10,11 +10,11 @@ public class DecisionBuilder(string file) : DecisionBuilder<Btms.Types.Alvs.Deci
 public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     where T : Decision, new()
 {
-    private DecisionBuilder(): base(GetInitialValues)
+    private DecisionBuilder(): base()
     {
     }
 
-    protected DecisionBuilder(string file) : base(GetInitialValues, file)
+    protected DecisionBuilder(string file) : base(file)
     {
     }
 
@@ -31,8 +31,8 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     public DecisionBuilder<T> WithReferenceNumber(string chedReference)
     {
         var id = MatchIdentifier.FromNotification(chedReference);
-        
-        base.Id = id.AsCdsEntryReference();
+        //
+        // base.Id = id.AsCdsEntryReference();
         return Do(x =>
         {
             x.Header!.EntryReference = id.AsCdsEntryReference();
@@ -89,10 +89,5 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
                     c.DecisionCode.AssertHasValue();
                 }));
         });
-    }
-    
-    private static (DateTime? created, string? id) GetInitialValues(T message)
-    {
-       return (message.ServiceHeader?.ServiceCallTimestamp, message.Header?.EntryReference);
     }
 }

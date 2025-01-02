@@ -31,11 +31,11 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>
     where T : ImportNotification, new()
 {
-    protected ImportNotificationBuilder(): base(GetInitialValues)
+    protected ImportNotificationBuilder(): base()
     {
     }
 
-    protected ImportNotificationBuilder(string? file = null, string? itemJson = null) : base(GetInitialValues, file, itemJson)
+    protected ImportNotificationBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
     {
     }
     
@@ -107,8 +107,6 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         });
     }
     
-    
-
     public ImportNotificationBuilder<T> WithSimpleCommodity(string commodityCode, string description, int netWeight, Guid? uniqueComplementId = null)
     {
         return Do(n =>
@@ -190,6 +188,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.Version = version;
         });
     }
+    
     protected override ImportNotificationBuilder<T> Validate()
     {
         return Do(n =>
@@ -206,12 +205,5 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             }
             
         });
-    }
-    
-    private static (DateTime? created, string? id) GetInitialValues(T message)
-    {
-        // var cr = (AlvsClearanceRequest)message;
-        return (message.LastUpdated, message.ReferenceNumber);
-        // throw new NotImplementedException();
     }
 }
