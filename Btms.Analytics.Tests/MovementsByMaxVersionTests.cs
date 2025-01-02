@@ -61,7 +61,7 @@ public class MovementsByMaxVersionTests(
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(1);
+        result.Values.Count.Should().Be(2);
     }
     
     [Fact]

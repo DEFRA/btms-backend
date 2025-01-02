@@ -22,13 +22,13 @@ public class MovementsByCreatedDateTests(
 
         testOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(2);
+        result.Count.Should().Be(3);
 
-        result[0].Name.Should().Be("Linked");
-        result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
-        result[0].Periods.Count.Should().Be(48);
+        result[1].Name.Should().Be("Linked");
+        result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
+        result[1].Periods.Count.Should().Be(48);
         
-        result[1].Name.Should().Be("Not Linked");
+        result[2].Name.Should().Be("Not Linked");
     }
     
     [Fact]
@@ -44,9 +44,9 @@ public class MovementsByCreatedDateTests(
 
         testOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(2);
+        result.Count.Should().Be(3);
         
-        result.Select(r => r.Name).Should().Equal("Linked", "Not Linked");
+        result.Select(r => r.Name).Should().Equal("Investigate", "Linked", "Not Linked");
 
         result.Should().AllSatisfy(r =>
         {
@@ -69,12 +69,12 @@ public class MovementsByCreatedDateTests(
 
         testOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(2);
+        result.Count.Should().Be(3);
 
-        result[0].Name.Should().Be("Linked");
-        result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
-        result[0].Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
+        result[1].Name.Should().Be("Linked");
+        result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
+        result[1].Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
         
-        result[1].Name.Should().Be("Not Linked");
+        result[2].Name.Should().Be("Not Linked");
     }
 }

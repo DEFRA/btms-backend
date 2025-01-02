@@ -28,7 +28,7 @@ public class BasicSampleDataTestFixture : IDisposable
         _mongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
         
         // Would like to pick this up from env/config/DB state
-        var insertToMongo = true;
+        var insertToMongo = false;
 
         if (insertToMongo)
         {

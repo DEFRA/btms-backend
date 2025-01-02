@@ -21,7 +21,7 @@ public class MovementsByStatusTests(
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
-        result.Values.Count.Should().Be(2);
+        result.Values.Count.Should().Be(3);
         result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
     }
     
@@ -34,8 +34,8 @@ public class MovementsByStatusTests(
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(2);
-        result.Values.Keys.Order().Should().Equal("Linked", "Not Linked");
+        result.Values.Count.Should().Be(3);
+        result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
     }
     
     [Fact]
@@ -47,7 +47,7 @@ public class MovementsByStatusTests(
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(2);
-        result.Values.Keys.Order().Should().Equal("Linked", "Not Linked");
+        result.Values.Count.Should().Be(3);
+        result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
     }
 }
