@@ -296,7 +296,8 @@ public class LinkingServiceTests
             {
                 Documents = [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
             }).ToList(),
-            ClearanceRequests = new()
+            ClearanceRequests = new(),
+            Status = MovementStatus.Default()
         };
 
         var existingMovement = createExistingMovement ? 
@@ -310,7 +311,8 @@ public class LinkingServiceTests
                         ? []
                         : [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
                 }).ToList(),
-                ClearanceRequests = new()
+                ClearanceRequests = new(),
+                Status = MovementStatus.Default()
             } : null;
 
 
@@ -398,7 +400,8 @@ public class LinkingServiceTests
                         Header = new() { EntryReference = entryRef, EntryVersionNumber = 3, DeclarationType = "F" }
                     }
                 ],
-                Items = new ()
+                Items = new (),
+                Status = MovementStatus.Default()
             };
             
             movements.Add(mov);

@@ -1,6 +1,7 @@
 using Btms.Analytics;
 using Btms.Analytics.Extensions;
 using Btms.Common.Extensions;
+using Btms.Model.Ipaffs;
 using FluentAssertions;
 using MongoDB.Driver.Linq;
 
@@ -13,7 +14,7 @@ public static class AnalyticsDashboards
         IImportNotificationsAggregationService importService,
         IMovementsAggregationService movementsService,
         string[] chartsToRender,
-        string[] chedTypes,
+        ImportNotificationTypeEnum[] chedTypes,
         string? country,
         DateTime? dateFrom,
         DateTime? dateTo

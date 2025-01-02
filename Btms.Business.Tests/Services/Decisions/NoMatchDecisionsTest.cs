@@ -1,3 +1,4 @@
+using Btms.Business.Builders;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Matching;
@@ -77,13 +78,17 @@ public class NoMatchDecisionsTest
             : new CrNoMatchNoChecksScenarioGenerator(NullLogger<CrNoMatchNoChecksScenarioGenerator>.Instance);
             
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
-
-        var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
+        
         var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
-        return generatorResult.Select(x =>
-        {
-            var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
-            return movementBuilder.From(internalClearanceRequest).Build();
-        }).ToList();
+        var generatorResult = generator
+            .Generate(1, 1, DateTime.UtcNow, config)
+            .First(x => x is AlvsClearanceRequest);
+
+        var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)generatorResult);
+        var movement = movementBuilder
+            .From(internalClearanceRequest)
+            .Build();
+
+        return [movement];
     }
 }

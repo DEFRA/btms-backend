@@ -21,6 +21,11 @@ public static class AnalyticsHelpers
 {
     internal static DateTime AggregateDateCreator(this BsonValue b) => b["dateToUse"].BsonType != BsonType.Null ? b["dateToUse"].ToUniversalTime() : DateTime.MinValue;
 
+    internal static string GetLinkedName(string linked, string type)
+    {
+        return $"{type} {linked}";
+    }
+    
     internal static string GetLinkedName(bool linked, string type)
     {
         return $"{type} {GetLinkedName(linked)}";
@@ -46,8 +51,8 @@ public static class AnalyticsHelpers
             .ToArray();
     }
 
-    public static string[] GetMovementSegments()
+    public static string[] GetMovementStatusSegments()
     {
-        return ["Linked", "Not Linked"];
+        return ["Linked", "Not Linked", "Investigate"];
     }
 }

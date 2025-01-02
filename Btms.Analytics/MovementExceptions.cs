@@ -1,5 +1,6 @@
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
+using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Analytics;
@@ -9,15 +10,14 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
     //Returns a summary of the exceptions or a list
     // Means we can share the same anonymous / query code without needing to create loads
     // of classes
-    public (SingleSeriesDataset summary, List<ExceptionResult>) GetAllExceptions(DateTime from, DateTime to, bool summary, string[]? chedTypes = null, string? country = null)
+    public (SingleSeriesDataset summary, List<ExceptionResult>) GetAllExceptions(DateTime from, DateTime to, bool summary, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var exceptionsSummary = new SingleSeriesDataset();
         var exceptionsResult = new List<ExceptionResult>();
         
         var simplifiedMovementView = context
             .Movements
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .Where(m => country == null || m.DispatchCountryCode == country )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .Select(m => new
             {
                 // TODO - we should think about pre-calculating this stuff and storing it on the movement...
@@ -29,7 +29,9 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
-                HasMatchDecisions = m.AlvsDecisionStatus.Context != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus.AnyMatch,
+                ChedTypes = m.AlvsDecisionStatus.Context.ChedTypes,
+                // HasMatchDecisions = m.AlvsDecisionStatus.Context.AlvsCheckStatus != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus.AnyMatch,
+                Status = m.Status,
                 DecisionMatched = !m.AlvsDecisionStatus.Decisions
                     .OrderBy(d => d.Context.AlvsDecisionNumber)
                     .Reverse()
@@ -48,7 +50,9 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 MaxEntryVersion = m.MaxEntryVersion,
                 LinkedCheds = m.LinkedCheds,
                 ItemCount = m.ItemCount,
-                HasMatchDecisions = m.HasMatchDecisions,
+                ChedTypes = m.ChedTypes,
+                // HasMatchDecisions = m.HasMatchDecisions,
+                Status = m.Status,
                 HasNotificationRelationships = m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
                 // TODO - can we include CHED versions here too?
@@ -78,6 +82,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                         UpdatedSource = r.UpdatedSource!.Value,
                         Updated = r.Updated,
                         ItemCount = r.ItemCount,
+                        ChedTypes = r.ChedTypes!,
                         MaxEntryVersion = r.MaxEntryVersion,
                         MaxDecisionNumber = r.MaxDecisionNumber,
                         LinkedCheds = r.LinkedCheds,
@@ -87,7 +92,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         }
         
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
-            .Where(r => r.HasMatchDecisions && !r.HasNotificationRelationships);
+            .Where(r => r.Status.LinkStatus == "Investigate");
         
         if (summary)
         {
@@ -107,6 +112,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                         UpdatedSource = r.UpdatedSource!.Value,
                         Updated = r.Updated,
                         ItemCount = r.ItemCount,
+                        ChedTypes = r.ChedTypes!,
                         MaxEntryVersion = r.MaxEntryVersion,
                         MaxDecisionNumber = r.MaxDecisionNumber,
                         LinkedCheds = r.LinkedCheds,
@@ -138,6 +144,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                         UpdatedSource = r.UpdatedSource!.Value,
                         Updated = r.Updated,
                         ItemCount = r.ItemCount,
+                        ChedTypes = r.ChedTypes!,
                         MaxEntryVersion = r.MaxEntryVersion,
                         MaxDecisionNumber = r.MaxDecisionNumber,
                         LinkedCheds = r.LinkedCheds,

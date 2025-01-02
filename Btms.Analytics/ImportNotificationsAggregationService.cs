@@ -115,12 +115,23 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         });
     }
 
-    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Notifications
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .Where(m => country == null || m.PartOne!.Route!.TransitingStates!.Contains(country))
+            .Where(n => (n.CreatedSource >= from && n.CreatedSource < to)
+                        && (country == null || n.PartOne!.Route!.TransitingStates!.Contains(country))
+             
+                        && (chedTypes == null || chedTypes!.Length == 0 || n.ImportNotificationType == null || chedTypes!.Contains(n.ImportNotificationType!.Value))
+            )
+            
+            // .Select(n => new { Notification = n, IsChedTypeMatch = chedTypes == null || n.ImportNotificationType == null || Array.IndexOf(chedTypes!, n.ImportNotificationType) > -1 })
+            // .Where(n => (n.Notification.CreatedSource >= from && n.Notification.CreatedSource < to)
+            //             && (country == null || n.Notification.PartOne!.Route!.TransitingStates!.Contains(country))
+            //             && n.IsChedTypeMatch
+            // )
+            // .Select(n => n.Notification)
+
             .GroupBy(n => new { MaxVersion =
                 n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
             })

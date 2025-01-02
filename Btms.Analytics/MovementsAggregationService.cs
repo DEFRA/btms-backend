@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
@@ -16,6 +17,7 @@ namespace Btms.Analytics;
 
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
+        
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>
@@ -39,15 +41,15 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var data = context
             .Movements
-            .Select(m => new { m.CreatedSource, IsLinked = m.Relationships.Notifications.Data.Count > 0 ? "Linked" : "Not Linked" })
+            .SelectLinkStatus()
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .GroupBy(m => m.IsLinked)
+            .GroupBy(m => m.Description)
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => g.Key, g => g.Count);
             
         return Task.FromResult(new SingleSeriesDataset
         {
-            Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
+            Values = AnalyticsHelpers.GetMovementStatusSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
 
@@ -56,7 +58,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .GroupBy(m => new { Linked = m.Relationships.Notifications.Data.Count > 0, ItemCount = m.Items.Count })
+            .SelectLinkStatus()
+            .GroupBy(m => new { Linked = m.Description, ItemCount = m.Movement.Items.Count })
             .Select(g => new { g.Key.Linked, g.Key.ItemCount, Count = g.Count() });
             
         var mongoResult = mongoQuery
@@ -64,14 +67,14 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .ToList();
             
         var dictionary = mongoResult
-            .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.ItemCount }, g => g.Count);
+            .ToDictionary(g => new { Title = g.Linked, g.ItemCount }, g => g.Count);
             
         var maxCount = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.Count) : 0;
 
         return Task.FromResult(new MultiSeriesDataset()
         {
-            Series = AnalyticsHelpers.GetMovementSegments()
+            Series = AnalyticsHelpers.GetMovementStatusSegments()
                 .Select(title => new Series()
                     {
                         Name = title,
@@ -93,10 +96,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .SelectLinkStatus()
             .GroupBy(m => new
             {
-                Linked = m.Relationships.Notifications.Data.Count > 0,
-                DocumentReferenceCount = m.Items
+                Linked = m.Description,
+                DocumentReferenceCount = m.Movement.Items
                     .SelectMany(i => i.Documents == null ? new string[] {} : i.Documents.Select(d => d.DocumentReference))
                     .Distinct()
                     .Count()
@@ -107,7 +111,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         
         var dictionary = mongoResult
             .ToDictionary(
-                g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.DocumentReferenceCount },
+                g => new { Title = g.Linked, g.DocumentReferenceCount },
                 g => g.MovementCount);
 
         var maxReferences = mongoResult.Count > 0 ?
@@ -115,7 +119,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         return Task.FromResult(new MultiSeriesDataset()
         {
-            Series = AnalyticsHelpers.GetMovementSegments()
+            Series = AnalyticsHelpers.GetMovementStatusSegments()
                 .Select(title => new Series()
                 {
                     Name = title,
@@ -187,12 +191,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return new EntityDataset<AuditHistory>(entries);
     }
 
-    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .Where(m => country == null || m.DispatchCountryCode == country )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .GroupBy(n => new { MaxVersion =
                 n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber )
             })
@@ -205,12 +208,15 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
     
-    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .Where(m => country == null || m.DispatchCountryCode == country )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            // .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+            //             && (country == null || m.DispatchCountryCode == country)
+            //             && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
+            // )
             .GroupBy(n => new { MaxVersion =
                 n.Decisions.Max(a => a.Header!.DecisionNumber )
             })
@@ -223,27 +229,23 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
 
-    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
-        var (_, result) = movementExceptions.GetAllExceptions(from, to, false, chedTypes, country);
+        var (_, result) = movementExceptions
+            .GetAllExceptions(from, to, false, chedTypes, country);
             
         return Task.FromResult(result);
     }
     
-    public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
-        var (summary, _) = movementExceptions.GetAllExceptions(from, to, true, chedTypes, country);
+        var (summary, _) = movementExceptions
+            .GetAllExceptions(from, to, true, chedTypes, country);
             
         return Task.FromResult(summary);
     }
-
-    // TODO : remove
-    // public Task<MultiSeriesDataset> ByCheck(DateTime from, DateTime to, string[]? chedTypes = null, string? country = null)
-    // {
-    //     return Task.FromResult(new MultiSeriesDataset() );
-    // }
 
     private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
@@ -261,7 +263,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Movements
             .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
 
-        var output = AnalyticsHelpers.GetMovementSegments()
+        var output = AnalyticsHelpers.GetMovementStatusSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))
             .AsOrderedArray(m => m.Name);
         
@@ -277,11 +279,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// <param name="to"></param>
     /// <returns></returns>
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
-        DateTime to, string[]? chedTypes = null, string? country = null)
+        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var mongoQuery = context
             .Movements
-            .Where(m => m.CreatedSource >= from && m.CreatedSource < to)
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
             .SelectMany(d => d.Decision.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))

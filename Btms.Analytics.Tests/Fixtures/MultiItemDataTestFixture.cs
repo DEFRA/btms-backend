@@ -39,6 +39,9 @@ public class MultiItemDataTestFixture : IDisposable
             app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
             
+            app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<CrNoMatchNoDecisionScenarioGenerator>(10, 3, arrivalDateRange: 0))
+                .GetAwaiter().GetResult();
+            
             app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
             

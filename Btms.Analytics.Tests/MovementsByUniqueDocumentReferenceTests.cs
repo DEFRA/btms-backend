@@ -25,8 +25,8 @@ public class MovementsByUniqueDocumentReferenceTests(
 
         testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
-        result.Count().Should().Be(2);
-        result.Select(r => r.Name).Order().Should().Equal("Linked", "Not Linked");
+        result.Count().Should().Be(3);
+        result.Select(r => r.Name).Order().Should().Equal("Investigate", "Linked", "Not Linked");
         
         result.Should().AllSatisfy(d =>
         {
