@@ -10,7 +10,7 @@ namespace TestDataGenerator.Tests;
 
 public class ScenarioTests
 {
-    ServiceProvider _serviceProvider = BuilderExtensions.GetDefaultServiceProvider();
+    readonly ServiceProvider _serviceProvider = BuilderExtensions.GetDefaultServiceProvider();
     
     public static IEnumerable<object[]> GetAllScenarios()
     {

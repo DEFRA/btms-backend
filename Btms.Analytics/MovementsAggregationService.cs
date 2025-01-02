@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
@@ -16,6 +17,7 @@ namespace Btms.Analytics;
 
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
+        
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>
@@ -191,10 +193,12 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var data = context
             .Movements
-            .Where(m => m.CreatedSource >= from && m.CreatedSource < to
-                    && (country == null || m.DispatchCountryCode == country)
-                    && (chedTypes == null || !chedTypes!.Any() || !m.AlvsDecisionStatus!.Context!.ChedTypes!.Any() ||
-                        m.AlvsDecisionStatus!.Context!.ChedTypes!.Any(c => chedTypes!.Contains(c))))
+            // .Where(FilterByDateAndParams)
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            // .Where(m => m.CreatedSource >= from && m.CreatedSource < to
+            //         && (country == null || m.DispatchCountryCode == country)
+            //         && (chedTypes == null || !chedTypes!.Any() || !m.AlvsDecisionStatus!.Context!.ChedTypes!.Any() ||
+            //             m.AlvsDecisionStatus!.Context!.ChedTypes!.Any(c => chedTypes!.Contains(c))))
             .GroupBy(n => new { MaxVersion =
                 n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber )
             })
@@ -211,10 +215,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var data = context
             .Movements
-            .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
-                        && (country == null || m.DispatchCountryCode == country)
-                        && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
-            )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            // .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+            //             && (country == null || m.DispatchCountryCode == country)
+            //             && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
+            // )
             .GroupBy(n => new { MaxVersion =
                 n.Decisions.Max(a => a.Header!.DecisionNumber )
             })
@@ -281,10 +286,13 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var mongoQuery = context
             .Movements
-            .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
-                        && (country == null || m.DispatchCountryCode == country)
-                        && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
-            )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+
+            // .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+            //             && (country == null || m.DispatchCountryCode == country)
+            //             && (chedTypes == null || !chedTypes!.Any() || !m.AlvsDecisionStatus!.Context!.ChedTypes!.Any() ||
+            //                 m.AlvsDecisionStatus!.Context!.ChedTypes!.Any(c => chedTypes!.Contains(c)))
+            // )
             .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
             .SelectMany(d => d.Decision.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))

@@ -17,10 +17,13 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         
         var simplifiedMovementView = context
             .Movements
-            .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
-                        && (country == null || m.DispatchCountryCode == country)
-                        && (chedTypes == null || m.AlvsDecisionStatus.Context.ChedTypes!.Intersect(chedTypes).Count() != 0) 
-            )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+
+            // .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+            //             && (country == null || m.DispatchCountryCode == country)
+            //             && (chedTypes == null || !chedTypes!.Any() || !m.AlvsDecisionStatus!.Context!.ChedTypes!.Any() ||
+            //                 m.AlvsDecisionStatus!.Context!.ChedTypes!.Any(c => chedTypes!.Contains(c)))
+            // )
             .Select(m => new
             {
                 // TODO - we should think about pre-calculating this stuff and storing it on the movement...
