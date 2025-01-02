@@ -35,7 +35,11 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             DispatchCountryCode = request.Header.DispatchCountryCode!,
             GoodsLocationCode = request.Header.GoodsLocationCode!,
             ClearanceRequests = [request],
-            Items = request.Items?.Select(x => x).ToList()!,
+            Items = request.Items?.ToList()!,
+            Status = new MovementStatus()
+            {
+                ChedTypes = GetChedTypes(request.Items!.ToList())
+            }
         };
         
         _movement
@@ -52,9 +56,9 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
         return this;
     }
 
-    private ImportNotificationTypeEnum[] GetChedTypes()
+    private ImportNotificationTypeEnum[] GetChedTypes(List<Items>? items = null)
     {
-        return _movement!.Items?
+        return items?
             .SelectMany(i => i.Documents!)
             .Select(d =>
                 d.DocumentCode!.GetChedType()
@@ -161,7 +165,8 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             }
 
             _movement.AlvsDecisionStatus.Decisions.Add(alvsDecision);
-           
+
+            _movement.AddLinkStatus();
         }
         else
         {

@@ -30,7 +30,11 @@ public static class MovementExtensions
             .Select(m => new MovementWithLinkStatus() {
                 Movement = m,
                 CreatedSource = m.CreatedSource!.Value,
-                Description = m.Relationships.Notifications.Data.Count > 0 ? "Linked" : "Not Linked"
+                Description =
+                    m.Status.LinkStatus
+                    // m.Relationships.Notifications.Data.Count > 0 ? "Linked" :
+                    // m.AlvsDecisionStatus!.Context!.AlvsCheckStatus!.AnyMatch ? "Investigate" :
+                    // "Not Linked"
             });
 
         return m;

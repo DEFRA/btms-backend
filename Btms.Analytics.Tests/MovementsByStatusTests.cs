@@ -22,7 +22,7 @@ public class MovementsByStatusTests(
         testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
         result.Values.Count.Should().Be(2);
-        result.Values.Keys.Order().Should().Equal("Linked", "Not Linked");
+        result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
     }
     
     [Fact]

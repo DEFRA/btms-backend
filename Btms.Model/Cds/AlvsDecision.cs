@@ -47,59 +47,78 @@ public class DecisionImportNotifications
     public required DateTime UpdatedSource { get; set; }
 }
 
-public class StatusChecker {
-    
+public class StatusChecker
+{
+
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AllMatch { get; set; }
+    public bool AllMatch { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AnyMatch { get; set; }
+    public bool AnyMatch { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AllNoMatch { get; set; }
+    public bool AllNoMatch { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AnyNoMatch { get; set; }
+    public bool AnyNoMatch { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AllHold { get; set; }
+    public bool AllHold { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AnyHold { get; set; }
+    public bool AnyHold { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AllRefuse { get; set; }
+    public bool AllRefuse { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AnyRefuse { get; set; }
+    public bool AnyRefuse { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AllRelease { get; set; }
+    public bool AllRelease { get; set; } = default;
         
     [Attr]
     [System.ComponentModel.Description("")]
-    public required bool AnyRelease { get; set; }
+    public bool AnyRelease { get; set; } = default;
 }
 
-public partial class DecisionContext : IAuditContext //
+public class MovementStatus
 {
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public List<DecisionImportNotifications>? ImportNotifications { get; set; }
+    public static MovementStatus Default()
+    {
+        return new MovementStatus() { ChedTypes = [] };
+    }
     
     [Attr]
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public required ImportNotificationTypeEnum[]? ChedTypes { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public string LinkStatus { get; set; } = "Not Linked";
+
+}
+public partial class DecisionContext : IAuditContext //
+{
+    //TODO : Remove in favour of MovementStatus
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ImportNotificationTypeEnum[]? ChedTypes { get; set; }
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<DecisionImportNotifications>? ImportNotifications { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]

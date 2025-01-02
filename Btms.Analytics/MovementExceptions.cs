@@ -30,7 +30,8 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
                 ChedTypes = m.AlvsDecisionStatus.Context.ChedTypes,
-                HasMatchDecisions = m.AlvsDecisionStatus.Context.AlvsCheckStatus != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus.AnyMatch,
+                // HasMatchDecisions = m.AlvsDecisionStatus.Context.AlvsCheckStatus != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus.AnyMatch,
+                Status = m.Status,
                 DecisionMatched = !m.AlvsDecisionStatus.Decisions
                     .OrderBy(d => d.Context.AlvsDecisionNumber)
                     .Reverse()
@@ -50,7 +51,8 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 LinkedCheds = m.LinkedCheds,
                 ItemCount = m.ItemCount,
                 ChedTypes = m.ChedTypes,
-                HasMatchDecisions = m.HasMatchDecisions,
+                // HasMatchDecisions = m.HasMatchDecisions,
+                Status = m.Status,
                 HasNotificationRelationships = m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
                 // TODO - can we include CHED versions here too?
@@ -90,7 +92,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         }
         
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
-            .Where(r => r.HasMatchDecisions && !r.HasNotificationRelationships);
+            .Where(r => r.Status.LinkStatus == "Investigate");
         
         if (summary)
         {

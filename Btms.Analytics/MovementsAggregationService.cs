@@ -49,7 +49,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             
         return Task.FromResult(new SingleSeriesDataset
         {
-            Values = AnalyticsHelpers.GetMovementSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
+            Values = AnalyticsHelpers.GetMovementStatusSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
 
@@ -74,7 +74,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         return Task.FromResult(new MultiSeriesDataset()
         {
-            Series = AnalyticsHelpers.GetMovementSegments()
+            Series = AnalyticsHelpers.GetMovementStatusSegments()
                 .Select(title => new Series()
                     {
                         Name = title,
@@ -119,7 +119,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         return Task.FromResult(new MultiSeriesDataset()
         {
-            Series = AnalyticsHelpers.GetMovementSegments()
+            Series = AnalyticsHelpers.GetMovementStatusSegments()
                 .Select(title => new Series()
                 {
                     Name = title,
@@ -263,7 +263,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Movements
             .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
 
-        var output = AnalyticsHelpers.GetMovementSegments()
+        var output = AnalyticsHelpers.GetMovementStatusSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))
             .AsOrderedArray(m => m.Name);
         

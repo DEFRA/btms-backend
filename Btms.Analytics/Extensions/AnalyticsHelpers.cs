@@ -51,8 +51,8 @@ public static class AnalyticsHelpers
             .ToArray();
     }
 
-    public static string[] GetMovementSegments()
+    public static string[] GetMovementStatusSegments()
     {
-        return ["Linked", "Not Linked"];
+        return ["Linked", "Not Linked", "Investigate"];
     }
 }
