@@ -42,9 +42,10 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             }
         };
         
-        _movement
-            .AlvsDecisionStatus.Context
-            .ChedTypes = GetChedTypes();
+        //TODO : Remove
+        // _movement
+        //     .AlvsDecisionStatus.Context
+        //     .ChedTypes = GetChedTypes();
         
         return this;
     }
@@ -63,6 +64,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             .Select(d =>
                 d.DocumentCode!.GetChedType()
             )
+            .Distinct()
             .Where(ct => ct.HasValue())
             .Select(ct => ct!.Value)
             .ToArray()!;

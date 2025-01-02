@@ -53,15 +53,16 @@ public class MatchingServiceTests
         var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
-        var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
+        var generatorResult = generator
+            .Generate(1, 1, DateTime.UtcNow, config)
+            .First(x => x is AlvsClearanceRequest);
 
-        return generatorResult
-            .Select(x =>
-            {
-                var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)x);
-                return movementBuilder.From(internalClearanceRequest).Build();
-            })
-            .ToList();
+        var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)generatorResult);
+        var movement = movementBuilder
+            .From(internalClearanceRequest)
+            .Build();
+
+        return [movement];
     }
 
     private static (List<ImportNotification> Notifications, List<Movement> Movements) GenerateSimpleMatch()

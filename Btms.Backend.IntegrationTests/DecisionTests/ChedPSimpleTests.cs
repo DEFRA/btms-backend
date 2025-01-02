@@ -131,12 +131,21 @@ public class ChedPSimpleTests(InMemoryScenarioApplicationFactory<SimpleMatchScen
             .GetResourceObjects<Movement>()
             .Single();
        
+        
         movement
-            .AlvsDecisionStatus
-            .Context!
+            .Status
             .ChedTypes
             .Should()
             .Equal(ImportNotificationTypeEnum.Cvedp);
+        
+        //
+        // movement
+        //     .AlvsDecisionStatus
+        //     .Context!
+        //     .ChedTypes
+        //     .Should()
+        //     .Equal(ImportNotificationTypeEnum.Cvedp);
+
     }
     
     [Fact(Skip = "Relationships aren't being deserialised correctly")]
