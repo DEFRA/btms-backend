@@ -12,7 +12,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithSimpleCommodity("1604142800", "Skipjack Tuna", 300)
-            .WithInspectionStatus("NOTREQUIRED") //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
+            .WithInspectionStatus(InspectionRequiredEnum.NotRequired) //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
             .WithVersionNumber()
             .ValidateAndBuild();
 
