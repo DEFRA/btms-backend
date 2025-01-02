@@ -21,6 +21,11 @@ public static class AnalyticsHelpers
 {
     internal static DateTime AggregateDateCreator(this BsonValue b) => b["dateToUse"].BsonType != BsonType.Null ? b["dateToUse"].ToUniversalTime() : DateTime.MinValue;
 
+    internal static string GetLinkedName(string linked, string type)
+    {
+        return $"{type} {linked}";
+    }
+    
     internal static string GetLinkedName(bool linked, string type)
     {
         return $"{type} {GetLinkedName(linked)}";

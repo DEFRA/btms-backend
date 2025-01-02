@@ -41,9 +41,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     {
         var data = context
             .Movements
-            .Select(m => new { m.CreatedSource, IsLinked = m.Relationships.Notifications.Data.Count > 0 ? "Linked" : "Not Linked" })
+            .SelectLinkStatus()
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .GroupBy(m => m.IsLinked)
+            .GroupBy(m => m.Description)
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => g.Key, g => g.Count);
             
@@ -58,7 +58,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
-            .GroupBy(m => new { Linked = m.Relationships.Notifications.Data.Count > 0, ItemCount = m.Items.Count })
+            .SelectLinkStatus()
+            .GroupBy(m => new { Linked = m.Description, ItemCount = m.Movement.Items.Count })
             .Select(g => new { g.Key.Linked, g.Key.ItemCount, Count = g.Count() });
             
         var mongoResult = mongoQuery
@@ -66,7 +67,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .ToList();
             
         var dictionary = mongoResult
-            .ToDictionary(g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.ItemCount }, g => g.Count);
+            .ToDictionary(g => new { Title = g.Linked, g.ItemCount }, g => g.Count);
             
         var maxCount = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.Count) : 0;
@@ -95,10 +96,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .SelectLinkStatus()
             .GroupBy(m => new
             {
-                Linked = m.Relationships.Notifications.Data.Count > 0,
-                DocumentReferenceCount = m.Items
+                Linked = m.Description,
+                DocumentReferenceCount = m.Movement.Items
                     .SelectMany(i => i.Documents == null ? new string[] {} : i.Documents.Select(d => d.DocumentReference))
                     .Distinct()
                     .Count()
@@ -109,7 +111,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         
         var dictionary = mongoResult
             .ToDictionary(
-                g => new { Title = AnalyticsHelpers.GetLinkedName(g.Linked), g.DocumentReferenceCount },
+                g => new { Title = g.Linked, g.DocumentReferenceCount },
                 g => g.MovementCount);
 
         var maxReferences = mongoResult.Count > 0 ?
