@@ -212,6 +212,7 @@ internal static class Bootstrap
             map.MapProperty("commodityChecks").ExcludeFromInternal();
             map.MapProperty("autoClearedDateTime").IsDateTime().SetInternalName("autoClearedOn");
             map.MapProperty("checkDate").IsDateTime().SetInternalName("checkedOn");
+            map.MapProperty("inspectionRequired").SetType("InspectionRequiredEnum");
         });
 
         GeneratorClassMap.RegisterClassMap("PartThree", map => { map.MapProperty("destructionDate").IsDate(); });

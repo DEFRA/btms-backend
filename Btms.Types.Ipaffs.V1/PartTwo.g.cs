@@ -158,7 +158,7 @@ public partial class PartTwo  //
         /// Inspection required
         /// </summary>
     [JsonPropertyName("inspectionRequired")]
-    public string? InspectionRequired { get; set; }
+    public InspectionRequiredEnum? InspectionRequired { get; set; }
 
 	
         /// <summary>
