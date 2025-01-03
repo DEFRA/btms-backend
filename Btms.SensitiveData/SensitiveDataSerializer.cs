@@ -55,6 +55,11 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         }
         var sensitiveFields = SensitiveFieldsProvider.Get(type);
 
+        if (!sensitiveFields.Any())
+        {
+            return json;
+        }
+
         var rootNode = JsonNode.Parse(json);
        
         foreach (var sensitiveField in sensitiveFields)
