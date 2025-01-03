@@ -15,7 +15,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class ChedPSimpleTests(ITestOutputHelper output)
-    : BaseTest<SimpleMatchScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
 {
     
     [Fact]
@@ -181,8 +181,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         // TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client
             .GetExceptions();
         
         TestOutputHelper.WriteLine($"{result.StatusCode} status");

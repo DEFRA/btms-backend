@@ -12,7 +12,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class NonContiguous(ITestOutputHelper output)
-    : BaseTest<CrNonContiguousDecisionsScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<CrNonContiguousDecisionsScenarioGenerator>(output)
 {
     
     [Fact]

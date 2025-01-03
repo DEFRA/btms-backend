@@ -14,7 +14,7 @@ namespace Btms.Analytics.Tests;
 //     BasicSampleDataTestFixture basicSampleDataTestFixture,
 //     ITestOutputHelper testOutputHelper)
 public class MovementsByMaxVersionTests(ITestOutputHelper output)
-    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
     
     [Fact]
@@ -22,8 +22,7 @@ public class MovementsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client
             .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
                 dateFrom:DateTime.Today.AddDays(-1),
                 dateTo:DateTime.Today.AddDays(1));
@@ -51,8 +50,7 @@ public class MovementsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client
             .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
                 dateFrom:DateTime.Today.AddDays(-1),
                 dateTo:DateTime.Today.AddDays(1),
@@ -81,8 +79,7 @@ public class MovementsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client
             .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
                 dateFrom:DateTime.Today.AddDays(-1),
                 dateTo:DateTime.Today.AddDays(1),
@@ -106,8 +103,7 @@ public class MovementsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client
             .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
                 dateFrom:DateTime.Today.AddDays(-1),
                 dateTo:DateTime.Today.AddDays(1),
@@ -137,8 +133,7 @@ public class MovementsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client   
             .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
                 dateFrom:DateTime.Today.AddDays(-1),
                 dateTo:DateTime.Today.AddDays(1),

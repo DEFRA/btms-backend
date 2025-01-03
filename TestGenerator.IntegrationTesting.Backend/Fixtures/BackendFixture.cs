@@ -23,19 +23,20 @@ namespace TestGenerator.IntegrationTesting.Backend.Fixtures;
 
 public class BackendFixture
 {
-    private readonly IMongoDbContext _mongoDbContext;
+    public readonly IMongoDbContext MongoDbContext;
     public readonly BtmsClient BtmsClient;
     
     private BackendFactory WebApp { get; set; }
-
+    private readonly int _consumerPushDelayMs;
     public readonly ITestOutputHelper TestOutputHelper;
 
-    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName)
+    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName, int consumerPushDelayMs = 1000)
     {
         TestOutputHelper = testOutputHelper;
+        _consumerPushDelayMs = consumerPushDelayMs;
         
         WebApp = new BackendFactory(databaseName, testOutputHelper);
-        (_mongoDbContext, BtmsClient) = WebApp.Start();
+        (MongoDbContext, BtmsClient) = WebApp.Start();
         
     }
 
@@ -45,7 +46,7 @@ public class BackendFixture
         
         var logger = TestOutputHelper.GetLogger<BackendFactory>();
         
-        await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message));
+        await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message), _consumerPushDelayMs);
         
         return testData;
     }

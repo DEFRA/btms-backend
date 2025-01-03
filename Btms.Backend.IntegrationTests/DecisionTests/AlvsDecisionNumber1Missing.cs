@@ -12,7 +12,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
-    : BaseTest<CrDecisionWithoutV1ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<CrDecisionWithoutV1ScenarioGenerator>(output)
 {
     
     [Fact]

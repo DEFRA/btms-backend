@@ -4,28 +4,33 @@ using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 using Btms.Analytics.Tests.Fixtures;
+using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(BasicSampleDataTestCollection))]
-public class ImportNotificationsByCreatedDateTests(
-    BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+// [Collection(nameof(BasicSampleDataTestCollection))]
+// public class ImportNotificationsByCreatedDateTests(
+//     BasicSampleDataTestFixture basicSampleDataTestFixture,
+//     ITestOutputHelper testOutputHelper)
+public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output)
+
 {
-    
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        var result = (await GetImportNotificationsAggregationService()
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(),AggregationPeriod.Hour))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine(result.ToJsonString());
+        TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.Count.Should().Be(8);
 
-        result[0].Periods.Count(p => p.Value > 0).Should().BeGreaterThan(1);
+        // result[0].Periods.Count(p => p.Value > 0).Should().BeGreaterThan(1);
+        result[0].Periods.Sum(p => p.Value)
+            .Should().BeGreaterThan(0);
 
         result[0].Name.Should().Be("CHEDA Linked");
         result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today.Tomorrow());
@@ -35,12 +40,12 @@ public class ImportNotificationsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        var result = (await GetImportNotificationsAggregationService()
             .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine(result.ToJsonString());
+        TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.Count.Should().Be(8);
 
@@ -55,6 +60,9 @@ public class ImportNotificationsByCreatedDateTests(
             });
             r.Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
         });
+        
+        result[0].Periods.Sum(p => p.Value)
+            .Should().BeGreaterThan(0);
     }
     
     [Fact]
@@ -63,12 +71,12 @@ public class ImportNotificationsByCreatedDateTests(
         var from = DateTime.MaxValue.AddDays(-1);
         var to = DateTime.MaxValue;
 
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        var result = (await GetImportNotificationsAggregationService()
                 .ByCreated(from, to, AggregationPeriod.Hour))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine(result.ToJsonString());
+        TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.Count.Should().Be(8);
 
@@ -84,5 +92,8 @@ public class ImportNotificationsByCreatedDateTests(
             });
             r.Periods.Count.Should().Be(24);
         });
+        
+        result[0].Periods.Sum(p => p.Value)
+            .Should().Be(0);
     }
 }

@@ -13,7 +13,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class NoMatchTests(ITestOutputHelper output)
-    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
     
     [Fact]
