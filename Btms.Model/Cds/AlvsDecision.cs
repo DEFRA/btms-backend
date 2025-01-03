@@ -11,6 +11,7 @@
 using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
+using System.Runtime.Serialization;
 using Btms.Model.Auditing;
 using Btms.Model.Ipaffs;
 using MongoDB.Bson.Serialization.Attributes;
@@ -126,14 +127,32 @@ public class MovementStatus
 
 }
 
+[JsonConverter(typeof(JsonStringEnumConverterEx<DecisionStatusEnum>))]
 public enum DecisionStatusEnum {
-    InvestigationNeeded, // = "Investigation Needed";
-    BtmsDecisionNotPresent, // = "Btms Decision Not Present";
-    BtmsMadeSameDecisionAsAlvs, // = "Btms Made Same Decision As Alvs";
-    AlvsClearanceRequestVersion1NotPresent, //"Alvs Clearance Request Version 1 Not Present"
-    AlvsClearanceRequestVersionsNotComplete, //"Alvs Clearance Request Versions Not Complete"
-    AlvsDecisionVersion1NotPresent, //"Alvs Decision Version 1 Not Present"
-    AlvsDecisionVersionsNotComplete //"Alvs Decision Versions Not Complete"
+    
+    [EnumMember(Value = "No Alvs Decisions")]
+    NoAlvsDecisions,
+    
+    [EnumMember(Value = "Investigation Needed")]
+    InvestigationNeeded,
+    
+    [EnumMember(Value = "Btms Decision Not Present")]
+    BtmsDecisionNotPresent,
+    
+    [EnumMember(Value = "Btms Made Same Decision As Alvs")]
+    BtmsMadeSameDecisionAsAlvs,
+    
+    [EnumMember(Value = "Alvs Clearance Request Version 1 Not Present")]
+    AlvsClearanceRequestVersion1NotPresent,
+    
+    [EnumMember(Value = "Alvs Clearance Request Versions Not Complete")]
+    AlvsClearanceRequestVersionsNotComplete,
+    
+    [EnumMember(Value = "Alvs Decision Version 1 Not Present")]
+    AlvsDecisionVersion1NotPresent,
+    
+    [EnumMember(Value = "Alvs Decision Versions Not Complete")]
+    AlvsDecisionVersionsNotComplete
 }
 
 public partial class DecisionContext : IAuditContext //
@@ -166,7 +185,8 @@ public partial class DecisionContext : IAuditContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public DecisionStatusEnum? DecisionStatus { get; set; }
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public DecisionStatusEnum DecisionStatus { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -189,7 +209,8 @@ public partial class AlvsDecisionStatus  //
 
     [Attr]
     [System.ComponentModel.Description("")]
-    public DecisionStatusEnum? DecisionStatus { get; set; } = default;
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public DecisionStatusEnum DecisionStatus { get; set; } = DecisionStatusEnum.NoAlvsDecisions;
     
     [Attr]
     [System.ComponentModel.Description("")]
