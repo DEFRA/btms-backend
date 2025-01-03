@@ -50,16 +50,7 @@
     <None Update="Properties\local.env">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Scenarios\Samples\chedp-one-commodity.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Scenarios\Samples\decision-one-item.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scenarios\Samples\chedd-one-commodity.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scenarios\Samples\chedpp-multiple-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Scenarios\Samples\DuplicateMovementItems-CDMS-211\ALVS\2024\11\01\24GBC4EB0D97OK4AR4-d728e21f-a12d-4d8f-aa49-f73b7c2f1065.json">
@@ -80,18 +71,34 @@
     <None Update="Scenarios\Samples\NoAuditLogForMovementUpdate\IPAFFS\CHEDP\2024\12\26\CHEDP_GB_2024_031218000003-8fcd7903-ab05-4f75-be4f-444475fd80cd.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\cheda-one-commodity.json">
+    <None Remove="Scenarios\Samples\chedp-one-commodity.json" />
+    <Content Include="Scenarios\Samples\chedp-one-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedd-one-commodity.json">
+    </Content>
+    <None Remove="Scenarios\Samples\chedd-one-commodity.json" />
+    <Content Include="Scenarios\Samples\chedd-one-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedp-one-commodity.json">
+    </Content>
+    <None Remove="Scenarios\Samples\chedpp-multiple-commodity.json" />
+    <Content Include="Scenarios\Samples\chedpp-multiple-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedpp-multiple-commodity.json">
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\cheda-one-commodity.json" />
+    <Content Include="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\cheda-one-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedd-one-commodity.json" />
+    <Content Include="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedd-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedp-one-commodity.json" />
+    <Content Include="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedp-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedpp-multiple-commodity.json" />
+    <Content Include="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedpp-multiple-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
