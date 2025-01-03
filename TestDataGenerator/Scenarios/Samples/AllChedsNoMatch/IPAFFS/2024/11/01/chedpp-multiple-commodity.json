@@ -1,0 +1,334 @@
+{
+  "id": 3991,
+  "referenceNumber": "CHEDPP.GB.2024.1003991",
+  "version": 1,
+  "lastUpdated": "2024-08-19T08:50:00.193Z",
+  "lastUpdatedBy": {
+    "displayName": "Percy Inspector-Tester",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "type": "CHEDPP",
+  "status": "VALIDATED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "uniqueId": "fd8a422b-4371-44a2-9693-6f6dbe26cc4b"
+      },
+      {
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "uniqueId": "aff9422c-f5ee-4785-b34a-588edb089940"
+      }
+    ],
+    "assessmentDateTime": "2021-04-16T10:45:01.455922"
+  },
+  "partOne": {
+    "personResponsible": {
+      "name": "Percy Inspector-Tester",
+      "companyId": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+      "companyName": "Defra Test BIP",
+      "address": [
+        "Animal and Plant Health Agency",
+        "Woodham Lane",
+        "New Haw",
+        "Addlestone",
+        "Surrey",
+        "KT15 3NB"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "020 8225 7295",
+      "email": "DefraTestBIP@anthunt3.33mail.com",
+      "contactId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "customsReferenceNumber": "1234",
+    "containsWoodPackaging": false,
+    "consignor": {
+      "id": "c7ca28db-e7b5-45e5-b2b6-5a94111950b9",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "Paul Dedectivu",
+      "address": {
+        "addressLine1": "Address Line 1",
+        "city": "Birmingham",
+        "postalZipCode": "B6 Y2R",
+        "countryISOCode": "BD",
+        "telephone": "0756623125",
+        "email": "kainos@kainos.com"
+      },
+      "tracesId": 10000008
+    },
+    "consignee": {
+      "id": "4d3ddb80-2a7d-4416-bc74-27ac3b17b258",
+      "type": "organisation branch address",
+      "status": "approved",
+      "companyName": "Herzog Inc 6c92D",
+      "individualName": "Kristina Larson",
+      "approvalNumber": "FBEFYT-594273",
+      "otherIdentifier": "ABP",
+      "address": {
+        "addressLine1": "21793 43Aq3",
+        "addressLine2": "0108 Desmond Radial Q7B1x",
+        "addressLine3": "Suite 455 K91s4",
+        "city": "North Gustavetown",
+        "postalZipCode": "14248",
+        "countryISOCode": "TK",
+        "ukTelephone": "442087521",
+        "internationalTelephone": {
+          "countryCode": "5",
+          "subscriberNumber": "185433"
+        },
+        "email": "some@email.com"
+      },
+      "tracesId": 10000135
+    },
+    "importer": {
+      "id": "4d3ddb80-2a7d-4416-bc74-27ac3b17b258",
+      "type": "organisation branch address",
+      "status": "approved",
+      "companyName": "Herzog Inc 6c92D",
+      "individualName": "Kristina Larson",
+      "approvalNumber": "FBEFYT-594273",
+      "otherIdentifier": "ABP",
+      "address": {
+        "addressLine1": "21793 43Aq3",
+        "addressLine2": "0108 Desmond Radial Q7B1x",
+        "addressLine3": "Suite 455 K91s4",
+        "city": "North Gustavetown",
+        "postalZipCode": "14248",
+        "countryISOCode": "TK",
+        "ukTelephone": "442087521",
+        "internationalTelephone": {
+          "countryCode": "5",
+          "subscriberNumber": "185433"
+        },
+        "email": "some@email.com"
+      },
+      "tracesId": 10000135
+    },
+    "placeOfDestination": {
+      "id": "4d3ddb80-2a7d-4416-bc74-27ac3b17b258",
+      "type": "organisation branch address",
+      "status": "approved",
+      "companyName": "Herzog Inc 6c92D",
+      "individualName": "Kristina Larson",
+      "approvalNumber": "FBEFYT-594273",
+      "otherIdentifier": "ABP",
+      "address": {
+        "addressLine1": "21793 43Aq3",
+        "addressLine2": "0108 Desmond Radial Q7B1x",
+        "addressLine3": "Suite 455 K91s4",
+        "city": "North Gustavetown",
+        "postalZipCode": "14248",
+        "countryISOCode": "TK",
+        "ukTelephone": "442087521",
+        "internationalTelephone": {
+          "countryCode": "5",
+          "subscriberNumber": "185433"
+        },
+        "email": "some@email.com"
+      },
+      "tracesId": 10000135
+    },
+    "commodities": {
+      "totalGrossWeight": 10,
+      "totalNetWeight": 2,
+      "numberOfPackages": 2,
+      "commodityComplement": [
+        {
+          "commodityID": "08081080",
+          "commodityDescription": "Other",
+          "complementID": 62685,
+          "complementName": "Malus angustifolia",
+          "eppoCode": "MABAN",
+          "speciesID": "62685",
+          "speciesName": "Malus angustifolia",
+          "speciesClass": "62685",
+          "speciesNomination": "Malus angustifolia"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "fd8a422b-4371-44a2-9693-6f6dbe26cc4b",
+          "complementID": 62685,
+          "speciesID": "62685",
+          "keyDataPair": [
+            {
+              "key": "regulatory_authority",
+              "data": "PHSI"
+            },
+            {
+              "key": "variety",
+              "data": "Golden Delicious"
+            },
+            {
+              "key": "class",
+              "data": "CLASSI"
+            },
+            {
+              "key": "type_product",
+              "data": "Budwood/scions"
+            },
+            {
+              "key": "type_package",
+              "data": "Bag"
+            },
+            {
+              "key": "netweight",
+              "data": "1"
+            },
+            {
+              "key": "number_package",
+              "data": "1"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "aff9422c-f5ee-4785-b34a-588edb089940",
+          "complementID": 62685,
+          "speciesID": "62685",
+          "keyDataPair": [
+            {
+              "key": "variety",
+              "data": "Coxes Orange Pippin"
+            },
+            {
+              "key": "class",
+              "data": "CLASSI"
+            },
+            {
+              "key": "regulatory_authority",
+              "data": "PHSI"
+            },
+            {
+              "key": "type_product",
+              "data": "Budwood/scions"
+            },
+            {
+              "key": "type_package",
+              "data": "Bag"
+            },
+            {
+              "key": "netweight",
+              "data": "1"
+            },
+            {
+              "key": "number_package",
+              "data": "1"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "AF",
+      "consignedCountry": "AF"
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBBXH4",
+    "pointOfEntryControlPoint": "INSPBHX2",
+    "arrivalDate": "2022-01-01",
+    "arrivalTime": "09:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "AB123",
+      "type": "Aeroplane",
+      "document": "Document"
+    },
+    "submissionDate": "2021-02-17T10:58:51.464308Z",
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/",
+        "message": "ACCOMPANYING_DOCUMENTS:Add a phytosanitary certificate"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/commodities/",
+        "message": "Add the quantity"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/commodities/",
+        "message": "Add the quantity type"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/providectcmrn",
+        "message": "Select if using the Common Transit Convention (CTC)"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/isgvmsroute",
+        "message": "Select if using the Goods Vehicle Movement Service (GVMS)"
+      }
+    ],
+    "submittedBy": {
+      "displayName": "Percy Inspector-Tester",
+      "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "complexCommoditySelected": true,
+    "contactDetails": {
+      "name": "Full Name",
+      "telephone": "0123456789",
+      "email": "name@example.com",
+      "agent": "Agent Name"
+    }
+  },
+  "partTwo": {
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "Auto",
+        "lastName": "Cleared",
+        "email": "PlantHealth.Info@apha.gov.uk",
+        "phone": "0300 1000 313",
+        "signed": "2024-08-19T08:50:00.180947343"
+      }
+    },
+    "commodityChecks": [
+      {
+        "uniqueComplementId": "fd8a422b-4371-44a2-9693-6f6dbe26cc4b",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "Auto cleared",
+            "hasChecksComplete": true
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "Auto cleared",
+            "hasChecksComplete": true
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "Auto cleared",
+            "hasChecksComplete": true
+          }
+        ]
+      },
+      {
+        "uniqueComplementId": "aff9422c-f5ee-4785-b34a-588edb089940",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "Auto cleared",
+            "hasChecksComplete": true
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "Auto cleared",
+            "hasChecksComplete": true
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "Auto cleared",
+            "hasChecksComplete": true
+          }
+        ]
+      }
+    ],
+    "phsiAutoCleared": true,
+    "hmiAutoCleared": true
+  },
+  "etag": "0000000000028476",
+  "chedTypeVersion": 1
+}

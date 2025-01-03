@@ -201,7 +201,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             // NB - this may not be correct...
             // if (n.ImportNotificationType != ImportNotificationTypeEnum.Cveda && n.PartTwo.HasValue())
             // {
-            //     n.PartTwo!.InspectionRequired.AssertHasValue("Import Notification PartTwo InspectionRequired missing");    
+            //     n.PartTwo!.InspectionRequired.AssertHasValue($"Import Notification {n.ImportNotificationType} {n.ReferenceNumber} PartTwo InspectionRequired missing");    
             // }
             
         });

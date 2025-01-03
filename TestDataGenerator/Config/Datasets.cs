@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using TestDataGenerator.Scenarios;
+using AllChedsNoMatchScenarioGenerator = TestDataGenerator.Scenarios.SpecificFiles.AllChedsNoMatchScenarioGenerator;
 
 namespace TestDataGenerator.Config;
 
@@ -12,7 +13,7 @@ public class Dataset
 }
 
 public class Datasets(IHost app)
-{   
+{
     public static Dataset[] GetDatasets(IHost app)
     {
         var ds = new Datasets(app);
@@ -25,17 +26,20 @@ public class Datasets(IHost app)
             ds.LoadTest,
             ds.LoadTest90Dx1,
             ds.LoadTestCondensed,
-            ds.LoadTest90Dx10k,
-            ds.AllChedNoMatch
+            ds.LoadTest90Dx10k
         ];
     }
-    
+
     public readonly Dataset EndToEndIbm = new()
     {
         Name = "EndToEnd-IBM",
         Description = "WIP : A set of scenarios generated from IBMs scenario definitions",
         RootPath = "GENERATED-ENDTOEND-IBM",
-        Scenarios = new[] { app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 1) }
+        Scenarios = new[]
+        {
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1,
+                1)
+        }
     };
 
     public readonly Dataset One = new()
@@ -45,9 +49,12 @@ public class Datasets(IHost app)
         RootPath = "GENERATED-ONE",
         Scenarios = new[]
         {
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 1),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 1),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.MultiStepScenarioGenerator>(1, 1)
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1,
+                1),
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1,
+                1),
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.MultiStepScenarioGenerator>(1,
+                1)
         }
     };
 
@@ -60,7 +67,8 @@ public class Datasets(IHost app)
         {
             app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(3, 7),
             app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(3, 7),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(3, 7)
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(3,
+                7)
         }
     };
 
@@ -73,7 +81,8 @@ public class Datasets(IHost app)
         {
             app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(100, 90),
             app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(100, 90)
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(
+                100, 90)
         }
     };
 
@@ -86,7 +95,7 @@ public class Datasets(IHost app)
         {
             app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5, 7),
             app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(5, 7),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(15, 7),
+            app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(15, 7),
             app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(15, 7)
         }
     };
@@ -101,7 +110,7 @@ public class Datasets(IHost app)
             {
                 app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5000, 90),
                 app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90),
-                app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(4900, 90)
+                app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(4900, 90)
             }
     };
 
@@ -115,16 +124,8 @@ public class Datasets(IHost app)
             {
                 app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 90),
                 app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(1, 90),
-                app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 90)
+                app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 90)
             }
-    };
-
-    public readonly Dataset AllChedNoMatch = new()
-    {
-        Name = "All-CHED-No-Match",
-        Description = "LIM TODO",
-        RootPath = "GENERATED-ALL-CHED-NO-MATCH",
-        Scenarios = new[] { app.Services.CreateScenarioConfig<AllChedsNoMatchScenarioGenerator>(1, 1) }
     };
 
     // public readonly Dataset Pha = new()
