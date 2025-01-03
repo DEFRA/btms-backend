@@ -13,7 +13,7 @@ namespace Btms.Consumers.Extensions;
 /// </summary>
 public static class MessageRoutingExtensions
 {
-    public static async Task PushToConsumers(this IServiceProvider sp, ILogger logger, IEnumerable<object> messages)
+    public static async Task PushToConsumers(this IServiceProvider sp, ILogger logger, IEnumerable<object> messages, int sleepMs = 1000)
     {
         var output = new List<object>();
         
@@ -80,7 +80,7 @@ public static class MessageRoutingExtensions
             // We may want to switch to pushing to the bus, rather than directly to the consumer
             // so we get the concurrency protection.
 
-            Thread.Sleep(1000);
+            Thread.Sleep(sleepMs);
         }
     }
 }

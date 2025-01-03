@@ -10,6 +10,15 @@ namespace TestDataGenerator.Scenarios;
 
 public static class NoMatchExtensions
 {
+    
+    public static AlvsClearanceRequest CompleteSimpleClearanceRequest(int scenario, int item, DateTime entryDate, ScenarioConfig config)
+    {
+        return NoMatchExtensions
+            .SimpleClearanceRequest(scenario, item, entryDate, config)
+            .WithTunaItem()
+            .ValidateAndBuild();
+    }
+    
     public static ClearanceRequestBuilder<AlvsClearanceRequest> SimpleClearanceRequest(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         return BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
@@ -83,9 +92,7 @@ public class CrNoMatchNoChecksScenarioGenerator(ILogger<CrNoMatchNoChecksScenari
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         var clearanceRequest = NoMatchExtensions
-            .SimpleClearanceRequest(scenario, item, entryDate, config)
-            .WithTunaItem()
-            .ValidateAndBuild();
+            .CompleteSimpleClearanceRequest(scenario, item, entryDate, config);
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
@@ -127,6 +134,55 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
         var alvsDecision = clearanceRequest
             .GetDecisionBuilder()
             .ValidateAndBuild();
+        
+        logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
+        
+        return new GeneratorResult([clearanceRequest, alvsDecision]);
+    }
+}
+
+
+public class CrNonContiguousDecisionsScenarioGenerator(ILogger<CrNonContiguousDecisionsScenarioGenerator> logger) : ScenarioGenerator
+{
+    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
+    {
+        var clearanceRequest = NoMatchExtensions
+            .CompleteSimpleClearanceRequest(scenario, item, entryDate, config);
+
+        logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
+
+        var alvsDecisionBuilder = clearanceRequest
+            .GetDecisionBuilder()
+            .WithDecisionVersionNumber(1);
+
+        var alvsDecision = alvsDecisionBuilder
+            .ValidateAndBuild();
+        
+        var alvsDecision2 = alvsDecisionBuilder
+            .Clone()
+            .WithDecisionVersionNumber(3)
+            .ValidateAndBuild();
+        
+        logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
+        
+        return new GeneratorResult([clearanceRequest, alvsDecision, alvsDecision2]);
+    }
+}
+
+
+public class CrDecisionWithoutV1ScenarioGenerator(ILogger<CrDecisionWithoutV1ScenarioGenerator> logger) : ScenarioGenerator
+{
+    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
+    {
+        var clearanceRequest = NoMatchExtensions
+            .CompleteSimpleClearanceRequest(scenario, item, entryDate, config);
+
+        logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
+
+        var alvsDecision = clearanceRequest
+            .GetDecisionBuilder()
+            .WithDecisionVersionNumber(2)
+            .Build();
         
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
         
