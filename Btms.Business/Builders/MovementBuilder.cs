@@ -152,9 +152,8 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
                 ((alvsDecision.Context.AlvsDecisionNumber > _movement.AlvsDecisionStatus.Context?.AlvsDecisionNumber) &&
                  (alvsDecision.Context.BtmsDecisionNumber >= _movement.AlvsDecisionStatus.Context?.BtmsDecisionNumber)))
             {
-                _movement.AlvsDecisionStatus.DecisionStatus = alvsDecision.Context.DecisionStatus!;
+                _movement.AlvsDecisionStatus.DecisionStatus = alvsDecision.Context.DecisionStatus;
                 _movement.AlvsDecisionStatus.Context = alvsDecision.Context;
-                // _movement.AlvsDecisionStatus.Checks = alvsDecision.Context.Checks;
             }
             else
             {
@@ -369,11 +368,11 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             AnyHold = btmsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H'))
         };
         
-        var pairStatus = "Investigation Needed";
+        var decisionStatus = DecisionStatusEnum.InvestigationNeeded;
         
         if (alvsDecision.Context.BtmsDecisionNumber == 0)
         {
-            pairStatus = "Btms Decision Not Present";
+            decisionStatus = DecisionStatusEnum.BtmsDecisionNotPresent;
         }
         else
         {
@@ -382,19 +381,11 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
             if (checksMatch)
             {
                 alvsDecision.Context.DecisionMatched = true;
-                pairStatus = "Btms Made Same Decision As Alvs";
-            }
-            else if (!_movement.ClearanceRequests.Exists(c => c.Header!.EntryVersionNumber == 1))
-            {
-                pairStatus = "Alvs Clearance Request Version 1 Not Present";
-            }
-            else if (alvsDecision.Decision.Header!.DecisionNumber != 1 && !_movement.AlvsDecisionStatus.Decisions.Exists(c => c.Context.AlvsDecisionNumber == 1))
-            {
-                pairStatus = "Alvs Decision Version 1 Not Present";
+                decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
             }
         }
         
-        alvsDecision.Context.DecisionStatus = pairStatus;
+        alvsDecision.Context.DecisionStatus = decisionStatus;
     }
 
     public Movement Build()

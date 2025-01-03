@@ -1,5 +1,6 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
+using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
@@ -120,7 +121,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .AlvsDecisionStatus
             .DecisionStatus
             .Should()
-            .Be("Btms Made Same Decision As Alvs");
+            .Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
     [Fact]

@@ -126,8 +126,20 @@ public class MovementStatus
 
 }
 
+public enum DecisionStatusEnum {
+    InvestigationNeeded, // = "Investigation Needed";
+    BtmsDecisionNotPresent, // = "Btms Decision Not Present";
+    BtmsMadeSameDecisionAsAlvs, // = "Btms Made Same Decision As Alvs";
+    AlvsClearanceRequestVersion1NotPresent, //"Alvs Clearance Request Version 1 Not Present"
+    AlvsClearanceRequestVersionsNotComplete, //"Alvs Clearance Request Versions Not Complete"
+    AlvsDecisionVersion1NotPresent, //"Alvs Decision Version 1 Not Present"
+    AlvsDecisionVersionsNotComplete //"Alvs Decision Versions Not Complete"
+}
+
 public partial class DecisionContext : IAuditContext //
 {
+    // public const string StatusInvestigationNeeded = "Investigation Needed";
+    // public const string StatusInvestigationNeeded = "Investigation Needed";
     [Attr]
     [System.ComponentModel.Description("")]
     public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
@@ -154,7 +166,7 @@ public partial class DecisionContext : IAuditContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DecisionStatus { get; set; }
+    public DecisionStatusEnum? DecisionStatus { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -177,7 +189,7 @@ public partial class AlvsDecisionStatus  //
 
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DecisionStatus { get; set; } = default;
+    public DecisionStatusEnum? DecisionStatus { get; set; } = default;
     
     [Attr]
     [System.ComponentModel.Description("")]
