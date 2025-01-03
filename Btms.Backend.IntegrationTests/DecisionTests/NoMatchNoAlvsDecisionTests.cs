@@ -9,8 +9,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NoMatchNoAlvsDecisionTests(ITestOutputHelper testOutputHelper, BackendFixture backendFixture, TestGeneratorFixture generatorFixture)
-    : BaseTest<CrNoMatchNoDecisionScenarioGenerator>(testOutputHelper, generatorFixture, backendFixture)//,
+public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
+    : BaseTest<CrNoMatchNoDecisionScenarioGenerator>(output)
        // IClassFixture<BackendFixture<CrNoMatchNoDecisionScenarioGenerator>>,
        // IClassFixture<TestGeneratorFixture<CrNoMatchNoDecisionScenarioGenerator>>
 {

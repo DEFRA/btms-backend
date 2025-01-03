@@ -10,11 +10,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NoMatchTests(ITestOutputHelper testOutputHelper,
-    // BackendGeneratorFixture<CrNoMatchSingleItemWithDecisionScenarioGenerator> backendGeneratorFixture)
-    BackendFixture backendFixture,
-    TestGeneratorFixture generatorFixture)
-    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(testOutputHelper, generatorFixture, backendFixture)//,
+public class NoMatchTests(ITestOutputHelper output)
+    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
         ////IClassFixture<BackendFixture<CrNoMatchSingleItemWithDecisionScenarioGenerator>>,
         ////IClassFixture<TestGeneratorFixture<CrNoMatchSingleItemWithDecisionScenarioGenerator>>
 {

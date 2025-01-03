@@ -13,8 +13,8 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class ChedPSimpleTests(ITestOutputHelper testOutputHelper, BackendFixture backendFixture, TestGeneratorFixture generatorFixture)
-    : BaseTest<SimpleMatchScenarioGenerator>(testOutputHelper, generatorFixture, backendFixture)
+public class ChedPSimpleTests(ITestOutputHelper output)
+    : BaseTest<SimpleMatchScenarioGenerator>(output)
 {
     
     [Fact]

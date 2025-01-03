@@ -12,8 +12,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class ChedPDuplicateDecisionTests(ITestOutputHelper testOutputHelper, BackendFixture backendFixture, TestGeneratorFixture generatorFixture)
-    : BaseTest<SimpleMatchScenarioGenerator>(testOutputHelper, generatorFixture, backendFixture)
+public class ChedPDuplicateDecisionTests(ITestOutputHelper output)
+    : BaseTest<SimpleMatchScenarioGenerator>(output)
 {            
     // [Fact(Skip = "We currently import the duplicate alvs decision & store it on the movement")]
     [Fact]

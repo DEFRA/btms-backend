@@ -17,68 +17,36 @@ using Serilog.Extensions.Logging;
 using TestDataGenerator;
 using Xunit.Abstractions;
 
+using TestGenerator.IntegrationTesting.Backend.Extensions;
+
 namespace TestGenerator.IntegrationTesting.Backend.Fixtures;
 
 public class BackendFixture
 {
-    private IMongoDbContext _mongoDbContext;
-    public BtmsClient BtmsClient;
+    private readonly IMongoDbContext _mongoDbContext;
+    public readonly BtmsClient BtmsClient;
     
-    // public List<GeneratedResult> LoadedData;
-    
-    // private IHost TestGeneratorApp { get; set; }
     private BackendFactory WebApp { get; set; }
-    
-    public BackendFixture()
-    {   
-        // Generate test data
-        
-        // var generatorBuilder = new HostBuilder();
-        // generatorBuilder.ConfigureTestDataGenerator("Scenarios/Samples");
-        
-       // var dbName = typeof(T).Name;
-       
-    }
 
-    public void Init(string dbName)
+    public readonly ITestOutputHelper TestOutputHelper;
+
+    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName)
     {
-        WebApp = new BackendFactory(DatabaseName, TestOutputHelper);
+        TestOutputHelper = testOutputHelper;
+        
+        WebApp = new BackendFactory(databaseName, testOutputHelper);
         (_mongoDbContext, BtmsClient) = WebApp.Start();
+        
     }
-
-    public ITestOutputHelper TestOutputHelper { get; set; } = null!;
-    public string DatabaseName { get; set; } = null!;
-
-    // public IMongoDbContext GetDbContext()
-    // {
-    //     return _mongoDbContext;
-    // }
 
     public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData)
     {
         await BtmsClient.ClearDb();
         
-        // var data = new List<GeneratedResult>();
-        
-        // TODO: Need a logger
-        var logger = NullLogger.Instance;
+        var logger = TestOutputHelper.GetLogger<BackendFactory>();
         
         await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message));
         
-        //
-        // foreach (var t in testData)
-        // {
-        //     
-        //     
-        //     // data.AddRange(t.GeneratorResult);
-        //     // var output = t.GeneratorResult
-        //     //     .Select(r => new  (generatorResult.Generator, 0, 1, 1, r))
-        //     //     .ToList();
-        //     
-        //     // LoadedData.AddRange(t.GeneratorResult);
-        // }
-
-
         return testData;
     }
 }
@@ -130,8 +98,7 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
                     
                     var db = client.GetDatabase($"btms-{dbName}");
                    
-                    // TODO : Use our ILoggerFactory
-                    mongoDbContext = new MongoDbContext(db, new SerilogLoggerFactory());
+                    mongoDbContext = new MongoDbContext(db, testOutputHelper.GetLoggerFactory());
                     return db;
                 });
 

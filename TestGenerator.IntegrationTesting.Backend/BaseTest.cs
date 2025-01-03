@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using TestDataGenerator;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
@@ -5,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace TestGenerator.IntegrationTesting.Backend;
 
-public abstract class BaseTest<T> : IClassFixture<TestGeneratorFixture>, IClassFixture<BackendFixture>
+public abstract class BaseTest<T> // : IClassFixture<TestGeneratorFixture>, IClassFixture<BackendFixture>
     where T : ScenarioGenerator
 {
     protected readonly BtmsClient Client;
@@ -15,25 +16,20 @@ public abstract class BaseTest<T> : IClassFixture<TestGeneratorFixture>, IClassF
     protected readonly ITestOutputHelper TestOutputHelper;
 
     protected readonly List<GeneratedResult> LoadedData;
-    protected BaseTest(ITestOutputHelper testOutputHelper,
-        // BackendGeneratorFixture<T> backendGeneratorFixture
-        TestGeneratorFixture testGeneratorFixture,
-        BackendFixture backendFixture
+    protected BaseTest(
+        ITestOutputHelper testOutputHelper
     )
     {
-        TestGeneratorFixture = testGeneratorFixture;
-        BackendFixture = backendFixture;
-        
-        // Client = backendGeneratorFixture.Backend.BtmsClient;
-        // TestGeneratorFixture = backendGeneratorFixture.TestGenerator;
-        // BackendFixture = backendGeneratorFixture.Backend;
         TestOutputHelper = testOutputHelper;
         
-        backendFixture.TestOutputHelper = testOutputHelper;
-        backendFixture.DatabaseName = GetType().Name;
-        backendFixture.Init(GetType().Name);
+        TestGeneratorFixture = new TestGeneratorFixture();
+        BackendFixture = new BackendFixture(testOutputHelper, GetType().Name);
         
-        Client = backendFixture.BtmsClient;
+        // BackendFixture.TestOutputHelper = testOutputHelper;
+        // BackendFixture.DatabaseName = GetType().Name;
+        // BackendFixture.Init(GetType().Name);
+        
+        Client = BackendFixture.BtmsClient;
 
         var data = TestGeneratorFixture.GenerateTestData<T>();
         LoadedData = BackendFixture

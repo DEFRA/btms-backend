@@ -13,8 +13,8 @@ namespace Btms.Analytics.Tests;
 // public class MovementsByMaxVersionTests(
 //     BasicSampleDataTestFixture basicSampleDataTestFixture,
 //     ITestOutputHelper testOutputHelper)
-public class MovementsByMaxVersionTests(ITestOutputHelper testOutputHelper, BackendFixture backendFixture, TestGeneratorFixture generatorFixture)
-    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(testOutputHelper, generatorFixture, backendFixture)
+public class MovementsByMaxVersionTests(ITestOutputHelper output)
+    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
     
     [Fact]
