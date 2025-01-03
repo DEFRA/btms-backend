@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Btms.Backend.IntegrationTests.JsonApiClient;
+namespace TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 
 public class JsonApiClient(HttpClient client)
 {

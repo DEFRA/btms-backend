@@ -31,8 +31,11 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     public DecisionBuilder<T> WithReferenceNumber(string chedReference)
     {
         var id = MatchIdentifier.FromNotification(chedReference);
-        //
-        // base.Id = id.AsCdsEntryReference();
+        return WithReferenceNumber(id);   
+    }
+    
+    public DecisionBuilder<T> WithReferenceNumber(MatchIdentifier id)
+    {
         return Do(x =>
         {
             x.Header!.EntryReference = id.AsCdsEntryReference();

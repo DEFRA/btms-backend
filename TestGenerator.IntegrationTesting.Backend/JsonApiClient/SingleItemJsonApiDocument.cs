@@ -1,7 +1,7 @@
 using System.Text.Json;
 using JsonApiDotNetCore.Serialization.Objects;
 
-namespace Btms.Backend.IntegrationTests.JsonApiClient;
+namespace TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 
 public class SingleItemJsonApiDocument : JsonApiDocument<ResourceObject>
 {

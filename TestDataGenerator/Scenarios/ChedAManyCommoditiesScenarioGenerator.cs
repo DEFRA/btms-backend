@@ -24,6 +24,7 @@ public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesS
             .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
+            .WithEntryVersionNumber()
             .ValidateAndBuild();
         
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);

@@ -1,6 +1,5 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
-using Btms.Backend.IntegrationTests.JsonApiClient;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
