@@ -1,12 +1,8 @@
-using Btms.Business.Commands;
-using Btms.Backend.IntegrationTests.JsonApiClient;
-using FluentAssertions;
-using idunno.Authentication.Basic;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Business.Commands;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 

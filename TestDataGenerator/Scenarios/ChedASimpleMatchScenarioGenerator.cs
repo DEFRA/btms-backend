@@ -22,6 +22,7 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
             .WithDispatchCountryCode(notification.PartOne!.Route!.TransitingStates!.FirstOrDefault())
+            .WithEntryVersionNumber()
             .ValidateAndBuild();
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);

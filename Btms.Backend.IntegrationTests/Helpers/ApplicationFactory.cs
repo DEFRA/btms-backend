@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;

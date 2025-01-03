@@ -5,13 +5,14 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Business.Commands;
+using Btms.Model.Ipaffs;
 using Btms.SyncJob;
 using Elastic.CommonSchema;
 using FluentAssertions;
 using idunno.Authentication.Basic;
 using Xunit;
 
-namespace Btms.Backend.IntegrationTests.Helpers;
+namespace TestGenerator.IntegrationTesting.Backend.Fixtures;
 
 public class BtmsClient
 {
@@ -111,11 +112,29 @@ public class BtmsClient
 
         return (response, Path.GetFileName(response.Headers.Location?.ToString()));
     }
-    public Task<HttpResponseMessage> GetAnalyticsDashboard(string charts)
+    
+    public Task<HttpResponseMessage> GetExceptions()
     {
         return client.GetAsync(
-            $"/analytics/dashboard?chartsToRender={charts}");
+            $"/analytics/exceptions");
     }
+    
+    public Task<HttpResponseMessage> GetAnalyticsDashboard(string[] charts,
+        ImportNotificationTypeEnum[]? chedTypes = null,
+        string? country = null,
+        DateTime? dateFrom = null,
+        DateTime? dateTo = null)
+    {
+        var chartsFilter = String.Join("&chartsToRender=", charts);
+        var dateFromFilter = dateFrom.HasValue ? $"&dateFrom={dateFrom.Value:yyyy-MM-dd}" : "";
+        var dateToFilter = dateTo.HasValue ? $"&dateTo={dateTo.Value:yyyy-MM-dd}" : "";
+        var countryFilter = country != null ? $"&coo={country}" : "";
+        var chedTypeFilter = chedTypes != null ? "&chedType=" + String.Join("&chedType=", chedTypes) : "";
+
+        return client.GetAsync(
+            $"/analytics/dashboard?chartsToRender={chartsFilter}{dateFromFilter}{dateToFilter}{countryFilter}{chedTypeFilter}");
+    }
+    
     private async Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
     {
         var jsonData = JsonSerializer.Serialize(command);

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JsonApiSerializer" Version="2.0.1" />
+      <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.4.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
+      <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+        <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.6\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Btms.Backend\Btms.Backend.csproj" />
+      <ProjectReference Include="..\TestDataGenerator\TestDataGenerator.csproj" />
+    </ItemGroup>
+
+</Project>

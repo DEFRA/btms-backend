@@ -23,6 +23,7 @@ using TestDataGenerator;
 using TestDataGenerator.Config;
 using TestDataGenerator.Extensions;
 using TestDataGenerator.Scenarios;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
@@ -70,7 +71,7 @@ public class InMemoryApplicationFactory(string databaseName, ITestOutputHelper t
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
                     var dbName = string.IsNullOrEmpty(databaseName) ? Random.Shared.Next().ToString() : databaseName;
-                    var db = client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
+                    var db = client.GetDatabase($"Btms_{dbName}");
                    
                     // TODO : Use our ILoggerFactory
                     mongoDbContext = new MongoDbContext(db, new SerilogLoggerFactory());

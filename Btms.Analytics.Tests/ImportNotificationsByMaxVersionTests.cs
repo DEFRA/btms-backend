@@ -68,7 +68,7 @@ public class ImportNotificationsByMaxVersionTests(
     {
         testOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "AL"));
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "ES"));
 
         testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         

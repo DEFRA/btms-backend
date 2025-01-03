@@ -10,6 +10,7 @@ using Btms.SyncJob;
 using FluentAssertions;
 using idunno.Authentication.Basic;
 using Microsoft.AspNetCore.Mvc.Testing;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 [assembly: CollectionBehavior(DisableTestParallelization = true)]

@@ -286,7 +286,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
-            .SelectMany(d => d.Decision.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
+            .SelectMany(d => d.Decision.Context.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
             .GroupBy(d => new
             {
                 d.Decision.Context.DecisionStatus,
@@ -306,7 +306,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         // Works
         var summary = new SingleSeriesDataset() {
             Values = mongoQuery
-                .GroupBy(q => q.Key.DecisionStatus ?? "TBC")
+                .GroupBy(q => q.Key.DecisionStatus ?? "Investigation Needed")
                 .ToDictionary(
                     g => g.Key,
                     g => g.Sum(k => k.Count)
@@ -320,7 +320,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 {
                     Fields = new Dictionary<string, string>()
                     {
-                        { "Classification", a.Key.DecisionStatus ?? "TBC" },
+                        { "Classification", a.Key.DecisionStatus ?? "Investigation Needed" },
                         { "CheckCode", a.Key.CheckCode! },
                         { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }

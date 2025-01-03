@@ -12,8 +12,8 @@ public static class MovementExtensions
             .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
                         && (country == null || m.DispatchCountryCode == country)
                         && (chedTypes == null || !chedTypes!.Any() ||
-                            !m.AlvsDecisionStatus!.Context!.ChedTypes!.Any() ||
-                            m.AlvsDecisionStatus!.Context!.ChedTypes!.Any(c => chedTypes!.Contains(c))));
+                            !m.BtmsStatus.ChedTypes!.Any() ||
+                            m.BtmsStatus.ChedTypes!.Any(c => chedTypes!.Contains(c))));
 
     }
 
@@ -31,7 +31,7 @@ public static class MovementExtensions
                 Movement = m,
                 CreatedSource = m.CreatedSource!.Value,
                 Description =
-                    m.Status.LinkStatus
+                    m.BtmsStatus.LinkStatus
                     // m.Relationships.Notifications.Data.Count > 0 ? "Linked" :
                     // m.AlvsDecisionStatus!.Context!.AlvsCheckStatus!.AnyMatch ? "Investigate" :
                     // "Not Linked"

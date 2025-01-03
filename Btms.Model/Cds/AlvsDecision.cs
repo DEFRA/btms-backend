@@ -93,28 +93,44 @@ public class StatusChecker
 
 public class MovementStatus
 {
+    public const string NotLinkedStatus = "Not Linked";
+    public const string LinkedStatus = "Linked";
+    public const string InvestigateStatus = "Investigate";
+    
     public static MovementStatus Default()
     {
-        return new MovementStatus() { ChedTypes = [] };
+        return new MovementStatus()
+        {
+            ChedTypes = [],
+            Linked = false,
+            LinkStatus = NotLinkedStatus
+        };
     }
     
     [Attr]
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
-    public required ImportNotificationTypeEnum[]? ChedTypes { get; set; }
+    public required ImportNotificationTypeEnum[] ChedTypes { get; set; }
 
     [Attr]
     [System.ComponentModel.Description("")]
-    public string LinkStatus { get; set; } = "Not Linked";
+    public required bool Linked { get; set; }
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public required string LinkStatus { get; set; }
+    
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public required string[] CountriesOfOrigin { get; set; }
 
 }
+
 public partial class DecisionContext : IAuditContext //
 {
-    //TODO : Remove in favour of MovementStatus
     [Attr]
     [System.ComponentModel.Description("")]
-    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
-    public ImportNotificationTypeEnum[]? ChedTypes { get; set; }
+    public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -166,11 +182,6 @@ public partial class AlvsDecisionStatus  //
     [Attr]
     [System.ComponentModel.Description("")]
     public DecisionContext Context { get; set; } = new DecisionContext();
-    
-    // TODO - should we put the checks into context, and so into audit log?
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
 }
 
 public partial class AlvsDecision  //
@@ -182,12 +193,6 @@ public partial class AlvsDecision  //
     [Attr]
     [System.ComponentModel.Description("")]
     public required DecisionContext Context { get; set; }
-    
-    // TODO - should we put the checks into context, and so into audit log?
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required List<ItemCheck> Checks { get; set; }
-    
 }
 
 

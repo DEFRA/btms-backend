@@ -297,7 +297,7 @@ public class LinkingServiceTests
                 Documents = [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
             }).ToList(),
             ClearanceRequests = new(),
-            Status = MovementStatus.Default()
+            BtmsStatus = MovementStatus.Default()
         };
 
         var existingMovement = createExistingMovement ? 
@@ -312,7 +312,7 @@ public class LinkingServiceTests
                         : [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
                 }).ToList(),
                 ClearanceRequests = new(),
-                Status = MovementStatus.Default()
+                BtmsStatus = MovementStatus.Default()
             } : null;
 
 
@@ -401,7 +401,7 @@ public class LinkingServiceTests
                     }
                 ],
                 Items = new (),
-                Status = MovementStatus.Default()
+                BtmsStatus = MovementStatus.Default()
             };
             
             movements.Add(mov);

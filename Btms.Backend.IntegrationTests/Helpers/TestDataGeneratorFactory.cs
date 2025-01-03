@@ -25,6 +25,7 @@ using Btms.Types.Ipaffs;
 using SlimMessageBus;
 using SlimMessageBus.Host;
 using TestDataGenerator.Scenarios;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit.Sdk;
 
 namespace Btms.Backend.IntegrationTests.Helpers;

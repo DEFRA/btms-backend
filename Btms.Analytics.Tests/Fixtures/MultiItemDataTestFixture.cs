@@ -3,6 +3,7 @@ using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Scenarios;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit.Abstractions;
 
 namespace Btms.Analytics.Tests.Fixtures;

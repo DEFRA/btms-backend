@@ -1,6 +1,6 @@
 using Btms.SyncJob;
 
-namespace Btms.Backend.IntegrationTests;
+namespace TestGenerator.IntegrationTesting.Backend;
 
 public class SyncJobResponse
 {

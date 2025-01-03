@@ -1,18 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
-using Btms.Common.Extensions;
-using Btms.Model;
-using Btms.SyncJob;
-using Btms.Backend.IntegrationTests.JsonApiClient;
-using FluentAssertions;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using Btms.Backend.IntegrationTests.Extensions;
 using Btms.Backend.IntegrationTests.Helpers;
-using Json.More;
+using FluentAssertions;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -27,7 +16,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetIndividualMultiSeriesDatetimeChart()
     {
         //Act
-        var response = await Client.GetAnalyticsDashboard("importNotificationLinkingByCreated");
+        var response = await Client.GetAnalyticsDashboard(["importNotificationLinkingByCreated"]);
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());
@@ -44,7 +33,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetIndividualMultiSeriesChart()
     {
         //Act
-        var response = await Client.GetAnalyticsDashboard("lastMonthMovementsByItemCount");
+        var response = await Client.GetAnalyticsDashboard(["lastMonthMovementsByItemCount"]);
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());
@@ -61,7 +50,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
     public async Task GetIndividualSingleSeriesChart()
     {
         //Act
-        var response = await Client.GetAnalyticsDashboard("last7DaysImportNotificationsLinkingStatus");
+        var response = await Client.GetAnalyticsDashboard(["last7DaysImportNotificationsLinkingStatus"]);
         
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(response.StatusCode.ToString());

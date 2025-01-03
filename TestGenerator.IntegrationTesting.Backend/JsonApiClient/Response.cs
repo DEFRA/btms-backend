@@ -1,7 +1,7 @@
 using System.Net;
 using JsonApiSerializer.JsonApi;
 
-namespace Btms.Backend.IntegrationTests.JsonApiClient;
+namespace TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 
 public class Response<T>
 {

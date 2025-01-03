@@ -1,14 +1,13 @@
-using Btms.Business.Commands;
-using Btms.Model;
-using Btms.SyncJob;
-using Btms.Backend.IntegrationTests.JsonApiClient;
-using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Business.Commands;
+using Btms.Model;
+using Btms.SyncJob;
+using FluentAssertions;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 

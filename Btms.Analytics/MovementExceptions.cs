@@ -18,6 +18,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         var simplifiedMovementView = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .Where(m => !m.BtmsStatus.Linked)
             .Select(m => new
             {
                 // TODO - we should think about pre-calculating this stuff and storing it on the movement...
@@ -29,9 +30,8 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
-                ChedTypes = m.AlvsDecisionStatus.Context.ChedTypes,
-                // HasMatchDecisions = m.AlvsDecisionStatus.Context.AlvsCheckStatus != null && m.AlvsDecisionStatus.Context.AlvsCheckStatus.AnyMatch,
-                Status = m.Status,
+                ChedTypes = m.BtmsStatus.ChedTypes,
+                Status = m.BtmsStatus,
                 DecisionMatched = !m.AlvsDecisionStatus.Decisions
                     .OrderBy(d => d.Context.AlvsDecisionNumber)
                     .Reverse()
@@ -51,7 +51,6 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 LinkedCheds = m.LinkedCheds,
                 ItemCount = m.ItemCount,
                 ChedTypes = m.ChedTypes,
-                // HasMatchDecisions = m.HasMatchDecisions,
                 Status = m.Status,
                 HasNotificationRelationships = m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,

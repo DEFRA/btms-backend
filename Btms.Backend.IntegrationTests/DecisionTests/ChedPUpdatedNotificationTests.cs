@@ -1,24 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
-using Btms.Common.Extensions;
-using Btms.Model;
-using Btms.SyncJob;
-using Btms.Backend.IntegrationTests.JsonApiClient;
-using FluentAssertions;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using Btms.Backend.IntegrationTests.Extensions;
 using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Business.Commands;
-using Btms.Model.Cds;
-using Btms.Model.Ipaffs;
+using Btms.Model;
 using Btms.Types.Alvs;
-using TestDataGenerator.Scenarios;
-using Json.More;
-using Microsoft.Extensions.Logging;
+using Btms.Types.Ipaffs;
+using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
 using Xunit;
 using Xunit.Abstractions;
@@ -42,8 +26,8 @@ public class ChedPUpdatedNotificationTests(InMemoryScenarioApplicationFactory<Mu
             .message;
         
         // The scenario has multiple versions of the same notification so we just want one of them.
-        var chedPNotification = (Types.Ipaffs.ImportNotification)loadedData.FirstOrDefault(d =>
-                d is { generator: MultiStepScenarioGenerator, message: Types.Ipaffs.ImportNotification })
+        var chedPNotification = (ImportNotification)loadedData.FirstOrDefault(d =>
+                d is { generator: MultiStepScenarioGenerator, message: ImportNotification })
             .message;
 
         // Act

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using JsonApiDotNetCore.Serialization.JsonConverters;
 using JsonApiDotNetCore.Serialization.Objects;
 
-namespace Btms.Backend.IntegrationTests.JsonApiClient;
+namespace TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 
 public abstract class JsonApiDocument<T>
 {

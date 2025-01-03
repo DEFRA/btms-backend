@@ -10,6 +10,8 @@
 #nullable enable
 
 
+using Btms.Model.Ipaffs;
+
 namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ImportNotificationMapper
@@ -22,6 +24,7 @@ public static class ImportNotificationMapper
         }
 
         var to = new Btms.Model.Ipaffs.ImportNotification();
+        
         to.IpaffsId = from?.IpaffsId;
         to.Etag = from?.Etag;
         to.ExternalReferences = from?.ExternalReferences?.Select(x => ExternalReferenceMapper.Map(x)).ToArray();
