@@ -1,316 +1,273 @@
 {
-  "referenceNumber": null,
-  "externalReferences": [
-    {
-      "system": "NCTS",
-      "reference": "24GB123456789AB012",
-      "exactMatch": true,
-      "verifiedByImporter": true,
-      "verifiedByInspector": false
-    }
-  ],
-  "version": null,
-  "lastUpdated": null,
+  "id": 4255014,
+  "referenceNumber": "CHEDP.GB.2024.5255014",
+  "version": 1,
+  "lastUpdated": "2024-12-04T15:05:11.008415539Z",
   "lastUpdatedBy": {
-    "displayName": "Mark Admin-Tester",
-    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    "displayName": "d0815b8fc9958c9733b67f67ecd8d3b7202759bc3d333a6864916fb9b3b27778",
+    "userId": "c58f2986-1047-ee11-be6d-000d3aad6e61"
   },
   "type": "CVEDP",
-  "status": "SUBMITTED",
+  "status": "VALIDATED",
   "riskAssessment": {
     "commodityResults": [
       {
-        "riskDecision": "REENFORCED_CHECK",
-        "exitRiskDecision": "INCONCLUSIVE",
-        "uniqueId": "9f16a281-8629-41dd-b3bd-e59975910aca"
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "c6fa43d5-f5da-4a63-bde5-d5bed9add114"
       }
     ],
-    "assessmentDateTime": "2024-11-08T08:22:52.702425171"
+    "assessmentDateTime": "2024-12-04T13:12:26.214369117"
   },
   "journeyRiskCategorisation": {
     "riskLevel": "Low",
     "riskLevelMethod": "User",
-    "riskLevelDateTime": "2024-11-08T08:22:27.587"
+    "riskLevelDateTime": "2024-12-04T13:10:43.7"
   },
   "isHighRiskEuImport": true,
   "partOne": {
     "personResponsible": {
-      "name": "Performance Tester",
-      "companyId": "25b79d6b-6646-e911-a96b-000d3a28d891",
-      "companyName": "Happy Valley_14143510048",
+      "name": "d0815b8fc9958c9733b67f67ecd8d3b7202759bc3d333a6864916fb9b3b27778",
+      "companyId": "a2e1a768-7c6f-eb11-a812-000d3a49b7d6",
+      "companyName": "7e0fabbaa7e07ef8b430e8f11f59f1f7e5b159521c812b4d850706d4df15acbf",
       "address": [
-        "DEPARTMENT FOR ENVIRONMENT FOOD & RURAL AFFAIRS (D E F R A), HORNBEAM HOUSE",
-        "ELECTRA WAY",
-        "CHESHIRE EAST",
-        "CREWE",
-        "CW1 6GJ"
+        "ec472b6e6c9f48251921af0fac2134e6c23ee4c11a58ecb70a41d8c3df9fb37b",
+        "28b746e128de8b5327ae03485d64d3081de59ade3e95227e46d265b62b0cb9b7",
+        "3757c9267315c627f8ed7343c163171f4a4eeb78cb52fad0f01324c751b41dd0",
+        "12a8584c0ae48558db43b11e19b4d47255bb29669587d4c9a34debf4c25c3458",
+        "21fa061b6f75a44c4a7a4c0c911d77b2c0f9d0b096b6625c4beea7c609ca641f"
       ],
       "country": "GB",
       "tracesID": 1001,
-      "phone": "0788976546",
-      "email": "TIC94587_3So@defratest.org.uk",
-      "contactId": "ab7b426a-6646-e911-a96f-000d3a28da35"
+      "phone": "876bb079da5976283b0d0705724debb552833ec32685f76b0339a3d6164d451a",
+      "email": "337af265884b3f162c7ddd1fe1e4b81dbb0d375800eb9a5856b2e7b5cb48f108",
+      "contactId": "c58f2986-1047-ee11-be6d-000d3aad6e61"
     },
     "consignor": {
-      "id": "cf596bdc-4f1b-4300-bacf-b1d0e5d5d0ea",
+      "id": "fa768947-f6c5-4a2c-9985-2c3105937f01",
       "type": "exporter",
       "status": "nonapproved",
-      "companyName": "perf-consignor-company-name",
+      "companyName": "f21eb97ead88aa7b350fdd9d657ec47932e2fc648794dc7a4a816cf323ed188d",
       "address": {
-        "addressLine1": "perf-consignor-address-line-1",
-        "city": "perf-consignor-city",
-        "postalZipCode": "AB1 1AB",
-        "countryISOCode": "AF",
-        "telephone": "0123456789",
-        "email": "perf@test.com"
+        "addressLine1": "dae58d6d23d880a0d04e6df2a494737905ac89a52fea0411eb0dd270e8769a9d",
+        "addressLine2": "3d9a1397930c9661c334970765d39691a03b643a570fb8fbe299a4b5fac2b3f9",
+        "city": "adbfd9a475e8d63a59b4a499ca8fdb24daa11a67ff5c7bd75ca0ed4456487870",
+        "postalZipCode": "3d9a1397930c9661c334970765d39691a03b643a570fb8fbe299a4b5fac2b3f9",
+        "countryISOCode": "3ec7eac287fd209db84013345b50e6abf5b572c3313803a3b1a7d4f783d6ef43",
+        "telephone": "ca89241d25d26931e57540e1ea5923356081b067614a3abca1c3a49be347deda",
+        "email": "8a82464aec02cb3089a7f6cc6b3b44612c3575f180f214c866161b24944f817c"
       },
-      "tracesId": 10130964
+      "tracesId": 10300991
     },
     "consignee": {
-      "id": "6a7b7d73-c2a1-4bd2-abda-766df1f5a82f",
-      "type": "consignee",
-      "status": "nonapproved",
-      "companyName": "perf-consignee-company-name",
-      "address": {
-        "addressLine1": "perf-consignor-address-line-1",
-        "city": "perf-consignee-city",
-        "postalZipCode": "AB1 1AB",
-        "countryISOCode": "AF",
-        "telephone": "0123456789",
-        "email": "perf@test.com"
-      },
-      "tracesId": 10130965
-    },
-    "importer": {
-      "id": "6a7b7d73-c2a1-4bd2-abda-766df1f5a82f",
+      "id": "bd8abb28-7bb3-4f52-a5b8-cb69749c1cbe",
       "type": "importer",
       "status": "nonapproved",
-      "companyName": "perf-consignee-company-name",
+      "companyName": "e2a3c4ad49cf16e4c2db145983db00cc58f5b13f293119ca9a3ab7b37ac3ac3a",
       "address": {
-        "addressLine1": "perf-consignor-address-line-1",
-        "city": "perf-consignee-city",
-        "postalZipCode": "AB1 1AB",
-        "countryISOCode": "AF",
-        "telephone": "0123456789",
-        "email": "perf@test.com"
+        "addressLine1": "62ad0ab0f9e58c05c5f6371236384db25d99ce5bc9ec726e4d91861569a395ab",
+        "addressLine2": "cce2b42037716226ba86d9ce61ba37a66228169b63bec2a1b8dad46107db1f32",
+        "city": "e69800c9cfd8a8a1c6fb3ad142cf6c1b297a5a1334d595d8235670a59cf1e0bc",
+        "postalZipCode": "c2d8a65e7a3fc36a0760357c8d6ef19ddab343072a178c9b246d5d2d0be1ec44",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "2fbe58297371fe79c79f8a86cd83afc190c2401d13122de1772bb6567351c8b1",
+        "email": "adf7e835de7dff510c3751ab9c11ec09a43a467811f339ed4e6df562c73f0678"
       },
-      "tracesId": 10130965
+      "tracesId": 10111759
+    },
+    "importer": {
+      "id": "bd8abb28-7bb3-4f52-a5b8-cb69749c1cbe",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "e2a3c4ad49cf16e4c2db145983db00cc58f5b13f293119ca9a3ab7b37ac3ac3a",
+      "address": {
+        "addressLine1": "62ad0ab0f9e58c05c5f6371236384db25d99ce5bc9ec726e4d91861569a395ab",
+        "addressLine2": "cce2b42037716226ba86d9ce61ba37a66228169b63bec2a1b8dad46107db1f32",
+        "city": "e69800c9cfd8a8a1c6fb3ad142cf6c1b297a5a1334d595d8235670a59cf1e0bc",
+        "postalZipCode": "c2d8a65e7a3fc36a0760357c8d6ef19ddab343072a178c9b246d5d2d0be1ec44",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "2fbe58297371fe79c79f8a86cd83afc190c2401d13122de1772bb6567351c8b1",
+        "email": "adf7e835de7dff510c3751ab9c11ec09a43a467811f339ed4e6df562c73f0678"
+      },
+      "tracesId": 10111759
     },
     "placeOfDestination": {
-      "id": "6a7b7d73-c2a1-4bd2-abda-766df1f5a82f",
-      "type": "destination",
+      "id": "923cd956-146b-4056-842c-41faead22e95",
+      "type": "importer",
       "status": "nonapproved",
-      "companyName": "perf-consignee-company-name",
+      "companyName": "cbba6a8aa2af47fce4b9a5fd54eb663e53c6729c0081ef58167a4dd524de41d1",
       "address": {
-        "addressLine1": "perf-consignor-address-line-1",
-        "city": "perf-consignee-city",
-        "postalZipCode": "AB1 1AB",
-        "countryISOCode": "AF",
-        "telephone": "0123456789",
-        "email": "perf@test.com"
+        "addressLine1": "6a0479831b8d0e3ed198803062cc6a91d02a1f4ba3d73dd59b1755c1662d12a8",
+        "city": "f11f3f6ba9c633bdcef02ed7ff6ddd6f8801cc048f388338740c825636af2e63",
+        "postalZipCode": "a3eda07dd06f107d1de56a96baa51ad63628728a1d4ea4e4f289a51bfac98c4e",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "bb5e9cde6a7c4dfc977171c8205b6c362283929f945916640c82205d5d45d58d",
+        "email": "adf7e835de7dff510c3751ab9c11ec09a43a467811f339ed4e6df562c73f0678"
       },
-      "tracesId": 10130965
+      "tracesId": 10112029
     },
     "commodities": {
-      "totalGrossWeight": 2,
-      "totalNetWeight": 1,
-      "numberOfPackages": 1,
-      "temperature": "Chilled",
+      "totalGrossWeight": 10464.4,
+      "totalNetWeight": 9644.4,
+      "numberOfPackages": 1640,
+      "temperature": "Frozen",
       "commodityComplement": [
         {
-          "commodityID": "02042210",
-          "commodityDescription": "Short forequarters",
+          "commodityID": "190120",
+          "commodityDescription": "Mixes and doughs for the preparation of bakers\u0027 wares of heading 1905",
           "complementID": 1,
-          "complementName": "Ovis aries",
-          "speciesID": "167258",
-          "speciesName": "Ovis aries",
-          "speciesTypeName": "Domestic",
-          "speciesType": "16",
-          "speciesClass": "167258",
-          "speciesNomination": "Ovis aries"
+          "speciesType": "190120",
+          "speciesClass": "190120"
         }
       ],
       "complementParameterSet": [
         {
-          "uniqueComplementID": "9f16a281-8629-41dd-b3bd-e59975910aca",
+          "uniqueComplementID": "c6fa43d5-f5da-4a63-bde5-d5bed9add114",
           "complementID": 1,
-          "speciesID": "167258",
           "keyDataPair": [
             {
               "key": "netweight",
-              "data": "1"
+              "data": "9644.4"
             },
             {
               "key": "number_package",
-              "data": "1"
+              "data": "1640"
             },
             {
               "key": "type_package",
-              "data": "Bale"
+              "data": "Carton"
             }
           ]
         }
       ],
       "includeNonAblactedAnimals": false,
-      "countryOfOrigin": "AT",
-      "isLowRiskArticle72Country": false,
-      "consignedCountry": "AT",
-      "totalGrossVolume": 2,
-      "totalGrossVolumeUnit": "litres"
+      "countryOfOrigin": "FR",
+      "consignedCountry": "FR"
     },
     "purpose": {
       "conformsToEU": true,
-      "exitBIP": "GBFXT1",
-      "thirdCountry": "DZ",
-      "transitThirdCountries": [
-        "AS"
-      ],
-      "purposeGroup": "For Transit to 3rd Country",
-      "estimatedArrivalDateAtPortOfExit": null,
-      "estimatedArrivalTimeAtPortOfExit": null
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
     },
-    "pointOfEntry": "GBPBY017",
-    "arrivalDate": null,
-    "arrivalTime": null,
-    "transporter": {
-      "id": "9d151269-fd63-46ff-ae39-121a6f847944",
-      "type": "private transporter",
-      "status": "nonapproved",
-      "companyName": "perf-transporter-company-name",
-      "address": {
-        "addressLine1": "perf-transporter-address-line-1",
-        "city": "perf-transporter-city",
-        "postalZipCode": "AB1 1AB",
-        "countryISOCode": "AF",
-        "telephone": "0123456789",
-        "email": "perf@test.com"
-      },
-      "tracesId": 10130966
-    },
-    "transporterDetailsRequired": true,
-    "meansOfTransport": {
-      "id": "perf-identification",
-      "type": "Aeroplane",
-      "document": "perf-document"
-    },
+    "pointOfEntry": "GBSEV25",
+    "arrivalDate": "2024-12-04",
+    "arrivalTime": "17:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
     "meansOfTransportFromEntryPoint": {
-      "id": "perf-identification",
-      "type": "Aeroplane",
-      "document": "perf-document"
+      "id": "GP067VP GR701DQ",
+      "type": "Road Vehicle",
+      "document": "8001817170"
     },
-    "departureDate": "2024-12-31",
-    "departureTime": "12:00:00",
     "veterinaryInformation": {
-      "establishmentsOfOrigin": [
-        {
-          "id": "11b4e363-8839-ccf7-d0ca-7dc35cf50b6e",
-          "name": "Cashmere Fibere Afghan Ltd",
-          "country": "AF",
-          "types": [
-            "Category 3"
-          ],
-          "approvalNumber": "AF 0023",
-          "section": "Other facility for the collection or handling of animal by-products(unprocessed or untreated materials)"
-        }
-      ],
       "accompanyingDocuments": [
         {
-          "documentType": "billOfLading",
-          "documentReference": "perf-document-number",
-          "documentIssueDate": "2024-01-01"
+          "documentType": "commercialInvoice",
+          "documentReference": "8001817170",
+          "documentIssueDate": "2024-12-04",
+          "attachmentId": "13553e6f-8f44-48c4-8b17-a05f9fb7b866",
+          "attachmentFilename": "facture 8001817170.xlsx",
+          "attachmentContentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "uploadUserId": "c58f2986-1047-ee11-be6d-000d3aad6e61",
+          "uploadOrganisationId": "a2e1a768-7c6f-eb11-a812-000d3a49b7d6"
         }
       ]
     },
-    "importerLocalReferenceNumber": "local-reference-number",
+    "importerLocalReferenceNumber": "8001817170",
     "sealsContainers": [
       {
-        "sealNumber": "1",
-        "containerNumber": "1",
+        "containerNumber": "GP067VP GR701DQ",
         "officialSeal": false
       }
     ],
-    "submissionDate": "2024-11-08T08:25:18.409312817Z",
+    "submissionDate": "2024-12-04T13:12:24.744858918Z",
     "submittedBy": {
-      "displayName": "Mark Admin-Tester",
-      "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+      "displayName": "d0815b8fc9958c9733b67f67ecd8d3b7202759bc3d333a6864916fb9b3b27778",
+      "userId": "c58f2986-1047-ee11-be6d-000d3aad6e61"
     },
     "complexCommoditySelected": true,
-    "portOfEntry": "GBBRS",
-    "portOfExit": "GBFXT",
+    "portOfEntry": "GBSEV",
     "contactDetails": {
-      "name": "percy inspector",
-      "telephone": "020 8225 7295",
-      "email": "defratestbip@anthunt3.33mail.com"
+      "name": "28dffaa9c771220dbcf884009da26997b391ff0f004a975ffc344b5938f41408",
+      "telephone": "61ca3d35572b15ac34c54cda99d9d4ac2687a68ecf777901e60299d34ce372cd",
+      "email": "b1ede1bb47ad30dd1024bb266c11fe8683ad415c615fa5eec2f4068e9ae9a4d3"
     },
-    "nominatedContacts": [
-      {
-        "name": "mo green",
-        "telephone": "0207 555 9675",
-        "email": "mo@green.com"
+    "isGVMSRoute": true,
+    "isChargeable": true,
+    "wasChargeable": true,
+    "billingInformation": {
+      "isConfirmed": true,
+      "emailAddress": "OLLUKPAY@oocllogistics.com",
+      "phoneNumber": "01473659000",
+      "postalAddress": {
+        "addressLine1": "OOCL HOUSE",
+        "addressLine2": "BRIDGE ROAD",
+        "addressLine3": "O O C L",
+        "addressLine4": "LEVINGTON",
+        "county": "SUFFOLK",
+        "cityOrTown": "IPSWICH",
+        "postalCode": "IP10 0NE"
       }
-    ],
-    "isGVMSRoute": false,
-    "provideCtcMrn": "YES"
+    },
+    "commonUserCharge": {
+      "wasSentToTradeCharge": true
+    },
+    "provideCtcMrn": "NO"
   },
+  "decisionBy": {
+    "displayName": "e19bb5243f28beadde6ce237be687b8cbc54fa918ce1b5c2d3d17cb287346d1d",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-04T15:05:10.919926472Z",
   "partTwo": {
     "decision": {
-      "decision": "Acceptable for Transit",
-      "transitExitBip": "GBFXT1",
-      "transitThirdCountry": "AS",
-      "transitDestinationThirdCountry": "DZ"
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
     },
-    "consignmentCheck": {},
+    "consignmentCheck": {
+      "documentCheckResult": "Not Done",
+      "identityCheckType": "Not Done",
+      "identityCheckResult": "Not Done",
+      "identityCheckNotDoneReason": "Reduced checks regime",
+      "physicalCheckResult": "Not Done",
+      "physicalCheckNotDoneReason": "Reduced checks regime"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "72a65ccfebc123877ec83e75538d65004774b90e0d2136d6d56f2c2237b00f3d",
+        "lastName": "568205949613a735c6a81cd476c08c0b7f0714ffc5250bd257f75a1d998ec16a",
+        "email": "7ad4955ec93b5cbb8badab400a069bf9b051c20ec452f10d01432a7b87d5d038",
+        "phone": "5589e05a0e3e920a66b864d57a5f25f2b896b068574331ad2b4731ce372d025b",
+        "signed": "2024-12-04T15:05:11.008381338"
+      },
+      "iuuCheckRequired": false
+    },
     "consignmentValidation": [
       {
         "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable",
         "message": "What is the decision for this consignment"
       },
       {
-        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/physicalcheckdone",
-        "message": "Physical check"
-      },
-      {
-        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/documentcheckresult",
-        "message": "Documentary check"
-      },
-      {
-        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/laboratorytestsrequired",
-        "message": "Are laboratory tests required"
-      },
-      {
-        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/identitycheckdone",
-        "message": "Identity check"
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/veterinaryinformation/establishmentsoforigin",
+        "message": "Approved establishment"
       }
     ],
-    "inspectionRequired": null
+    "checkDate": "2024-12-04T15:05:10.882333217Z",
+    "inspectionRequired": "Not required",
+    "autoClearedDateTime": "2024-12-04T15:05:10.882367618Z"
   },
   "partThree": {
     "sealCheckRequired": false
   },
   "consignmentValidation": [
     {
-      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/documentcheckresult",
-      "message": "Documentary check"
-    },
-    {
-      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/identitycheckdone",
-      "message": "Identity check"
-    },
-    {
-      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/physicalcheckdone",
-      "message": "Physical check"
-    },
-    {
-      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/laboratorytestsrequired",
-      "message": "Are laboratory tests required"
-    },
-    {
       "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable",
       "message": "What is the decision for this consignment"
     }
   ],
-  "etag": "00000000000C61A5",
-  "riskDecisionLockingTime": "2024-12-31T10:00:00Z",
-  "isRiskDecisionLocked": false,
+  "etag": "00000000045133AE",
+  "riskDecisionLockingTime": "2024-12-04T15:00:00Z",
+  "isRiskDecisionLocked": true,
   "chedTypeVersion": 1
 }
