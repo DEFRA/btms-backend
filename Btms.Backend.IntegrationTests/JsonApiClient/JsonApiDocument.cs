@@ -9,7 +9,7 @@ public abstract class JsonApiDocument<T>
 {
     protected JsonSerializerOptions JsonSerializerOptions = new()
     {
-        Converters = { new SingleOrManyDataConverterFactory() },
+        Converters = { new SingleOrManyDataConverterFactory(), new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
