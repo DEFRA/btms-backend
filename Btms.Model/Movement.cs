@@ -24,7 +24,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     [ChangeSetIgnore] //TODO : should we ignore this or not?
     [Attr] 
-    public required MovementStatus Status { get; set; }
+    public required MovementStatus BtmsStatus { get; set; }
         
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
     [ChangeSetIgnore]

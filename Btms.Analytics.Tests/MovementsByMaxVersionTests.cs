@@ -1,78 +1,159 @@
-using Btms.Common.Extensions;
+using Btms.Model.Ipaffs;
 using FluentAssertions;
+using TestDataGenerator.Scenarios;
+using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
+using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 
-using Btms.Analytics.Tests.Fixtures;
-using Btms.Model.Ipaffs;
-
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(BasicSampleDataTestCollection))]
-public class MovementsByMaxVersionTests(
-    BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+// [Collection(nameof(BasicSampleDataTestCollection))]
+// public class MovementsByMaxVersionTests(
+//     BasicSampleDataTestFixture basicSampleDataTestFixture,
+//     ITestOutputHelper testOutputHelper)
+public class MovementsByMaxVersionTests(ITestOutputHelper output)
+    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
-    // [Fact]
-    // public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
-    // {
-    //     testOutputHelper.WriteLine("Querying for aggregated data");
-    //     var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
-    //         .ByStatus(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
-    //
-    //     testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
-    //     
-    //     result.Values.Count.Should().Be(2);
-    //     result.Values.Keys.Order().Should().Equal("Linked", "Not Linked");
-    // }
-    //
-    // [Fact]
-    // public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
-    // {
-    //     testOutputHelper.WriteLine("Querying for aggregated data");
-    //     var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
-    //         .ByStatus(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
-    //
-    //     testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-    //     
-    //     result.Values.Count.Should().Be(2);
-    //     result.Values.Keys.Order().Should().Equal("Linked", "Not Linked");
-    // }
-    //
-    // [Fact]
-    // public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
-    // {
-    //     testOutputHelper.WriteLine("Querying for aggregated data");
-    //     var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
-    //         .ByStatus(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
-    //
-    //     testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-    //     
-    //     result.Values.Count.Should().Be(2);
-    //     result.Values.Keys.Order().Should().Equal("Linked", "Not Linked");
-    // }
+    
+    [Fact]
+    public async Task WhenCalled_ReturnsResults()
+    {
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+
+        var result = await BackendFixture
+            .BtmsClient
+            .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
+                dateFrom:DateTime.Today.AddDays(-1),
+                dateTo:DateTime.Today.AddDays(1));
+        
+        TestOutputHelper.WriteLine($"{result.StatusCode} status");
+        result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
+        
+        var charts = await result.ToJsonDictionary();
+        
+        TestOutputHelper.WriteLine($"movementsByMaxEntryVersion keys : {charts["movementsByMaxEntryVersion"].GetKeys()}");
+        TestOutputHelper.WriteLine($"result keys : {charts["movementsByMaxEntryVersion"]["values"]!.GetKeys()}");
+
+        charts["movementsByMaxEntryVersion"]["values"]!
+            .GetKeys()
+            .Length.Should().Be(1);
+        
+        var val = charts["movementsByMaxEntryVersion"]["values"]!["1"]!
+            .GetValue<int>()
+            .Should()
+            .Be(1);
+    }
     
     [Fact]
     public async Task WhenCalledWithChedType_ReturnsResults()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), chedTypes: [ImportNotificationTypeEnum.Cveda]));
+        TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        var result = await BackendFixture
+            .BtmsClient
+            .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
+                dateFrom:DateTime.Today.AddDays(-1),
+                dateTo:DateTime.Today.AddDays(1),
+                chedTypes: [ImportNotificationTypeEnum.Cvedp]);
         
-        result.Values.Count.Should().Be(2);
+        TestOutputHelper.WriteLine($"{result.StatusCode} status");
+        result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
+        
+        var charts = await result.ToJsonDictionary();
+        
+        TestOutputHelper.WriteLine($"movementsByMaxEntryVersion keys : {charts["movementsByMaxEntryVersion"].GetKeys()}");
+        TestOutputHelper.WriteLine($"result keys : {charts["movementsByMaxEntryVersion"]["values"]!.GetKeys()}");
+
+        charts["movementsByMaxEntryVersion"]["values"]!
+            .GetKeys()
+            .Length.Should().Be(1);
+        
+        var val = charts["movementsByMaxEntryVersion"]["values"]!["1"]!
+            .GetValue<int>()
+            .Should()
+            .Be(1);
+    }
+    
+    [Fact]
+    public async Task WhenCalledWithWrongChedType_ReturnsResults()
+    {
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+
+        var result = await BackendFixture
+            .BtmsClient
+            .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
+                dateFrom:DateTime.Today.AddDays(-1),
+                dateTo:DateTime.Today.AddDays(1),
+                chedTypes: [ImportNotificationTypeEnum.Cveda]);
+        
+        TestOutputHelper.WriteLine($"{result.StatusCode} status");
+        result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
+        
+        var charts = await result.ToJsonDictionary();
+        
+        TestOutputHelper.WriteLine($"movementsByMaxEntryVersion keys : {charts["movementsByMaxEntryVersion"].GetKeys()}");
+        TestOutputHelper.WriteLine($"result keys : {charts["movementsByMaxEntryVersion"]["values"]!.GetKeys()}");
+
+        charts["movementsByMaxEntryVersion"]["values"]!
+            .GetKeys()
+            .Length.Should().Be(0);
     }
     
     [Fact]
     public async Task WhenCalledWithCountry_ReturnsResults()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "AL"));
+        TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        var result = await BackendFixture
+            .BtmsClient
+            .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
+                dateFrom:DateTime.Today.AddDays(-1),
+                dateTo:DateTime.Today.AddDays(1),
+                country:"FR");
         
-        result.Values.Count.Should().Be(1);
+        TestOutputHelper.WriteLine($"{result.StatusCode} status");
+        result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
+        
+        var charts = await result.ToJsonDictionary();
+        
+        TestOutputHelper.WriteLine($"movementsByMaxEntryVersion keys : {charts["movementsByMaxEntryVersion"].GetKeys()}");
+        TestOutputHelper.WriteLine($"result keys : {charts["movementsByMaxEntryVersion"]["values"]!.GetKeys()}");
+
+        charts["movementsByMaxEntryVersion"]["values"]!
+            .GetKeys()
+            .Length.Should().Be(1);
+        
+        var val = charts["movementsByMaxEntryVersion"]["values"]!["1"]!
+            .GetValue<int>()
+            .Should()
+            .Be(1);
+    }
+    
+    
+    [Fact]
+    public async Task WhenCalledWithWrongCountry_ReturnsResults()
+    {
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+
+        var result = await BackendFixture
+            .BtmsClient
+            .GetAnalyticsDashboard(["movementsByMaxEntryVersion"],
+                dateFrom:DateTime.Today.AddDays(-1),
+                dateTo:DateTime.Today.AddDays(1),
+                country:"ES");
+        
+        TestOutputHelper.WriteLine($"{result.StatusCode} status");
+        result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
+        
+        var charts = await result.ToJsonDictionary();
+        
+        TestOutputHelper.WriteLine($"movementsByMaxEntryVersion keys : {charts["movementsByMaxEntryVersion"].GetKeys()}");
+        TestOutputHelper.WriteLine($"result keys : {charts["movementsByMaxEntryVersion"]["values"]!.GetKeys()}");
+
+        charts["movementsByMaxEntryVersion"]["values"]!
+            .GetKeys()
+            .Length.Should().Be(0);
     }
 }

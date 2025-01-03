@@ -4,6 +4,7 @@ using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
+using TestDataGenerator.Helpers;
 using TestDataGenerator.Scenarios;
 using Decision = Btms.Types.Alvs.Decision;
 
@@ -16,27 +17,29 @@ public abstract class ScenarioGenerator
 
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
+    //TODO : remove these Get methods...
     internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file, string fileExtension = ".json")
     {
         var fullPath = $"{_fullFolder}/{file}{fileExtension}";
         var builder = ImportNotificationBuilder.FromFile(fullPath);
-
+    
         return builder;
     }
 
     internal ClearanceRequestBuilder GetClearanceRequestBuilder(string file, string fileExtension = ".json")
     {
-        var fullPath = $"{_fullFolder}/{file}{fileExtension}";
-        var builder = new ClearanceRequestBuilder(fullPath);
-
-        return builder;
+        return BuilderHelpers.GetClearanceRequestBuilder(file, fileExtension);
+        // var fullPath = $"{_fullFolder}/{file}{fileExtension}";
+        // var builder = new ClearanceRequestBuilder(fullPath);
+        //
+        // return builder;
     }
-
+    
     internal DecisionBuilder GetDecisionBuilder(string file, string fileExtension = ".json")
     {
         var fullPath = $"{_fullFolder}/{file}{fileExtension}";
         var builder = new DecisionBuilder(fullPath);
-
+    
         return builder;
     }
 

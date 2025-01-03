@@ -79,7 +79,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
 
         return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
     }
-    public ClearanceRequestBuilder<T> WithEntryVersionNumber(int version)
+    public ClearanceRequestBuilder<T> WithEntryVersionNumber(int version = 1)
     {
         return Do(x =>
         {
@@ -198,6 +198,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         return Do(cr =>
         {
             cr.Header!.EntryReference.AssertHasValue("Clearance Request EntryReference missing");
+            cr.Header!.EntryVersionNumber.AssertHasValue("Clearance Request EntryVersionNumber missing");
             cr.Header!.DeclarationUcr.AssertHasValue("Clearance Request DeclarationUcr missing");
             cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing");
             // cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
