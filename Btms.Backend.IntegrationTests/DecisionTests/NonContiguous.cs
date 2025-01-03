@@ -1,5 +1,6 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
+using Btms.Model.Cds;
 using FluentAssertions;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
@@ -10,12 +11,12 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NoMatchTests(ITestOutputHelper output)
-    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
+public class NonContiguous(ITestOutputHelper output)
+    : BaseTest<CrNonContiguousDecisionsScenarioGenerator>(output)
 {
     
     [Fact]
-    public void ShouldNotHaveLinked()
+    public void ShouldHave2AlvsDecisions()
     {
         // Assert
         var movement = Client.AsJsonApiClient()
@@ -23,11 +24,16 @@ public class NoMatchTests(ITestOutputHelper output)
             .GetResourceObjects<Movement>()
             .Single();
 
-        movement.BtmsStatus.LinkStatus.Should().Be("Not Linked");
+        movement
+            .AlvsDecisionStatus
+            .Decisions
+            .Count
+            .Should()
+            .Be(2);
     }
     
     [Fact]
-    public void ShouldHaveAlvsDecision()
+    public void ShouldHaveCorrectDecisionNumbers()
     {
         // Assert
         var movement = Client.AsJsonApiClient()
@@ -35,24 +41,16 @@ public class NoMatchTests(ITestOutputHelper output)
             .GetResourceObjects<Movement>()
             .Single();
 
-        movement.AlvsDecisionStatus.Decisions.Count.Should().Be(1);
+        movement
+            .AlvsDecisionStatus
+            .Decisions
+            .Select(d => d.Context.AlvsDecisionNumber)
+            .Should()
+            .Equal(1, 3);
     }
     
     [Fact]
-    public void ShouldHaveDecisionStatus()
-    {
-        
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement.AlvsDecisionStatus.DecisionStatus.Should().BeNull();
-    }
-    
-    [Fact]
-    public void ShouldHaveDecisionMatchedFalse()
+    public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
         
         // Assert
@@ -63,9 +61,8 @@ public class NoMatchTests(ITestOutputHelper output)
 
         movement
             .AlvsDecisionStatus
-            .Context!
-            .DecisionMatched
+            .DecisionStatus
             .Should()
-            .BeFalse();
+            .Be(DecisionStatusEnum.AlvsDecisionVersionsNotComplete);
     }
 }

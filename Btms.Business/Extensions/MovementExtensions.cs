@@ -17,9 +17,10 @@ public static class MovementExtensions
             //Contains duplicates
             return false;
         }
-        else if (numbers.Count() == numbers.Last())
+        else if (numbers.Count() != numbers.Last())
         {
             //Some missing
+            // should be contiguous
 
             return false;
         }
@@ -43,11 +44,11 @@ public static class MovementExtensions
         {
             alvsDecisionStatus = DecisionStatusEnum.AlvsClearanceRequestVersionsNotComplete;
         }
-        else if (movement.AlvsDecisionStatus.Decisions.Exists(d => d.Context.AlvsDecisionNumber == 1))
+        else if (!movement.AlvsDecisionStatus.Decisions.Exists(d => d.Context.AlvsDecisionNumber == 1))
         {
             alvsDecisionStatus = DecisionStatusEnum.AlvsDecisionVersion1NotPresent;
         }
-        else if (movement.AlvsDecisionStatus.Decisions.AreNumbersComplete(d => d.Context.AlvsDecisionNumber!))
+        else if (!movement.AlvsDecisionStatus.Decisions.AreNumbersComplete(d => d.Context.AlvsDecisionNumber!))
         {
             alvsDecisionStatus = DecisionStatusEnum.AlvsDecisionVersionsNotComplete;
         }

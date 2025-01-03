@@ -11,8 +11,6 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 [Trait("Category", "Integration")]
 public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
     : BaseTest<CrNoMatchNoDecisionScenarioGenerator>(output)
-       // IClassFixture<BackendFixture<CrNoMatchNoDecisionScenarioGenerator>>,
-       // IClassFixture<TestGeneratorFixture<CrNoMatchNoDecisionScenarioGenerator>>
 {
     
     [Fact]

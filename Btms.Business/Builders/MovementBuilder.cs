@@ -164,6 +164,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger)
 
             _movement.AlvsDecisionStatus.Decisions.Add(alvsDecision);
 
+            _movement.AnalyseAlvsStatus();
             _movement.AddLinkStatus();
         }
         else
