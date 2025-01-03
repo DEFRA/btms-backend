@@ -80,6 +80,18 @@
     <None Update="Scenarios\Samples\NoAuditLogForMovementUpdate\IPAFFS\CHEDP\2024\12\26\CHEDP_GB_2024_031218000003-8fcd7903-ab05-4f75-be4f-444475fd80cd.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\cheda-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedd-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedp-one-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedpp-multiple-commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

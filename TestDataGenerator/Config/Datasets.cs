@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using TestDataGenerator.Scenarios;
+using TestDataGenerator.Scenarios.SpecificFiles;
 
 namespace TestDataGenerator.Config;
 
@@ -86,7 +87,7 @@ public class Datasets(IHost app)
         {
             app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5, 7),
             app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(5, 7),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(15, 7),
+            app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(15, 7),
             app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(15, 7)
         }
     };
@@ -101,7 +102,7 @@ public class Datasets(IHost app)
             {
                 app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(5000, 90),
                 app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(100, 90),
-                app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(4900, 90)
+                app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(4900, 90)
             }
     };
 
@@ -115,7 +116,7 @@ public class Datasets(IHost app)
             {
                 app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(1, 90),
                 app.Services.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(1, 90),
-                app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 90)
+                app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 90)
             }
     };
 

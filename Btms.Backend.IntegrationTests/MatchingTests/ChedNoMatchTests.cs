@@ -1,7 +1,7 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
-using TestDataGenerator.Scenarios;
+using TestDataGenerator.Scenarios.SpecificFiles;
 using Xunit;
 using Xunit.Abstractions;
 
