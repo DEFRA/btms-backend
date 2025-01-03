@@ -37,7 +37,7 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
             .GetResourceObjects<Movement>()
             .Single();
 
-        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.InvestigationNeeded);
+        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.NoAlvsDecisions);
     }
     
     [Fact]
