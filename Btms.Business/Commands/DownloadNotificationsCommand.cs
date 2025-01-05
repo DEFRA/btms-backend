@@ -50,7 +50,7 @@ public class DownloadCommand : IRequest, ISyncJob
 
             await Download(request, rootFolder, "RAW/FINALISATION", typeof(AlvsClearanceRequest), cancellationToken);
 
-            ZipFile.CreateFromDirectory(rootFolder, $"{env.ContentRootPath}\\{request.JobId}.zip");
+            ZipFile.CreateFromDirectory(rootFolder, $"{env.ContentRootPath}/{request.JobId}.zip");
            
             Directory.Delete(rootFolder, true);
         }
