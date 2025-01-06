@@ -52,7 +52,7 @@ public static class SyncEndpoints
 
     private static IResult DownloadNotifications([FromServices] IWebHostEnvironment env, string id)
     {
-        var stream = File.OpenRead($"{Path.Combine(env.ContentRootPath, id)}.zip");
+        var stream = File.OpenRead($"{env.ContentRootPath}/{id}.zip");
         return Results.File(stream, "application/zip", $"{id}.zip", enableRangeProcessing: true);
     }
 
