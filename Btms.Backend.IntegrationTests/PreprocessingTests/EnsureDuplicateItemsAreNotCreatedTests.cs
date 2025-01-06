@@ -13,9 +13,7 @@ namespace Btms.Backend.IntegrationTests.PreprocessingTests;
 public class EnsureDuplicateItemsAreNotCreatedTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<DuplicateMovementItems_CDMS_211>(output)
 {
-    
-    [Fact(Skip = "We're ending up with 2 items on the clearance request here.")]
-    // [Fact]
+    [Fact]
     public void ShouldNotCreateDuplicateItems()
     {
         // Arrange
@@ -24,7 +22,6 @@ public class EnsureDuplicateItemsAreNotCreatedTests(ITestOutputHelper output)
         var movementMessage = (AlvsClearanceRequest)loadedData.First(d =>
                 d is { Message: AlvsClearanceRequest })
             .Message;
-        
         
         // Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById(movementMessage!.Header!.EntryReference!, "api/movements");
