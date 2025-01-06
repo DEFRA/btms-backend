@@ -2,31 +2,29 @@ using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.MatchingTests;
 
 [Trait("Category", "Integration")]
-public class UnmatchedChedTests(
-    InMemoryScenarioApplicationFactory<AllChedsNoMatchScenarioGenerator> factory,
-    ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "MatchingTests"),
-        IClassFixture<InMemoryScenarioApplicationFactory<AllChedsNoMatchScenarioGenerator>>
+public class UnmatchedChedTests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<AllChedsNoMatchScenarioGenerator>(output)
 {
     [Fact]
     public void ChedsWithNoCR_ShouldNotMatch()
     {
         // Arrange
-        var loadedData = factory.LoadedData;
+        var loadedData = LoadedData;
         var chedA = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cveda }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cveda }).Message;
         var chedD = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).Message;
         var chedP = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).Message;
         var chedPP = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Chedpp }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Chedpp }).Message;
         
 
         // // Act

@@ -104,7 +104,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                 {
                     Name = title,
                     Dimension = "ItemCount",
-                    Results = Enumerable.Range(0, maxCommodities)
+                    Results = Enumerable.Range(0, maxCommodities + 1)
                         .Select(i => new ByNumericDimensionResult
                         {
                             Dimension = i,

@@ -31,63 +31,32 @@ public static class TestDataGeneratorHelpers
             foreach (var message in generatorResult)
             {
                 var scope = sp.CreateScope();
-                
+                var bus = scope.ServiceProvider.GetRequiredService<IPublishBus>();
+                var headers = new Dictionary<string, object>();
+
                 switch (message)
                 {
                     case null:
                         throw new ArgumentNullException();
-                    
-                    case ImportNotification n:
-                        
-                        var notificationConsumer = (NotificationConsumer)scope
-                            .ServiceProvider
-                            .GetRequiredService<IConsumer<ImportNotification>>();
 
-                        notificationConsumer.Context = new ConsumerContext
-                        {
-                            Headers = new Dictionary<string, object> { { "messageId", n.ReferenceNumber! } }
-                        };
-                        
-                        await notificationConsumer.OnHandle(n);
+                    case ImportNotification n:
+                        headers.Add("messageId", n.ReferenceNumber!);
+                        await bus.Publish(n, "NOTIFICATIONS", headers);
                         logger.LogInformation("Sent notification {0} to consumer", n.ReferenceNumber!);
                         break;
-                    
-                    case Decision d:
-                        // This sleep is to allow the system to settle, and have made any links & decisions
-                        // Before sending in a decision and causing a concurrency issue
-                        // Ideally we want to switch to pushing to the bus, rather than directly to the consumer
-                        // so we get the concurrency protection.
-                        
-                        Thread.Sleep(1000);
-                        
-                        var decisionConsumer = (DecisionsConsumer)scope
-                            .ServiceProvider
-                            .GetRequiredService<IConsumer<Decision>>();
 
-                        decisionConsumer.Context = new ConsumerContext
-                        {
-                            Headers = new Dictionary<string, object> { { "messageId", d.Header!.EntryReference! } }
-                        };
-                        
-                        await decisionConsumer.OnHandle(d);
+                    case Decision d:
+                        headers.Add("messageId", d.Header!.EntryReference!);
+                        await bus.Publish(d, "DECISIONS", headers);
                         logger.LogInformation("Sent decision {0} to consumer", d.Header!.EntryReference!);
                         break;
-                    
+
                     case AlvsClearanceRequest cr:
-                        
-                        var crConsumer = (AlvsClearanceRequestConsumer)scope
-                            .ServiceProvider
-                            .GetRequiredService<IConsumer<AlvsClearanceRequest>>();
-                        
-                        crConsumer.Context = new ConsumerContext
-                        {
-                            Headers = new Dictionary<string, object> { { "messageId", cr.Header!.EntryReference! } }
-                        };
-                        
-                        await crConsumer.OnHandle(cr);
-                        logger.LogInformation("Semt cr {0} to consumer", cr.Header!.EntryReference!);
+                        headers.Add("messageId", cr.Header!.EntryReference!);
+                        await bus.Publish(cr, "CLEARANCEREQUESTS", headers);
+                        logger.LogInformation("Sent cr {0} to consumer", cr.Header!.EntryReference!);
                         break;
-                        
+
                     default:
                         throw new ArgumentException($"Unexpected type {message.GetType().Name}");
                 }

@@ -1,6 +1,8 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
+using Btms.Model.Cds;
 using FluentAssertions;
+using Humanizer;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -11,13 +13,11 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class NoMatchTests(ITestOutputHelper output)
-    : BaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
-        ////IClassFixture<BackendFixture<CrNoMatchSingleItemWithDecisionScenarioGenerator>>,
-        ////IClassFixture<TestGeneratorFixture<CrNoMatchSingleItemWithDecisionScenarioGenerator>>
+    : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
     
     [Fact]
-    public void ShouldHaveNotificationRelationships()
+    public void ShouldNotHaveLinked()
     {
         // Assert
         var movement = Client.AsJsonApiClient()
@@ -50,7 +50,7 @@ public class NoMatchTests(ITestOutputHelper output)
             .GetResourceObjects<Movement>()
             .Single();
 
-        movement.AlvsDecisionStatus.DecisionStatus.Should().BeNull();
+        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.InvestigationNeeded);
     }
     
     [Fact]

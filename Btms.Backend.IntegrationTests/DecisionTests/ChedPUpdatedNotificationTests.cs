@@ -3,15 +3,17 @@ using Btms.Model;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
+using TestDataGenerator.Scenarios;
 using TestDataGenerator.Scenarios.ChedP;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class ChedPUpdatedNotificationTests(InMemoryScenarioApplicationFactory<MultiStepScenarioGenerator> factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<MultiStepScenarioGenerator>>
+public class ChedPUpdatedNotificationTests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<MultiStepScenarioGenerator>(output)
 {
     
     [Fact(Skip = "We're not currently re-linking when a new version of notification arrives it seems")]
@@ -19,16 +21,16 @@ public class ChedPUpdatedNotificationTests(InMemoryScenarioApplicationFactory<Mu
     public void MultipleNotificationVersionScenario_ShouldBeLinkedAndMatchDecision()
     {
         // Arrange
-        var loadedData = factory.LoadedData;
+        var loadedData = LoadedData;
         
         var chedPMovement = (AlvsClearanceRequest)loadedData.Single(d =>
-                d is { generator: MultiStepScenarioGenerator, message: AlvsClearanceRequest })
-            .message;
+                d is { Message: AlvsClearanceRequest })
+            .Message;
         
         // The scenario has multiple versions of the same notification so we just want one of them.
-        var chedPNotification = (ImportNotification)loadedData.FirstOrDefault(d =>
-                d is { generator: MultiStepScenarioGenerator, message: ImportNotification })
-            .message;
+        var chedPNotification = (ImportNotification)LoadedData.Single(d =>
+                d is { Message: ImportNotification })
+            .Message;
 
         // Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById(chedPMovement!.Header!.EntryReference!, "api/movements");

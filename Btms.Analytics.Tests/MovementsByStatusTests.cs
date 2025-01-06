@@ -4,22 +4,22 @@ using Xunit;
 using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
+using TestDataGenerator.Config;
+using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(BasicSampleDataTestCollection))]
-public class MovementsByStatusTests(
-    BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+public class MovementsByStatusTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     [Fact]
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetMovementsAggregationService()
             .ByStatus(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
 
-        testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
+        TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
         result.Values.Count.Should().Be(3);
         result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
@@ -28,11 +28,11 @@ public class MovementsByStatusTests(
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetMovementsAggregationService()
             .ByStatus(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(3);
         result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
@@ -41,11 +41,11 @@ public class MovementsByStatusTests(
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetMovementsAggregationService()
             .ByStatus(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(3);
         result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
