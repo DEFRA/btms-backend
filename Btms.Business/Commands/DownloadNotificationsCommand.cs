@@ -39,8 +39,10 @@ public class DownloadCommand : IRequest, ISyncJob
             await Download(request, rootFolder, "RAW/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), cancellationToken);
 
             await Download(request, rootFolder, "RAW/DECISIONS", typeof(AlvsClearanceRequest), cancellationToken);
-            
-            ZipFile.CreateFromDirectory(rootFolder, $"{env.ContentRootPath}\\{request.JobId}.zip");
+
+            await Download(request, rootFolder, "RAW/FINALISATION", typeof(AlvsClearanceRequest), cancellationToken);
+
+            ZipFile.CreateFromDirectory(rootFolder, $"{env.ContentRootPath}/{request.JobId}.zip");
            
             Directory.Delete(rootFolder, true);
         }
