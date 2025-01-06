@@ -8,7 +8,7 @@ using SlimMessageBus;
 
 namespace Btms.Consumers;
 
-public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilder existingMovementBuilder)
+public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory movementBuilderFactory)
     : IConsumer<Decision>, IConsumerWithContext
 {
     public async Task OnHandle(Decision message)
@@ -21,7 +21,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilder existi
             var auditId = Context.Headers["messageId"].ToString();
             var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
             
-            existingMovementBuilder = existingMovementBuilder
+            var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeDecision(auditId!, internalClearanceRequest, notificationContext);
                 // .Build();

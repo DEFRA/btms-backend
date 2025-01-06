@@ -44,7 +44,7 @@ public class AuditEntry
 
     public bool IsUpdated()
     {
-        return Status == "Created";
+        return Status == "Updated";
     }
 
 

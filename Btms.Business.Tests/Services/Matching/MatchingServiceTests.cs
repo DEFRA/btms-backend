@@ -50,7 +50,7 @@ public class MatchingServiceTests
     {
         CrNoMatchScenarioGenerator generator =
             new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
-        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator
@@ -58,7 +58,8 @@ public class MatchingServiceTests
             .First(x => x is AlvsClearanceRequest);
 
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)generatorResult);
-        var movement = movementBuilder
+        
+        var movement = movementBuilderFactory
             .From(internalClearanceRequest)
             .Build();
 
@@ -70,7 +71,7 @@ public class MatchingServiceTests
         ChedASimpleMatchScenarioGenerator generator =
             new ChedASimpleMatchScenarioGenerator(NullLogger<ChedASimpleMatchScenarioGenerator>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
-        var movementBuilder = new MovementBuilder(NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
@@ -89,7 +90,7 @@ public class MatchingServiceTests
                     case AlvsClearanceRequest cr:
 
                         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(cr);
-                        memo.Movements.Add(movementBuilder.From(internalClearanceRequest).Build());
+                        memo.Movements.Add(movementBuilderFactory.From(internalClearanceRequest).Build());
                         break;
                     default:
                         throw new ArgumentException($"Unexpected type {x.GetType().Name}");

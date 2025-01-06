@@ -9,13 +9,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Pipelines.PreProcessing;
 
-public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilder movementBuilder) : IPreProcessor<AlvsClearanceRequest, Movement>
+public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilderFactory movementBuilderFactory) : IPreProcessor<AlvsClearanceRequest, Movement>
 {
     public async Task<PreProcessingResult<Movement>> Process(PreProcessingContext<AlvsClearanceRequest> preProcessingContext)
     {
 
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
-        var mb = movementBuilder.From(internalClearanceRequest);
+        var mb = movementBuilderFactory.From(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(mb.Id);
 
         if (existingMovement is null)
@@ -36,9 +36,9 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         // if (movement.ClearanceRequests[^1].Header?.EntryVersionNumber > existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
         if (mb.IsEntryVersionNumberGreaterThan(existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber))
         {
-            var existingBuilder = movementBuilder.From(existingMovement);
+            var existingBuilder = movementBuilderFactory.From(existingMovement);
             // var changeSet = movement.ClearanceRequests[^1].GenerateChangeSet(existingMovement.ClearanceRequests[0]);
-            var changeSet = existingBuilder.GenerateChangeSet(mb);
+            var changeSet = mb.GenerateChangeSet(existingBuilder);
             
             var auditEntry = mb.UpdateAuditEntry(
                 preProcessingContext.MessageId,
@@ -46,7 +46,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
                 changeSet
             );
 
-            mb.Update(auditEntry);
+            existingBuilder.Update(auditEntry);
 
             existingBuilder.ReplaceClearanceRequests(mb);
             

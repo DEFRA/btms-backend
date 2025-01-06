@@ -15,6 +15,22 @@ public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper ou
     : ScenarioGeneratorBaseTest<NoAuditLogForMovementUpdate>(output)
 {
     [Fact]
+    public void ShouldHaveCorrectDocumentReferenceFromUpdatedClearanceRequest()
+    {
+        // Assert
+        var movement = Client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single();
+
+        movement.Items
+            .Where(x => x.Documents != null)
+            .SelectMany(x => x.Documents!)
+            .Count(x => x.DocumentReference == "GBCHD2024.001239999999")
+            .Should().Be(1);
+    }
+    
+    [Fact]
     public void ShouldHaveUpdatedAuditEntry()
     {
         // Assert
@@ -26,18 +42,5 @@ public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper ou
         movement.AuditEntries
             .Count(a => a is { CreatedBy: "Cds", Status: "Updated" })
             .Should().Be(1);
-    }
-    
-    [Fact(Skip = "The document ref isn't being updated.")]
-    // [Fact]
-    public void ShouldHaveCorrectDocumentReferenceFromUpdatedClearanceRequest()
-    {
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-        
-        movement.Items.First().Documents!.First().DocumentReference.Should().Be("GBCHD2024.001239999999");
     }
 }

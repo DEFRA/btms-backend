@@ -68,7 +68,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDecisionService, DecisionService>();
         services.AddScoped<IMatchingService, MatchingService>();
 
-        services.AddTransient<MovementBuilder>();
+        services.AddTransient<MovementBuilderFactory>();
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
         services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
 
