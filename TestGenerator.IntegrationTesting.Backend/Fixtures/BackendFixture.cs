@@ -28,14 +28,15 @@ public class BackendFixture
     
     private BackendFactory WebApp { get; set; }
     private readonly int _consumerPushDelayMs;
+    
     public readonly ITestOutputHelper TestOutputHelper;
 
-    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName, int consumerPushDelayMs = 1000)
+    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName, int consumerPushDelayMs = 1000, Dictionary<string, string>? backendConfigOverrides = null)
     {
         TestOutputHelper = testOutputHelper;
         _consumerPushDelayMs = consumerPushDelayMs;
         
-        WebApp = new BackendFactory(databaseName, testOutputHelper);
+        WebApp = new BackendFactory(databaseName, testOutputHelper, configOverrides: backendConfigOverrides);
         (MongoDbContext, BtmsClient) = WebApp.Start();
         
     }
@@ -51,7 +52,8 @@ public class BackendFixture
         return testData;
     }
 }
-public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper ) : WebApplicationFactory<Program> 
+
+public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper, Dictionary<string, string>? configOverrides = null) : WebApplicationFactory<Program> 
 {
     private IMongoDbContext? mongoDbContext;
     
@@ -65,9 +67,13 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
             { "BlobServiceOptions:CachePath", "Scenarios/Samples" },
             { "BlobServiceOptions:CacheReadEnabled", "true" },
             { "AuthKeyStore:Credentials:IntTest", "Password" },
-
             { "ConsumerOptions:EnableBlockingPublish", "true" }
         };
+        
+        configOverrides?.ToList().ForEach(x =>
+        {
+            configurationValues.AddOrUpdate(x.Key, x.Value);
+        });
 
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues!)

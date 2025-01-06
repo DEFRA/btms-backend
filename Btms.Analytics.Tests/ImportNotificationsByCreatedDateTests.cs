@@ -4,12 +4,13 @@ using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 using Btms.Analytics.Tests.Fixtures;
+using TestDataGenerator.Config;
 using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
 public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
-    : ScenarioDatasetBaseTest(output, "LoadTest-Condensed")
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 
 {
     [Fact]

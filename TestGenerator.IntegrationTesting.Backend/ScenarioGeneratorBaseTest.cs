@@ -61,13 +61,14 @@ public abstract class ScenarioGeneratorBaseTest<T>
         {
             assert.Invoke();
         }
-        catch(Exception e)
+        catch(Exception)
         {
             TestOutputHelper.WriteLine("Additional context for assertion failure(s)");
             TestOutputHelper.WriteLine("{0} Notifications are in the database.", BackendFixture.MongoDbContext.Notifications.Count());
             TestOutputHelper.WriteLine("{0} Movements are in the database.", BackendFixture.MongoDbContext.Movements.Count());
             TestOutputHelper.WriteLine("Notification IDs are {0}.", BackendFixture.MongoDbContext.Notifications.Select(m => m.Id).ToArray());
             TestOutputHelper.WriteLine("Movement IDs are {0}.", BackendFixture.MongoDbContext.Movements.Select(m => m.Id).ToArray()!);
+            
             //just throw to preserve stacktrace
             throw;
         }
