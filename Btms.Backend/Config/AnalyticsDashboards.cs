@@ -49,12 +49,20 @@ public static class AnalyticsDashboards
                 () => importService.ByStatus(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
             },
             {
+                "allImportNotificationsByTypeAndStatus",
+                () => importService.ByStatus().AsIDataset()
+            },
+            {
                 "last24HoursMovementsLinkingByCreated",
                 () => movementsService.ByCreated(DateTime.Now.NextHour().Yesterday(), DateTime.Now.NextHour(), AggregationPeriod.Hour).AsIDataset()
             },
             {
                 "movementsLinkingByCreated",
                 () => movementsService.ByCreated(DateTime.Today.MonthAgo(), DateTime.Today).AsIDataset()
+            },
+            {
+                "allMovementsByStatus",
+                () => movementsService.ByStatus().AsIDataset()
             },
             {
                 "lastMonthMovementsByStatus",
