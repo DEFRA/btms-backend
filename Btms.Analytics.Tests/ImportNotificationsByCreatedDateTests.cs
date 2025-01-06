@@ -8,12 +8,8 @@ using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
-// [Collection(nameof(BasicSampleDataTestCollection))]
-// public class ImportNotificationsByCreatedDateTests(
-//     BasicSampleDataTestFixture basicSampleDataTestFixture,
-//     ITestOutputHelper testOutputHelper)
 public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
-    : ScenarioDatasetBaseTest(output)
+    : ScenarioDatasetBaseTest(output, "LoadTest-Condensed")
 
 {
     [Fact]

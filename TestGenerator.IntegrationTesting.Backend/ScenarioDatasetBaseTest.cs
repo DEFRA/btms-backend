@@ -17,8 +17,13 @@ public abstract class ScenarioDatasetBaseTest
     protected readonly ITestOutputHelper TestOutputHelper;
 
     protected readonly List<GeneratedResult> LoadedData;
+
+    private static Dictionary<string, List<GeneratedResult>> AllTestClassesDatasets
+        = new Dictionary<string, List<GeneratedResult>>();
+        
     protected ScenarioDatasetBaseTest(
-        ITestOutputHelper testOutputHelper
+        ITestOutputHelper testOutputHelper,
+        string datasetName
     )
     {
         TestOutputHelper = testOutputHelper;
@@ -28,16 +33,32 @@ public abstract class ScenarioDatasetBaseTest
         
         Client = BackendFixture.BtmsClient;
         _mongoDbContext = BackendFixture.MongoDbContext;
-        
-        var data = testGeneratorFixture
-            .GenerateTestDataset("LoadTest-Condensed")
-            .GetAwaiter()
-            .GetResult();
-        
-        LoadedData = BackendFixture
-            .LoadTestData(data)
-            .GetAwaiter()
-            .GetResult();
+
+        // This lock may not be needed if xunit guarantees tests in the same test class
+        // are not parrallelised
+        lock (datasetName)
+        {
+            if (AllTestClassesDatasets.TryGetValue(datasetName, out var loadedData))
+            {
+                testOutputHelper.WriteLine("Dataset is cached. Using cached data");
+                LoadedData = loadedData;
+            }
+            else
+            {
+                testOutputHelper.WriteLine("Dataset is not cached, loading via test generator");
+                var data = testGeneratorFixture
+                    .GenerateTestDataset(datasetName)
+                    .GetAwaiter()
+                    .GetResult();
+                
+                LoadedData = BackendFixture
+                    .LoadTestData(data)
+                    .GetAwaiter()
+                    .GetResult();
+                
+                AllTestClassesDatasets.Add(datasetName, LoadedData);
+            }
+        }
     }
     
     /// <summary>
