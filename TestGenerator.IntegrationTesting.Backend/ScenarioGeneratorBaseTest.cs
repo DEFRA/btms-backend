@@ -26,7 +26,7 @@ public abstract class ScenarioGeneratorBaseTest<T>
         TestOutputHelper = testOutputHelper;
         
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
-        BackendFixture = new BackendFixture(testOutputHelper, GetType().Name);
+        BackendFixture = new BackendFixture(testOutputHelper, typeof(T).Name);
         
         Client = BackendFixture.BtmsClient;
         
