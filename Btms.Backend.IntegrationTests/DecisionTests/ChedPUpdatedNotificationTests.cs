@@ -12,9 +12,6 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-// public class ChedPUpdatedNotificationTests(InMemoryScenarioApplicationFactory<MultiStepScenarioGenerator> factory, ITestOutputHelper testOutputHelper)
-//     : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<MultiStepScenarioGenerator>>
-
 public class ChedPUpdatedNotificationTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<MultiStepScenarioGenerator>(output)
 {

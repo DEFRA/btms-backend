@@ -12,9 +12,6 @@ namespace Btms.Backend.IntegrationTests.PreprocessingTests;
 [Trait("Category", "Integration")]
 public class EnsureDuplicateItemsAreNotCreatedTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<DuplicateMovementItems_CDMS_211>(output)
-
-// public class EnsureDuplicateItemsAreNotCreatedTests(InMemoryScenarioApplicationFactory<DuplicateMovementItems_CDMS_211> factory, ITestOutputHelper testOutputHelper)
-//     : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<DuplicateMovementItems_CDMS_211>>
 {
     
     [Fact(Skip = "We're ending up with 2 items on the clearance request here.")]

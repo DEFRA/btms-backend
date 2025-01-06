@@ -13,6 +13,8 @@ public abstract class ScenarioGeneratorBaseTest<T>
     protected readonly ITestOutputHelper TestOutputHelper;
     
     protected readonly List<GeneratedResult> LoadedData;
+
+    public required BackendFixture BackendFixture;
     
     private static Dictionary<Type, List<GeneratedResult>> AllScenarioDatasets
         = new Dictionary<Type, List<GeneratedResult>>();
@@ -24,10 +26,10 @@ public abstract class ScenarioGeneratorBaseTest<T>
         TestOutputHelper = testOutputHelper;
         
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
-        var backendFixture = new BackendFixture(testOutputHelper, GetType().Name);
+        BackendFixture = new BackendFixture(testOutputHelper, GetType().Name);
         
-        Client = backendFixture.BtmsClient;
-
+        Client = BackendFixture.BtmsClient;
+        
         lock (typeof(T))
         {
             if (AllScenarioDatasets.TryGetValue(typeof(T), out var loadedData))
@@ -42,7 +44,7 @@ public abstract class ScenarioGeneratorBaseTest<T>
                 var data = testGeneratorFixture
                     .GenerateTestData<T>();
         
-                LoadedData = backendFixture
+                LoadedData = BackendFixture
                     .LoadTestData(data)
                     .GetAwaiter()
                     .GetResult();
@@ -51,6 +53,24 @@ public abstract class ScenarioGeneratorBaseTest<T>
             }
         }
         
+    }
+    
+    protected void AddAdditionalContextToAssertFailures(Action assert)
+    {
+        try
+        {
+            assert.Invoke();
+        }
+        catch(Exception e)
+        {
+            TestOutputHelper.WriteLine("Additional context for assertion failure(s)");
+            TestOutputHelper.WriteLine("{0} Notifications are in the database.", BackendFixture.MongoDbContext.Notifications.Count());
+            TestOutputHelper.WriteLine("{0} Movements are in the database.", BackendFixture.MongoDbContext.Movements.Count());
+            TestOutputHelper.WriteLine("Notification IDs are {0}.", BackendFixture.MongoDbContext.Notifications.Select(m => m.Id).ToArray());
+            TestOutputHelper.WriteLine("Movement IDs are {0}.", BackendFixture.MongoDbContext.Movements.Select(m => m.Id).ToArray()!);
+            //just throw to preserve stacktrace
+            throw;
+        }
     }
 
     protected async Task ClearDb()
