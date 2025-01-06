@@ -1,4 +1,5 @@
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
@@ -153,8 +154,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Get("api/movements")
             .GetResourceObjects<Movement>()
             .Single();
-
-        movement.BtmsStatus.LinkStatus.Should().Be("Linked");
+        
+        movement.BtmsStatus.LinkStatus.Should().Be("Linked", movement.ToJson());
     }
     
     // [Fact]
