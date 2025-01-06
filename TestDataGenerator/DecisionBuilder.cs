@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Alvs;
@@ -14,7 +15,7 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     {
     }
 
-    protected DecisionBuilder(string file) : base(file)
+    protected DecisionBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
     {
     }
 
@@ -26,6 +27,20 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     public static DecisionBuilder<T> FromFile(string file)
     {
         return new DecisionBuilder<T>(file);
+    }
+    
+    /// <summary>
+    /// build, serialise and then deserialise the object to break any byref type relationships
+    /// </summary>
+    /// <returns></returns>
+    public DecisionBuilder<T> Clone()
+    {
+
+        var json = JsonSerializer.Serialize(this.Build());
+        
+        var builder =  new DecisionBuilder<T>(itemJson: json);
+        
+        return builder;
     }
 
     public DecisionBuilder<T> WithReferenceNumber(string chedReference)

@@ -1,3 +1,4 @@
+using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
 using Btms.Model.Cds;
 using FluentAssertions;
@@ -10,41 +11,47 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<CrNoMatchNoDecisionScenarioGenerator>(output)
+public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<CrDecisionWithoutV1ScenarioGenerator>(output)
 {
     
     [Fact]
-    public void ShouldHaveNotificationRelationships()
+    public void ShouldHave2AlvsDecision()
     {
-        
         // Assert
         var movement = Client.AsJsonApiClient()
             .Get("api/movements")
             .GetResourceObjects<Movement>()
             .Single();
 
-        movement.BtmsStatus.LinkStatus.Should().Be("Not Linked");
+        movement
+            .AlvsDecisionStatus
+            .Decisions
+            .Count
+            .Should()
+            .Be(1);
     }
     
     [Fact]
-    public void ShouldHaveDecisionStatus()
+    public void ShouldHaveCorrectDecisionNumbers()
     {
-        
         // Assert
         var movement = Client.AsJsonApiClient()
             .Get("api/movements")
             .GetResourceObjects<Movement>()
             .Single();
 
-        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.NoAlvsDecisions);
+        movement
+            .AlvsDecisionStatus
+            .Decisions
+            .Select(d => d.Context.AlvsDecisionNumber)
+            .Should()
+            .Equal(2);
     }
     
     [Fact]
-    public void ShouldHaveDecisionMatched()
+    public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
-        // var res =  Client.AsJsonApiClient()
-        //     .Get("api/movements");
         
         // Assert
         var movement = Client.AsJsonApiClient()
@@ -54,9 +61,8 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
 
         movement
             .AlvsDecisionStatus
-            .Context!
-            .DecisionMatched
+            .DecisionStatus
             .Should()
-            .BeFalse();
+            .Be(DecisionStatusEnum.AlvsDecisionVersion1NotPresent);
     }
 }

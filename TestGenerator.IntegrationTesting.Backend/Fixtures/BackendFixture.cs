@@ -23,19 +23,21 @@ namespace TestGenerator.IntegrationTesting.Backend.Fixtures;
 
 public class BackendFixture
 {
-    private readonly IMongoDbContext _mongoDbContext;
+    public readonly IMongoDbContext MongoDbContext;
     public readonly BtmsClient BtmsClient;
     
     private BackendFactory WebApp { get; set; }
-
+    private readonly int _consumerPushDelayMs;
+    
     public readonly ITestOutputHelper TestOutputHelper;
 
-    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName)
+    public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName, int consumerPushDelayMs = 1000, Dictionary<string, string>? backendConfigOverrides = null)
     {
         TestOutputHelper = testOutputHelper;
+        _consumerPushDelayMs = consumerPushDelayMs;
         
-        WebApp = new BackendFactory(databaseName, testOutputHelper);
-        (_mongoDbContext, BtmsClient) = WebApp.Start();
+        WebApp = new BackendFactory(databaseName, testOutputHelper, configOverrides: backendConfigOverrides);
+        (MongoDbContext, BtmsClient) = WebApp.Start();
         
     }
 
@@ -45,12 +47,13 @@ public class BackendFixture
         
         var logger = TestOutputHelper.GetLogger<BackendFactory>();
         
-        await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message));
+        await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message), _consumerPushDelayMs);
         
         return testData;
     }
 }
-public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper ) : WebApplicationFactory<Program> 
+
+public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper, Dictionary<string, string>? configOverrides = null) : WebApplicationFactory<Program> 
 {
     private IMongoDbContext? mongoDbContext;
     
@@ -63,8 +66,14 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
             { "DisableLoadIniFile", "true" },
             { "BlobServiceOptions:CachePath", "Scenarios/Samples" },
             { "BlobServiceOptions:CacheReadEnabled", "true" },
-            { "AuthKeyStore:Credentials:IntTest", "Password" }
+            { "AuthKeyStore:Credentials:IntTest", "Password" },
+            { "ConsumerOptions:EnableBlockingPublish", "true" }
         };
+        
+        configOverrides?.ToList().ForEach(x =>
+        {
+            configurationValues.AddOrUpdate(x.Key, x.Value);
+        });
 
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues!)

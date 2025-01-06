@@ -14,10 +14,12 @@ public class Dataset
 
 public class Datasets(IHost app)
 {
+    public const string FunctionalAnalyticsDatasetName = "Functional-Analytics";
+    
     public static Dataset[] GetDatasets(IHost app)
     {
         var ds = new Datasets(app);
-        // return ds.Sets;
+        
         return
         [
             ds.EndToEndIbm,
@@ -26,9 +28,34 @@ public class Datasets(IHost app)
             ds.LoadTest,
             ds.LoadTest90Dx1,
             ds.LoadTestCondensed,
-            ds.LoadTest90Dx10k
+            ds.LoadTest90Dx10k,
+            ds.FunctionalAnalytics
         ];
     }
+
+    public readonly Dataset FunctionalAnalytics = new()
+    {
+        Name = FunctionalAnalyticsDatasetName,
+        Description = "Functional Testing Analytics Dataset",
+        RootPath = "FUNCTIONAL-ANALYTICS",
+        Scenarios = new[]
+        {
+            // Migrates setup from BasicSampleDataTestFixture in analytics testing
+            
+            // Ensure we have some data scenarios around 24/48 hour tests
+            
+            app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0),
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 2),
+            app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0),
+            
+            // Create some more variable data over the rest of time
+
+            app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 7, arrivalDateRange: 10),
+            app.Services.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(5, 3, arrivalDateRange: 10),
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 3, arrivalDateRange: 10),
+            app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10)
+        }
+    };
 
     public readonly Dataset EndToEndIbm = new()
     {

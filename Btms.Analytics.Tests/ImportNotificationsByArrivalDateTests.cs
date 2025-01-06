@@ -4,26 +4,26 @@ using Xunit;
 using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
+using TestDataGenerator.Config;
+using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(BasicSampleDataTestCollection))]
-public class ImportNotificationsByArrivalDateTests(
-    BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+public class ImportNotificationsByArrivalDateTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     
     [Fact]
     public async Task WhenCalledNextMonth_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
+        TestOutputHelper.WriteLine("Querying for aggregated data");
         
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        var result = (await GetImportNotificationsAggregationService()
             .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine($"{result.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Count} aggregated items found");
             
         result.Count.Should().Be(8);
         

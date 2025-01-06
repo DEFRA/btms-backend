@@ -11,6 +11,7 @@
 using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
+using System.Runtime.Serialization;
 using Btms.Model.Auditing;
 using Btms.Model.Ipaffs;
 using MongoDB.Bson.Serialization.Attributes;
@@ -126,8 +127,38 @@ public class MovementStatus
 
 }
 
+[JsonConverter(typeof(JsonStringEnumConverterEx<DecisionStatusEnum>))]
+public enum DecisionStatusEnum {
+    
+    [EnumMember(Value = "No Alvs Decisions")]
+    NoAlvsDecisions,
+    
+    [EnumMember(Value = "Investigation Needed")]
+    InvestigationNeeded,
+    
+    [EnumMember(Value = "Btms Decision Not Present")]
+    BtmsDecisionNotPresent,
+    
+    [EnumMember(Value = "Btms Made Same Decision As Alvs")]
+    BtmsMadeSameDecisionAsAlvs,
+    
+    [EnumMember(Value = "Alvs Clearance Request Version 1 Not Present")]
+    AlvsClearanceRequestVersion1NotPresent,
+    
+    [EnumMember(Value = "Alvs Clearance Request Versions Not Complete")]
+    AlvsClearanceRequestVersionsNotComplete,
+    
+    [EnumMember(Value = "Alvs Decision Version 1 Not Present")]
+    AlvsDecisionVersion1NotPresent,
+    
+    [EnumMember(Value = "Alvs Decision Versions Not Complete")]
+    AlvsDecisionVersionsNotComplete
+}
+
 public partial class DecisionContext : IAuditContext //
 {
+    // public const string StatusInvestigationNeeded = "Investigation Needed";
+    // public const string StatusInvestigationNeeded = "Investigation Needed";
     [Attr]
     [System.ComponentModel.Description("")]
     public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
@@ -154,7 +185,8 @@ public partial class DecisionContext : IAuditContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DecisionStatus { get; set; }
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public DecisionStatusEnum DecisionStatus { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -177,7 +209,8 @@ public partial class AlvsDecisionStatus  //
 
     [Attr]
     [System.ComponentModel.Description("")]
-    public string? DecisionStatus { get; set; } = default;
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public DecisionStatusEnum DecisionStatus { get; set; } = DecisionStatusEnum.NoAlvsDecisions;
     
     [Attr]
     [System.ComponentModel.Description("")]
