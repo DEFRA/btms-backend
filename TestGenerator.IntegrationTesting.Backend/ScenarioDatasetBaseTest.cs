@@ -18,7 +18,7 @@ public abstract class ScenarioDatasetBaseTest
 
     protected readonly List<GeneratedResult> LoadedData;
 
-    private static Dictionary<string, List<GeneratedResult>> AllTestClassesDatasets
+    private static Dictionary<string, List<GeneratedResult>> AllDatasets
         = new Dictionary<string, List<GeneratedResult>>();
         
     protected ScenarioDatasetBaseTest(
@@ -34,11 +34,9 @@ public abstract class ScenarioDatasetBaseTest
         Client = BackendFixture.BtmsClient;
         _mongoDbContext = BackendFixture.MongoDbContext;
 
-        // This lock may not be needed if xunit guarantees tests in the same test class
-        // are not parrallelised
         lock (datasetName)
         {
-            if (AllTestClassesDatasets.TryGetValue(datasetName, out var loadedData))
+            if (AllDatasets.TryGetValue(datasetName, out var loadedData))
             {
                 testOutputHelper.WriteLine("Dataset is cached. Using cached data");
                 LoadedData = loadedData;
@@ -56,7 +54,7 @@ public abstract class ScenarioDatasetBaseTest
                     .GetAwaiter()
                     .GetResult();
                 
-                AllTestClassesDatasets.Add(datasetName, LoadedData);
+                AllDatasets.Add(datasetName, LoadedData);
             }
         }
     }

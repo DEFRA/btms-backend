@@ -13,6 +13,10 @@ public abstract class ScenarioGeneratorBaseTest<T>
     protected readonly ITestOutputHelper TestOutputHelper;
     
     protected readonly List<GeneratedResult> LoadedData;
+    
+    private static Dictionary<Type, List<GeneratedResult>> AllScenarioDatasets
+        = new Dictionary<Type, List<GeneratedResult>>();
+    
     protected ScenarioGeneratorBaseTest(
         ITestOutputHelper testOutputHelper
     )
@@ -24,13 +28,29 @@ public abstract class ScenarioGeneratorBaseTest<T>
         
         Client = backendFixture.BtmsClient;
 
-        var data = testGeneratorFixture
-            .GenerateTestData<T>();
+        lock (typeof(T))
+        {
+            if (AllScenarioDatasets.TryGetValue(typeof(T), out var loadedData))
+            {
+                testOutputHelper.WriteLine("Scenario is cached. Using cached data");
+                LoadedData = loadedData;
+            }
+            else
+            {
+                testOutputHelper.WriteLine("Scenario is not cached, loading via test generator");
+                
+                var data = testGeneratorFixture
+                    .GenerateTestData<T>();
         
-        LoadedData = backendFixture
-            .LoadTestData(data)
-            .GetAwaiter()
-            .GetResult();
+                LoadedData = backendFixture
+                    .LoadTestData(data)
+                    .GetAwaiter()
+                    .GetResult();
+                
+                AllScenarioDatasets.Add(typeof(T), LoadedData);
+            }
+        }
+        
     }
 
     protected async Task ClearDb()
