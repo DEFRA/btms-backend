@@ -4,6 +4,7 @@ using Btms.Model.Cds;
 using FluentAssertions;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
@@ -19,10 +20,8 @@ public class NonContiguous(ITestOutputHelper output)
     public void ShouldHave2AlvsDecisions()
     {
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .AlvsDecisionStatus
@@ -36,10 +35,8 @@ public class NonContiguous(ITestOutputHelper output)
     public void ShouldHaveCorrectDecisionNumbers()
     {
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .AlvsDecisionStatus
@@ -54,10 +51,8 @@ public class NonContiguous(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .AlvsDecisionStatus

@@ -57,7 +57,7 @@ public static class MovementExtensions
     }
     public static void AddLinkStatus(this Movement movement)
     {
-        var linkStatus = MovementStatus.NotLinkedStatus;
+        var linkStatus = MovementStatus.InvestigateStatus;
         var linked = false;
         
         if (movement.Relationships.Notifications.Data.Count > 0)
@@ -65,9 +65,9 @@ public static class MovementExtensions
             linkStatus = MovementStatus.LinkedStatus;
             linked = true;
         }
-        else if (movement.AlvsDecisionStatus?.Context?.AlvsCheckStatus?.AnyMatch ?? false)
+        else if (movement.Relationships.Notifications.Data.Count == 0)
         {
-            linkStatus = MovementStatus.InvestigateStatus;
+            linkStatus = MovementStatus.NotLinkedStatus;
         }
         
         movement.BtmsStatus.LinkStatus = linkStatus;
