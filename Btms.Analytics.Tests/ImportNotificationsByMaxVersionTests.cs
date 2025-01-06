@@ -30,21 +30,20 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await GetImportNotificationsAggregationService()
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
+        var result = await ImportNotificationsAggregationService
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour());
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(1);
-
     }
     
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await GetImportNotificationsAggregationService()
-            .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
+        var result = await ImportNotificationsAggregationService
+            .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
@@ -55,8 +54,8 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     public async Task WhenCalledWithChedType_ReturnsResults()
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await GetImportNotificationsAggregationService()
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), chedTypes: [ImportNotificationTypeEnum.Cveda]));
+        var result = await ImportNotificationsAggregationService
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), chedTypes: [ImportNotificationTypeEnum.Cveda]);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
@@ -67,8 +66,8 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     public async Task WhenCalledWithCountry_ReturnsResults()
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await GetImportNotificationsAggregationService()
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "ES"));
+        var result = await ImportNotificationsAggregationService
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "ES");
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
