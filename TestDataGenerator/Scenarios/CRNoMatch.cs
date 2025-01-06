@@ -10,7 +10,6 @@ namespace TestDataGenerator.Scenarios;
 
 public static class NoMatchExtensions
 {
-    
     public static AlvsClearanceRequest CompleteSimpleClearanceRequest(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         return NoMatchExtensions
@@ -141,7 +140,6 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
     }
 }
 
-
 public class CrNonContiguousDecisionsScenarioGenerator(ILogger<CrNonContiguousDecisionsScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
@@ -168,7 +166,6 @@ public class CrNonContiguousDecisionsScenarioGenerator(ILogger<CrNonContiguousDe
         return new GeneratorResult([clearanceRequest, alvsDecision, alvsDecision2]);
     }
 }
-
 
 public class CrDecisionWithoutV1ScenarioGenerator(ILogger<CrDecisionWithoutV1ScenarioGenerator> logger) : ScenarioGenerator
 {

@@ -64,7 +64,9 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
             { "DisableLoadIniFile", "true" },
             { "BlobServiceOptions:CachePath", "Scenarios/Samples" },
             { "BlobServiceOptions:CacheReadEnabled", "true" },
-            { "AuthKeyStore:Credentials:IntTest", "Password" }
+            { "AuthKeyStore:Credentials:IntTest", "Password" },
+
+            { "ConsumerOptions:EnableBlockingPublish", "true" }
         };
 
         var configuration = new ConfigurationBuilder()

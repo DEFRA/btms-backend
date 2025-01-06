@@ -9,10 +9,6 @@ using Xunit.Abstractions;
 
 namespace Btms.Analytics.Tests;
 
-// [Collection(nameof(BasicSampleDataTestCollection))]
-// public class MovementsByMaxVersionTests(
-//     BasicSampleDataTestFixture basicSampleDataTestFixture,
-//     ITestOutputHelper testOutputHelper)
 public class MovementsByMaxVersionTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {

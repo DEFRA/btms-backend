@@ -4,16 +4,16 @@ using Btms.Types.Alvs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
 using TestDataGenerator.Scenarios.SpecificFiles;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.PreprocessingTests;
 
 [Trait("Category", "Integration")]
-public class EnsureAuditEntryIsAddedForMovementUpdatesTests(InMemoryScenarioApplicationFactory<NoAuditLogForMovementUpdate> factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<NoAuditLogForMovementUpdate>>
+public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<NoAuditLogForMovementUpdate>(output)
 {
-    
     [Fact]
     public void ShouldHaveUpdatedAuditEntry()
     {
