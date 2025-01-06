@@ -10,20 +10,5 @@
     "entryVersionNumber": null,
     "decisionNumber": null
   },
-  "items": [
-    {
-      "itemNumber": null,
-      "documents": [],
-      "checks": [
-        {
-          "checkCode": null,
-          "decisionCode": null,
-          "decisionValidUntil": null,
-          "decisionReasons": [
-            " A Customs Declaration has been submitted however no matching CHEDPP(s) have been submitted (for CHEDPP number(s) GBCHD2024.). Please correct the CHEDPP number(s) entered on your customs declaration. "
-          ]
-        }
-      ]
-    }
-  ]
+  "items": null
 }

@@ -23,10 +23,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     public void ShouldHaveCorrectAlvsDecisions()
     {
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
         
         movement.AlvsDecisionStatus.Decisions.Count.Should().Be(1);
         
@@ -46,10 +44,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Message;
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
         
         movement.Decisions.Count.Should().Be(2);
         
@@ -73,10 +69,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
         
         movement.AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version))
@@ -95,10 +89,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .AlvsDecisionStatus
@@ -113,10 +105,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .AlvsDecisionStatus
@@ -130,10 +120,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
         
         movement
             .BtmsStatus
@@ -150,10 +138,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
         
         movement.BtmsStatus.LinkStatus.Should().Be("Linked", movement.ToJson());
     }
@@ -166,10 +152,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .Relationships.Notifications.Data

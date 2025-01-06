@@ -3,6 +3,7 @@ using Btms.Model;
 using FluentAssertions;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,11 +18,8 @@ public class ManyItemTests(ITestOutputHelper output)
     public void ShouldHaveOneChedType()
     {
         // Act
-        var movementResource = Client.AsJsonApiClient()
-            .Get("api/movements")
-            // .Data
-            .GetResourceObjects<Movement>()
-            .Single()
+        var movementResource = Client
+            .GetSingleMovement()
             .BtmsStatus.ChedTypes!.Count()
             .Should().Be(1);
     }
