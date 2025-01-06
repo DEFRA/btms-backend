@@ -20,7 +20,10 @@ public abstract class ScenarioDatasetBaseTest
     
     private static Dictionary<string, List<GeneratedResult>> AllDatasets
         = new Dictionary<string, List<GeneratedResult>>();
-        
+
+    protected readonly IImportNotificationsAggregationService ImportNotificationsAggregationService;
+    protected readonly IMovementsAggregationService MovementsAggregationService;
+    
     /// <summary>
     /// 
     /// </summary>
@@ -49,6 +52,12 @@ public abstract class ScenarioDatasetBaseTest
         
         Client = BackendFixture.BtmsClient;
         MongoDbContext = BackendFixture.MongoDbContext;
+        
+        ImportNotificationsAggregationService = new ImportNotificationsAggregationService(MongoDbContext,
+            TestOutputHelper.GetLogger<ImportNotificationsAggregationService>());
+
+        MovementsAggregationService = new MovementsAggregationService(MongoDbContext,
+            TestOutputHelper.GetLogger<MovementsAggregationService>());
 
         if (reloadData)
         {
@@ -95,6 +104,7 @@ public abstract class ScenarioDatasetBaseTest
     /// </summary>
     /// <param name="testOutputHelper"></param>
     /// <returns></returns>
+    // [Obsolete("Use the ImportNotificationsAggregationService property instead")]
     protected IImportNotificationsAggregationService GetImportNotificationsAggregationService()
     {
         var logger = TestOutputHelper.GetLogger<ImportNotificationsAggregationService>();
@@ -106,6 +116,7 @@ public abstract class ScenarioDatasetBaseTest
     /// </summary>
     /// <param name="testOutputHelper"></param>
     /// <returns></returns>
+    // [Obsolete("Use the MovementsAggregationService property instead")]
     protected IMovementsAggregationService GetMovementsAggregationService()
     {
         var logger = TestOutputHelper.GetLogger<MovementsAggregationService>();
