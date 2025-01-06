@@ -5,23 +5,23 @@ using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
 using Btms.Model.Ipaffs;
+using TestDataGenerator.Config;
+using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(BasicSampleDataTestCollection))]
-public class ImportNotificationsByMaxVersionTests(
-    BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetImportNotificationsAggregationService()
             .ByMaxVersion(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()));
 
-        testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
+        TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
         result.Values.Count.Should().Be(1);
     }
@@ -29,11 +29,11 @@ public class ImportNotificationsByMaxVersionTests(
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetImportNotificationsAggregationService()
             .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(1);
 
@@ -42,11 +42,11 @@ public class ImportNotificationsByMaxVersionTests(
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetImportNotificationsAggregationService()
             .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(0);
     }
@@ -54,11 +54,11 @@ public class ImportNotificationsByMaxVersionTests(
     [Fact]
     public async Task WhenCalledWithChedType_ReturnsResults()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetImportNotificationsAggregationService()
             .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), chedTypes: [ImportNotificationTypeEnum.Cveda]));
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(1);
     }
@@ -66,11 +66,11 @@ public class ImportNotificationsByMaxVersionTests(
     [Fact]
     public async Task WhenCalledWithCountry_ReturnsResults()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await basicSampleDataTestFixture.GetImportNotificationsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetImportNotificationsAggregationService()
             .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "ES"));
 
-        testOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
+        TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
         result.Values.Count.Should().Be(1);
     }

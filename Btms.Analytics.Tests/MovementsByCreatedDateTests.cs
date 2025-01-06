@@ -4,23 +4,23 @@ using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 using Btms.Analytics.Tests.Fixtures;
+using TestDataGenerator.Config;
+using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(BasicSampleDataTestCollection))]
-public class MovementsByCreatedDateTests(
-    BasicSampleDataTestFixture basicSampleDataTestFixture,
-    ITestOutputHelper testOutputHelper) 
+public class MovementsByCreatedDateTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        var result = (await GetMovementsAggregationService()
             .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine(result.ToJsonString());
+        TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.Count.Should().Be(3);
 
@@ -37,12 +37,12 @@ public class MovementsByCreatedDateTests(
         var from = DateTime.MaxValue.AddDays(-1);
         var to = DateTime.MaxValue;
 
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        var result = (await GetMovementsAggregationService()
             .ByCreated(from, to, AggregationPeriod.Hour))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine(result.ToJsonString());
+        TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.Count.Should().Be(3);
         
@@ -62,12 +62,12 @@ public class MovementsByCreatedDateTests(
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
-        var result = (await basicSampleDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        var result = (await GetMovementsAggregationService()
                 .ByCreated(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine(result.ToJsonString());
+        TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.Count.Should().Be(3);
 

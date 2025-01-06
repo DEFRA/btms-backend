@@ -2,14 +2,15 @@ using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
 using FluentAssertions;
 using TestDataGenerator.Scenarios;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class ManyItemTests(InMemoryScenarioApplicationFactory<CrNoMatchScenarioGenerator> factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<CrNoMatchScenarioGenerator>>
+public class ManyItemTests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<CrNoMatchScenarioGenerator>(output)
 {
     
     [Fact]

@@ -3,14 +3,15 @@ using Btms.Model;
 using Btms.Types.Alvs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.PreprocessingTests;
 
 [Trait("Category", "Integration")]
-public class EnsureDuplicateItemsAreNotCreatedTests(InMemoryScenarioApplicationFactory<DuplicateMovementItems_CDMS_211> factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"), IClassFixture<InMemoryScenarioApplicationFactory<DuplicateMovementItems_CDMS_211>>
+public class EnsureDuplicateItemsAreNotCreatedTests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<DuplicateMovementItems_CDMS_211>(output)
 {
     
     [Fact(Skip = "We're ending up with 2 items on the clearance request here.")]
@@ -18,11 +19,11 @@ public class EnsureDuplicateItemsAreNotCreatedTests(InMemoryScenarioApplicationF
     public void ShouldNotCreateDuplicateItems()
     {
         // Arrange
-        var loadedData = factory.LoadedData;
+        var loadedData = LoadedData;
         
         var movementMessage = (AlvsClearanceRequest)loadedData.First(d =>
-                d is { message: AlvsClearanceRequest })
-            .message;
+                d is { Message: AlvsClearanceRequest })
+            .Message;
         
         
         // Act

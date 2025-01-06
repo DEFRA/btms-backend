@@ -4,22 +4,22 @@ using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
 using Btms.Analytics.Tests.Helpers;
-    
+using TestDataGenerator.Config;
+using TestGenerator.IntegrationTesting.Backend;
+
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(MultiItemDataTestCollection))]
-public class MovementsDocumentReferencesByMovementTests(
-    MultiItemDataTestFixture multiItemDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+public class MovementsDocumentReferencesByMovementTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     [Fact]
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetMovementsAggregationService()
             .UniqueDocumentReferenceByMovementCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
 
-        testOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
+        TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
         result.Should().HaveResults();
     }

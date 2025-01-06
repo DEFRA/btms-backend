@@ -33,7 +33,9 @@ public static class TestContextHelper
             // TO-DO these aren't relevant to us, but cause an error
             // if not specified
             { "BlobServiceOptions:CachePath", "../../../Fixtures" },
-            { "BlobServiceOptions:CacheReadEnabled", "true" }
+            { "BlobServiceOptions:CacheReadEnabled", "true" },
+
+            { "ConsumerOptions:EnableBlockingPublish", "true" }
         };
 
         builder

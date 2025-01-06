@@ -5,25 +5,25 @@ using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
 using Btms.Analytics.Tests.Helpers;
-    
+using TestDataGenerator.Config;
+using TestGenerator.IntegrationTesting.Backend;
+
 namespace Btms.Analytics.Tests;
 
-[Collection(nameof(MultiItemDataTestCollection))]
-public class MovementsByItemsTests(
-    MultiItemDataTestFixture multiItemDataTestFixture,
-    ITestOutputHelper testOutputHelper)
+public class MovementsByItemsTests(ITestOutputHelper output)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     
     [Fact]
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
-        testOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await multiItemDataTestFixture.GetMovementsAggregationService(testOutputHelper)
+        TestOutputHelper.WriteLine("Querying for aggregated data");
+        var result = (await GetMovementsAggregationService()
             .ByItemCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()))
             .Series
             .ToList();
 
-        testOutputHelper.WriteLine("{0} aggregated items found", result.Count);
+        TestOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
         result.Count.Should().Be(3);
         result.Select(r => r.Name).Order().Should().Equal("Investigate", "Linked", "Not Linked");

@@ -301,12 +301,13 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Execute(logger);
         
         logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
-        
+
+        var enumLookup = new JsonStringEnumConverterEx<DecisionStatusEnum>();
         
         // Works
         var summary = new SingleSeriesDataset() {
             Values = mongoQuery
-                .GroupBy(q => q.Key.DecisionStatus ?? "Investigation Needed")
+                .GroupBy(q => enumLookup.GetValue(q.Key.DecisionStatus))
                 .ToDictionary(
                     g => g.Key,
                     g => g.Sum(k => k.Count)
@@ -320,7 +321,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 {
                     Fields = new Dictionary<string, string>()
                     {
-                        { "Classification", a.Key.DecisionStatus ?? "Investigation Needed" },
+                        { "Classification", enumLookup.GetValue(a.Key.DecisionStatus) },
                         { "CheckCode", a.Key.CheckCode! },
                         { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }

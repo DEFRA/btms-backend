@@ -1,5 +1,7 @@
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Common.Extensions;
 using Btms.Model;
+using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
@@ -14,7 +16,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class ChedPSimpleTests(ITestOutputHelper output)
-    : BaseTest<SimpleMatchScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
 {
     
     [Fact]
@@ -120,7 +122,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .AlvsDecisionStatus
             .DecisionStatus
             .Should()
-            .Be("Btms Made Same Decision As Alvs");
+            .Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
     [Fact]
@@ -152,8 +154,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Get("api/movements")
             .GetResourceObjects<Movement>()
             .Single();
-
-        movement.BtmsStatus.LinkStatus.Should().Be("Linked");
+        
+        movement.BtmsStatus.LinkStatus.Should().Be("Linked", movement.ToJson());
     }
     
     // [Fact]
@@ -180,8 +182,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         // TestOutputHelper.WriteLine("Querying for aggregated data");
 
-        var result = await BackendFixture
-            .BtmsClient
+        var result = await Client
             .GetExceptions();
         
         TestOutputHelper.WriteLine($"{result.StatusCode} status");
