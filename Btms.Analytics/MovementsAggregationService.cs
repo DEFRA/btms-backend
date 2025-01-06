@@ -37,12 +37,12 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Aggregate(dateRange, CreateDatasetName, matchFilter, "$createdSource", aggregateBy);
     }
 
-    public Task<SingleSeriesDataset> ByStatus(DateTime from, DateTime to)
+    public Task<SingleSeriesDataset> ByStatus(DateTime? from = null, DateTime? to = null)
     {
         var data = context
             .Movements
             .SelectLinkStatus()
-            .Where(n => n.CreatedSource >= from && n.CreatedSource < to)
+            .Where(n => (from == null || n.CreatedSource >= from) && (to == null || n.CreatedSource < to))
             .GroupBy(m => m.Description)
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => g.Key, g => g.Count);
