@@ -19,7 +19,6 @@ public class NonContiguous(ITestOutputHelper output)
     [Fact]
     public void ShouldHave2AlvsDecisions()
     {
-        // Assert
         var movement = Client
             .GetSingleMovement();
 
@@ -34,7 +33,6 @@ public class NonContiguous(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
-        // Assert
         var movement = Client
             .GetSingleMovement();
 
@@ -49,8 +47,6 @@ public class NonContiguous(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
-        
-        // Assert
         var movement = Client
             .GetSingleMovement();
 
@@ -59,5 +55,44 @@ public class NonContiguous(ITestOutputHelper output)
             .DecisionStatus
             .Should()
             .Be(DecisionStatusEnum.AlvsDecisionVersionsNotComplete);
+    }
+    
+    [Fact]
+    public void ShouldHavePairedAlvsDecisions()
+    {
+        var movement = Client
+            .GetSingleMovement();
+
+        movement
+            .AlvsDecisionStatus
+            .Decisions
+            .Count(d => d.Context.Paired)
+            .Should().Be(1);
+    }
+    
+    [Fact]
+    public void ShouldHave1BtmsDecision()
+    {
+        var movement = Client
+            .GetSingleMovement();
+
+        movement
+            .Decisions
+            .Count
+            .Should()
+            .Be(1);
+    }
+    
+    [Fact]
+    public void ShouldHavePairedBtmsDecisions()
+    {
+        var movement = Client
+            .GetSingleMovement();
+
+        movement
+            .AlvsDecisionStatus
+            .Decisions
+            .Select(d => (d.Context.AlvsDecisionNumber, d.Context.BtmsDecisionNumber))
+            .Should().Equal((1,null), (3,1));
     }
 }

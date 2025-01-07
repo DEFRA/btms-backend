@@ -194,6 +194,9 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
                 .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
                 .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
     
+            //TODO : Is it possible for these BTMS decisions to arrive out of sequence?
+            // If so, we shouldn't just update the ALVS decision, we should check if it's a newer BTMS decision first. 
+            
             alvsDecision.Context.BtmsDecisionNumber = clearanceRequest.Header!.DecisionNumber!.Value;
             alvsDecision.Context.Paired = true;
             alvsDecision.Context.Checks = alvsDecision
@@ -226,27 +229,47 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         // This is an initial implementation
         // we want to be smarter about how we 'pair' things, considering the same version of the import notifications
         // Q : can a BTMS decision be 'paired' to multiple ALVS decisions? Probably not...
-        var btmsDecision = _movement.Decisions?
+        var btmsDecisions = _movement.Decisions?
             .Where(d => 
                 d.Header!.EntryVersionNumber == _movement.EntryVersionNumber)
             .OrderBy(d => d.ServiceHeader!.ServiceCalled)
-            .Reverse()
-            .FirstOrDefault();
+            .Reverse();
+            
+        var mostRecentBtmsDecision = btmsDecisions?.FirstOrDefault();
 
-        var btmsChecks = btmsDecision ?
+        var pairedAlvsDecision = _movement
+            .AlvsDecisionStatus
+            .Decisions
+            .SingleOrDefault(d => 
+                d.Context.Paired && d.Context.BtmsDecisionNumber == mostRecentBtmsDecision?.Header?.DecisionNumber
+            );
+
+        // We should only pair to this ALVS decision if we haven't already paired to a higher decision number
+        var shouldPair = mostRecentBtmsDecision.HasValue()
+                         && (!pairedAlvsDecision.HasValue() || pairedAlvsDecision.Context.BtmsDecisionNumber < clearanceRequest?.Header?.DecisionNumber);
+
+        if (shouldPair && pairedAlvsDecision.HasValue())
+        {
+            // A BTMS decision should only be paired with a single ALVS decision
+            // So if its already paired, remove it.
+            pairedAlvsDecision!.Context.Paired = false;
+            pairedAlvsDecision!.Context.BtmsDecisionNumber = null;
+        }
+
+        var btmsChecks = mostRecentBtmsDecision ?
             .Items!
             .SelectMany(i => i.Checks!.Select(c => new { Item = i!, Check = c }))
             .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
         
         var alvsDecision = new AlvsDecision()
         {
-            Decision = clearanceRequest,
+            Decision = clearanceRequest!, //TODO : not sure how this can be null...
             Context = new DecisionContext()
             {
-                AlvsDecisionNumber = clearanceRequest!.Header!.DecisionNumber!.Value,
-                BtmsDecisionNumber = btmsDecision == null ? 0 : btmsDecision!.Header!.DecisionNumber!.Value,
+                AlvsDecisionNumber = clearanceRequest!.Header!.DecisionNumber!,
+                BtmsDecisionNumber = shouldPair ? mostRecentBtmsDecision!.Header!.DecisionNumber : null,
                 EntryVersionNumber = clearanceRequest!.Header!.EntryVersionNumber!.Value,
-                Paired = btmsDecision != null,
+                Paired = shouldPair,
                 Checks = clearanceRequest
                     .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
                     .Select(ic =>
@@ -264,9 +287,9 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             }
         };
         
-        if (btmsDecision != null)
+        if (mostRecentBtmsDecision != null)
         {
-            CompareDecisions(alvsDecision, btmsDecision);
+            CompareDecisions(alvsDecision, mostRecentBtmsDecision);
         }
         
         return alvsDecision;

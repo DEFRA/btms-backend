@@ -18,24 +18,35 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class ChedPSimpleTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
 {
-    
+
     [Fact]
-    public void ShouldHaveCorrectAlvsDecisions()
+    public void ShouldHaveCorrectAlvsDecisionMatchedStatus()
     {
         // Assert
         var movement = Client
             .GetSingleMovement();
-        
-        movement.AlvsDecisionStatus.Decisions.Count.Should().Be(1);
-        
+
         movement.AlvsDecisionStatus.Decisions
-            .First()
+            .Single()
+            .Context.DecisionMatched
+            .Should().BeTrue();
+
+        movement.AlvsDecisionStatus
             .Context.DecisionMatched
             .Should().BeTrue();
     }
-    
+
     [Fact]
-    public void ShouldHaveCorrectBtmsDecisions()
+    public void ShouldHave2BtmsDecisions()
+    {
+        Client
+            .GetSingleMovement()
+            .Decisions.Count
+            .Should().Be(2);
+    }
+
+    [Fact]
+    public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var chedPNotification = (ImportNotification)LoadedData
             .Single(d =>
@@ -46,8 +57,6 @@ public class ChedPSimpleTests(ITestOutputHelper output)
         // Assert
         var movement = Client
             .GetSingleMovement();
-        
-        movement.Decisions.Count.Should().Be(2);
         
         var decisionWithLinkAndContext = movement.AuditEntries
             .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
@@ -63,16 +72,25 @@ public class ChedPSimpleTests(ITestOutputHelper output)
                 ( chedPNotification.ReferenceNumber!, 1 )
             ]);
     }
+    
+    [Fact]
+    public void ShouldHave1AlvsDecision()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus
+            .Decisions
+            .Count
+            .Should()
+            .Be(1);
+    }
 
     [Fact]
     public void ShouldHaveCorrectAuditTrail()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-        
-        movement.AuditEntries
+        Client
+            .GetSingleMovement()
+            .AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
             .Equal([
@@ -87,12 +105,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveDecisionMatched()
     {
-        
-        // Assert
         var movement = Client
-            .GetSingleMovement();
-
-        movement
+            .GetSingleMovement()
             .AlvsDecisionStatus
             .Context!
             .DecisionMatched
@@ -103,12 +117,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveDecisionStatus()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
             .DecisionStatus
             .Should()
@@ -118,12 +128,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveChedType()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-        
-        movement
+        Client
+            .GetSingleMovement()
             .BtmsStatus
             .ChedTypes
             .Should()
@@ -131,17 +137,13 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     }
     
     [Fact]
-    // [Fact(Skip = "Relationships aren't being deserialised correctly")]
-    // TODO : for some reason whilst jsonClientResponse contains the notification relationship,
-    // but movement from .GetResourceObject(s)<Movement>();  doesn't!
     public void ShouldBeLinked()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-        
-        movement.BtmsStatus.LinkStatus.Should().Be("Linked", movement.ToJson());
+        Client
+            .GetSingleMovement()
+            .BtmsStatus.LinkStatus
+            .Should()
+            .Be("Linked");
     }
     
     // [Fact]
@@ -150,12 +152,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     // but movement from .GetResourceObject(s)<Movement>();  doesn't!
     public void ShouldHaveNotificationRelationships()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
+        Client
+            .GetSingleMovement()
             .Relationships.Notifications.Data
             .Should().NotBeEmpty();
     }
@@ -175,5 +173,18 @@ public class ChedPSimpleTests(ITestOutputHelper output)
         (await result.GetString())
             .Should()
             .Be("[]");
+    }
+    
+    [Fact]
+    public void AlvsDecisionShouldBePaired()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus
+            .Decisions
+            .Single()
+            .Context
+            .Should()
+            .Match<DecisionContext>(c => c.BtmsDecisionNumber == 2 && c.Paired == true);
     }
 }

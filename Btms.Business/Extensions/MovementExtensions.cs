@@ -1,3 +1,4 @@
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 
@@ -5,10 +6,11 @@ namespace Btms.Business.Extensions;
 
 public static class MovementExtensions
 {
-    public static bool AreNumbersComplete<T>(this IEnumerable<T> source, Func<T, int> getNumbers)
+    public static bool AreNumbersComplete<T>(this IEnumerable<T> source, Func<T, int?> getNumbers)
     {
         var numbers = source
             .Select(getNumbers)
+            .Where(n => n.HasValue())
             .Order()
             .ToList();
 
@@ -48,7 +50,7 @@ public static class MovementExtensions
         {
             alvsDecisionStatus = DecisionStatusEnum.AlvsDecisionVersion1NotPresent;
         }
-        else if (!movement.AlvsDecisionStatus.Decisions.AreNumbersComplete(d => d.Context.AlvsDecisionNumber!))
+        else if (!movement.AlvsDecisionStatus.Decisions.AreNumbersComplete(d => d.Context.AlvsDecisionNumber))
         {
             alvsDecisionStatus = DecisionStatusEnum.AlvsDecisionVersionsNotComplete;
         }

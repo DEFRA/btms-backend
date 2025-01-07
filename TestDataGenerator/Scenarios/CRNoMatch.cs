@@ -51,7 +51,6 @@ public static class NoMatchExtensions
             .WithEntryVersionNumber(1)
             .WithDecisionVersionNumber()
             .WithClearanceRequestDecisions(clearanceRequest);
-
     }
 }
 
@@ -122,8 +121,6 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        // var reference = DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item);
-
         var clearanceRequest = NoMatchExtensions
             .SimpleClearanceRequest(scenario, item, entryDate, config)
             .WithRandomItems(10, 100)

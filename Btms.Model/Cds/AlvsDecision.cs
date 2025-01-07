@@ -155,10 +155,21 @@ public enum DecisionStatusEnum {
     AlvsDecisionVersionsNotComplete
 }
 
-public partial class DecisionContext : IAuditContext //
+
+public partial class SummarisedDecisionContext //
 {
-    // public const string StatusInvestigationNeeded = "Investigation Needed";
-    // public const string StatusInvestigationNeeded = "Investigation Needed";
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public int? AlvsDecisionNumber { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public int? BtmsDecisionNumber { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public int EntryVersionNumber { get; set; } = default;
+    
     [Attr]
     [System.ComponentModel.Description("")]
     public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
@@ -169,28 +180,19 @@ public partial class DecisionContext : IAuditContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public int AlvsDecisionNumber { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public int BtmsDecisionNumber { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public int EntryVersionNumber { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool Paired { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public DecisionStatusEnum DecisionStatus { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
     public bool DecisionMatched { get; set; } = default;
+}
+
+public partial class DecisionContext : SummarisedDecisionContext, IAuditContext //
+{   
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool Paired { get; set; } = default;
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -214,7 +216,7 @@ public partial class AlvsDecisionStatus  //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public DecisionContext Context { get; set; } = new DecisionContext();
+    public SummarisedDecisionContext Context { get; set; } = new SummarisedDecisionContext();
 }
 
 public partial class AlvsDecision  //
