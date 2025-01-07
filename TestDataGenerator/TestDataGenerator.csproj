@@ -99,6 +99,38 @@
     <Content Include="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedpp-multiple-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-cheda-match.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-cheda-match.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-chedd-match.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-chedd-match.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-chedp-match.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-chedp-match.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-chedpp-match.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\ALVS\cr-chedpp-match.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\IPAFFS\cheda.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\IPAFFS\cheda.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\IPAFFS\chedd.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\IPAFFS\chedd.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\IPAFFS\chedp.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\IPAFFS\chedp.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\AllChedsWithDecision\IPAFFS\chedpp.json" />
+    <Content Include="Scenarios\Samples\AllChedsWithDecision\IPAFFS\chedpp.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

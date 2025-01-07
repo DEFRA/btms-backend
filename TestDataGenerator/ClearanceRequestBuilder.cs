@@ -199,7 +199,10 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         {
             cr.Header!.EntryReference.AssertHasValue("Clearance Request EntryReference missing");
             cr.Header!.DeclarationUcr.AssertHasValue("Clearance Request DeclarationUcr missing");
-            cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing");
+            
+            // masterUcr can be null
+            // cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing"); 
+            
             // cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
 
             Array.ForEach(cr.Items!, i => Array.ForEach(i.Documents!, d => d.DocumentReference.AssertHasValue()));

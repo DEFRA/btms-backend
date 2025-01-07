@@ -1,0 +1,252 @@
+{
+  "id": 4254108,
+  "referenceNumber": "CHEDD.GB.2024.5254108",
+  "version": 1,
+  "lastUpdated": "2024-12-04T11:35:45.895059383Z",
+  "lastUpdatedBy": {
+    "displayName": "cb097c4e80cae160be3e93654bcce8e9c74cc4772620c58572e3bac72b45af13",
+    "userId": "7f1931b2-b741-e911-a955-000d3a454330"
+  },
+  "type": "CED",
+  "status": "SUBMITTED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "53a529a3-38a0-4840-be11-c9484752fdc1"
+      }
+    ],
+    "assessmentDateTime": "2024-12-04T11:35:45.864208215"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "cb097c4e80cae160be3e93654bcce8e9c74cc4772620c58572e3bac72b45af13",
+      "companyId": "8b1931b2-b741-e911-a955-000d3a454330",
+      "companyName": "7ab161cb2f2b13db4e6176e9551e8bf2fab656ee878f7cf6630ace75fb2f3e86",
+      "address": [
+        "e7871709bc6c95dc83f43e0e5a55bf041c2bd1e496784d95042701582588a576",
+        "ea8f8b2e5661a8656b785b44abd4bcdef1d3b8680e9b437cdaacad074a4d60a3",
+        "4388d7bb45e224facad913f8b4145e6693fe183d5e12b2bd0484a215c4af35ce",
+        "569f517896bab44f869eababfaf86446b0264fbd53d628b08cea3e8d2dba39c6"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "5c04d057d15468aac15aa9ab121070df229a6c0ee1795d15821e76e4a2bca0a1",
+      "email": "489c61ca8f66404fc125e7247e5f1c8bd5036dec0df7fe36bdf4d28866b4d361",
+      "contactId": "7f1931b2-b741-e911-a955-000d3a454330"
+    },
+    "consignor": {
+      "id": "c8f019b5-0faa-46e4-8f73-1d3170090faa",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "c322ca016cec145fa16cb5c2e4406100d44a0cab778607016a3fe5a214ab51f2",
+      "address": {
+        "addressLine1": "378bfca76d901ce33d71fbf6005a54559ffe7359a8627a530bd88a71b6c025b8",
+        "city": "47a831485427b89f400254044b7ff2030099daff9e0d08a0f887af77aa816fa9",
+        "postalZipCode": "ed5cc058a144ec7ee0e6e7b099f53fdf0aec34e91a14a768482b16e1af8ff135",
+        "countryISOCode": "f1a7eb59f63cb4ad4e0986e19a9b3e452859631e7c3a65faf2dbeaf05528131e",
+        "telephone": "8951811be480786a88c279f957a407cd0bde5714793cb7b6438ff03642ef7d45",
+        "email": "14b04ead9b1cea2149d6d51cf3bb17cbcd535d74e2c692ecf5343f070ce91fe4"
+      },
+      "tracesId": 10333671
+    },
+    "consignee": {
+      "id": "8e1d3873-d6c9-4c39-9024-8ba7fc421175",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "c9f27f9394e2be7e3d6231d328ebb43d6f4483d476835451409c898677f67e74",
+      "address": {
+        "addressLine1": "d97c1d64d9a5bed5ad6263d4abb092609d510f5afabf2c06c3bf379033254870",
+        "addressLine2": "e6328afbafaea3f514fca117b8108c34590c2583f339c711d53a2dd72c1a392e",
+        "addressLine3": "09066171601b7a65919ae629c914d15801980a1107674467ac70c8cc71aa40f6",
+        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
+        "postalZipCode": "a3ea51d62acf19ff1d1643448bb4f37a5941a19722c63c99cbe9087102542e04",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "a762c25c93bfbe4f94672039900dd45d6372750b148464f8f5daa0d84eb9fcd7",
+        "email": "f4ac266934799577574e6779fd4a1255cc7c1bc2f4804d6f47f54970b076613e"
+      },
+      "tracesId": 10004605
+    },
+    "importer": {
+      "id": "8e1d3873-d6c9-4c39-9024-8ba7fc421175",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "c9f27f9394e2be7e3d6231d328ebb43d6f4483d476835451409c898677f67e74",
+      "address": {
+        "addressLine1": "d97c1d64d9a5bed5ad6263d4abb092609d510f5afabf2c06c3bf379033254870",
+        "addressLine2": "e6328afbafaea3f514fca117b8108c34590c2583f339c711d53a2dd72c1a392e",
+        "addressLine3": "09066171601b7a65919ae629c914d15801980a1107674467ac70c8cc71aa40f6",
+        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
+        "postalZipCode": "a3ea51d62acf19ff1d1643448bb4f37a5941a19722c63c99cbe9087102542e04",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "a762c25c93bfbe4f94672039900dd45d6372750b148464f8f5daa0d84eb9fcd7",
+        "email": "f4ac266934799577574e6779fd4a1255cc7c1bc2f4804d6f47f54970b076613e"
+      },
+      "tracesId": 10004605
+    },
+    "placeOfDestination": {
+      "id": "8e1d3873-d6c9-4c39-9024-8ba7fc421175",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "c9f27f9394e2be7e3d6231d328ebb43d6f4483d476835451409c898677f67e74",
+      "address": {
+        "addressLine1": "d97c1d64d9a5bed5ad6263d4abb092609d510f5afabf2c06c3bf379033254870",
+        "addressLine2": "e6328afbafaea3f514fca117b8108c34590c2583f339c711d53a2dd72c1a392e",
+        "addressLine3": "09066171601b7a65919ae629c914d15801980a1107674467ac70c8cc71aa40f6",
+        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
+        "postalZipCode": "a3ea51d62acf19ff1d1643448bb4f37a5941a19722c63c99cbe9087102542e04",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "a762c25c93bfbe4f94672039900dd45d6372750b148464f8f5daa0d84eb9fcd7",
+        "email": "f4ac266934799577574e6779fd4a1255cc7c1bc2f4804d6f47f54970b076613e"
+      },
+      "tracesId": 10004605
+    },
+    "commodities": {
+      "totalGrossWeight": 4141,
+      "totalNetWeight": 3612,
+      "numberOfPackages": 1023,
+      "temperature": "Chilled",
+      "commodityComplement": [
+        {
+          "commodityID": "07096010",
+          "commodityDescription": "Sweet peppers",
+          "complementID": 1,
+          "speciesType": "07096010",
+          "speciesClass": "07096010"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "53a529a3-38a0-4840-be11-c9484752fdc1",
+          "complementID": 1,
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "3612"
+            },
+            {
+              "key": "number_package",
+              "data": "1023"
+            },
+            {
+              "key": "type_package",
+              "data": "Package"
+            }
+          ]
+        }
+      ],
+      "countryOfOrigin": "TR",
+      "consignedCountry": "TR",
+      "commodityIntendedFor": "human"
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBHRW1P",
+    "arrivalDate": "2024-12-06",
+    "arrivalTime": "16:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "33ANV424",
+      "type": "Road Vehicle",
+      "document": "CMR"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "CNM2024000000081",
+          "documentIssueDate": "2024-12-02",
+          "attachmentId": "4795865b-f570-4346-923f-10b30cab918a",
+          "attachmentFilename": "CANIM81.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "7f1931b2-b741-e911-a955-000d3a454330",
+          "uploadOrganisationId": "8b1931b2-b741-e911-a955-000d3a454330"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "BER047552",
+    "sealsContainers": [
+      {
+        "sealNumber": "NONE",
+        "containerNumber": "33AND740",
+        "officialSeal": false
+      }
+    ],
+    "submissionDate": "2024-12-04T11:35:45.171331311Z",
+    "submittedBy": {
+      "displayName": "cb097c4e80cae160be3e93654bcce8e9c74cc4772620c58572e3bac72b45af13",
+      "userId": "7f1931b2-b741-e911-a955-000d3a454330"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBHRW",
+    "contactDetails": {
+      "name": "4518989b190a2afaf4a84adfe2f72944e1bae1515b472fd6803414d4633c13da",
+      "telephone": "4ba6a016f9e1341825bef4131de36359c3dba0be12fda61b9ac3dbdac7b4f77e",
+      "email": "af5f596a790f09ee27e60f6822e72b6ac845059baaa2dc29b7674954cebe9660"
+    },
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "decision": {
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {},
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable",
+        "message": "What is the decision for this consignment"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/physicalcheckdone",
+        "message": "Physical check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/documentcheckresult",
+        "message": "Documentary check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/identitycheckdone",
+        "message": "Identity check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/laboratorytestsrequired",
+        "message": "Are laboratory tests required"
+      }
+    ],
+    "inspectionRequired": "Not required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/identitycheckdone",
+      "message": "Identity check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/documentcheckresult",
+      "message": "Documentary check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/physicalcheckdone",
+      "message": "Physical check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/laboratorytestsrequired",
+      "message": "Are laboratory tests required"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable",
+      "message": "What is the decision for this consignment"
+    }
+  ],
+  "etag": "0000000004506EA5",
+  "riskDecisionLockingTime": "2024-12-06T14:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 2
+}
