@@ -32,4 +32,26 @@ public class SingleChedH01Tests(ITestOutputHelper output)
         chedPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!.Single().Checks!.Single()
             .DecisionCode.Should().Be("H01");
     }
+
+    // [Fact]
+    // public void SingleChed_ShouldHaveH02CheckValues()
+    // {
+    //     // Arrange
+    //     var loadedData = factory.LoadedData;
+    //
+    //     var chedPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
+    //             d is { message: AlvsClearanceRequest })
+    //         .message;
+    //
+    //     var chedPNotification = (Types.Ipaffs.ImportNotification)loadedData.Single(d =>
+    //             d is { message: Types.Ipaffs.ImportNotification })
+    //         .message;
+    //
+    //     // Act
+    //     var chedPMovement = Client.AsJsonApiClient()
+    //         .GetById(chedPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
+    //
+    //     // Assert
+    //     chedPMovement.Decisions.Last().Items!.Single().Checks!.Single().DecisionCode.Should().Be("H01");
+    // }
 }
