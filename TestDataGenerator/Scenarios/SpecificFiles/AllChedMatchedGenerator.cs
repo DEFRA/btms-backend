@@ -87,7 +87,7 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
         var random = new Random();
         var decision = new Decision();
         decision.ConsignmentAcceptable = true;
-        decision.DecisionEnum = DecisionDecisionEnum.AcceptableForTranshipment;
+        decision.DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket;
         
         var chedAImportNotification = ((ImportNotificationBuilder)builders
                 .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/cheda.json")
@@ -101,6 +101,7 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
                 .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedp.json")
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, random.Next(1, 100))
+            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
             .WithPartTwoDecision(decision)
             .ValidateAndBuild();
 
@@ -108,6 +109,7 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
                 .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedd.json")
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Ced, scenario, entryDate, random.Next(1, 100))
+            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
             .WithPartTwoDecision(decision)
             .ValidateAndBuild();
 
