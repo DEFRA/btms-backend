@@ -1,0 +1,333 @@
+{
+  "id": 5031,
+  "referenceNumber": "CHEDD.GB.2019.1005031",
+  "version": 1,
+  "lastUpdated": "2020-04-08T12:32:02.48Z",
+  "lastUpdatedBy": {
+    "displayName": "Percy Inspector-Tester",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "type": "CED",
+  "status": "SUBMITTED",
+  "partOne": {
+    "importerLocalReferenceNumber": "Reference number",
+    "personResponsible": {
+      "name": "Percy Inspector-Tester",
+      "companyId": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+      "companyName": "Defra Test BIP",
+      "address": [
+        "Animal and Plant Health Agency",
+        "Woodham Lane",
+        "New Haw",
+        "Addlestone",
+        "Surrey",
+        "KT15 3NB",
+        "GB"
+      ],
+      "city": "Surrey",
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "020 8225 7295",
+      "email": "DefraTestBIP@anthunt3.33mail.com",
+      "contactId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "consignor": {
+      "id": "9e5de724-94e4-44bb-b55e-0369c1301917",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "Emard Emard and Emard",
+      "address": {
+        "addressLine1": "44064 Horacio",
+        "addressLine2": "52862 Flatley Grove",
+        "addressLine3": "Colorado",
+        "city": "West Antonia",
+        "postalZipCode": "64443-1",
+        "countryISOCode": "DE",
+        "internationalTelephone": {
+          "countryCode": "32",
+          "subscriberNumber": "1617777777"
+        },
+        "email": "ukoperator@email.com"
+      }
+    },
+    "consignee": {
+      "id": "03359c68-3410-4829-8ff2-b516397ecdeb",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "Graham Graham and Graham",
+      "address": {
+        "addressLine1": "132 Vincenza",
+        "addressLine2": "5948 Larry Ranch",
+        "addressLine3": "Ohio",
+        "city": "North Eliezerchester",
+        "postalZipCode": "HDB 7zh",
+        "countryISOCode": "GB",
+        "ukTelephone": "01615555555",
+        "email": "ukoperator@email.com"
+      }
+    },
+    "departureDate": "2020-06-15",
+    "departureTime": "21:30",
+    "importer": {
+      "id": "03359c68-3410-4829-8ff2-b516397ecdeb",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "Graham Graham and Graham",
+      "address": {
+        "addressLine1": "132 Vincenza",
+        "addressLine2": "5948 Larry Ranch",
+        "addressLine3": "Ohio",
+        "city": "North Eliezerchester",
+        "postalZipCode": "HDB 7zh",
+        "countryISOCode": "GB",
+        "ukTelephone": "01615555555",
+        "email": "ukoperator@email.com"
+      }
+    },
+    "placeOfDestination": {
+      "id": "03359c68-3410-4829-8ff2-b516397ecdeb",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "Graham Graham and Graham",
+      "address": {
+        "addressLine1": "132 Vincenza",
+        "addressLine2": "5948 Larry Ranch",
+        "addressLine3": "Ohio",
+        "city": "North Eliezerchester",
+        "postalZipCode": "HDB 7zh",
+        "countryISOCode": "GB",
+        "ukTelephone": "01615555555",
+        "email": "ukoperator@email.com"
+      }
+    },
+    "transporter": {
+      "id": "81f9a1b2-8ed0-4a2a-a823-3444d6912400",
+      "type": "commercial transporter",
+      "status": "nonapproved",
+      "companyName": "Goldner Goldner and Goldner",
+      "address": {
+        "addressLine1": "2357 Rogers",
+        "addressLine2": "90771 Patience Cove",
+        "addressLine3": "Rhode Island",
+        "city": "Ricoshire",
+        "postalZipCode": "g4t 3RH",
+        "countryISOCode": "GB",
+        "ukTelephone": "01615555555",
+        "telephone": "01615555555",
+        "email": "ukoperator@email.com"
+      }
+    },
+    "commodities": {
+      "totalGrossWeight": 8678,
+      "totalNetWeight": 101,
+      "totalGrossVolume" : 10.0,
+      "totalGrossVolumeUnit" : "litres",
+      "numberOfPackages": 5,
+      "temperature": "Chilled",
+      "numberOfAnimals": 0,
+      "regionOfOrigin": "FJ",
+      "commodityComplement": [
+        {
+          "commodityID": "08062030",
+          "commodityDescription": "Sultanas",
+          "complementID": 149810,
+          "speciesType": "149810",
+          "speciesClass": "149810",
+          "speciesFamily": "149810"
+        },
+        {
+          "commodityID": "08062031",
+          "commodityDescription": "Sultanas",
+          "complementID": 149811,
+          "speciesType": "149810",
+          "speciesClass": "149810",
+          "speciesFamily": "149810"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "complementID": 149810,
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "10"
+            },
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "type_package",
+              "data": "Bag"
+            }
+          ]
+        },
+        {
+          "complementID": 149811,
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "10"
+            },
+            {
+              "key": "number_package",
+              "data": "2"
+            },
+            {
+              "key": "type_package",
+              "data": "Bag"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "FJ",
+      "consignedCountry": "FJ"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "purposeGroup": "For Import",
+      "finalBIP": "Final BIP"
+    },
+    "pointOfEntry": "GBDSA4P",
+    "arrivalDate": "2019-06-14",
+    "arrivalTime": "23:10:00",
+    "meansOfTransportFromEntryPoint": {
+      "id": "8181881",
+      "type": "Railway Wagon",
+      "document": "hshshshs"
+    },
+    "veterinaryInformation": {
+      "veterinaryDocument": "23432",
+      "veterinaryDocumentIssueDate": "1999-01-11",
+      "accompanyingDocuments": [
+        {
+          "documentIssueDate": "2020-05-17",
+          "documentType": "airWaybill",
+          "documentReference": "DOC_12345"
+        }
+      ]
+    },
+    "sealsContainers": [
+      {
+        "sealNumber": "6666",
+        "containerNumber": "5678",
+        "officialSeal": false
+      },
+      {
+        "sealNumber": "6667",
+        "containerNumber": "5679",
+        "officialSeal": true
+      }
+    ],
+    "submissionDate": "2019-11-29T11:02:28.76883Z",
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/partone/commodities/totalgrossvolume",
+        "message": "Total gross volume"
+      }
+    ],
+    "submittedBy": {
+      "displayName": "Percy Inspector-Tester",
+      "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    }
+  },
+  "decisionBy": {
+    "displayName": "s_RcwY29955gH7DEKLupAA-FPA4U8xbltyAGMuJ3uto",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "decisionDate": "2019-12-03T10:48:08.899922Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Animal Feeding Stuff"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Satisfactory",
+      "identityCheckDone": false,
+      "identityCheckResult": "Satisfactory",
+      "physicalCheckDone": false,
+      "physicalCheckResult": "Satisfactory"
+    },
+    "controlledDestination": {
+      "id": "03359c68-3410-4829-8ff2-b516397ecdeb",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "Graham Graham and Graham",
+      "address": {
+        "addressLine1": "132 Vincenza",
+        "addressLine2": "5948 Larry Ranch",
+        "addressLine3": "Ohio",
+        "city": "North Eliezerchester",
+        "postalZipCode": "HDB 7zh",
+        "countryISOCode": "GB",
+        "ukTelephone": "01615555555",
+        "email": "ukoperator@email.com"
+      }
+    },
+    "laboratoryTestsRequired": true,
+    "laboratoryTests": {
+      "testDate": "2019-12-02T16:41:41.633",
+      "singleLaboratoryTests": [
+        {
+          "commodityCode": "08062030",
+          "tracesID": 1,
+          "testName": ".Beta-agonists (screening multisubstances)",
+          "applicant": {
+            "analysisType": "Initial analysis",
+            "laboratory": "Microbiology Cardiff (FE)",
+            "laboratoryAddress": "Llandough Hospita, Penlan Road, Penarth, Wales CF64 2XX",
+            "laboratoryIdentification": "Public Health Wales (PHW)",
+            "laboratoryPhoneNumber": "029 20716745",
+            "sampleBatchNumber": "21e3",
+            "numberOfSamples": 12,
+            "sampleType": "Cuttings",
+            "conservationOfSample": "Ambient",
+            "inspector": {
+              "name": "Percy Inspector-Tester",
+              "phone": "020 8225 7295",
+              "email": "DefraTestBIP@anthunt3.33mail.com"
+            }
+          },
+          "laboratoryTestResult": {
+            "sampleUseByDate": "2010-10-10",
+            "releasedDate": "2009-10-20",
+            "laboratoryTestMethod": "Looking",
+            "results": "I looked with my eyes and saw no problems",
+            "conclusion": "Satisfactory",
+            "labTestCreatedDate": "2019-12-02"
+          }
+        }
+      ]
+    },
+    "resealedContainersIncluded": true,
+    "resealedContainersMapping": [
+      {
+        "sealNumber": "6666",
+        "containerNumber": "5678",
+        "officialSeal": false,
+        "resealedSealNumber": "1111"
+      },
+      {
+        "sealNumber": "6667",
+        "containerNumber": "5679",
+        "officialSeal": true,
+        "resealedSealNumber": "1112"
+      }
+    ],
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "Percy",
+        "lastName": "Inspector-Tester",
+        "email": "DefraTestBIP@anthunt3.33mail.com",
+        "phone": "020 8225 7295",
+        "signed": "2019-12-03T10:48:09.003509"
+      }
+    },
+    "bipLocalReferenceNumber": "1234",
+    "checkDate": "2020-01-30T10:15:00Z"
+  },
+  "partThree": {},
+  "replaces": "CHEDD.GB.2019.1000054"
+}

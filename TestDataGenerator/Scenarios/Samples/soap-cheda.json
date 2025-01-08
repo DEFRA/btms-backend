@@ -1,0 +1,209 @@
+{
+  "referenceNumber": "CHEDA.GB.2024.1043483",
+  "lastUpdated": "2018-06-05T11:03:22.337Z",
+  "version": "1",
+  "type": "CVEDA",
+  "status": "VALIDATED",
+  "officialVeterinarian": null,
+  "decisionBy": {
+    "displayName": "s_RcwY29955gH7DEKLupAA-FPA4U8xbltyAGMuJ3uto",
+    "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+  },
+  "decisionDate": "2018-03-19T10:42:13.885Z",
+  "partOne": {
+    "personResponsible": {
+      "name": "Michael Scott",
+      "companyId": "null",
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "01234566234",
+      "email": "test14@hghumankainos.33mail.com",
+      "contactId": "ebc98b54-834c-e911-a96a-000d3a29ba60",
+      "address": [
+        "Animal and Plant Health Agency",
+        "Woodham Lane",
+        "New Haw",
+        "Addlestone",
+        "Surrey",
+        "KT15 3NB"
+      ]
+    },
+    "pointOfEntry": "GBBEL4",
+    "commodities": {
+      "totalGrossWeight": "0",
+      "totalNetWeight": 0,
+      "numberOfPackages": 12,
+      "temperature": null,
+      "numberOfAnimals": 61,
+      "commodityComplement": [
+        {
+          "commodityID": "0103",
+          "complementID": "1911",
+          "speciesID": "3144",
+          "speciesName": "Sus scrofa domesticus",
+          "speciesTypeName": "Domestic",
+          "speciesType": "1911",
+          "speciesClassName": "",
+          "speciesClass": "1911",
+          "speciesFamilyName": "",
+          "speciesFamily": "1911",
+          "speciesNomination": "Sus scrofa domesticus"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "complementID": "1911",
+          "speciesID": "3144",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "12"
+            },
+            {
+              "key": "number_animal",
+              "data": "61"
+            },
+            {
+              "key": "invasive_specie",
+              "data": "false"
+            },
+            {
+              "key": "allowed",
+              "data": "false"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": true,
+      "countryOfOrigin": "FJ",
+      "regionOfOrigin": null,
+      "consignedCountry": null,
+      "animalsCertifiedAs": "Approved",
+      "commodityIntendedFor": null
+    },
+    "consignor": {
+      "individualName": "MARCH SEGARRA,SA",
+      "companyName": "MARCH SEGARRA,SA",
+      "address": {
+        "addressLine1": "CTRA LA COMELLA,45",
+        "postalZipCode": "AD500",
+        "countryISOCode": "AD",
+        "city": "Andorra"
+      },
+      "type": "exporter",
+      "status": "approved"
+    },
+    "consignee": {
+      "individualName": "Acme Importers Limited",
+      "companyName": "Acme Importers Limited",
+      "address": {
+        "addressLine1": "23 High Street, Newcastle, ABC123",
+        "postalZipCode": "CB3",
+        "countryISOCode": "GB",
+        "city": "Newcastle"
+      },
+      "type": "consignee",
+      "status": "nonapproved"
+    },
+    "importer": {
+      "individualName": "JONES AS & JT",
+      "companyName": "JONES AS & JT",
+      "address": {
+        "addressLine1": "66 RICKAMORE ROAD UPPER TEMPLEPATRICK BALLYCLARE",
+        "postalZipCode": "BT39",
+        "countryISOCode": "GB",
+        "city": "BALLYCLARE"
+      },
+      "type": "importer",
+      "status": "approved"
+    },
+    "purpose": {
+      "conformsToEU": false,
+      "internalMarketPurpose": null,
+      "finalBIP": "GBBEL1",
+      "thirdCountryTranshipment": "Panama",
+      "forNonConforming": null,
+      "regNumber": null,
+      "shipName": null,
+      "shipPort": null,
+      "exitBIP": null,
+      "thirdCountry": "Panama",
+      "transitThirdCountries": [
+        "GB"
+      ],
+      "forImportOrAdmission": "Definitive import",
+      "exitDate": null,
+      "purposeGroup": "For Re-Import"
+    },
+    "placeOfDestination": {
+      "companyName": "Five Sisters Zoo Park",
+      "address": {
+        "addressLine1": "Gavieside",
+        "postalZipCode": "EH55",
+        "countryISOCode": "GB",
+        "city": "Gavieside"
+      },
+      "type": "destination",
+      "status": "nonapproved"
+    },
+    "arrivalDate": "2019-06-14",
+    "arrivalTime": "10:11",
+    "meansOfTransport": {
+      "type": "Ship",
+      "document": "CVEDA_TRANSPORT_DOC.226243",
+      "id": "CVEDATRANSPORT_ID.676863"
+    },
+    "transporter": {
+      "individualName": "Chris+Nichol",
+      "companyName": "Chris+Nichol",
+      "address": {
+        "addressLine1": "the+grove+cartwright+street+cleckheaton+bd19+5lx",
+        "postalZipCode": "BD19",
+        "countryISOCode": "GB",
+        "city": "Cleckheaton"
+      },
+      "type": "private transporter",
+      "status": "approved",
+      "approvalNumber": "GB00113999"
+    },
+    "meansOfTransportFromEntryPoint": {
+      "type": "Aeroplane",
+      "document": "CVEDA_VET_DOC.595",
+      "id": "CVEDA_VET_ID.771"
+    },
+    "departureDate": "2019-06-19",
+    "departureTime": "04:54",
+    "estimatedJourneyTimeInMinutes": "0",
+    "responsibleForTransport": "responsible_transport_from_bip",
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [],
+      "veterinaryDocument": "CVEDA_VET.051823",
+      "veterinaryDocumentIssueDate": "2018-04-19",
+      "accompanyingDocumentNumbers": [
+        "n/a"
+      ]
+    },
+    "importerLocalReferenceNumber": "CVEDA.866781",
+    "route": {
+      "transitingStates": [
+        "IS"
+      ]
+    },
+    "sealsContainers": [],
+    "submissionDate": "2018-06-05T11:03:00.138Z"
+  },
+  "partTwo": {
+    "controlAuthority": null,
+    "consignmentCheck": null,
+    "impactOfTransportOnAnimals": null,
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Temporary Import"
+    },
+    "resealedContainers": null,
+    "onwardTransportation": null
+  },
+  "partThree": {
+    "controlStatus": "REQUIRED"
+  }
+}

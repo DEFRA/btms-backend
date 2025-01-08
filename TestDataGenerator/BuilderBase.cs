@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoFixture;
 using AutoFixture.Dsl;
 using Btms.Common.Extensions;
@@ -29,7 +30,10 @@ public abstract class BuilderBase<T, TBuilder> :
         if (filePath.HasValue())
         {
             var json = File.ReadAllText(filePath);
-            item = JsonSerializer.Deserialize<T>(json)!;
+            item = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+            {
+                NumberHandling = JsonNumberHandling.AllowReadingFromString
+            })!;
         }
         else if (itemJson.HasValue())
         {
