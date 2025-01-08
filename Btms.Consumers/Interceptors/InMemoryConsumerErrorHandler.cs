@@ -1,12 +1,13 @@
 using Btms.Consumers.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SlimMessageBus;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Memory;
 
 namespace Btms.Consumers.Interceptors;
 
-public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger)
+public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger, IOptions<ConsumerOptions> options)
     : IMemoryConsumerErrorHandler<T>
 {
     private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
@@ -15,7 +16,7 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
         consumerContext.IncrementRetryAttempt();
         var retryCount = consumerContext.GetRetryAttempt();
         
-        if (retryCount > 5)
+        if (retryCount > options.Value.ErrorRetries)
         {
             logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
             return ConsumerErrorHandlerResult.Failure;
