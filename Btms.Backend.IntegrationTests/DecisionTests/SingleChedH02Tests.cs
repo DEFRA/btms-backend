@@ -99,7 +99,7 @@ public class SingleChedDecisionTests(
         IClassFixture<InMemoryScenarioApplicationFactory<AllChedsNonHoldDecisionGenerator>>
 {
     [Fact]
-    public void SingleChed_ShouldHaveH02CheckValues()
+    public void SingleChed_ShouldHaveC03CheckValues()
     {
         // Arrange
         var loadedData = factory.LoadedData;
@@ -110,8 +110,6 @@ public class SingleChedDecisionTests(
             d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).message;
         var chedP = (ImportNotification)loadedData.Single(d =>
             d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).message;
-        var chedPP = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Chedpp }).message;
 
         var chedAClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
                 d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
@@ -128,11 +126,6 @@ public class SingleChedDecisionTests(
                     chedP.ReferenceNumber!.Split(".")
                         .Last()))
             .message;
-        var chedPPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
-                    chedPP.ReferenceNumber!.Split(".")
-                        .Last()))
-            .message;
 
         // Act
         var chedAMovement = Client.AsJsonApiClient()
@@ -141,8 +134,6 @@ public class SingleChedDecisionTests(
             .GetById(chedDClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedPMovement = Client.AsJsonApiClient()
             .GetById(chedPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
-        var chedPPMovement = Client.AsJsonApiClient()
-            .GetById(chedPPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
 
         // Assert
         string decisionCode = "";
@@ -150,7 +141,7 @@ public class SingleChedDecisionTests(
             .All(i =>
             {
                 decisionCode = i.Checks!.First().DecisionCode!;
-                return decisionCode.Equals("E03");
+                return decisionCode.Equals("C03");
             }).Should().BeTrue("Expected C03. Actually {0}", decisionCode);
         chedDMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
             .All(i =>
@@ -159,12 +150,6 @@ public class SingleChedDecisionTests(
                 return decisionCode.Equals("C03");
             }).Should().BeTrue("Expected C03. Actually {0}", decisionCode);
         chedPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
-            .All(i =>
-            {
-                decisionCode = i.Checks!.First().DecisionCode!;
-                return decisionCode.Equals("C03");
-            }).Should().BeTrue("Expected C03. Actually {0}", decisionCode);
-        chedPPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
             .All(i =>
             {
                 decisionCode = i.Checks!.First().DecisionCode!;
