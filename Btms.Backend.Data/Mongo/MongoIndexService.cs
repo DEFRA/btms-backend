@@ -13,9 +13,15 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
         return Task.WhenAll(
             CreateIndex("MatchReferenceIdx",
                 Builders<ImportNotification>.IndexKeys.Ascending(m => m._MatchReference), cancellationToken),
+            CreateIndex("Created",
+                Builders<ImportNotification>.IndexKeys.Ascending(m => m.Created), cancellationToken),
 
             CreateIndex("MatchReferenceIdx",
-                Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken));
+                Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken),
+            CreateIndex("Created",
+                Builders<Movement>.IndexKeys.Ascending(m => m.Created), cancellationToken)
+
+        );
 
     }
 
