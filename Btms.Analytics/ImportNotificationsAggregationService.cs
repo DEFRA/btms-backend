@@ -149,7 +149,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
 
         var mongoResult = context
             .Notifications
-            .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
+            .GetAggregatedRecordsDictionary(logger, filter, projection, group, datasetGroup, createDatasetName);
         
         var output = AnalyticsHelpers.GetImportNotificationSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))

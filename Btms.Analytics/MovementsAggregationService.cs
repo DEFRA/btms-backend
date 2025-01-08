@@ -261,7 +261,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         var mongoResult = context
             .Movements
-            .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
+            .GetAggregatedRecordsDictionary(logger, filter, projection, group, datasetGroup, createDatasetName);
 
         var output = AnalyticsHelpers.GetMovementStatusSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))
