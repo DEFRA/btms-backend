@@ -4,53 +4,51 @@ using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class SingleChedH02Tests(
-    InMemoryScenarioApplicationFactory<AllChedsH02DecisionGenerator> factory,
-    ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"),
-        IClassFixture<InMemoryScenarioApplicationFactory<AllChedsH02DecisionGenerator>>
+public class SingleChedH02Tests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<AllChedsH02DecisionGenerator>(output)
 {
     [Fact]
     public void SingleChed_ShouldHaveH02CheckValues()
     {
         // Arrange
-        var loadedData = factory.LoadedData;
+        var loadedData = LoadedData;
 
         var chedA = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cveda }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cveda }).Message;
         var chedD = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).Message;
         var chedP = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).Message;
         var chedPP = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Chedpp }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Chedpp }).Message;
 
         var chedAClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedA.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
         var chedDClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedD.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
         var chedPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedP.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
         var chedPPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedPP.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
 
         // Act
         var chedAMovement = Client.AsJsonApiClient()
@@ -93,39 +91,37 @@ public class SingleChedH02Tests(
 
 [Trait("Category", "Integration")]
 public class SingleChedDecisionTests(
-    InMemoryScenarioApplicationFactory<AllChedsNonHoldDecisionGenerator> factory,
-    ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper, "DecisionTests"),
-        IClassFixture<InMemoryScenarioApplicationFactory<AllChedsNonHoldDecisionGenerator>>
+    ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<AllChedsNonHoldDecisionGenerator>(output)
 {
     [Fact]
     public void SingleChed_ShouldHaveC03CheckValues()
     {
         // Arrange
-        var loadedData = factory.LoadedData;
+        var loadedData = LoadedData;
 
         var chedA = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cveda }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cveda }).Message;
         var chedD = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Ced }).Message;
         var chedP = (ImportNotification)loadedData.Single(d =>
-            d.message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).message;
+            d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).Message;
 
         var chedAClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedA.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
         var chedDClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedD.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
         var chedPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
+                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedP.ReferenceNumber!.Split(".")
                         .Last()))
-            .message;
+            .Message;
 
         // Act
         var chedAMovement = Client.AsJsonApiClient()
