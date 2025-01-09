@@ -167,10 +167,6 @@ public partial class SummarisedDecisionContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
     public List<DecisionImportNotifications>? ImportNotifications { get; set; }
     
     [Attr]
@@ -196,6 +192,10 @@ public class DecisionComparison
     [Attr]
     [System.ComponentModel.Description("")]
     public int? BtmsDecisionNumber { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
 }
 
 public partial class DecisionContext : SummarisedDecisionContext, IAuditContext //

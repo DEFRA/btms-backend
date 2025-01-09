@@ -1,4 +1,5 @@
 using Btms.Backend.IntegrationTests.Helpers;
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 using FluentAssertions;
@@ -55,14 +56,14 @@ public class NonContiguous(ITestOutputHelper output)
     }
     
     [Fact]
-    public void ShouldHavePairedAlvsDecisions()
+    public void ShouldHavePairedAlvsDecision()
     {
         Client
             .GetSingleMovement()
-            .AlvsDecisionStatus
-            .Decisions
-            .Count(d => d.Context.DecisionComparison!.Paired)
-            .Should().Be(1);
+            .AlvsDecisionStatus.Decisions
+            .Select(d => d.Context.DecisionComparison?.Paired)
+            // .Count(d => d.Context.DecisionComparison is { Paired: true })
+            .Should().Equal(null, true);
     }
     
     [Fact]
@@ -82,7 +83,7 @@ public class NonContiguous(ITestOutputHelper output)
 
         movement
             .AlvsDecisionStatus.Decisions
-            .Select(d => (d.Context.AlvsDecisionNumber, d.Context.DecisionComparison!.BtmsDecisionNumber))
+            .Select(d => (d.Context.AlvsDecisionNumber, d.Context.DecisionComparison?.BtmsDecisionNumber))
             .Should().Equal((1,null), (3,1));
     }
 }

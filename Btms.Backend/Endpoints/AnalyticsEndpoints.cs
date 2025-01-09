@@ -15,13 +15,15 @@ public static class AnalyticsEndpoints
     
     public static void UseAnalyticsEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet(BaseRoute + "/dashboard", GetDashboard).AllowAnonymous()
-            .CacheOutput();
-        app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState).AllowAnonymous();
+        app.MapGet(BaseRoute + "/dashboard", GetDashboard)
+            .AllowAnonymous();
+            // .CacheOutput("Expire10Min");
+        app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState)
+            .AllowAnonymous();
         app.MapGet(BaseRoute + "/timeline", Timeline)
-            .CacheOutput();;
+            .CacheOutput("Expire10Min");;
         app.MapGet(BaseRoute + "/exceptions", Exceptions)
-            .CacheOutput();
+            .CacheOutput("Expire10Min");
     }
     private static async Task<IResult> Timeline(
         [FromServices] IImportNotificationsAggregationService importService,

@@ -36,6 +36,29 @@ public class NoMatchTests(ITestOutputHelper output)
     }
     
     [Fact]
+    public void AlvsDecisionShouldHaveCorrectChecks()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            .Should().BeEquivalentTo([
+                new { 
+                    ItemNumber = 1,
+                    CheckCode = "H222",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                },
+                new {
+                    ItemNumber = 1,
+                    CheckCode = "H224",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                    
+                }
+            ]);
+    }
+    
+    [Fact]
     public void ShouldHaveDecisionStatus()
     {
         Client
@@ -50,7 +73,7 @@ public class NoMatchTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .SingleBtmsDecisionAuditEntry()
-            .Context?.Checks
+            .Context?.DecisionComparison?.Checks
             .Should().NotBeNull();
     }
     

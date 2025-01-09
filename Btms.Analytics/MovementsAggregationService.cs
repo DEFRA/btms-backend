@@ -286,7 +286,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
-            .SelectMany(d => d.Decision.Context.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
+            .SelectMany(d => d.Decision.Context.DecisionComparison!.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
+            // .SelectMany(d => d.Decision.Context.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
             .GroupBy(d => new
             {
                 d.Decision.Context.DecisionComparison!.DecisionStatus,

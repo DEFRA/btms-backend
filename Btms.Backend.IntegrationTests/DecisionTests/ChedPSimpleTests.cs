@@ -1,3 +1,4 @@
+using System.Net;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Common.Extensions;
 using Btms.Model;
@@ -180,6 +181,47 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Single()
             .Context
             .DecisionComparison!
-            .Should().Match<DecisionComparison>(c => c.BtmsDecisionNumber == 2 && c.Paired == true);
+            .Should().BeEquivalentTo(
+                new
+                {
+                    BtmsDecisionNumber = 2,
+                    Paired = true
+                });
+    }
+    
+    [Fact]
+    public void AlvsDecisionShouldHaveCorrectChecks()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            .Should().BeEquivalentTo([
+                new { 
+                    ItemNumber = 1,
+                    CheckCode = "H222",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "H01"
+                },
+                new {
+                    ItemNumber = 1,
+                    CheckCode = "H224",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "H01"
+                }
+            ]);
+    }
+    
+    [Fact]
+    public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
+    {
+        var result = await (await Client
+            .GetAnalyticsDashboard(["decisionsByDecisionCode"]))
+            .ToJsonDictionary();
+
+        // TODO would be nice to deserialise this into our dataset structures from analytics... 
+        result["decisionsByDecisionCode"]?["summary"]?["values"]?[
+            "Btms Made Same Decision As Alvs"]?
+            .GetValue<int>()
+            .Should().Be(2);
     }
 }
