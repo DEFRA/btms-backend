@@ -6,6 +6,7 @@ using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
+using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -16,22 +17,33 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class ChedPSimpleTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
+public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
 {
 
-    [Fact]
+    [Fact(Skip = "Has Ched PP Checks")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Decisions
-            .Single()
+            .First(d => d.Context.AlvsDecisionNumber == 2)
             .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
     
     [Fact]
+    public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnPreviousDecison()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Decisions
+            .First(d => d.Context.AlvsDecisionNumber == 1)
+            .Context.DecisionComparison
+            .Should().BeNull();
+    }
+    
+    [Fact(Skip = "Has Ched PP Checks")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -42,19 +54,19 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     }
 
     [Fact]
-    public void ShouldHave2BtmsDecisions()
+    public void ShouldHave1BtmsDecision()
     {
         Client
             .GetSingleMovement()
             .Decisions.Count
-            .Should().Be(2);
+            .Should().Be(1);
     }
 
     [Fact]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
-        var chedPNotification = (ImportNotification)LoadedData
-            .Single(d =>
+        var notification = (ImportNotification)LoadedData
+            .First(d =>
                 d is { Message: ImportNotification }
             )
             .Message;
@@ -74,20 +86,18 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Select(n => (n.Id, n.Version))
             .Should()
             .Equal([
-                ( chedPNotification.ReferenceNumber!, 1 )
+                ( notification.ReferenceNumber!, 1 )
             ]);
     }
     
     [Fact]
-    public void ShouldHave1AlvsDecision()
+    public void ShouldHave2AlvsDecisions()
     {
         Client
             .GetSingleMovement()
-            .AlvsDecisionStatus
-            .Decisions
-            .Count
+            .AlvsDecisionStatus.Decisions.Count
             .Should()
-            .Be(1);
+            .Be(2);
     }
 
     [Fact]
@@ -100,14 +110,15 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should()
             .Equal([
                 ("Cds", "Created", 1),
-                ("Btms", "Decision", 1),
                 ("Btms", "Linked", null),
-                ("Btms", "Decision", 2),
-                ("Alvs", "Decision", 1)
+                ("Btms", "Decision", 1),
+                ("Cds", "Updated", 2),
+                ("Alvs", "Decision", 1),
+                ("Alvs", "Decision", 2)
             ]);
     }
 
-    [Fact]
+    [Fact(Skip = "Has Chedpp Checks")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -117,12 +128,12 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     }
     
     [Fact]
-    public void ShouldHaveDecisionStatus()
+    public void ShouldHaveChedPPDecisionStatus()
     {
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
-            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
+            .Should().Be(DecisionStatusEnum.HasChedppChecks);
     }
     
     [Fact]
@@ -131,7 +142,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.ChedTypes
-            .Should().Equal(ImportNotificationTypeEnum.Cvedp);
+            .Should().Equal(ImportNotificationTypeEnum.Chedpp);
     }
     
     [Fact]
@@ -172,24 +183,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [Fact]
-    public void AlvsDecisionShouldBePaired()
-    {
-        Client
-            .GetSingleMovement()
-            .AlvsDecisionStatus.Decisions
-            .Single()
-            .Context
-            .DecisionComparison!
-            .Should().BeEquivalentTo(
-                new
-                {
-                    BtmsDecisionNumber = 2,
-                    Paired = true
-                });
-    }
-    
-    [Fact]
+    [Fact(Skip = "Has Chedpp Checks")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client
@@ -198,15 +192,15 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().BeEquivalentTo([
                 new { 
                     ItemNumber = 1,
-                    CheckCode = "H222",
-                    AlvsDecisionCode = "H01", 
-                    BtmsDecisionCode = "H01"
+                    CheckCode = "H218",
+                    AlvsDecisionCode = "C03", 
+                    BtmsDecisionCode = "C03"
                 },
-                new {
+                new { 
                     ItemNumber = 1,
-                    CheckCode = "H224",
-                    AlvsDecisionCode = "H01", 
-                    BtmsDecisionCode = "H01"
+                    CheckCode = "H219",
+                    AlvsDecisionCode = "C03", 
+                    BtmsDecisionCode = "C03"
                 }
             ]);
     }
