@@ -17,13 +17,13 @@ We can use files from the datalake datasets to generate scenario folders that ha
 
 See the implementations of SpecificFilesScenarioGenerator for examples. The files can be used as-is, in a single unit test, or can be modified using the same builder pattern we use for other scenarios before being built. It's even possible to use them in load tests, by customising them to ensure they're unique using the builders (by changing CHED numbers, MRNs etc).
 
-Copy all Movement files matching the ID into
+Copy all Movement files matching the ID into a Samples folder
 
-find .test-data-generator/PRODREDACTED-202411/ALVS .test-data-generator/PRODREDACTED-202411/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBC4EB0D97OK4AR4 | xargs -I '{}' rsync -R '{}' ./Scenarios/SpecificFiles/DuplicateMovementItems-CDMS-211/
+find .test-data-generator/PRODREDACTED-202412/ALVS .test-data-generator/PRODREDACTED-202412/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBDEHMFC4WGXVAR7 | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDEHMFC4WGXVAR7/
 
-Copy all Movement files matching the ID into
+Copy all Import Notification files matching the ID into a Samples folder
 
-find .test-data-generator/PRODREDACTED-202411/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5071194\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/DuplicateMovementItems-CDMS-211/
+find .test-data-generator/PRODREDACTED-202412/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5249748\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDEHMFC4WGXVAR7/
 
 ## Merging datasets
 

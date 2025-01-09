@@ -13,7 +13,7 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NoMatchTests(ITestOutputHelper output)
+public class NoMatch(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
     
@@ -64,7 +64,7 @@ public class NoMatchTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
-            .Should().Be(DecisionStatusEnum.InvestigationNeeded);
+            .Should().Be(DecisionStatusEnum.NoImportNotificationsLinked);
     }
     
     [Fact]

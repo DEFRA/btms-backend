@@ -138,7 +138,7 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
     }
 }
 
-public class CrNonContiguousDecisionsScenarioGenerator(ILogger<CrNonContiguousDecisionsScenarioGenerator> logger) : ScenarioGenerator
+public class CrNoMatchNonContiguousDecisionsScenarioGenerator(ILogger<CrNoMatchNonContiguousDecisionsScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

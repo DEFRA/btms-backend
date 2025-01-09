@@ -13,8 +13,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NonContiguous(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<CrNonContiguousDecisionsScenarioGenerator>(output)
+public class NoMatchNonContiguous(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<CrNoMatchNonContiguousDecisionsScenarioGenerator>(output)
 {
     
     [Fact]
@@ -52,7 +52,7 @@ public class NonContiguous(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should()
-            .Be(DecisionStatusEnum.AlvsDecisionVersionsNotComplete);
+            .Be(DecisionStatusEnum.NoImportNotificationsLinked);
     }
     
     [Fact]
@@ -64,6 +64,28 @@ public class NonContiguous(ITestOutputHelper output)
             .Select(d => d.Context.DecisionComparison?.Paired)
             // .Count(d => d.Context.DecisionComparison is { Paired: true })
             .Should().Equal(null, true);
+    }
+    
+    [Fact]
+    public void AlvsDecisionShouldHaveCorrectChecks()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            .Should().BeEquivalentTo([
+                new { 
+                    ItemNumber = 1,
+                    CheckCode = "H222",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                },
+                new {
+                    ItemNumber = 1,
+                    CheckCode = "H224",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                }
+            ]);
     }
     
     [Fact]

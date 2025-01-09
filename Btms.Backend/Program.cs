@@ -261,7 +261,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 	app.UseSyncEndpoints(options);
 	app.UseManagementEndpoints(options);
 	app.UseDiagnosticEndpoints(options);
-	app.UseAnalyticsEndpoints();
+	app.UseAnalyticsEndpoints(options);
     
     if (builder.Environment.IsDevelopment())
     {

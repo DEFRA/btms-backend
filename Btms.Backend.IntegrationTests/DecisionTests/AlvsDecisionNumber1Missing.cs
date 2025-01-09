@@ -17,6 +17,28 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
 {
     
     [Fact]
+    public void AlvsDecisionShouldHaveCorrectChecks()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            .Should().BeEquivalentTo([
+                new { 
+                    ItemNumber = 1,
+                    CheckCode = "H222",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                },
+                new {
+                    ItemNumber = 1,
+                    CheckCode = "H224",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                }
+            ]);
+    }
+    
+    [Fact]
     public void ShouldHave1AlvsDecision()
     {
         Client
@@ -49,6 +71,6 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
             .Context.DecisionComparison!
             .DecisionStatus
             .Should()
-            .Be(DecisionStatusEnum.AlvsDecisionVersion1NotPresent);
+            .Be(DecisionStatusEnum.NoImportNotificationsLinked);
     }
 }

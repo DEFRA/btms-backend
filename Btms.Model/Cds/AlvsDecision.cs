@@ -139,6 +139,12 @@ public enum DecisionStatusEnum {
     // [EnumMember(Value = "Btms Decision Not Present")]
     // BtmsDecisionNotPresent,
     
+    [EnumMember(Value = "Has Ched PP Checks")]
+    HasChedppChecks,
+    
+    [EnumMember(Value = "No Import Notifications Linked")]
+    NoImportNotificationsLinked,
+    
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
     

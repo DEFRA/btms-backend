@@ -23,5 +23,4 @@ public class ManyItemTests(ITestOutputHelper output)
             .BtmsStatus.ChedTypes!.Count()
             .Should().Be(1);
     }
-    
 }

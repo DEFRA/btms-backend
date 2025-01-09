@@ -392,6 +392,14 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             alvsDecision.Context.DecisionComparison.DecisionMatched = true;
             decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
         }
+        else if (_movement.Relationships.Notifications.Data.Count == 0)
+        {
+            decisionStatus = DecisionStatusEnum.NoImportNotificationsLinked;
+        }
+        else if (_movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp))
+        {
+            decisionStatus = DecisionStatusEnum.HasChedppChecks;
+        }
         else if (!_movement.ClearanceRequests.Exists(c => c.Header!.EntryVersionNumber == 1))
         {
             decisionStatus = DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent;
