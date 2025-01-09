@@ -71,7 +71,12 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Services.AddHostedService<QueueHostedService>();
 	builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 	builder.Configuration.AddEnvironmentVariables();
-    builder.Services.AddOutputCache();
+    builder.Services.AddOutputCache(options =>
+        {
+            options.AddBasePolicy(builder =>
+                builder.Expire(TimeSpan.FromMinutes(10)));
+        }
+    );
     
 	var logger = ConfigureLogging(builder);
 
@@ -86,7 +91,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         .Bind(builder.Configuration.GetSection(ServiceBusOptions.SectionName))
         .ValidateDataAnnotations();
 
-builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
+    builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
 		.PostConfigure(options =>
 		{
 			builder.Configuration.Bind(options);
