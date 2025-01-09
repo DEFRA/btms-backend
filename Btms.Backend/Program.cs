@@ -73,7 +73,9 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Configuration.AddEnvironmentVariables();
     builder.Services.AddOutputCache(options =>
         {
-            options.AddBasePolicy(builder =>
+            // options.AddBasePolicy(builder =>
+            //     builder.Expire(TimeSpan.FromMinutes(10)));
+            options.AddPolicy("Expire10Min", builder => 
                 builder.Expire(TimeSpan.FromMinutes(10)));
         }
     );
@@ -259,7 +261,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 	app.UseSyncEndpoints(options);
 	app.UseManagementEndpoints(options);
 	app.UseDiagnosticEndpoints(options);
-	app.UseAnalyticsEndpoints();
+	app.UseAnalyticsEndpoints(options);
     
     if (builder.Environment.IsDevelopment())
     {

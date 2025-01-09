@@ -5,13 +5,14 @@ using Xunit;
 using Xunit.Abstractions;
 using Btms.Analytics.Tests.Helpers;
 using Btms.Analytics.Tests.Fixtures;
+using Btms.Model.Extensions;
 using TestDataGenerator.Config;
 using TestGenerator.IntegrationTesting.Backend;
 
 namespace Btms.Analytics.Tests;
 
 public class ImportNotificationsByCommoditiesTests(ITestOutputHelper output)
-    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName, reloadData:false)
 {
     
     [Fact]
@@ -24,6 +25,7 @@ public class ImportNotificationsByCommoditiesTests(ITestOutputHelper output)
             .ToList();
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Count);
+        TestOutputHelper.WriteLine(result.ToJsonString());
         
         result.Count().Should().Be(8);
         result.Select(r => r.Name).Order().Should().Equal(AnalyticsHelpers.GetImportNotificationSegments().Order());

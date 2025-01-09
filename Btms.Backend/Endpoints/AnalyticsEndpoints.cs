@@ -6,6 +6,7 @@ using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model.Ipaffs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Btms.Backend.Endpoints;
 
@@ -13,15 +14,28 @@ public static class AnalyticsEndpoints
 {
 	private const string BaseRoute = "analytics";
     
-    public static void UseAnalyticsEndpoints(this IEndpointRouteBuilder app)
+    public static void UseAnalyticsEndpoints(this IEndpointRouteBuilder app, IOptions<ApiOptions> options)
     {
-        app.MapGet(BaseRoute + "/dashboard", GetDashboard).AllowAnonymous()
-            .CacheOutput();
-        app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState).AllowAnonymous();
-        app.MapGet(BaseRoute + "/timeline", Timeline)
-            .CacheOutput();;
-        app.MapGet(BaseRoute + "/exceptions", Exceptions)
-            .CacheOutput();
+        var dashboard = app.MapGet(BaseRoute + "/dashboard", GetDashboard)
+            .AllowAnonymous();
+        
+        var timeline = app.MapGet(BaseRoute + "/timeline", Timeline);
+        
+        var exceptions = app.MapGet(BaseRoute + "/exceptions", Exceptions);
+        
+        app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState)
+            .AllowAnonymous();
+
+        if (!options.Value.AnalyticsCachePolicy.HasValue()) return;
+        
+        dashboard
+            .CacheOutput(options.Value.AnalyticsCachePolicy);
+            
+        timeline
+            .CacheOutput(options.Value.AnalyticsCachePolicy);
+                
+        exceptions
+            .CacheOutput(options.Value.AnalyticsCachePolicy);
     }
     private static async Task<IResult> Timeline(
         [FromServices] IImportNotificationsAggregationService importService,
