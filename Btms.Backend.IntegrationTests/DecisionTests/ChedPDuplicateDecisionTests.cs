@@ -43,7 +43,7 @@ public class ChedPDuplicateDecisionTests(ITestOutputHelper output)
 
             movement.AlvsDecisionStatus.Decisions
                 .First()
-                .Context.DecisionMatched
+                .Context.DecisionComparison!.DecisionMatched
                 .Should().BeTrue();
 
             var decisionWithLinkAndContext = movement.AuditEntries

@@ -136,8 +136,8 @@ public enum DecisionStatusEnum {
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded,
     
-    [EnumMember(Value = "Btms Decision Not Present")]
-    BtmsDecisionNotPresent,
+    // [EnumMember(Value = "Btms Decision Not Present")]
+    // BtmsDecisionNotPresent,
     
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
@@ -155,16 +155,11 @@ public enum DecisionStatusEnum {
     AlvsDecisionVersionsNotComplete
 }
 
-
 public partial class SummarisedDecisionContext //
 {
     [Attr]
     [System.ComponentModel.Description("")]
     public int? AlvsDecisionNumber { get; set; } = default;
-    
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public int? BtmsDecisionNumber { get; set; } = default;
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -180,20 +175,31 @@ public partial class SummarisedDecisionContext //
     
     [Attr]
     [System.ComponentModel.Description("")]
+    public DecisionComparison? DecisionComparison { get; set; }
+}
+
+public class DecisionComparison
+{
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public bool Paired { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public DecisionStatusEnum DecisionStatus { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
     public bool DecisionMatched { get; set; } = default;
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public int? BtmsDecisionNumber { get; set; } = default;
 }
 
 public partial class DecisionContext : SummarisedDecisionContext, IAuditContext //
-{   
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public bool Paired { get; set; } = default;
-    
+{
     [Attr]
     [System.ComponentModel.Description("")]
     public StatusChecker? AlvsCheckStatus { get; set; }
@@ -209,14 +215,21 @@ public partial class AlvsDecisionStatus  //
     [System.ComponentModel.Description("")]
     public List<AlvsDecision> Decisions { get; set; } = new List<AlvsDecision>();
 
-    [Attr]
-    [System.ComponentModel.Description("")]
-    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
-    public DecisionStatusEnum DecisionStatus { get; set; } = DecisionStatusEnum.NoAlvsDecisions;
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    // public DecisionStatusEnum DecisionStatus { get; set; } = DecisionStatusEnum.NoAlvsDecisions;
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public SummarisedDecisionContext Context { get; set; } = new SummarisedDecisionContext();
+    public SummarisedDecisionContext Context { get; set; } = new SummarisedDecisionContext()
+    {
+        //Initialise the DecisionComparison at the top level
+        DecisionComparison = new DecisionComparison()
+        {
+            DecisionStatus = DecisionStatusEnum.NoAlvsDecisions
+        }
+    };
 }
 
 public partial class AlvsDecision  //

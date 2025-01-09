@@ -19,11 +19,8 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
     [Fact]
     public void ShouldHave1AlvsDecision()
     {
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
             .Decisions
             .Count
@@ -34,11 +31,8 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
             .Decisions
             .Select(d => d.Context.AlvsDecisionNumber)
@@ -49,13 +43,10 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
+            .Context.DecisionComparison!
             .DecisionStatus
             .Should()
             .Be(DecisionStatusEnum.AlvsDecisionVersion1NotPresent);

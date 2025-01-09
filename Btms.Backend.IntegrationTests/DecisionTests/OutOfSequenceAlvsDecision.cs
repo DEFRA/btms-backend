@@ -20,60 +20,39 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
     [Fact]
     public void ShouldHave2AlvsDecisions()
     {
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
-            .AlvsDecisionStatus
-            .Decisions
-            .Count
-            .Should()
-            .Be(2);
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Decisions.Count
+            .Should().Be(2);
     }
     
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
         // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
-            .AlvsDecisionStatus
-            .Decisions
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Decisions
             .Select(d => d.Context.AlvsDecisionNumber)
-            .Should()
-            .Equal(2, 1);
+            .Should().Equal(2, 1);
     }
     
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
-            .AlvsDecisionStatus
-            .DecisionStatus
-            .Should()
-            .Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
     [Fact]
     public void ShouldHavePairedAlvsDecisions()
     {
-        
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement
-            .AlvsDecisionStatus
-            .Decisions
-            .Count(d => d.Context.Paired)
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Decisions
+            .Count(d => d.Context.DecisionComparison!.Paired)
             .Should().Be(1);
     }
     
@@ -84,7 +63,7 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus
             .Decisions
-            .Select(d => (d.Context.AlvsDecisionNumber, d.Context.BtmsDecisionNumber))
+            .Select(d => (d.Context.AlvsDecisionNumber, d.Context.DecisionComparison!.BtmsDecisionNumber))
             .Should().Equal(
                 (2,2),
                 (1, null));

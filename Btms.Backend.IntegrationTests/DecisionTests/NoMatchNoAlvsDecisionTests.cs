@@ -31,10 +31,10 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.NoAlvsDecisions);
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.NoAlvsDecisions);
     }
     
     [Fact]
@@ -47,6 +47,7 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
         movement
             .AlvsDecisionStatus
             .Context!
+            .DecisionComparison!
             .DecisionMatched
             .Should()
             .BeFalse();

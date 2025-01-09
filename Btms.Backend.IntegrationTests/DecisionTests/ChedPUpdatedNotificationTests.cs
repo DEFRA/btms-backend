@@ -79,10 +79,9 @@ public class ChedPUpdatedNotificationTests
     {
         Client
             .GetSingleMovement()
-            .AlvsDecisionStatus
-            .Decisions
+            .AlvsDecisionStatus.Decisions
             .Single()
-            .Context.DecisionMatched
+            .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
 
@@ -105,6 +104,6 @@ public class ChedPUpdatedNotificationTests
                 (ChedPNotification.ReferenceNumber!, 2)
             ]);
 
-        decisionWithLinkAndContext.Context.Paired.Should().BeTrue();
+        decisionWithLinkAndContext.Context.DecisionComparison!.Paired.Should().BeTrue();
     }
 }

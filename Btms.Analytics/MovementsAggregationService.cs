@@ -289,7 +289,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .SelectMany(d => d.Decision.Context.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
             .GroupBy(d => new
             {
-                d.Decision.Context.DecisionStatus,
+                d.Decision.Context.DecisionComparison!.DecisionStatus,
                 d.Check.CheckCode,
                 d.Check.AlvsDecisionCode,
                 d.Check.BtmsDecisionCode

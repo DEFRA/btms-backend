@@ -20,19 +20,23 @@ public class ChedPSimpleTests(ITestOutputHelper output)
 {
 
     [Fact]
-    public void ShouldHaveCorrectAlvsDecisionMatchedStatus()
+    public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
-        // Assert
-        var movement = Client
-            .GetSingleMovement();
-
-        movement.AlvsDecisionStatus.Decisions
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Decisions
             .Single()
-            .Context.DecisionMatched
+            .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
-
-        movement.AlvsDecisionStatus
-            .Context.DecisionMatched
+    }
+    
+    [Fact]
+    public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus
+            .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
 
@@ -107,11 +111,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         var movement = Client
             .GetSingleMovement()
-            .AlvsDecisionStatus
-            .Context!
-            .DecisionMatched
-            .Should()
-            .BeTrue();
+            .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
+            .Should().BeTrue();
     }
     
     [Fact]
@@ -119,10 +120,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .AlvsDecisionStatus
-            .DecisionStatus
-            .Should()
-            .Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
+            .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
     [Fact]
@@ -130,10 +129,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus
-            .ChedTypes
-            .Should()
-            .Equal(ImportNotificationTypeEnum.Cvedp);
+            .BtmsStatus.ChedTypes
+            .Should().Equal(ImportNotificationTypeEnum.Cvedp);
     }
     
     [Fact]
@@ -142,8 +139,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should()
-            .Be("Linked");
+            .Should().Be("Linked");
     }
     
     // [Fact]
@@ -180,11 +176,10 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .AlvsDecisionStatus
-            .Decisions
+            .AlvsDecisionStatus.Decisions
             .Single()
             .Context
-            .Should()
-            .Match<DecisionContext>(c => c.BtmsDecisionNumber == 2 && c.Paired == true);
+            .DecisionComparison!
+            .Should().Match<DecisionComparison>(c => c.BtmsDecisionNumber == 2 && c.Paired == true);
     }
 }
