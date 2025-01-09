@@ -71,7 +71,8 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Services.AddHostedService<QueueHostedService>();
 	builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 	builder.Configuration.AddEnvironmentVariables();
-
+    builder.Services.AddOutputCache();
+    
 	var logger = ConfigureLogging(builder);
 
 	if (!builder.Configuration.GetValue<bool>("DisableLoadIniFile"))
@@ -237,6 +238,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 	app.UseAuthentication();
 	app.UseAuthorization();
 	app.UseJsonApi();
+    app.UseOutputCache();
 	app.MapControllers().RequireAuthorization();
     
     var dotnetHealthEndpoint = "/health-dotnet";
@@ -247,7 +249,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 			Predicate = _ => true,
 			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 		});
-
+    
 	var options = app.Services.GetRequiredService<IOptions<ApiOptions>>();
 	app.UseSyncEndpoints(options);
 	app.UseManagementEndpoints(options);
