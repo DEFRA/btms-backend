@@ -15,6 +15,11 @@ jobs:
   pr-validator:
     name: Run Pull Request Checks
     runs-on: ubuntu-latest
+
+    services:
+  
+
+
     steps:
       - uses: actions/setup-dotnet@v3
         with:
@@ -22,6 +27,11 @@ jobs:
            8.0
       - name: Check out code
         uses: actions/checkout@v3 
+
+      - name: Check out azure-service-bus-emulator-installer
+        uses: actions/checkout@master
+        with:
+          repository: https://github.com/Azure/azure-service-bus-emulator-installer.git
 
       - name: Install Docker using Docker's official script
         run: |
