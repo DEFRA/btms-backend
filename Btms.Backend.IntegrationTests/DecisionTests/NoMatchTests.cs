@@ -5,6 +5,7 @@ using FluentAssertions;
 using Humanizer;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
@@ -12,61 +13,86 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class NoMatchTests(ITestOutputHelper output)
+public class NoMatch(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
     
     [Fact]
     public void ShouldNotHaveLinked()
     {
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement.BtmsStatus.LinkStatus.Should().Be("Not Linked");
+        Client
+            .GetSingleMovement()
+            .BtmsStatus.LinkStatus
+            .Should().Be("Not Linked");
     }
     
     [Fact]
     public void ShouldHaveAlvsDecision()
     {
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement.AlvsDecisionStatus.Decisions.Count.Should().Be(1);
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Decisions.Count
+            .Should().Be(1);
+    }
+    
+    [Fact]
+    public void AlvsDecisionShouldHaveCorrectChecks()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            .Should().BeEquivalentTo([
+                new { 
+                    ItemNumber = 1,
+                    CheckCode = "H222",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                },
+                new {
+                    ItemNumber = 1,
+                    CheckCode = "H224",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                    
+                }
+            ]);
     }
     
     [Fact]
     public void ShouldHaveDecisionStatus()
     {
-        
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.InvestigationNeeded);
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.NoImportNotificationsLinked);
+    }
+    
+    [Fact]
+    public void ShouldHaveDecisionAuditChecks()
+    {
+        Client
+            .GetSingleMovement()
+            .SingleBtmsDecisionAuditEntry()
+            .Context?.DecisionComparison?.Checks
+            .Should().NotBeNull();
+    }
+    
+    [Fact]
+    public void ShouldNotHaveDecisionAuditNotifications()
+    {
+        Client
+            .GetSingleMovement()
+            .SingleBtmsDecisionAuditEntry()
+            .Context?.ImportNotifications
+            .Should().BeEmpty();
     }
     
     [Fact]
     public void ShouldHaveDecisionMatchedFalse()
     {
-        
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement
-            .AlvsDecisionStatus
-            .Context!
-            .DecisionMatched
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
             .Should()
             .BeFalse();
     }

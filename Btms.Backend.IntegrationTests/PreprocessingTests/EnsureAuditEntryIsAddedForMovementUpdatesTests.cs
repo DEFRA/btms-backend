@@ -5,6 +5,7 @@ using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -18,10 +19,8 @@ public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper ou
     public void ShouldHaveCorrectDocumentReferenceFromUpdatedClearanceRequest()
     {
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement.Items
             .Where(x => x.Documents != null)
@@ -34,10 +33,8 @@ public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper ou
     public void ShouldHaveUpdatedAuditEntry()
     {
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
         
         movement.AuditEntries
             .Count(a => a is { CreatedBy: "Cds", Status: "Updated" })

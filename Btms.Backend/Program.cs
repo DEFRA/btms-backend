@@ -71,7 +71,15 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Services.AddHostedService<QueueHostedService>();
 	builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 	builder.Configuration.AddEnvironmentVariables();
-
+    builder.Services.AddOutputCache(options =>
+        {
+            // options.AddBasePolicy(builder =>
+            //     builder.Expire(TimeSpan.FromMinutes(10)));
+            options.AddPolicy("Expire10Min", builder => 
+                builder.Expire(TimeSpan.FromMinutes(10)));
+        }
+    );
+    
 	var logger = ConfigureLogging(builder);
 
 	if (!builder.Configuration.GetValue<bool>("DisableLoadIniFile"))
@@ -80,7 +88,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 			.AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 	}
 
-builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
+    builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
 		.PostConfigure(options =>
 		{
 			builder.Configuration.Bind(options);
@@ -232,6 +240,7 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 	app.UseAuthentication();
 	app.UseAuthorization();
 	app.UseJsonApi();
+    app.UseOutputCache();
 	app.MapControllers().RequireAuthorization();
     
     var dotnetHealthEndpoint = "/health-dotnet";
@@ -242,12 +251,12 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
 			Predicate = _ => true,
 			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 		});
-
+    
 	var options = app.Services.GetRequiredService<IOptions<ApiOptions>>();
 	app.UseSyncEndpoints(options);
 	app.UseManagementEndpoints(options);
 	app.UseDiagnosticEndpoints(options);
-	app.UseAnalyticsEndpoints();
+	app.UseAnalyticsEndpoints(options);
     
     if (builder.Environment.IsDevelopment())
     {

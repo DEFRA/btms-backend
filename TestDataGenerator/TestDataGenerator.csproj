@@ -99,6 +99,110 @@
     <Content Include="Scenarios\Samples\AllChedsNoMatch\IPAFFS\2024\11\01\chedpp-multiple-commodity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-2ec7017d-121c-475e-bdf3-ecebbbe36a05.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-2ec7017d-121c-475e-bdf3-ecebbbe36a05.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-3d06c8ce-9b1d-43fd-83aa-a58b63427846.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-3d06c8ce-9b1d-43fd-83aa-a58b63427846.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-a84b5d1f-1fab-4fc3-bd95-2983ff5958de.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-a84b5d1f-1fab-4fc3-bd95-2983ff5958de.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-b5090dc8-e164-4965-9f4f-ba9685d59669.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-b5090dc8-e164-4965-9f4f-ba9685d59669.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-c9e67f7e-0294-43a0-a86b-2fd076aad021.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-c9e67f7e-0294-43a0-a86b-2fd076aad021.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-cbd1daae-3360-4250-9838-1c5625c8debe.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\IPAFFS\CHEDP\2024\12\02\CHEDP_GB_2024_5168690-cbd1daae-3360-4250-9838-1c5625c8debe.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\DECISIONS\2024\12\03\24GBDE3CF94H96TAR0-0deb3808-c55e-4196-9270-50ff1ee2ce49.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\DECISIONS\2024\12\03\24GBDE3CF94H96TAR0-0deb3808-c55e-4196-9270-50ff1ee2ce49.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\DECISIONS\2024\12\03\24GBDE3CF94H96TAR0-cca3e3a2-7e08-4c71-a30c-7a9410b959f6.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\DECISIONS\2024\12\03\24GBDE3CF94H96TAR0-cca3e3a2-7e08-4c71-a30c-7a9410b959f6.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\ALVS\2024\12\03\24GBDE3CF94H96TAR0-cca1b5ad-9a98-4a65-9d21-3a6cd4d6ac8e.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDE3CF94H96TAR0\ALVS\2024\12\03\24GBDE3CF94H96TAR0-cca1b5ad-9a98-4a65-9d21-3a6cd4d6ac8e.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-8c94e5fa-6b15-47c5-aa06-bdacebeaaf2e.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-8c94e5fa-6b15-47c5-aa06-bdacebeaaf2e.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-31ccc6a2-21a5-46eb-a5f8-ecb5519dbd5e.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-31ccc6a2-21a5-46eb-a5f8-ecb5519dbd5e.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-da211ab4-c4fb-4441-bf4c-30f0bb0a8fd0.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-da211ab4-c4fb-4441-bf4c-30f0bb0a8fd0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-ef05149f-a05b-4a9b-8d37-3846ce8cf283.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229013-ef05149f-a05b-4a9b-8d37-3846ce8cf283.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\DECISIONS\2024\12\03\24GBDEEA43OY1CQAR7-eb986707-aaf2-4e38-bad7-43408f544e39.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\DECISIONS\2024\12\03\24GBDEEA43OY1CQAR7-eb986707-aaf2-4e38-bad7-43408f544e39.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\DECISIONS\2024\12\03\24GBDEEA43OY1CQAR7-9222eb38-c409-4212-9fef-60c66cc6ae05.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\DECISIONS\2024\12\03\24GBDEEA43OY1CQAR7-9222eb38-c409-4212-9fef-60c66cc6ae05.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\ALVS\2024\12\03\24GBDEEA43OY1CQAR7-b2a82cb2-1e09-4ce2-8f9c-28393738b3db.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\ALVS\2024\12\03\24GBDEEA43OY1CQAR7-b2a82cb2-1e09-4ce2-8f9c-28393738b3db.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\ALVS\2024\12\03\24GBDEEA43OY1CQAR7-84fb7a09-ec94-4ee1-9c27-db7e95cac4a0.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEEA43OY1CQAR7\ALVS\2024\12\03\24GBDEEA43OY1CQAR7-84fb7a09-ec94-4ee1-9c27-db7e95cac4a0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\03\CHEDP_GB_2024_5249748-6637f130-0b55-4a93-affe-cc5ff38f3f3b.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\03\CHEDP_GB_2024_5249748-6637f130-0b55-4a93-affe-cc5ff38f3f3b.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\DECISIONS\2024\12\03\24GBDEHMFC4WGXVAR7-9ebf019a-44ed-4b13-99cf-75bc09ccfa10.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\DECISIONS\2024\12\03\24GBDEHMFC4WGXVAR7-9ebf019a-44ed-4b13-99cf-75bc09ccfa10.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\04\CHEDP_GB_2024_5249748-be95d75b-4bb6-4649-850f-4faad1b44cf3.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\04\CHEDP_GB_2024_5249748-be95d75b-4bb6-4649-850f-4faad1b44cf3.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\ALVS\2024\12\03\24GBDEHMFC4WGXVAR7-a88b5194-0acc-4d92-8c01-b3adb38ecf92.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\ALVS\2024\12\03\24GBDEHMFC4WGXVAR7-a88b5194-0acc-4d92-8c01-b3adb38ecf92.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\03\CHEDP_GB_2024_5249748-455feccb-7945-4e6a-948d-a794d9e3164b.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\03\CHEDP_GB_2024_5249748-455feccb-7945-4e6a-948d-a794d9e3164b.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\DECISIONS\2024\12\05\24GBDEHMFC4WGXVAR7-6dd70573-9e4b-495e-a33b-1eaa9c4280f9.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\DECISIONS\2024\12\05\24GBDEHMFC4WGXVAR7-6dd70573-9e4b-495e-a33b-1eaa9c4280f9.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\DECISIONS\2024\12\05\24GBDEHMFC4WGXVAR7-f47beadf-bc63-40ac-bde6-7e03e6bbdf82.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\DECISIONS\2024\12\05\24GBDEHMFC4WGXVAR7-f47beadf-bc63-40ac-bde6-7e03e6bbdf82.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\ALVS\2024\12\05\24GBDEHMFC4WGXVAR7-df2bb68d-87b3-4692-a3d1-19b83663497e.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\ALVS\2024\12\05\24GBDEHMFC4WGXVAR7-df2bb68d-87b3-4692-a3d1-19b83663497e.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\05\CHEDP_GB_2024_5249748-8d30beb3-7fa3-407b-8b62-d54d417dce4e.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDEHMFC4WGXVAR7\IPAFFS\CHEDP\2024\12\05\CHEDP_GB_2024_5249748-8d30beb3-7fa3-407b-8b62-d54d417dce4e.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

@@ -261,7 +261,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         var mongoResult = context
             .Movements
-            .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
+            .GetAggregatedRecordsDictionary(logger, filter, projection, group, datasetGroup, createDatasetName);
 
         var output = AnalyticsHelpers.GetMovementStatusSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))
@@ -286,10 +286,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .SelectMany(m => m.AlvsDecisionStatus.Decisions.Select(
                 d => new {Decision = d, Movement = m } ))
-            .SelectMany(d => d.Decision.Context.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
+            .SelectMany(d => d.Decision.Context.DecisionComparison!.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
+            // .SelectMany(d => d.Decision.Context.Checks.Select(c => new { d.Decision, d.Movement, Check = c}))
             .GroupBy(d => new
             {
-                d.Decision.Context.DecisionStatus,
+                d.Decision.Context.DecisionComparison!.DecisionStatus,
                 d.Check.CheckCode,
                 d.Check.AlvsDecisionCode,
                 d.Check.BtmsDecisionCode
