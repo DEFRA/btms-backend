@@ -23,6 +23,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3 
 
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "compose.yml"
+
       - name: Check out azure-service-bus-emulator-installer
         uses: actions/checkout@master
         with:
