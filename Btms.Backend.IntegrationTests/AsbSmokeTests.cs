@@ -22,17 +22,17 @@ public class AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOut
 
         foreach (var generatedResult in generatorResult)
         {
-            if (generatedResult.Message is AlvsClearanceRequest cr)
+            switch (generatedResult.Message)
             {
-                await ServiceBusHelper.PublishClearanceRequest(cr);
-            }
-            else if (generatedResult.Message is Decision d)
-            {
-                await ServiceBusHelper.PublishDecision(d);
-            }
-            else if (generatedResult.Message is ImportNotification n)
-            {
-                await ServiceBusHelper.PublishNotification(n);
+                case AlvsClearanceRequest cr:
+                    await ServiceBusHelper.PublishClearanceRequest(cr);
+                    break;
+                case Decision d:
+                    await ServiceBusHelper.PublishDecision(d);
+                    break;
+                case ImportNotification n:
+                    await ServiceBusHelper.PublishNotification(n);
+                    break;
             }
         }
 
