@@ -1,4 +1,3 @@
-using System.Text.Json.Nodes;
 using Btms.Common.Extensions;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
@@ -7,8 +6,6 @@ using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using MongoDB.Driver.Core.Configuration;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -25,6 +22,7 @@ namespace Btms.Consumers.Extensions
             IConfiguration configuration)
         {
             services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
+            services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName);
             
             var consumerOpts = configuration
                 .GetSection(ConsumerOptions.SectionName)
