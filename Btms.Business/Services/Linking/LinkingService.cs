@@ -138,7 +138,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
     private async Task CheckMovementForRemovedLinks(MovementLinkContext linkContext,
         CancellationToken cancellationToken = default)
     {
-        var chedRefs = linkContext.ChangeSet?.GetPreviousValue<List<string>>($"$.{nameof(Movement._MatchReferences)}");
+        var chedRefs = linkContext.ChangeSet?.GetPreviousValue<List<string>>($"{nameof(Movement._MatchReferences)}");
         
         if (chedRefs?.Count > 0)
         {
@@ -147,9 +147,29 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             {
                 foreach (var chedRef in chedRefs)
                 {
+                    await RemoveNotificationLinkFromMovement(linkContext.PersistedMovement, chedRef,
+                        cancellationToken);
                     await RemoveMovementLinkFromNotification(linkContext.PersistedMovement.Id, chedRef,
                         cancellationToken);
                 }
+            }
+        }
+    }
+
+    private async Task RemoveNotificationLinkFromMovement(Movement movement, string chedRef,
+        CancellationToken cancellationToken = default)
+    {
+        var notification = dbContext.Notifications.SingleOrDefault(x => x._MatchReference == chedRef);
+
+        if (notification != null)
+        {
+            var relationshipLink = movement.Relationships.Notifications.Data?
+                .SingleOrDefault(x => x.Id == notification.Id && x.Type == "notifications");
+
+            if (relationshipLink != null)
+            {
+                movement.RemoveRelationship(relationshipLink);
+                await dbContext.Movements.Update(movement, movement._Etag);
             }
         }
     }
