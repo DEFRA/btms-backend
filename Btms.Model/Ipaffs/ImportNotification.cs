@@ -147,6 +147,24 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault()));
         }
     }
+    
+    public void RemoveRelationship(RelationshipDataItem relationship)
+    {
+        var unlinked = false;
+        
+        if (Relationships.Movements.Data.Contains(relationship))
+        {
+            Relationships.Movements.Data.Remove(relationship);
+            unlinked = true;
+        }
+
+        Relationships.Movements.Matched = Relationships.Movements.Data.TrueForAll(x => x.Matched.GetValueOrDefault());
+
+        if (unlinked)
+        {
+            AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
+        }
+    }
 
     public void Changed(AuditEntry auditEntry)
     {
