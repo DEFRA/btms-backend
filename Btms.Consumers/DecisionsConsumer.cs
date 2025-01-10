@@ -1,5 +1,6 @@
 using Btms.Backend.Data;
 using Btms.Business.Builders;
+using Btms.Consumers.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Alvs;
@@ -18,7 +19,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
 
         if (existingMovement != null)
         {
-            var auditId = Context.Headers["messageId"].ToString();
+            var auditId = Context.GetMessageId();
             var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
             
             var existingMovementBuilder = movementBuilderFactory

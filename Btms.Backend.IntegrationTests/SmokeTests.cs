@@ -10,6 +10,7 @@ using FluentAssertions;
 using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Btms.Backend.IntegrationTests;
 
