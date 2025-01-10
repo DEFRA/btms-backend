@@ -10,7 +10,7 @@ namespace Btms.Backend.IntegrationTests.Helpers;
 
 public static class ServiceBusHelper
 {
-    private static string _connectionString = "Endpoint=sb://host.docker.internal;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
+    private static string _connectionString = "Endpoint=sb://host.docker.internal:5672;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
 
 
     public static Task PublishClearanceRequest(AlvsClearanceRequest request)
