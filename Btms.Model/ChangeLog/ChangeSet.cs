@@ -34,7 +34,7 @@ public class ChangeSet(JsonPatch jsonPatch, JsonNode jsonNodePrevious)
     
     public T? GetPreviousValue<T>(string path)
     {
-        var jp = JsonPath.Parse($"$.{nameof(Movement._MatchReferences)}");
+        var jp = JsonPath.Parse($"$.{path}");
         var pathResult = jp.Evaluate(Previous);
 
         if (pathResult.Matches.Any())
