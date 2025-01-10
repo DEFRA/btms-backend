@@ -168,3 +168,23 @@ public class SingleChedDecisionTests(ITestOutputHelper output)
     }
 }
 
+[Trait("Category", "Integration")]
+public class MultiChedDecisionTest(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<MultiChedPMatchScenarioGenerator>(output)
+{
+    [Fact]
+    public void MultiChed_ShouldHaveH01CheckValues()
+    {
+        string decisionCode = "";
+        var expectedDecision = "H02";
+        var movements = Client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>().Single().Decisions
+            .OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
+            .All(i =>
+            {
+                decisionCode = i.Checks!.First().DecisionCode!;
+                
+                return decisionCode.Equals(expectedDecision);
+            }).Should().BeTrue($"Expected {expectedDecision}. Actually {{0}}", decisionCode);
+        ;
+    }
+}
