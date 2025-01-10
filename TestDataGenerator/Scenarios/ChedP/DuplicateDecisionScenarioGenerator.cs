@@ -1,5 +1,6 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
+using TestDataGenerator.Extensions;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
@@ -19,17 +20,13 @@ public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenari
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
-        // TODO - check with Matt what a sensible checkCode, decision & other fields we need to 
-        // implement a 'real world' test here
-        var checkCode = "H2019";
-        var decisionCode = "H01";
-
+        
         var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
-            .WithItem("N853", "16041421", "Tuna ROW CHEDP", 900, checkCode)
+            .WithTunaItem()
             .ValidateAndBuild();
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
@@ -39,7 +36,7 @@ public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenari
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
             .WithDecisionVersionNumber()
-            .WithItemAndCheck(1, checkCode, decisionCode)
+            .WithTunaChecks()
             .ValidateAndBuild();
         
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);

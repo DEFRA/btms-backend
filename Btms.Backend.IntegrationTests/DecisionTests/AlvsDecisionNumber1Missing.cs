@@ -4,6 +4,7 @@ using Btms.Model.Cds;
 using FluentAssertions;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,15 +17,32 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
 {
     
     [Fact]
-    public void ShouldHave2AlvsDecision()
+    public void AlvsDecisionShouldHaveCorrectChecks()
     {
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            .Should().BeEquivalentTo([
+                new { 
+                    ItemNumber = 1,
+                    CheckCode = "H222",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                },
+                new {
+                    ItemNumber = 1,
+                    CheckCode = "H224",
+                    AlvsDecisionCode = "H01", 
+                    BtmsDecisionCode = "X00"
+                }
+            ]);
+    }
+    
+    [Fact]
+    public void ShouldHave1AlvsDecision()
+    {
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
             .Decisions
             .Count
@@ -35,13 +53,8 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
             .Decisions
             .Select(d => d.Context.AlvsDecisionNumber)
@@ -52,17 +65,12 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
-        
-        // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement
+        Client
+            .GetSingleMovement()
             .AlvsDecisionStatus
+            .Context.DecisionComparison!
             .DecisionStatus
             .Should()
-            .Be(DecisionStatusEnum.AlvsDecisionVersion1NotPresent);
+            .Be(DecisionStatusEnum.NoImportNotificationsLinked);
     }
 }

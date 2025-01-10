@@ -40,6 +40,7 @@ public static class AnalyticsExtensions
 
     public static Dictionary<string, BsonDocument> GetAggregatedRecordsDictionary<T>(
         this IMongoCollectionSet<T> collection,
+        ILogger logger,
         FilterDefinition<T> filter,
         ProjectionDefinition<T> projection,
         ProjectionDefinition<BsonDocument> group,
@@ -52,7 +53,7 @@ public static class AnalyticsExtensions
             .Project(projection)
             .Group(group)
             .Group(datasetGroup)
-            .ToList()
+            .Execute(logger)
             .ToDictionary(createDatasetName, b => b);
     }
 
@@ -157,7 +158,7 @@ public static class AnalyticsExtensions
     /// <returns></returns>
     /// <exception cref="AnalyticsException"></exception>
     public static Dictionary<TKey, TElement> ExecuteAsDictionary<TSource, TKey, TElement>(
-        this IEnumerable<TSource> source,
+        this IQueryable<TSource> source,
         ILogger logger,
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector)

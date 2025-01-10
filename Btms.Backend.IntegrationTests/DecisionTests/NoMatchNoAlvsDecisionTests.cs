@@ -3,6 +3,7 @@ using Btms.Model.Cds;
 using FluentAssertions;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
@@ -19,10 +20,8 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement.BtmsStatus.LinkStatus.Should().Be("Not Linked");
     }
@@ -32,29 +31,23 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
     {
         
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
-
-        movement.AlvsDecisionStatus.DecisionStatus.Should().Be(DecisionStatusEnum.NoAlvsDecisions);
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.NoAlvsDecisions);
     }
     
     [Fact]
     public void ShouldHaveDecisionMatched()
-    {
-        // var res =  Client.AsJsonApiClient()
-        //     .Get("api/movements");
-        
+    {   
         // Assert
-        var movement = Client.AsJsonApiClient()
-            .Get("api/movements")
-            .GetResourceObjects<Movement>()
-            .Single();
+        var movement = Client
+            .GetSingleMovement();
 
         movement
             .AlvsDecisionStatus
             .Context!
+            .DecisionComparison!
             .DecisionMatched
             .Should()
             .BeFalse();

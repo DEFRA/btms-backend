@@ -11,15 +11,36 @@ number of each scenario across the time period.
 NB. The standard Azure App Registration we currently use doesn't have write access, and using our own creds in the app
 isn't quite working, so I've been generating locally and then syncing to blob storage.
 
-## Generating a scenario given a resource ID:
+## Generating a scenario sample folder given a resource ID
 
-Copy all Movement files matching the ID into
+We can use files from the datalake datasets to generate scenario folders that have the messages for a given MRN &/or CHED number, to allow us to use those resources in unit tests. This allows us to easily reproduce sequences seen in prod (from the redacted dataset) or other environments, as a test, and should allow us reproduce issues that we find and validate fixes for them.
 
-find .test-data-generator/PRODREDACTED-202411/ALVS .test-data-generator/PRODREDACTED-202411/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBC4EB0D97OK4AR4 | xargs -I '{}' rsync -R '{}' ./Scenarios/SpecificFiles/DuplicateMovementItems-CDMS-211/
+See the implementations of SpecificFilesScenarioGenerator for examples. The files can be used as-is, in a single unit test, or can be modified using the same builder pattern we use for other scenarios before being built. It's even possible to use them in load tests, by customising them to ensure they're unique using the builders (by changing CHED numbers, MRNs etc).
 
-Copy all Movement files matching the ID into
+Copy all Movement files matching the ID into a Samples folder
 
-find .test-data-generator/PRODREDACTED-202411/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5071194\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/DuplicateMovementItems-CDMS-211/
+find .test-data-generator/PRODREDACTED-202412/ALVS .test-data-generator/PRODREDACTED-202412/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBDEHMFC4WGXVAR7 | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDEHMFC4WGXVAR7/
+
+Copy all Import Notification files matching the ID into a Samples folder
+
+find .test-data-generator/PRODREDACTED-202412/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5249748\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDEHMFC4WGXVAR7/
+
+## Merging datasets
+
+As we download datasets each month, we want to also have a single 'all' data set. This is called PRODREDACTED-ALL in the SND data.
+
+Something like the below should work, however I haven't been able to work out the auth...
+
+azcopy login --tenant-id c9d74090-b4e6-4b04-981d-e6757a
+
+azcopy list https://snddmpinfdl1001.blob.core.windows.net/dmp-1001/PRODREDACTED-202411/ALVS/2024/11/01
+
+azcopy sync 'https://snddmpinfdl1001.blob.core.windows.net/dmp-1001/PRODREDACTED-202411' 'https://snddmpinfdl1001.blob.core.windows.net/dmp-1001/PRODREDACTED-ALL' --recursive
+
+Instead, i've merged locally and then synched up to blob storage:
+
+
+
 
 ## Interacting with blob storage to push generated datasets
 

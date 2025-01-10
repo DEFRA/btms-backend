@@ -86,9 +86,19 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     {
         return Do(dec =>
         {
-            dec.Items![0].ItemNumber = item;
-            dec.Items![0].Checks![0].CheckCode = checkCode;
-            dec.Items![0].Checks![0].DecisionCode = decisionCode;
+            if (!dec.Items.HasValue())
+            {
+                dec.Items = [];
+            }
+
+            dec.Items = dec
+                .Items
+                .Append(new Items()
+                {
+                    ItemNumber = item,
+                    Checks = new[] { new Check() { CheckCode = checkCode, DecisionCode = decisionCode } }
+                })
+                .ToArray();
         });
     }
 
@@ -99,13 +109,19 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
             cr.ServiceHeader!.ServiceCallTimestamp.AssertHasValue("Decision ServiceCallTimestamp missing");
             cr.Header!.EntryReference.AssertHasValue("Decision EntryReference missing");
             cr.Header!.DecisionNumber.AssertHasValue("Decision DecisionNumber missing");
+            
+            cr.Items.AssertHasValue("Decision Items missing");
 
-            Array.ForEach(cr.Items!, i => 
+            Array.ForEach(cr.Items!, i =>
+            {
+                i.Checks.AssertHasValue("Decision Item Checks missing");
+                
                 Array.ForEach(i.Checks!, c =>
                 {
-                    c.CheckCode.AssertHasValue();
-                    c.DecisionCode.AssertHasValue();
-                }));
+                    c.CheckCode.AssertHasValue("Decision Item Check CheckCode missing");
+                    c.DecisionCode.AssertHasValue("Decision Item Check DecisionCode missing");
+                });
+            });
         });
     }
 }

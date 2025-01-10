@@ -8,6 +8,8 @@ public class ApiOptions
 	public static readonly string SectionName = nameof(ApiOptions);
 
 	public bool EnableManagement { get; set; } = default!;
+    
+    public string? AnalyticsCachePolicy { get; set; } = default!;
 	public bool EnableSync { get; set; } = true;
 
 	[ConfigurationKeyName("CDP_HTTPS_PROXY")]

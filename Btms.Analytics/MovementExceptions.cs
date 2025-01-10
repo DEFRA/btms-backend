@@ -32,11 +32,12 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 ItemCount = m.Items.Count,
                 ChedTypes = m.BtmsStatus.ChedTypes,
                 Status = m.BtmsStatus,
-                DecisionMatched = !m.AlvsDecisionStatus.Decisions
-                    .OrderBy(d => d.Context.AlvsDecisionNumber)
-                    .Reverse()
-                    .First()
-                    .Context.DecisionMatched,
+                DecisionMatched = m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionMatched,
+                // DecisionMatched = !m.AlvsDecisionStatus.Decisions
+                //     .OrderBy(d => d.Context.AlvsDecisionNumber)
+                //     .Reverse()
+                //     .First()
+                //     .Context.DecisionMatched,
                 HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
                 ContiguousAlvsClearanceRequestVersionsFrom1 = 
                     m.ClearanceRequests.Select(c => c.Header!.EntryVersionNumber)

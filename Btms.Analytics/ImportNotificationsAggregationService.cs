@@ -119,10 +119,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
     {
         var data = context
             .Notifications
-            .Where(n => (n.CreatedSource >= from && n.CreatedSource < to)
-                        && (country == null || n.CommoditiesSummary!.CountryOfOrigin! == country)
-                        && (chedTypes == null || chedTypes!.Length == 0 || n.ImportNotificationType == null || chedTypes!.Contains(n.ImportNotificationType!.Value))
-            )
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .GroupBy(n => new { MaxVersion =
                 n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
             })
@@ -149,7 +146,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
 
         var mongoResult = context
             .Notifications
-            .GetAggregatedRecordsDictionary(filter, projection, group, datasetGroup, createDatasetName);
+            .GetAggregatedRecordsDictionary(logger, filter, projection, group, datasetGroup, createDatasetName);
         
         var output = AnalyticsHelpers.GetImportNotificationSegments()
             .Select(title => mongoResult.AsDataset(dateRange, title))

@@ -28,12 +28,14 @@ public class BackendFixture
     
     private BackendFactory WebApp { get; set; }
     private readonly int _consumerPushDelayMs;
+    private readonly ILogger Logger;
     
     public readonly ITestOutputHelper TestOutputHelper;
 
     public BackendFixture(ITestOutputHelper testOutputHelper, string databaseName, int consumerPushDelayMs = 1000, Dictionary<string, string>? backendConfigOverrides = null)
     {
         TestOutputHelper = testOutputHelper;
+        Logger = TestOutputHelper.GetLogger<BackendFixture>();
         _consumerPushDelayMs = consumerPushDelayMs;
         
         WebApp = new BackendFactory(databaseName, testOutputHelper, configOverrides: backendConfigOverrides);
@@ -45,9 +47,7 @@ public class BackendFixture
     {
         await BtmsClient.ClearDb();
         
-        var logger = TestOutputHelper.GetLogger<BackendFactory>();
-        
-        await WebApp.Services.PushToConsumers(logger, testData.Select(d => d.Message), _consumerPushDelayMs);
+        await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), _consumerPushDelayMs);
         
         return testData;
     }
@@ -56,7 +56,8 @@ public class BackendFixture
 public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper, Dictionary<string, string>? configOverrides = null) : WebApplicationFactory<Program> 
 {
     private IMongoDbContext? mongoDbContext;
-    
+    private ILogger Logger = testOutputHelper.GetLogger<BackendFactory>();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here

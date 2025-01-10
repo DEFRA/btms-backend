@@ -116,15 +116,20 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     }
 
     public ClearanceRequestBuilder<T> WithItem(string documentCode, string commodityCode, string description,
-        int netWeight, string checkCode = "H2019")
+        int netWeight, string[]? checks = null)
     {
+        checks = checks ?? ["H2019"];
+        
         return Do(cr =>
         {
             cr.Items![0].TaricCommodityCode = commodityCode;
             cr.Items![0].GoodsDescription = description;
             cr.Items![0].ItemNetMass = netWeight;
             cr.Items![0].Documents![0].DocumentCode = documentCode;
-            cr.Items![0].Checks![0].CheckCode = checkCode;
+            
+            cr.Items![0].Checks = checks
+                .Select(c => new Check() { CheckCode = c })
+                .ToArray();
         });
     }
 

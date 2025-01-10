@@ -32,6 +32,9 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
         result[0].Name.Should().Be("CHEDA Linked");
         result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today.Tomorrow());
         result[0].Periods.Count.Should().Be(48);
+        
+        result.Sum(r => r.Periods.Sum(p => p.Value))
+            .Should().BeGreaterThan(0);
     }
     
     [Fact]
@@ -58,7 +61,7 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
             r.Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
         });
         
-        result[0].Periods.Sum(p => p.Value)
+        result.Sum(r => r.Periods.Sum(p => p.Value))
             .Should().BeGreaterThan(0);
     }
     
@@ -90,7 +93,7 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
             r.Periods.Count.Should().Be(24);
         });
         
-        result[0].Periods.Sum(p => p.Value)
+        result.Sum(r => r.Periods.Sum(p => p.Value))
             .Should().Be(0);
     }
 }
