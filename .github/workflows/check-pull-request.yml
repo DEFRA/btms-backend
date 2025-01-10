@@ -21,13 +21,7 @@ jobs:
           dotnet-version: |
            8.0
       - name: Check out code
-        uses: actions/checkout@v3      
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.11.0
-        with:
-          mongodb-version: '7.0'
-          mongodb-replica-set: test-rs
-          mongodb-port: 29017
+        uses: actions/checkout@v3 
 
       - name: Install Docker using Docker's official script
         run: |
@@ -44,7 +38,14 @@ jobs:
 
       - name: Start application-specific services using Docker Compose
         run: docker-compose up -d
-        continue-on-error: false
+        continue-on-error: false  
+        
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.11.0
+        with:
+          mongodb-version: '7.0'
+          mongodb-replica-set: test-rs
+          mongodb-port: 29017
 
       - name: Test       
         run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
