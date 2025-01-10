@@ -1,5 +1,6 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
+using TestDataGenerator.Extensions;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
@@ -19,31 +20,21 @@ public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerat
             .Clone()
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, 2)
             .Build();
-            
-        // var notification3 = notification1Builder
-        //     .Clone()
-        //     .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, 3)
-        //     .Build();;
 
         var notification1 = notification1Builder.Build();
 
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification1.ReferenceNumber);
+        
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification2.ReferenceNumber);
-        // logger.LogInformation("Created {NotificationReferenceNumber}", 
-        //     notification3.ReferenceNumber);
 
-        // TODO - check with Matt what a sensible checkCode, decision & other fields we need to 
-        // implement a 'real world' test here
-        var checkCode = "H2019";
-        
         var clearanceRequestBuilder = GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification1.PartOne!.ArrivalDate, notification1.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification1.ReferenceNumber!)
             .WithEntryVersionNumber(1)
-            .WithItem("N853", "16041421", "Tuna ROW CHEDP", 900, checkCode);
+            .WithTunaItem();
             
         var clearanceRequest = clearanceRequestBuilder
             .ValidateAndBuild();

@@ -3,6 +3,7 @@ using Btms.Model;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
+using TestDataGenerator.Extensions;
 using TestDataGenerator.Helpers;
 using Decision = Btms.Types.Alvs.Decision;
 
@@ -14,7 +15,6 @@ public static class NoMatchExtensions
     {
         return NoMatchExtensions
             .SimpleClearanceRequest(scenario, item, entryDate, config)
-            .WithTunaItem()
             .ValidateAndBuild();
     }
     
@@ -25,15 +25,10 @@ public static class NoMatchExtensions
             .WithArrivalDateTimeOffset(DateTime.Today.ToDate(), DateTime.Now.ToTime())
             .WithReferenceNumberOneToOne(DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario,
                 entryDate, item))
-            .WithEntryVersionNumber();
+            .WithEntryVersionNumber()
+            .WithTunaItem();
     }
-
-    public static ClearanceRequestBuilder<AlvsClearanceRequest> WithTunaItem(this ClearanceRequestBuilder<AlvsClearanceRequest> builder)
-    {
-        return builder
-            .WithItemNoChecks("N853", "16041421", "Tuna ROW CHEDP", 900);
-    }
-
+    
     public static MatchIdentifier DocumentReferenceFromFirstDoc(this AlvsClearanceRequest clearanceRequest)
     {
         return MatchIdentifier.FromCds(clearanceRequest
@@ -49,19 +44,13 @@ public static class NoMatchExtensions
     {
         var reference = clearanceRequest
             .DocumentReferenceFromFirstDoc();
-
-        // TODO - check with Matt what a sensible checkCode, decision & other fields we need to 
-        // implement a 'real world' test here
-        var checkCode = "H2019";
-        var decisionCode = "H01";
-
+        
         return BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(reference)
             .WithEntryVersionNumber(1)
             .WithDecisionVersionNumber()
-            .WithItemAndCheck(1, checkCode, decisionCode);
-
+            .WithClearanceRequestDecisions(clearanceRequest);
     }
 }
 
@@ -91,8 +80,19 @@ public class CrNoMatchNoChecksScenarioGenerator(ILogger<CrNoMatchNoChecksScenari
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         var clearanceRequest = NoMatchExtensions
-            .CompleteSimpleClearanceRequest(scenario, item, entryDate, config);
-
+            .SimpleClearanceRequest(scenario, item, entryDate, config)
+            .Do(cr =>
+            {
+                // Remove the checks from the items
+                cr.Items = cr.Items?
+                    .Select(i =>
+                    {
+                        i.Checks = null;
+                        return i;
+                    })
+                    .ToArray();
+            })
+            .ValidateAndBuild();
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
         return new GeneratorResult([clearanceRequest]);
@@ -121,8 +121,6 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        // var reference = DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item);
-
         var clearanceRequest = NoMatchExtensions
             .SimpleClearanceRequest(scenario, item, entryDate, config)
             .WithRandomItems(10, 100)
@@ -140,7 +138,7 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
     }
 }
 
-public class CrNonContiguousDecisionsScenarioGenerator(ILogger<CrNonContiguousDecisionsScenarioGenerator> logger) : ScenarioGenerator
+public class CrNoMatchNonContiguousDecisionsScenarioGenerator(ILogger<CrNoMatchNonContiguousDecisionsScenarioGenerator> logger) : ScenarioGenerator
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

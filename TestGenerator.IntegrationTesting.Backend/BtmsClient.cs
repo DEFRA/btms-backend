@@ -10,6 +10,7 @@ using Btms.SyncJob;
 using Elastic.CommonSchema;
 using FluentAssertions;
 using idunno.Authentication.Basic;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace TestGenerator.IntegrationTesting.Backend.Fixtures;

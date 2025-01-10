@@ -1,0 +1,1 @@
+{"serviceHeader":{"sourceSystem":"ALVS","destinationSystem":"CDS","correlationId":"000","serviceCallTimestamp":1733218025717},"header":{"entryReference":"24GBDE3CF94H96TAR0","entryVersionNumber":1,"decisionNumber":1},"items":[{"itemNumber":1,"documents":[],"checks":[{"checkCode":"H222","decisionCode":"C03","decisionValidUntil":null,"decisionReasons":[]}]}]}
