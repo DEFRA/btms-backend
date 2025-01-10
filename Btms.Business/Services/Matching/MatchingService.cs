@@ -14,23 +14,23 @@ public class MatchingService : IMatchingService
             {
                 if (item.Documents == null) continue;
 
-                foreach (var document in item.Documents)
+                foreach (var documentGroup in item.Documents.GroupBy(d => d.DocumentReference))
                 {
-                    Debug.Assert(document.DocumentReference != null);
+                    Debug.Assert(documentGroup.Key != null);
                     Debug.Assert(movement.Id != null, "movement.Id != null");
                     Debug.Assert(item.ItemNumber != null, "item.ItemNumber != null");
 
                     var notification = matchingContext.Notifications.Find(x =>
-                        x._MatchReference == MatchIdentifier.FromCds(document.DocumentReference).Identifier);
+                        x._MatchReference == MatchIdentifier.FromCds(documentGroup.Key).Identifier);
 
                     if (notification is null)
                     {
-                        matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, document.DocumentReference);
+                        matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup.Key);
                     }
                     else
                     {
                         Debug.Assert(notification?.Id != null, "notification.Id != null");
-                        matchingResult.AddMatch(notification.Id, movement.Id, item.ItemNumber.Value, document.DocumentReference);
+                        matchingResult.AddMatch(notification.Id, movement.Id, item.ItemNumber.Value, documentGroup.Key);
                     }
                 }
             }
