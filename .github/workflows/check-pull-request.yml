@@ -28,6 +28,7 @@ jobs:
           mongodb-version: '7.0'
           mongodb-replica-set: test-rs
           mongodb-port: 29017
+
       - name: Install Docker using Docker's official script
         run: |
           curl -fsSL https://get.docker.com -o get-docker.sh
@@ -39,6 +40,10 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
+        continue-on-error: false
+
+      - name: Start application-specific services using Docker Compose
+        run: docker-compose up -d
         continue-on-error: false
 
       - name: Test       
