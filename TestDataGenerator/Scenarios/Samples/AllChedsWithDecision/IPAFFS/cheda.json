@@ -1,0 +1,357 @@
+{
+  "id": 4249486,
+  "referenceNumber": "CHEDA.GB.2024.5249486",
+  "version": 1,
+  "lastUpdated": "2024-12-04T11:03:22.132727902Z",
+  "lastUpdatedBy": {
+    "displayName": "c84d453c16541f842a2e85575943591105f5739894526f4edbbf17d87cc8536e",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "type": "CVEDA",
+  "status": "VALIDATED",
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "1efb6f009d3891665e74600374bb97010751c4560d86994231408cd318b196f9",
+      "companyId": "33accdd3-3e46-e911-a956-000d3a454330",
+      "companyName": "5443ca807721e59cb2635ef5e0fcdbfe9ab03def6005f7e2f0b840c05ef0ebb2",
+      "address": [
+        "8492f081fdac5bb22af7442759d30e6a83ae5e8fbf79e5a08a29b2d5ac0ede45",
+        "ef93daca4caf122636f83f156f993438cfb8b5dcffad5372e1580b4aa93ee508",
+        "cce01b776723b2287838c1003b8d2eacd73f724597d1f97619d9eb5fa76f4f5b",
+        "2304e27c58c8ba5043c8b66b1bfd7c35ad61fc9f0b47c760458d9e366a4e6b0b"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "0ea99a515b5119adb4f6ce62b4dede780d512683061dbbef69ad7f73f9d4146a",
+      "email": "441e1bf49e8c5a480faa1166697191b7dcd7976c051287de6b4cdbaf223a6b13",
+      "contactId": "dfb0eb26-3947-e911-a95e-000d3a454f67"
+    },
+    "consignor": {
+      "id": "d297ddad-d8f3-4702-9944-8c1b61a3fe00",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "f35e46722626289b1d45d72380bd3ec53727982641b7d2f88049c4b586706a57",
+      "address": {
+        "addressLine1": "a6d855dfcba8cab8f22a8f0b501f199b2c0da5e25ad16e8250cdb9bb27b0ae6f",
+        "addressLine2": "06aa5d5ed53199910bf121004bdefca86556956c161d6d5cfa296824d6c34a75",
+        "city": "5b289f91320ff0f627cd45c9a43e5e52d67f164b174f04b5b7355133aecda41c",
+        "postalZipCode": "2a5fcb2a13ae6a25c6eb48206750d86fa15201aca40732a47efb4740d3841647",
+        "countryISOCode": "520ad334f1cc1fccbbba66772029cf0ccd56e581215e6943ebb05e4ec48b9057",
+        "telephone": "8828ea3207357d00cb809327ffc64dccc6ff05766c75b3beedefce60c17355f9",
+        "email": "5675c634cef98843f232e72de37f2853c84c0cf46cc3f4519d07052171ed0e6b"
+      },
+      "tracesId": 10002944
+    },
+    "consignee": {
+      "id": "85c438e6-3686-4062-bf9d-e1d58164a68c",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "4a77fe918a2578212847583908399131a2a133fc2fedd8dce8bd34b8ea36426e",
+      "address": {
+        "addressLine1": "2debbd9124f852908592deb08f236309ce614bada8c44df23ccb33d2a48069e7",
+        "addressLine2": "e2bb1e61a94dd3846f83d373682d10c992b83e41f158a194eb84ea01a5c29fcb",
+        "city": "764ef57bd734bae0e201b906228c7b30456e4c1b0e6f2a6b7bebb1b0ffb3d758",
+        "postalZipCode": "03a6ba8b2d0cb1ceecaa2f61401672348aac7d7b36688e0ea4f81a0ba66db067",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "3dda65327d961f7db68b3bcf7424561422fee8bf937216affe6f0dc0f40cd13d",
+        "email": "7fff530af7e4a176cca83cdc62b6287114183ef69ae80cee18bf352f9ef643cc"
+      },
+      "tracesId": 10002945
+    },
+    "importer": {
+      "id": "85c438e6-3686-4062-bf9d-e1d58164a68c",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "4a77fe918a2578212847583908399131a2a133fc2fedd8dce8bd34b8ea36426e",
+      "address": {
+        "addressLine1": "2debbd9124f852908592deb08f236309ce614bada8c44df23ccb33d2a48069e7",
+        "addressLine2": "e2bb1e61a94dd3846f83d373682d10c992b83e41f158a194eb84ea01a5c29fcb",
+        "city": "764ef57bd734bae0e201b906228c7b30456e4c1b0e6f2a6b7bebb1b0ffb3d758",
+        "postalZipCode": "03a6ba8b2d0cb1ceecaa2f61401672348aac7d7b36688e0ea4f81a0ba66db067",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "3dda65327d961f7db68b3bcf7424561422fee8bf937216affe6f0dc0f40cd13d",
+        "email": "7fff530af7e4a176cca83cdc62b6287114183ef69ae80cee18bf352f9ef643cc"
+      },
+      "tracesId": 10002945
+    },
+    "placeOfDestination": {
+      "id": "85c438e6-3686-4062-bf9d-e1d58164a68c",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "4a77fe918a2578212847583908399131a2a133fc2fedd8dce8bd34b8ea36426e",
+      "address": {
+        "addressLine1": "2debbd9124f852908592deb08f236309ce614bada8c44df23ccb33d2a48069e7",
+        "addressLine2": "e2bb1e61a94dd3846f83d373682d10c992b83e41f158a194eb84ea01a5c29fcb",
+        "city": "764ef57bd734bae0e201b906228c7b30456e4c1b0e6f2a6b7bebb1b0ffb3d758",
+        "postalZipCode": "03a6ba8b2d0cb1ceecaa2f61401672348aac7d7b36688e0ea4f81a0ba66db067",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "3dda65327d961f7db68b3bcf7424561422fee8bf937216affe6f0dc0f40cd13d",
+        "email": "7fff530af7e4a176cca83cdc62b6287114183ef69ae80cee18bf352f9ef643cc"
+      },
+      "tracesId": 10002945
+    },
+    "commodities": {
+      "numberOfPackages": 10,
+      "numberOfAnimals": 4233,
+      "commodityComplement": [
+        {
+          "commodityID": "03011100",
+          "commodityDescription": "Freshwater fish",
+          "complementID": 237020,
+          "complementName": "Other freshwater fish",
+          "speciesID": "300832",
+          "speciesName": "Other freshwater fish",
+          "speciesType": "2",
+          "speciesClass": "315137",
+          "speciesNomination": "Other freshwater fish",
+          "isCdsMatched": true
+        },
+        {
+          "commodityID": "030760",
+          "commodityDescription": "Snails, other than sea snails",
+          "complementID": 237024,
+          "complementName": "Gasteropoda",
+          "speciesID": "37579",
+          "speciesName": "Gasteropoda",
+          "speciesTypeName": "Aquarium",
+          "speciesType": "1",
+          "speciesClass": "37579",
+          "speciesNomination": "Gasteropoda",
+          "isCdsMatched": true
+        },
+        {
+          "commodityID": "03079100",
+          "commodityDescription": "Live, fresh or chilled",
+          "complementID": 237026,
+          "complementName": "Other Mollusca",
+          "speciesID": "332694",
+          "speciesName": "Other Mollusca",
+          "speciesTypeName": "Aquarium",
+          "speciesType": "1",
+          "speciesClass": "36704",
+          "speciesNomination": "Other Mollusca",
+          "isCdsMatched": true
+        },
+        {
+          "commodityID": "03011900",
+          "commodityDescription": "Other than 0301 11 00",
+          "complementID": 237027,
+          "complementName": "Acanthurus leucosternon",
+          "speciesID": "293770",
+          "speciesName": "Acanthurus leucosternon",
+          "speciesType": "2",
+          "speciesClass": "133301",
+          "speciesNomination": "Acanthurus leucosternon",
+          "isCdsMatched": true
+        },
+        {
+          "commodityID": "03089010",
+          "commodityDescription": "Live, fresh or chilled",
+          "complementID": 237028,
+          "complementName": "Actiniaria",
+          "speciesID": "160028",
+          "speciesName": "Actiniaria",
+          "speciesTypeName": "Aquarium",
+          "speciesType": "1",
+          "speciesClass": "133305",
+          "speciesNomination": "Actiniaria",
+          "isCdsMatched": true
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "ee2ff620-5b1c-4215-bcfe-16667b03b24c",
+          "complementID": 237020,
+          "speciesID": "300832",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "6"
+            },
+            {
+              "key": "number_animal",
+              "data": "4143"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "9547a2c8-8cf7-4f01-ac86-3d14f7800749",
+          "complementID": 237024,
+          "speciesID": "37579",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "number_animal",
+              "data": "50"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "09331178-6d2b-4f75-b37f-2fd81121e947",
+          "complementID": 237026,
+          "speciesID": "332694",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "number_animal",
+              "data": "10"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "b92786d2-c85a-466c-b2cb-000e20ae7f1b",
+          "complementID": 237027,
+          "speciesID": "293770",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "number_animal",
+              "data": "25"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "cf2f4291-3d12-41dd-8657-bb7cf1d669ee",
+          "complementID": 237028,
+          "speciesID": "160028",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "number_animal",
+              "data": "5"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "LK",
+      "animalsCertifiedAs": "Pets"
+    },
+    "purpose": {
+      "forImportOrAdmission": "Definitive import",
+      "purposeGroup": "For Re-Import"
+    },
+    "pointOfEntry": "GBMNC4",
+    "arrivalDate": "2024-12-04",
+    "arrivalTime": "06:05:00",
+    "transporter": {
+      "id": "cf265f1e-c0b8-487a-92dd-608f9e7d5766",
+      "type": "commercial transporter",
+      "status": "approved",
+      "companyName": "567377ebc0710f4999fdf05e13b05fcffb7ea9a89ed86f223c165459abe85f84",
+      "individualName": "a104efca466714099dc77569ebe5d9dea90b20dc3ce191ea34477d64e72701c7",
+      "approvalNumber": "UK/PREST/T2/00106388",
+      "address": {
+        "addressLine1": "f0307bf1681c106a2527e513599b718b3eac68d50efc521a97d721fd7a5bfaba",
+        "addressLine2": "7217b5f62974da1f3c0607964c1f7d24d6555e92f85a821807b1646a18dbb508",
+        "addressLine3": "8492f081fdac5bb22af7442759d30e6a83ae5e8fbf79e5a08a29b2d5ac0ede45",
+        "city": "00814e9a6bbf93a2c3f20b1732ff117fe8fb58556f80fb1cdb3064d3b6ddadd5",
+        "postalZipCode": "2304e27c58c8ba5043c8b66b1bfd7c35ad61fc9f0b47c760458d9e366a4e6b0b",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe"
+      },
+      "tracesId": 10393170
+    },
+    "meansOfTransport": {
+      "id": "RG51EFT",
+      "type": "Road Vehicle",
+      "document": "157-3888 1975"
+    },
+    "meansOfTransportFromEntryPoint": {
+      "id": "QR021",
+      "type": "Aeroplane",
+      "document": "157-38881975"
+    },
+    "departureDate": "2024-12-04",
+    "departureTime": "10:05:00",
+    "estimatedJourneyTimeInMinutes": 5,
+    "responsibleForTransport": "Lincs Aquatics",
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "DAPH/VRA/4/1/4/1-(2024)-1764",
+          "documentIssueDate": "2024-12-03",
+          "attachmentId": "dbb75b5c-48a0-4d7e-a7da-0e27c500617d",
+          "attachmentFilename": "Health Certificate and .pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "dfb0eb26-3947-e911-a95e-000d3a454f67",
+          "uploadOrganisationId": "33accdd3-3e46-e911-a956-000d3a454330"
+        },
+        {
+          "documentType": "airWaybill",
+          "documentReference": "157-38881975",
+          "documentIssueDate": "2024-11-28",
+          "attachmentId": "8fb9ff36-29e2-44ac-ba8c-f9cacbb03786",
+          "attachmentFilename": "AWB.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "dfb0eb26-3947-e911-a95e-000d3a454f67",
+          "uploadOrganisationId": "33accdd3-3e46-e911-a956-000d3a454330"
+        }
+      ],
+      "identificationDetails": [
+        {}
+      ]
+    },
+    "route": {},
+    "submissionDate": "2024-12-03T14:54:43.083764875Z",
+    "submittedBy": {
+      "displayName": "1efb6f009d3891665e74600374bb97010751c4560d86994231408cd318b196f9",
+      "userId": "dfb0eb26-3947-e911-a95e-000d3a454f67"
+    },
+    "complexCommoditySelected": true
+  },
+  "decisionBy": {
+    "displayName": "c84d453c16541f842a2e85575943591105f5739894526f4edbbf17d87cc8536e",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-04T11:03:22.103167096Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market"
+    },
+    "consignmentCheck": {
+      "euStandard": "Not Set",
+      "documentCheckResult": "Satisfactory",
+      "nationalRequirements": "Not Set",
+      "additionalGuarantees": "Not Set",
+      "identityCheckResult": "Satisfactory",
+      "physicalCheckResult": "Satisfactory",
+      "welfareCheck": "Satisfactory",
+      "numberOfAnimalsChecked": 505
+    },
+    "impactOfTransportOnAnimals": {
+      "numberOfDeadAnimals": 2,
+      "numberOfDeadAnimalsUnit": "number",
+      "numberOfUnfitAnimalsUnit": "number"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "62dd16aa7c43f419f6884863859e6073ff1929131425494d9030ba4adfe6191c",
+        "lastName": "e0f6f763ba6a468ad4079bbde442c0e4932832e1ee445c902d5c7eb6958ae8ce",
+        "email": "1cb4763847e01dffdf16df4a2536c5e243124ee35ec310c46ca249a3765f5e61",
+        "phone": "4302b5032003831d95374de1bdf81eb25f86ea18fdf1a6221013bfc9976ac8f0",
+        "signed": "2024-12-04T11:03:22.1326946"
+      }
+    },
+    "bipLocalReferenceNumber": "BCP.8.2024.0530"
+  },
+  "etag": "0000000004504BB3",
+  "isCdsFullMatched": true,
+  "chedTypeVersion": 1
+}
