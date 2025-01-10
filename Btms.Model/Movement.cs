@@ -74,7 +74,6 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
 
     [BsonElement("_matchReferences")]
-    [ChangeSetIgnore]
     public List<string> _MatchReferences
     {
         get
