@@ -126,6 +126,16 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         }
     }
 
+    public void RemoveRelationship(RelationshipDataItem relationship)
+    {
+        if (Relationships.Notifications.Data.Contains(relationship))
+        {
+            Relationships.Notifications.Data.Remove(relationship);
+        }
+
+        Relationships.Notifications.Matched = Relationships.Notifications.Data.TrueForAll(x => x.Matched.GetValueOrDefault());
+    }
+    
     [BsonIgnore]
     [NotMapped]
     [ChangeSetIgnore]
