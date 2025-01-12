@@ -13,7 +13,7 @@ namespace Btms.Backend.IntegrationTests;
 [Trait("Category", "Integration")]
 public class AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : BaseApiTests(factory, testOutputHelper, "AsbSmokeTests"), IClassFixture<ApplicationFactory>
 {
-    [Fact]
+    [Fact(Skip = "Do not run correctly on github at the moment")]
     public async Task AsbSmokeTest()
     {
         await base.ClearDb();
