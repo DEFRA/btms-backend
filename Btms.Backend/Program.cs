@@ -88,11 +88,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 			.AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
 	}
 
-    builder.Services
-        .AddOptions<ServiceBusOptions>()
-        .Bind(builder.Configuration.GetSection(ServiceBusOptions.SectionName))
-        .ValidateDataAnnotations();
-
     builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
 		.PostConfigure(options =>
 		{

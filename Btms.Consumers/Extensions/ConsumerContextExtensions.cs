@@ -1,5 +1,6 @@
 using SlimMessageBus;
 using System.Diagnostics;
+using Azure.Messaging.ServiceBus;
 
 namespace Btms.Consumers.Extensions;
 
@@ -29,6 +30,21 @@ public static class ConsumerContextExtensions
     public static string GetMessageId(this IConsumerContext consumerContext)
     {
         if (consumerContext.Headers.TryGetValue(MessageBusHeaders.MessageId, out var value))
+        {
+            return value.ToString()!;
+        }
+
+        if(consumerContext.Properties.TryGetValue(MessageBusHeaders.ServiceBusMessage, out var sbMessage))
+        {
+            return ((ServiceBusReceivedMessage)sbMessage).MessageId;
+        }
+
+        return string.Empty;
+    }
+
+    public static string GetMessageType(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Headers.TryGetValue(MessageBusHeaders.MessageType, out var value))
         {
             return value.ToString()!;
         }

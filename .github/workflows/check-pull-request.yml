@@ -21,13 +21,20 @@ jobs:
           dotnet-version: |
            8.0
       - name: Check out code
-        uses: actions/checkout@v3      
+        uses: actions/checkout@v3 
+
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "compose.yml"     
+        
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
         with:
           mongodb-version: '7.0'
           mongodb-replica-set: test-rs
           mongodb-port: 29017
+
       - name: Test       
         run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
 
