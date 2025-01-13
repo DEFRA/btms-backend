@@ -11,7 +11,8 @@ using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
-public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger) : IImportNotificationsAggregationService
+public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger) 
+    : IImportNotificationsAggregationService
 {
     public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
@@ -53,6 +54,61 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         {
             Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
+    }
+    
+    public EntityDataset<ScenarioItem> Scenarios(DateTime? from = null, DateTime? to = null)
+    {
+        var commodityNotifications = context
+            .Notifications
+            .Where(n => (
+                            from == null || n.CreatedSource >= from) &&
+                        (to == null || n.CreatedSource < to) &&
+                        n.Relationships.Movements.Data.Any()
+            )
+            .SelectMany(n => n
+                .Commodities
+                .Select(c => new
+                {
+                    Ched = n.Id!,
+                    Mrns = n.Relationships.Movements.Data.Select(m => m.Id),
+                    CommodityDescription = c.CommodityDescription!,
+                    CommodityCount = n.Commodities.Count(),
+                    MovementCount = n.Relationships.Movements.Data.Count,
+                    // CommodityDescriptionLCase = c.CommodityDescription!.ToLower(), 
+                    Detail = new { Notification = n, Commodity = c }
+                }));
+        
+        var sweetPeppers = commodityNotifications
+            .Where(c =>
+                c.Detail.Commodity.CommodityId == "07096010" &&
+                c.MovementCount > 3
+                // c.CommodityDescription == "Sweet peppers"
+                // c.CommodityDescriptionLCase.Contains("sweet") && 
+                // c.CommodityDescriptionLCase.Contains("peppers") && 
+                // !c.CommodityDescriptionLCase.Contains("other than sweet")
+            )
+            .Take(5)
+            .Execute(logger);
+
+        var data = sweetPeppers
+            .Select(s => new ScenarioItem()
+            {
+                Scenario = "Sweet Peppers", Keys = s.Mrns.Concat([s.Ched]).ToArray()!
+            })
+            .ToList();
+
+        return new EntityDataset<ScenarioItem>(data);
+            
+        //     new [] {
+        //     new ScenarioItem() { Scenario = "Sweet Peppers", Keys = new[] { "Test" }}
+        // }));
+        // return Task.FromResult(new EntityDataset<(string scenario, string ched, string[] mrns)>(
+        //     new (string scenario, string ched, string[] mrns)[]
+        //     {
+        //         ("Ched with sweet peppers commodity 07096010", "", [""])
+        //     })
+        // );
+
     }
 
     public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByCommodityCount(DateTime from, DateTime to)

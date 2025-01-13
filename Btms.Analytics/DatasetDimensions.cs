@@ -54,6 +54,7 @@ public class StringBucketDimensionResult : IDimensionResult
 }
 
 public class AuditHistory(AuditEntry auditEntry, string resourceType, string resourceApiPrefix, string resourceId)
+    : IDimensionResult 
 {
     public AuditEntry AuditEntry { get; set; } = auditEntry;
     public string ResourceType { get; set; } = resourceType;
