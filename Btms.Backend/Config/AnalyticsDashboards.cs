@@ -73,8 +73,20 @@ public static class AnalyticsDashboards
                 () => movementsService.ByItemCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
             },
             {
+                "uniqueDocumentReferenceCount",
+                () => movementsService.ByUniqueDocumentReferenceCount(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
+            },
+            {
+                "uniqueDocumentReferenceByMovementCount",
+                () => movementsService.UniqueDocumentReferenceByMovementCount(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
+            },
+            {
                 "lastMonthMovementsByUniqueDocumentReferenceCount",
                 () => movementsService.ByUniqueDocumentReferenceCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "movementsByUniqueDocumentReferenceCount",
+                () => movementsService.ByUniqueDocumentReferenceCount(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
             },
             {
                 "lastMonthUniqueDocumentReferenceByMovementCount",

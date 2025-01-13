@@ -346,16 +346,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         
         alvsDecision.Context.DecisionComparison.Checks = alvsChecks;
         
-        //
-        // alvsChecks = alvsChecks
-        //     .Select(c =>
-        //     {
-        //         var decisionCode = btmsCheckDictionary[(c.ItemNumber, c.CheckCode)];
-        //         c.BtmsDecisionCode = decisionCode;
-        //         return c;
-        //     }).ToList();
-        
-
         alvsDecision.Context.AlvsCheckStatus = new StatusChecker()
         {
             AllMatch = alvsChecks.All(c => !c.AlvsDecisionCode.StartsWith('X')),

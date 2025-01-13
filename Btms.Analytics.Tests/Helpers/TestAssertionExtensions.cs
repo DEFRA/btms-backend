@@ -2,7 +2,7 @@ namespace Btms.Analytics.Tests.Helpers;
 
 public static class TestAssertionExtensions
 {
-    public static MultiSeriesDatasetAssertions Should(this List<Series>? instance)
+    public static MultiSeriesDatasetAssertions Should(this List<Series<ByNumericDimensionResult>>? instance)
     {
         return new MultiSeriesDatasetAssertions(instance);
     }
