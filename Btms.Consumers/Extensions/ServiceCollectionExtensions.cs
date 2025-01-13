@@ -1,3 +1,5 @@
+using System.Net;
+using Azure.Messaging.ServiceBus;
 using Btms.Common.Extensions;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
@@ -48,6 +50,15 @@ namespace Btms.Consumers.Extensions
                 {
                     cbb.WithProviderServiceBus(cfg =>
                     {
+                        cfg.ClientFactory = (sp, settings) =>
+                        {
+                            var clientOptions = new ServiceBusClientOptions()
+                            {
+                                WebProxy = sp.GetRequiredService<IWebProxy>(),
+                                TransportType = ServiceBusTransportType.AmqpWebSockets,
+                            };
+                            return new ServiceBusClient(settings.ConnectionString, clientOptions);
+                        };
                         cfg.ConnectionString = serviceBusOptions?.ConnectionString;
                     });
                     cbb.AddJsonSerializer();
