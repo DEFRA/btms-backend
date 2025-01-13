@@ -33,6 +33,7 @@ public class TabularDataset<TColumn> : IDataset where TColumn : IDimensionResult
 }
 
 public class EntityDataset<T>(IEnumerable<T> items) : IDataset
+    where T : IDimensionResult
 {
     public IEnumerable<T> Items { get; set; } = items;
 }
@@ -40,6 +41,15 @@ public class EntityDataset<T>(IEnumerable<T> items) : IDataset
 public class MultiSeriesDatetimeDataset : IDataset
 {
     public List<DatetimeSeries> Series { get; set; } = [];
+}
+
+public class ScenarioItem : IDimensionResult
+{
+    [JsonInclude]
+    public required string Scenario;
+    
+    [JsonInclude]
+    public required string[] Keys;
 }
 
 /// <summary>
@@ -97,6 +107,11 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         {
             JsonSerializer.Serialize(writer, value as SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>, options);
         }
+        // else if (value is EntityDataset<(string scenario, string ched, string[] mrns)>)
+        // {
+        //     JsonSerializer.Serialize(writer, value as EntityDataset<(string scenario, string ched, string[] mrns)>, options);
+        // }
+        
         else
         {
             throw new NotImplementedException();
