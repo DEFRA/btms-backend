@@ -1,4 +1,5 @@
 using Btms.Model;
+using Btms.Model.Cds;
 using MongoDB.Bson;
 namespace Btms.Analytics.Extensions;
 
@@ -51,8 +52,10 @@ public static class AnalyticsHelpers
             .ToArray();
     }
 
-    public static string[] GetMovementStatusSegments()
+    public static LinkStatusEnum[] GetMovementStatusSegments()
     {
-        return ["Linked", "Not Linked", "Investigate"];
+        return Enum.GetValues<LinkStatusEnum>();
+        // .Select(e => e.AsString()).ToArray();
+        // return ["Linked", "Not Linked", "Investigate"];
     }
 }
