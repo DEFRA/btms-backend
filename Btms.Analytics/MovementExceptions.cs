@@ -1,5 +1,6 @@
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
+using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 
@@ -92,7 +93,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         }
         
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
-            .Where(r => r.Status.LinkStatus == "Investigate");
+            .Where(r => r.Status.LinkStatus != LinkStatusEnum.Linked);
         
         if (summary)
         {

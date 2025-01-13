@@ -67,11 +67,11 @@ public class DatetimeSeries(string name)
     public List<ByDateTimeResult> Periods { get; set; } = [];
 }
 
-public class Series
+public class Series<TDimensionResult>
 {
     public required string Name { get; set; }
     public required string Dimension { get; set; }
-    public required List<IDimensionResult> Results { get; set; }
+    public required List<TDimensionResult> Results { get; set; }
 }
 
 /// <summary>
@@ -82,8 +82,18 @@ public class DimensionResultTypeMappingConverter<TType> : JsonConverter<TType> w
 {
     [return: MaybeNull]
     public override TType Read(
-        ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        throw new NotImplementedException();
+        ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var newOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = options.PropertyNamingPolicy
+        };
+        // ByNumericDimensionResult byNumeric = JsonSerializer.Deserialize<ByNumericDimensionResult>(ref reader, newOptions)!;
+
+        TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
+        // return new ByNumericDimensionResult() { Dimension = 1, Value = 1};
+        return result;
+    }
 
     public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
     {

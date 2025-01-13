@@ -1,4 +1,5 @@
 using Btms.Model;
+using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 
 namespace Btms.Analytics.Extensions;
@@ -21,7 +22,7 @@ public static class MovementExtensions
     {
         public required Movement Movement;
         public required DateTime CreatedSource;
-        public required string Description;
+        public required LinkStatusEnum Status;
     }
     
     public static IQueryable<MovementWithLinkStatus> SelectLinkStatus(this IQueryable<Movement> source)
@@ -30,8 +31,7 @@ public static class MovementExtensions
             .Select(m => new MovementWithLinkStatus() {
                 Movement = m,
                 CreatedSource = m.CreatedSource!.Value,
-                Description =
-                    m.BtmsStatus.LinkStatus
+                Status = m.BtmsStatus.LinkStatus
                     // m.Relationships.Notifications.Data.Count > 0 ? "Linked" :
                     // m.AlvsDecisionStatus!.Context!.AlvsCheckStatus!.AnyMatch ? "Investigate" :
                     // "Not Linked"

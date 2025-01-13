@@ -55,7 +55,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         });
     }
 
-    public Task<MultiSeriesDataset> ByCommodityCount(DateTime from, DateTime to)
+    public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByCommodityCount(DateTime from, DateTime to)
     {
         var query = context
             .Notifications
@@ -97,10 +97,10 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                 g => g.NotificationCount);
         
         
-        return Task.FromResult(new MultiSeriesDataset()
+        return Task.FromResult(new MultiSeriesDataset<ByNumericDimensionResult>()
         {
             Series = AnalyticsHelpers.GetImportNotificationSegments()
-                .Select(title => new Series()
+                .Select(title => new Series<ByNumericDimensionResult>()
                 {
                     Name = title,
                     Dimension = "ItemCount",
@@ -109,7 +109,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                         {
                             Dimension = i,
                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
-                        }).ToList<IDimensionResult>()
+                        }).ToList()
                 })
                 .ToList()
         });
