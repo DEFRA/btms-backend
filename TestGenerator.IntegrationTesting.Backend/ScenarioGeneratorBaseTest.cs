@@ -20,7 +20,8 @@ public abstract class ScenarioGeneratorBaseTest<T>
         = new Dictionary<Type, List<GeneratedResult>>();
     
     protected ScenarioGeneratorBaseTest(
-        ITestOutputHelper testOutputHelper
+        ITestOutputHelper testOutputHelper,
+        bool reloadData = true
     )
     {
         TestOutputHelper = testOutputHelper;
@@ -43,11 +44,20 @@ public abstract class ScenarioGeneratorBaseTest<T>
                 
                 var data = testGeneratorFixture
                     .GenerateTestData<T>();
-        
-                LoadedData = BackendFixture
-                    .LoadTestData(data)
-                    .GetAwaiter()
-                    .GetResult();
+
+                
+                if (reloadData)
+                {
+                    LoadedData = BackendFixture
+                        .LoadTestData(data)
+                        .GetAwaiter()
+                        .GetResult();
+                }
+                else
+                {
+                    TestOutputHelper.WriteLine("Warn : data in DB has not been replaced!");
+                    LoadedData = data;
+                }
                 
                 AllScenarioDatasets.Add(typeof(T), LoadedData);
             }

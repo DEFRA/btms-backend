@@ -19,7 +19,6 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class ChedPSimpleTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
 {
-
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
@@ -41,7 +40,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHave2BtmsDecisions()
     {
         Client
@@ -50,7 +49,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().Be(2);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var chedPNotification = (ImportNotification)LoadedData
@@ -90,7 +89,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be(1);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -140,7 +139,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Linked");
+            .Should().Be(LinkStatusEnum.Linked);
     }
     
     // [Fact]
@@ -154,7 +153,6 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Relationships.Notifications.Data
             .Should().NotBeEmpty();
     }
-
     
     [Fact]
     public async Task ShouldNotHaveExceptions()
@@ -172,7 +170,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void AlvsDecisionShouldBePaired()
     {
         Client

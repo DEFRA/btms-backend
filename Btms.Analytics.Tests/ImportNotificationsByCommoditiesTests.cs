@@ -12,7 +12,7 @@ using TestGenerator.IntegrationTesting.Backend;
 namespace Btms.Analytics.Tests;
 
 public class ImportNotificationsByCommoditiesTests(ITestOutputHelper output)
-    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName, reloadData:false)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
     
     [Fact]
@@ -37,7 +37,6 @@ public class ImportNotificationsByCommoditiesTests(ITestOutputHelper output)
         });
         
         result.Should().HaveResults();
-        
         result.Should().BeSameLength();
     }
 }

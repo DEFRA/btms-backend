@@ -23,7 +23,7 @@ public class NoMatch(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Not Linked");
+            .Should().Be(LinkStatusEnum.NotLinked);
     }
     
     [Fact]

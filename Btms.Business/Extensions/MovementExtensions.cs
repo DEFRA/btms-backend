@@ -29,49 +29,21 @@ public static class MovementExtensions
 
         return true;
     }
-
-    // public static void AnalyseAlvsStatus(this Movement movement)
-    // {
-    //     var alvsDecisionStatus = DecisionStatusEnum.InvestigationNeeded;
-    //
-    //     if (movement.AlvsDecisionStatus.Decisions.All(d => d.Context.DecisionMatched))
-    //     {
-    //         alvsDecisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
-    //     }
-    //     else if (!movement.ClearanceRequests.Exists(c => c.Header!.EntryVersionNumber == 1))
-    //     {
-    //         alvsDecisionStatus = DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent;
-    //     }
-    //     else if (!movement.ClearanceRequests.AreNumbersComplete(c => c.Header!.EntryVersionNumber!.Value))
-    //     {
-    //         alvsDecisionStatus = DecisionStatusEnum.AlvsClearanceRequestVersionsNotComplete;
-    //     }
-    //     else if (!movement.AlvsDecisionStatus.Decisions.Exists(d => d.Context.AlvsDecisionNumber == 1))
-    //     {
-    //         alvsDecisionStatus = DecisionStatusEnum.AlvsDecisionVersion1NotPresent;
-    //     }
-    //     else if (!movement.AlvsDecisionStatus.Decisions.AreNumbersComplete(d => d.Context.AlvsDecisionNumber))
-    //     {
-    //         alvsDecisionStatus = DecisionStatusEnum.AlvsDecisionVersionsNotComplete;
-    //     }
-    //
-    //     movement.AlvsDecisionStatus.DecisionStatus = alvsDecisionStatus;
-    // }
     
     public static void AddLinkStatus(this Movement movement)
     {
-        var linkStatus = MovementStatus.InvestigateStatus;
+        var linkStatus = LinkStatusEnum.NotLinked;
         var linked = false;
         
         if (movement.Relationships.Notifications.Data.Count > 0)
         {
-            linkStatus = MovementStatus.LinkedStatus;
+            linkStatus = LinkStatusEnum.Linked;
             linked = true;
         }
-        else if (movement.Relationships.Notifications.Data.Count == 0)
-        {
-            linkStatus = MovementStatus.NotLinkedStatus;
-        }
+        // else if (movement.Relationships.Notifications.Data.Count == 0)
+        // {
+        //     linkStatus = LinkStatusEnum.NotLinked;
+        // }
         
         movement.BtmsStatus.LinkStatus = linkStatus;
         movement.BtmsStatus.Linked = linked;

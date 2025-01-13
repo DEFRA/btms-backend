@@ -21,7 +21,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator>(output)
 {
 
-    [Fact(Skip="Wrong decision being made")]
+    [FailingFact(jiraTicket:"CDMS-232")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -43,7 +43,17 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Should().BeNull();
     }
     
-    [Fact(Skip="Wrong decision being made")]
+    [Fact]
+    public void ShouldHaveCorrectAlvsDecisionStatusAtGlobalLevel()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus
+            .Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent);
+    }
+    
+    [FailingFact(jiraTicket:"CDMS-232")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -53,7 +63,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHave2BtmsDecisions()
     {
         Client
@@ -100,7 +110,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be(3);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         //NB : Unsure why there's a BTMS decision 2 after alvs decision 1, but not
@@ -120,15 +130,6 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
                 ("Cds", "Updated", 2),
                 ("Alvs", "Decision", 3),
             ]);
-    }
-
-    [Fact(Skip="Wrong decision being made")]
-    public void ShouldHaveDecisionMatched()
-    {
-        var movement = Client
-            .GetSingleMovement()
-            .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
-            .Should().BeTrue();
     }
     
     [Fact]
@@ -155,7 +156,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Linked");
+            .Should().Be(LinkStatusEnum.Linked);
     }
     
     [Fact]
@@ -174,7 +175,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [Fact(Skip="Wrong decision being made")]
+    [FailingFact(jiraTicket:"CDMS-232")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client

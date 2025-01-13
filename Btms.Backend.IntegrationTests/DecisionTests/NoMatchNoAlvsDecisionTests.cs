@@ -16,14 +16,14 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
 {
     
     [Fact]
-    public void ShouldHaveNotificationRelationships()
+    public void ShouldHaveLinkStatusNotLinked()
     {
         
         // Assert
         var movement = Client
             .GetSingleMovement();
 
-        movement.BtmsStatus.LinkStatus.Should().Be("Not Linked");
+        movement.BtmsStatus.LinkStatus.Should().Be(LinkStatusEnum.NotLinked);
     }
     
     [Fact]

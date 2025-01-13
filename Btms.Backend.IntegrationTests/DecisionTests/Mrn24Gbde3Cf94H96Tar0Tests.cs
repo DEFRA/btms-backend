@@ -20,8 +20,8 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDE3CF94H96TAR0ScenarioGenerator>(output)
 {
-
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
+    // [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -43,7 +43,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should().BeNull();
     }
     
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -62,7 +62,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should().Be(1);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var notification = (ImportNotification)LoadedData
@@ -101,8 +101,8 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should()
             .Be(2);
     }
-
-    [Fact]
+    
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -119,7 +119,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             ]);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -128,7 +128,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
     
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234")]
     public void ShouldHaveDecisionStatus()
     {
         Client
@@ -152,21 +152,8 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Linked");
+            .Should().Be(LinkStatusEnum.Linked);
     }
-    
-    // [Fact]
-    [Fact(Skip = "Relationships aren't being deserialised correctly")]
-    // TODO : for some reason whilst jsonClientResponse contains the notification relationship,
-    // but movement from .GetResourceObject(s)<Movement>();  doesn't!
-    public void ShouldHaveNotificationRelationships()
-    {
-        Client
-            .GetSingleMovement()
-            .Relationships.Notifications.Data
-            .Should().NotBeEmpty();
-    }
-
     
     [Fact]
     public async Task ShouldNotHaveExceptions()

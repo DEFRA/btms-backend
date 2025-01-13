@@ -44,7 +44,7 @@ public abstract class ScenarioDatasetBaseTest
         // So rather than slow down the load, we can just run it concurrently
         var backendConfigurationOverrides = new Dictionary<string, string>
         {
-            { "ConsumerOptions:EnableBlockingPublish", "false" }
+            { "ConsumerOptions:EnableBlockingPublish", "true" }
         };
         
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
@@ -83,10 +83,6 @@ public abstract class ScenarioDatasetBaseTest
                     AllDatasets.Add(datasetName, loadedData);
                 }
             }
-        }
-        else
-        {
-            
         }
     }
 

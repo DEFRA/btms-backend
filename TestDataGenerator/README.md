@@ -19,11 +19,11 @@ See the implementations of SpecificFilesScenarioGenerator for examples. The file
 
 Copy all Movement files matching the ID into a Samples folder
 
-find .test-data-generator/PRODREDACTED-202412/ALVS .test-data-generator/PRODREDACTED-202412/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBDEHMFC4WGXVAR7 | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDEHMFC4WGXVAR7/
+find .test-data-generator/PRODREDACTED-202412/ALVS .test-data-generator/PRODREDACTED-202412/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBDDJER3ZFRMZAR9 | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDDJER3ZFRMZAR9/
 
 Copy all Import Notification files matching the ID into a Samples folder
 
-find .test-data-generator/PRODREDACTED-202412/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5249748\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDEHMFC4WGXVAR7/
+find .test-data-generator/PRODREDACTED-202412/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5229357\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDDJER3ZFRMZAR9/
 
 ## Merging datasets
 
@@ -37,10 +37,7 @@ azcopy list https://snddmpinfdl1001.blob.core.windows.net/dmp-1001/PRODREDACTED-
 
 azcopy sync 'https://snddmpinfdl1001.blob.core.windows.net/dmp-1001/PRODREDACTED-202411' 'https://snddmpinfdl1001.blob.core.windows.net/dmp-1001/PRODREDACTED-ALL' --recursive
 
-Instead, i've merged locally and then synched up to blob storage:
-
-
-
+Instead, i've merged locally and then synched up to blob storage
 
 ## Interacting with blob storage to push generated datasets
 

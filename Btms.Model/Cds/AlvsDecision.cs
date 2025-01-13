@@ -94,9 +94,9 @@ public class StatusChecker
 
 public class MovementStatus
 {
-    public const string NotLinkedStatus = "Not Linked";
-    public const string LinkedStatus = "Linked";
-    public const string InvestigateStatus = "Investigate";
+    // public const string NotLinkedStatus = "Not Linked";
+    // public const string LinkedStatus = "Linked";
+    // public const string InvestigateStatus = "Investigate";
     
     public static MovementStatus Default()
     {
@@ -104,7 +104,7 @@ public class MovementStatus
         {
             ChedTypes = [],
             Linked = false,
-            LinkStatus = NotLinkedStatus
+            LinkStatus = LinkStatusEnum.NotLinked
         };
     }
     
@@ -119,34 +119,43 @@ public class MovementStatus
     
     [Attr]
     [System.ComponentModel.Description("")]
-    public required string LinkStatus { get; set; }
-    
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public required string[] CountriesOfOrigin { get; set; }
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public required LinkStatusEnum LinkStatus { get; set; }
+}
 
+[JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatusEnum>))]
+public enum LinkStatusEnum
+{
+    [EnumMember(Value = "Not Linked")]
+    NotLinked,
+    
+    [EnumMember(Value = "Linked")]
+    Linked,
+    
+    [EnumMember(Value = "Investigate")]
+    Investigate
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<DecisionStatusEnum>))]
-public enum DecisionStatusEnum {
+public enum DecisionStatusEnum 
+{
+    [EnumMember(Value = "Btms Made Same Decision As Alvs")]
+    BtmsMadeSameDecisionAsAlvs,
+    
+    [EnumMember(Value = "Has Ched PP Checks")]
+    HasChedppChecks,
+
+    [EnumMember(Value = "No Import Notifications Linked")]
+    NoImportNotificationsLinked,
     
     [EnumMember(Value = "No Alvs Decisions")]
     NoAlvsDecisions,
     
-    [EnumMember(Value = "Investigation Needed")]
-    InvestigationNeeded,
+    [EnumMember(Value = "Has Multiple Ched Types")]
+    HasMultipleChedTypes,
     
-    // [EnumMember(Value = "Btms Decision Not Present")]
-    // BtmsDecisionNotPresent,
-    
-    [EnumMember(Value = "Has Ched PP Checks")]
-    HasChedppChecks,
-    
-    [EnumMember(Value = "No Import Notifications Linked")]
-    NoImportNotificationsLinked,
-    
-    [EnumMember(Value = "Btms Made Same Decision As Alvs")]
-    BtmsMadeSameDecisionAsAlvs,
+    [EnumMember(Value = "Has Multiple Cheds")]
+    HasMultipleCheds,
     
     [EnumMember(Value = "Alvs Clearance Request Version 1 Not Present")]
     AlvsClearanceRequestVersion1NotPresent,
@@ -158,7 +167,10 @@ public enum DecisionStatusEnum {
     AlvsDecisionVersion1NotPresent,
     
     [EnumMember(Value = "Alvs Decision Versions Not Complete")]
-    AlvsDecisionVersionsNotComplete
+    AlvsDecisionVersionsNotComplete,
+    
+    [EnumMember(Value = "Investigation Needed")]
+    InvestigationNeeded,
 }
 
 public partial class SummarisedDecisionContext //
