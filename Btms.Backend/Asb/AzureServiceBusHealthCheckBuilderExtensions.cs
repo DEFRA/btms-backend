@@ -24,13 +24,30 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
         this IHealthChecksBuilder builder,
         TimeSpan? timeout = default)
     {
-        return builder.Add(new HealthCheckRegistration(
-            "azuresubscription",
+        builder.Add(new HealthCheckRegistration(
+            "azuresubscription_alvs",
             sp =>
             {
                 var sbOptions = sp.GetRequiredService<IOptions<ServiceBusOptions>>();
-                var firstSubscription = sbOptions.Value.Subscriptions.First();
-                var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(firstSubscription.Value.Topic, firstSubscription.Value.Subscription)
+                var subscription = sbOptions.Value.AlvsSubscription;
+                var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
+                {
+                    ConnectionString = sbOptions.Value.ConnectionString,
+                    UsePeekMode = true
+                };
+                return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
+            },
+            default,
+            default,
+            timeout));
+
+        return builder.Add(new HealthCheckRegistration(
+            "azuresubscription_notification",
+            sp =>
+            {
+                var sbOptions = sp.GetRequiredService<IOptions<ServiceBusOptions>>();
+                var subscription = sbOptions.Value.NotificationSubscription;
+                var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
                 {
                     ConnectionString = sbOptions.Value.ConnectionString,
                     UsePeekMode = true
