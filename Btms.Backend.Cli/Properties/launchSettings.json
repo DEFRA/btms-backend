@@ -7,6 +7,13 @@
 
       // "commandLineArgs": "generate-vehicle-movement-model"
       //"commandLineArgs": "generate-alvs-model"
+    },
+    "Btms.Backend.Cli.FindMrnRelatedMessages": {
+      "commandName": "Project",
+      "commandLineArgs": "find-mrn-related-messages -m 24GBDEHMFC4WGXVAR7"
+
+      // "commandLineArgs": "generate-vehicle-movement-model"
+      //"commandLineArgs": "generate-alvs-model"
     }
   }
 }
