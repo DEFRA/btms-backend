@@ -33,7 +33,8 @@ public class ChedPUpdatedNotificationTests
 
     // This scenario has an update adding a commodity that gets 
     // processed but doesn't cause a new decision
-    [FailingFact(jiraTicket:"CDMS-234")]
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void ShouldHaveCorrectAuditEntries()
     {
         var movement = Client
@@ -47,12 +48,13 @@ public class ChedPUpdatedNotificationTests
                 ("Btms", "Decision", 1, null),
                 ("Btms", "Linked", null, null), //TODO : can we get context in here including the notification info
                 ("Btms", "Decision", 2, 1),
+                ("Btms", "Decision", 3, 2),
                 ("Alvs", "Decision", 1, null), //TODO : we should be able to use the IBM provided file to get some context
-                ("Btms", "Decision", 3, 2)
+
             ]);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     // [Fact]
     public void ShouldHave3BtmsDecisions()
     {

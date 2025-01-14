@@ -21,7 +21,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
 {
 
-    [FailingFact(reason: "Has Ched PP Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -43,7 +43,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeNull();
     }
     
-    [FailingFact(reason: "Has Ched PP Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -53,7 +53,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void ShouldHave1BtmsDecision()
     {
         Client
@@ -100,7 +101,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Be(2);
     }
 
-    [FailingFact(reason: "Has Ched PP Checks")]
+    [Fact]
+    // [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -118,7 +120,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             ]);
     }
 
-    [FailingFact(reason: "Has Ched PP Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -170,7 +172,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(reason: "Has Ched PP Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client

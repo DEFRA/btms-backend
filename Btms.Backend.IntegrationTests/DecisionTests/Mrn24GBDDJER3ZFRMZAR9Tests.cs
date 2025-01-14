@@ -21,7 +21,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator>(output)
 {
 
-    [FailingFact(jiraTicket:"CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -32,7 +32,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
     
-    [FailingFact(jiraTicket:"CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveCorrectAlvsDecisionStatusAtGlobalLevel()
     {
         Client
@@ -42,7 +42,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
-    [FailingFact(jiraTicket:"CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -53,7 +53,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     }
 
     // [IncorrectDecisionFact(Skip = "This should be making multiple decisions at the momennt given the complexity. Currently only making one")]
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveTbcBtmsDecisions()
     {
         //
@@ -63,7 +63,8 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Should().Be(1);
     }
 
-    [FailingFact(jiraTicket:"CDMS-235")]
+    // [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+    [Fact]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var notification = (ImportNotification)LoadedData
@@ -111,7 +112,8 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Be(3);
     }
 
-    [FailingFact(jiraTicket:"CDMS-235")]
+    // [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+    [Fact]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -137,7 +139,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             ]);
     }
 
-    [FailingFact(jiraTicket:"CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -189,7 +191,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(jiraTicket:"CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     // [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {

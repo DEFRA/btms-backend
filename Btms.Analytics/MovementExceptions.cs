@@ -24,16 +24,16 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             {
                 // TODO - we should think about pre-calculating this stuff and storing it on the movement...
 
-                Id = m.Id,
-                UpdatedSource = m.UpdatedSource,
-                Updated = m.Updated,
+                m.Id,
+                m.UpdatedSource,
+                m.Updated,
                 MaxDecisionNumber = m.Decisions.Max(d => d.Header!.DecisionNumber) ?? 0,
                 MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
-                ChedTypes = m.BtmsStatus.ChedTypes,
-                Status = m.BtmsStatus,
-                DecisionMatched = m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionMatched,
+                m.BtmsStatus.ChedTypes,
+                m.BtmsStatus.LinkStatus,
+                m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionMatched,
                 // DecisionMatched = !m.AlvsDecisionStatus.Decisions
                 //     .OrderBy(d => d.Context.AlvsDecisionNumber)
                 //     .Reverse()
@@ -46,19 +46,19 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             .Select(m => new
             {
                 Id = m.Id,
-                UpdatedSource = m.UpdatedSource,
-                Updated = m.Updated,
-                MaxDecisionNumber = m.MaxDecisionNumber,
-                MaxEntryVersion = m.MaxEntryVersion,
-                LinkedCheds = m.LinkedCheds,
-                ItemCount = m.ItemCount,
-                ChedTypes = m.ChedTypes,
-                Status = m.Status,
-                HasNotificationRelationships = m.HasNotificationRelationships,
+                m.UpdatedSource,
+                m.Updated,
+                m.MaxDecisionNumber,
+                m.MaxEntryVersion,
+                m.LinkedCheds,
+                m.ItemCount,
+                m.ChedTypes,
+                m.LinkStatus,
+                m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
                 // TODO - can we include CHED versions here too?
                 TotalDocumentVersions = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds,
-                DecisionMatched = m.DecisionMatched,
+                m.DecisionMatched,
                 ContiguousAlvsClearanceRequestVersionsFrom1 = m.ContiguousAlvsClearanceRequestVersionsFrom1.Count() == m.MaxEntryVersion
             });
 
@@ -91,9 +91,9 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                     })
             );
         }
-        
+
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
-            .Where(r => r.Status.LinkStatus != LinkStatusEnum.Linked);
+            .Where(r => r.LinkStatus != LinkStatusEnum.Linked);
         
         if (summary)
         {

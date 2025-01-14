@@ -1,14 +1,9 @@
-using System.Net;
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Common.Extensions;
-using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
@@ -40,7 +35,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHave2BtmsDecisions()
     {
         Client
@@ -49,7 +44,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().Be(2);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var chedPNotification = (ImportNotification)LoadedData
@@ -89,7 +84,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be(1);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -170,7 +165,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void AlvsDecisionShouldBePaired()
     {
         Client

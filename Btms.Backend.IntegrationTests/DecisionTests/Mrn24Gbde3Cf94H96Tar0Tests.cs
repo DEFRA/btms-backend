@@ -20,7 +20,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDE3CF94H96TAR0ScenarioGenerator>(output)
 {
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     // [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
@@ -43,7 +43,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should().BeNull();
     }
     
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -62,7 +62,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should().Be(1);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var notification = (ImportNotification)LoadedData
@@ -102,7 +102,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Be(2);
     }
     
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -119,7 +119,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             ]);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -128,7 +128,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
     
-    [FailingFact(jiraTicket:"CDMS-234")]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveDecisionStatus()
     {
         Client
