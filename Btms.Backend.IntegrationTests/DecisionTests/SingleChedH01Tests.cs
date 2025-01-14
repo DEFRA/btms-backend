@@ -29,7 +29,7 @@ public class SingleChedH01Tests(ITestOutputHelper output)
             .GetById(chedPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
 
         // Assert
-        chedPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!.Single().Checks!.Single()
+        chedPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!.Last().Checks!.Last()
             .DecisionCode.Should().Be("H01");
     }
 

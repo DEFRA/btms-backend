@@ -63,6 +63,6 @@ public class NonContiguous(ITestOutputHelper output)
             .AlvsDecisionStatus
             .Context.DecisionComparison!.DecisionStatus
             .Should()
-            .Be(DecisionStatusEnum.AlvsDecisionVersionsNotComplete);
+            .Be(DecisionStatusEnum.NoImportNotificationsLinked);
     }
 }

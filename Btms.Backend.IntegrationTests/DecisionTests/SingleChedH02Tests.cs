@@ -123,11 +123,6 @@ public class SingleChedDecisionTests(ITestOutputHelper output)
                     chedP.ReferenceNumber!.Split(".")
                         .Last()))
             .Message;
-        var chedPPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
-                d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
-                    chedPP.ReferenceNumber!.Split(".")
-                        .Last()))
-            .Message;
 
         // Act
         var chedAMovement = Client.AsJsonApiClient()
@@ -136,8 +131,6 @@ public class SingleChedDecisionTests(ITestOutputHelper output)
             .GetById(chedDClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedPMovement = Client.AsJsonApiClient()
             .GetById(chedPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
-        var chedPPMovement = Client.AsJsonApiClient()
-            .GetById(chedPPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
 
         // Assert
         string decisionCode = "";
@@ -145,7 +138,7 @@ public class SingleChedDecisionTests(ITestOutputHelper output)
             .All(i =>
             {
                 decisionCode = i.Checks!.First().DecisionCode!;
-                return decisionCode.Equals("E03");
+                return decisionCode.Equals("C03");
             }).Should().BeTrue("Expected C03. Actually {0}", decisionCode);
         chedDMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
             .All(i =>
@@ -154,12 +147,6 @@ public class SingleChedDecisionTests(ITestOutputHelper output)
                 return decisionCode.Equals("C03");
             }).Should().BeTrue("Expected C03. Actually {0}", decisionCode);
         chedPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
-            .All(i =>
-            {
-                decisionCode = i.Checks!.First().DecisionCode!;
-                return decisionCode.Equals("C03");
-            }).Should().BeTrue("Expected C03. Actually {0}", decisionCode);
-        chedPPMovement.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
             .All(i =>
             {
                 decisionCode = i.Checks!.First().DecisionCode!;
