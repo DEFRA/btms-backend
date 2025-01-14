@@ -180,6 +180,22 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.PartTwo!.InspectionRequired = inspectionRequired;
         });
     }
+    
+    public ImportNotificationBuilder<T> WithImportNotificationStatus(ImportNotificationStatusEnum importNotificationStatus = ImportNotificationStatusEnum.Submitted)
+    {
+        return Do(x =>
+        {
+            x.Status = importNotificationStatus;
+        });
+    }
+
+    public ImportNotificationBuilder<T> WithPartTwoDecision(Decision decision)
+    {
+        return Do(x =>
+        {
+            x.PartTwo!.Decision = decision;
+        });
+    }
 
     public ImportNotificationBuilder<T> WithVersionNumber(int version = 1)
     {
