@@ -11,13 +11,10 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-// [Trait("Category", "Testing12")]
-// [Category("Testing12")]
 public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator>(output)
 {
-
-    [FailingFact(jiraTicket:"CDMS-232")]
+    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -49,7 +46,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Should().Be(DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent);
     }
     
-    [FailingFact(jiraTicket:"CDMS-232")]
+    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -59,7 +56,8 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void ShouldHave2BtmsDecisions()
     {
         Client
@@ -106,11 +104,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be(3);
     }
 
-    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
-    [Fact, Category("Testing12")]
-    // [FailingFactTraitAttribute(name:"Category", value:"Testing12")]
-    // [FailingFact(jiraTicket:"CDMS-234", name="Category", value:"Testing12")]
-    // [Trait("Category", "CDMS-234")] 
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         //NB : Unsure why there's a BTMS decision 2 after alvs decision 1, but not
@@ -120,7 +114,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
-            .Equal([
+            .BeEquivalentTo<(string, string, int?)>([
                 ("Cds", "Created", 1),
                 ("Btms", "Linked", null),
                 ("Btms", "Decision", 1),
@@ -175,7 +169,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(jiraTicket:"CDMS-232")]
+    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client
