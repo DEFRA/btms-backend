@@ -46,35 +46,38 @@ namespace Btms.Consumers.Extensions
             //Message Bus
             services.AddSlimMessageBus(mbb =>
             {
-                mbb.AddChildBus("ASB", cbb =>
+                if (consumerOpts.EnableAsbConsumers)
                 {
-                    cbb.WithProviderServiceBus(cfg =>
+                    mbb.AddChildBus("ASB", cbb =>
                     {
-                        cfg.ClientFactory = (sp, settings) =>
+                        cbb.WithProviderServiceBus(cfg =>
                         {
-                            var clientOptions = new ServiceBusClientOptions()
+                            cfg.ClientFactory = (sp, settings) =>
                             {
-                                WebProxy = sp.GetRequiredService<IWebProxy>(),
-                                TransportType = ServiceBusTransportType.AmqpWebSockets,
+                                var clientOptions = new ServiceBusClientOptions()
+                                {
+                                    WebProxy = sp.GetRequiredService<IWebProxy>(),
+                                    TransportType = ServiceBusTransportType.AmqpWebSockets,
+                                };
+                                return new ServiceBusClient(settings.ConnectionString, clientOptions);
                             };
-                            return new ServiceBusClient(settings.ConnectionString, clientOptions);
-                        };
-                        cfg.ConnectionString = serviceBusOptions?.ConnectionString;
+                            cfg.ConnectionString = serviceBusOptions?.ConnectionString;
+                        });
+                        cbb.AddJsonSerializer();
+
+                        cbb.Consume<object>(x => x
+                            .Topic(serviceBusOptions?.AlvsSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions?.AlvsSubscription.Subscription)
+                            .WithConsumer<AlvsAsbConsumer>()
+                            .Instances(consumerOpts.AsbAlvsMessages));
+
+                        cbb.Consume<ImportNotification>(x => x
+                            .Topic(serviceBusOptions?.NotificationSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
+                            .WithConsumer<NotificationConsumer>()
+                            .Instances(consumerOpts.AsbNotifications));
                     });
-                    cbb.AddJsonSerializer();
-
-                    cbb.Consume<object>(x => x
-                        .Topic(serviceBusOptions?.AlvsSubscription.Topic)
-                        .SubscriptionName(serviceBusOptions?.AlvsSubscription.Subscription)
-                        .WithConsumer<AlvsAsbConsumer>()
-                        .Instances(consumerOpts.AsbAlvsMessages));
-
-                    cbb.Consume<ImportNotification>(x => x
-                        .Topic(serviceBusOptions?.NotificationSubscription.Topic)
-                        .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
-                        .WithConsumer<NotificationConsumer>()
-                        .Instances(consumerOpts.AsbNotifications));
-                });
+                }
 
                 mbb
                     .AddChildBus("InMemory", cbb =>
