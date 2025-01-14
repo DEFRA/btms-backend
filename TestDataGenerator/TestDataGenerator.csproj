@@ -540,6 +540,8 @@
     </Content>
     <None Remove="Scenarios\Samples\MultiChedWithDecision\ChedP\IPAFFS\CHEDP_GB_2024_5252076-68f47047-4045-4150-9e5b-1cab6938000c.json" />
     <Content Include="Scenarios\Samples\MultiChedWithDecision\ChedP\IPAFFS\CHEDP_GB_2024_5252076-68f47047-4045-4150-9e5b-1cab6938000c.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Remove="Scenarios\Samples\Mrn-24GBDDJER3ZFRMZAR9\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229333-3044016d-32fa-4bff-86fb-dd564cfd6953.json" />
     <Content Include="Scenarios\Samples\Mrn-24GBDDJER3ZFRMZAR9\IPAFFS\CHEDPP\2024\12\01\CHEDPP_GB_2024_5229333-3044016d-32fa-4bff-86fb-dd564cfd6953.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

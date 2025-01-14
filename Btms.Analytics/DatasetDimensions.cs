@@ -89,10 +89,9 @@ public class DimensionResultTypeMappingConverter<TType> : JsonConverter<TType> w
         {
             PropertyNamingPolicy = options.PropertyNamingPolicy
         };
-        // ByNumericDimensionResult byNumeric = JsonSerializer.Deserialize<ByNumericDimensionResult>(ref reader, newOptions)!;
-
+        
         TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
-        // return new ByNumericDimensionResult() { Dimension = 1, Value = 1};
+        
         return result;
     }
 

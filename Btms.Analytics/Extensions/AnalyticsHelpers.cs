@@ -55,7 +55,5 @@ public static class AnalyticsHelpers
     public static LinkStatusEnum[] GetMovementStatusSegments()
     {
         return Enum.GetValues<LinkStatusEnum>();
-        // .Select(e => e.AsString()).ToArray();
-        // return ["Linked", "Not Linked", "Investigate"];
     }
 }
