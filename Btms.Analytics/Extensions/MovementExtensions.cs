@@ -32,9 +32,6 @@ public static class MovementExtensions
                 Movement = m,
                 CreatedSource = m.CreatedSource!.Value,
                 Status = m.BtmsStatus.LinkStatus
-                    // m.Relationships.Notifications.Data.Count > 0 ? "Linked" :
-                    // m.AlvsDecisionStatus!.Context!.AlvsCheckStatus!.AnyMatch ? "Investigate" :
-                    // "Not Linked"
             });
 
         return m;

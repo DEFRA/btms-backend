@@ -40,10 +40,6 @@ public static class MovementExtensions
             linkStatus = LinkStatusEnum.Linked;
             linked = true;
         }
-        // else if (movement.Relationships.Notifications.Data.Count == 0)
-        // {
-        //     linkStatus = LinkStatusEnum.NotLinked;
-        // }
         
         movement.BtmsStatus.LinkStatus = linkStatus;
         movement.BtmsStatus.Linked = linked;

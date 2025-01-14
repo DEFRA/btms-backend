@@ -98,17 +98,6 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .ToList();
 
         return new EntityDataset<ScenarioItem>(data);
-            
-        //     new [] {
-        //     new ScenarioItem() { Scenario = "Sweet Peppers", Keys = new[] { "Test" }}
-        // }));
-        // return Task.FromResult(new EntityDataset<(string scenario, string ched, string[] mrns)>(
-        //     new (string scenario, string ched, string[] mrns)[]
-        //     {
-        //         ("Ched with sweet peppers commodity 07096010", "", [""])
-        //     })
-        // );
-
     }
 
     public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByCommodityCount(DateTime from, DateTime to)

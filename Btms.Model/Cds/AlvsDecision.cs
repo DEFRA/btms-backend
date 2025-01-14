@@ -93,11 +93,7 @@ public class StatusChecker
 }
 
 public class MovementStatus
-{
-    // public const string NotLinkedStatus = "Not Linked";
-    // public const string LinkedStatus = "Linked";
-    // public const string InvestigateStatus = "Investigate";
-    
+{   
     public static MovementStatus Default()
     {
         return new MovementStatus()

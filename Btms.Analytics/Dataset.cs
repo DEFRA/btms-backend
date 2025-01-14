@@ -75,13 +75,9 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         {
             newOptions.Converters.Add(jsonConverter);
         }
-        // newOptions.Converters.Append<IEnumerable<JsonConverter>>(converters);
         
         TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
 
-        // TType result = JsonSerializer.Deserialize<TType>(ref reader, options)!;
-        
-        // return new ByNumericDimensionResult() { Dimension = 1, Value = 1};
         return result;   
     }
 
@@ -107,11 +103,6 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         {
             JsonSerializer.Serialize(writer, value as SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>, options);
         }
-        // else if (value is EntityDataset<(string scenario, string ched, string[] mrns)>)
-        // {
-        //     JsonSerializer.Serialize(writer, value as EntityDataset<(string scenario, string ched, string[] mrns)>, options);
-        // }
-        
         else
         {
             throw new NotImplementedException();
