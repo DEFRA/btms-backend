@@ -8,6 +8,7 @@ using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -46,35 +47,46 @@ namespace Btms.Consumers.Extensions
             //Message Bus
             services.AddSlimMessageBus(mbb =>
             {
-                mbb.AddChildBus("ASB", cbb =>
+                if (consumerOpts.EnableAsbConsumers)
                 {
-                    cbb.WithProviderServiceBus(cfg =>
+                    mbb.AddChildBus("ASB", cbb =>
                     {
-                        cfg.ClientFactory = (sp, settings) =>
+                        cbb.WithProviderServiceBus(cfg =>
                         {
-                            var clientOptions = new ServiceBusClientOptions()
+                            cfg.TopologyProvisioning = new ServiceBusTopologySettings
                             {
-                                WebProxy = sp.GetRequiredService<IWebProxy>(),
-                                TransportType = ServiceBusTransportType.AmqpWebSockets,
+                                Enabled = false
                             };
-                            return new ServiceBusClient(settings.ConnectionString, clientOptions);
-                        };
-                        cfg.ConnectionString = serviceBusOptions?.ConnectionString;
+
+                            cfg.ClientFactory = (sp, settings) =>
+                            {
+                                var clientOptions = sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
+                                    ? new ServiceBusClientOptions()
+                                    : new ServiceBusClientOptions
+                                    {
+                                        WebProxy = sp.GetRequiredService<IWebProxy>(),
+                                        TransportType = ServiceBusTransportType.AmqpWebSockets,
+                                    };
+                                
+                                return new ServiceBusClient(settings.ConnectionString, clientOptions);
+                            };
+                            cfg.ConnectionString = serviceBusOptions?.ConnectionString;
+                        });
+                        cbb.AddJsonSerializer();
+
+                        cbb.Consume<object>(x => x
+                            .Topic(serviceBusOptions?.AlvsSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions?.AlvsSubscription.Subscription)
+                            .WithConsumer<AlvsAsbConsumer>()
+                            .Instances(consumerOpts.AsbAlvsMessages));
+
+                        cbb.Consume<ImportNotification>(x => x
+                            .Topic(serviceBusOptions?.NotificationSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
+                            .WithConsumer<NotificationConsumer>()
+                            .Instances(consumerOpts.AsbNotifications));
                     });
-                    cbb.AddJsonSerializer();
-
-                    cbb.Consume<object>(x => x
-                        .Topic(serviceBusOptions?.AlvsSubscription.Topic)
-                        .SubscriptionName(serviceBusOptions?.AlvsSubscription.Subscription)
-                        .WithConsumer<AlvsAsbConsumer>()
-                        .Instances(consumerOpts.AsbAlvsMessages));
-
-                    cbb.Consume<ImportNotification>(x => x
-                        .Topic(serviceBusOptions?.NotificationSubscription.Topic)
-                        .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
-                        .WithConsumer<NotificationConsumer>()
-                        .Instances(consumerOpts.AsbNotifications));
-                });
+                }
 
                 mbb
                     .AddChildBus("InMemory", cbb =>
