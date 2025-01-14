@@ -12,7 +12,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class NonContiguous(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<CrNonContiguousDecisionsScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<CrNoMatchNonContiguousDecisionsScenarioGenerator>(output)
 {
     
     [Fact]
@@ -61,7 +61,7 @@ public class NonContiguous(ITestOutputHelper output)
 
         movement
             .AlvsDecisionStatus
-            .DecisionStatus
+            .Context.DecisionComparison!.DecisionStatus
             .Should()
             .Be(DecisionStatusEnum.AlvsDecisionVersionsNotComplete);
     }
