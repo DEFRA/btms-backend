@@ -8,6 +8,7 @@ using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -52,13 +53,21 @@ namespace Btms.Consumers.Extensions
                     {
                         cbb.WithProviderServiceBus(cfg =>
                         {
+                            cfg.TopologyProvisioning = new ServiceBusTopologySettings
+                            {
+                                Enabled = false
+                            };
+
                             cfg.ClientFactory = (sp, settings) =>
                             {
-                                var clientOptions = new ServiceBusClientOptions()
-                                {
-                                    WebProxy = sp.GetRequiredService<IWebProxy>(),
-                                    TransportType = ServiceBusTransportType.AmqpWebSockets,
-                                };
+                                var clientOptions = sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
+                                    ? new ServiceBusClientOptions()
+                                    : new ServiceBusClientOptions
+                                    {
+                                        WebProxy = sp.GetRequiredService<IWebProxy>(),
+                                        TransportType = ServiceBusTransportType.AmqpWebSockets,
+                                    };
+                                
                                 return new ServiceBusClient(settings.ConnectionString, clientOptions);
                             };
                             cfg.ConnectionString = serviceBusOptions?.ConnectionString;

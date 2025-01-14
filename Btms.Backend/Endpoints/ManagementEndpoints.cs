@@ -6,7 +6,9 @@ using MongoDB.Driver;
 using System.Collections;
 using Btms.Backend.Config;
 using Btms.Business.Commands;
+using Btms.Consumers;
 using Microsoft.AspNetCore.Mvc;
+using SlimMessageBus.Host;
 
 namespace Btms.Backend.Endpoints;
 
@@ -23,7 +25,9 @@ public static class ManagementEndpoints
 			app.MapGet(BaseRoute + "/environment", GetEnvironment).AllowAnonymous();
 			app.MapGet(BaseRoute + "/status", GetStatus).AllowAnonymous();
             app.MapGet(BaseRoute + "/initialise", Initialise).AllowAnonymous();
-		}
+            app.MapGet(BaseRoute + "/asb/start", StartAsb).AllowAnonymous();
+            app.MapGet(BaseRoute + "/asb/stop", StopAsb).AllowAnonymous();
+}
 	}
 
 	private static string[] _keysToRedact = [
@@ -82,6 +86,35 @@ public static class ManagementEndpoints
     {
         await DropCollectionsAsync(context);
         await SyncEndpoints.InitialiseEnvironment(app, syncPeriod);
+
+        return Results.Ok();
+    }
+
+    private static async Task<IResult> StartAsb([FromServices] ICompositeMessageBus messageBus, [FromServices] IOptions<ConsumerOptions> options)
+    {
+        if (options.Value.EnableAsbConsumers && messageBus is ICompositeMessageBus compositeMessageBus)
+        {
+            var asbMessageBus = compositeMessageBus.GetChildBus("ASB");
+            if (!asbMessageBus.IsStarted)
+            {
+                await asbMessageBus.Start();
+            }
+        }
+
+        return Results.Ok();
+    }
+
+
+    private static async Task<IResult> StopAsb([FromServices] IMasterMessageBus messageBus, [FromServices] IOptions<ConsumerOptions> options)
+    {
+        if (options.Value.EnableAsbConsumers && messageBus is ICompositeMessageBus compositeMessageBus)
+        {
+            var asbMessageBus = compositeMessageBus.GetChildBus("ASB");
+            if (asbMessageBus.IsStarted)
+            {
+                await asbMessageBus.Stop();
+            }
+        }
 
         return Results.Ok();
     }
