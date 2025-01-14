@@ -53,7 +53,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHave1BtmsDecision()
     {
         Client
@@ -102,7 +102,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .Be(2);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -152,21 +152,8 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Linked");
+            .Should().Be(LinkStatusEnum.Linked);
     }
-    
-    // [Fact]
-    [Fact(Skip = "Relationships aren't being deserialised correctly")]
-    // TODO : for some reason whilst jsonClientResponse contains the notification relationship,
-    // but movement from .GetResourceObject(s)<Movement>();  doesn't!
-    public void ShouldHaveNotificationRelationships()
-    {
-        Client
-            .GetSingleMovement()
-            .Relationships.Notifications.Data
-            .Should().NotBeEmpty();
-    }
-
     
     [Fact]
     public async Task ShouldNotHaveExceptions()

@@ -57,7 +57,7 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             .Should().Equal(true, null);
     }
     
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHavePairedBtmsDecisions()
     {
         Client

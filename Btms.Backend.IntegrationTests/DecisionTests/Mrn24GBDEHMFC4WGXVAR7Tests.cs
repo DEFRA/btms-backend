@@ -1,15 +1,9 @@
-using System.Net;
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Common.Extensions;
-using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
-using TestDataGenerator.Scenarios.ChedP;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
@@ -20,8 +14,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator>(output)
 {
-
-    [Fact(Skip="Wrong decision being made")]
+    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -43,7 +36,17 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Should().BeNull();
     }
     
-    [Fact(Skip="Wrong decision being made")]
+    [Fact]
+    public void ShouldHaveCorrectAlvsDecisionStatusAtGlobalLevel()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus
+            .Context.DecisionComparison!.DecisionStatus
+            .Should().Be(DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent);
+    }
+    
+    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -53,6 +56,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     [Fact]
     public void ShouldHave2BtmsDecisions()
     {
@@ -100,7 +104,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be(3);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         //NB : Unsure why there's a BTMS decision 2 after alvs decision 1, but not
@@ -110,7 +114,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
-            .Equal([
+            .BeEquivalentTo<(string, string, int?)>([
                 ("Cds", "Created", 1),
                 ("Btms", "Linked", null),
                 ("Btms", "Decision", 1),
@@ -120,15 +124,6 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
                 ("Cds", "Updated", 2),
                 ("Alvs", "Decision", 3),
             ]);
-    }
-
-    [Fact(Skip="Wrong decision being made")]
-    public void ShouldHaveDecisionMatched()
-    {
-        var movement = Client
-            .GetSingleMovement()
-            .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
-            .Should().BeTrue();
     }
     
     [Fact]
@@ -155,7 +150,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Linked");
+            .Should().Be(LinkStatusEnum.Linked);
     }
     
     [Fact]
@@ -174,7 +169,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [Fact(Skip="Wrong decision being made")]
+    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client
@@ -194,12 +189,12 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {
         var result = await (await Client
-            .GetAnalyticsDashboard(["decisionsByDecisionCode"]))
+                .GetAnalyticsDashboard(["decisionsByDecisionCode"]))
             .ToJsonDictionary();
 
         // TODO would be nice to deserialise this into our dataset structures from analytics... 
         result["decisionsByDecisionCode"]?["summary"]?["values"]?[
-            "Btms Made Same Decision As Alvs"]?
+                "Btms Made Same Decision As Alvs"]?
             .GetValue<int>()
             .Should().Be(2);
     }

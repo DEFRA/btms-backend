@@ -1,11 +1,36 @@
 using System.Text.RegularExpressions;
 using Btms.BlobService;
+using Btms.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TestDataGenerator.Extensions;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
-public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger) : ScenarioGenerator
+public class Mrn24GBDEEA43OY1CQAR7ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEEA43OY1CQAR7");
+
+public class Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEHMFC4WGXVAR7");
+
+public class Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator> logger) : SpecificFilesScenarioGenerator(
+    sp, logger, "Mrn-24GBDDJER3ZFRMZAR9");
+
+public class Mrn24GBDE3CF94H96TAR0ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDE3CF94H96TAR0ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE3CF94H96TAR0");
+
+
+public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
+public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
     
@@ -38,6 +63,28 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         }
 
         return list;
+    }
+    
+    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
+    {
+        if (!sampleFolder.HasValue())
+        {
+            throw new InvalidOperationException(
+                "Either need to specify the scenarioPath in the constructor, or ovrride the generate function.");
+        }
+        var builders =  GetBuilders(sampleFolder)
+            .GetAwaiter().GetResult();
+        
+        logger.LogInformation("Created {builders} Builders", 
+            builders.Count);
+
+        var messages = builders
+            .Select(b => b.builder)
+            .ToArray()
+            .BuildAll()
+            .ToArray();
+        
+        return new GeneratorResult(messages);
     }
     
 }

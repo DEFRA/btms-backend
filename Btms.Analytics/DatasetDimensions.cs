@@ -54,6 +54,7 @@ public class StringBucketDimensionResult : IDimensionResult
 }
 
 public class AuditHistory(AuditEntry auditEntry, string resourceType, string resourceApiPrefix, string resourceId)
+    : IDimensionResult 
 {
     public AuditEntry AuditEntry { get; set; } = auditEntry;
     public string ResourceType { get; set; } = resourceType;
@@ -67,11 +68,11 @@ public class DatetimeSeries(string name)
     public List<ByDateTimeResult> Periods { get; set; } = [];
 }
 
-public class Series
+public class Series<TDimensionResult>
 {
     public required string Name { get; set; }
     public required string Dimension { get; set; }
-    public required List<IDimensionResult> Results { get; set; }
+    public required List<TDimensionResult> Results { get; set; }
 }
 
 /// <summary>
@@ -82,8 +83,17 @@ public class DimensionResultTypeMappingConverter<TType> : JsonConverter<TType> w
 {
     [return: MaybeNull]
     public override TType Read(
-        ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        throw new NotImplementedException();
+        ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var newOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = options.PropertyNamingPolicy
+        };
+        
+        TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
+        
+        return result;
+    }
 
     public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
     {

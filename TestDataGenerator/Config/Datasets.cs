@@ -15,6 +15,7 @@ public class Dataset
 public class Datasets(IHost app)
 {
     public const string FunctionalAnalyticsDatasetName = "Functional-Analytics";
+    public const string FunctionalAnalyticsDecisionsDatasetName = "Functional-Analytics-Decisions";
     
     public static Dataset[] GetDatasets(IHost app)
     {
@@ -29,7 +30,8 @@ public class Datasets(IHost app)
             ds.LoadTest90Dx1,
             ds.LoadTestCondensed,
             ds.LoadTest90Dx10k,
-            ds.FunctionalAnalytics
+            ds.FunctionalAnalytics,
+            ds.FunctionalAnalyticsDecisions
         ];
     }
 
@@ -44,16 +46,28 @@ public class Datasets(IHost app)
             
             // Ensure we have some data scenarios around 24/48 hour tests
             
-            app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 2),
-            app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0),
+            app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(2, 2, arrivalDateRange: 0),
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(2, 2, arrivalDateRange: 2),
+            app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(2, 2, arrivalDateRange: 0),
             
             // Create some more variable data over the rest of time
 
-            app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 7, arrivalDateRange: 10),
-            app.Services.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(5, 3, arrivalDateRange: 10),
-            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 3, arrivalDateRange: 10),
-            app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10)
+            app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(2, 2, arrivalDateRange: 10),
+            app.Services.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(2, 2, arrivalDateRange: 10),
+            app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 2, arrivalDateRange: 10),
+            app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 2, arrivalDateRange: 10)
+        }
+    };
+    
+    public readonly Dataset FunctionalAnalyticsDecisions = new()
+    {
+        Name = FunctionalAnalyticsDecisionsDatasetName,
+        Description = "Functional Testing Analytics Dataset for testing decision analytics",
+        RootPath = "FUNCTIONAL-ANALYTICS-DECISIONS",
+        Scenarios = new[]
+        {   
+            app.Services.CreateScenarioConfig<CrNoMatchSingleItemWithDecisionScenarioGenerator>(2, 2, arrivalDateRange: 0),
+            app.Services.CreateScenarioConfig<CrNoMatchNoDecisionScenarioGenerator>(2, 2, arrivalDateRange: 2),
         }
     };
 
