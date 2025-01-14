@@ -1,15 +1,9 @@
-using System.Net;
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Common.Extensions;
-using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
-using TestDataGenerator.Scenarios.ChedP;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
@@ -17,6 +11,8 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
+// [Trait("Category", "Testing12")]
+// [Category("Testing12")]
 public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator>(output)
 {
@@ -110,7 +106,11 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be(3);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234")]
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact, Category("Testing12")]
+    // [FailingFactTraitAttribute(name:"Category", value:"Testing12")]
+    // [FailingFact(jiraTicket:"CDMS-234", name="Category", value:"Testing12")]
+    // [Trait("Category", "CDMS-234")] 
     public void ShouldHaveCorrectAuditTrail()
     {
         //NB : Unsure why there's a BTMS decision 2 after alvs decision 1, but not
@@ -195,12 +195,12 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {
         var result = await (await Client
-            .GetAnalyticsDashboard(["decisionsByDecisionCode"]))
+                .GetAnalyticsDashboard(["decisionsByDecisionCode"]))
             .ToJsonDictionary();
 
         // TODO would be nice to deserialise this into our dataset structures from analytics... 
         result["decisionsByDecisionCode"]?["summary"]?["values"]?[
-            "Btms Made Same Decision As Alvs"]?
+                "Btms Made Same Decision As Alvs"]?
             .GetValue<int>()
             .Should().Be(2);
     }
