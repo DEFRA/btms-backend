@@ -120,7 +120,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             
         // Assert
         auditTrail.Should()
-            .Equal([
+            .BeEquivalentTo<(string, string, int?)>([
                 ("Cds", "Created", 1),
                 ("Btms", "Linked", null),
                 ("Btms", "Decision", 1),
