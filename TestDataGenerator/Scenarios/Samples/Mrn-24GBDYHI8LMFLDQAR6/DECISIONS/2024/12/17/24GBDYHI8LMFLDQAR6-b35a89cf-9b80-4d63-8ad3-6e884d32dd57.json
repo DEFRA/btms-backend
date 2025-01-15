@@ -1,0 +1,29 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "ALVS",
+    "destinationSystem": "CDS",
+    "correlationId": "000",
+    "serviceCallTimestamp": 1734450676167
+  },
+  "header": {
+    "entryReference": "24GBDYHI8LMFLDQAR6",
+    "entryVersionNumber": 1,
+    "decisionNumber": 1
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H220",
+          "decisionCode": "X00",
+          "decisionValidUntil": null,
+          "decisionReasons": [
+            " A Customs Declaration with a GMS product has been selected for HMI inspection. If using PEACH then raise a GMS application. If using IPAFFS then create a CHEDPP and amend your licence to reference it. If a CHEDPP exists amend your licence to reference it. Failure to do so will delay your Customs release. The selected item was declared on a Customs Declaration with a Declaration UCR of 4GB751812341004-4067009564 and no Part Number, with a weight of 15 KGs and is TARIC Code 1211908690 GRIFFONIA S"
+          ]
+        }
+      ]
+    }
+  ]
+}
