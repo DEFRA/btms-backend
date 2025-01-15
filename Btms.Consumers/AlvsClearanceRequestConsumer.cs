@@ -37,7 +37,7 @@ namespace Btms.Consumers;
                     preProcessingResult.ChangeSet);
                 var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
 
-                if (linkResult.Outcome == LinkOutcome.Linked)
+                if (linkResult.Outcome != LinkOutcome.NotLinked)
                 {
                     Context.Linked();
                 }

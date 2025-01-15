@@ -9,6 +9,6 @@ public static class MovementExtensions
     {
         return movement
             .AuditEntries
-            .Single(a => a is { CreatedBy: "Btms", Status: "Decision" });
+            .Single(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" });
     }
 }

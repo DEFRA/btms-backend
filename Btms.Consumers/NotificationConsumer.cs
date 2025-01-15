@@ -24,21 +24,26 @@ namespace Btms.Consumers;
 
             if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
             {
+                LogStatus("Skipped", message);
                 Context.Skipped();
             }
             else
             {
+                LogStatus("PreProcessed", message);
                 Context.PreProcessed();
             }
 
             if (preProcessingResult.IsCreatedOrChanged())
             {
+                LogStatus("IsCreatedOrChanged=true", message);
+                
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
                 var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
 
-                if (linkResult.Outcome == LinkOutcome.Linked)
+                if (linkResult.Outcome != LinkOutcome.NotLinked)
                 {
+                    LogStatus("Linked", message);
                     Context.Linked();
                 }
 
@@ -47,8 +52,17 @@ namespace Btms.Consumers;
 
                 await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
             }
+            else
+            {
+                LogStatus("IsCreatedOrChanged=false", message);
+            }
 
         }
+    }
+
+    private void LogStatus(string state, ImportNotification message)
+    {
+        logger.LogInformation("{state} : {id}, {version}, {lastUpdated}", state, message.ReferenceNumber, message.Version, message.LastUpdated);
     }
 
     public IConsumerContext Context { get; set; } = null!;

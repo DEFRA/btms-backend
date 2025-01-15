@@ -1,15 +1,10 @@
-using System.Net;
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Common.Extensions;
-using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
+using Btms.Model.Auditing;
 using FluentAssertions;
-using TestDataGenerator.Scenarios.ChedP;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
@@ -52,14 +47,15 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    // [IncorrectDecisionFact(Skip = "This should be making multiple decisions at the momennt given the complexity. Currently only making one")]
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
-    public void ShouldHaveTbcBtmsDecisions()
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
+    public void ShouldHave2BtmsDecisions()
     {
         //
         var actual = Client
             .GetSingleMovement()
             .Decisions;
+
         actual.Count
             .Should().Be(2);
     }
@@ -79,7 +75,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .GetSingleMovement();
         
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
         
         decisionWithLinkAndContext.Context!.ImportNotifications
@@ -124,20 +120,20 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
 
         actual.Should()
             .Equal([
-                ("Cds", "Created", 1),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Linked", null),
-                ("Btms", "Decision", 1),
-                ("Cds", "Updated", 2),
-                ("Btms", "Decision", 2),
-                ("Alvs", "Decision", 1)
+                (CreatedBySystem.Cds, "Created", 1),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Decision", 1),
+                (CreatedBySystem.Cds, "Updated", 2),
+                (CreatedBySystem.Btms, "Decision", 2),
+                (CreatedBySystem.Alvs, "Decision", 1)
             ]);
     }
 

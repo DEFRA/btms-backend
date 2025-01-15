@@ -1,9 +1,6 @@
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Model;
-using Btms.Types.Alvs;
+using Btms.Model.Auditing;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
-using TestDataGenerator.Scenarios;
 using TestDataGenerator.Scenarios.ChedP;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
@@ -44,12 +41,12 @@ public class ChedPUpdatedNotificationTests
             .Select(a => (a.CreatedBy, a.Status, a.Version, a.Context?.ImportNotifications?.FirstOrDefault()?.Version))
             .Should()
             .Equal([
-                ("Cds", "Created", 1, null),
-                ("Btms", "Decision", 1, null),
-                ("Btms", "Linked", null, null), //TODO : can we get context in here including the notification info
-                ("Btms", "Decision", 2, 1),
-                ("Btms", "Decision", 3, 2),
-                ("Alvs", "Decision", 1, null), //TODO : we should be able to use the IBM provided file to get some context
+                (CreatedBySystem.Cds, "Created", 1, null),
+                (CreatedBySystem.Btms, "Decision", 1, null),
+                (CreatedBySystem.Btms, "Linked", null, null), //TODO : can we get context in here including the notification info
+                (CreatedBySystem.Btms, "Decision", 2, 1),
+                (CreatedBySystem.Btms, "Decision", 3, 2),
+                (CreatedBySystem.Alvs, "Decision", 1, null), //TODO : we should be able to use the IBM provided file to get some context
 
             ]);
     }
@@ -107,7 +104,7 @@ public class ChedPUpdatedNotificationTests
             .GetSingleMovement();
 
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
 
         decisionWithLinkAndContext.Context!.ImportNotifications

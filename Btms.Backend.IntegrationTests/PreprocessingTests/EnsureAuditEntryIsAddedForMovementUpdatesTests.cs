@@ -1,8 +1,5 @@
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Model;
-using Btms.Types.Alvs;
 using FluentAssertions;
-using TestDataGenerator.Scenarios.ChedP;
+using Btms.Model.Auditing;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
@@ -37,7 +34,7 @@ public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper ou
             .GetSingleMovement();
         
         movement.AuditEntries
-            .Count(a => a is { CreatedBy: "Cds", Status: "Updated" })
+            .Count(a => a is { CreatedBy: CreatedBySystem.Cds, Status: "Updated" })
             .Should().Be(1);
     }
 }

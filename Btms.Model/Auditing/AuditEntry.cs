@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Model.Extensions;
@@ -8,17 +9,27 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Btms.Model.Auditing;
 
+[JsonConverter(typeof(JsonStringEnumConverterEx<CreatedBySystem>))]
+public enum CreatedBySystem
+{
+    Btms,
+    Ipaffs,
+    Alvs,
+    Cds,
+    Gvms
+}
 public class AuditEntry
 {
-    public const string CreatedBySystem = "Btms";
-    public const string CreatedByIpaffs = "Ipaffs";
-    public const string CreatedByAlvs = "Alvs";
-    public const string CreatedByCds = "Cds";
-    public const string CreatedByGvms = "Gvms";
+    // public const string CreatedBySystem = "Btms";
+    // public const string CreatedByIpaffs = "Ipaffs";
+    // public const string CreatedByAlvs = "Alvs";
+    // public const string CreatedByCds = "Cds";
+    // public const string CreatedByGvms = "Gvms";
+    
     public string Id { get; set; } = default!;
     public int? Version { get; set; }
 
-    public string CreatedBy { get; set; } = default!;
+    public CreatedBySystem CreatedBy { get; set; } = default!;
 
     public DateTime? CreatedSource { get; set; }
 
@@ -49,7 +60,7 @@ public class AuditEntry
 
 
     public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated,
-        string lastUpdatedBy, string status, string source)
+        CreatedBySystem lastUpdatedBy, string status, CreatedBySystem source)
     {
         var node1 = JsonNode.Parse(previous.ToJsonString());
         var node2 = JsonNode.Parse(current.ToJsonString());
@@ -57,12 +68,12 @@ public class AuditEntry
         return CreateInternal(node1!, node2!, id, version, lastUpdated, status, source);
     }
 
-    public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated, string source)
+    public static AuditEntry CreateUpdated<T>(T previous, T current, string id, int version, DateTime? lastUpdated, CreatedBySystem source)
     {
-        return Create(previous, current, id, version, lastUpdated, CreatedBySystem, "Updated", source);
+        return Create(previous, current, id, version, lastUpdated, CreatedBySystem.Btms, "Updated", source);
     }
 
-    public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, string source)
+    public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, CreatedBySystem source)
     {
         var auditEntry = new AuditEntry
         {
@@ -82,7 +93,7 @@ public class AuditEntry
         return auditEntry;
     }
 
-    public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated, string source)
+    public static AuditEntry CreateCreatedEntry<T>(T current, string id, int version, DateTime? lastUpdated, CreatedBySystem source)
     {
         return new AuditEntry
         {
@@ -95,7 +106,7 @@ public class AuditEntry
         };
     }
 
-    public static AuditEntry CreateSkippedVersion(string id, int version, DateTime? lastUpdated, string source)
+    public static AuditEntry CreateSkippedVersion(string id, int version, DateTime? lastUpdated, CreatedBySystem source)
     {
         return new AuditEntry
         {
@@ -115,7 +126,7 @@ public class AuditEntry
         {
             Id = id,
             CreatedSource = t,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = CreatedBySystem.Btms,
             CreatedLocal = t,
             Status = "Linked"
         };
@@ -128,7 +139,7 @@ public class AuditEntry
             Id = id,
             Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = CreatedBySystem.Btms,
             CreatedLocal = DateTime.UtcNow,
             Status = "Unlinked"
         };
@@ -141,7 +152,7 @@ public class AuditEntry
         {
             Id = id,
             CreatedSource = t,
-            CreatedBy = CreatedBySystem,
+            CreatedBy = CreatedBySystem.Btms,
             CreatedLocal = t,
             Status = "Matched"
         };
@@ -155,7 +166,7 @@ public class AuditEntry
             Id = id,
             Version = version,
             CreatedSource = lastUpdated,
-            CreatedBy = isAlvs ? CreatedByAlvs : CreatedBySystem,
+            CreatedBy = isAlvs ? CreatedBySystem.Alvs : CreatedBySystem.Btms,
             CreatedLocal = DateTime.UtcNow,
             Status = "Decision",
             Context = context
@@ -163,7 +174,7 @@ public class AuditEntry
     }
 
     private static AuditEntry CreateInternal(JsonNode previous, JsonNode current, string id, int version,
-        DateTime? lastUpdated, string status, string source)
+        DateTime? lastUpdated, string status, CreatedBySystem source)
     {
         var diff = previous.CreatePatch(current);
 

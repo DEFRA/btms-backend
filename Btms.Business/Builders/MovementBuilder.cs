@@ -155,7 +155,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         // matchReferences = [];
     }
 
-    public AuditEntry CreateAuditEntry(string messageId, string source)
+    public AuditEntry CreateAuditEntry(string messageId, CreatedBySystem source)
     {
         GuardNullMovement();
         
@@ -169,7 +169,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         return auditEntry;
     }
     
-    public AuditEntry UpdateAuditEntry(string messageId, string source, ChangeSet changeSet)
+    public AuditEntry UpdateAuditEntry(string messageId, CreatedBySystem source, ChangeSet changeSet)
     {
         GuardNullMovement();
         

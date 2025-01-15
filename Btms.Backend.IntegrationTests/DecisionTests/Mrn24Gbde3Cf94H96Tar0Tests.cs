@@ -2,6 +2,7 @@ using System.Net;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Common.Extensions;
 using Btms.Model;
+using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -76,7 +77,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .GetSingleMovement();
         
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
         
         decisionWithLinkAndContext.Context!.ImportNotifications
@@ -111,11 +112,11 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
             .Equal([
-                ("Cds", "Created", 1),
-                ("Btms", "Linked", null),
-                ("Btms", "Decision", 1),
-                ("Alvs", "Decision", 1),
-                ("Alvs", "Decision", 2)
+                (CreatedBySystem.Cds, "Created", 1),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Decision", 1),
+                (CreatedBySystem.Alvs, "Decision", 1),
+                (CreatedBySystem.Alvs, "Decision", 2)
             ]);
     }
 

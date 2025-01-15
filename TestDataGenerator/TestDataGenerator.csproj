@@ -670,6 +670,14 @@
     <Content Include="Scenarios\Samples\Mrn-24GBDDJER3ZFRMZAR9\ALVS\2024\12\03\24GBDDJER3ZFRMZAR9-21d71687-8fb0-4825-926c-2a382d4df02a.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDYHI8LMFLDQAR6\ALVS\2024\12\17\24GBDYHI8LMFLDQAR6-67256aea-170d-4a1e-b057-51ed9c05a63d.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDYHI8LMFLDQAR6\ALVS\2024\12\17\24GBDYHI8LMFLDQAR6-67256aea-170d-4a1e-b057-51ed9c05a63d.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Scenarios\Samples\Mrn-24GBDYHI8LMFLDQAR6\DECISIONS\2024\12\17\24GBDYHI8LMFLDQAR6-b35a89cf-9b80-4d63-8ad3-6e884d32dd57.json" />
+    <Content Include="Scenarios\Samples\Mrn-24GBDYHI8LMFLDQAR6\DECISIONS\2024\12\17\24GBDYHI8LMFLDQAR6-b35a89cf-9b80-4d63-8ad3-6e884d32dd57.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
