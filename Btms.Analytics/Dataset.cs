@@ -16,9 +16,10 @@ public class SummarisedDataset<TSummary, TResult> : IDataset
     
 }
 
-public class MultiSeriesDataset : IDataset
+public class MultiSeriesDataset<TDimensionResult> : IDataset
+    where TDimensionResult : IDimensionResult
 {
-    public List<Series> Series { get; set; } = [];
+    public List<Series<TDimensionResult>> Series { get; set; } = [];
 }
 
 public class SingleSeriesDataset : IDataset, IDimensionResult
@@ -32,6 +33,7 @@ public class TabularDataset<TColumn> : IDataset where TColumn : IDimensionResult
 }
 
 public class EntityDataset<T>(IEnumerable<T> items) : IDataset
+    where T : IDimensionResult
 {
     public IEnumerable<T> Items { get; set; } = items;
 }
@@ -39,6 +41,15 @@ public class EntityDataset<T>(IEnumerable<T> items) : IDataset
 public class MultiSeriesDatetimeDataset : IDataset
 {
     public List<DatetimeSeries> Series { get; set; } = [];
+}
+
+public class ScenarioItem : IDimensionResult
+{
+    [JsonInclude]
+    public required string Scenario;
+    
+    [JsonInclude]
+    public required string[] Keys;
 }
 
 /// <summary>
@@ -49,8 +60,26 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
 {
     [return: MaybeNull]
     public override TType Read(
-        ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        throw new NotImplementedException();
+        ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var converters = options
+            .Converters
+            .Where(c => c is not DatasetResultTypeMappingConverter<TType>);
+
+        var newOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = options.PropertyNamingPolicy
+        };
+        
+        foreach (var jsonConverter in converters)
+        {
+            newOptions.Converters.Add(jsonConverter);
+        }
+        
+        TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
+
+        return result;   
+    }
 
     public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
     {
@@ -58,9 +87,9 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         {
             JsonSerializer.Serialize(writer, value as MultiSeriesDatetimeDataset, options);
         }
-        else if (value is MultiSeriesDataset)
+        else if (value is MultiSeriesDataset<ByNumericDimensionResult>)
         {
-            JsonSerializer.Serialize(writer, value as MultiSeriesDataset, options);
+            JsonSerializer.Serialize(writer, value as MultiSeriesDataset<ByNumericDimensionResult>, options);
         }
         else if (value is SingleSeriesDataset)
         {

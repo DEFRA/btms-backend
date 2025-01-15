@@ -13,7 +13,22 @@ namespace Btms.Consumers.Extensions;
 /// </summary>
 public static class MessageRoutingExtensions
 {
-    public static async Task PushToConsumers(this IServiceProvider sp, ILogger logger, IEnumerable<object> messages, int sleepMs = 1000)
+    public static async Task PushToConsumers(this IServiceProvider sp, 
+        ILogger logger, IEnumerable<object> messages,
+        int sleepMs = 1000, bool synchronous = false)
+    {
+        var output = new List<object>();
+        await PushMessagesToConsumers(sp, logger, messages
+                .Where(m => m is not Decision),
+            sleepMs, synchronous);
+
+        await PushMessagesToConsumers(sp, logger, messages
+                .Where(m => m is Decision),
+            sleepMs, synchronous);
+    }
+    public static async Task PushMessagesToConsumers(this IServiceProvider sp, 
+        ILogger logger, IEnumerable<object> messages, 
+        int sleepMs = 1000, bool synchronous = false)
     {
         var output = new List<object>();
         

@@ -61,6 +61,7 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
             r.Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
         });
         
+        // result.shoul
         result.Sum(r => r.Periods.Sum(p => p.Value))
             .Should().BeGreaterThan(0);
     }

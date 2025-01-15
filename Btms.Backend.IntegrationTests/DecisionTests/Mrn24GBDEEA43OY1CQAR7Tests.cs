@@ -21,7 +21,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
 {
 
-    [Fact(Skip = "Has Ched PP Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -43,7 +43,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeNull();
     }
     
-    [Fact(Skip = "Has Ched PP Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -53,6 +53,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     [Fact]
     public void ShouldHave1BtmsDecision()
     {
@@ -101,6 +102,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
     }
 
     [Fact]
+    // [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -118,7 +120,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             ]);
     }
 
-    [Fact(Skip = "Has Chedpp Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -151,21 +153,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be("Linked");
+            .Should().Be(LinkStatusEnum.Linked);
     }
-    
-    // [Fact]
-    [Fact(Skip = "Relationships aren't being deserialised correctly")]
-    // TODO : for some reason whilst jsonClientResponse contains the notification relationship,
-    // but movement from .GetResourceObject(s)<Movement>();  doesn't!
-    public void ShouldHaveNotificationRelationships()
-    {
-        Client
-            .GetSingleMovement()
-            .Relationships.Notifications.Data
-            .Should().NotBeEmpty();
-    }
-
     
     [Fact]
     public async Task ShouldNotHaveExceptions()
@@ -183,7 +172,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [Fact(Skip = "Has Chedpp Checks")]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client
@@ -209,12 +198,13 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {
         var result = await (await Client
-            .GetAnalyticsDashboard(["decisionsByDecisionCode"]))
+            .GetAnalyticsDashboard(["decisionsByDecisionCode"],
+                dateFrom:DateTime.MinValue, dateTo:DateTime.MaxValue))
             .ToJsonDictionary();
 
         // TODO would be nice to deserialise this into our dataset structures from analytics... 
-        result["decisionsByDecisionCode"]?["summary"]?["values"]?[
-            "Btms Made Same Decision As Alvs"]?
+        result["decisionsByDecisionCode"]!["summary"]!["values"]![
+            "Has Ched PP Checks"]!
             .GetValue<int>()
             .Should().Be(2);
     }

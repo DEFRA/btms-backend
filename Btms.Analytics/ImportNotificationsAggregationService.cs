@@ -11,7 +11,8 @@ using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
-public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger) : IImportNotificationsAggregationService
+public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger) 
+    : IImportNotificationsAggregationService
 {
     public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
@@ -54,8 +55,52 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
         });
     }
+    
+    public EntityDataset<ScenarioItem> Scenarios(DateTime? from = null, DateTime? to = null)
+    {
+        var commodityNotifications = context
+            .Notifications
+            .Where(n => (
+                            from == null || n.CreatedSource >= from) &&
+                        (to == null || n.CreatedSource < to) &&
+                        n.Relationships.Movements.Data.Any()
+            )
+            .SelectMany(n => n
+                .Commodities
+                .Select(c => new
+                {
+                    Ched = n.Id!,
+                    Mrns = n.Relationships.Movements.Data.Select(m => m.Id),
+                    CommodityDescription = c.CommodityDescription!,
+                    CommodityCount = n.Commodities.Count(),
+                    MovementCount = n.Relationships.Movements.Data.Count,
+                    // CommodityDescriptionLCase = c.CommodityDescription!.ToLower(), 
+                    Detail = new { Notification = n, Commodity = c }
+                }));
+        
+        var sweetPeppers = commodityNotifications
+            .Where(c =>
+                c.Detail.Commodity.CommodityId == "07096010" &&
+                c.MovementCount > 3
+                // c.CommodityDescription == "Sweet peppers"
+                // c.CommodityDescriptionLCase.Contains("sweet") && 
+                // c.CommodityDescriptionLCase.Contains("peppers") && 
+                // !c.CommodityDescriptionLCase.Contains("other than sweet")
+            )
+            .Take(5)
+            .Execute(logger);
 
-    public Task<MultiSeriesDataset> ByCommodityCount(DateTime from, DateTime to)
+        var data = sweetPeppers
+            .Select(s => new ScenarioItem()
+            {
+                Scenario = "Sweet Peppers", Keys = s.Mrns.Concat([s.Ched]).ToArray()!
+            })
+            .ToList();
+
+        return new EntityDataset<ScenarioItem>(data);
+    }
+
+    public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByCommodityCount(DateTime from, DateTime to)
     {
         var query = context
             .Notifications
@@ -97,10 +142,10 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                 g => g.NotificationCount);
         
         
-        return Task.FromResult(new MultiSeriesDataset()
+        return Task.FromResult(new MultiSeriesDataset<ByNumericDimensionResult>()
         {
             Series = AnalyticsHelpers.GetImportNotificationSegments()
-                .Select(title => new Series()
+                .Select(title => new Series<ByNumericDimensionResult>()
                 {
                     Name = title,
                     Dimension = "ItemCount",
@@ -109,7 +154,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
                         {
                             Dimension = i,
                             Value = asDictionary.GetValueOrDefault(new { Title=title, CommodityCount = i })
-                        }).ToList<IDimensionResult>()
+                        }).ToList()
                 })
                 .ToList()
         });
