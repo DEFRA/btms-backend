@@ -57,10 +57,11 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     public void ShouldHaveTbcBtmsDecisions()
     {
         //
-        Client
+        var actual = Client
             .GetSingleMovement()
-            .Decisions.Count
-            .Should().Be(1);
+            .Decisions;
+        actual.Count
+            .Should().Be(2);
     }
 
     // [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
@@ -116,11 +117,12 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveCorrectAuditTrail()
     {
-        Client
+        var actual = Client
             .GetSingleMovement()
             .AuditEntries
-            .Select(a => (a.CreatedBy, a.Status, a.Version))
-            .Should()
+            .Select(a => (a.CreatedBy, a.Status, a.Version));
+
+        actual.Should()
             .Equal([
                 ("Cds", "Created", 1),
                 ("Btms", "Linked", null),
@@ -134,8 +136,8 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
                 ("Btms", "Linked", null),
                 ("Btms", "Decision", 1),
                 ("Cds", "Updated", 2),
+                ("Btms", "Decision", 2),
                 ("Alvs", "Decision", 1)
-                
             ]);
     }
 
