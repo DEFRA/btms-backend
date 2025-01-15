@@ -49,7 +49,36 @@ namespace Btms.Consumers.Extensions
             {
                 if (consumerOpts.EnableAsbConsumers)
                 {
-                    mbb.AddChildBus("ASB", cbb =>
+                    mbb.AddChildBus("ASB_Notification", cbb =>
+                    {
+                        cbb.WithProviderServiceBus(cfg =>
+                        {
+                            cfg.TopologyProvisioning = new ServiceBusTopologySettings { Enabled = false };
+
+                            cfg.ClientFactory = (sp, settings) =>
+                            {
+                                var clientOptions = sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
+                                    ? new ServiceBusClientOptions()
+                                    : new ServiceBusClientOptions
+                                    {
+                                        WebProxy = sp.GetRequiredService<IWebProxy>(),
+                                        TransportType = ServiceBusTransportType.AmqpWebSockets,
+                                    };
+                                
+                                return new ServiceBusClient(settings.ConnectionString, clientOptions);
+                            };
+                            cfg.ConnectionString = serviceBusOptions?.NotificationSubscription.ConnectionString;
+                        });
+                        cbb.AddJsonSerializer();
+
+                        cbb.Consume<ImportNotification>(x => x
+                            .Topic(serviceBusOptions?.NotificationSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
+                            .WithConsumer<NotificationConsumer>()
+                            .Instances(consumerOpts.AsbNotifications));
+                    });
+
+                    mbb.AddChildBus("ASB_Alvs", cbb =>
                     {
                         cbb.WithProviderServiceBus(cfg =>
                         {
@@ -67,10 +96,10 @@ namespace Btms.Consumers.Extensions
                                         WebProxy = sp.GetRequiredService<IWebProxy>(),
                                         TransportType = ServiceBusTransportType.AmqpWebSockets,
                                     };
-                                
+
                                 return new ServiceBusClient(settings.ConnectionString, clientOptions);
                             };
-                            cfg.ConnectionString = serviceBusOptions?.ConnectionString;
+                            cfg.ConnectionString = serviceBusOptions?.AlvsSubscription.ConnectionString;
                         });
                         cbb.AddJsonSerializer();
 
@@ -79,12 +108,6 @@ namespace Btms.Consumers.Extensions
                             .SubscriptionName(serviceBusOptions?.AlvsSubscription.Subscription)
                             .WithConsumer<AlvsAsbConsumer>()
                             .Instances(consumerOpts.AsbAlvsMessages));
-
-                        cbb.Consume<ImportNotification>(x => x
-                            .Topic(serviceBusOptions?.NotificationSubscription.Topic)
-                            .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
-                            .WithConsumer<NotificationConsumer>()
-                            .Instances(consumerOpts.AsbNotifications));
                     });
                 }
 
