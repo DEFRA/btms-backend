@@ -1,12 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Btms.Model.Extensions;
 
 namespace Btms.Model;
 
 public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum : struct, System.Enum
 {
-
     private readonly Dictionary<TEnum, string> _enumToString = new();
     private readonly Dictionary<string, TEnum> _stringToEnum = new();
     private readonly Dictionary<int, TEnum> _numberToEnum = new();
@@ -28,8 +28,14 @@ public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum
             if (attr?.Value != null)
             {
                 _enumToString.Add(value, attr.Value);
-                _stringToEnum.Add(attr.Value, value);
                 _numberToEnum.Add(num, value);
+
+                if (attr.Value != value.ToString())
+                {
+                    //Don't attempt to add the same value again if the EnumMember Value is the
+                    //same as the enum value
+                    _stringToEnum.Add(attr.Value, value);
+                }
             }
             else
             {

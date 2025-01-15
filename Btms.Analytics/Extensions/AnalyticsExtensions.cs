@@ -256,7 +256,7 @@ public static class AnalyticsExtensions
         return (IDataset)ms.Result;
     }
 
-    public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDataset> ms)
+    public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDataset<ByNumericDimensionResult>> ms)
     {
         await ms;
         return (IDataset)ms.Result;

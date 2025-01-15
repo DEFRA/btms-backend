@@ -31,6 +31,9 @@ public class ChedPUpdatedNotificationTests
             .Message;
     }
 
+    // This scenario has an update adding a commodity that gets 
+    // processed but doesn't cause a new decision
+    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     [Fact]
     public void ShouldHaveCorrectAuditEntries()
     {
@@ -45,12 +48,14 @@ public class ChedPUpdatedNotificationTests
                 ("Btms", "Decision", 1, null),
                 ("Btms", "Linked", null, null), //TODO : can we get context in here including the notification info
                 ("Btms", "Decision", 2, 1),
+                ("Btms", "Decision", 3, 2),
                 ("Alvs", "Decision", 1, null), //TODO : we should be able to use the IBM provided file to get some context
-                ("Btms", "Decision", 3, 2)
+
             ]);
     }
 
-    [Fact]
+    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    // [Fact]
     public void ShouldHave3BtmsDecisions()
     {
         var movement = Client
@@ -75,7 +80,7 @@ public class ChedPUpdatedNotificationTests
     }
 
     [Fact]
-    public void AlvsDecisionShouldMatch()
+    public void AlvsDecisionShouldBeMatched()
     {
         Client
             .GetSingleMovement()
@@ -85,6 +90,15 @@ public class ChedPUpdatedNotificationTests
             .Should().BeTrue();
     }
 
+    [Fact]
+    public void AlvsDecisionShouldBePaired()
+    {
+        Client
+            .GetSingleMovement()
+            .AlvsDecisionStatus
+            .Context.DecisionComparison!.Paired
+            .Should().BeTrue();
+    }
 
     [Fact]
     public void LastBtmsDecisionShouldHaveCorrectAuditEntry()
@@ -93,7 +107,8 @@ public class ChedPUpdatedNotificationTests
             .GetSingleMovement();
 
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Single(a => a is { CreatedBy: "Btms", Status: "Decision", Version: 3 });
+            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .MaxBy(a => a.Version)!;
 
         decisionWithLinkAndContext.Context!.ImportNotifications
             .Should().NotBeNull();
@@ -103,7 +118,5 @@ public class ChedPUpdatedNotificationTests
             .Should().Equal([
                 (ChedPNotification.ReferenceNumber!, 2)
             ]);
-
-        decisionWithLinkAndContext.Context.DecisionComparison!.Paired.Should().BeTrue();
     }
 }

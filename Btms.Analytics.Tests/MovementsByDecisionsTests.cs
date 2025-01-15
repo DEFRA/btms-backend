@@ -11,21 +11,18 @@ using TestGenerator.IntegrationTesting.Backend;
 namespace Btms.Analytics.Tests;
 
 public class MovementsByDecisionsTests(ITestOutputHelper output)
-    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
+    : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDecisionsDatasetName)
 {
-    
-    [Fact(Skip = "Needs revisiting - needs more assertions, perhaps switch to individual scenario test")]
+    [Fact]
+    // [Fact(Skip = "Needs revisiting - needs more assertions, perhaps switch to individual scenario test")]
     public async Task WhenCalled_ReturnExpectedAggregation()
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
-        var result = (await GetMovementsAggregationService()
-            .ByDecision(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()))
-            .Result;
+        var result = await MovementsAggregationService
+            .ByDecision(DateTime.MinValue, DateTime.MaxValue)!;
 
-        TestOutputHelper.WriteLine("{0} aggregated items found", result.Count);
+        TestOutputHelper.WriteLine("{0} aggregated items found", result!.Result.Count());
         
-        result.Count.Should().BeGreaterThan(1);
-        // result.Select(r => r.Key).Order().Should()
-        //     .Equal("ALVS Linked : H01", "BTMS Linked : C03", "BTMS Linked : X00", "BTMS Not Linked : X00");
+        result.Result.Count.Should().BeGreaterThan(1);
     }
 }
