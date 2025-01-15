@@ -32,7 +32,7 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
                 var subscription = sbOptions.Value.AlvsSubscription;
                 var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
                 {
-                    ConnectionString = sbOptions.Value.ConnectionString,
+                    ConnectionString = sbOptions.Value.AlvsSubscription.ConnectionString,
                     UsePeekMode = true
                 };
                 return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
@@ -49,7 +49,7 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
                 var subscription = sbOptions.Value.NotificationSubscription;
                 var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
                 {
-                    ConnectionString = sbOptions.Value.ConnectionString,
+                    ConnectionString = sbOptions.Value.NotificationSubscription.ConnectionString,
                     UsePeekMode = true
                 };
                 return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
