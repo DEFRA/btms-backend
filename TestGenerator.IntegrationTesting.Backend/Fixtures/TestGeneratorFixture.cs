@@ -42,6 +42,11 @@ public class TestGeneratorFixture
         
         _testGeneratorApp = generatorBuilder.Build();
     }
+
+    // public T GetGeneric(Type scenarioGeneratorType)
+    // {
+    //     
+    // }
     
     public List<GeneratedResult> GenerateTestData<T>() where T : ScenarioGenerator
     {   
