@@ -15,4 +15,4 @@ public record DecisionResult
 
 public record DocumentDecisionResult(string MovementId, int ItemNumber, string DocumentReference, DecisionCode DecisionCode);
 
-public record DecisionFinderResult(DecisionCode DecisionCode);
+public record DecisionFinderResult(DecisionCode DecisionCode, string? DecisionReason = null);
