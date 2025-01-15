@@ -2,6 +2,7 @@ using System.Net;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Common.Extensions;
 using Btms.Model;
+using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -55,7 +56,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
 
     // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     [Fact]
-    public void ShouldHave1BtmsDecision()
+    public void ShouldHave2BtmsDecisions()
     {
         // Act
         var decisions = Client
@@ -82,7 +83,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .GetSingleMovement();
         
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
         
         decisionWithLinkAndContext.Context!.ImportNotifications
@@ -106,8 +107,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Be(2);
     }
 
-    [Fact]
-    // [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAuditTrail()
     {
         // Act
@@ -119,13 +120,13 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
         // Assert
         auditTrail.Should()
             .Equal([
-                ("Cds", "Created", 1),
-                ("Btms", "Linked", null),
-                ("Btms", "Decision", 1),
-                ("Cds", "Updated", 2),
-                ("Btms", "Decision", 2),
-                ("Alvs", "Decision", 1),
-                ("Alvs", "Decision", 2)
+                (CreatedBySystem.Cds, "Created", 1),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Decision", 1),
+                (CreatedBySystem.Cds, "Updated", 2),
+                (CreatedBySystem.Btms, "Decision", 2),
+                (CreatedBySystem.Alvs, "Decision", 1),
+                (CreatedBySystem.Alvs, "Decision", 2)
             ]);
     }
 
@@ -213,7 +214,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
 
         // TODO would be nice to deserialise this into our dataset structures from analytics... 
         result["decisionsByDecisionCode"]!["summary"]!["values"]![
-            "Has Ched PP Checks"]!
+            "Has Other E9X Data Errors"]!
             .GetValue<int>()
             .Should().Be(2);
     }

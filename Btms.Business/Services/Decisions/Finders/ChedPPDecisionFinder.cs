@@ -12,6 +12,6 @@ public class ChedPPDecisionFinder : IDecisionFinder
             return new DecisionFinderResult(code!.Value);
         }
 
-        return new DecisionFinderResult(DecisionCode.X00);
+        return new DecisionFinderResult(DecisionCode.E98);
     }
 }

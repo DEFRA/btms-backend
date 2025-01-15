@@ -392,9 +392,9 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
-        linkResult.Notifications.Count.Should().Be(0);
-        linkResult.Movements.Count.Should().Be(0);
+        linkResult.Outcome.Should().Be(LinkOutcome.LinksExist);
+        linkResult.Notifications.Count.Should().Be(1);
+        linkResult.Movements.Count.Should().Be(1);
     }
 
     [Fact]
@@ -523,9 +523,9 @@ public class LinkingServiceTests
         
         // Assert
         linkResult.Should().NotBeNull();
-        linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
-        linkResult.Notifications.Count.Should().Be(0);
-        linkResult.Movements.Count.Should().Be(0);
+        linkResult.Outcome.Should().Be(LinkOutcome.LinksExist);
+        linkResult.Notifications.Count.Should().Be(1);
+        linkResult.Movements.Count.Should().Be(2);
     }
 
     [Fact]

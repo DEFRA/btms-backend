@@ -50,25 +50,29 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 switch (linkContext)
                 {
                     case MovementLinkContext movementLinkContext:
+                        result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
+                        
                         if (!ShouldLinkMovement(movementLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
-                            return new LinkResult(LinkOutcome.NotLinked);
+                            result.Outcome = LinkOutcome.LinksExist;
+                            return result;
                         }
                         
                         await CheckMovementForRemovedLinks(movementLinkContext, cancellationToken);
 
-                        result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
                         break;
                     case ImportNotificationLinkContext notificationLinkContext:
+                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
+                            cancellationToken);
+                        
                         if (!ShouldLink(notificationLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
-                            return new LinkResult(LinkOutcome.NotLinked);
+                            result.Outcome = LinkOutcome.LinksExist;
+                            return result;
                         }
 
-                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
-                            cancellationToken);
                         break;
                     default: throw new ArgumentException("context type not supported");
                 }

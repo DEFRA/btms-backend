@@ -18,7 +18,7 @@ namespace TestGenerator.IntegrationTesting.Backend;
 [IgnoreXunitAnalyzersRule1013]
 public class FailingFactAttribute: FactAttribute
 {
-    // private static readonly string[] IncompleteJiraTickets = ["CDMS-234", "CDMS-235", "CDMS-232", "CDMS-205"];
+    // private static readonly string[] IncompleteJiraTickets = ["CDMS-234", "CDMS-235", "CDMS-232", "CDMS-205", "CDMS-229"];
     private static readonly string[] IncompleteJiraTickets = ["CDMS-235", "CDMS-232", "CDMS-205"];
     // private static readonly string[] IncompleteJiraTickets = [];
 

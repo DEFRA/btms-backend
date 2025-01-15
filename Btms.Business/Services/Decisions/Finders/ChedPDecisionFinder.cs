@@ -1,3 +1,4 @@
+using Btms.Common.Extensions;
 using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Decisions.Finders;
@@ -11,7 +12,11 @@ public class ChedPDecisionFinder : IDecisionFinder
             return new DecisionFinderResult(code!.Value);
         }
 
-        var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
+        if (!notification.TryGetConsignmentAcceptable(out var consignmentAcceptable, out var decisionCode))
+        {
+            return new DecisionFinderResult(decisionCode!.Value);
+        }
+        
         return consignmentAcceptable switch
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch
@@ -21,7 +26,7 @@ public class ChedPDecisionFinder : IDecisionFinder
                     new DecisionFinderResult(DecisionCode.E03),
                 DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03),
                 DecisionDecisionEnum.AcceptableIfChanneled => new DecisionFinderResult(DecisionCode.C06),
-                _ => new DecisionFinderResult(DecisionCode.X00)
+                _ => new DecisionFinderResult(DecisionCode.E96)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
@@ -29,9 +34,10 @@ public class ChedPDecisionFinder : IDecisionFinder
                 DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04),
                 DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03),
                 DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07),
-                _ => new DecisionFinderResult(DecisionCode.X00)
-            },
-            _ => new DecisionFinderResult(DecisionCode.X00)
+                _ => new DecisionFinderResult(DecisionCode.E97)
+            }
+            ,
+            // _ => new DecisionFinderResult(DecisionCode.E99)
         };
     }
 }

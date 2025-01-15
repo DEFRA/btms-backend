@@ -144,6 +144,12 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,
     
+    [EnumMember(Value = "Has Other E9X Data Errors")]
+    HasOtherDataErrors,
+    
+    [EnumMember(Value = "Has Generic E99 Data Errors")]
+    HasGenericDataErrors,
+    
     [EnumMember(Value = "No Alvs Decisions")]
     NoAlvsDecisions,
     
