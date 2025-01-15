@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Text.Json;
 
 namespace Btms.Common.Extensions;
@@ -11,7 +12,7 @@ public static class GeneralExtensions
         return JsonSerializer.Serialize(obj);
     }
     
-    public static bool HasValue<T>([NotNullWhen(true)] this T? val)
+    [Pure] public static bool HasValue<T>([Pure, NotNullWhen(true)] this T? val)
     {
         if (!Equals(val, default(T)))
         {

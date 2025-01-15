@@ -14,5 +14,14 @@ public enum DecisionCode
     N03,
     N04,
     N07,
-    X00
+    X00,
+    
+    // Unexpected value in PartTwo?.Decision?.DecisionEnum
+    E96,
+    // Unexpected value in artTwo?.Decision?.NotAcceptableAction
+    E97,
+    // Not implemented
+    E98,
+    // Other unexpected data error
+    E99
 }

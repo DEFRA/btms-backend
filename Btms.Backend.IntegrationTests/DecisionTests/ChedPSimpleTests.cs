@@ -1,3 +1,4 @@
+using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -58,7 +59,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .GetSingleMovement();
         
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
         
         decisionWithLinkAndContext.Context!.ImportNotifications
@@ -93,11 +94,11 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
             .Equal([
-                ("Cds", "Created", 1),
-                ("Btms", "Decision", 1),
-                ("Btms", "Linked", null),
-                ("Btms", "Decision", 2),
-                ("Alvs", "Decision", 1)
+                (CreatedBySystem.Cds, "Created", 1),
+                (CreatedBySystem.Btms, "Decision", 1),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Decision", 2),
+                (CreatedBySystem.Alvs, "Decision", 1)
             ]);
     }
 

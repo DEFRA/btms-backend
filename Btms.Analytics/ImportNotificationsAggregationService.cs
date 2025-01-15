@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
+using Btms.Model.Auditing;
 using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
@@ -166,7 +167,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Notifications
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .GroupBy(n => new { MaxVersion =
-                n.AuditEntries.Where(a => a.CreatedBy == "Ipaffs").Max(a => a.Version )
+                n.AuditEntries.Where(a => a.CreatedBy == CreatedBySystem.Ipaffs).Max(a => a.Version )
             })
             .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
             .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);

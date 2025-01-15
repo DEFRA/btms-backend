@@ -178,7 +178,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             auditId,
             Version.GetValueOrDefault(),
             UpdatedSource,
-            AuditEntry.CreatedByIpaffs);
+            CreatedBySystem.Ipaffs);
         Changed(auditEntry);
     }
 
@@ -188,7 +188,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             auditId,
             version,
             UpdatedSource,
-            AuditEntry.CreatedByIpaffs);
+            CreatedBySystem.Ipaffs);
         Changed(auditEntry);
     }
 
@@ -198,7 +198,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             auditId,
             Version.GetValueOrDefault(),
             UpdatedSource,
-            AuditEntry.CreatedByIpaffs);
+            CreatedBySystem.Ipaffs);
         Changed(auditEntry);
     }
 

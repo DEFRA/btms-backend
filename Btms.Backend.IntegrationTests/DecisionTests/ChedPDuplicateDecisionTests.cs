@@ -1,5 +1,6 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
+using Btms.Model.Auditing;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -50,7 +51,7 @@ public class ChedPDuplicateDecisionTests(ITestOutputHelper output)
                 .Should().BeTrue();
 
             var decisionWithLinkAndContext = movement.AuditEntries
-                .Where(a => a.CreatedBy == "Btms" && a.Status == "Decision")
+                .Where(a => a.CreatedBy == CreatedBySystem.Btms && a.Status == "Decision")
                 .MaxBy(a => a.Version)!;
 
             decisionWithLinkAndContext.Context!.ImportNotifications
