@@ -94,10 +94,13 @@ public static class ManagementEndpoints
     {
         if (options.Value.EnableAsbConsumers && messageBus is ICompositeMessageBus compositeMessageBus)
         {
-            var asbMessageBus = compositeMessageBus.GetChildBus("ASB");
-            if (!asbMessageBus.IsStarted)
+            var asbMessageBuses = compositeMessageBus.GetChildBuses().Where(x => x.Name.StartsWith("ASB"));
+            foreach (var asbMessageBus in asbMessageBuses)
             {
-                await asbMessageBus.Start();
+                if (!asbMessageBus.IsStarted)
+                {
+                    await asbMessageBus.Start();
+                }
             }
         }
 
@@ -109,11 +112,15 @@ public static class ManagementEndpoints
     {
         if (options.Value.EnableAsbConsumers && messageBus is ICompositeMessageBus compositeMessageBus)
         {
-            var asbMessageBus = compositeMessageBus.GetChildBus("ASB");
-            if (asbMessageBus.IsStarted)
+            var asbMessageBuses = compositeMessageBus.GetChildBuses().Where(x => x.Name.StartsWith("ASB"));
+            foreach (var asbMessageBus in asbMessageBuses)
             {
-                await asbMessageBus.Stop();
+                if (asbMessageBus.IsStarted)
+                {
+                    await asbMessageBus.Stop();
+                }
             }
+            
         }
 
         return Results.Ok();
