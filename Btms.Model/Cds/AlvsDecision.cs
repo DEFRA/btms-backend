@@ -140,6 +140,9 @@ public enum DecisionStatusEnum
     
     [EnumMember(Value = "Has Ched PP Checks")]
     HasChedppChecks,
+    
+    [EnumMember(Value = "Has Errors")]
+    HasErrors,
 
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,

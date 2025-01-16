@@ -89,8 +89,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             _movement.Decisions.Add(clearanceRequest);
             
             context = FindAlvsPairAndUpdate(clearanceRequest);
-            
-            
         }
         else if (isAlvs)
         {
@@ -107,23 +105,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
                 _movement.AlvsDecisionStatus.Context = alvsDecision.Context;
             }
 
-            // if (_movement.AlvsDecisionStatus.Decisions.Count == 0 || ((alvsDecision.Context.AlvsDecisionNumber >=_movement. AlvsDecisionStatus.Context?.AlvsDecisionNumber) &&
-            //                                                           (alvsDecision.Context.BtmsDecisionNumber > _movement.AlvsDecisionStatus.Context?.BtmsDecisionNumber)) ||
-            //     ((alvsDecision.Context.AlvsDecisionNumber > _movement.AlvsDecisionStatus.Context?.AlvsDecisionNumber) &&
-            //      (alvsDecision.Context.BtmsDecisionNumber >= _movement.AlvsDecisionStatus.Context?.BtmsDecisionNumber)))
-            // {
-            //     _movement.AlvsDecisionStatus.DecisionStatus = alvsDecision.Context.DecisionStatus;
-            //     _movement.AlvsDecisionStatus.Context = alvsDecision.Context;
-            // }
-            // else
-            // {
-            //     logger.LogWarning("Decision AlvsDecisionNumber {0}, BtmsDecisionNumber {1} received out of sequence, not updating top level status. Top level status currently AlvsDecisionNumber {2}, BtmsDecisionNumber {3}",
-            //         alvsDecision.Context.AlvsDecisionNumber, alvsDecision.Context.BtmsDecisionNumber,
-            //         _movement.AlvsDecisionStatus.Context?.AlvsDecisionNumber, _movement.AlvsDecisionStatus.Context?.BtmsDecisionNumber);
-            // }
-
-
-            // _movement.AnalyseAlvsStatus();
             _movement.AddLinkStatus();
         }
         else
@@ -261,11 +242,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         {
             CompareDecisions(alvsDecision, mostRecentBtmsDecision);
         }
-
-        // var btmsChecks = mostRecentBtmsDecision ?
-        //     .Items?
-        //     .SelectMany(i => i.Checks!.Select(c => new { Item = i!, Check = c }))
-        //     .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
     }
     
 

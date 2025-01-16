@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<SyncMetrics>();
         services.TryAddSingleton<InMemoryQueueMetrics>();
         services.TryAddSingleton<LinkingMetrics>();
+        services.TryAddSingleton<ValidationMetrics>();
 
         return services;
     }
