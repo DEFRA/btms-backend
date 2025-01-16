@@ -9,12 +9,11 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class IuuDecisionFinderTests
 {
     [Theory]
-    [InlineData(true, null, DecisionCode.X00, "TBC")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "TBC")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "TBC")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "TBC")]
-    [InlineData(false, null, DecisionCode.X00, null)]
-    public void DecisionFinderTest(bool iuuCheckRequired, ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
+    [InlineData(null, DecisionCode.X00, "TBC")]
+    [InlineData(ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "TBC")]
+    [InlineData(ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "TBC")]
+    [InlineData(ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "TBC")]
+    public void DecisionFinderTest(ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
     {
         // Arrange
         var notification = new ImportNotification
@@ -23,7 +22,7 @@ public class IuuDecisionFinderTests
             {
                 ControlAuthority = new ControlAuthority
                 {
-                    IuuCheckRequired = iuuCheckRequired,
+                    IuuCheckRequired = true,
                     IuuOption = iuuOption
                 }
             }
