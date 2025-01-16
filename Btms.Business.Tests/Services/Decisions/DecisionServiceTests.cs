@@ -22,9 +22,9 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
-    public async Task When_processing_decisions_for_ched_type_notifications_Then_should_use_correct_decision_finder(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    public async Task When_processing_decisions_for_ched_type_notifications_not_requiring_iuu_notifications_Then_should_use_matching_ched_decision_finder(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
-        var decisionContext = CreateDecisionContext(targetImportNotificationType);
+        var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: false);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
         var decisionService = serviceProvider.GetRequiredService<IDecisionService>();
 
@@ -32,15 +32,31 @@ public class DecisionServiceTests
 
         decisionResult.Decisions[0].DecisionCode.Should().Be(expectedDecisionCode);
     }
-    
+
+    [Theory]
+    [InlineData(ImportNotificationTypeEnum.Ced, ChedDDecisionCode)]
+    [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
+    public async Task When_processing_decisions_when_iuu_notifications_not_indicated_Then_should_use_matching_ched_decision_finder(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    {
+        var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: null);
+        var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
+        var decisionService = serviceProvider.GetRequiredService<IDecisionService>();
+
+        var decisionResult = await decisionService.Process(decisionContext, CancellationToken.None);
+
+        decisionResult.Decisions[0].DecisionCode.Should().Be(expectedDecisionCode);
+    }
+
     [Theory]
     [InlineData(ImportNotificationTypeEnum.Ced)]
     [InlineData(ImportNotificationTypeEnum.Cveda)]
     [InlineData(ImportNotificationTypeEnum.Cvedp)]
     [InlineData(ImportNotificationTypeEnum.Chedpp)]
-    public async Task When_processing_decisions_for_iuu_notifications_whatever_the_ched_type_Then_should_use_correct_decision_finder(ImportNotificationTypeEnum targetImportNotificationType)
+    public async Task When_processing_decisions_when_requiring_iuu_notifications_Then_should_use_iuu_decision_finder(ImportNotificationTypeEnum targetImportNotificationType)
     {
-        var decisionContext = CreateDecisionContext(targetImportNotificationType, true);
+        var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: true);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
         var decisionService = serviceProvider.GetRequiredService<IDecisionService>();
 
@@ -48,7 +64,7 @@ public class DecisionServiceTests
 
         decisionResult.Decisions[0].DecisionCode.Should().Be(IuuDecisionCode);
     }
-    
+
     private const DecisionCode ChedDDecisionCode = DecisionCode.C05;
     private const DecisionCode ChedADecisionCode = DecisionCode.C06;
     private const DecisionCode ChedPDecisionCode = DecisionCode.C07;
@@ -81,7 +97,7 @@ public class DecisionServiceTests
         _serviceCollection.AddSingleton(decisionFinder);
     }
 
-    private static DecisionContext CreateDecisionContext(ImportNotificationTypeEnum? importNotificationType, bool iuuCheckRequired = false)
+    private static DecisionContext CreateDecisionContext(ImportNotificationTypeEnum? importNotificationType, bool? iuuCheckRequired)
     {
         var matchingResult = new MatchingResult();
         matchingResult.AddMatch("notification-1", "movement-1", 1, "document-ref-1");
