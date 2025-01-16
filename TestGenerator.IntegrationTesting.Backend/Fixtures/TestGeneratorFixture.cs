@@ -60,7 +60,8 @@ public class TestGeneratorFixture
             {
                 Count = 1, DateOffset = 1, Scenario = 1,
                 GeneratorResult = rm.Result,
-                Message = rm.Message
+                Message = rm.Message,
+                Filepath = ""
             })
            .ToList();
     }
@@ -87,7 +88,8 @@ public class TestGeneratorFixture
                     Count = rm.Result.count, DateOffset = rm.Result.dateOffset,
                     Scenario = rm.Result.scenario,
                     GeneratorResult = rm.Result.result,
-                    Message = rm.Message
+                    Message = rm.Message,
+                    Filepath = ""
                 })
             );
             

@@ -51,7 +51,6 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     [Fact]
     public void ShouldHave2BtmsDecisions()
     {
-        //
         var actual = Client
             .GetSingleMovement()
             .Decisions;

@@ -75,7 +75,6 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
 
                 save = true;
             }
-            
 
             if (save)
             {
