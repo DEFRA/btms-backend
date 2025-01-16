@@ -11,7 +11,7 @@ public interface IValidationService
     /// </summary>
     /// <param name="linkContext"></param>
     /// <param name="cancellationToken"></param>
-    bool PostLinking(LinkContext linkContext, LinkResult linkResult, CancellationToken cancellationToken = default);
+    Task<bool> PostLinking(LinkContext linkContext, LinkResult linkResult, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 
@@ -19,5 +19,5 @@ public interface IValidationService
     /// <param name="linkResult"></param>
     /// <param name="decision"></param>
     /// <param name="cancellationToken"></param>
-    bool PostDecision(LinkResult linkResult, DecisionResult decision, CancellationToken cancellationToken = default);
+    Task<bool> PostDecision(LinkResult linkResult, DecisionResult decision, CancellationToken cancellationToken = default);
 }

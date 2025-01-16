@@ -92,6 +92,34 @@ public class StatusChecker
     public bool AnyRelease { get; set; } = default;
 }
 
+[JsonConverter(typeof(JsonStringEnumConverterEx<MovementStatusEnum>))]
+public enum MovementStatusEnum 
+{
+    [EnumMember(Value = "Investigation Needed")]
+    InvestigationNeeded = -2,
+    
+    [EnumMember(Value = "Error")]
+    Error = -1,
+    
+    [EnumMember(Value = "Ok")]
+    Ok = 0,
+    
+}
+
+
+[JsonConverter(typeof(JsonStringEnumConverterEx<MovementSegmentEnum>))]
+public enum MovementSegmentEnum 
+{
+    [EnumMember(Value = "CDMS-205 AC1")]
+    Cdms205Ac1,
+    [EnumMember(Value = "CDMS-205 AC2")]
+    Cdms205Ac2,
+    [EnumMember(Value = "CDMS-205 AC3")]
+    Cdms205Ac3,
+    [EnumMember(Value = "CDMS-205 AC4")]
+    Cdms205Ac4,
+}
+
 public class MovementStatus
 {   
     public static MovementStatus Default()
@@ -117,11 +145,29 @@ public class MovementStatus
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public required LinkStatusEnum LinkStatus { get; set; }
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public string? LinkStatusDescription { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public MovementStatusEnum Status { get; set; } = MovementStatusEnum.Ok;
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public MovementSegmentEnum? Segment { get; set; } 
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatusEnum>))]
 public enum LinkStatusEnum
 {
+    [EnumMember(Value = "Error")]
+    Error,
+    
     [EnumMember(Value = "Not Linked")]
     NotLinked,
     

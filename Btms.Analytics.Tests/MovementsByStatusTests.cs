@@ -4,6 +4,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 using Btms.Analytics.Tests.Fixtures;
+using Btms.Analytics.Tests.Helpers;
 using TestDataGenerator.Config;
 using TestGenerator.IntegrationTesting.Backend;
 
@@ -21,8 +22,7 @@ public class MovementsByStatusTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
-        result.Values.Count.Should().Be(3);
-        result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
+        result.ShouldBeCorrect();
     }
     
     [Fact]
@@ -34,8 +34,7 @@ public class MovementsByStatusTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(3);
-        result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
+        result.ShouldBeCorrect();
     }
     
     [Fact]
@@ -47,7 +46,6 @@ public class MovementsByStatusTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.Values.Count.Should().Be(3);
-        result.Values.Keys.Order().Should().Equal("Investigate", "Linked", "Not Linked");
+        result.ShouldBeCorrect();
     }
 }

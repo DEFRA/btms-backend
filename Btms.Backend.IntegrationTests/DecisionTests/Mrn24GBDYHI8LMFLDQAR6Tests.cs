@@ -115,11 +115,11 @@ public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.ChedTypes
-            //Unsure what this one is actually supposed to be
-            .Should().Equal(ImportNotificationTypeEnum.Cvedp);
+            .Should().BeNull();
     }
     
-    [Fact]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
     public void ShouldNotBeLinked()
     {
         Client
@@ -143,6 +143,28 @@ public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
         (await result.GetString())
             .Should()
             .Be("[]");
+    }
+    
+    /// <summary>
+    /// Ensures we capture the error status of the movement
+    /// but will likely need to change as part of the error code work
+    /// </summary>
+    [Fact]
+    public void ShouldBeFlaggedAsError()
+    {
+        var movement = 
+        Client
+            .GetSingleMovement();
+            
+        movement
+            .BtmsStatus
+            .Should().BeEquivalentTo(
+                new { 
+                    LinkStatus = LinkStatusEnum.Error,
+                    LinkStatusDescription = "ALVSVAL318",
+                    Status = MovementStatusEnum.Error
+                }
+            );
     }
     
     [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]

@@ -32,6 +32,8 @@ public static class MovementExtensions
     
     public static void AddLinkStatus(this Movement movement)
     {
+        if (movement.BtmsStatus.LinkStatus == LinkStatusEnum.Error) return;
+        
         var linkStatus = LinkStatusEnum.NotLinked;
         var linked = false;
         

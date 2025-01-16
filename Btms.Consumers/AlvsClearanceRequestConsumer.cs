@@ -45,7 +45,7 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
 
-                if (!validationService.PostLinking(linkContext, linkResult, Context.CancellationToken))
+                if (! await validationService.PostLinking(linkContext, linkResult, Context.CancellationToken))
                 {
                     return;
                 }
@@ -55,7 +55,7 @@ namespace Btms.Consumers;
 
                 var decisionResult = await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true), Context.CancellationToken);
                 
-                validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+                await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
             }
         }
     }
