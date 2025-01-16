@@ -11,7 +11,7 @@ public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
     
     Task Insert(T item, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default);
 
-    Task Update(T item, string etag, IMongoDbTransaction transaction = default!,
+    Task Update(T item, string? etag = default, IMongoDbTransaction transaction = default!,
         CancellationToken cancellationToken = default);
     
     IAggregateFluent<T> Aggregate();

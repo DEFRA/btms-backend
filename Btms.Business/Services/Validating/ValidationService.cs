@@ -58,8 +58,8 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             });    
         }
         
-        await movementsToUpdate.ForEachAsync(async m => await dbContext.Movements.Update(m, m._Etag, cancellationToken: cancellationToken));
-        await importNotificationsToUpdate.ForEachAsync(async n => await dbContext.Notifications.Update(n, n._Etag, cancellationToken: cancellationToken));
+        await movementsToUpdate.ForEachAsync(async m => await dbContext.Movements.Update(m, cancellationToken: cancellationToken));
+        await importNotificationsToUpdate.ForEachAsync(async n => await dbContext.Notifications.Update(n, cancellationToken: cancellationToken));
 
         metrics.Validated();
 
