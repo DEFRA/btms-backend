@@ -23,9 +23,9 @@ internal class GenerateVehicleMovementModelCommand : IRequest
     public string MappingOutputPath { get; set; } =
         "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Gvms.Mapping.V1\\";
 
-    public class Handler : AsyncRequestHandler<GenerateVehicleMovementModelCommand>
+    public class Handler : IRequestHandler<GenerateVehicleMovementModelCommand>
     {
-        protected override async Task Handle(GenerateVehicleMovementModelCommand request,
+        public async Task Handle(GenerateVehicleMovementModelCommand request,
             CancellationToken cancellationToken)
         {
             using var streamReader =
