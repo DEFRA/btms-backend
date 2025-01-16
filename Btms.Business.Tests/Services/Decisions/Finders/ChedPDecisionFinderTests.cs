@@ -9,6 +9,33 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class ChedPDecisionFinderTests
 {
     [Theory]
+    [InlineData(null, ImportNotificationTypeEnum.Cveda, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Cvedp, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Chedpp, false)]
+    [InlineData(false, ImportNotificationTypeEnum.Cvedp, true)]
+    [InlineData(true, ImportNotificationTypeEnum.Cvedp, true)]
+    public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
+    {
+        var notification = new ImportNotification
+        {
+            ImportNotificationType = importNotificationType,
+            PartTwo = new PartTwo
+            {
+                ControlAuthority = new ControlAuthority
+                {
+                    IuuCheckRequired = iuuCheckRequired
+                }
+            }
+        };
+        var sut = new ChedPDecisionFinder();
+
+        var result = sut.CanFindDecision(notification);
+
+        result.Should().Be(expectedResult);
+    }
+    
+    [Theory]
     [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, DecisionCode.C03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, DecisionCode.E03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableIfChanneled, null, DecisionCode.C06)]
@@ -37,7 +64,7 @@ public class ChedPDecisionFinderTests
     [InlineData(false, null, DecisionNotAcceptableActionEnum.IndustrialProcessing, DecisionCode.X00)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.ReDispatch, DecisionCode.X00)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.UseForOtherPurposes, DecisionCode.X00)]
-    public void DecisionFinderTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode)
+    public void FindDecisionTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode)
     {
         // Arrange
         var notification = new ImportNotification

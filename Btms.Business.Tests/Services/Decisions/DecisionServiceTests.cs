@@ -22,7 +22,7 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
-    public async Task When_processing_decisions_for_ched_type_notifications_not_requiring_iuu_notifications_Then_should_use_matching_ched_decision_finder(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    public async Task When_processing_decisions_for_ched_type_notifications_not_requiring_iuu_notifications_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
         var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: false);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
@@ -30,6 +30,7 @@ public class DecisionServiceTests
 
         var decisionResult = await decisionService.Process(decisionContext, CancellationToken.None);
 
+        decisionResult.Decisions.Should().HaveCount(1);
         decisionResult.Decisions[0].DecisionCode.Should().Be(expectedDecisionCode);
     }
 
@@ -38,7 +39,7 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
-    public async Task When_processing_decisions_when_iuu_notifications_not_indicated_Then_should_use_matching_ched_decision_finder(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    public async Task When_processing_decisions_when_iuu_notifications_not_indicated_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
         var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: null);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
@@ -46,15 +47,16 @@ public class DecisionServiceTests
 
         var decisionResult = await decisionService.Process(decisionContext, CancellationToken.None);
 
+        decisionResult.Decisions.Should().HaveCount(1);
         decisionResult.Decisions[0].DecisionCode.Should().Be(expectedDecisionCode);
     }
 
     [Theory]
-    [InlineData(ImportNotificationTypeEnum.Ced)]
-    [InlineData(ImportNotificationTypeEnum.Cveda)]
-    [InlineData(ImportNotificationTypeEnum.Cvedp)]
-    [InlineData(ImportNotificationTypeEnum.Chedpp)]
-    public async Task When_processing_decisions_when_requiring_iuu_notifications_Then_should_use_iuu_decision_finder(ImportNotificationTypeEnum targetImportNotificationType)
+    [InlineData(ImportNotificationTypeEnum.Ced, ChedDDecisionCode)]
+    [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
+    public async Task When_processing_decisions_when_requiring_iuu_notifications_Then_should_use_matching_ched_decision_and_iuu_decision_finders(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
         var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: true);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
@@ -62,7 +64,9 @@ public class DecisionServiceTests
 
         var decisionResult = await decisionService.Process(decisionContext, CancellationToken.None);
 
-        decisionResult.Decisions[0].DecisionCode.Should().Be(IuuDecisionCode);
+        decisionResult.Decisions.Should().HaveCount(2);
+        decisionResult.Decisions.Should().Contain(x => x.DecisionCode == expectedDecisionCode);
+        decisionResult.Decisions.Should().Contain(x => x.DecisionCode == IuuDecisionCode);
     }
 
     private const DecisionCode ChedDDecisionCode = DecisionCode.C05;
