@@ -4,7 +4,7 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedDDecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification) => notification.PartTwo?.ControlAuthority?.IuuCheckRequired == false && notification.ImportNotificationType == ImportNotificationTypeEnum.Ced;
+    public bool CanFindDecision(ImportNotification notification) => notification.PartTwo?.ControlAuthority?.IuuCheckRequired is null or false && notification.ImportNotificationType == ImportNotificationTypeEnum.Ced;
 
     public DecisionFinderResult FindDecision(ImportNotification notification)
     {
