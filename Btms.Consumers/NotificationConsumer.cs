@@ -6,12 +6,14 @@ using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
+using Btms.Business.Services.Validating;
 
 namespace Btms.Consumers;
 
     internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService,
         IMatchingService matchingService,
         IDecisionService decisionService,
+        IValidationService validationService,
         ILogger<NotificationConsumer> logger)
     : IConsumer<ImportNotification>, IConsumerWithContext
 {
@@ -20,7 +22,8 @@ namespace Btms.Consumers;
         var messageId = Context.GetMessageId();
         using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.ReferenceNumber!))
         {
-            var preProcessingResult = await preProcessor.Process(new PreProcessingContext<ImportNotification>(message, messageId));
+            var preProcessingResult = await preProcessor
+                .Process(new PreProcessingContext<ImportNotification>(message, messageId));
 
             if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
             {
@@ -47,10 +50,17 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
 
+                if (!validationService.PostLinking(linkContext, linkResult, Context.CancellationToken))
+                {
+                    return;
+                }
+
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
-                await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
+                var decisionResult = await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
+                
+                validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
             }
             else
             {
