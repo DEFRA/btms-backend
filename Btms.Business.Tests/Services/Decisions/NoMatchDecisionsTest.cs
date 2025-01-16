@@ -1,6 +1,6 @@
 using Btms.Business.Builders;
-using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
+using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Matching;
 using Btms.Model;
 using Btms.Model.Ipaffs;
@@ -27,7 +27,7 @@ public class NoMatchDecisionsTest
         var movements = GenerateMovements(false);
         var publishBus = Substitute.For<IPublishBus>();
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus, Array.Empty<IDecisionFinder>());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
@@ -51,7 +51,7 @@ public class NoMatchDecisionsTest
         movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
         var publishBus = Substitute.For<IPublishBus>();
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus);
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus, Array.Empty<IDecisionFinder>());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);

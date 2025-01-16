@@ -15,17 +15,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
+using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
-using Btms.Model;
 using Btms.Types.Alvs;
 
 namespace Btms.Business.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddBusinessServices(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
@@ -67,6 +66,12 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ILinkingService, LinkingService>();
         services.AddScoped<IDecisionService, DecisionService>();
         services.AddScoped<IMatchingService, MatchingService>();
+
+        services.AddScoped<IDecisionFinder, ChedADecisionFinder>();
+        services.AddScoped<IDecisionFinder, ChedDDecisionFinder>();
+        services.AddScoped<IDecisionFinder, ChedPDecisionFinder>();
+        services.AddScoped<IDecisionFinder, ChedPPDecisionFinder>();
+        services.AddScoped<IDecisionFinder, IuuDecisionFinder>();
 
         services.AddTransient<MovementBuilderFactory>();
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
