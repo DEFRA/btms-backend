@@ -9,6 +9,33 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class ChedADecisionFinderTests
 {
     [Theory]
+    [InlineData(null, ImportNotificationTypeEnum.Cveda, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Cvedp, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Chedpp, false)]
+    [InlineData(false, ImportNotificationTypeEnum.Cveda, true)]
+    [InlineData(true, ImportNotificationTypeEnum.Cveda, true)]
+    public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
+    {
+        var notification = new ImportNotification
+        {
+            ImportNotificationType = importNotificationType,
+            PartTwo = new PartTwo
+            {
+                ControlAuthority = new ControlAuthority
+                {
+                    IuuCheckRequired = iuuCheckRequired
+                }
+            }
+        };
+        var sut = new ChedADecisionFinder();
+
+        var result = sut.CanFindDecision(notification);
+
+        result.Should().Be(expectedResult);
+    }
+    
+    [Theory]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTranshipment, null, DecisionCode.E03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, DecisionCode.E03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, DecisionCode.C03)]
@@ -37,10 +64,8 @@ public class ChedADecisionFinderTests
     [InlineData(false, null, DecisionNotAcceptableActionEnum.IndustrialProcessing, DecisionCode.X00)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.ReDispatch, DecisionCode.X00)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.UseForOtherPurposes, DecisionCode.X00)]
-
-    public void DecisionFinderTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode)
+    public void FindDecisionTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode)
     {
-        // Arrange
         var notification = new ImportNotification
         {
             PartTwo = new PartTwo
@@ -55,10 +80,8 @@ public class ChedADecisionFinderTests
         };
         var sut = new ChedADecisionFinder();
         
-        // Act
         var result = sut.FindDecision(notification);
 
-        // Assert
         result.DecisionCode.Should().Be(expectedCode);
     }
 }
