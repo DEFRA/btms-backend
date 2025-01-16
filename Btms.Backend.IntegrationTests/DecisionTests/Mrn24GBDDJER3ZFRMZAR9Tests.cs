@@ -11,7 +11,7 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
-[Trait("Category", "Integration")]
+[Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac5")]
 public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator>(output)
 {
@@ -156,22 +156,31 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     }
     
     [Fact]
-    public void ShouldHaveChedType()
+    public void ShoulHaveCorrectBtmsStatus()
     {
-        Client
-            .GetSingleMovement()
-            .BtmsStatus.ChedTypes
-            .Should().Equal(ImportNotificationTypeEnum.Chedpp);
+        var movement = 
+            Client
+                .GetSingleMovement();
+            
+        movement
+            .BtmsStatus
+            .Should().BeEquivalentTo(
+                new { 
+                    LinkStatus = LinkStatusEnum.Linked,
+                    Segment = MovementSegmentEnum.Cdms205Ac5,
+                    ChedTypes = (ImportNotificationTypeEnum[])[ImportNotificationTypeEnum.Chedpp]
+                }
+            );
     }
     
-    [Fact]
-    public void ShouldBeLinked()
-    {
-        Client
-            .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
-    }
+    // [Fact]
+    // public void ShouldBeLinked()
+    // {
+    //     Client
+    //         .GetSingleMovement()
+    //         .BtmsStatus.LinkStatus
+    //         .Should().Be(LinkStatusEnum.Linked);
+    // }
     
     [Fact]
     public async Task ShouldNotHaveExceptions()

@@ -299,6 +299,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
                                      DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs ? 
                                         DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs :
+                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
+                                            DecisionStatusEnum.ReliesOnCDMS205 :
+                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms249? 
+                                            DecisionStatusEnum.ReliesOnCDMS249 :
                                         d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
                                         DecisionStatusEnum.HasChedppChecks ? 
                                             DecisionStatusEnum.HasChedppChecks :

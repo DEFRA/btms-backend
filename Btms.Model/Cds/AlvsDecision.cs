@@ -96,11 +96,11 @@ public class StatusChecker
 public enum MovementStatusEnum 
 {
     [EnumMember(Value = "Investigation Needed")]
-    InvestigationNeeded = -2,
+    InvestigationNeeded = -1,
     
-    [EnumMember(Value = "Error")]
-    Error = -1,
-    
+    // [EnumMember(Value = "Error")]
+    // Error = -1,
+    //
     [EnumMember(Value = "Ok")]
     Ok = 0,
     
@@ -118,6 +118,10 @@ public enum MovementSegmentEnum
     Cdms205Ac3,
     [EnumMember(Value = "CDMS-205 AC4")]
     Cdms205Ac4,
+    [EnumMember(Value = "CDMS-205 AC5")]
+    Cdms205Ac5,
+    [EnumMember(Value = "CDMS-249")]
+    Cdms249,
 }
 
 public class MovementStatus
@@ -151,10 +155,10 @@ public class MovementStatus
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public string? LinkStatusDescription { get; set; }
 
-    [Attr]
-    [System.ComponentModel.Description("")]
-    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
-    public MovementStatusEnum Status { get; set; } = MovementStatusEnum.Ok;
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    // public MovementStatusEnum Status { get; set; } = MovementStatusEnum.Ok;
 
     [Attr]
     [System.ComponentModel.Description("")]
@@ -184,12 +188,15 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
     
+    [EnumMember(Value = "CDMS-205")]
+    ReliesOnCDMS205,
+    
+    [EnumMember(Value = "CDMS-249")]
+    ReliesOnCDMS249,
+    
     [EnumMember(Value = "Has Ched PP Checks")]
     HasChedppChecks,
     
-    [EnumMember(Value = "Has Errors")]
-    HasErrors,
-
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,
     

@@ -46,4 +46,11 @@ public static class MovementExtensions
         movement.BtmsStatus.LinkStatus = linkStatus;
         movement.BtmsStatus.Linked = linked;
     }
+    public static string[] UniqueDocumentReferences(this Movement movement)
+    {
+        return movement.Items
+            .SelectMany(i => i.Documents ?? [])
+            .Select(d => d.DocumentReference!)
+            .ToArray();
+    }
 }

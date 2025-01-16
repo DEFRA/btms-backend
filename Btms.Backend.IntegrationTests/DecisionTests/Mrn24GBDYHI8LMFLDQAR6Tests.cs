@@ -12,7 +12,7 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
-[Trait("Category", "Integration")]
+[Trait("Category", "Integration"), Trait("Segment", "CDMS-249")]
 public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator>(output)
 {
@@ -162,7 +162,7 @@ public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
                 new { 
                     LinkStatus = LinkStatusEnum.Error,
                     LinkStatusDescription = "ALVSVAL318",
-                    Status = MovementStatusEnum.Error
+                    Segment = MovementSegmentEnum.Cdms249
                 }
             );
     }
