@@ -214,7 +214,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
 
         // TODO would be nice to deserialise this into our dataset structures from analytics... 
         result["decisionsByDecisionCode"]!["summary"]!["values"]![
-            "Has Other E9X Data Errors"]!
+            "Has Ched PP Checks"]!
             .GetValue<int>()
             .Should().Be(2);
     }
