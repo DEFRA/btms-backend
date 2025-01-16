@@ -15,7 +15,7 @@ public class AllChedsH02DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH
 
         var random = new Random();
         var chedAImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/cheda.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "cheda.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, random.Next(1, 100))
             .WithInspectionStatus()
@@ -23,13 +23,13 @@ public class AllChedsH02DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH
             .ValidateAndBuild();
 
         var chedPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedp.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedp.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, random.Next(1, 100))
             .ValidateAndBuild();
 
         var chedDImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedd.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedd.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Ced, scenario, entryDate, random.Next(1, 100))
             .WithInspectionStatus()
@@ -37,31 +37,31 @@ public class AllChedsH02DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH
             .ValidateAndBuild();
 
         var chedPPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedpp.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedpp.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, scenario, entryDate, random.Next(1, 100))
             .ValidateAndBuild();
 
         var chedAClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-cheda-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-cheda-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedAImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
 
         var chedPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedp-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedp-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedPImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
 
         var chedDClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedd-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedd-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedDImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
 
         var chedPPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedpp-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedpp-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedPPImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
@@ -90,7 +90,7 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
         decision.DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket;
         
         var chedAImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/cheda.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "cheda.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, random.Next(1, 100))
             .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
@@ -98,7 +98,7 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
             .ValidateAndBuild();
 
         var chedPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedp.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedp.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, random.Next(1, 100))
             .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
@@ -106,7 +106,7 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
             .ValidateAndBuild();
 
         var chedDImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedd.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedd.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Ced, scenario, entryDate, random.Next(1, 100))
             .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
@@ -114,32 +114,32 @@ public class AllChedsNonHoldDecisionGenerator(IServiceProvider sp, ILogger<AllCh
             .ValidateAndBuild();
 
         var chedPPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedpp.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedpp.json"))
                 .builder)
             .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, scenario, entryDate, random.Next(1, 100))
             .WithPartTwoDecision(decision)
             .ValidateAndBuild();
 
         var chedAClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-cheda-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-cheda-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedAImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
 
         var chedPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedp-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedp-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedPImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
 
         var chedDClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedd-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedd-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedDImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
 
         var chedPPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedpp-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedpp-match.json"))
                 .builder)
             .WithReferenceNumberOneToOne(chedPPImportNotification.ReferenceNumber!)
             .ValidateAndBuild();
