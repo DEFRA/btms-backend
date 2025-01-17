@@ -50,27 +50,32 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 switch (linkContext)
                 {
                     case MovementLinkContext movementLinkContext:
+                        result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
+                        
                         if (!ShouldLinkMovement(movementLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
-                            return new LinkResult(LinkOutcome.NotLinked);
+                            result.Outcome = LinkOutcome.LinksExist;
+                            return result;
                         }
+                        
+                        await CheckMovementForRemovedLinks(movementLinkContext, cancellationToken);
 
-                        result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
                         break;
                     case ImportNotificationLinkContext notificationLinkContext:
+                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
+                            cancellationToken);
+                        
                         if (!ShouldLink(notificationLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
-                            return new LinkResult(LinkOutcome.NotLinked);
+                            result.Outcome = LinkOutcome.LinksExist;
+                            return result;
                         }
 
-                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
-                            cancellationToken);
                         break;
                     default: throw new ArgumentException("context type not supported");
                 }
-
 
                 if (result.Outcome == LinkOutcome.NotLinked)
                 {
@@ -84,9 +89,9 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 metrics.Linked<ImportNotification>(result.Notifications.Count);
 
                 using var transaction = await dbContext.StartTransaction(cancellationToken);
-                foreach (var notification in result.Notifications)
+                foreach (var movement in result.Movements)
                 {
-                    foreach (var movement in result.Movements)
+                    foreach (var notification in result.Notifications)
                     {
                         notification.AddRelationship(new TdmRelationshipObject
                         {
@@ -131,11 +136,66 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
         }
 
-       
-
         return result;
     }
 
+    private async Task CheckMovementForRemovedLinks(MovementLinkContext linkContext,
+        CancellationToken cancellationToken = default)
+    {
+        var chedRefs = linkContext.ChangeSet?.GetPreviousValue<List<string>>($"{nameof(Movement._MatchReferences)}");
+        
+        if (chedRefs?.Count > 0)
+        {
+            var removedRefs = chedRefs.Except(linkContext.PersistedMovement._MatchReferences).ToList();
+            if (removedRefs.Any())
+            {
+                foreach (var chedRef in chedRefs)
+                {
+                    await RemoveNotificationLinkFromMovement(linkContext.PersistedMovement, chedRef,
+                        cancellationToken);
+                    await RemoveMovementLinkFromNotification(linkContext.PersistedMovement.Id, chedRef,
+                        cancellationToken);
+                }
+            }
+        }
+    }
+
+    private async Task RemoveNotificationLinkFromMovement(Movement movement, string chedRef,
+        CancellationToken cancellationToken = default)
+    {
+        var notification = dbContext.Notifications.SingleOrDefault(x => x._MatchReference == chedRef);
+
+        if (notification != null)
+        {
+            var relationshipLink = movement.Relationships.Notifications.Data?
+                .SingleOrDefault(x => x.Id == notification.Id && x.Type == "notifications");
+
+            if (relationshipLink != null)
+            {
+                movement.RemoveRelationship(relationshipLink);
+                await dbContext.Movements.Update(movement, movement._Etag);
+            }
+        }
+    }
+
+    private async Task RemoveMovementLinkFromNotification(string? movementId, string chedRef,
+        CancellationToken cancellationToken = default)
+    {
+        var notification = dbContext.Notifications.SingleOrDefault(x => x._MatchReference == chedRef);
+
+        if (notification != null)
+        {
+            var relationshipLink = notification.Relationships.Movements.Data?
+                .SingleOrDefault(x => x.Id == movementId && x.Type == "movements");
+
+            if (relationshipLink != null)
+            {
+                notification.RemoveRelationship(relationshipLink);
+                await dbContext.Notifications.Update(notification, notification._Etag);
+            }
+        }
+    }
+    
     private static bool ShouldLinkMovement(ChangeSet? changeSet)
     {
         return changeSet is null || changeSet.HasDocumentsChanged();

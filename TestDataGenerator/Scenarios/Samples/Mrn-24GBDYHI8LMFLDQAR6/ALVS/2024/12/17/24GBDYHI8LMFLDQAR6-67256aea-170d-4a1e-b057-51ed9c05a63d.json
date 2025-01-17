@@ -1,0 +1,44 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDS",
+    "destinationSystem": "ALVS",
+    "correlationId": "1353267",
+    "serviceCallTimestamp": 1734450662000
+  },
+  "header": {
+    "entryReference": "24GBDYHI8LMFLDQAR6",
+    "entryVersionNumber": 1,
+    "previousVersionNumber": null,
+    "declarationUCR": "4GB751812341004-4067009564",
+    "declarationPartNumber": null,
+    "declarationType": "S",
+    "arrivalDateTime": null,
+    "submitterTURN": "GB751812341004",
+    "declarantId": "GB751812341004",
+    "declarantName": "GB751812341004",
+    "dispatchCountryCode": "CN",
+    "goodsLocationCode": "CBRLHRDHX",
+    "masterUCR": "HDHX6159193062467009564"
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "customsProcedureCode": "4000000",
+      "taricCommodityCode": "1211908690",
+      "goodsDescription": "GRIFFONIA SEED EXTRACT",
+      "consigneeId": "GB131774813000",
+      "consigneeName": "GB131774813000",
+      "itemNetMass": 15,
+      "itemSupplementaryUnits": 0,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": "CN",
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H220",
+          "departmentCode": "HMI"
+        }
+      ]
+    }
+  ]
+}

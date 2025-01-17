@@ -21,9 +21,9 @@ internal class GenerateIpaffsModelCommand : IRequest
     public string MappingOutputPath { get; set; } =
         "D:\\repos\\esynergy\\btms-backend\\Btms.Types.Ipaffs.Mapping.V1\\";
 
-    public class Handler : AsyncRequestHandler<GenerateIpaffsModelCommand>
+    public class Handler : IRequestHandler<GenerateIpaffsModelCommand>
     {
-        protected override async Task Handle(GenerateIpaffsModelCommand request,
+        public async Task Handle(GenerateIpaffsModelCommand request,
             CancellationToken cancellationToken)
         {
             var builder =

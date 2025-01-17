@@ -36,10 +36,11 @@ public class IuuDecisionFinderTests
     }
     
     [Theory]
-    [InlineData(null, DecisionCode.X00, "IUU None")]
     [InlineData(ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU OK")]
     [InlineData(ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not Compliant")]
     [InlineData(ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU NA")]
+    [InlineData(null, DecisionCode.X00, "IUU None")]
+    [InlineData((ControlAuthorityIuuOptionEnum)999, DecisionCode.E95, "IUU Unknown")]
     public void FindDecisionTest(ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
     {
         var notification = new ImportNotification

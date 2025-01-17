@@ -49,6 +49,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         _movement.ClearanceRequests.AddRange(builder._movement.ClearanceRequests);
 
         _movement.Items = builder._movement.Items;
+        _movement._MatchReferences = builder._movement._MatchReferences;
     }
 
     public ChangeSet GenerateChangeSet(MovementBuilder builder)
@@ -56,7 +57,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         GuardNullMovement();
         builder.GuardNullMovement();
         
-        return _movement.ClearanceRequests[^1].GenerateChangeSet(builder._movement.ClearanceRequests[0]);
+        return _movement.GenerateChangeSet(builder._movement);
     }
 
     public MovementBuilder MergeDecision(string path, Model.Cds.CdsClearanceRequest clearanceRequest, List<DecisionImportNotifications>? notificationContext)
@@ -154,7 +155,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         // matchReferences = [];
     }
 
-    public AuditEntry CreateAuditEntry(string messageId, string source)
+    public AuditEntry CreateAuditEntry(string messageId, CreatedBySystem source)
     {
         GuardNullMovement();
         
@@ -168,7 +169,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         return auditEntry;
     }
     
-    public AuditEntry UpdateAuditEntry(string messageId, string source, ChangeSet changeSet)
+    public AuditEntry UpdateAuditEntry(string messageId, CreatedBySystem source, ChangeSet changeSet)
     {
         GuardNullMovement();
         

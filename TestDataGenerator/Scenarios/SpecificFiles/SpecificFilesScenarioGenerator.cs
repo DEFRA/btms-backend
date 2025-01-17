@@ -27,6 +27,10 @@ public class Mrn24GBDE3CF94H96TAR0ScenarioGenerator(
     ILogger<Mrn24GBDE3CF94H96TAR0ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE3CF94H96TAR0");
 
+public class Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDYHI8LMFLDQAR6");
 
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");

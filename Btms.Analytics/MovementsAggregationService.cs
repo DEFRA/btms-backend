@@ -299,6 +299,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
                                      DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs ? 
                                         DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs :
+                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
+                                        DecisionStatusEnum.HasChedppChecks ? 
+                                            DecisionStatusEnum.HasChedppChecks :
+                                        c.BtmsDecisionCode == "E99" ? DecisionStatusEnum.HasGenericDataErrors :
+                                        c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith("E9") ? DecisionStatusEnum.HasOtherDataErrors :
                                         d.BtmsStatus.ChedTypes.Length > 1 ? DecisionStatusEnum.HasMultipleChedTypes :
                                         d.Relationships.Notifications.Data.Count > 1 ? DecisionStatusEnum.HasMultipleCheds :
                                         d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus

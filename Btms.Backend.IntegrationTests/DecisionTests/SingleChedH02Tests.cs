@@ -39,6 +39,7 @@ public class SingleChedH02Tests(ITestOutputHelper output)
                     chedD.ReferenceNumber!.Split(".")
                         .Last()))
             .Message;
+        
         var chedPClearanceRequest = (AlvsClearanceRequest)loadedData.Single(d =>
                 d.Message is AlvsClearanceRequest clearanceRequest && clearanceRequest.Header!.EntryReference!.Contains(
                     chedP.ReferenceNumber!.Split(".")

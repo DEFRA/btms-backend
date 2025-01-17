@@ -71,7 +71,7 @@ public class ClearanceRequestConsumerTests
         
         var mb = mbFactory.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
             
-        mb.Update(mb.CreateAuditEntry("Test",  AuditEntry.CreatedByCds));
+        mb.Update(mb.CreateAuditEntry("Test",  CreatedBySystem.Cds));
 
         var movement = mb.Build();
         

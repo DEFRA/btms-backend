@@ -24,7 +24,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             
             var auditEntry = mb.CreateAuditEntry(
                 preProcessingContext.MessageId,
-                AuditEntry.CreatedByCds
+                CreatedBySystem.Cds
             );
             
             mb.Update(auditEntry);
@@ -42,7 +42,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             
             var auditEntry = mb.UpdateAuditEntry(
                 preProcessingContext.MessageId,
-                AuditEntry.CreatedByCds,
+                CreatedBySystem.Cds,
                 changeSet
             );
 
