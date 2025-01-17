@@ -18,7 +18,7 @@ public static class DecisionMessageBuilder
         {
             var movement = decisionContext.Movements.First(x => x.Id == movementDecisions.Key);
             var messageNumber = movement is { Decisions: null } ? 1 : movement.Decisions.Count + 1;
-            var decisionMessage = new Decision()
+            var decisionMessage = new Decision
             {
                 ServiceHeader = BuildServiceHeader(),
                 Header = BuildHeader(movement, messageNumber),
@@ -71,7 +71,7 @@ public static class DecisionMessageBuilder
         
         foreach (var itemCheck in item.Checks)
         {
-            var maxDecisionResult = itemDecisions.OrderByDescending(x => x.DecisionCode).First();
+            var maxDecisionResult = itemDecisions.Where(x => x.DecisionType.ForCheckCode(itemCheck.CheckCode)).OrderByDescending(x => x.DecisionCode).First();
             yield return new Check
             {
                 CheckCode = itemCheck.CheckCode,

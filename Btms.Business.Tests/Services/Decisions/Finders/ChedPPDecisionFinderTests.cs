@@ -38,12 +38,9 @@ public class ChedPPDecisionFinderTests
     [Fact]
     public async Task FindDecisionTest()
     {
-        // Arrange
         var sut = new ChedPPDecisionFinder();
         
-        // Act
 
-        // Assert
         await Task.CompletedTask;
     }
 }

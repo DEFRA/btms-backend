@@ -66,7 +66,6 @@ public class ChedDDecisionFinderTests
     [InlineData(false, null, DecisionNotAcceptableActionEnum.UseForOtherPurposes, DecisionCode.X00)]
     public void FindDecisionTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode)
     {
-        // Arrange
         var notification = new ImportNotification
         {
             PartTwo = new PartTwo
@@ -81,10 +80,9 @@ public class ChedDDecisionFinderTests
         };
         var sut = new ChedDDecisionFinder();
 
-        // Act
         var result = sut.FindDecision(notification);
 
-        // Assert
         result.DecisionCode.Should().Be(expectedCode);
+        result.DecisionType.Should().Be(DecisionType.Ched);
     }
 }

@@ -10,7 +10,7 @@ public class ChedDDecisionFinder : IDecisionFinder
     {
         if (notification.TryGetHoldDecision(out var code))
         {
-            return new DecisionFinderResult(code!.Value);
+            return new DecisionFinderResult(code!.Value, DecisionType.Ched);
         }
 
         var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
@@ -18,18 +18,18 @@ public class ChedDDecisionFinder : IDecisionFinder
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch
             {
-                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03),
-                _ => new DecisionFinderResult(DecisionCode.X00)
+                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, DecisionType.Ched),
+                _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
-                DecisionNotAcceptableActionEnum.Destruction => new DecisionFinderResult(DecisionCode.N02),
-                DecisionNotAcceptableActionEnum.Redispatching => new DecisionFinderResult(DecisionCode.N04),
-                DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03),
-                DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07),
-                _ => new DecisionFinderResult(DecisionCode.X00)
+                DecisionNotAcceptableActionEnum.Destruction => new DecisionFinderResult(DecisionCode.N02, DecisionType.Ched),
+                DecisionNotAcceptableActionEnum.Redispatching => new DecisionFinderResult(DecisionCode.N04, DecisionType.Ched),
+                DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03, DecisionType.Ched),
+                DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07, DecisionType.Ched),
+                _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
             },
-            _ => new DecisionFinderResult(DecisionCode.X00)
+            _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
         };
     }
 }
