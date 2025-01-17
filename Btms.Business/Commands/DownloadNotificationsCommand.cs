@@ -8,6 +8,7 @@ using Btms.SyncJob;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Btms.Business.Commands;
 
@@ -22,41 +23,45 @@ public class DownloadCommand : IRequest, ISyncJob
 
     public DownloadFilter? Filter { get; set; } = null;
 
-    public string RootFolder { get; set; } = "RAW";
+    public string? RootFolder { get; set; }
 
-    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env) : IRequestHandler<DownloadCommand>
+    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env, IOptions<BusinessOptions> businessOptions) : IRequestHandler<DownloadCommand>
     {
 
         public async Task Handle(DownloadCommand request, CancellationToken cancellationToken)
         {
+            var blobContainer = string.IsNullOrEmpty(request.RootFolder)
+                ? businessOptions.Value.DmpBlobRootFolder
+                : request.RootFolder;
+
             var subFolder = $"temp\\{request.JobId}";
             var rootFolder = Path.Combine(env.ContentRootPath, subFolder);
             Directory.CreateDirectory(rootFolder);
 
             if (request.Filter is not null)
             {
-                await Download(request, rootFolder, $"{request.RootFolder}/ALVS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
 
                 var chedGrouping = request.Filter.Cheds.GroupBy(x => x.Type);
                 foreach (var chedGroup in chedGrouping)
                 {
-                    await Download(request, rootFolder, $"{request.RootFolder}/IPAFFS/{chedGroup.Key}", typeof(ImportNotification), chedGroup.Select(x => x.Identifier).ToArray(), cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/{chedGroup.Key}", typeof(ImportNotification), chedGroup.Select(x => x.Identifier).ToArray(), cancellationToken);
                 }
             }
             else
             {
-                await Download(request, rootFolder, $"{request.RootFolder}/IPAFFS/CHEDA", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{request.RootFolder}/IPAFFS/CHEDD", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{request.RootFolder}/IPAFFS/CHEDP", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{request.RootFolder}/IPAFFS/CHEDPP", typeof(ImportNotification), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDA", typeof(ImportNotification), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDD", typeof(ImportNotification), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDP", typeof(ImportNotification), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDPP", typeof(ImportNotification), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{request.RootFolder}/ALVS", typeof(AlvsClearanceRequest), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{request.RootFolder}/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{request.RootFolder}/DECISIONS", typeof(AlvsClearanceRequest), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{request.RootFolder}/FINALISATION", typeof(AlvsClearanceRequest), null, cancellationToken);
+                await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(AlvsClearanceRequest), null, cancellationToken);
             }
 
 
@@ -70,7 +75,7 @@ public class DownloadCommand : IRequest, ISyncJob
 
         private async Task Download(DownloadCommand request, string rootFolder, string folder, Type type, string[]? filenameFilter, CancellationToken cancellationToken)
         {
-            
+
             ParallelOptions options = new() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = 10 };
             var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPath()}", cancellationToken);
             //Write local files
