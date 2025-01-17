@@ -112,7 +112,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                                     notification._MatchReference)
                             ]
                         });
-                        movement.AddLinkStatus();
+                        // movement.AddLinkStatus();
 
                         await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
                         await dbContext.Notifications.Update(notification, transaction: transaction, cancellationToken: cancellationToken);

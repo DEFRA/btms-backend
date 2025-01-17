@@ -18,7 +18,7 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
-public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
+public class ChedPpPhsiValidated(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
 {
 
@@ -156,6 +156,24 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .BtmsStatus.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Chedpp);
     }
+     
+    [Fact]
+    public void ShouldHaveCorrectBtmsStatus()
+    {
+        var movement = 
+            Client
+                .GetSingleMovement();
+            
+        movement
+            .BtmsStatus
+            .Should().BeEquivalentTo(
+                new { 
+                    LinkStatus = LinkStatusEnum.AllLinked,
+                    Segment = MovementSegmentEnum.Cdms205Ac5,
+                    // ChedTypes = (ImportNotificationTypeEnum[])[ImportNotificationTypeEnum.Chedpp]
+                }
+            );
+    }
     
     [Fact]
     public void ShouldBeLinked()
@@ -163,7 +181,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
+            .Should().Be(LinkStatusEnum.AllLinked);
     }
     
     [Fact]

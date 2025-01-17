@@ -40,22 +40,35 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
         
         await Task.WhenAll(linkResult.Movements.Select(async m =>
         {
-            var save = false;
+            // var save = false;
             var errored = m.BtmsStatus.LinkStatus == LinkStatusEnum.Error;
             var chedTypes = m.BtmsStatus.ChedTypes;
-            
+
+            var notificationRelationshipIds = m.UniqueNotificationRelationshipIds();
+            var documentReferenceIds = m.UniqueDocumentReferenceIds();
+
             m.BtmsStatus = MovementStatus.Default();
             m.BtmsStatus.ChedTypes = chedTypes;
-            
+            m.BtmsStatus.LinkStatus = documentReferenceIds.Count == 0
+                ? LinkStatusEnum.NoLinks
+                : notificationRelationshipIds.Count() == documentReferenceIds.Count() &&
+                  notificationRelationshipIds.All(documentReferenceIds.Contains)
+                    ? LinkStatusEnum.AllLinked
+                    : notificationRelationshipIds.Count == 0 && documentReferenceIds.Count != 0
+                        ? LinkStatusEnum.MissingLinks
+                        : notificationRelationshipIds.Count < documentReferenceIds.Count()
+                            ? LinkStatusEnum.PartiallyLinked
+                            : LinkStatusEnum.Investigate;
+                
             if (!errored && m.Items.Any(i => i.Documents?.Length == 0))
             {
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
-                m.BtmsStatus.LinkStatus = LinkStatusEnum.Error;
+                // m.BtmsStatus.LinkStatus = LinkStatusEnum.Error;
                 m.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
 
                 valid = false;
-                save = true;
+                // save = true;
             }
             else if (hasNotifications && 
                      m.UniqueDocumentReferences().Length == 1 && 
@@ -71,7 +84,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                     _ => null
                 };
 
-                save = true;
+                // save = true;
             }
             else if (hasNotifications && 
                      m.UniqueDocumentReferences().Length > 1 &&
@@ -82,13 +95,13 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms205Ac5;
 
-                save = true;
+                // save = true;
             }
 
-            if (save)
-            {
-                await dbContext.Movements.Update(m, cancellationToken: cancellationToken);
-            }
+            // if (save)
+            // {
+            await dbContext.Movements.Update(m, cancellationToken: cancellationToken);
+            // }
         }));
         
         // if (movementsWithoutDocs.Any())

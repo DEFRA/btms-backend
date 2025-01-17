@@ -140,7 +140,6 @@ public class MovementStatus
         return new MovementStatus()
         {
             ChedTypes = [],
-            Linked = false,
             LinkStatus = LinkStatusEnum.NotLinked
         };
     }
@@ -150,9 +149,9 @@ public class MovementStatus
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public required ImportNotificationTypeEnum[] ChedTypes { get; set; }
 
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool Linked { get; set; }
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public required bool Linked { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
@@ -184,8 +183,17 @@ public enum LinkStatusEnum
     [EnumMember(Value = "Not Linked")]
     NotLinked,
     
-    [EnumMember(Value = "Linked")]
-    Linked,
+    [EnumMember(Value = "Partially Linked")]
+    PartiallyLinked,
+    
+    [EnumMember(Value = "Missing Links")]
+    MissingLinks,
+    
+    [EnumMember(Value = "No Links")]
+    NoLinks,
+    
+    [EnumMember(Value = "All Linked")]
+    AllLinked,
     
     [EnumMember(Value = "Investigate")]
     Investigate

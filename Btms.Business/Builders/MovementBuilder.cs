@@ -105,7 +105,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
                 _movement.AlvsDecisionStatus.Context = alvsDecision.Context;
             }
 
-            _movement.AddLinkStatus();
+            // _movement.AddLinkStatus();
         }
         else
         {
