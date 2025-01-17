@@ -8,12 +8,18 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 Bootstrap.GeneratorClassMaps();
 var builder = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
-        services.AddLogging(configure => configure.AddConsole().SetMinimumLevel(LogLevel.Warning));
+        services.AddLogging(configure => configure.AddSimpleConsole(o =>
+        {
+            o.SingleLine = true;
+            o.ColorBehavior = LoggerColorBehavior.Enabled;
+            
+        }).SetMinimumLevel(LogLevel.Information));
         services.AddTransient<App>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
     });
