@@ -15,7 +15,7 @@ var builder = Host.CreateDefaultBuilder(args)
     {
         services.AddLogging(configure => configure.AddConsole().SetMinimumLevel(LogLevel.Warning));
         services.AddTransient<App>();
-        services.AddMediatR(typeof(Program));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
     });
 
 var host = builder.Build();

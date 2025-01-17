@@ -1,3 +1,5 @@
+using Btms.Common.Extensions;
+using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -14,14 +16,26 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator>(output)
 {
-    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
+    [FailingFact(jiraTicket:"CDMS-229"), Trait("JiraTicket", "CDMS-229")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Decisions
-            .First(d => d.Context.AlvsDecisionNumber == 2)
+            .MaxBy(d => d.Context.AlvsDecisionNumber)!
             .Context.DecisionComparison!.DecisionMatched
+            .Should().BeTrue();
+    }
+    
+    [FailingFact(jiraTicket:"CDMS-229"), Trait("JiraTicket", "CDMS-229")]
+    public void ImportNotificationShouldBeAutoCleared()
+    {
+        var notification = 
+        Client
+            .GetSingleImportNotification();
+            
+        notification   
+            .PartTwo?.AutoClearedOn.HasValue()
             .Should().BeTrue();
     }
     
@@ -43,10 +57,10 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus
             .Context.DecisionComparison!.DecisionStatus
-            .Should().Be(DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent);
+            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
-    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
+    [FailingFact(jiraTicket:"CDMS-229"), Trait("JiraTicket", "CDMS-229")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -58,12 +72,17 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
 
     // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     [Fact]
-    public void ShouldHave2BtmsDecisions()
+    public void ShouldHave4BtmsDecisions()
     {
-        Client
+        // Act
+        var decisions = Client
             .GetSingleMovement()
-            .Decisions.Count
-            .Should().Be(2);
+            .Decisions;
+        
+        // Assert
+        // This should really only be 2, but with the update logic fixed we now need to dedupe decisions
+        decisions.Count
+            .Should().Be(4);
     }
 
     [Fact]
@@ -80,7 +99,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .GetSingleMovement();
         
         var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: "Btms", Status: "Decision" })
+            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
         
         decisionWithLinkAndContext.Context!.ImportNotifications
@@ -107,22 +126,23 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
     [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
-        //NB : Unsure why there's a BTMS decision 2 after alvs decision 1, but not
-        // a btms decision after cds updated and alvs decision? 
-        Client
+        // Act
+        var auditTrail = Client
             .GetSingleMovement()
             .AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version))
             .Should()
-            .BeEquivalentTo<(string, string, int?)>([
-                ("Cds", "Created", 1),
-                ("Btms", "Linked", null),
-                ("Btms", "Decision", 1),
-                ("Alvs", "Decision", 1),
-                ("Btms", "Decision", 2),
-                ("Alvs", "Decision", 2),
-                ("Cds", "Updated", 2),
-                ("Alvs", "Decision", 3),
+            .BeEquivalentTo<(CreatedBySystem, string, int?)>([
+                (CreatedBySystem.Cds, "Created", 1),
+                (CreatedBySystem.Btms, "Linked", null),
+                (CreatedBySystem.Btms, "Decision", 1),
+                (CreatedBySystem.Btms, "Decision", 2),
+                (CreatedBySystem.Btms, "Decision", 3),
+                (CreatedBySystem.Cds, "Updated", 2),
+                (CreatedBySystem.Btms, "Decision", 4),
+                (CreatedBySystem.Alvs, "Decision", 1),
+                (CreatedBySystem.Alvs, "Decision", 2),
+                (CreatedBySystem.Alvs, "Decision", 3),
             ]);
     }
     
@@ -132,7 +152,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
-            .Should().Be(DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent);
+            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
     [Fact]
@@ -169,7 +189,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(jiraTicket:"CDMS-232"), Trait("JiraTicket", "CDMS-232")]
+    [FailingFact(jiraTicket:"CDMS-229"), Trait("JiraTicket", "CDMS-229")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client

@@ -13,7 +13,8 @@ public class IuuDecisionFinder : IDecisionFinder
             ControlAuthorityIuuOptionEnum.Iuuok => new DecisionFinderResult(DecisionCode.C07, DecisionType.Iuu, "IUU OK"),
             ControlAuthorityIuuOptionEnum.IUUNotCompliant => new DecisionFinderResult(DecisionCode.X00, DecisionType.Iuu, "IUU Not Compliant"),
             ControlAuthorityIuuOptionEnum.Iuuna => new DecisionFinderResult(DecisionCode.C08, DecisionType.Iuu, "IUU NA"),
-            _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Iuu, "IUU None")
+            null => new DecisionFinderResult(DecisionCode.X00, DecisionType.Iuu, "IUU None"),
+            _ => new DecisionFinderResult(DecisionCode.E95, DecisionType.Iuu, "IUU Unknown")
         };
     }
 }

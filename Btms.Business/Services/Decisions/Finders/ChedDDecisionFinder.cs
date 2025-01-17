@@ -19,7 +19,7 @@ public class ChedDDecisionFinder : IDecisionFinder
             true => notification.PartTwo?.Decision?.DecisionEnum switch
             {
                 DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, DecisionType.Ched),
-                _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
+                _ => new DecisionFinderResult(DecisionCode.E96, DecisionType.Ched)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
@@ -27,9 +27,9 @@ public class ChedDDecisionFinder : IDecisionFinder
                 DecisionNotAcceptableActionEnum.Redispatching => new DecisionFinderResult(DecisionCode.N04, DecisionType.Ched),
                 DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03, DecisionType.Ched),
                 DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07, DecisionType.Ched),
-                _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
+                _ => new DecisionFinderResult(DecisionCode.E97, DecisionType.Ched)
             },
-            _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
+            _ => new DecisionFinderResult(DecisionCode.E99, DecisionType.Ched)
         };
     }
 }

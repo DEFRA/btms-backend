@@ -5,6 +5,7 @@ using Btms.Consumers.MemoryQueue;
 using Btms.SyncJob;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SlimMessageBus.Host;
 
 namespace Btms.Backend.Endpoints;
 
@@ -21,7 +22,7 @@ public static class SyncEndpoints
             app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
             app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
 
-            app.MapGet(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
+            app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
             app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
         }
 
@@ -56,9 +57,9 @@ public static class SyncEndpoints
         return Results.File(stream, "application/zip", $"{id}.zip", enableRangeProcessing: true);
     }
 
-    private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromQuery] SyncPeriod period)
+    private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)
     {
-        var command = new DownloadCommand { SyncPeriod = period };
+        ////var command = new DownloadCommand { SyncPeriod = period };
         await mediator.SendJob(command);
         return Results.Ok(command.JobId);
     }
