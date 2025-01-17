@@ -18,5 +18,6 @@ public interface IMovementsAggregationService
     public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
     public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
     public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
-
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> BySegment(DateTime from,
+        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
 }

@@ -95,21 +95,24 @@ public class StatusChecker
 [JsonConverter(typeof(JsonStringEnumConverterEx<MovementStatusEnum>))]
 public enum MovementStatusEnum 
 {
+    [EnumMember(Value = "Decision Match")]
+    DecisionMatch = 0,
+    
+    // [EnumMember(Value = "Incomplete")]
+    Incomplete = 1,
+    
+    [EnumMember(Value = "Data Issue")]
+    DataIssue = -10,
+
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded = -1,
-    
-    // [EnumMember(Value = "Error")]
-    // Error = -1,
-    //
-    [EnumMember(Value = "Ok")]
-    Ok = 0,
-    
 }
 
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<MovementSegmentEnum>))]
 public enum MovementSegmentEnum 
 {
+    // CHED-PP PHSI
     [EnumMember(Value = "CDMS-205 AC1")]
     Cdms205Ac1,
     [EnumMember(Value = "CDMS-205 AC2")]
@@ -120,6 +123,8 @@ public enum MovementSegmentEnum
     Cdms205Ac4,
     [EnumMember(Value = "CDMS-205 AC5")]
     Cdms205Ac5,
+    
+    //Errors
     [EnumMember(Value = "CDMS-249")]
     Cdms249,
 }
@@ -155,10 +160,10 @@ public class MovementStatus
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public string? LinkStatusDescription { get; set; }
 
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
-    // public MovementStatusEnum Status { get; set; } = MovementStatusEnum.Ok;
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public MovementStatusEnum? Status { get; set; }
 
     [Attr]
     [System.ComponentModel.Description("")]

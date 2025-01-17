@@ -363,6 +363,86 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         
         return Task.FromResult(r);
     }
+    
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> BySegment(DateTime from,
+        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    {
+        var mongoQuery = context
+            .Movements
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .Select(m => new
+            {
+                DecisionStatus = "None", // d.AlvsDecisionStatus.Context.DecisionComparison != null ? d.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus.ToString() : "None",
+                DecisionMatched = false,
+                m.BtmsStatus,
+                m.AlvsDecisionStatus
+            })
+            // .SelectMany(d => d
+            //     .AlvsDecisionStatus.Context.DecisionComparison!.Checks
+            //     .Select(c => new
+            //     {
+            //         Movement = d, Check = c,
+            //         //Add additional analysis before building it into the write time analysis
+            //         d.BtmsStatus.Segment
+            //     }))
+            .GroupBy(d => new
+            {
+                d.BtmsStatus.Segment,
+                d.BtmsStatus.LinkStatus,
+                d.BtmsStatus.Status,
+                d.DecisionStatus,
+                // d.AlvsDecisionStatus.Context.DecisionComparison != null ? d.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus.ToString() : "None",
+                d.DecisionMatched,
+                // d.AlvsDecisionStatus?.Context?.DecisionComparison?.DecisionMatched
+                // d.Check.CheckCode,
+                // d.Check.AlvsDecisionCode,
+                // d.Check.BtmsDecisionCode
+            })
+            .Select(g => new
+            {
+                g.Key, Count = g.Count()
+            })
+            .Execute(logger);
+        
+        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+
+        var enumLookup = new JsonStringEnumConverterEx<MovementSegmentEnum>();
+        var summaryValues = mongoQuery
+            .GroupBy(q => q.Key.Segment)
+            .Select(g => new {g.Key, Sum = g.Sum(k => k.Count)})
+            .OrderBy(s => s.Key)
+            // .Where(g => g)
+            .ToDictionary(
+                g => g.Key.HasValue ? enumLookup.GetValue(g.Key.Value) : "None",
+                g => g.Sum
+            );
+        
+        // Works
+        var summary = new SingleSeriesDataset() {
+            Values = summaryValues
+        };
+        
+        var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
+        {
+            Summary = summary,
+            Result = mongoQuery.Select(a => new StringBucketDimensionResult()
+                {
+                    Fields = new Dictionary<string, string>()
+                    {
+                        { "Classification", a.Key.Segment.HasValue ? enumLookup.GetValue(a.Key.Segment.Value) : "None" },
+                        // { "CheckCode", a.Key.CheckCode! },
+                        // { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
+                        // { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
+                    },
+                    Value = a.Count
+                })
+                .OrderBy(r => r.Value)
+                .Reverse()
+                .ToList()
+        };
+        
+        return Task.FromResult(r);
+    }
 
     private static Task<TabularDataset<ByNameDimensionResult>> DefaultTabularDatasetByNameDimensionResult()
     {
