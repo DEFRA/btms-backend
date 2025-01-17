@@ -21,9 +21,9 @@ internal class GenerateAlvsModelCommand : IRequest
 
     public string MappingOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Alvs.Mapping.V1\\";
 
-    public class Handler : AsyncRequestHandler<GenerateAlvsModelCommand>
+    public class Handler : IRequestHandler<GenerateAlvsModelCommand>
     {
-        protected override async Task Handle(GenerateAlvsModelCommand request, CancellationToken cancellationToken)
+        public async Task Handle(GenerateAlvsModelCommand request, CancellationToken cancellationToken)
         {
 #pragma warning disable S1075
             var reader = new XmlTextReader("D:\\repos\\esynergy\\Btms-Backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateAlvsModel\\sendALVSClearanceRequest.xsd");
