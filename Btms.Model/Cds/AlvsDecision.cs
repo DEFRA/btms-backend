@@ -92,6 +92,49 @@ public class StatusChecker
     public bool AnyRelease { get; set; } = default;
 }
 
+[JsonConverter(typeof(JsonStringEnumConverterEx<MovementStatusEnum>))]
+public enum MovementStatusEnum 
+{
+    [EnumMember(Value = "Decision Match")]
+    DecisionMatch = 0,
+    
+    [EnumMember(Value = "Feature Missing")]
+    FeatureMissing = 1,
+
+    [EnumMember(Value = "Investigation Needed")]
+    InvestigationNeeded = -1,
+    
+    [EnumMember(Value = "Known Issue")]
+    KnownIssue = -2,
+    
+    [EnumMember(Value = "Data Issue")]
+    DataIssue = -10,
+
+}
+
+
+[JsonConverter(typeof(JsonStringEnumConverterEx<MovementSegmentEnum>))]
+public enum MovementSegmentEnum 
+{
+    // CHED-PP PHSI
+    [EnumMember(Value = "CDMS-205 AC1")]
+    Cdms205Ac1,
+    [EnumMember(Value = "CDMS-205 AC2")]
+    Cdms205Ac2,
+    [EnumMember(Value = "CDMS-205 AC3")]
+    Cdms205Ac3,
+    [EnumMember(Value = "CDMS-205 AC4")]
+    Cdms205Ac4,
+    [EnumMember(Value = "CDMS-205 AC5")]
+    Cdms205Ac5,
+    
+    //Errors
+    [EnumMember(Value = "CDMS-249")]
+    Cdms249,
+    
+    None,
+}
+
 public class MovementStatus
 {   
     public static MovementStatus Default()
@@ -99,7 +142,6 @@ public class MovementStatus
         return new MovementStatus()
         {
             ChedTypes = [],
-            Linked = false,
             LinkStatus = LinkStatusEnum.NotLinked
         };
     }
@@ -109,24 +151,51 @@ public class MovementStatus
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public required ImportNotificationTypeEnum[] ChedTypes { get; set; }
 
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public required bool Linked { get; set; }
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public required bool Linked { get; set; }
     
     [Attr]
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public required LinkStatusEnum LinkStatus { get; set; }
+    
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public string? LinkStatusDescription { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public MovementStatusEnum? Status { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public MovementSegmentEnum? Segment { get; set; } 
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatusEnum>))]
 public enum LinkStatusEnum
 {
+    [EnumMember(Value = "Error")]
+    Error,
+    
     [EnumMember(Value = "Not Linked")]
     NotLinked,
     
-    [EnumMember(Value = "Linked")]
-    Linked,
+    [EnumMember(Value = "Partially Linked")]
+    PartiallyLinked,
+    
+    [EnumMember(Value = "Missing Links")]
+    MissingLinks,
+    
+    [EnumMember(Value = "No Links")]
+    NoLinks,
+    
+    [EnumMember(Value = "All Linked")]
+    AllLinked,
     
     [EnumMember(Value = "Investigate")]
     Investigate
@@ -138,9 +207,15 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
     
+    [EnumMember(Value = "CDMS-205")]
+    ReliesOnCDMS205,
+    
+    [EnumMember(Value = "CDMS-249")]
+    ReliesOnCDMS249,
+    
     [EnumMember(Value = "Has Ched PP Checks")]
     HasChedppChecks,
-
+    
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,
     
@@ -173,6 +248,9 @@ public enum DecisionStatusEnum
     
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded,
+    
+    [EnumMember(Value = "None")]
+    None,
 }
 
 public partial class SummarisedDecisionContext //

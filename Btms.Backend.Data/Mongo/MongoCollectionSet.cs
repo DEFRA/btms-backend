@@ -52,8 +52,16 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
             : collection.InsertOneAsync(item, cancellationToken: cancellationToken);
     }
 
+    public async Task Update(T item, IMongoDbTransaction? transaction = null,
+        CancellationToken cancellationToken = default)
+    {
+        await Update(item, item._Etag, transaction, cancellationToken);
+    }
+
     public async Task Update(T item, string etag, IMongoDbTransaction? transaction = null, CancellationToken cancellationToken = default)
     {
+        // etag = etag ?? 
+        
         ArgumentNullException.ThrowIfNull(etag);
         var builder = Builders<T>.Filter;
 

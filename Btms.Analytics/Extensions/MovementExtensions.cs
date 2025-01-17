@@ -17,6 +17,17 @@ public static class MovementExtensions
                             m.BtmsStatus.ChedTypes!.Any(c => chedTypes!.Contains(c))));
 
     }
+    // public static IQueryable<Movement> WhereFilteredByCreatedDateAndParams(this IQueryable<Movement> source, DateTime from, DateTime to,
+    //     ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    // {
+    //     return source
+    //         .Where(m => (m.CreatedSource >= from && m.CreatedSource < to)
+    //                     && (country == null || m.DispatchCountryCode == country)
+    //                     && (chedTypes == null || !chedTypes!.Any() ||
+    //                         !m.BtmsStatus.ChedTypes!.Any() ||
+    //                         m.BtmsStatus.ChedTypes!.Any(c => chedTypes!.Contains(c))));
+    //
+    // }
 
     public class MovementWithLinkStatus
     {

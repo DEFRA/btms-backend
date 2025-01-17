@@ -299,6 +299,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
                                      DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs ? 
                                         DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs :
+                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
+                                            DecisionStatusEnum.ReliesOnCDMS205 :
+                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms249? 
+                                            DecisionStatusEnum.ReliesOnCDMS249 :
                                         d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
                                         DecisionStatusEnum.HasChedppChecks ? 
                                             DecisionStatusEnum.HasChedppChecks :
@@ -349,6 +353,81 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                         { "CheckCode", a.Key.CheckCode! },
                         { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
+                    },
+                    Value = a.Count
+                })
+                .OrderBy(r => r.Value)
+                .Reverse()
+                .ToList()
+        };
+        
+        return Task.FromResult(r);
+    }
+    
+    public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> BySegment(DateTime from,
+        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    {
+        var mongoQuery = context
+            .Movements
+            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .Select(m => new
+            {
+                DecisionStatus = m.AlvsDecisionStatus.Context.DecisionComparison == null ?
+                    DecisionStatusEnum.None:
+                    m.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus,
+                DecisionMatched = false,
+                m.BtmsStatus,
+                m.AlvsDecisionStatus
+            })
+            .GroupBy(d => new
+            {
+                Segment = d.BtmsStatus.Segment ?? MovementSegmentEnum.None,
+                d.BtmsStatus.LinkStatus,
+                d.BtmsStatus.Status,
+                d.DecisionStatus,
+                // d.AlvsDecisionStatus.Context.DecisionComparison != null ? d.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus.ToString() : "None",
+                d.DecisionMatched,
+                // d.AlvsDecisionStatus?.Context?.DecisionComparison?.DecisionMatched
+                // d.Check.CheckCode,
+                // d.Check.AlvsDecisionCode,
+                // d.Check.BtmsDecisionCode
+            })
+            .Select(g => new
+            {
+                g.Key, Count = g.Count()
+            })
+            .Execute(logger);
+        
+        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+
+        var enumLookup = new JsonStringEnumConverterEx<MovementSegmentEnum>();
+        var summaryValues = mongoQuery
+            .GroupBy(q => q.Key.Segment)
+            .Select(g => new {g.Key, Sum = g.Sum(k => k.Count)})
+            .OrderBy(s => s.Key)
+            // .Where(g => g)
+            .ToDictionary(
+                g => enumLookup.GetValue(g.Key),
+                g => g.Sum
+            );
+        
+        // Works
+        var summary = new SingleSeriesDataset() {
+            Values = summaryValues
+        };
+        
+        var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
+        {
+            Summary = summary,
+            Result = mongoQuery.Select(a => new StringBucketDimensionResult()
+                {
+                    Fields = new Dictionary<string, string>()
+                    {
+                        // { "Classification", enumLookup.GetValue(a.Key!.Segment) },
+                        { "Classification", enumLookup.GetValue(a.Key!.Segment!) },
+                        // { "CheckCode", a.Key.CheckCode! },
+                        // { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
+                        // { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
                     },
                     Value = a.Count
                 })

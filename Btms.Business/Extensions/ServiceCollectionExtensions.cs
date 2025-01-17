@@ -17,6 +17,7 @@ using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
+using Btms.Business.Services.Validating;
 using Btms.Model;
 using Btms.Types.Alvs;
 
@@ -65,6 +66,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ILinkingService, LinkingService>();
+        services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<IDecisionService, DecisionService>();
         services.AddScoped<IMatchingService, MatchingService>();
 

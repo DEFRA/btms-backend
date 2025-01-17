@@ -112,11 +112,11 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                                     notification._MatchReference)
                             ]
                         });
-                        movement.AddLinkStatus();
+                        // movement.AddLinkStatus();
 
-                        await dbContext.Movements.Update(movement, movement._Etag, transaction, cancellationToken);
-                        await dbContext.Notifications.Update(notification, notification._Etag, transaction,
-                            cancellationToken);
+                        await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
+                        await dbContext.Notifications.Update(notification, transaction: transaction, cancellationToken: cancellationToken);
+                        
                     }
                 }
 
@@ -173,7 +173,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             if (relationshipLink != null)
             {
                 movement.RemoveRelationship(relationshipLink);
-                await dbContext.Movements.Update(movement, movement._Etag);
+                await dbContext.Movements.Update(movement, cancellationToken: cancellationToken);
             }
         }
     }
@@ -191,7 +191,8 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             if (relationshipLink != null)
             {
                 notification.RemoveRelationship(relationshipLink);
-                await dbContext.Notifications.Update(notification, notification._Etag);
+
+                await dbContext.Notifications.Update(notification, cancellationToken: cancellationToken);
             }
         }
     }

@@ -19,7 +19,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         var simplifiedMovementView = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
-            .Where(m => !m.BtmsStatus.Linked)
+            .Where(m => m.BtmsStatus.LinkStatus != LinkStatusEnum.AllLinked)
             .Select(m => new
             {
                 // TODO - we should think about pre-calculating this stuff and storing it on the movement...
@@ -93,7 +93,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         }
 
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
-            .Where(r => r.LinkStatus != LinkStatusEnum.Linked);
+            .Where(r => r.LinkStatus != LinkStatusEnum.AllLinked);
         
         if (summary)
         {

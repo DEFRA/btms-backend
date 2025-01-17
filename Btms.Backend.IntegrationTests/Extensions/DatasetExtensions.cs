@@ -1,3 +1,5 @@
+using Btms.Analytics;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestDataGenerator;

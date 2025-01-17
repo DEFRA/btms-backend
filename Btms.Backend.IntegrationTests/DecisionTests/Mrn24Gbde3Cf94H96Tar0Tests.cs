@@ -153,7 +153,7 @@ public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
+            .Should().Be(LinkStatusEnum.AllLinked);
     }
     
     [Fact]
