@@ -49,8 +49,10 @@ namespace Btms.Consumers;
                     LogStatus("Linked", message);
                     Context.Linked();
                 }
-
-                if (!await validationService.PostLinking(linkContext, linkResult, Context.CancellationToken))
+                // 
+                if (!await validationService.PostLinking(linkContext, linkResult, 
+                        triggeringNotification: preProcessingResult.Record,
+                        cancellationToken: Context.CancellationToken))
                 {
                     return;
                 }

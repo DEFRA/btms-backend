@@ -9,6 +9,7 @@ using Btms.Model.Cds;
 using Btms.Model.Extensions;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
+using SlimMessageBus.Host;
 
 namespace Btms.Business.Services.Validating;
 
@@ -20,16 +21,21 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
     /// <param name="linkContext"></param>
     /// <param name="linkResult"></param>
     /// <param name="cancellationToken"></param>
-    public async Task<bool> PostLinking(LinkContext linkContext, LinkResult linkResult, CancellationToken cancellationToken = default)
+    public async Task<bool> PostLinking(LinkContext linkContext, LinkResult linkResult, 
+        Movement? triggeringMovement = null, ImportNotification? triggeringNotification = null,
+        CancellationToken cancellationToken = default)
     {
+        // , Movement? triggeringMovement = null, ImportNotification? triggeringNotification = null
+        if (!(triggeringMovement.HasValue() || triggeringNotification.HasValue()))
+        {
+            throw new InvalidOperationException(
+                "Can't call PostLinking without either a movement or notification.");
+        }
+        
         logger.LogInformation("PreMatching");
-        // var movementsToUpdate = new List<Movement>();
-        // var importNotificationsToUpdate = new List<ImportNotification>();
+        
         var valid = true;
         
-        // var movementsWithoutDocs = linkResult.Movements
-        //     .Where(m => m.BtmsStatus.LinkStatus != LinkStatusEnum.Error && m.Items.Any(i => i.Documents?.Length == 0));
-
         var hasNotifications = linkResult.Notifications.Count != 0;
         
         await Task.WhenAll(linkResult.Movements.Select(async m =>
@@ -43,6 +49,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             
             if (!errored && m.Items.Any(i => i.Documents?.Length == 0))
             {
+                m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.LinkStatus = LinkStatusEnum.Error;
                 m.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
@@ -54,6 +61,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                      m.UniqueDocumentReferences().Length == 1 && 
                      m.Items.Any(i => i.Checks?.Any(d => d.CheckCode == "H219") ?? false))
             {
+                m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.Segment = linkResult.Notifications.Single().Status switch
                 {
                     ImportNotificationStatusEnum.Validated => MovementSegmentEnum.Cdms205Ac1,
@@ -71,6 +79,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                          .SelectMany(i => (i.Checks ?? []).Select(d => d.CheckCode!))
                          .Count(d => d == "H219") > 1)
             {
+                m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms205Ac5;
 
                 save = true;

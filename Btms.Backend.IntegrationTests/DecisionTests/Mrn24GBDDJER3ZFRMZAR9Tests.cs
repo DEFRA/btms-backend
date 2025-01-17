@@ -197,7 +197,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-205")]
     // [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {

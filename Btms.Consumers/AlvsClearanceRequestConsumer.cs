@@ -7,6 +7,9 @@ using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Model;
+using Btms.Model.Cds;
+using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
@@ -45,7 +48,15 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
 
-                if (! await validationService.PostLinking(linkContext, linkResult, Context.CancellationToken))
+                // var m = new Movement()
+                // {
+                //     BtmsStatus = MovementStatus.Default()
+                // };
+                // (Movement)preProcessingResult.Record
+                // 
+                if (! await validationService.PostLinking(linkContext, linkResult, 
+                        triggeringMovement: preProcessingResult.Record,
+                        cancellationToken: Context.CancellationToken))
                 {
                     return;
                 }

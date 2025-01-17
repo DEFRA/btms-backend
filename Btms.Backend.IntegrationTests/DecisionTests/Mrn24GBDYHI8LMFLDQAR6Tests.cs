@@ -150,7 +150,7 @@ public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
     /// but will likely need to change as part of the error code work
     /// </summary>
     [Fact]
-    public void ShouldBeFlaggedAsError()
+    public void ShouldHaveCorrectBtmsStatus()
     {
         var movement = 
         Client

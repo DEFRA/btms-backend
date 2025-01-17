@@ -98,14 +98,18 @@ public enum MovementStatusEnum
     [EnumMember(Value = "Decision Match")]
     DecisionMatch = 0,
     
-    // [EnumMember(Value = "Incomplete")]
-    Incomplete = 1,
+    [EnumMember(Value = "Feature Missing")]
+    FeatureMissing = 1,
+
+    [EnumMember(Value = "Investigation Needed")]
+    InvestigationNeeded = -1,
+    
+    [EnumMember(Value = "Known Issue")]
+    KnownIssue = -2,
     
     [EnumMember(Value = "Data Issue")]
     DataIssue = -10,
 
-    [EnumMember(Value = "Investigation Needed")]
-    InvestigationNeeded = -1,
 }
 
 
