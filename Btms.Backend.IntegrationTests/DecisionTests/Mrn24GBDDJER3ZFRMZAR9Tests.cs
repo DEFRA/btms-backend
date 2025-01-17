@@ -11,7 +11,7 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
-[Trait("Category", "Integration")]
+[Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac5")]
 public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator>(output)
 {
@@ -51,7 +51,6 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     [Fact]
     public void ShouldHave2BtmsDecisions()
     {
-        //
         var actual = Client
             .GetSingleMovement()
             .Decisions;
@@ -156,22 +155,31 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
     }
     
     [Fact]
-    public void ShouldHaveChedType()
+    public void ShoulHaveCorrectBtmsStatus()
     {
-        Client
-            .GetSingleMovement()
-            .BtmsStatus.ChedTypes
-            .Should().Equal(ImportNotificationTypeEnum.Chedpp);
+        var movement = 
+            Client
+                .GetSingleMovement();
+            
+        movement
+            .BtmsStatus
+            .Should().BeEquivalentTo(
+                new { 
+                    LinkStatus = LinkStatusEnum.AllLinked,
+                    Segment = MovementSegmentEnum.Cdms205Ac5,
+                    ChedTypes = (ImportNotificationTypeEnum[])[ImportNotificationTypeEnum.Chedpp]
+                }
+            );
     }
     
-    [Fact]
-    public void ShouldBeLinked()
-    {
-        Client
-            .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
-    }
+    // [Fact]
+    // public void ShouldBeLinked()
+    // {
+    //     Client
+    //         .GetSingleMovement()
+    //         .BtmsStatus.LinkStatus
+    //         .Should().Be(LinkStatusEnum.Linked);
+    // }
     
     [Fact]
     public async Task ShouldNotHaveExceptions()
@@ -189,7 +197,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
-    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+    [FailingFact(jiraTicket:"CDMS-205")]
     // [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {

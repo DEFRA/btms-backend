@@ -25,8 +25,10 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
-        Client
-            .GetSingleMovement()
+        var movement = Client
+            .GetSingleMovement();
+            
+        movement
             .AlvsDecisionStatus.Decisions
             .First(d => d.Context.AlvsDecisionNumber == 2)
             .Context.DecisionComparison!.DecisionMatched
@@ -153,7 +155,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
+            .Should().Be(LinkStatusEnum.AllLinked);
     }
     
     [Fact]

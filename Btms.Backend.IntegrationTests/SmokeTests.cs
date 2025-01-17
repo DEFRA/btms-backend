@@ -5,9 +5,11 @@ using System.Text.Json.Serialization;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
 using Btms.Model;
+using Btms.Model.Auditing;
 using Btms.SyncJob;
 using FluentAssertions;
 using TestGenerator.IntegrationTesting.Backend;
+using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -69,7 +71,31 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
         jsonClientResponse.Data.Count.Should().Be(5);
+        
+        // Check Audit Entry
+        Client.GetFirstImportNotification()
+            .AuditEntries
+            .First(a => 
+                a.Status == "Created" )
+            .Id
+            .Should().StartWith("SmokeTest/");
+            
     }
+    
+    // [Fact]
+    // public void AuditEntryIdsShouldBeCorrectFormat()
+    // {
+    //     Client
+    //         .GetSingleMovement()
+    //         .AuditEntries
+    //         .Where(a => a.CreatedBy is CreatedBySystem.Alvs or CreatedBySystem.Cds && a.Status == "Created" )
+    //         .Should().AllSatisfy(
+    //             a =>
+    //             {
+    //
+    //                 a.Id.Should().StartWith("");
+    //             });
+    // }
 
     [Fact(Skip="Unclear how Checks was being set as it's not present in the clearance request text file :|")]
     public async Task SyncDecisions()

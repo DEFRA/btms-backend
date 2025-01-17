@@ -32,8 +32,14 @@ public class Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator(
     ILogger<Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDYHI8LMFLDQAR6");
 
+public class Mrn24GBDPN81VSULAGAR9ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDPN81VSULAGAR9");
+
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();

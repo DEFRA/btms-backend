@@ -32,14 +32,6 @@ public class MovementsByUniqueDocumentReferenceTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine("{0} aggregated items found", chart.Series!.Count);
         
-        chart.Series!.Count.Should().Be(3);
-        chart.Series.Should().HaveResults();
-        chart.Series.Should().BeSameLength();
-            
-        chart.Series!.Should().AllSatisfy(d =>
-        {
-            d.Dimension.Should().Be("Document Reference Count");
-        });
-        
+        chart.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }
