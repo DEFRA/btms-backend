@@ -27,8 +27,6 @@ internal class DownloadScenarioDataCommand : IRequest
 
     public IEnumerable<string> ClearanceRequests { get; set; } = [];
 
-    
-
     public class Handler : IRequestHandler<DownloadScenarioDataCommand>
     {
         public async Task Handle(DownloadScenarioDataCommand request, CancellationToken cancellationToken)
