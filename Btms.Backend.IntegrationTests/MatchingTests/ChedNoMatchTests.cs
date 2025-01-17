@@ -28,10 +28,10 @@ public class UnmatchedChedTests(ITestOutputHelper output)
         
 
         // // Act
-        var chedAImportNotification = Client.AsJsonApiClient().GetById(chedA.ReferenceNumber!, Path.Join("api", "import-notifications")).GetResourceObject<Model.Ipaffs.ImportNotification>();
-        var chedDImportNotification = Client.AsJsonApiClient().GetById(chedD.ReferenceNumber!, Path.Join("api", "import-notifications")).GetResourceObject<Model.Ipaffs.ImportNotification>();
-        var chedPImportNotification = Client.AsJsonApiClient().GetById(chedP.ReferenceNumber!, Path.Join("api", "import-notifications")).GetResourceObject<Model.Ipaffs.ImportNotification>();
-        var chedPPImportNotification = Client.AsJsonApiClient().GetById(chedPP.ReferenceNumber!, Path.Join("api", "import-notifications")).GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedAImportNotification = Client.AsJsonApiClient().GetById(chedA.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedDImportNotification = Client.AsJsonApiClient().GetById(chedD.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedPImportNotification = Client.AsJsonApiClient().GetById(chedP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
+        var chedPPImportNotification = Client.AsJsonApiClient().GetById(chedPP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
 
         
             
