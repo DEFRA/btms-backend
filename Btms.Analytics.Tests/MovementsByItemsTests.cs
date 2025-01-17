@@ -25,6 +25,6 @@ public class MovementsByItemsTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         
-        result.ShouldBeCorrect();
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }

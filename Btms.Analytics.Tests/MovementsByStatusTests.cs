@@ -22,7 +22,7 @@ public class MovementsByStatusTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
-        result.ShouldBeCorrect();
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
     
     [Fact]
@@ -34,7 +34,7 @@ public class MovementsByStatusTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.ShouldBeCorrect();
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
     
     [Fact]
@@ -46,6 +46,6 @@ public class MovementsByStatusTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
-        result.ShouldBeCorrect();
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }

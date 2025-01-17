@@ -1,3 +1,5 @@
+using Btms.Model;
+using Btms.Model.Cds;
 using FluentAssertions;
 
 namespace Btms.Analytics.Tests.Helpers;
@@ -13,18 +15,28 @@ public static class TestAssertionExtensions
         return new SingleSeriesDatasetAssertions(instance);
     }
     
-    public static void ShouldBeCorrect(this List<DatetimeSeries> result)
+    private static void ShouldBeEquivalentToLinkStatusEnum(this List<string> result)
     {
-        result.Count.Should().Be(4);
+        var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
+
+        var fields = enumLookup.GetValues();
+        result.Count().Should().Be(fields.Count());
         
-        result.Select(r => r.Name)
-            .Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
+        result
+            .Should().BeEquivalentTo(fields);
     }
     
-    public static void ShouldBeCorrect(this List<DatetimeSeries> result, DateTime from, DateTime to,
+    public static void ShouldBeCorrectBasedOnLinkStatusEnum(this List<DatetimeSeries> result)
+    {
+        result.Select(r => r.Name)
+            .ToList()
+            .ShouldBeEquivalentToLinkStatusEnum();
+    }
+    
+    public static void ShouldBeCorrectBasedOnLinkStatusEnum(this List<DatetimeSeries> result, DateTime from, DateTime to,
         AggregationPeriod aggregationPeriod = AggregationPeriod.Day)
     {
-        result.ShouldBeCorrect();
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
 
         var periodTimespan = to - from;
         var periods = (int)(aggregationPeriod == AggregationPeriod.Hour ? periodTimespan.TotalHours : periodTimespan.TotalDays);
@@ -41,11 +53,12 @@ public static class TestAssertionExtensions
     }
     
     
-    public static void ShouldBeCorrect(this List<Series<ByNumericDimensionResult>> result)
+    public static void ShouldBeCorrectBasedOnLinkStatusEnum(this List<Series<ByNumericDimensionResult>> result)
     {
         
-        result.Count.Should().Be(4);
-        result.Select(r => r.Name).Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
+        result.Select(r => r.Name)
+            .ToList()
+            .ShouldBeEquivalentToLinkStatusEnum();
         
         result.Should().AllSatisfy(r =>
         {
@@ -58,15 +71,20 @@ public static class TestAssertionExtensions
         result.Should().BeSameLength();
     }
 
-    public static void ShouldBeCorrect(this SingleSeriesDataset result)
+    public static void ShouldBeCorrectBasedOnLinkStatusEnum(this SingleSeriesDataset result)
     {
-        result.Values.Count.Should().Be(4);
-        result.Values.Keys.Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
+        result.Values.Keys
+            .ToList()
+            .ShouldBeEquivalentToLinkStatusEnum();
     }
     
-    public static void ShouldBeCorrect(this MultiSeriesDataset<ByNumericDimensionResult> result)
+    public static void ShouldBeCorrectBasedOnLinkStatusEnum(this MultiSeriesDataset<ByNumericDimensionResult> result)
     {
-        result.Series!.Count.Should().Be(4);
+        result.Series.Select(s => s.Name)
+            .ToList()
+            .ShouldBeEquivalentToLinkStatusEnum();
+        
+        // result.Series!.Count.Should().Be(4);
         result.Series.Should().HaveResults();
         result.Series.Should().BeSameLength();
             

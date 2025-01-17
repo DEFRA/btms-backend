@@ -25,7 +25,6 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
         Movement? triggeringMovement = null, ImportNotification? triggeringNotification = null,
         CancellationToken cancellationToken = default)
     {
-        // , Movement? triggeringMovement = null, ImportNotification? triggeringNotification = null
         if (!(triggeringMovement.HasValue() || triggeringNotification.HasValue()))
         {
             throw new InvalidOperationException(
@@ -40,10 +39,10 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
         
         await Task.WhenAll(linkResult.Movements.Select(async m =>
         {
-            // var save = false;
-            var errored = m.BtmsStatus.LinkStatus == LinkStatusEnum.Error;
+            if (m.BtmsStatus.LinkStatus == LinkStatusEnum.Error) return;
+            
             var chedTypes = m.BtmsStatus.ChedTypes;
-
+            
             var notificationRelationshipIds = m.UniqueNotificationRelationshipIds();
             var documentReferenceIds = m.UniqueDocumentReferenceIds();
 
@@ -60,18 +59,16 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                             ? LinkStatusEnum.PartiallyLinked
                             : LinkStatusEnum.Investigate;
                 
-            if (!errored && m.Items.Any(i => i.Documents?.Length == 0))
+            if (m.Items.Any(i => i.Documents?.Length == 0))
             {
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
-                // m.BtmsStatus.LinkStatus = LinkStatusEnum.Error;
                 m.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
 
                 valid = false;
-                // save = true;
             }
             else if (hasNotifications && 
-                     m.UniqueDocumentReferences().Length == 1 && 
+                     documentReferenceIds.Count == 1 && 
                      m.Items.Any(i => i.Checks?.Any(d => d.CheckCode == "H219") ?? false))
             {
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
@@ -83,8 +80,6 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                     ImportNotificationStatusEnum.InProgress or ImportNotificationStatusEnum.Submitted => MovementSegmentEnum.Cdms205Ac4,
                     _ => null
                 };
-
-                // save = true;
             }
             else if (hasNotifications && 
                      m.UniqueDocumentReferences().Length > 1 &&
@@ -94,50 +89,12 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             {
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms205Ac5;
-
-                // save = true;
             }
 
-            // if (save)
-            // {
             await dbContext.Movements.Update(m, cancellationToken: cancellationToken);
-            // }
+            
         }));
         
-        // if (movementsWithoutDocs.Any())
-        // {
-        //     foreach (var movementsWithOutDoc in movementsWithoutDocs)
-        //     {
-        //         valid = false;
-        //         
-        //         movementsWithOutDoc.BtmsStatus.LinkStatus = LinkStatusEnum.Error;
-        //         movementsWithOutDoc.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
-        //         movementsWithOutDoc.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
-        //         
-        //         movementsToUpdate.AddIfNotPresent(movementsWithOutDoc);
-        //     }
-        // }
-        
-        // Segment the movements for later use
-
-        // if (linkResult.Notifications.Any())
-        // {
-        //     linkResult.Movements.ForEach(m =>
-        //     {
-        //         if (m.UniqueDocumentReferences().Length == 1 && 
-        //             linkResult.Notifications.Single().Status == ImportNotificationStatusEnum.Validated &&
-        //             m.Items.Any(i => i.Checks?.Any(d => d.CheckCode == "H219") ?? false)
-        //         )
-        //         {
-        //             m.BtmsStatus.Segment = MovementSegmentEnum.Cdms205Ac1;
-        //         
-        //             movementsToUpdate.AddIfNotPresent(m);
-        //         }
-        //     });    
-        // }
-        
-        // await importNotificationsToUpdate.ForEachAsync(async n => await dbContext.Notifications.Update(n, cancellationToken: cancellationToken));
-
         metrics.Validated();
 
         return valid;

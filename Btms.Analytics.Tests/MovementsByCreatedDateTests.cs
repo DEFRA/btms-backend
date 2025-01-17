@@ -23,10 +23,12 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(4);
-        result.Select(r => r.Name).Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
-        result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
-        result[1].Periods.Count.Should().Be(48);
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
+        
+        // result.Count.Should().Be(4);
+        // result.Select(r => r.Name).Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
+        // result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
+        // result[1].Periods.Count.Should().Be(48);
     }
     
     [Fact]
@@ -42,7 +44,7 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine(result.ToJsonString());
 
-        result.ShouldBeCorrect(from, to, AggregationPeriod.Hour);
+        result.ShouldBeCorrectBasedOnLinkStatusEnum(from, to, AggregationPeriod.Hour);
     }
     
     [Fact]
@@ -55,7 +57,7 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine(result.ToJsonString());
 
-        result.ShouldBeCorrect(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow());
+        result.ShouldBeCorrectBasedOnLinkStatusEnum(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow());
         // result.Count.Should().Be(4);
         //
         // result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);

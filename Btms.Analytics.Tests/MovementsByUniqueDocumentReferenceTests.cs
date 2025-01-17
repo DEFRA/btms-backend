@@ -32,6 +32,6 @@ public class MovementsByUniqueDocumentReferenceTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine("{0} aggregated items found", chart.Series!.Count);
         
-        chart.ShouldBeCorrect();
+        chart.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }

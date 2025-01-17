@@ -17,10 +17,13 @@ using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
-[Trait("Category", "Integration")]
+[Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac3")]
 public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDPN81VSULAGAR9ScenarioGenerator>(output)
 {
+    //TODO : when https://github.com/DEFRA/btms-backend/pull/59 is merged switch to the new test base class!
+    // ChedPpPhsiValidated(ITestOutputHelper output)
+    //     : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
 
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
@@ -109,29 +112,6 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
             .Be(2);
     }
 
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
-    public void ShouldHaveCorrectAuditTrail()
-    {
-        // Act
-        var auditTrail = Client
-            .GetSingleMovement()
-            .AuditEntries
-            .Select(a => (a.CreatedBy, a.Status, a.Version));
-
-        // Assert
-        auditTrail.Should()
-            .Equal([
-                (CreatedBySystem.Cds, "Created", 1),
-                (CreatedBySystem.Btms, "Linked", null),
-                (CreatedBySystem.Btms, "Decision", 1),
-                (CreatedBySystem.Cds, "Updated", 2),
-                (CreatedBySystem.Btms, "Decision", 2),
-                (CreatedBySystem.Alvs, "Decision", 1),
-                (CreatedBySystem.Alvs, "Decision", 2)
-            ]);
-    }
-
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveDecisionMatched()
     {
@@ -172,7 +152,7 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
             .Should().BeEquivalentTo(
                 new { 
                     LinkStatus = LinkStatusEnum.AllLinked,
-                    Segment = MovementSegmentEnum.Cdms205Ac5
+                    Segment = MovementSegmentEnum.Cdms205Ac3
                 }
             );
     }

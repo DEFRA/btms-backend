@@ -19,10 +19,10 @@ public static class ImportNotificationTypeEnumExtensions
         };
     }
     
-    public static ImportNotificationTypeEnum? GetChedTypeFromCheckCode(this string documentCode)
+    public static ImportNotificationTypeEnum? GetChedTypeFromCheckCode(this string checkCode)
     {
         //This is the mapping from https://eaflood.atlassian.net/wiki/spaces/ALVS/pages/5400920093/DocumentCode+CheckCode+Mapping
-        return documentCode switch
+        return checkCode switch
         {
             "H221" => ImportNotificationTypeEnum.Cveda,
             "H223" => ImportNotificationTypeEnum.Ced,

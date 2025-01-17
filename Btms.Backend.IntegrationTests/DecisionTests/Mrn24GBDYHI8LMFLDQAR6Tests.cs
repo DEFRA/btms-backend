@@ -160,7 +160,7 @@ public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
             .BtmsStatus
             .Should().BeEquivalentTo(
                 new { 
-                    LinkStatus = LinkStatusEnum.Error,
+                    LinkStatus = LinkStatusEnum.NoLinks,
                     LinkStatusDescription = "ALVSVAL318",
                     Segment = MovementSegmentEnum.Cdms249
                 }
