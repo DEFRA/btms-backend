@@ -110,12 +110,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             Relationships.Notifications.Data.AddRange(dataItems);
             linked = true;
         }
-
-        Relationships.Notifications.Matched = Items
-            .Select(x => x.ItemNumber)
-            .All(itemNumber =>
-                Relationships.Notifications.Data.Exists(x => x.Matched.GetValueOrDefault() && x.SourceItem == itemNumber));
-
+        
         //TODO : This would be the right time to call AddLinkStatus I think
         // but relies on linking being moved into Business
         // this.AddLinkStatus();
@@ -132,8 +127,6 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         {
             Relationships.Notifications.Data.Remove(relationship);
         }
-
-        Relationships.Notifications.Matched = Relationships.Notifications.Data.TrueForAll(x => x.Matched.GetValueOrDefault());
     }
     
     [BsonIgnore]

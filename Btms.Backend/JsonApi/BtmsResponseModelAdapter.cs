@@ -72,9 +72,6 @@ public class BtmsResponseModelAdapter(
 
 
             var meta = new Dictionary<string, object?>();
-
-            meta.Add("matched", relationship.Item2.Matched);
-
             resourceObject.Relationships.Add(relationship.Item1,
                 new RelationshipObject
                 {
