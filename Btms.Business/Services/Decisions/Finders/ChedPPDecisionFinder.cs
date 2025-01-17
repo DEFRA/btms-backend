@@ -11,9 +11,9 @@ public class ChedPPDecisionFinder : IDecisionFinder
     {
         if (notification.TryGetHoldDecision(out var code))
         {
-            return new DecisionFinderResult(code!.Value);
+            return new DecisionFinderResult(code!.Value, DecisionType.Ched);
         }
 
-        return new DecisionFinderResult(DecisionCode.X00);
+        return new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched);
     }
 }

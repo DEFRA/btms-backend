@@ -36,10 +36,10 @@ public class IuuDecisionFinderTests
     }
     
     [Theory]
-    [InlineData(null, DecisionCode.X00, "TBC")]
-    [InlineData(ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "TBC")]
-    [InlineData(ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "TBC")]
-    [InlineData(ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "TBC")]
+    [InlineData(null, DecisionCode.X00, "IUU None")]
+    [InlineData(ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU OK")]
+    [InlineData(ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not Compliant")]
+    [InlineData(ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU NA")]
     public void FindDecisionTest(ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
     {
         var notification = new ImportNotification
@@ -59,6 +59,6 @@ public class IuuDecisionFinderTests
 
         result.DecisionCode.Should().Be(expectedDecisionCode);
         result.DecisionReason.Should().Be(expectedDecisionReason);
-        result.CheckCodes.Should().BeEquivalentTo(["H224", "C673"]);
+        result.DecisionType.Should().Be(DecisionType.Iuu);
     }
 }

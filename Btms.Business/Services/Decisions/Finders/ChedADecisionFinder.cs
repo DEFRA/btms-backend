@@ -10,7 +10,7 @@ public class ChedADecisionFinder : IDecisionFinder
     {
         if (notification.TryGetHoldDecision(out var code))
         {
-            return new DecisionFinderResult(code!.Value);
+            return new DecisionFinderResult(code!.Value, DecisionType.Ched);
         }
 
         var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
@@ -18,19 +18,19 @@ public class ChedADecisionFinder : IDecisionFinder
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch
             {
-                DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit => new DecisionFinderResult(DecisionCode.E03),
-                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03),
-                DecisionDecisionEnum.AcceptableForTemporaryImport => new DecisionFinderResult(DecisionCode.C05),
-                DecisionDecisionEnum.HorseReEntry => new DecisionFinderResult(DecisionCode.C06),
-                _ => new DecisionFinderResult(DecisionCode.X00)
+                DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit => new DecisionFinderResult(DecisionCode.E03, DecisionType.Ched),
+                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, DecisionType.Ched),
+                DecisionDecisionEnum.AcceptableForTemporaryImport => new DecisionFinderResult(DecisionCode.C05, DecisionType.Ched),
+                DecisionDecisionEnum.HorseReEntry => new DecisionFinderResult(DecisionCode.C06, DecisionType.Ched),
+                _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
-                DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter => new DecisionFinderResult(DecisionCode.N02),
-                DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04),
-                _ => new DecisionFinderResult(DecisionCode.X00)
+                DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter => new DecisionFinderResult(DecisionCode.N02, DecisionType.Ched),
+                DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, DecisionType.Ched),
+                _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
             },
-            _ => new DecisionFinderResult(DecisionCode.X00)
+            _ => new DecisionFinderResult(DecisionCode.X00, DecisionType.Ched)
         };
     }
 }

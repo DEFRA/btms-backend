@@ -22,7 +22,7 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
-    public async Task When_processing_decisions_for_ched_type_notifications_not_requiring_iuu_notifications_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    public async Task When_processing_decisions_for_ched_type_notifications_not_requiring_iuu_check_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
         var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: false);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
@@ -39,7 +39,7 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
-    public async Task When_processing_decisions_when_iuu_notifications_not_indicated_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    public async Task When_processing_decisions_when_iuu_check_not_indicated_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
         var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: null);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
@@ -56,7 +56,7 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode)]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode)]
-    public async Task When_processing_decisions_when_requiring_iuu_notifications_Then_should_use_matching_ched_decision_and_iuu_decision_finders(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
+    public async Task When_processing_decisions_when_requiring_iuu_check_Then_should_use_matching_ched_decision_and_iuu_decision_finders(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode)
     {
         var decisionContext = CreateDecisionContext(targetImportNotificationType, iuuCheckRequired: true);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
@@ -65,8 +65,20 @@ public class DecisionServiceTests
         var decisionResult = await decisionService.Process(decisionContext, CancellationToken.None);
 
         decisionResult.Decisions.Should().HaveCount(2);
-        decisionResult.Decisions.Should().Contain(x => x.DecisionCode == expectedDecisionCode);
-        decisionResult.Decisions.Should().Contain(x => x.DecisionCode == IuuDecisionCode);
+        decisionResult.Decisions.Should().Contain(x => x.DecisionCode == expectedDecisionCode && x.DecisionType == DecisionType.Ched);
+        decisionResult.Decisions.Should().Contain(x => x.DecisionCode == IuuDecisionCode && x.DecisionType == DecisionType.Iuu);
+    }
+    
+    [Fact]
+    public async Task When_processing_unknown_decisions_Then_should_throw()
+    {
+        var decisionContext = CreateDecisionContext((ImportNotificationTypeEnum)999, iuuCheckRequired: false);
+        var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0]);
+        var decisionService = serviceProvider.GetRequiredService<IDecisionService>();
+
+        var act = () => decisionService.Process(decisionContext, CancellationToken.None);
+        
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
     private const DecisionCode ChedDDecisionCode = DecisionCode.C05;
@@ -86,18 +98,18 @@ public class DecisionServiceTests
     
     private ServiceProvider ConfigureDecisionFinders(ImportNotification notification)
     {
-        ConfigureDecisionFinders<ChedDDecisionFinder>(notification, ChedDDecisionCode);
-        ConfigureDecisionFinders<ChedADecisionFinder>(notification, ChedADecisionCode);
-        ConfigureDecisionFinders<ChedPDecisionFinder>(notification, ChedPDecisionCode);
-        ConfigureDecisionFinders<ChedPPDecisionFinder>(notification, ChedPPDecisionCode);
-        ConfigureDecisionFinders<IuuDecisionFinder>(notification, IuuDecisionCode);
+        ConfigureDecisionFinders<ChedDDecisionFinder>(notification, ChedDDecisionCode, DecisionType.Ched);
+        ConfigureDecisionFinders<ChedADecisionFinder>(notification, ChedADecisionCode, DecisionType.Ched);
+        ConfigureDecisionFinders<ChedPDecisionFinder>(notification, ChedPDecisionCode, DecisionType.Ched);
+        ConfigureDecisionFinders<ChedPPDecisionFinder>(notification, ChedPPDecisionCode, DecisionType.Ched);
+        ConfigureDecisionFinders<IuuDecisionFinder>(notification, IuuDecisionCode, DecisionType.Iuu);
         return _serviceCollection.BuildServiceProvider();
     }
 
-    private void ConfigureDecisionFinders<T>(ImportNotification notification, DecisionCode expectedDecisionCode) where T : class, IDecisionFinder
+    private void ConfigureDecisionFinders<T>(ImportNotification notification, DecisionCode expectedDecisionCode, DecisionType decisionType) where T : class, IDecisionFinder
     {
         var decisionFinder = Substitute.ForTypeForwardingTo<IDecisionFinder, T>();
-        decisionFinder.FindDecision(notification).Returns(new DecisionFinderResult(expectedDecisionCode));
+        decisionFinder.FindDecision(notification).Returns(new DecisionFinderResult(expectedDecisionCode, decisionType));
         _serviceCollection.AddSingleton(decisionFinder);
     }
 

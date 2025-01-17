@@ -47,7 +47,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
             {
                 if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
                 {
-                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, DecisionCode.X00);
+                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, DecisionCode.X00, DecisionType.None);
                 }
             }
         }
@@ -59,7 +59,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
                 var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
                 var decisionCodes = GetDecisions(notification);
                 foreach (var decisionCode in decisionCodes) 
-                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode, decisionCode.DecisionReason, decisionCode.CheckCodes);
+                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode, decisionCode.DecisionType, decisionCode.DecisionReason);
             }
         }
 
