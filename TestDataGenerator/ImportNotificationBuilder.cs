@@ -173,6 +173,13 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         });
     }
     
+    public ImportNotificationBuilder<T> WithOptionalStep(bool execute, Func<ImportNotificationBuilder<T>, ImportNotificationBuilder<T>> func)
+    {
+        if (!execute) return this;
+
+        return func(this);
+    }
+    
     public ImportNotificationBuilder<T> WithInspectionStatus(InspectionRequiredEnum inspectionRequired = InspectionRequiredEnum.Required)
     {
         return Do(x =>
