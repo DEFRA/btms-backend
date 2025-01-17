@@ -372,22 +372,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
             .Select(m => new
             {
-                DecisionStatus = "None", // d.AlvsDecisionStatus.Context.DecisionComparison != null ? d.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus.ToString() : "None",
+                DecisionStatus = m.AlvsDecisionStatus.Context.DecisionComparison == null ?
+                    DecisionStatusEnum.None:
+                    m.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus,
                 DecisionMatched = false,
                 m.BtmsStatus,
                 m.AlvsDecisionStatus
             })
-            // .SelectMany(d => d
-            //     .AlvsDecisionStatus.Context.DecisionComparison!.Checks
-            //     .Select(c => new
-            //     {
-            //         Movement = d, Check = c,
-            //         //Add additional analysis before building it into the write time analysis
-            //         d.BtmsStatus.Segment
-            //     }))
             .GroupBy(d => new
             {
-                d.BtmsStatus.Segment,
+                Segment = d.BtmsStatus.Segment ?? MovementSegmentEnum.None,
                 d.BtmsStatus.LinkStatus,
                 d.BtmsStatus.Status,
                 d.DecisionStatus,
@@ -413,7 +407,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .OrderBy(s => s.Key)
             // .Where(g => g)
             .ToDictionary(
-                g => g.Key.HasValue ? enumLookup.GetValue(g.Key.Value) : "None",
+                g => enumLookup.GetValue(g.Key),
                 g => g.Sum
             );
         
@@ -429,7 +423,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 {
                     Fields = new Dictionary<string, string>()
                     {
-                        { "Classification", a.Key.Segment.HasValue ? enumLookup.GetValue(a.Key.Segment.Value) : "None" },
+                        // { "Classification", enumLookup.GetValue(a.Key!.Segment) },
+                        { "Classification", enumLookup.GetValue(a.Key!.Segment!) },
                         // { "CheckCode", a.Key.CheckCode! },
                         // { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         // { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }

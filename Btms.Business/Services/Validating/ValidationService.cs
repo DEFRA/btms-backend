@@ -61,10 +61,13 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                 
             if (m.Items.Any(i => i.Documents?.Length == 0))
             {
+                // One of the error states from CDMS-242
+                // https://eaflood.atlassian.net/wiki/spaces/ALVS/pages/5400723501/To-be+HMRCErrorNotification+-+Error+Codes
+                
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
-
+                
                 valid = false;
             }
             else if (hasNotifications && 

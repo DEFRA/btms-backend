@@ -131,6 +131,8 @@ public enum MovementSegmentEnum
     //Errors
     [EnumMember(Value = "CDMS-249")]
     Cdms249,
+    
+    None,
 }
 
 public class MovementStatus
@@ -246,6 +248,9 @@ public enum DecisionStatusEnum
     
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded,
+    
+    [EnumMember(Value = "None")]
+    None,
 }
 
 public partial class SummarisedDecisionContext //

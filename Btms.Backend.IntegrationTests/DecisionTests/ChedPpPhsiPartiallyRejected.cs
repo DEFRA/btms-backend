@@ -16,15 +16,24 @@ using Xunit.Abstractions;
 using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
+/// <summary>
+/// 
+/// </summary>
+/// <param name="output"></param>
+///
+/// TODO : when https://github.com/DEFRA/btms-backend/pull/59 is merged switch to the new test base class!
+// [Trait("Category", "Integration")]
+// public class ChedPpPhsiTests(ITestOutputHelper output) : MultipleScenarioGeneratorBaseTest(output)
+// {
 
 [Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac3")]
 public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24GBDPN81VSULAGAR9ScenarioGenerator>(output)
 {
-    //TODO : when https://github.com/DEFRA/btms-backend/pull/59 is merged switch to the new test base class!
-    // ChedPpPhsiValidated(ITestOutputHelper output)
-    //     : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
 
+    /// <summary>
+    /// Should become [InlineData(typeof(Mrn24GBDPN81VSULAGAR9ScenarioGenerator), "H01", MovementSegmentEnum.Cdms205Ac3)]
+    /// </summary>
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
