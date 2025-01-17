@@ -52,13 +52,13 @@ public class SingleChedH02Tests(ITestOutputHelper output)
 
         // Act
         var chedAMovement = Client.AsJsonApiClient()
-            .GetById(chedAClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedAClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedDMovement = Client.AsJsonApiClient()
-            .GetById(chedDClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedDClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedPMovement = Client.AsJsonApiClient()
-            .GetById(chedPClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedPPMovement = Client.AsJsonApiClient()
-            .GetById(chedPPClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedPPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
 
         // Assert
         string decisionCode = "";
@@ -126,11 +126,11 @@ public class SingleChedDecisionTests(ITestOutputHelper output)
 
         // Act
         var chedAMovement = Client.AsJsonApiClient()
-            .GetById(chedAClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedAClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedDMovement = Client.AsJsonApiClient()
-            .GetById(chedDClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedDClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
         var chedPMovement = Client.AsJsonApiClient()
-            .GetById(chedPClearanceRequest!.Header!.EntryReference!, Path.Join("api", "movements")).GetResourceObject<Movement>();
+            .GetById(chedPClearanceRequest!.Header!.EntryReference!, "api/movements").GetResourceObject<Movement>();
 
         // Assert
         string decisionCode = "";
@@ -164,7 +164,7 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
     {
         string decisionCode = "";
         var expectedDecision = "H02";
-        var movements = Client.AsJsonApiClient().Get(Path.Join("api", "movements")).GetResourceObjects<Movement>().Single().Decisions
+        var movements = Client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>().Single().Decisions
             .OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
             .All(i =>
             {
