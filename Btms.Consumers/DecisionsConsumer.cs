@@ -25,9 +25,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeDecision(auditId!, internalClearanceRequest, notificationContext);
-                // .Build();
-
-            // var merged = existingMovement.MergeDecision(auditId!, internalClearanceRequest);
+            
             if (existingMovementBuilder.HasChanges)
             {
                 await dbContext.Movements.Update(existingMovementBuilder.Build(), existingMovement._Etag);
