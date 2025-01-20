@@ -16,6 +16,7 @@ public enum DecisionCode
     N07,
     X00,
     
+    E94,    // IUU not indicated in PartTwo?.ControlAuthority?.IuuCheckRequired but "H224" requested in Items[]?.Checks[]?.CheckCode
     E95,    // Unexpected value in PartTwo?.Decision?.IuuOption
     E96,    // Unexpected value in PartTwo?.Decision?.DecisionEnum
     E97,    // Unexpected value in PartTwo?.Decision?.NotAcceptableAction

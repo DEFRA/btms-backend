@@ -14,7 +14,7 @@ public class ChedPPDecisionFinderTests
     [InlineData(null, ImportNotificationTypeEnum.Cvedp, false)]
     [InlineData(null, ImportNotificationTypeEnum.Chedpp, true)]
     [InlineData(false, ImportNotificationTypeEnum.Chedpp, true)]
-    [InlineData(true, ImportNotificationTypeEnum.Chedpp, true)]
+    [InlineData(true, ImportNotificationTypeEnum.Chedpp, false)]
     public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
     {
         var notification = new ImportNotification

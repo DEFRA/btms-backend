@@ -71,7 +71,7 @@ public static class DecisionMessageBuilder
         
         foreach (var itemCheck in item.Checks)
         {
-            var maxDecisionResult = itemDecisions.Where(x => x.DecisionType.ForCheckCode(itemCheck.CheckCode)).OrderByDescending(x => x.DecisionCode).First();
+            var maxDecisionResult = itemDecisions.OrderByDescending(x => x.DecisionCode).First();
             yield return new Check
             {
                 CheckCode = itemCheck.CheckCode,

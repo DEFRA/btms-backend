@@ -9,39 +9,37 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class IuuDecisionFinderTests
 {
     [Theory]
-    [InlineData(null, ImportNotificationTypeEnum.Cvedp, false)]
-    [InlineData(null, null, false)]
-    [InlineData(false, ImportNotificationTypeEnum.Cvedp, false)]
-    [InlineData(false, null, false)]
-    [InlineData(true, ImportNotificationTypeEnum.Cvedp, true)]
-    [InlineData(true, null, true)]
-    public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222", "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, false, null)]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, false)]
+    
+    [InlineData(ImportNotificationTypeEnum.Cveda, false, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Ced, false, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H224")]
+    [InlineData(null, false, "H224")]
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, params string[]? checkCodes)
     {
         var notification = new ImportNotification
         {
-            ImportNotificationType = importNotificationType,
-            PartTwo = new PartTwo
-            {
-                ControlAuthority = new ControlAuthority
-                {
-                    IuuCheckRequired = iuuCheckRequired
-                }
-            }
+            ImportNotificationType = importNotificationType
         };
         var sut = new IuuDecisionFinder();
 
-        var result = sut.CanFindDecision(notification);
+        var result = sut.CanFindDecision(notification, checkCodes);
 
         result.Should().Be(expectedResult);
     }
     
     [Theory]
-    [InlineData(ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU OK")]
-    [InlineData(ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not Compliant")]
-    [InlineData(ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU NA")]
-    [InlineData(null, DecisionCode.X00, "IUU None")]
-    [InlineData((ControlAuthorityIuuOptionEnum)999, DecisionCode.E95, "IUU Unknown")]
-    public void FindDecisionTest(ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
+    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU OK")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not Compliant")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU NA")]
+    [InlineData(true, null, DecisionCode.X00, "IUU None")]
+    [InlineData(true, (ControlAuthorityIuuOptionEnum)999, DecisionCode.E95, "IUU Unknown")]
+    [InlineData(false, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.E94, "IUU Not Indicated")]
+    public void FindDecisionTest(bool iuuCheckRequired, ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
     {
         var notification = new ImportNotification
         {
@@ -49,7 +47,7 @@ public class IuuDecisionFinderTests
             {
                 ControlAuthority = new ControlAuthority
                 {
-                    IuuCheckRequired = true,
+                    IuuCheckRequired = iuuCheckRequired,
                     IuuOption = iuuOption
                 }
             }
@@ -60,6 +58,5 @@ public class IuuDecisionFinderTests
 
         result.DecisionCode.Should().Be(expectedDecisionCode);
         result.DecisionReason.Should().Be(expectedDecisionReason);
-        result.DecisionType.Should().Be(DecisionType.Iuu);
     }
 }

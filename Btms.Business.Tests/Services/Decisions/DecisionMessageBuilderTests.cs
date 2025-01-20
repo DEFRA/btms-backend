@@ -13,9 +13,23 @@ public class DecisionMessageBuilderTests
     [Fact]
     public async Task Test()
     {
-        var decisionResult = new DecisionResult();
-        decisionResult.AddDecision("movement-1", 1, "", DecisionCode.C03, DecisionType.Ched, "reason-1");
-        var decisionContext = new DecisionContext
+        var decisionResult = CreateDecisionResult();
+        var decisionContext = CreateDecisionContext();
+
+        var decisions = await DecisionMessageBuilder.Build(decisionContext, decisionResult);
+
+        decisions.Should().HaveCount(1);
+        decisions[0].Items.Should().HaveCount(1);
+        decisions[0].Items?[0].Checks.Should().HaveCount(1);
+        decisions[0].Items?[0].Checks?[0].CheckCode.Should().Be("A111");
+        decisions[0].Items?[0].Checks?[0].DecisionCode.Should().Be("C03");
+        decisions[0].Items?[0].Checks?[0].DecisionReasons.Should().HaveCount(1);
+        decisions[0].Items?[0].Checks?[0].DecisionReasons?[0].Should().Be("reason-1");
+    }
+
+    private static DecisionContext CreateDecisionContext()
+    {
+        return new DecisionContext
         (
             [],
             [
@@ -41,15 +55,12 @@ public class DecisionMessageBuilderTests
             ],
             new MatchingResult()
         );
+    }
 
-        var decisions = await DecisionMessageBuilder.Build(decisionContext, decisionResult);
-
-        decisions.Should().HaveCount(1);
-        decisions[0].Items.Should().HaveCount(1);
-        decisions[0].Items?[0].Checks.Should().HaveCount(1);
-        decisions[0].Items?[0].Checks?[0].CheckCode.Should().Be("A111");
-        decisions[0].Items?[0].Checks?[0].DecisionCode.Should().Be("C03");
-        decisions[0].Items?[0].Checks?[0].DecisionReasons.Should().HaveCount(1);
-        decisions[0].Items?[0].Checks?[0].DecisionReasons?[0].Should().Be("reason-1");
+    private static DecisionResult CreateDecisionResult()
+    {
+        var decisionResult = new DecisionResult();
+        decisionResult.AddDecision("movement-1", 1, "", DecisionCode.C03, "reason-1");
+        return decisionResult;
     }
 }

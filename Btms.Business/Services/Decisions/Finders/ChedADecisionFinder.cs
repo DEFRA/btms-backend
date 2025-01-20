@@ -4,13 +4,13 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedADecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cveda;
+    public bool CanFindDecision(ImportNotification notification, string[]? _ = null) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cveda && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification)
+    public DecisionFinderResult FindDecision(ImportNotification notification, string[]? _ = null)
     {
         if (notification.TryGetHoldDecision(out var code))
         {
-            return new DecisionFinderResult(code!.Value, DecisionType.Ched);
+            return new DecisionFinderResult(code!.Value);
         }
 
         var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
@@ -18,19 +18,19 @@ public class ChedADecisionFinder : IDecisionFinder
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch
             {
-                DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit => new DecisionFinderResult(DecisionCode.E03, DecisionType.Ched),
-                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, DecisionType.Ched),
-                DecisionDecisionEnum.AcceptableForTemporaryImport => new DecisionFinderResult(DecisionCode.C05, DecisionType.Ched),
-                DecisionDecisionEnum.HorseReEntry => new DecisionFinderResult(DecisionCode.C06, DecisionType.Ched),
-                _ => new DecisionFinderResult(DecisionCode.E96, DecisionType.Ched)
+                DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit => new DecisionFinderResult(DecisionCode.E03),
+                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03),
+                DecisionDecisionEnum.AcceptableForTemporaryImport => new DecisionFinderResult(DecisionCode.C05),
+                DecisionDecisionEnum.HorseReEntry => new DecisionFinderResult(DecisionCode.C06),
+                _ => new DecisionFinderResult(DecisionCode.E96)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
-                DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter => new DecisionFinderResult(DecisionCode.N02, DecisionType.Ched),
-                DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, DecisionType.Ched),
-                _ => new DecisionFinderResult(DecisionCode.E97, DecisionType.Ched)
+                DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter => new DecisionFinderResult(DecisionCode.N02),
+                DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04),
+                _ => new DecisionFinderResult(DecisionCode.E97)
             },
-            _ => new DecisionFinderResult(DecisionCode.E99, DecisionType.Ched)
+            _ => new DecisionFinderResult(DecisionCode.E99)
         };
     }
 }

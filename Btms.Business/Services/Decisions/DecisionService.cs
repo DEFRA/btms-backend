@@ -1,4 +1,5 @@
 using Btms.Business.Services.Decisions.Finders;
+using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
@@ -47,7 +48,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
             {
                 if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
                 {
-                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, DecisionCode.X00, DecisionType.None);
+                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, DecisionCode.X00);
                 }
             }
         }
@@ -57,22 +58,24 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
             if (decisionContext.HasChecks(match.MovementId, match.ItemNumber))
             {
                 var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
-                var decisionCodes = GetDecisions(notification);
+                var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
+                var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+                var decisionCodes = GetDecisions(notification, checkCodes);
                 foreach (var decisionCode in decisionCodes) 
-                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode, decisionCode.DecisionType, decisionCode.DecisionReason);
+                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode, decisionCode.DecisionReason);
             }
         }
 
         return Task.FromResult(decisionsResult);
     }
 
-    private DecisionFinderResult[] GetDecisions(ImportNotification notification)
+    private DecisionFinderResult[] GetDecisions(ImportNotification notification, string[]? checkCodes)
     {
-        var finders = decisionFinders.Where(x => x.CanFindDecision(notification)).ToArray();
+        var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCodes)).ToArray();
 
         if (finders.Length == 0) throw new InvalidOperationException("Invalid ImportNotificationType / IUUCheckRequired");
 
-        var results = finders.Select(x => x.FindDecision(notification)).ToArray();
+        var results = finders.Select(x => x.FindDecision(notification, checkCodes)).ToArray();
 
         var item = 1;
         foreach (var result in results)

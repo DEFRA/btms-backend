@@ -4,6 +4,6 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public interface IDecisionFinder
 {
-    bool CanFindDecision(ImportNotification notification);
-    DecisionFinderResult FindDecision(ImportNotification notification);
+    bool CanFindDecision(ImportNotification notification, string[]? checkCodes);
+    DecisionFinderResult FindDecision(ImportNotification notification, string[]? checkCodes);
 }
