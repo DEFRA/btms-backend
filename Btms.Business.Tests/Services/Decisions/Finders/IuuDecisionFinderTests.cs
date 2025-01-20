@@ -58,5 +58,6 @@ public class IuuDecisionFinderTests
 
         result.DecisionCode.Should().Be(expectedDecisionCode);
         result.DecisionReason.Should().Be(expectedDecisionReason);
+        result.CheckCode.Should().Be("H224");
     }
 }

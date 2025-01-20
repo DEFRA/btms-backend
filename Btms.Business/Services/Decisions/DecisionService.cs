@@ -48,7 +48,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
             {
                 if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
                 {
-                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, DecisionCode.X00);
+                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, null, DecisionCode.X00);
                 }
             }
         }
@@ -62,7 +62,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
                 var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
                 var decisionCodes = GetDecisions(notification, checkCodes);
                 foreach (var decisionCode in decisionCodes) 
-                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.DecisionCode, decisionCode.DecisionReason);
+                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
             }
         }
 
