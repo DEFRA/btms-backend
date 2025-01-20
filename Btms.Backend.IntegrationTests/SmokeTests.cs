@@ -78,7 +78,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
             .First(a => 
                 a.Status == "Created" )
             .Id
-            .Should().StartWith("SmokeTest/");
+            .Should().StartWith($"SmokeTest{Path.DirectorySeparatorChar}");
             
     }
     
