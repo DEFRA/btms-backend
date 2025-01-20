@@ -3,6 +3,7 @@ using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
+using Btms.Business.Services.Validating;
 using Btms.Consumers.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
@@ -36,22 +37,25 @@ public class ClearanceRequestConsumerTests
         var movement = mb.Build();
 
         var mockLinkingService = Substitute.For<ILinkingService>();
-            var decisionService = Substitute.For<IDecisionService>();
-            var matchingService = Substitute.For<IMatchingService>();
-            var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
+        var decisionService = Substitute.For<IDecisionService>();
+        var matchingService = Substitute.For<IMatchingService>();
+        var validationService = Substitute.For<IValidationService>();
+        var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
 
         preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(outcome, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
-        consumer.Context = new ConsumerContext
-        {
-            Headers = new Dictionary<string, object>
-            {
-                { "messageId", clearanceRequest.Header!.EntryReference! }
-            }
-        };
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+                {
+                    Context = new ConsumerContext
+                    {
+                        Headers = new Dictionary<string, object>
+                        {
+                            { "messageId", clearanceRequest.Header!.EntryReference! }
+                        }
+                    }
+                };
 
         // ACT
         await consumer.OnHandle(clearanceRequest);
@@ -76,9 +80,10 @@ public class ClearanceRequestConsumerTests
         var movement = mb.Build();
         
         var mockLinkingService = Substitute.For<ILinkingService>();
-            var decisionService = Substitute.For<IDecisionService>();
-            var matchingService = Substitute.For<IMatchingService>();
-            var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
+        var decisionService = Substitute.For<IDecisionService>();
+        var matchingService = Substitute.For<IMatchingService>();
+        var validationService = Substitute.For<IValidationService>();
+        var preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Model.Movement>>();
 
         mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)));
@@ -87,14 +92,16 @@ public class ClearanceRequestConsumerTests
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, NullLogger<AlvsClearanceRequestConsumer>.Instance);
-        consumer.Context = new ConsumerContext
-        {
-            Headers = new Dictionary<string, object>
-            {
-                { "messageId", clearanceRequest.Header!.EntryReference! }
-            }
-        };
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+                {
+                    Context = new ConsumerContext
+                    {
+                        Headers = new Dictionary<string, object>
+                        {
+                            { "messageId", clearanceRequest.Header!.EntryReference! }
+                        }
+                    }
+                };
 
         // ACT
         await consumer.OnHandle(clearanceRequest);

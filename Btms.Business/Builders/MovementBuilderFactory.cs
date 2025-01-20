@@ -32,7 +32,7 @@ public class MovementBuilderFactory(ILogger<MovementBuilder> logger)
             BtmsStatus = new MovementStatus()
             {
                 ChedTypes = GetChedTypes(request.Items!.ToList()),
-                Linked = false,
+                // Linked = false,
                 LinkStatus = LinkStatusEnum.NotLinked
             }
         };

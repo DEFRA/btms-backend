@@ -170,7 +170,7 @@ public class Mrn24GBDEHMFC4WGXVAR7Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
+            .Should().Be(LinkStatusEnum.AllLinked);
     }
     
     [Fact]

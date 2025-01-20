@@ -23,14 +23,14 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     private List<string> matchReferences = [];
 
     [ChangeSetIgnore] //TODO : should we ignore this or not?
-    [Attr] 
-    public required MovementStatus BtmsStatus { get; set; }
+    [Attr]
+    public required MovementStatus BtmsStatus { get; set; } = MovementStatus.Default();
         
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
     [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
 
-    [Attr] public List<CdsClearanceRequest> ClearanceRequests { get; set; } = default!;
+    [Attr] public List<CdsClearanceRequest> ClearanceRequests { get; init; } = default!;
 
     [Attr] public List<CdsClearanceRequest> Decisions { get; set; } = default!;
 
@@ -110,12 +110,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             Relationships.Notifications.Data.AddRange(dataItems);
             linked = true;
         }
-
-        Relationships.Notifications.Matched = Items
-            .Select(x => x.ItemNumber)
-            .All(itemNumber =>
-                Relationships.Notifications.Data.Exists(x => x.Matched.GetValueOrDefault() && x.SourceItem == itemNumber));
-
+        
         //TODO : This would be the right time to call AddLinkStatus I think
         // but relies on linking being moved into Business
         // this.AddLinkStatus();
@@ -132,8 +127,6 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
         {
             Relationships.Notifications.Data.Remove(relationship);
         }
-
-        Relationships.Notifications.Matched = Relationships.Notifications.Data.TrueForAll(x => x.Matched.GetValueOrDefault());
     }
     
     [BsonIgnore]

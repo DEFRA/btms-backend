@@ -20,15 +20,10 @@ public enum CreatedBySystem
 }
 public class AuditEntry
 {
-    // public const string CreatedBySystem = "Btms";
-    // public const string CreatedByIpaffs = "Ipaffs";
-    // public const string CreatedByAlvs = "Alvs";
-    // public const string CreatedByCds = "Cds";
-    // public const string CreatedByGvms = "Gvms";
-    
     public string Id { get; set; } = default!;
     public int? Version { get; set; }
 
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CreatedBySystem CreatedBy { get; set; } = default!;
 
     public DateTime? CreatedSource { get; set; }

@@ -126,8 +126,6 @@ public static class AnalyticsEndpoints
             await AnalyticsDashboards
                 .GetCharts(logger, importService, movementsService, chartsToRender,
                     chedTypes, countryOfOrigin, dateFrom, dateTo);
-
-        // return await SerialiseResult(result);
         
         var options =
             new JsonSerializerOptions
@@ -142,20 +140,4 @@ public static class AnalyticsEndpoints
         
         return TypedResults.Json(result, options);
     }
-
-    // private static async Task<IResult> SerialiseResult(object result)
-    // {
-    //     var options =
-    //         new JsonSerializerOptions
-    //         {
-    //             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    //             Converters =
-    //             {
-    //                 new DatasetResultTypeMappingConverter<IDataset>(),
-    //                 new DimensionResultTypeMappingConverter<IDimensionResult>()
-    //             }
-    //         };
-    //
-    //     return await Task.FromResult(TypedResults.Json(result, options));
-    // }
 }

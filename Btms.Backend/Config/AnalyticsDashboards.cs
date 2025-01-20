@@ -100,6 +100,10 @@ public static class AnalyticsDashboards
                 "decisionsByDecisionCode",
                 () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, chedTypes, country).AsIDataset()
             },
+            // {
+            //     "movementsBySegment",
+            //     () => movementsService.BySegment(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, chedTypes, country).AsIDataset()
+            // },
             {
                 "importNotificationsByVersion",
                 () => importService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
