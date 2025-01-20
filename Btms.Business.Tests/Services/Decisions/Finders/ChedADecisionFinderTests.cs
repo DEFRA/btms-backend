@@ -14,7 +14,7 @@ public class ChedADecisionFinderTests
     [InlineData(null, ImportNotificationTypeEnum.Cvedp, false)]
     [InlineData(null, ImportNotificationTypeEnum.Chedpp, false)]
     [InlineData(false, ImportNotificationTypeEnum.Cveda, true)]
-    [InlineData(true, ImportNotificationTypeEnum.Cveda, true)]
+    [InlineData(true, ImportNotificationTypeEnum.Cveda, false)]
     public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
     {
         var notification = new ImportNotification
@@ -85,6 +85,5 @@ public class ChedADecisionFinderTests
         var result = sut.FindDecision(notification);
 
         result.DecisionCode.Should().Be(expectedCode);
-        result.DecisionType.Should().Be(DecisionType.Ched);
     }
 }

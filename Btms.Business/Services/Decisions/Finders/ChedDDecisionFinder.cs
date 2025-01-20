@@ -4,13 +4,13 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedDDecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification) => notification.ImportNotificationType == ImportNotificationTypeEnum.Ced;
+    public bool CanFindDecision(ImportNotification notification, string[]? _ = null) => notification.ImportNotificationType == ImportNotificationTypeEnum.Ced && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification)
+    public DecisionFinderResult FindDecision(ImportNotification notification, string[]? _ = null)
     {
         if (notification.TryGetHoldDecision(out var code))
         {
-            return new DecisionFinderResult(code!.Value, DecisionType.Ched);
+            return new DecisionFinderResult(code!.Value);
         }
 
         var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
@@ -18,18 +18,18 @@ public class ChedDDecisionFinder : IDecisionFinder
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch
             {
-                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, DecisionType.Ched),
-                _ => new DecisionFinderResult(DecisionCode.E96, DecisionType.Ched)
+                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03),
+                _ => new DecisionFinderResult(DecisionCode.E96)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
-                DecisionNotAcceptableActionEnum.Destruction => new DecisionFinderResult(DecisionCode.N02, DecisionType.Ched),
-                DecisionNotAcceptableActionEnum.Redispatching => new DecisionFinderResult(DecisionCode.N04, DecisionType.Ched),
-                DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03, DecisionType.Ched),
-                DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07, DecisionType.Ched),
-                _ => new DecisionFinderResult(DecisionCode.E97, DecisionType.Ched)
+                DecisionNotAcceptableActionEnum.Destruction => new DecisionFinderResult(DecisionCode.N02),
+                DecisionNotAcceptableActionEnum.Redispatching => new DecisionFinderResult(DecisionCode.N04),
+                DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03),
+                DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07),
+                _ => new DecisionFinderResult(DecisionCode.E97)
             },
-            _ => new DecisionFinderResult(DecisionCode.E99, DecisionType.Ched)
+            _ => new DecisionFinderResult(DecisionCode.E99)
         };
     }
 }

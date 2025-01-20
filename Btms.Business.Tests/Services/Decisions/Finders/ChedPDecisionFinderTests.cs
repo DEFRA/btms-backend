@@ -1,5 +1,7 @@
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Decisions.Finders;
+using Btms.Model;
+using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
 using Xunit;
@@ -9,28 +11,24 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class ChedPDecisionFinderTests
 {
     [Theory]
-    [InlineData(null, ImportNotificationTypeEnum.Cveda, false)]
-    [InlineData(null, ImportNotificationTypeEnum.Ced, false)]
-    [InlineData(null, ImportNotificationTypeEnum.Cvedp, true)]
-    [InlineData(null, ImportNotificationTypeEnum.Chedpp, false)]
-    [InlineData(false, ImportNotificationTypeEnum.Cvedp, true)]
-    [InlineData(true, ImportNotificationTypeEnum.Cvedp, true)]
-    public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
+    [InlineData(ImportNotificationTypeEnum.Cveda, false, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Ced, false, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H222")]
+    
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true)]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, null)]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222", "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H224")]
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, params string[]? checkCodes)
     {
         var notification = new ImportNotification
         {
             ImportNotificationType = importNotificationType,
-            PartTwo = new PartTwo
-            {
-                ControlAuthority = new ControlAuthority
-                {
-                    IuuCheckRequired = iuuCheckRequired
-                }
-            }
         };
         var sut = new ChedPDecisionFinder();
 
-        var result = sut.CanFindDecision(notification);
+        var result = sut.CanFindDecision(notification, checkCodes);
 
         result.Should().Be(expectedResult);
     }
@@ -83,6 +81,5 @@ public class ChedPDecisionFinderTests
         var result = sut.FindDecision(notification);
 
         result.DecisionCode.Should().Be(expectedCode);
-        result.DecisionType.Should().Be(DecisionType.Ched);
     }
 }
