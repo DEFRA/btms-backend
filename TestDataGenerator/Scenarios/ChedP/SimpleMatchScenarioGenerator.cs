@@ -14,6 +14,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithSimpleCommodity("1604142800", "Skipjack Tuna", 300)
             .WithInspectionStatus(InspectionRequiredEnum.NotRequired) //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
+            .WithIuuOption(ControlAuthorityIuuOptionEnum.Iuuok)
             .WithVersionNumber()
             .ValidateAndBuild();
 
@@ -36,7 +37,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithEntryVersionNumber(1)
             .WithDecisionVersionNumber()
             .WithItemAndCheck(1, "H222", "H01")
-            .WithItemAndCheck(1, "H224", "H01")
+            .WithItemAndCheck(1, "H224", "C07")
             .ValidateAndBuild();
         
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);

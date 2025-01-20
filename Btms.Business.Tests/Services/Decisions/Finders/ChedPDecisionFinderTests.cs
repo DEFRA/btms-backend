@@ -81,5 +81,6 @@ public class ChedPDecisionFinderTests
         var result = sut.FindDecision(notification);
 
         result.DecisionCode.Should().Be(expectedCode);
+        result.CheckCode.Should().BeNull();
     }
 }

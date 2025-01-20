@@ -111,10 +111,10 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return Do(n =>
         {
-            n.PartOne!.Commodities = new Commodities()
+            n.PartOne!.Commodities = new Commodities
             {
                 CommodityComplements = [
-                    new CommodityComplement()
+                    new CommodityComplement
                     {
                         ComplementId = 1,
                         SpeciesId = "000",
@@ -126,12 +126,12 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
                     }
                 ],
                 ComplementParameterSets = [
-                    new ComplementParameterSet()
+                    new ComplementParameterSet
                     {
                         UniqueComplementId = (uniqueComplementId ?? Guid.NewGuid()).ToString(),
                         ComplementId = 1,
                         SpeciesId = "000",
-                        KeyDataPairs = new Dictionary<string, object>()
+                        KeyDataPairs = new Dictionary<string, object>
                         {
                             { "netweight", netWeight }
                         }
@@ -158,11 +158,11 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
         return Do(n =>
         {
-            n.RiskAssessment = new RiskAssessmentResult()
+            n.RiskAssessment = new RiskAssessmentResult
             {
                 CommodityResults = new []
                 {
-                    new CommodityRiskResult()
+                    new CommodityRiskResult
                     {
                         RiskDecision = riskDecision,
                         UniqueId = uniqueComplementId.ToString()
@@ -201,6 +201,15 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
         return Do(x =>
         {
             x.PartTwo!.Decision = decision;
+        });
+    }
+
+    public ImportNotificationBuilder<T> WithIuuOption(ControlAuthorityIuuOptionEnum iuuOption)
+    {
+        return Do(x =>
+        {
+            x.PartTwo!.ControlAuthority!.IuuCheckRequired = true;
+            x.PartTwo!.ControlAuthority!.IuuOption = iuuOption;
         });
     }
 
