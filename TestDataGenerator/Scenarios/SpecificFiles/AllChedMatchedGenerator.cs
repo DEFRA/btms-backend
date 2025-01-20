@@ -43,40 +43,41 @@ public class AllChedsH01DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH
 
         logger.LogInformation("Created {builders} Builders",
             builders.Count);
-
+        
         var random = new Random();
         var chedAImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/cheda.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "cheda.json"))
                 .builder)
             .WithInspectionStatus(InspectionRequiredEnum.NotRequired)
             .WithImportNotificationStatus()
             .ValidateAndBuild();
 
         var chedPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedp.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedp.json"))
                 .builder)
             .WithInspectionStatus(InspectionRequiredEnum.Inconclusive)
             .ValidateAndBuild();
 
         var chedDImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/IPAFFS/chedd.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "IPAFFS", "chedd.json"))
                 .builder)
             .WithInspectionStatus(InspectionRequiredEnum.Inconclusive)
             .WithImportNotificationStatus()
             .ValidateAndBuild();
 
+
         var chedAClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-cheda-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-cheda-match.json"))
                 .builder)
             .ValidateAndBuild();
 
         var chedPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedp-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedp-match.json"))
                 .builder)
             .ValidateAndBuild();
 
         var chedDClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == "AllChedsWithDecision/ALVS/cr-chedd-match.json")
+                .Single(b => b.filePath == Path.Join("AllChedsWithDecision", "ALVS", "cr-chedd-match.json"))
                 .builder)
             .ValidateAndBuild();
 
