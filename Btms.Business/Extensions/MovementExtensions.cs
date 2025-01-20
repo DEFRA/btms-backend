@@ -30,18 +30,49 @@ public static class MovementExtensions
         return true;
     }
     
-    public static void AddLinkStatus(this Movement movement)
+    // public static void AddLinkStatus(this Movement movement)
+    // {
+    //     if (movement.BtmsStatus.LinkStatus == LinkStatusEnum.Error) return;
+    //     
+    //     var linkStatus = LinkStatusEnum.NotLinked;
+    //     var linked = false;
+    //     
+    //     if (movement.Relationships.Notifications.Data.Count > 0)
+    //     {
+    //         linkStatus = LinkStatusEnum.Linked;
+    //         linked = true;
+    //     }
+    //     
+    //     movement.BtmsStatus.LinkStatus = linkStatus;
+    //     movement.BtmsStatus.Linked = linked;
+    // }
+    
+    public static string[] UniqueDocumentReferences(this Movement movement)
     {
-        var linkStatus = LinkStatusEnum.NotLinked;
-        var linked = false;
-        
-        if (movement.Relationships.Notifications.Data.Count > 0)
-        {
-            linkStatus = LinkStatusEnum.Linked;
-            linked = true;
-        }
-        
-        movement.BtmsStatus.LinkStatus = linkStatus;
-        movement.BtmsStatus.Linked = linked;
+        return movement.Items
+            .SelectMany(i => i.Documents ?? [])
+            .Select(d => d.DocumentReference!)
+            .ToArray();
+    }
+    
+    private static string TrimUniqueNumber(this string id)
+    {
+        return id.Substring(id.LastIndexOf(".") + 1);
+    }
+    public static List<string> UniqueNotificationRelationshipIds(this Movement movement)
+    {
+        return movement.Relationships.Notifications.Data
+            .Select(n => n.Id!.TrimUniqueNumber())
+            .Distinct() // We may end up with multiple relationships for the same ID if multiple items link to it?
+            .ToList();
+    }
+    
+    public static List<string> UniqueDocumentReferenceIds(this Movement movement)
+    {
+        return movement.Items
+            .SelectMany(i => i.Documents ?? [])
+            .Select(d => d.DocumentReference!.TrimUniqueNumber())
+            .Distinct()
+            .ToList();
     }
 }

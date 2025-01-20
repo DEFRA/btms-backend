@@ -57,7 +57,8 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             //
             // existingMovement.Items.AddRange(movement.Items);
             
-            await dbContext.Movements.Update(existingMovement, existingMovement._Etag);
+            await dbContext.Movements.Update(existingMovement);
+
             return PreProcessResult.Changed(existingMovement, changeSet);
         }
 

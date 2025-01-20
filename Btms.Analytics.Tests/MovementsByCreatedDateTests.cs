@@ -4,6 +4,7 @@ using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 using Btms.Analytics.Tests.Fixtures;
+using Btms.Analytics.Tests.Helpers;
 using TestDataGenerator.Config;
 using TestGenerator.IntegrationTesting.Backend;
 
@@ -22,13 +23,12 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(3);
-
-        result[1].Name.Should().Be("Linked");
-        result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
-        result[1].Periods.Count.Should().Be(48);
+        result.ShouldBeCorrectBasedOnLinkStatusEnum();
         
-        result[2].Name.Should().Be("Not Linked");
+        // result.Count.Should().Be(4);
+        // result.Select(r => r.Name).Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
+        // result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
+        // result[1].Periods.Count.Should().Be(48);
     }
     
     [Fact]
@@ -44,19 +44,7 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(3);
-        
-        result.Select(r => r.Name).Should().Equal("Investigate", "Linked", "Not Linked");
-
-        result.Should().AllSatisfy(r =>
-        {
-            r.Periods.Should().AllSatisfy(p =>
-            {
-                p.Period.Should().BeOnOrAfter(from);
-                p.Period.Should().BeOnOrBefore(to);
-            });
-            r.Periods.Count.Should().Be(24);
-        });
+        result.ShouldBeCorrectBasedOnLinkStatusEnum(from, to, AggregationPeriod.Hour);
     }
     
     [Fact]
@@ -69,12 +57,10 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine(result.ToJsonString());
 
-        result.Count.Should().Be(3);
-
-        result[1].Name.Should().Be("Linked");
-        result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
-        result[1].Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
-        
-        result[2].Name.Should().Be("Not Linked");
+        result.ShouldBeCorrectBasedOnLinkStatusEnum(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow());
+        // result.Count.Should().Be(4);
+        //
+        // result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
+        // result[1].Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
     }
 }

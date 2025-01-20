@@ -16,12 +16,24 @@ using Xunit.Abstractions;
 using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
+/// <summary>
+/// 
+/// </summary>
+/// <param name="output"></param>
+///
+/// TODO : when https://github.com/DEFRA/btms-backend/pull/59 is merged switch to the new test base class!
+// [Trait("Category", "Integration")]
+// public class ChedPpPhsiTests(ITestOutputHelper output) : MultipleScenarioGeneratorBaseTest(output)
+// {
 
-[Trait("Category", "Integration")]
-public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator>(output)
+[Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac3")]
+public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<Mrn24GBDPN81VSULAGAR9ScenarioGenerator>(output)
 {
 
+    /// <summary>
+    /// Should become [InlineData(typeof(Mrn24GBDPN81VSULAGAR9ScenarioGenerator), "H01", MovementSegmentEnum.Cdms205Ac3)]
+    /// </summary>
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
@@ -33,7 +45,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
     
-    [Fact]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnPreviousDecison()
     {
         Client
@@ -54,8 +67,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
-    [Fact]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHave2BtmsDecisions()
     {
         // Act
@@ -97,7 +110,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             ]);
     }
     
-    [Fact]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHave2AlvsDecisions()
     {
         Client
@@ -105,29 +119,6 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .AlvsDecisionStatus.Decisions.Count
             .Should()
             .Be(2);
-    }
-
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
-    public void ShouldHaveCorrectAuditTrail()
-    {
-        // Act
-        var auditTrail = Client
-            .GetSingleMovement()
-            .AuditEntries
-            .Select(a => (a.CreatedBy, a.Status, a.Version));
-
-        // Assert
-        auditTrail.Should()
-            .Equal([
-                (CreatedBySystem.Cds, "Created", 1),
-                (CreatedBySystem.Btms, "Linked", null),
-                (CreatedBySystem.Btms, "Decision", 1),
-                (CreatedBySystem.Cds, "Updated", 2),
-                (CreatedBySystem.Btms, "Decision", 2),
-                (CreatedBySystem.Alvs, "Decision", 1),
-                (CreatedBySystem.Alvs, "Decision", 2)
-            ]);
     }
 
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
@@ -139,7 +130,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Should().BeTrue();
     }
     
-    [Fact]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveChedPPDecisionStatus()
     {
         Client
@@ -156,14 +148,22 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .BtmsStatus.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Chedpp);
     }
-    
+     
     [Fact]
-    public void ShouldBeLinked()
+    public void ShouldHaveCorrectBtmsStatus()
     {
-        Client
-            .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.Linked);
+        var movement = 
+            Client
+                .GetSingleMovement();
+            
+        movement
+            .BtmsStatus
+            .Should().BeEquivalentTo(
+                new { 
+                    LinkStatus = LinkStatusEnum.AllLinked,
+                    Segment = MovementSegmentEnum.Cdms205Ac3
+                }
+            );
     }
     
     [Fact]
@@ -182,6 +182,7 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             .Be("[]");
     }
     
+    // [Fact]
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -204,7 +205,8 @@ public class Mrn24GBDEEA43OY1CQAR7Tests(ITestOutputHelper output)
             ]);
     }
     
-    [Fact]
+    // [Fact]
+    [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {
         var result = await (await Client

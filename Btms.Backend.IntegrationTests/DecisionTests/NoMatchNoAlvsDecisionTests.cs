@@ -23,7 +23,7 @@ public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
         var movement = Client
             .GetSingleMovement();
 
-        movement.BtmsStatus.LinkStatus.Should().Be(LinkStatusEnum.NotLinked);
+        movement.BtmsStatus.LinkStatus.Should().Be(LinkStatusEnum.MissingLinks);
     }
     
     [Fact]

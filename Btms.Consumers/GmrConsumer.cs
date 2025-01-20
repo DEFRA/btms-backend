@@ -35,7 +35,9 @@ internal class GmrConsumer(IMongoDbContext dbContext)
                         version: internalGmr.AuditEntries.Count + 1,
                         lastUpdated: gmr.UpdatedSource, 
                         CreatedBySystem.Gvms);
+                    
                     internalGmr.AuditEntries.Add(auditEntry);
+                    
                     await dbContext.Gmrs.Update(internalGmr, existingGmr._Etag);
                 }
             }

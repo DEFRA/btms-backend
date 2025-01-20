@@ -139,9 +139,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             Relationships.Movements.Data.AddRange(dataItems);
             linked = true;
         }
-
-        Relationships.Movements.Matched = Relationships.Movements.Data.TrueForAll(x => x.Matched.GetValueOrDefault());
-
+        
         if (linked)
         {
             AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault()));
@@ -157,9 +155,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             Relationships.Movements.Data.Remove(relationship);
             unlinked = true;
         }
-
-        Relationships.Movements.Matched = Relationships.Movements.Data.TrueForAll(x => x.Matched.GetValueOrDefault());
-
+        
         if (unlinked)
         {
             AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));

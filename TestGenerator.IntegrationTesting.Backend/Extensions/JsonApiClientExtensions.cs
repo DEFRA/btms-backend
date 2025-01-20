@@ -15,6 +15,15 @@ public static class JsonClientExtensions
             .Single();
     }
     
+    public static ImportNotification GetFirstImportNotification(this BtmsClient client)
+    {
+        var results = client.AsJsonApiClient()
+            .Get("api/import-notifications")
+            .GetResourceObjects<ImportNotification>();
+            
+        return results.First();
+    }
+    
     public static ImportNotification GetSingleImportNotification(this BtmsClient client)
     {
         return client.AsJsonApiClient()

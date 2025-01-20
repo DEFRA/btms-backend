@@ -17,7 +17,7 @@
 
       // "commandLineArgs": "generate-vehicle-movement-model"
       //"commandLineArgs": "generate-alvs-model"
-      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBDPN81VSULAGAR9 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBDPN81VSULAGAR9"
+      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBDE3CF94H96TAR0 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBDE3CF94H96TAR0"
     }
   }
 }

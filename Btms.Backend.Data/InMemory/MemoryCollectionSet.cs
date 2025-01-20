@@ -46,11 +46,22 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     [SuppressMessage("SonarLint", "S2955",
         Justification =
             "IEquatable<T> would need to be implemented on every data entity just to stop sonar complaining about a null check. Nope.")]
+    public Task Update(T item, IMongoDbTransaction transaction = default!,
+        CancellationToken cancellationToken = default)
+    {
+        return Update(item, item._Etag, transaction, cancellationToken);
+    }
+
+    [SuppressMessage("SonarLint", "S2955",
+        Justification =
+            "IEquatable<T> would need to be implemented on every data entity just to stop sonar complaining about a null check. Nope.")]
     public Task Update(T item, string etag, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default)
     {
+        etag = etag ?? item._Etag;
+        
         var existingItem = data.Find(x => x.Id == item.Id);
         if (existingItem == null) return Task.CompletedTask;
-
+        
         if ((existingItem._Etag) != etag)
         {
             throw new ConcurrencyException(item.Id!, etag);
