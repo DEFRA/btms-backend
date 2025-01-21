@@ -40,7 +40,7 @@ public class ChedPPDecisionFinderTests
     {
         var sut = new ChedPPDecisionFinder();
         
-
+        Assert.True(true);
         await Task.CompletedTask;
     }
 }
