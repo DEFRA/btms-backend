@@ -14,13 +14,13 @@ public class IuuDecisionFinder : IDecisionFinder
         {
             true => notification.PartTwo?.ControlAuthority?.IuuOption switch
             {
-                ControlAuthorityIuuOptionEnum.Iuuok => new DecisionFinderResult(DecisionCode.C07, checkCode, "IUU OK"),
-                ControlAuthorityIuuOptionEnum.IUUNotCompliant => new DecisionFinderResult(DecisionCode.X00, checkCode, "IUU Not Compliant"),
-                ControlAuthorityIuuOptionEnum.Iuuna => new DecisionFinderResult(DecisionCode.C08, checkCode, "IUU NA"),
-                null => new DecisionFinderResult(DecisionCode.X00, checkCode, "IUU None"),
-                _ => new DecisionFinderResult(DecisionCode.E95, checkCode, "IUU Unknown")
+                ControlAuthorityIuuOptionEnum.Iuuok => new DecisionFinderResult(DecisionCode.C07, checkCode, "IUU Compliant"),
+                ControlAuthorityIuuOptionEnum.IUUNotCompliant => new DecisionFinderResult(DecisionCode.X00, checkCode, "IUU Not compliant - Contact Port Health Authority (imports) or Marine Management Organisation (landings)."),
+                ControlAuthorityIuuOptionEnum.Iuuna => new DecisionFinderResult(DecisionCode.C08, checkCode, "IUU Not applicable"),
+                null => new DecisionFinderResult(DecisionCode.X00, checkCode, "IUU Awaiting decision"),
+                _ => new DecisionFinderResult(DecisionCode.E95, checkCode, "IUU Data error")
             },
-            false => new DecisionFinderResult(DecisionCode.E94, checkCode, "IUU Not Indicated")
+            false => new DecisionFinderResult(DecisionCode.E94, checkCode, "IUU Data error")
         };
     }
 }
