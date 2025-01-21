@@ -4,7 +4,7 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedADecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string? _) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cveda && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cveda && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
