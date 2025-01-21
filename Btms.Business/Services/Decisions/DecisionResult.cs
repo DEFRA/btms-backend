@@ -3,16 +3,15 @@ namespace Btms.Business.Services.Decisions;
 public record DecisionResult
 {
     private readonly List<DocumentDecisionResult> _results = [];
-    public DocumentDecisionResult AddDecision(string movementId, int itemNumber, string documentReference, DecisionCode decisionCode)
+    
+    public void AddDecision(string movementId, int itemNumber, string documentReference, string? checkCode, DecisionCode decisionCode, string? decisionReason = null)
     {
-        var item = new DocumentDecisionResult(movementId, itemNumber, documentReference, decisionCode);
-        _results.Add(item);
-        return item;
+        _results.Add(new DocumentDecisionResult(movementId, itemNumber, documentReference, checkCode, decisionCode, decisionReason));
     }
 
     public IReadOnlyList<DocumentDecisionResult> Decisions => _results.AsReadOnly();
 }
 
-public record DocumentDecisionResult(string MovementId, int ItemNumber, string DocumentReference, DecisionCode DecisionCode);
+public record DocumentDecisionResult(string MovementId, int ItemNumber, string DocumentReference, string? CheckCode, DecisionCode DecisionCode, string? DecisionReason);
 
-public record DecisionFinderResult(DecisionCode DecisionCode);
+public record DecisionFinderResult(DecisionCode DecisionCode, string? CheckCode, string? DecisionReason = null);

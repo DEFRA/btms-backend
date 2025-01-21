@@ -5,16 +5,18 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedPDecisionFinder : IDecisionFinder
 {
-    public DecisionFinderResult FindDecision(ImportNotification notification)
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp && checkCode != IuuDecisionFinder.IuuCheckCode;
+
+    public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
         if (notification.TryGetHoldDecision(out var code))
         {
-            return new DecisionFinderResult(code!.Value);
+            return new DecisionFinderResult(code!.Value, checkCode);
         }
 
         if (!notification.TryGetConsignmentAcceptable(out var consignmentAcceptable, out var decisionCode))
         {
-            return new DecisionFinderResult(decisionCode!.Value);
+            return new DecisionFinderResult(decisionCode!.Value, checkCode);
         }
         
         return consignmentAcceptable switch
@@ -23,21 +25,21 @@ public class ChedPDecisionFinder : IDecisionFinder
             {
                 DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit
                     or DecisionDecisionEnum.AcceptableForSpecificWarehouse =>
-                    new DecisionFinderResult(DecisionCode.E03),
-                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03),
-                DecisionDecisionEnum.AcceptableIfChanneled => new DecisionFinderResult(DecisionCode.C06),
-                _ => new DecisionFinderResult(DecisionCode.E96)
+
+                    new DecisionFinderResult(DecisionCode.E03, checkCode),
+                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, checkCode),
+                DecisionDecisionEnum.AcceptableIfChanneled => new DecisionFinderResult(DecisionCode.C06, checkCode),
+                _ => new DecisionFinderResult(DecisionCode.E96, checkCode)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
-                DecisionNotAcceptableActionEnum.Destruction => new DecisionFinderResult(DecisionCode.N02),
-                DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04),
-                DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03),
-                DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07),
-                _ => new DecisionFinderResult(DecisionCode.E97)
-            }
-            ,
-            // _ => new DecisionFinderResult(DecisionCode.E99)
+                DecisionNotAcceptableActionEnum.Destruction => new DecisionFinderResult(DecisionCode.N02, checkCode),
+                DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, checkCode),
+                DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03, checkCode),
+                DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07, checkCode),
+                _ => new DecisionFinderResult(DecisionCode.E97, checkCode)
+            },
+            // _ => new DecisionFinderResult(DecisionCode.E99, checkCode)
         };
     }
 }

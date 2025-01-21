@@ -199,8 +199,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
                 new {
                     ItemNumber = 1,
                     CheckCode = "H224",
-                    AlvsDecisionCode = "H01", 
-                    BtmsDecisionCode = "H01"
+                    AlvsDecisionCode = "C07", 
+                    BtmsDecisionCode = "C07"
                 }
             ]);
     }

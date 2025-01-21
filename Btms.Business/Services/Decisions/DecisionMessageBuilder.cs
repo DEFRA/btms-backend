@@ -1,7 +1,6 @@
 using Btms.Business.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model;
-using Btms.Model.Ipaffs;
 using Btms.Types.Alvs;
 using Decision = Btms.Types.Alvs.Decision;
 
@@ -13,17 +12,17 @@ public static class DecisionMessageBuilder
     {
         var list = new List<Decision>();
 
-        var movements = decisionResult.Decisions.GroupBy(x => x.MovementId).ToList();
+        var decisionsByMovement = decisionResult.Decisions.GroupBy(x => x.MovementId);
 
-        foreach (var movementGroup in movements)
+        foreach (var movementDecisions in decisionsByMovement)
         {
-            var movement = decisionContext.Movements.First(x => x.Id == movementGroup.Key);
+            var movement = decisionContext.Movements.First(x => x.Id == movementDecisions.Key);
             var messageNumber = movement is { Decisions: null } ? 1 : movement.Decisions.Count + 1;
-            var decisionMessage = new Decision()
+            var decisionMessage = new Decision
             {
                 ServiceHeader = BuildServiceHeader(),
                 Header = BuildHeader(movement, messageNumber),
-                Items = BuildItems(movement, movementGroup).ToArray()
+                Items = BuildItems(movement, movementDecisions).ToArray()
             };
             list.Add(decisionMessage);
         }
@@ -33,7 +32,7 @@ public static class DecisionMessageBuilder
 
     private static ServiceHeader BuildServiceHeader()
     {
-        return new ServiceHeader()
+        return new ServiceHeader
         {
             SourceSystem = "BTMS",
             ServiceCallTimestamp = DateTime.UtcNow,
@@ -44,7 +43,7 @@ public static class DecisionMessageBuilder
 
     private static Header BuildHeader(Movement movement, int messageNumber)
     {
-        return new Header()
+        return new Header
         {
             EntryReference = movement.EntryReference,
             EntryVersionNumber = movement.EntryVersionNumber,
@@ -52,51 +51,52 @@ public static class DecisionMessageBuilder
         };
     }
     
-    private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementGroup)
+    private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
     {
-        var itemGroups = movementGroup.GroupBy(x => x.ItemNumber);
-        foreach (var itemGroup in itemGroups)
+        var decisionsByItem = movementDecisions.GroupBy(x => x.ItemNumber);
+        foreach (var itemDecisions in decisionsByItem)
         {
-            var item = movement.Items.First(x => x.ItemNumber == itemGroup.Key);
-            yield return new Items()
+            var item = movement.Items.First(x => x.ItemNumber == itemDecisions.Key);
+            yield return new Items
             {
-                ItemNumber = itemGroup.Key,
-                Checks = BuildChecks(item, itemGroup).ToArray()
+                ItemNumber = itemDecisions.Key,
+                Checks = BuildChecks(item, itemDecisions).ToArray()
             };
         }
     }
 
-    private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemsGroup)
+    private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
     {
-        if (item.Checks != null)
+        if (item.Checks == null) yield break;
+        
+        foreach (var checkCode in item.Checks.Select(x => x.CheckCode))
         {
-            foreach (var itemCheck in item.Checks)
+            var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).First();
+            yield return new Check
             {
-                var decisionCode = itemsGroup.Max(x => x.DecisionCode);
-                yield return new Check()
-                {
-                    CheckCode = itemCheck.CheckCode,
-                    DecisionCode = itemsGroup.Max(x => x.DecisionCode).ToString(),
-                    DecisionReasons = BuildDecisionReasons(item, decisionCode)
-                };
-            }
+                CheckCode = checkCode,
+                DecisionCode = maxDecisionResult.DecisionCode.ToString(),
+                DecisionReasons = BuildDecisionReasons(item, maxDecisionResult)
+            };
         }
     }
 
-    public static string[] BuildDecisionReasons(Model.Cds.Items item, DecisionCode decisionCode)
+    private static string[] BuildDecisionReasons(Model.Cds.Items item, DocumentDecisionResult maxDecisionResult)
     {
-        switch (decisionCode)
+        var reasons = new List<string>();
+        if (maxDecisionResult.DecisionCode == DecisionCode.X00)
         {
-            case DecisionCode.X00:
-                var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
-                var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
-                return
-                [
-                    $"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration."
-                ];
+            var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
+            var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
+            reasons.Add($"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration.");
         }
 
-        return [];
+        if (maxDecisionResult.DecisionReason != null)
+        {
+            reasons.Add(maxDecisionResult.DecisionReason);
+        }
+
+        return reasons.ToArray();
     }
 
     private static string MapToChedType(string documentCode)

@@ -282,6 +282,7 @@
         "message": "Identity check"
       }
     ],
+    "controlAuthority": { },
     "inspectionRequired": null
   },
   "partThree": {
