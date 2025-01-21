@@ -28,11 +28,10 @@ internal static class DecisionFinderExtensions
     
     public static bool TryGetHoldDecision(this ImportNotification notification, out DecisionCode? decisionCode)
     {
-        if (notification.Status == ImportNotificationStatusEnum.Submitted ||
-            notification.Status == ImportNotificationStatusEnum.InProgress)
+        if (notification.Status is ImportNotificationStatusEnum.Submitted or ImportNotificationStatusEnum.InProgress)
         {
-            if (notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.NotRequired ||
-                notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.Inconclusive)
+
+            if (notification.PartTwo?.InspectionRequired is InspectionRequiredEnum.NotRequired or InspectionRequiredEnum.Inconclusive)
             {
                 decisionCode = DecisionCode.H01;
                 return true;

@@ -16,12 +16,10 @@ public enum DecisionCode
     N07,
     X00,
     
-    // Unexpected value in PartTwo?.Decision?.DecisionEnum
-    E96,
-    // Unexpected value in artTwo?.Decision?.NotAcceptableAction
-    E97,
-    // Not implemented
-    E98,
-    // Other unexpected data error
-    E99
+    E94,    // IUU not indicated in PartTwo?.ControlAuthority?.IuuCheckRequired but "H224" requested in Items[]?.Checks[]?.CheckCode
+    E95,    // Unexpected value in PartTwo?.Decision?.IuuOption
+    E96,    // Unexpected value in PartTwo?.Decision?.DecisionEnum
+    E97,    // Unexpected value in PartTwo?.Decision?.NotAcceptableAction
+    E98,    // Not implemented
+    E99     // Other unexpected data error
 }

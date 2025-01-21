@@ -9,6 +9,27 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class ChedPDecisionFinderTests
 {
     [Theory]
+    [InlineData(ImportNotificationTypeEnum.Cveda, false, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Ced, false, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H222")]
+    
+    [InlineData(ImportNotificationTypeEnum.Cvedp, true, null)]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H224")]
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
+    {
+        var notification = new ImportNotification
+        {
+            ImportNotificationType = importNotificationType,
+        };
+        var sut = new ChedPDecisionFinder();
+
+        var result = sut.CanFindDecision(notification, checkCode);
+
+        result.Should().Be(expectedResult);
+    }
+    
+    [Theory]
     [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, DecisionCode.C03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, DecisionCode.E03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableIfChanneled, null, DecisionCode.C06)]
@@ -39,7 +60,6 @@ public class ChedPDecisionFinderTests
     [InlineData(false, null, DecisionNotAcceptableActionEnum.UseForOtherPurposes, DecisionCode.E97)]
     public void DecisionFinderTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode)
     {
-        // Arrange
         var notification = new ImportNotification
         {
             PartTwo = new PartTwo
@@ -54,10 +74,9 @@ public class ChedPDecisionFinderTests
         };
         var sut = new ChedPDecisionFinder();
 
-        // Act
-        var result = sut.FindDecision(notification);
+        var result = sut.FindDecision(notification, null);
 
-        // Assert
         result.DecisionCode.Should().Be(expectedCode);
+        result.CheckCode.Should().BeNull();
     }
 }

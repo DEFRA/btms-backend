@@ -7,22 +7,25 @@ namespace TestDataGenerator.Scenarios.SpecificFiles;
 public class AllChedsNoMatchScenarioGenerator(IServiceProvider sp, ILogger<AllChedsNoMatchScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger)
 {
+    private const string AllChedsNoMatchScenarioPath = "AllChedsNoMatch";
+    private const string? Ipaffs = "IPAFFS";
+
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var builders = GetBuilders("AllChedsNoMatch").GetAwaiter().GetResult();
+        var builders = GetBuilders(AllChedsNoMatchScenarioPath).GetAwaiter().GetResult();
 
         logger.LogInformation("Created {builders} Builders",
             builders.Count);
 
         var chedAMessage = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsNoMatch/IPAFFS/2024/11/01/cheda-one-commodity.json")
+                .Single(b => b.filePath == Path.Join(AllChedsNoMatchScenarioPath, Ipaffs, "2024", "11", "01", "cheda-one-commodity.json"))
                 .builder).WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
             .ValidateAndBuild();
 
         var chedPMessage = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsNoMatch/IPAFFS/2024/11/01/chedp-one-commodity.json")
+                .Single(b => b.filePath == Path.Join(AllChedsNoMatchScenarioPath, Ipaffs, "2024", "11", "01", "chedp-one-commodity.json"))
                 .builder)
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
@@ -30,7 +33,7 @@ public class AllChedsNoMatchScenarioGenerator(IServiceProvider sp, ILogger<AllCh
             .ValidateAndBuild();
 
         var chedDMessage = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsNoMatch/IPAFFS/2024/11/01/chedd-one-commodity.json")
+                .Single(b => b.filePath == Path.Join(AllChedsNoMatchScenarioPath, Ipaffs, "2024", "11", "01", "chedd-one-commodity.json"))
                 .builder)
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
@@ -38,7 +41,7 @@ public class AllChedsNoMatchScenarioGenerator(IServiceProvider sp, ILogger<AllCh
             .ValidateAndBuild();
         
         var chedPPMessage = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == "AllChedsNoMatch/IPAFFS/2024/11/01/chedpp-multiple-commodity.json")
+                .Single(b => b.filePath == Path.Join(AllChedsNoMatchScenarioPath, Ipaffs, "2024", "11", "01", "chedpp-multiple-commodity.json"))
                 .builder)
         .WithCreationDate(entryDate)
         .WithRandomArrivalDateTime(config.ArrivalDateRange)
