@@ -13,8 +13,8 @@ public static class IScenarioGeneratorExtensions
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithSimpleCommodity("1604142800", "Skipjack Tuna", 300)
-            .WithInspectionStatus(InspectionRequiredEnum
-                .NotRequired)
+            .WithIuuOption(ControlAuthorityIuuOptionEnum.Iuuok)
+            .WithInspectionStatus(InspectionRequiredEnum.NotRequired)
             .WithVersionNumber();
     }
     
