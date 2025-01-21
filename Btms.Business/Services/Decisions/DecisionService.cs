@@ -60,7 +60,9 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
             
             var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
             var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
-            var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();   // NOSONAR - The Cast<string>() is required to force the resulting variable to string[]? rather than string?[]?
+#pragma warning disable S1905 - The Cast<string>() is required to force the resulting variable to string[]? rather than string?[]?
+            var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+#pragma warning restore S1905
             var decisionCodes = GetDecisions(notification, checkCodes);
             foreach (var decisionCode in decisionCodes) 
                 decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
