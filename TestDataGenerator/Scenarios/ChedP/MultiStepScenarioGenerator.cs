@@ -14,6 +14,7 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
             .WithNoCommodities()
             .WithInspectionStatus(InspectionRequiredEnum.NotRequired) //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
+            .WithIuuOption(ControlAuthorityIuuOptionEnum.Iuuok)
             .WithVersionNumber();
             
         var notification = notificationBuilder
