@@ -147,6 +147,21 @@ public class AuditEntry
             Status = "Linked"
         };
     }
+
+    public static AuditEntry CreateAssociatedUpdate(string id, int version)
+    {
+        var t = DateTime.UtcNow;
+        
+        return new AuditEntry
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = t,
+            CreatedBy = CreatedBySystem.Btms,
+            CreatedLocal = t,
+            Status = "AssociatedUpdate"
+        };
+    }
     
     public static AuditEntry CreateUnlinked(string id, int version, DateTime? lastUpdated)
     {
