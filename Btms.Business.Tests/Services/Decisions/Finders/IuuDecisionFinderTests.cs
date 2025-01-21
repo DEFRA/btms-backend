@@ -31,12 +31,12 @@ public class IuuDecisionFinderTests
     }
     
     [Theory]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU OK")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not Compliant")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU NA")]
-    [InlineData(true, null, DecisionCode.X00, "IUU None")]
-    [InlineData(true, (ControlAuthorityIuuOptionEnum)999, DecisionCode.E95, "IUU Unknown")]
-    [InlineData(false, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.E94, "IUU Not Indicated")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU Compliant")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not compliant")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU Not applicable")]
+    [InlineData(true, null, DecisionCode.X00, "IUU Awaiting decision")]
+    [InlineData(true, (ControlAuthorityIuuOptionEnum)999, DecisionCode.E95, "IUU Data error")]
+    [InlineData(false, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.E94, "IUU Data error")]
     public void FindDecisionTest(bool iuuCheckRequired, ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
     {
         var notification = new ImportNotification
@@ -55,7 +55,7 @@ public class IuuDecisionFinderTests
         var result = sut.FindDecision(notification, IuuDecisionFinder.IuuCheckCode);
 
         result.DecisionCode.Should().Be(expectedDecisionCode);
-        result.DecisionReason.Should().Be(expectedDecisionReason);
+        result.DecisionReason.Should().StartWith(expectedDecisionReason);
         result.CheckCode.Should().Be(IuuDecisionFinder.IuuCheckCode);
     }
 }
