@@ -15,7 +15,7 @@ public class BasicDecisionCodeTests
         : ScenarioGeneratorBaseTest<AllChedsH01DecisionGenerator>(output)
     {
         [Fact]
-        public void SingleChed_ShouldHaveH02DecisionCode()
+        public void SingleChed_ShouldHaveH01DecisionCode()
         {
             CheckDecisionCode("H01", Client);
         }
@@ -67,7 +67,8 @@ public class BasicDecisionCodeTests
         string decisionCode;
         string mrn;
 
-        client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>().Should().AllSatisfy(m =>
+        var movements = client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>();
+        movements.Should().AllSatisfy(m =>
         {
             mrn = m.EntryReference;
             m.Decisions.OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items.Should().AllSatisfy(i =>

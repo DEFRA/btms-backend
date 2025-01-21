@@ -71,17 +71,33 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
 
     private DecisionFinderResult[] GetDecisions(ImportNotification notification, string[]? checkCodes)
     {
-        var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCodes)).ToArray();
-
-        if (finders.Length == 0) throw new InvalidOperationException("Invalid ImportNotificationType / IUUCheckRequired");
-
-        var results = finders.Select(x => x.FindDecision(notification, checkCodes)).ToArray();
+        var results = new List<DecisionFinderResult>();
+        if (checkCodes == null)
+        {
+            results.AddRange(GetDecisionsForCheckCode(notification, null));
+        }
+        else
+        {
+            foreach (var checkCode in checkCodes)
+            {
+                results.AddRange(GetDecisionsForCheckCode(notification, checkCode));
+            }
+        }
 
         var item = 1;
         foreach (var result in results)
             logger.LogInformation("Decision finder result {ItemNum} of {NumItems} for Notification {Id} Decision {Decision} - ConsignmentAcceptable {ConsignmentAcceptable}: DecisionEnum {DecisionEnum}: NotAcceptableAction {NotAcceptableAction}",
-                item++, results.Length, notification.Id, result.DecisionCode.ToString(), notification.PartTwo?.Decision?.ConsignmentAcceptable, notification.PartTwo?.Decision?.DecisionEnum.ToString(), notification.PartTwo?.Decision?.NotAcceptableAction?.ToString());
+                item++, results.Count, notification.Id, result.DecisionCode.ToString(), notification.PartTwo?.Decision?.ConsignmentAcceptable, notification.PartTwo?.Decision?.DecisionEnum.ToString(), notification.PartTwo?.Decision?.NotAcceptableAction?.ToString());
      
-        return results;
+        return results.ToArray();
+    }
+
+    private IEnumerable<DecisionFinderResult> GetDecisionsForCheckCode(ImportNotification notification, string? checkCode)
+    {
+        var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCode)).ToArray();
+
+        if (finders.Length == 0) throw new InvalidOperationException("Invalid ImportNotificationType / IUUCheckRequired");
+
+        return finders.Select(x => x.FindDecision(notification, checkCode));
     }
 }

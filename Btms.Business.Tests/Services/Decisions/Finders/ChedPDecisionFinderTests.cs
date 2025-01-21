@@ -1,7 +1,5 @@
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Decisions.Finders;
-using Btms.Model;
-using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
 using Xunit;
@@ -16,11 +14,9 @@ public class ChedPDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H222")]
     
-    [InlineData(ImportNotificationTypeEnum.Cvedp, true)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, true, null)]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222", "H224")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H224")]
-    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, params string[]? checkCodes)
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
     {
         var notification = new ImportNotification
         {
@@ -28,7 +24,7 @@ public class ChedPDecisionFinderTests
         };
         var sut = new ChedPDecisionFinder();
 
-        var result = sut.CanFindDecision(notification, checkCodes);
+        var result = sut.CanFindDecision(notification, checkCode);
 
         result.Should().Be(expectedResult);
     }
@@ -78,7 +74,7 @@ public class ChedPDecisionFinderTests
         };
         var sut = new ChedPDecisionFinder();
 
-        var result = sut.FindDecision(notification);
+        var result = sut.FindDecision(notification, null);
 
         result.DecisionCode.Should().Be(expectedCode);
         result.CheckCode.Should().BeNull();

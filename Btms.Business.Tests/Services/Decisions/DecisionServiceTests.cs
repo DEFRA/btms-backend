@@ -110,7 +110,9 @@ public class DecisionServiceTests
     private void ConfigureDecisionFinders<T>(ImportNotification notification, DecisionCode expectedDecisionCode, string[] checkCodes) where T : class, IDecisionFinder
     {
         var decisionFinder = Substitute.ForTypeForwardingTo<IDecisionFinder, T>();
-        decisionFinder.FindDecision(notification, Arg.Is<string[]>(matcher => matcher[0] == checkCodes[0])).Returns(new DecisionFinderResult(expectedDecisionCode, checkCodes.First()));
+        foreach (var checkCode in checkCodes) 
+            decisionFinder.FindDecision(notification, checkCode).Returns(new DecisionFinderResult(expectedDecisionCode, checkCode));
+
         _serviceCollection.AddSingleton(decisionFinder);
     }
 
