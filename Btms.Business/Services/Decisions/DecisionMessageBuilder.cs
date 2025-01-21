@@ -69,12 +69,12 @@ public static class DecisionMessageBuilder
     {
         if (item.Checks == null) yield break;
         
-        foreach (var itemCheck in item.Checks)
+        foreach (var checkCode in item.Checks.Select(x => x.CheckCode))
         {
-            var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == itemCheck.CheckCode).OrderByDescending(x => x.DecisionCode).First();
+            var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).First();
             yield return new Check
             {
-                CheckCode = itemCheck.CheckCode,
+                CheckCode = checkCode,
                 DecisionCode = maxDecisionResult.DecisionCode.ToString(),
                 DecisionReasons = BuildDecisionReasons(item, maxDecisionResult)
             };

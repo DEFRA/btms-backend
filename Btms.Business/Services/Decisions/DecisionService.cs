@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Btms.Business.Services.Decisions.Finders;
 using Btms.Model;
 using Btms.Model.Cds;
@@ -39,6 +40,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
         return decisionResult;
     }
 
+    [SuppressMessage("SonarLint", "L62", Justification = "The Cast<string>() on line 64 is required to force the resulting variable to string[]? rather than string?[]?")]
     private Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
         var decisionsResult = new DecisionResult();
@@ -55,15 +57,14 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
 
         foreach (var match in decisionContext.MatchingResult.Matches)
         {
-            if (decisionContext.HasChecks(match.MovementId, match.ItemNumber))
-            {
-                var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
-                var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
-                var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
-                var decisionCodes = GetDecisions(notification, checkCodes);
-                foreach (var decisionCode in decisionCodes) 
-                    decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
-            }
+            if (!decisionContext.HasChecks(match.MovementId, match.ItemNumber)) continue;
+            
+            var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+            var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
+            var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+            var decisionCodes = GetDecisions(notification, checkCodes);
+            foreach (var decisionCode in decisionCodes) 
+                decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
         }
 
         return Task.FromResult(decisionsResult);
