@@ -6,9 +6,9 @@ public class IuuDecisionFinder : IDecisionFinder
 {
     public const string IuuCheckCode = "H224";
     
-    public bool CanFindDecision(ImportNotification notification, string[]? checkCodes) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp && checkCodes?.Contains(IuuCheckCode) == true;
+    public bool CanFindDecision(ImportNotification notification, string[]? checkCodes = null) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp && checkCodes?.Contains(IuuCheckCode) == true;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification, string[]? _ = null)
+    public DecisionFinderResult FindDecision(ImportNotification notification, string[]? checkCodes = null)
     {
         return (notification.PartTwo?.ControlAuthority?.IuuCheckRequired == true) switch
         {
