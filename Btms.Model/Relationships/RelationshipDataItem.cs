@@ -6,8 +6,6 @@ namespace Btms.Model.Relationships;
 
 public sealed class RelationshipDataItem
 {
-    [Attr] public bool? Matched { get; set; }
-
     [Attr] public string? Type { get; set; }
 
     [Attr] public string? Id { get; set; }
@@ -23,10 +21,6 @@ public sealed class RelationshipDataItem
     public Dictionary<string, object?> ToDictionary()
     {
         var meta = new Dictionary<string, object?>();
-        if (Matched.HasValue)
-        {
-            meta.Add("matched", Matched);
-        }
 
         if (SourceItem.HasValue)
         {
@@ -51,11 +45,10 @@ public sealed class RelationshipDataItem
         return meta;
     }
 
-    public static RelationshipDataItem CreateFromNotification(ImportNotification notification, Movement movement, string matchReference, bool matched = true)
+    public static RelationshipDataItem CreateFromNotification(ImportNotification notification, Movement movement, string matchReference)
     {
         return new RelationshipDataItem
         {
-            Matched = matched,
             Type = "notifications",
             Id = notification.Id!,
             SourceItem = movement.Items
@@ -67,11 +60,10 @@ public sealed class RelationshipDataItem
         };
     }
 
-    public static RelationshipDataItem CreateFromMovement(ImportNotification notification, Movement movement, string matchReference, bool matched = true)
+    public static RelationshipDataItem CreateFromMovement(ImportNotification notification, Movement movement, string matchReference)
     {
         return new RelationshipDataItem
         {
-            Matched = matched,
             Type = "movements",
             Id = movement.Id!,
             SourceItem = notification.Commodities.FirstOrDefault()?.ComplementId,
