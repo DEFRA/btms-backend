@@ -5,12 +5,10 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedPDecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string[]? checkCodes = null) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp && checkCodes?.SequenceEqual([IuuDecisionFinder.IuuCheckCode]) != true;
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp && checkCode != IuuDecisionFinder.IuuCheckCode;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification, string[]? checkCodes = null)
+    public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
-        var checkCode = checkCodes?[0];
-
         if (notification.TryGetHoldDecision(out var code))
         {
             return new DecisionFinderResult(code!.Value, checkCode);

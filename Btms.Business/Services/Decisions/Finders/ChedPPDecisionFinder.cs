@@ -5,12 +5,10 @@ namespace Btms.Business.Services.Decisions.Finders;
 // ReSharper disable once InconsistentNaming
 public class ChedPPDecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string[]? checkCodes = null) => notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
+    public bool CanFindDecision(ImportNotification notification, string? _) => notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification, string[]? checkCodes = null)
+    public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
-        var checkCode = checkCodes?[0];
-        
         if (notification.TryGetHoldDecision(out var code))
         {
             return new DecisionFinderResult(code!.Value, checkCode);

@@ -10,16 +10,14 @@ public class IuuDecisionFinderTests
 {
     [Theory]
     [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H224")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222", "H224")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, null)]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, false)]
     
     [InlineData(ImportNotificationTypeEnum.Cveda, false, "H224")]
     [InlineData(ImportNotificationTypeEnum.Ced, false, "H224")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H224")]
     [InlineData(null, false, "H224")]
-    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, params string[]? checkCodes)
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
     {
         var notification = new ImportNotification
         {
@@ -27,7 +25,7 @@ public class IuuDecisionFinderTests
         };
         var sut = new IuuDecisionFinder();
 
-        var result = sut.CanFindDecision(notification, checkCodes);
+        var result = sut.CanFindDecision(notification, checkCode);
 
         result.Should().Be(expectedResult);
     }
@@ -54,10 +52,10 @@ public class IuuDecisionFinderTests
         };
         var sut = new IuuDecisionFinder();
 
-        var result = sut.FindDecision(notification);
+        var result = sut.FindDecision(notification, IuuDecisionFinder.IuuCheckCode);
 
         result.DecisionCode.Should().Be(expectedDecisionCode);
         result.DecisionReason.Should().Be(expectedDecisionReason);
-        result.CheckCode.Should().Be("H224");
+        result.CheckCode.Should().Be(IuuDecisionFinder.IuuCheckCode);
     }
 }

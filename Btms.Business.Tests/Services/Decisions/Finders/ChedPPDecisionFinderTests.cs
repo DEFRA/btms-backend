@@ -30,7 +30,7 @@ public class ChedPPDecisionFinderTests
         };
         var sut = new ChedPPDecisionFinder();
 
-        var result = sut.CanFindDecision(notification);
+        var result = sut.CanFindDecision(notification, null);
 
         result.Should().Be(expectedResult);
     }

@@ -30,7 +30,7 @@ public class ChedADecisionFinderTests
         };
         var sut = new ChedADecisionFinder();
 
-        var result = sut.CanFindDecision(notification);
+        var result = sut.CanFindDecision(notification, null);
 
         result.Should().Be(expectedResult);
     }
@@ -82,7 +82,7 @@ public class ChedADecisionFinderTests
         };
         var sut = new ChedADecisionFinder();
         
-        var result = sut.FindDecision(notification);
+        var result = sut.FindDecision(notification, null);
 
         result.DecisionCode.Should().Be(expectedCode);
         result.CheckCode.Should().BeNull();
