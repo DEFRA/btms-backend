@@ -14,7 +14,15 @@ public static class JsonClientExtensions
             .GetResourceObjects<Movement>()
             .Single();
     }
-    
+
+    public static Movement GetMovementByMrn(this BtmsClient client, string mrn)
+    {
+        return client.AsJsonApiClient()
+            .Get("api/movements")
+            .GetResourceObjects<Movement>()
+            .Single(x => x.EntryReference == mrn);
+    }
+
     public static ImportNotification GetFirstImportNotification(this BtmsClient client)
     {
         var results = client.AsJsonApiClient()
