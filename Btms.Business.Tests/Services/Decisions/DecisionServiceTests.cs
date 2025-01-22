@@ -21,7 +21,7 @@ public class DecisionServiceTests
     [InlineData(ImportNotificationTypeEnum.Ced, ChedDDecisionCode, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode, "H222")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode, "H214")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode, "H219")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, IuuDecisionCode, "H224")]
     public async Task When_processing_decisions_for_ched_type_notifications_not_requiring_iuu_check_Then_should_use_matching_ched_decision_finder_only(ImportNotificationTypeEnum targetImportNotificationType, DecisionCode expectedDecisionCode, params string[] checkCode)
     {
