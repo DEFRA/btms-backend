@@ -19,8 +19,8 @@ namespace Btms.Consumers;
         IMatchingService matchingService,
         IDecisionService decisionService, 
         IValidationService validationService,
-        ILogger<AlvsClearanceRequestConsumer> logger,
-        IMongoDbContext dbContext)
+        IAssociatedDataService associatedDataService,
+        ILogger<AlvsClearanceRequestConsumer> logger)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
     public async Task OnHandle(AlvsClearanceRequest message)
@@ -63,12 +63,8 @@ namespace Btms.Consumers;
                 {
                     return;
                 }
-
-                foreach (var notification in linkResult.Notifications)
-                {
-                    notification.Changed(AuditEntry.CreateAssociatedUpdate(messageId, notification.AuditEntries.LastOrDefault()?.Version ?? 1));
-                    await dbContext.Notifications.Update(notification, notification._Etag);
-                }
+                
+                await associatedDataService.Update(linkResult.Notifications, messageId, Context.CancellationToken);
 
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
