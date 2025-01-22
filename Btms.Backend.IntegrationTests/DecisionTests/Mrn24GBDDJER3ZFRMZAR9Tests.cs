@@ -151,7 +151,7 @@ public class Mrn24GBDDJER3ZFRMZAR9Tests(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
-            .Should().Be(DecisionStatusEnum.HasChedppChecks);
+            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
     
     [Fact]
