@@ -42,6 +42,8 @@ public class DownloadCommand : IRequest, ISyncJob
             {
                 await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
 
+                await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
+
                 var chedGrouping = request.Filter.Cheds.GroupBy(x => x.Type);
                 foreach (var chedGroup in chedGrouping)
                 {
