@@ -3,17 +3,29 @@ using Btms.Model.Ipaffs;
 namespace Btms.Business.Services.Decisions.Finders;
 
 // ReSharper disable once InconsistentNaming
-public class ChedPPDecisionFinder : IDecisionFinder
+public class ChedPpPhsiDecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string? checkCode) => notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
+    public const string CheckCode = "H219";
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) => 
+        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && checkCode == CheckCode;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
-        if (notification.TryGetHoldDecision(out var code))
+        switch (notification.Status)
         {
-            return new DecisionFinderResult(code!.Value, checkCode);
+            case ImportNotificationStatusEnum.Draft:
+                break;
+            case ImportNotificationStatusEnum.Submitted:
+            case ImportNotificationStatusEnum.InProgress:
+                return new DecisionFinderResult(DecisionCode.H02, checkCode);
+            case ImportNotificationStatusEnum.Validated:
+                return new DecisionFinderResult(DecisionCode.C03, checkCode);
+            case ImportNotificationStatusEnum.Rejected:
+                return new DecisionFinderResult(DecisionCode.N02, checkCode);
+            case ImportNotificationStatusEnum.PartiallyRejected:
+                return new DecisionFinderResult(DecisionCode.H01, checkCode);
         }
 
-        return new DecisionFinderResult(DecisionCode.E98, checkCode);
+        return new DecisionFinderResult(DecisionCode.E99, checkCode);
     }
 }
