@@ -3,11 +3,11 @@ using Btms.Model.Ipaffs;
 namespace Btms.Business.Services.Decisions.Finders;
 
 // ReSharper disable once InconsistentNaming
-public class ChedPpPhsiDecisionFinder : IDecisionFinder
+public class ChedPPDecisionFinder : IDecisionFinder
 {
-    public const string CheckCode = "H219";
+    public static readonly string[] CheckCodes = ["H218", "H220", "H219"];
     public bool CanFindDecision(ImportNotification notification, string? checkCode) => 
-        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && checkCode == CheckCode;
+        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && CheckCodes.Contains(checkCode);
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
