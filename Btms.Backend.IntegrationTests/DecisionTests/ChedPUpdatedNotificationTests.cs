@@ -1,4 +1,5 @@
 using Btms.Model.Auditing;
+using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.ChedP;
@@ -38,7 +39,7 @@ public class ChedPUpdatedNotificationTests
             .GetSingleMovement();
             
         movement.AuditEntries
-            .Select(a => (a.CreatedBy, a.Status, a.Version, a.Context?.ImportNotifications?.FirstOrDefault()?.Version))
+            .Select(a => (a.CreatedBy, a.Status, a.Version, (a.Context as DecisionContext)?.ImportNotifications?.FirstOrDefault()?.Version))
             .Should()
             .Equal([
                 (CreatedBySystem.Cds, "Created", 1, null),
@@ -107,10 +108,10 @@ public class ChedPUpdatedNotificationTests
             .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
 
-        decisionWithLinkAndContext.Context!.ImportNotifications
+        decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications
             .Should().NotBeNull();
 
-        decisionWithLinkAndContext.Context!.ImportNotifications!
+        decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Should().Equal([
                 (ChedPNotification.ReferenceNumber!, 2)

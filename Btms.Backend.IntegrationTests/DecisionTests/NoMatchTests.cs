@@ -73,7 +73,7 @@ public class NoMatch(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .SingleBtmsDecisionAuditEntry()
-            .Context?.DecisionComparison?.Checks
+            .Context.As<DecisionContext>()?.DecisionComparison?.Checks
             .Should().NotBeNull();
     }
     
@@ -83,7 +83,7 @@ public class NoMatch(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .SingleBtmsDecisionAuditEntry()
-            .Context?.ImportNotifications
+            .Context.As<DecisionContext>()?.ImportNotifications
             .Should().BeEmpty();
     }
     

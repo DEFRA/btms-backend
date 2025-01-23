@@ -16,7 +16,7 @@ public interface IBaseBuilder
 
 public abstract class BuilderBase<T, TBuilder> :
     IBaseBuilder
-    where TBuilder : BuilderBase<T, TBuilder> where T : new()
+    where TBuilder : BuilderBase<T, TBuilder> ///where T : new()
 
 {
     private IPostprocessComposer<T> _composer = null!;

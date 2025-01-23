@@ -16,6 +16,14 @@ public static class BuilderHelpers
         return builder;
     }
     
+    internal static FinalisationBuilder GetFinalisationBuilder(string file, string fileExtension = ".json")
+    {
+        var fullPath = $"{fullFolder}/{file}{fileExtension}";
+        var builder = new FinalisationBuilder(fullPath);
+        
+        return builder;
+    }
+    
     internal static DecisionBuilder GetDecisionBuilder(string file, string fileExtension = ".json")
     {
         var fullPath = $"{fullFolder}/{file}{fileExtension}";

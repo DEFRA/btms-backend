@@ -3,8 +3,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Btms.Model.Auditing;
 
-// [BsonKnownTypes(typeof(DecisionContext)]
-public interface IAuditContext
+[BsonKnownTypes(typeof(DecisionContext), typeof(CdsFinalisation))]
+public abstract class AuditContext
 {
     
 }

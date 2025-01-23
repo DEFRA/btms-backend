@@ -25,8 +25,14 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .WithEntryVersionNumber()
             .ValidateAndBuild();
 
+        var finalisation = GetFinalisationBuilder("finalisation")
+            .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(2), randomTime: false)
+            .WithReferenceNumber(notification.ReferenceNumber!)
+            .WithDecisionVersionNumber()
+            .ValidateAndBuild();
+        
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
         
-        return new GeneratorResult([clearanceRequest, notification]);
+        return new GeneratorResult([clearanceRequest, notification, finalisation]);
     }
 }

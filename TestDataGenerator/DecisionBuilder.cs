@@ -59,10 +59,10 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
         });   
     }
 
-    public DecisionBuilder<T> WithDecisionNumber(int number)
-    {
-        return Do(x => x.Header!.DecisionNumber = number);
-    }
+    // public DecisionBuilder<T> WithDecisionNumber(int number)
+    // {
+    //     return Do(x => x.Header!.DecisionNumber = number);
+    // }
 
     public DecisionBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {

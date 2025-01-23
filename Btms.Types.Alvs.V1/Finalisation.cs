@@ -15,14 +15,14 @@ public class Finalisation  //
     /// 
     /// </summary>
     [JsonPropertyName("serviceHeader")]
-    public ServiceHeader? ServiceHeader { get; set; }
+    public required ServiceHeader ServiceHeader { get; set; }
 
 	
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("header")]
-    public FinalisationHeader? Header { get; set; }
+    public required FinalisationHeader Header { get; set; }
 }
 
 public partial class FinalisationHeader  //

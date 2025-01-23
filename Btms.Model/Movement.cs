@@ -157,8 +157,30 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     [Attr]
     [ChangeSetIgnore] 
     public DateTime Updated { get; set; }
+    
+    [Attr]
+    [ChangeSetIgnore] 
+    public DateTime? Finalised { get; set; }
+    
+    [Attr]
+    [ChangeSetIgnore] 
+    public DateTime? FinalisedSource { get; set; }
+    
+    [Attr]
+    public Finalisation? Finalisation { get; set; }
+    
     public AuditEntry GetLatestAuditEntry()
     {
         return this.AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
     }
+}
+
+public class Finalisation {
+    
+    [Attr]
+    public required FinalState FinalState { get; set; }
+    
+    [Attr]
+    public required bool ManualAction { get; set; }
+
 }

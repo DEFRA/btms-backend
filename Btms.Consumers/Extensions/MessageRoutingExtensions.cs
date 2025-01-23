@@ -19,11 +19,15 @@ public static class MessageRoutingExtensions
     {
         var output = new List<object>();
         await PushMessagesToConsumers(sp, logger, messages
-                .Where(m => m is not Decision),
+                .Where(m => m is AlvsClearanceRequest or ImportNotification),
             sleepMs, synchronous);
 
         await PushMessagesToConsumers(sp, logger, messages
                 .Where(m => m is Decision),
+            sleepMs, synchronous);
+        
+        await PushMessagesToConsumers(sp, logger, messages
+                .Where(m => m is Finalisation),
             sleepMs, synchronous);
     }
     public static async Task PushMessagesToConsumers(this IServiceProvider sp, 
@@ -48,16 +52,22 @@ public static class MessageRoutingExtensions
                     logger.LogInformation("Sent notification {0} to consumer", n.ReferenceNumber!);
                     break;
 
+                case AlvsClearanceRequest cr:
+                    headers.Add("messageId", cr.Header!.EntryReference!);
+                    await bus.Publish(cr, "CLEARANCEREQUESTS", headers);
+                    logger.LogInformation("Sent cr {0} to consumer", cr.Header!.EntryReference!);
+                    break;
+
                 case Decision d:
                     headers.Add("messageId", d.Header!.EntryReference!);
                     await bus.Publish(d, "DECISIONS", headers);
                     logger.LogInformation("Sent decision {0} to consumer", d.Header!.EntryReference!);
                     break;
 
-                case AlvsClearanceRequest cr:
-                    headers.Add("messageId", cr.Header!.EntryReference!);
-                    await bus.Publish(cr, "CLEARANCEREQUESTS", headers);
-                    logger.LogInformation("Sent cr {0} to consumer", cr.Header!.EntryReference!);
+                case Finalisation d:
+                    headers.Add("messageId", d.Header!.EntryReference!);
+                    await bus.Publish(d, "FINALISATIONS", headers);
+                    logger.LogInformation("Sent finalisation {0} to consumer", d.Header!.EntryReference!);
                     break;
 
                 default:
