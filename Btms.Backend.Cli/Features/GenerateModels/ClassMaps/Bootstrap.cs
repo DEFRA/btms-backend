@@ -92,6 +92,14 @@ internal static class Bootstrap
                 map.MapProperty("agent").IsSensitive();
             });
 
+        GeneratorClassMap.RegisterClassMap("Inspector",
+            map =>
+            {
+                map.MapProperty("name").IsSensitive();
+                map.MapProperty("phone").IsSensitive();
+                map.MapProperty("email").IsSensitive();
+            });
+
         GeneratorClassMap.RegisterClassMap("Decision",
             map =>
             {
