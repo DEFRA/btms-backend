@@ -11,21 +11,14 @@ public class ChedPPDecisionFinder : IDecisionFinder
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
-        switch (notification.Status)
+        return notification.Status switch
         {
-            case ImportNotificationStatusEnum.Draft:
-                break;
-            case ImportNotificationStatusEnum.Submitted:
-            case ImportNotificationStatusEnum.InProgress:
-                return new DecisionFinderResult(DecisionCode.H02, checkCode);
-            case ImportNotificationStatusEnum.Validated:
-                return new DecisionFinderResult(DecisionCode.C03, checkCode);
-            case ImportNotificationStatusEnum.Rejected:
-                return new DecisionFinderResult(DecisionCode.N02, checkCode);
-            case ImportNotificationStatusEnum.PartiallyRejected:
-                return new DecisionFinderResult(DecisionCode.H01, checkCode);
-        }
-
-        return new DecisionFinderResult(DecisionCode.E99, checkCode);
+            ImportNotificationStatusEnum.Submitted or ImportNotificationStatusEnum.InProgress =>
+                new DecisionFinderResult(DecisionCode.H02, checkCode),
+            ImportNotificationStatusEnum.Validated => new DecisionFinderResult(DecisionCode.C03, checkCode),
+            ImportNotificationStatusEnum.Rejected => new DecisionFinderResult(DecisionCode.N02, checkCode),
+            ImportNotificationStatusEnum.PartiallyRejected => new DecisionFinderResult(DecisionCode.H01, checkCode),
+            _ => new DecisionFinderResult(DecisionCode.E99, checkCode)
+        };
     }
 }
