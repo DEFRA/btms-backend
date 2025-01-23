@@ -2,9 +2,6 @@ namespace Btms.Business.Services.Decisions;
 
 public enum DecisionCode
 {
-    H01,
-    H02,
-    E03,
     C03,
     C05,
     C06,
@@ -14,7 +11,12 @@ public enum DecisionCode
     N03,
     N04,
     N07,
+
+    H01,
+    H02,
+
     X00,
+    E03,
     
     E94,    // IUU not indicated in PartTwo?.ControlAuthority?.IuuCheckRequired but "H224" requested in Items[]?.Checks[]?.CheckCode
     E95,    // Unexpected value in PartTwo?.Decision?.IuuOption
