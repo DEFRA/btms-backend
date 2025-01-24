@@ -36,7 +36,8 @@ public class AuditEntry
     
     // TODO - getting a serialisation error when using IAuditContext
     // But as we only do this for decisions ignoring! 
-    public DecisionContext? Context { get; set; }
+    // [JsonConverter(typeof(DecisionContextConverter<AuditContext>))]
+    public AuditContext? Context { get; set; }
 
     public bool IsCreatedOrUpdated()
     {
@@ -184,6 +185,21 @@ public class AuditEntry
             CreatedBy = isAlvs ? CreatedBySystem.Alvs : CreatedBySystem.Btms,
             CreatedLocal = DateTime.UtcNow,
             Status = "Decision",
+            Context = context
+        };
+    }
+    
+    public static AuditEntry CreateFinalisation(string id, int version,
+        DateTime? lastUpdated, CdsFinalisation context, bool discarded = false)
+    {
+        return new AuditEntry()
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = lastUpdated,
+            CreatedBy = CreatedBySystem.Cds,
+            CreatedLocal = DateTime.UtcNow,
+            Status = discarded ? "Finalisation Discarded" : "Finalisation",
             Context = context
         };
     }

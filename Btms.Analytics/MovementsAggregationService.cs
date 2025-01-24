@@ -283,6 +283,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// </summary>
     /// <param name="from"></param>
     /// <param name="to"></param>
+    /// <param name="chedTypes"></param>
+    /// <param name="country"></param>
     /// <returns></returns>
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
         DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)

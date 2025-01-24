@@ -7,6 +7,7 @@ using Btms.Types.Ipaffs;
 using TestDataGenerator.Helpers;
 using TestDataGenerator.Scenarios;
 using Decision = Btms.Types.Alvs.Decision;
+using Finalisation = Btms.Types.Alvs.Finalisation;
 
 namespace TestDataGenerator;
 
@@ -29,10 +30,11 @@ public abstract class ScenarioGenerator
     internal ClearanceRequestBuilder GetClearanceRequestBuilder(string file, string fileExtension = ".json")
     {
         return BuilderHelpers.GetClearanceRequestBuilder(file, fileExtension);
-        // var fullPath = $"{_fullFolder}/{file}{fileExtension}";
-        // var builder = new ClearanceRequestBuilder(fullPath);
-        //
-        // return builder;
+    }
+    
+    internal FinalisationBuilder GetFinalisationBuilder(string file, string fileExtension = ".json")
+    {
+        return BuilderHelpers.GetFinalisationBuilder(file, fileExtension);
     }
     
     internal DecisionBuilder GetDecisionBuilder(string file, string fileExtension = ".json")
@@ -53,7 +55,7 @@ public abstract class ScenarioGenerator
         {
             foreach (var o in initial)
             {
-                if (o is ImportNotification || o is AlvsClearanceRequest || o is Decision)
+                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation)
                 {
                     Messages.Add(o);
                 }

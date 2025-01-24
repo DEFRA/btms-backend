@@ -82,10 +82,10 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
         
-        decisionWithLinkAndContext.Context!.ImportNotifications
+        decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications
             .Should().NotBeNull();
         
-        decisionWithLinkAndContext.Context!.ImportNotifications!
+        decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Should()
             .Equal([

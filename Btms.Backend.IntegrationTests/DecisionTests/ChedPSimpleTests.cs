@@ -60,12 +60,14 @@ public class ChedPSimpleTests(ITestOutputHelper output)
         
         var decisionWithLinkAndContext = movement.AuditEntries
             .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
-            .MaxBy(a => a.Version)!;
+            .MaxBy(a => a.Version)!
+            .Context
+            .As<DecisionContext>();
         
-        decisionWithLinkAndContext.Context!.ImportNotifications
+        decisionWithLinkAndContext.ImportNotifications
             .Should().NotBeNull();
         
-        decisionWithLinkAndContext.Context!.ImportNotifications!
+        decisionWithLinkAndContext.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Should()
             .Equal([

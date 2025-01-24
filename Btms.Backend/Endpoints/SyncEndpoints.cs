@@ -19,17 +19,25 @@ public static class SyncEndpoints
         {
             app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
             app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
+            
             app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
             app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
 
-            app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
-            app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
+            app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
+            app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
+            
+            app.MapGet(BaseRoute + "/decisions/", GetSyncDecisions).AllowAnonymous();
+            app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
+            
+            app.MapGet(BaseRoute + "/finalisations/", GetSyncFinalisations).AllowAnonymous();
+            app.MapPost(BaseRoute + "/finalisations/", SyncFinalisations).AllowAnonymous();
+            
         }
 
-        app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
-        app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
-        app.MapGet(BaseRoute + "/decisions/", GetSyncDecisions).AllowAnonymous();
-        app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
+        app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
+        app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
+        
+        
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/clear", ClearSyncJobs).AllowAnonymous();
@@ -159,6 +167,22 @@ public static class SyncEndpoints
     {
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
+    }
+    
+    private static async Task<IResult> GetSyncFinalisations(
+        [FromServices] IBtmsMediator mediator,
+        SyncPeriod syncPeriod)
+    {
+        SyncFinalisationsCommand command = new() { SyncPeriod = syncPeriod };
+        return await SyncFinalisations(mediator, command);
+    }
+
+    private static async Task<IResult> SyncFinalisations([FromServices] IBtmsMediator mediator,
+        [FromBody] SyncFinalisationsCommand command)
+    {
+        await mediator.SendSyncJob(command);
+        return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
+       
     }
     
     

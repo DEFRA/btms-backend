@@ -253,7 +253,7 @@ public enum DecisionStatusEnum
     None,
 }
 
-public partial class SummarisedDecisionContext //
+public partial class SummarisedDecisionContext : AuditContext //
 {
     [Attr]
     [System.ComponentModel.Description("")]
@@ -296,7 +296,7 @@ public class DecisionComparison
     public List<ItemCheck> Checks { get; set; } = new List<ItemCheck>();
 }
 
-public partial class DecisionContext : SummarisedDecisionContext, IAuditContext //
+public partial class DecisionContext : SummarisedDecisionContext //
 {
     [Attr]
     [System.ComponentModel.Description("")]

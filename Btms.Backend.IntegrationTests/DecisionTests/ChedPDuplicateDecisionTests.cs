@@ -1,6 +1,7 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Model;
 using Btms.Model.Auditing;
+using Btms.Model.Cds;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -54,10 +55,10 @@ public class ChedPDuplicateDecisionTests(ITestOutputHelper output)
                 .Where(a => a.CreatedBy == CreatedBySystem.Btms && a.Status == "Decision")
                 .MaxBy(a => a.Version)!;
 
-            decisionWithLinkAndContext.Context!.ImportNotifications
+            decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications
                 .Should().NotBeNull();
 
-            decisionWithLinkAndContext.Context!.ImportNotifications!
+            decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
                 .Select(n => (n.Id, n.Version))
                 .Should().Equal([
                     (chedPNotification.ReferenceNumber!, 1)
