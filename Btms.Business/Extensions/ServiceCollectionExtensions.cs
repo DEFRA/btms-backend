@@ -72,7 +72,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDecisionFinder, ChedADecisionFinder>();
         services.AddScoped<IDecisionFinder, ChedDDecisionFinder>();
         services.AddScoped<IDecisionFinder, ChedPDecisionFinder>();
-        services.AddScoped<IDecisionFinder, ChedPpPhsiDecisionFinder>();
+        services.AddScoped<IDecisionFinder, ChedPPDecisionFinder>();
         services.AddScoped<IDecisionFinder, IuuDecisionFinder>();
 
         services.AddTransient<MovementBuilderFactory>();
