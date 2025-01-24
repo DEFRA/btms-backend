@@ -56,12 +56,6 @@ public static class SyncEndpoints
         InitialiseCommand command = new() { SyncPeriod = period };
         
         await mediator.SendSyncJob(command);
-        
-        // return await SyncNotifications(mediator, command);
-        // await GetSyncNotifications(mediator, period);
-        // await GetSyncClearanceRequests(mediator, period);
-        //// await GetSyncDecisions(mediator, period);
-        //// await GetSyncGmrs(mediator, period);
 
         return Results.Ok();
     }
@@ -74,7 +68,6 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)
     {
-        ////var command = new DownloadCommand { SyncPeriod = period };
         await mediator.SendJob(command);
         return Results.Ok(command.JobId);
     }
@@ -189,8 +182,5 @@ public static class SyncEndpoints
     {
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
-       
     }
-    
-    
 }

@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Text.Json.Serialization;
 using Btms.BlobService;
+using Btms.Common.Extensions;
 using MediatR;
 using Btms.SensitiveData;
 using Btms.Types.Ipaffs;
@@ -77,13 +78,20 @@ public class DownloadCommand : IRequest, ISyncJob
 
         private async Task Download(DownloadCommand request, string rootFolder, string folder, Type type, string[]? filenameFilter, CancellationToken cancellationToken)
         {
-
             ParallelOptions options = new() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = 10 };
             
+            var paths = request.SyncPeriod.GetPeriodPaths();
+            
+            var tasks = paths
+                .Select((periodPath) =>
+                    blobService.GetResourcesAsync($"{folder}{periodPath}", cancellationToken)
+                )
+                .FlattenAsyncEnumerable();
+            
             //TODO : Need to update to iterate through paths...
-            var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPaths().First()}", cancellationToken);
+            // var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPaths().First()}", cancellationToken);
             //Write local files
-            await Parallel.ForEachAsync(result, options, async (item, _) =>
+            await Parallel.ForEachAsync(tasks, options, async (item, _) =>
             {
                 bool shouldDownload = true;
                 if (filenameFilter is not null)
