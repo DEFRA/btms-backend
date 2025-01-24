@@ -131,6 +131,11 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
             unlinked = true;
         }
 
+        if (Relationships.Notifications.Data.Count == 0)
+        {
+            Relationships.Notifications.Links = new RelationshipLinks();
+        }
+
         if (unlinked)
         {
             AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
