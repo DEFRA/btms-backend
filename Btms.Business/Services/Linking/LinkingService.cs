@@ -16,8 +16,14 @@ public static partial class LinkingServiceLogging
     [LoggerMessage(Level = LogLevel.Information, Message = "Linking Started for {ContextType} - {MatchIdentifier}")]
     internal static partial void LinkingStarted(this ILogger logger, string contextType, string matchIdentifier);
 
+    [LoggerMessage(Level = LogLevel.Information, Message = "UnLinking Started for {ContextType} - {MatchIdentifier}")]
+    internal static partial void UnLinkingStarted(this ILogger logger, string contextType, string matchIdentifier);
+
     [LoggerMessage(Level = LogLevel.Information, Message = "Linking Finished for {ContextType} - {MatchIdentifier}")]
     internal static partial void LinkingFinished(this ILogger logger, string contextType, string matchIdentifier);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "UnLinking Finished for {ContextType} - {MatchIdentifier}")]
+    internal static partial void UnLinkingFinished(this ILogger logger, string contextType, string matchIdentifier);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Linking Failed for {ContextType} - {MatchIdentifier}")]
     internal static partial void LinkingFailed(this ILogger logger, Exception exception, string contextType, string matchIdentifier);
@@ -112,7 +118,6 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                                     notification._MatchReference)
                             ]
                         });
-                        // movement.AddLinkStatus();
 
                         await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
                         await dbContext.Notifications.Update(notification, transaction: transaction, cancellationToken: cancellationToken);
@@ -137,6 +142,49 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
         }
 
         return result;
+    }
+
+    public async Task UnLink(ImportNotificationLinkContext linkContext, CancellationToken cancellationToken = default)
+    {
+        var startedAt = TimeProvider.System.GetTimestamp();
+        using (logger.BeginScope(new List<KeyValuePair<string, object>>
+               {
+                   new("MatchIdentifier", linkContext.GetIdentifiers()),
+                   new("ContextType", linkContext.GetType().Name),
+               }))
+        {
+            logger.UnLinkingStarted(linkContext.GetType().Name, linkContext.GetIdentifiers());
+            try
+            {
+                var result = await FindImportNotificationLinks(linkContext.PersistedImportNotification, cancellationToken);
+
+                using var transaction = await dbContext.StartTransaction(cancellationToken);
+                foreach (var movement in result.Movements)
+                {
+                    await RemoveNotificationLinkFromMovement(movement,
+                        linkContext.PersistedImportNotification._MatchReference, cancellationToken);
+                    await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
+                }
+
+                linkContext.PersistedImportNotification.RemoveAllRelationships();
+
+                await dbContext.Notifications.Update(linkContext.PersistedImportNotification, transaction: transaction, cancellationToken: cancellationToken);
+
+                await transaction.CommitTransaction(cancellationToken);
+            }
+            catch (Exception e)
+            {
+                // No Exception is logged at this point, as its logged further up the stack
+                metrics.Faulted(e);
+                throw new LinkException(e);
+            }
+            finally
+            {
+                var e = TimeProvider.System.GetElapsedTime(startedAt);
+                metrics.Completed(e.TotalMilliseconds);
+                logger.UnLinkingFinished(linkContext.GetType().Name, linkContext.GetIdentifiers());
+            }
+        }
     }
 
     private async Task CheckMovementForRemovedLinks(MovementLinkContext linkContext,
