@@ -47,6 +47,11 @@ public class DeletedNotificationTestsScenarioGenerator(
     ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DeletedNotification");
 
+public class CancelledNotificationTestsScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "CancelledNotification");
+
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
