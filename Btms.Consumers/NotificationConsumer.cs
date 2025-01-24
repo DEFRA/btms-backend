@@ -64,6 +64,12 @@ namespace Btms.Consumers;
                 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
             }
+            else if (preProcessingResult.IsDeleted())
+            {
+                var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
+                    preProcessingResult.ChangeSet);
+                await linkingService.UnLink(linkContext, Context.CancellationToken);
+            }
             else
             {
                 LogStatus("IsCreatedOrChanged=false", message);
