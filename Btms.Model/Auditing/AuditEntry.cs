@@ -53,6 +53,11 @@ public class AuditEntry
         return Status == "Updated";
     }
 
+    public bool IsDeleted()
+    {
+        return Status == "Deleted";
+    }
+
 
     public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated,
         CreatedBySystem lastUpdatedBy, string status, CreatedBySystem source)
@@ -70,6 +75,21 @@ public class AuditEntry
 
     public static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, CreatedBySystem source)
     {
+        return CreateUpdated(changeSet, id, version, lastUpdated, source, "Updated");
+    }
+
+    public static AuditEntry CreateCancelled(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, CreatedBySystem source)
+    {
+        return CreateUpdated(changeSet, id, version, lastUpdated, source, "Cancelled");
+    }
+
+    public static AuditEntry CreateDeleted(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, CreatedBySystem source)
+    {
+        return CreateUpdated(changeSet, id, version, lastUpdated, source, "Deleted");
+    }
+
+    private static AuditEntry CreateUpdated(ChangeSet changeSet, string id, int version, DateTime? lastUpdated, CreatedBySystem source, string status)
+    {
         var auditEntry = new AuditEntry
         {
             Id = id,
@@ -77,14 +97,14 @@ public class AuditEntry
             CreatedSource = lastUpdated,
             CreatedBy = source,
             CreatedLocal = DateTime.UtcNow,
-            Status = "Updated"
+            Status = status
         };
 
         foreach (var operation in changeSet.JsonPatch.Operations)
         {
             auditEntry.Diff.Add(AuditDiffEntry.Internal(operation));
         }
-        
+
         return auditEntry;
     }
 

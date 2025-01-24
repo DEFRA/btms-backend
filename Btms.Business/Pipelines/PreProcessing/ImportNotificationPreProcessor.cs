@@ -4,6 +4,7 @@ using Btms.Model.ChangeLog;
 using Btms.Types.Ipaffs;
 using Btms.Types.Ipaffs.Mapping;
 using Microsoft.Extensions.Logging;
+using ImportNotificationStatusEnum = Btms.Model.Ipaffs.ImportNotificationStatusEnum;
 
 namespace Btms.Business.Pipelines.PreProcessing;
 
@@ -30,7 +31,20 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
 
             var changeSet = internalNotification.GenerateChangeSet(existingNotification);
 
-            internalNotification.Update(preProcessingContext.MessageId, changeSet);
+            switch (internalNotification.Status)
+            {
+                case ImportNotificationStatusEnum.Cancelled:
+                    internalNotification.Cancel(preProcessingContext.MessageId, changeSet);
+                    break;
+                case ImportNotificationStatusEnum.Deleted:
+                    internalNotification.Delete(preProcessingContext.MessageId, changeSet);
+                    break;
+                default:
+                    internalNotification.Update(preProcessingContext.MessageId, changeSet);
+                    break;
+            }
+
+            
             await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
 
             return PreProcessResult.Changed(internalNotification, changeSet);

@@ -162,6 +162,12 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         }
     }
 
+    public void RemoveAllRelationships()
+    {
+        Relationships.Movements = TdmRelationshipObject.CreateDefault();
+        AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
+    }
+
     public void Changed(AuditEntry auditEntry)
     {
         AuditEntries.Add(auditEntry);
@@ -191,6 +197,26 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     public void Update(string auditId, ChangeSet changeSet)
     {
         var auditEntry = AuditEntry.CreateUpdated(changeSet,
+            auditId,
+            Version.GetValueOrDefault(),
+            UpdatedSource,
+            CreatedBySystem.Ipaffs);
+        Changed(auditEntry);
+    }
+
+    public void Cancel(string auditId, ChangeSet changeSet)
+    {
+        var auditEntry = AuditEntry.CreateCancelled(changeSet,
+            auditId,
+            Version.GetValueOrDefault(),
+            UpdatedSource,
+            CreatedBySystem.Ipaffs);
+        Changed(auditEntry);
+    }
+
+    public void Delete(string auditId, ChangeSet changeSet)
+    {
+        var auditEntry = AuditEntry.CreateDeleted(changeSet,
             auditId,
             Version.GetValueOrDefault(),
             UpdatedSource,
