@@ -31,13 +31,10 @@ public static class FinalisationMapper
                 DecisionNumber = from.Header.DecisionNumber,
                 EntryReference = from.Header.EntryReference,
                 EntryVersionNumber = from.Header.EntryVersionNumber,
-                FinalState = FinalState.Cleared,
-                ManualAction = true
+                FinalState = (FinalState)int.Parse(from.Header.FinalState),
+                ManualAction = from.Header.ManualAction == "Y"
             }
         };
-        // to.ServiceHeader = ServiceHeaderMapper.Map(from?.ServiceHeader!);
-        // to.Header = HeaderMapper.Map(from?.Header!);
-        // to.Items = from?.Items?.Select(x => ItemsMapper.Map(x)).ToArray();
         
         return to;
     }
