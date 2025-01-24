@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Btms.Model.Auditing;
 using JsonApiDotNetCore.Serialization.JsonConverters;
 using JsonApiDotNetCore.Serialization.Objects;
 
@@ -9,7 +10,7 @@ public abstract class JsonApiDocument<T>
 {
     protected JsonSerializerOptions JsonSerializerOptions = new()
     {
-        Converters = { new SingleOrManyDataConverterFactory(), new JsonStringEnumConverter() },
+        Converters = { new SingleOrManyDataConverterFactory(), new JsonStringEnumConverter() }, //, new DecisionContextConverter<AuditContext>()
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };

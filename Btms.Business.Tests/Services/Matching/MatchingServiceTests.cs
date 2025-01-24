@@ -10,6 +10,8 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using TestDataGenerator.Scenarios;
 using Xunit;
+using Decision = Btms.Types.Alvs.Decision;
+using Finalisation = Btms.Types.Alvs.Finalisation;
 
 namespace Btms.Business.Tests.Services.Matching;
 
@@ -91,6 +93,9 @@ public class MatchingServiceTests
 
                         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(cr);
                         memo.Movements.Add(movementBuilderFactory.From(internalClearanceRequest).Build());
+                        break;
+                    case Finalisation or Decision :
+                        Console.WriteLine("Ignoring decisions & finalisations");
                         break;
                     default:
                         throw new ArgumentException($"Unexpected type {x.GetType().Name}");

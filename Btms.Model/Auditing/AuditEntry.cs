@@ -36,6 +36,7 @@ public class AuditEntry
     
     // TODO - getting a serialisation error when using IAuditContext
     // But as we only do this for decisions ignoring! 
+    // [JsonConverter(typeof(DecisionContextConverter<AuditContext>))]
     public AuditContext? Context { get; set; }
 
     public bool IsCreatedOrUpdated()
