@@ -14,7 +14,8 @@ public class ChedPpPhsiDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Ced, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, true, "H219")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, true, "H218")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, true, "H220")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, false, null)]
     public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
     {
@@ -22,7 +23,7 @@ public class ChedPpPhsiDecisionFinderTests
         {
             ImportNotificationType = importNotificationType,
         };
-        var sut = new ChedPpPhsiDecisionFinder();
+        var sut = new ChedPPDecisionFinder();
 
         var result = sut.CanFindDecision(notification, checkCode);
 
@@ -47,7 +48,7 @@ public class ChedPpPhsiDecisionFinderTests
         {
            Status = status
         };
-        var sut = new ChedPpPhsiDecisionFinder();
+        var sut = new ChedPPDecisionFinder();
 
         var result = sut.FindDecision(notification, null);
 

@@ -33,9 +33,9 @@ public class DecisionMessageBuilderTests
         
         decisions[0].Items?[1].Checks.Should().HaveCount(1);
         decisions[0].Items?[1].Checks?[0].CheckCode.Should().Be("H111");
-        decisions[0].Items?[1].Checks?[0].DecisionCode.Should().Be("C06");
+        decisions[0].Items?[1].Checks?[0].DecisionCode.Should().Be("H01");
         decisions[0].Items?[1].Checks?[0].DecisionReasons.Should().HaveCount(1);
-        decisions[0].Items?[1].Checks?[0].DecisionReasons?[0].Should().Be("reason-4");
+        decisions[0].Items?[1].Checks?[0].DecisionReasons?[0].Should().Be("reason-3");
         
         decisions[1].Items.Should().HaveCount(2);
         decisions[1].Items?[0].Checks.Should().HaveCount(0);

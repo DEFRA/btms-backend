@@ -42,6 +42,11 @@ public class ChedPpPhsiDecisionTestsScenarioGenerator(
     ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "ChedPpPhsiDecisionTests");
 
+public class ChedPpHmiDecisionTestsScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "ChedPpHmiDecisionTests");
+
 public class DeletedNotificationTestsScenarioGenerator(
     IServiceProvider sp,
     ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)

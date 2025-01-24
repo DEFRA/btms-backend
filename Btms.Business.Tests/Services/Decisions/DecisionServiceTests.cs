@@ -102,7 +102,7 @@ public class DecisionServiceTests
         ConfigureDecisionFinders<ChedDDecisionFinder>(notification, ChedDDecisionCode, checkCodes);
         ConfigureDecisionFinders<ChedADecisionFinder>(notification, ChedADecisionCode, checkCodes);
         ConfigureDecisionFinders<ChedPDecisionFinder>(notification, ChedPDecisionCode, checkCodes);
-        ConfigureDecisionFinders<ChedPpPhsiDecisionFinder>(notification, ChedPPDecisionCode, checkCodes);
+        ConfigureDecisionFinders<ChedPPDecisionFinder>(notification, ChedPPDecisionCode, checkCodes);
         ConfigureDecisionFinders<IuuDecisionFinder>(notification, IuuDecisionCode, checkCodes);
         return _serviceCollection.BuildServiceProvider();
     }
