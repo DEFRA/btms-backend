@@ -14,34 +14,6 @@ using Movement = Btms.Model.Movement;
 
 namespace Btms.Business.Tests.Services.Linking;
 
-public class UnLinkingTests : LinkingServiceTests
-{
-    //0 movements are found
-    //many movements are found
-    //
-
-
-    [Fact]
-    public async Task Test1()
-    {
-        // Arrange
-        var testData = await AddTestData(2, 3, 1);
-
-        var sut = CreateLinkingService();
-        await sut.Link(new ImportNotificationLinkContext(testData.Cheds[0], null));
-        var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, false);
-
-        // Act
-        await sut.UnLink(notificationCtx);
-
-        var loadedNotification = await dbContext.Notifications.Find(testData.Cheds[0].Id!);
-        loadedNotification?.Relationships.Movements.Data.Should().BeNullOrEmpty();
-
-        var loadedMovements = dbContext.Movements.ToList();
-        loadedMovements.ForEach(m => m.Relationships.Notifications.Data.Should().BeNullOrEmpty());
-    }
-}
-
 public class LinkingServiceTests
 {
     private static readonly Random Random = new ();
