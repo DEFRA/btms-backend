@@ -1,5 +1,6 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios;
 
@@ -8,7 +9,7 @@ public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesS
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var notification = GetNotificationBuilder("cheda-one-commodity")
+        var notification = BuilderHelpers.GetNotificationBuilder("cheda-one-commodity")
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
@@ -20,7 +21,7 @@ public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesS
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
-        var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)

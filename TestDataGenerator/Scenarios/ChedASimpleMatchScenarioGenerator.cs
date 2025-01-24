@@ -1,5 +1,6 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios;
 
@@ -7,7 +8,7 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var notification = GetNotificationBuilder("cheda-one-commodity")
+        var notification = BuilderHelpers.GetNotificationBuilder("cheda-one-commodity")
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item)
@@ -17,7 +18,7 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
-        var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
@@ -25,7 +26,7 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .WithEntryVersionNumber()
             .ValidateAndBuild();
 
-        var finalisation = GetFinalisationBuilder("finalisation")
+        var finalisation = BuilderHelpers.GetFinalisationBuilder("finalisation")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(2), randomTime: false)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithDecisionVersionNumber()

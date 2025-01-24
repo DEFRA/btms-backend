@@ -1,6 +1,7 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Extensions;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
@@ -8,7 +9,7 @@ public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerat
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var notification1Builder = GetNotificationBuilder("chedp-one-commodity")
+        var notification1Builder = BuilderHelpers.GetNotificationBuilder("chedp-one-commodity")
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, 1)
@@ -29,7 +30,7 @@ public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerat
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification2.ReferenceNumber);
 
-        var clearanceRequestBuilder = GetClearanceRequestBuilder("cr-one-item")
+        var clearanceRequestBuilder = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification1.PartOne!.ArrivalDate, notification1.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification1.ReferenceNumber!)
