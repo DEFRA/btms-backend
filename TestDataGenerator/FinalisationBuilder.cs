@@ -12,9 +12,6 @@ public class FinalisationBuilder(string file) : FinalisationBuilder<Btms.Types.A
 public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
     where T : Finalisation
 {
-    private FinalisationBuilder(): base()
-    {
-    }
 
     protected FinalisationBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
     {
@@ -58,20 +55,19 @@ public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
         });   
     }
 
-    // public FinalisationBuilder<T> WithDecisionNumber(int number)
-    // {
-    //     return Do(x => x.Header!.DecisionNumber = number);
-    // }
-
     public FinalisationBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
-        var entry = randomTime ?
-            // We don't want documents created in the future!
-            entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
-            : entryDate;
-        
-        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
+        if (randomTime)
+        {
+            var hour = entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23;
+            return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime(hour));
+        }
+        else
+        {
+            return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
+        }
     }
+    
     public FinalisationBuilder<T> WithEntryVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.EntryVersionNumber = version);

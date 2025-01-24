@@ -11,9 +11,6 @@ public class DecisionBuilder(string file) : DecisionBuilder<Btms.Types.Alvs.Deci
 public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     where T : Decision, new()
 {
-    private DecisionBuilder(): base()
-    {
-    }
 
     protected DecisionBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
     {
@@ -58,21 +55,21 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
             x.Header!.MasterUcr = id.AsCdsMasterUcr();
         });   
     }
-
-    // public DecisionBuilder<T> WithDecisionNumber(int number)
-    // {
-    //     return Do(x => x.Header!.DecisionNumber = number);
-    // }
-
+    
     public DecisionBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
-        var entry = randomTime ?
-            // We don't want documents created in the future!
-            entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
-            : entryDate;
-        
-        return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entry);
+        if (randomTime)
+        {
+            var hour = entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23;
+            return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate.RandomTime(hour));
+        }
+        else
+        {
+            return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
+        }
     }
+
+    
     public DecisionBuilder<T> WithEntryVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.EntryVersionNumber = version);
