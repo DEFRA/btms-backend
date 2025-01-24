@@ -123,9 +123,17 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     public void RemoveRelationship(RelationshipDataItem relationship)
     {
+        var unlinked = false;
+
         if (Relationships.Notifications.Data.Contains(relationship))
         {
             Relationships.Notifications.Data.Remove(relationship);
+            unlinked = true;
+        }
+
+        if (unlinked)
+        {
+            AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
         }
     }
     

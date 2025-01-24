@@ -166,7 +166,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                     await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
                 }
 
-                linkContext.PersistedImportNotification.Relationships = new NotificationTdmRelationships();
+                linkContext.PersistedImportNotification.RemoveAllRelationships();
 
                 await dbContext.Notifications.Update(linkContext.PersistedImportNotification, transaction: transaction, cancellationToken: cancellationToken);
 

@@ -162,6 +162,12 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         }
     }
 
+    public void RemoveAllRelationships()
+    {
+        Relationships.Movements = TdmRelationshipObject.CreateDefault();
+        AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
+    }
+
     public void Changed(AuditEntry auditEntry)
     {
         AuditEntries.Add(auditEntry);
