@@ -4,6 +4,7 @@ using Btms.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Extensions;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
@@ -69,9 +70,9 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var tokenSource = new CancellationTokenSource();
         var clearanceRequestBlobs = blobService.GetResourcesAsync($"{scenarioPath}/ALVS", tokenSource.Token);
 
-        var clearanceRequestList = await GetBuildersForFolder($"{scenarioPath}/ALVS", GetClearanceRequestBuilder, tokenSource.Token);
-        var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", GetNotificationBuilder, tokenSource.Token);
-        var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", GetDecisionBuilder, tokenSource.Token);
+        var clearanceRequestList = await GetBuildersForFolder($"{scenarioPath}/ALVS", BuilderHelpers.GetClearanceRequestBuilder, tokenSource.Token);
+        var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", BuilderHelpers.GetNotificationBuilder, tokenSource.Token);
+        var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", BuilderHelpers.GetDecisionBuilder, tokenSource.Token);
 
         return clearanceRequestList
             .Concat(notificationList)

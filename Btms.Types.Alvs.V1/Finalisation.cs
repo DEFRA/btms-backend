@@ -7,10 +7,8 @@ using System.Dynamic;
 
 namespace Btms.Types.Alvs;
 
-public class Finalisation  //
+public class Finalisation
 {
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -25,9 +23,8 @@ public class Finalisation  //
     public required FinalisationHeader Header { get; set; }
 }
 
-public partial class FinalisationHeader  //
+public partial class FinalisationHeader
 {
-    
     /// <summary>
     /// 
     /// </summary>
@@ -57,6 +54,4 @@ public partial class FinalisationHeader  //
     /// </summary
     [JsonPropertyName("manualAction")]
     public required string ManualAction { get; set; }
-
 }
-

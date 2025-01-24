@@ -1,6 +1,7 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Extensions;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
@@ -8,7 +9,7 @@ public class ClearLinksDueToMrnDocumentRefChange(ILogger<ClearLinksDueToMrnDocum
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var notification = GetNotificationBuilder("chedp-one-commodity")
+        var notification = BuilderHelpers.GetNotificationBuilder("chedp-one-commodity")
             .WithCreationDate(entryDate)
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
@@ -19,7 +20,7 @@ public class ClearLinksDueToMrnDocumentRefChange(ILogger<ClearLinksDueToMrnDocum
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
-        var clearanceRequestBuilder = GetClearanceRequestBuilder("cr-one-item")
+        var clearanceRequestBuilder = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
