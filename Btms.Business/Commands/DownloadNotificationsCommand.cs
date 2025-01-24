@@ -79,7 +79,9 @@ public class DownloadCommand : IRequest, ISyncJob
         {
 
             ParallelOptions options = new() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = 10 };
-            var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPath()}", cancellationToken);
+            
+            //TODO : Need to update to iterate through paths...
+            var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPaths().First()}", cancellationToken);
             //Write local files
             await Parallel.ForEachAsync(result, options, async (item, _) =>
             {

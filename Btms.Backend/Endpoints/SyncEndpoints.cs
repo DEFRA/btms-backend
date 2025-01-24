@@ -1,6 +1,7 @@
 using Btms.Backend.Config;
 using Btms.Backend.Mediatr;
 using Btms.Business.Commands;
+using Btms.Business.Mediatr;
 using Btms.Consumers.MemoryQueue;
 using Btms.SyncJob;
 using Microsoft.AspNetCore.Mvc;
@@ -51,8 +52,14 @@ public static class SyncEndpoints
         var mediator = app.Services.GetRequiredService<IBtmsMediator>();
         
         await ClearSyncJobs(store);
-        await GetSyncNotifications(mediator, period);
-        await GetSyncClearanceRequests(mediator, period);
+        
+        InitialiseCommand command = new() { SyncPeriod = period };
+        
+        await mediator.SendSyncJob(command);
+        
+        // return await SyncNotifications(mediator, command);
+        // await GetSyncNotifications(mediator, period);
+        // await GetSyncClearanceRequests(mediator, period);
         //// await GetSyncDecisions(mediator, period);
         //// await GetSyncGmrs(mediator, period);
 
