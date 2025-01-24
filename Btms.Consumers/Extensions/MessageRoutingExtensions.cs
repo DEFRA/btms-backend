@@ -13,6 +13,8 @@ namespace Btms.Consumers.Extensions;
 /// </summary>
 public static class MessageRoutingExtensions
 {
+    private const string MESSAGE_ID_HEADER_KEY = "messageId";
+    
     public static async Task PushToConsumers(this IServiceProvider sp, 
         ILogger logger, IEnumerable<object> messages,
         int sleepMs = 1000, bool synchronous = false)
@@ -47,25 +49,25 @@ public static class MessageRoutingExtensions
                     throw new ArgumentNullException();
 
                 case ImportNotification n:
-                    headers.Add("messageId", n.ReferenceNumber!);
+                    headers.Add(MESSAGE_ID_HEADER_KEY, n.ReferenceNumber!);
                     await bus.Publish(n, "NOTIFICATIONS", headers);
                     logger.LogInformation("Sent notification {0} to consumer", n.ReferenceNumber!);
                     break;
 
                 case AlvsClearanceRequest cr:
-                    headers.Add("messageId", cr.Header!.EntryReference!);
+                    headers.Add(MESSAGE_ID_HEADER_KEY, cr.Header!.EntryReference!);
                     await bus.Publish(cr, "CLEARANCEREQUESTS", headers);
                     logger.LogInformation("Sent cr {0} to consumer", cr.Header!.EntryReference!);
                     break;
 
                 case Decision d:
-                    headers.Add("messageId", d.Header!.EntryReference!);
+                    headers.Add(MESSAGE_ID_HEADER_KEY, d.Header!.EntryReference!);
                     await bus.Publish(d, "DECISIONS", headers);
                     logger.LogInformation("Sent decision {0} to consumer", d.Header!.EntryReference!);
                     break;
 
                 case Finalisation d:
-                    headers.Add("messageId", d.Header!.EntryReference!);
+                    headers.Add(MESSAGE_ID_HEADER_KEY, d.Header!.EntryReference!);
                     await bus.Publish(d, "FINALISATIONS", headers);
                     logger.LogInformation("Sent finalisation {0} to consumer", d.Header!.EntryReference!);
                     break;

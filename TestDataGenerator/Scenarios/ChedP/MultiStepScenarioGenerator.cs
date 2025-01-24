@@ -1,6 +1,7 @@
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Extensions;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
@@ -8,7 +9,7 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var notificationBuilder = GetNotificationBuilder("chedp-one-commodity")
+        var notificationBuilder = BuilderHelpers.GetNotificationBuilder("chedp-one-commodity")
             .WithCreationDate(entryDate.AddDays(-1))
             .WithRandomArrivalDateTime(config.ArrivalDateRange)
             .WithReferenceNumber(ImportNotificationTypeEnum.Cvedp, scenario, entryDate, item)
@@ -23,7 +24,7 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
         logger.LogInformation("Created {NotificationReferenceNumber}", 
             notification.ReferenceNumber);
 
-        var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
@@ -33,7 +34,7 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
-        var alvsDecision = GetDecisionBuilder("decision-one-item")
+        var alvsDecision = BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)

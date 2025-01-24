@@ -10,6 +10,8 @@ namespace TestDataGenerator.Helpers;
 
 public static class DataHelpers
 {
+    private const string PATH_DATE_FORMAT = "yyyy/MM/dd";
+    
     internal static string BlobPath(this object resource, string rootPath)
     {
         switch (resource)
@@ -36,14 +38,9 @@ public static class DataHelpers
         return $"{rootPath}/IPAFFS/{notification.ImportNotificationType!.Value.AsString()}/{dateString}/{notification.ReferenceNumber!.Replace(".", "_")}-{Guid.NewGuid()}.json";
     }
 
-    private static string DateRef(this DateTime created)
-    {
-        return created.ToString("MMdd");
-    }
-
     private static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
     {
-        var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
+        var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString(PATH_DATE_FORMAT);
         var subPath = "ALVS";
         
         return
@@ -52,7 +49,7 @@ public static class DataHelpers
 
     private static string BlobPath(this Decision decision, string rootPath)
     {
-        var dateString = decision.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
+        var dateString = decision.ServiceHeader!.ServiceCallTimestamp!.Value.ToString(PATH_DATE_FORMAT);
         var subPath = "DECISIONS";
         
         return
@@ -61,11 +58,16 @@ public static class DataHelpers
 
     private static string BlobPath(this Finalisation finalisation, string rootPath)
     {
-        var dateString = finalisation.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
+        var dateString = finalisation.ServiceHeader!.ServiceCallTimestamp!.Value.ToString(PATH_DATE_FORMAT);
         var subPath = "FINALISATION";
         
         return
             $"{rootPath}/{subPath}/{dateString}/{finalisation.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
+    }
+
+    private static string DateRef(this DateTime created)
+    {
+        return created.ToString("MMdd");
     }
 
     internal static string AsCdsEntryReference(this MatchIdentifier identifier)

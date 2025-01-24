@@ -18,33 +18,6 @@ public abstract class ScenarioGenerator
 
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
-    //TODO : remove these Get methods...
-    internal ImportNotificationBuilder<ImportNotification> GetNotificationBuilder(string file, string fileExtension = ".json")
-    {
-        var fullPath = $"{_fullFolder}/{file}{fileExtension}";
-        var builder = ImportNotificationBuilder.FromFile(fullPath);
-    
-        return builder;
-    }
-
-    internal ClearanceRequestBuilder GetClearanceRequestBuilder(string file, string fileExtension = ".json")
-    {
-        return BuilderHelpers.GetClearanceRequestBuilder(file, fileExtension);
-    }
-    
-    internal FinalisationBuilder GetFinalisationBuilder(string file, string fileExtension = ".json")
-    {
-        return BuilderHelpers.GetFinalisationBuilder(file, fileExtension);
-    }
-    
-    internal DecisionBuilder GetDecisionBuilder(string file, string fileExtension = ".json")
-    {
-        var fullPath = $"{_fullFolder}/{file}{fileExtension}";
-        var builder = new DecisionBuilder(fullPath);
-    
-        return builder;
-    }
-
     /// <summary>
     /// A class to hold a list of message types we support. Would be nice to use something
     /// other than object :|
