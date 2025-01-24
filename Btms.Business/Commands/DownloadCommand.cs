@@ -88,8 +88,6 @@ public class DownloadCommand : IRequest, ISyncJob
                 )
                 .FlattenAsyncEnumerable();
             
-            //TODO : Need to update to iterate through paths...
-            // var result = blobService.GetResourcesAsync($"{folder}{request.SyncPeriod.GetPeriodPaths().First()}", cancellationToken);
             //Write local files
             await Parallel.ForEachAsync(tasks, options, async (item, _) =>
             {

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Btms.Common.Extensions;
 
 public static class DateTimeExtensions
@@ -88,5 +90,42 @@ public static class DateTimeExtensions
     public static TimeOnly ToTime(this DateTime val)
     {
         return TimeOnly.FromDateTime(val);
+    }
+    
+    /// <summary>
+    /// Borrowed from here https://stackoverflow.com/questions/11930565/list-the-months-between-two-dates
+    /// </summary>
+    /// <param name="endDate"></param>
+    /// <param name="startDate"></param>
+    /// <returns></returns>
+    public static IEnumerable<(int Month, int Year)> MonthsSince(
+        this DateTime endDate,
+        DateTime startDate
+    )
+    {
+        DateTime iterator;
+        DateTime limit;
+
+        if (endDate > startDate)
+        {
+            iterator = new DateTime(startDate.Year, startDate.Month, 1);
+            limit = endDate;
+        }
+        else
+        {
+            iterator = new DateTime(endDate.Year, endDate.Month, 1);
+            limit = startDate;
+        }
+
+        var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
+        while (iterator <= limit)
+        {
+            yield return (
+                iterator.Month, 
+                iterator.Year
+            );
+
+            iterator = iterator.AddMonths(1);
+        }
     }
 }

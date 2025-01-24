@@ -1,4 +1,6 @@
+using Btms.Common.Extensions;
 using Microsoft.VisualBasic;
+using DateTime = System.DateTime;
 
 namespace Btms.Business.Commands;
 
@@ -20,13 +22,10 @@ public static class SyncPeriodExtensions
         }
         else if (period == SyncPeriod.From202411)
         {
-            // TOOO : Make better!
-            // var startDate = new DateTime(2024, 11, 1);
-            // var months = 
-            // var months = DateTime.Today.Subtract(startDate);
-            // return [DateTime.Today.ToString("/yyyy/MM/")];
-
-            return ["/2024/11/", "/2024/12/", "/2025/01/"];
+            return DateTime.Today
+                .MonthsSince(new DateTime(2024, 11, 1))
+                .Select(p => $"/{p.Year}/{p.Month}/")
+                .ToArray();
         }
         else if (period == SyncPeriod.All)
         {

@@ -18,10 +18,7 @@ public static class ListExtensions
         }
     }
     
-    
-// #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public static async IAsyncEnumerable<T> FlattenAsyncEnumerable<T>(this IEnumerable<IAsyncEnumerable<T>> list)
-// #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         foreach (var asyncEnumerable in list)
         {
@@ -29,10 +26,6 @@ public static class ListExtensions
             {
                 yield return value;
             }
-            // foreach (var value in asyncEnumerable)
-            // {
-            //     yield return value;
-            // }
         }
     }
 }
