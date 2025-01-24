@@ -200,7 +200,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
     public void Cancel(string auditId, ChangeSet changeSet)
     {
-        var auditEntry = AuditEntry.CreateUpdated(changeSet,
+        var auditEntry = AuditEntry.CreateCancelled(changeSet,
             auditId,
             Version.GetValueOrDefault(),
             UpdatedSource,
@@ -210,7 +210,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
 
     public void Delete(string auditId, ChangeSet changeSet)
     {
-        var auditEntry = AuditEntry.CreateUpdated(changeSet,
+        var auditEntry = AuditEntry.CreateDeleted(changeSet,
             auditId,
             Version.GetValueOrDefault(),
             UpdatedSource,
