@@ -116,8 +116,7 @@ public static class DateTimeExtensions
             iterator = new DateTime(endDate.Year, endDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
             limit = startDate;
         }
-
-        var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
+        
         while (iterator <= limit)
         {
             yield return (

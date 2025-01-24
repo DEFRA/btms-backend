@@ -32,12 +32,10 @@ public class InitialiseCommand : SyncCommand
             SyncClearanceRequestsCommand clearanceRequests = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(clearanceRequests, cancellationToken);
 
-            Logger.LogInformation("ClearanceRequests Sync job started {0}", clearanceRequests.JobId);
-            
             SyncNotificationsCommand notifications = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(notifications, cancellationToken);
             
-            Logger.LogInformation("Notifications Sync job started {0}", notifications.JobId);
+            Logger.LogInformation("Started Notifications {0} and ClearanceRequests {1} sync jobs. Waiting on ClearanceRequests job to complete.", notifications.JobId, clearanceRequests.JobId);
 
             job.Start();
             
@@ -47,7 +45,7 @@ public class InitialiseCommand : SyncCommand
             {
                 var clearanceRequestJob = SyncJobStore.GetJob(clearanceRequests.JobId)!;
 
-                Logger.LogInformation("Sync jobs status clearance requests {0}", clearanceRequestJob.Status);
+                Logger.LogInformation("ClearanceRequests sync jobs status {0}", clearanceRequestJob.Status);
                 
                 if (!clearanceRequestJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending))
                 {
@@ -62,22 +60,24 @@ public class InitialiseCommand : SyncCommand
             SyncDecisionsCommand decisions = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(decisions, cancellationToken);
 
-            Logger.LogInformation("ClearanceRequests Sync job started {0}", clearanceRequests.JobId);
-            
             SyncFinalisationsCommand finalisations = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(finalisations, cancellationToken);
 
+            Logger.LogInformation("ClearanceRequests sync job complete. Started Decisions {0} and Finalisations {1} sync jobs", decisions.JobId, finalisations.JobId);
+            
             isComplete = false;
             
             while(!isComplete)
             {
                 var decisionsJob = SyncJobStore.GetJob(decisions.JobId)!;
                 var finalisationsJob = SyncJobStore.GetJob(finalisations.JobId)!;
+                var notificationsJob = SyncJobStore.GetJob(notifications.JobId)!;
 
-                Logger.LogInformation("Sync jobs status decisions {0}, finalisations {1}", decisionsJob.Status, finalisationsJob.Status);
+                Logger.LogInformation("Decisions {0}, Finalisations {1}, Notifications {2}", decisionsJob.Status, finalisationsJob.Status, notificationsJob.Status);
                 
                 if (!decisionsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending) &&
-                    !finalisationsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending))
+                    !finalisationsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending) &&
+                    !notificationsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending))
                 {
                     isComplete = true;
                 }
@@ -88,7 +88,6 @@ public class InitialiseCommand : SyncCommand
             }
             
             job.Complete();
-
         }
     }
     
