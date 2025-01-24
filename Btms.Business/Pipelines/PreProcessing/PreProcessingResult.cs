@@ -15,5 +15,9 @@ public record PreProcessingResult<T>(
         return Record.GetLatestAuditEntry().IsCreatedOrUpdated();
     }
 
+    public bool IsDeleted()
+    {
+        return Record.GetLatestAuditEntry().IsDeleted();
+    }
 
 }

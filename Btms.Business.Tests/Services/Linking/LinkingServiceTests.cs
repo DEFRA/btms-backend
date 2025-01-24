@@ -14,10 +14,38 @@ using Movement = Btms.Model.Movement;
 
 namespace Btms.Business.Tests.Services.Linking;
 
+public class UnLinkingTests : LinkingServiceTests
+{
+    //0 movements are found
+    //many movements are found
+    //
+
+
+    [Fact]
+    public async Task Test1()
+    {
+        // Arrange
+        var testData = await AddTestData(2, 3, 1);
+
+        var sut = CreateLinkingService();
+        await sut.Link(new ImportNotificationLinkContext(testData.Cheds[0], null));
+        var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, false);
+
+        // Act
+        await sut.UnLink(notificationCtx);
+
+        var loadedNotification = await dbContext.Notifications.Find(testData.Cheds[0].Id!);
+        loadedNotification?.Relationships.Movements.Data.Should().BeNullOrEmpty();
+
+        var loadedMovements = dbContext.Movements.ToList();
+        loadedMovements.ForEach(m => m.Relationships.Notifications.Data.Should().BeNullOrEmpty());
+    }
+}
+
 public class LinkingServiceTests
 {
     private static readonly Random Random = new ();
-    private readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
+    protected readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
     private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
     private static string GenerateNotificationReference(int id) => $"CHEDP.GB.2024.{id}";
@@ -582,8 +610,13 @@ public class LinkingServiceTests
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(0);
     }
-    
-    private MovementLinkContext CreateMovementContextWithItems(Movement? movement, List<ImportNotification?> existingCheds, List<ImportNotification?> receivedCheds)
+
+    protected LinkingService CreateLinkingService()
+    {
+        return new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
+    }
+
+    protected MovementLinkContext CreateMovementContextWithItems(Movement? movement, List<ImportNotification?> existingCheds, List<ImportNotification?> receivedCheds)
     {
         var entryReference = movement != null ? movement.EntryReference : $"TEST{GenerateRandomReference()}";
         var etag = movement != null ? movement._Etag : string.Empty;
@@ -625,7 +658,7 @@ public class LinkingServiceTests
         return output;
     }
     
-    private MovementLinkContext CreateMovementContextWithDocuments(Movement? movement, List<ImportNotification?> existingCheds, List<ImportNotification?> receivedCheds)
+    protected MovementLinkContext CreateMovementContextWithDocuments(Movement? movement, List<ImportNotification?> existingCheds, List<ImportNotification?> receivedCheds)
     {
         var entryReference = movement != null ? movement.EntryReference : $"TEST{GenerateRandomReference()}";
         var etag = movement != null ? movement._Etag : string.Empty;
@@ -674,7 +707,7 @@ public class LinkingServiceTests
     }
     
     
-    private MovementLinkContext CreateMovementContext(Movement? movement, List<ImportNotification?> cheds, bool createExistingMovement, bool existingDocs, bool newDocs = true)
+    protected MovementLinkContext CreateMovementContext(Movement? movement, List<ImportNotification?> cheds, bool createExistingMovement, bool existingDocs, bool newDocs = true)
     {
         var entryReference = movement != null ? movement.EntryReference : $"TEST{GenerateRandomReference()}";
         var etag = movement != null ? movement._Etag : string.Empty;
@@ -719,7 +752,7 @@ public class LinkingServiceTests
         return output;
     }
 
-    private ImportNotificationLinkContext CreateNotificationContext(ImportNotification? ched,
+    protected ImportNotificationLinkContext CreateNotificationContext(ImportNotification? ched,
         bool createExistingNotification, bool fieldsOfInterest)
     {
         var chedReference = ched != null ? int.Parse(ched._MatchReference) : GenerateRandomReference();
@@ -727,8 +760,8 @@ public class LinkingServiceTests
 
         return CreateNotificationContext(chedReference, etag, createExistingNotification, fieldsOfInterest);
     }
-    
-    private ImportNotificationLinkContext CreateNotificationContext(int chedReference, string etag, bool createExistingNotification, bool fieldsOfInterest)
+
+    protected ImportNotificationLinkContext CreateNotificationContext(int chedReference, string etag, bool createExistingNotification, bool fieldsOfInterest)
     {
         var notification = new ImportNotification
         {
@@ -757,8 +790,8 @@ public class LinkingServiceTests
 
         return output;
     }
-    
-    private async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<int> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1,  int unMatchedChedsPerMovement = 0)
+
+    protected async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<int> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1,  int unMatchedChedsPerMovement = 0)
     {
         matchedChedsPerMovement = int.Min(matchedChedsPerMovement, chedCount);
         var movements = new List<Movement>();

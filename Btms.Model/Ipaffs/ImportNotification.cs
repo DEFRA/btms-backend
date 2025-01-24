@@ -198,6 +198,26 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         Changed(auditEntry);
     }
 
+    public void Cancel(string auditId, ChangeSet changeSet)
+    {
+        var auditEntry = AuditEntry.CreateUpdated(changeSet,
+            auditId,
+            Version.GetValueOrDefault(),
+            UpdatedSource,
+            CreatedBySystem.Ipaffs);
+        Changed(auditEntry);
+    }
+
+    public void Delete(string auditId, ChangeSet changeSet)
+    {
+        var auditEntry = AuditEntry.CreateUpdated(changeSet,
+            auditId,
+            Version.GetValueOrDefault(),
+            UpdatedSource,
+            CreatedBySystem.Ipaffs);
+        Changed(auditEntry);
+    }
+
     public AuditEntry GetLatestAuditEntry()
     {
         return AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
