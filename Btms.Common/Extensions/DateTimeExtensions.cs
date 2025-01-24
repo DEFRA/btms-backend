@@ -108,12 +108,12 @@ public static class DateTimeExtensions
 
         if (endDate > startDate)
         {
-            iterator = new DateTime(startDate.Year, startDate.Month, 1);
+            iterator = new DateTime(startDate.Year, startDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
             limit = endDate;
         }
         else
         {
-            iterator = new DateTime(endDate.Year, endDate.Month, 1);
+            iterator = new DateTime(endDate.Year, endDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
             limit = startDate;
         }
 

@@ -23,7 +23,7 @@ public static class SyncPeriodExtensions
         else if (period == SyncPeriod.From202411)
         {
             return DateTime.Today
-                .MonthsSince(new DateTime(2024, 11, 1))
+                .MonthsSince(new DateTime(2024, 11, 1, 0, 0, 0, DateTimeKind.Utc))
                 .Select(p => $"/{p.Year}/{p.Month}/")
                 .ToArray();
         }
