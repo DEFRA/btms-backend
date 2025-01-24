@@ -1,3 +1,4 @@
+using Btms.Business.Extensions;
 using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Decisions.Finders;
@@ -5,9 +6,8 @@ namespace Btms.Business.Services.Decisions.Finders;
 // ReSharper disable once InconsistentNaming
 public class ChedPPDecisionFinder : IDecisionFinder
 {
-    public static readonly string[] CheckCodes = ["H218", "H220", "H219"];
     public bool CanFindDecision(ImportNotification notification, string? checkCode) => 
-        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && CheckCodes.Contains(checkCode);
+        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && checkCode?.GetChedTypeFromCheckCode() == ImportNotificationTypeEnum.Chedpp;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
