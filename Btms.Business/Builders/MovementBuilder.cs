@@ -60,6 +60,45 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         return _movement.GenerateChangeSet(builder._movement);
     }
 
+    public MovementBuilder MergeFinalisation(string path, CdsFinalisation finalisation)
+    {
+        GuardNullMovement();
+
+        if (!_movement.FinalisedSource.HasValue() || finalisation.ServiceHeader!.ServiceCalled > _movement.FinalisedSource)
+        {
+            HasChanges = true;
+
+            _movement.FinalisedSource = finalisation.ServiceHeader!.ServiceCalled;
+            _movement.Finalised = DateTime.Now;
+            _movement.Finalisation = new Finalisation()
+            {
+                FinalState = finalisation.Header.FinalState, ManualAction = finalisation.Header.ManualAction
+            };
+            
+            var auditEntry = AuditEntry.CreateFinalisation(
+                BuildNormalizedDecisionPath(path),
+                finalisation.Header!.DecisionNumber.GetValueOrDefault(),
+                finalisation.ServiceHeader!.ServiceCalled,
+                finalisation);
+        
+            this.Update(auditEntry);
+        }
+        else
+        {
+            logger.LogInformation("Finalisation message discarded");
+            
+            var auditEntry = AuditEntry.CreateFinalisation(
+                BuildNormalizedDecisionPath(path),
+                finalisation.Header!.DecisionNumber.GetValueOrDefault(),
+                finalisation.ServiceHeader!.ServiceCalled,
+                finalisation, true);
+        
+            this.Update(auditEntry);
+        }
+        
+        return this;
+    }
+
     public MovementBuilder MergeDecision(string path, Model.Cds.CdsClearanceRequest clearanceRequest, List<DecisionImportNotifications>? notificationContext)
     {
         GuardNullMovement();
@@ -133,7 +172,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         GuardNullMovement();
         
         _movement.AuditEntries.Add(auditEntry);
-        // matchReferences = [];
     }
 
     public AuditEntry CreateAuditEntry(string messageId, CreatedBySystem source)

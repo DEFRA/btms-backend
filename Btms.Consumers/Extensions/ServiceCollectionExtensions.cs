@@ -4,6 +4,7 @@ using Btms.Common.Extensions;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
+using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
@@ -144,6 +145,12 @@ namespace Btms.Consumers.Extensions
                             {
                                 x.Instances(consumerOpts.InMemoryDecisions);
                                 x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
+                            })
+                            .Produce<Finalisation>(x => x.DefaultTopic(nameof(Finalisation)))
+                            .Consume<Finalisation>(x =>
+                            {
+                                x.Instances(consumerOpts.InMemoryDecisions);
+                                x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
                             });
                     });
 

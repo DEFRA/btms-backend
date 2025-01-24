@@ -4,6 +4,7 @@ using Btms.Types.Ipaffs.V1.Extensions;
 using Btms.Types.Alvs;
 using Btms.Types.Ipaffs;
 using Decision = Btms.Types.Alvs.Decision;
+using Finalisation = Btms.Types.Alvs.Finalisation;
 
 namespace TestDataGenerator.Helpers;
 
@@ -21,24 +22,26 @@ public static class DataHelpers
                 return cr.BlobPath(rootPath);
             case Decision d:
                 return d.BlobPath(rootPath);
+            case Finalisation f:
+                return f.BlobPath(rootPath);
             default:
                 throw new InvalidDataException($"Unexpected type {resource.GetType().Name}");
         }
     }
-    
-    internal static string BlobPath(this ImportNotification notification, string rootPath)
+
+    private static string BlobPath(this ImportNotification notification, string rootPath)
     {
         var dateString = notification.LastUpdated!.Value.ToString("yyyy/MM/dd");
 
         return $"{rootPath}/IPAFFS/{notification.ImportNotificationType!.Value.AsString()}/{dateString}/{notification.ReferenceNumber!.Replace(".", "_")}-{Guid.NewGuid()}.json";
     }
 
-    internal static string DateRef(this DateTime created)
+    private static string DateRef(this DateTime created)
     {
         return created.ToString("MMdd");
     }
 
-    internal static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
+    private static string BlobPath(this AlvsClearanceRequest clearanceRequest, string rootPath)
     {
         var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
         var subPath = "ALVS";
@@ -47,13 +50,22 @@ public static class DataHelpers
             $"{rootPath}/{subPath}/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
 
-    internal static string BlobPath(this Decision decision, string rootPath)
+    private static string BlobPath(this Decision decision, string rootPath)
     {
         var dateString = decision.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
         var subPath = "DECISIONS";
         
         return
             $"{rootPath}/{subPath}/{dateString}/{decision.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
+    }
+
+    private static string BlobPath(this Finalisation finalisation, string rootPath)
+    {
+        var dateString = finalisation.ServiceHeader!.ServiceCallTimestamp!.Value.ToString("yyyy/MM/dd");
+        var subPath = "FINALISATION";
+        
+        return
+            $"{rootPath}/{subPath}/{dateString}/{finalisation.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
 
     internal static string AsCdsEntryReference(this MatchIdentifier identifier)

@@ -11,10 +11,6 @@ public class ClearanceRequestBuilder(string file) : ClearanceRequestBuilder<Alvs
 public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>> 
     where T : AlvsClearanceRequest, new()
 {
-    private ClearanceRequestBuilder(): base()
-    {
-    }
-
     protected ClearanceRequestBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
     {
     }
