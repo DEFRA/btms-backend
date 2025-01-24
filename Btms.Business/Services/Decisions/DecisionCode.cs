@@ -7,15 +7,17 @@ public enum DecisionCode
     C06,
     C07,
     C08,
-    N02,
-    N03,
-    N04,
-    N07,
 
     H01,
     H02,
 
     X00,
+
+    N02,
+    N03,
+    N04,
+    N07,
+
     E03,
     
     E94,    // IUU not indicated in PartTwo?.ControlAuthority?.IuuCheckRequired but "H224" requested in Items[]?.Checks[]?.CheckCode
