@@ -1,1 +1,69 @@
-{"serviceHeader":{"sourceSystem":"ALVS","destinationSystem":"CDS","correlationId":"000","serviceCallTimestamp":1733062869974},"header":{"entryReference":"24GBDB6P6GWPVLKAR7","entryVersionNumber":2,"decisionNumber":2},"items":[{"itemNumber":1,"documents":[],"checks":[{"checkCode":"H219","decisionCode":"C03","decisionValidUntil":null,"decisionReasons":[]},{"checkCode":"H223","decisionCode":"C03","decisionValidUntil":null,"decisionReasons":[]}]},{"itemNumber":2,"documents":[],"checks":[{"checkCode":"H218","decisionCode":"C03","decisionValidUntil":null,"decisionReasons":[]},{"checkCode":"H219","decisionCode":"C03","decisionValidUntil":null,"decisionReasons":[]},{"checkCode":"H223","decisionCode":"H01","decisionValidUntil":null,"decisionReasons":[]}]},{"itemNumber":6,"documents":[],"checks":[{"checkCode":"H219","decisionCode":"C03","decisionValidUntil":null,"decisionReasons":[]}]}]}
+{
+  "serviceHeader": {
+    "sourceSystem": "ALVS",
+    "destinationSystem": "CDS",
+    "correlationId": "000",
+    "serviceCallTimestamp": 1733062869974
+  },
+  "header": {
+    "entryReference": "24GBDB6P6GWPVLKAR7",
+    "entryVersionNumber": 2,
+    "decisionNumber": 2
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H219",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        },
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    },
+    {
+      "itemNumber": 2,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H218",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        },
+        {
+          "checkCode": "H219",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        },
+        {
+          "checkCode": "H223",
+          "decisionCode": "H01",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    },
+    {
+      "itemNumber": 6,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H219",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    }
+  ]
+}
