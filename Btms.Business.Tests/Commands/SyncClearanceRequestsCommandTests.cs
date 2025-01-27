@@ -22,7 +22,7 @@ public class SyncClearanceRequestsCommandTests(ITestOutputHelper outputHelper)
     {
         var clearanceRequest = ClearanceRequestBuilder.Default().Build();
         var command = new SyncClearanceRequestsCommand();
-        var jobStore = new SyncJobStore();
+        var jobStore = new SyncJobStore(NullLogger<SyncJobStore>.Instance);
         jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "ClearanceRequests");
 
 

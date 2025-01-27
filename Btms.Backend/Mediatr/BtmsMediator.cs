@@ -2,6 +2,7 @@ using Btms.SyncJob;
 using MediatR;
 using System.Diagnostics;
 using Btms.Backend.BackgroundTaskQueue;
+using Btms.Business.Mediatr;
 
 namespace Btms.Backend.Mediatr;
 
@@ -19,7 +20,7 @@ internal class BtmsMediator(
     public async Task SendSyncJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
     {
         var job = syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
-            
+
         await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (_) =>
         {
             using var scope = serviceScopeFactory.CreateScope();

@@ -1,6 +1,7 @@
 using Btms.Backend.Config;
 using Btms.Backend.Mediatr;
 using Btms.Business.Commands;
+using Btms.Business.Mediatr;
 using Btms.Consumers.MemoryQueue;
 using Btms.SyncJob;
 using Microsoft.AspNetCore.Mvc;
@@ -51,10 +52,10 @@ public static class SyncEndpoints
         var mediator = app.Services.GetRequiredService<IBtmsMediator>();
         
         await ClearSyncJobs(store);
-        await GetSyncNotifications(mediator, period);
-        await GetSyncClearanceRequests(mediator, period);
-        //// await GetSyncDecisions(mediator, period);
-        //// await GetSyncGmrs(mediator, period);
+        
+        InitialiseCommand command = new() { SyncPeriod = period };
+        
+        await mediator.SendSyncJob(command);
 
         return Results.Ok();
     }
@@ -67,7 +68,6 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)
     {
-        ////var command = new DownloadCommand { SyncPeriod = period };
         await mediator.SendJob(command);
         return Results.Ok(command.JobId);
     }
@@ -182,8 +182,5 @@ public static class SyncEndpoints
     {
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
-       
     }
-    
-    
 }
