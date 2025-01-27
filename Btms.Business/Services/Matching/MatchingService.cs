@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using Btms.Model;
 using Btms.Business.Extensions;
+using Btms.Model;
 
 namespace Btms.Business.Services.Matching;
 
