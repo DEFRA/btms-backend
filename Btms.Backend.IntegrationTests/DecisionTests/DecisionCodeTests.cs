@@ -43,6 +43,8 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
     [InlineData(typeof(ChedPn03ScenarioGenerator), "N03")]
     [InlineData(typeof(ChedPn04ScenarioGenerator), "N04")]
     [InlineData(typeof(ChedPn07ScenarioGenerator), "N07")]
+    [InlineData(typeof(MissingChedScenarioGenerator), "X00")]
+    [InlineData(typeof(IuuScenarioGenerator), "X00")]
     public void ShouldHaveCorrectDecisionCode(Type generatorType, string expectedDecisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecisionCode);

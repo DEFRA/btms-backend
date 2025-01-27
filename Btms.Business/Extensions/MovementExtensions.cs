@@ -30,23 +30,6 @@ public static class MovementExtensions
         return true;
     }
     
-    // public static void AddLinkStatus(this Movement movement)
-    // {
-    //     if (movement.BtmsStatus.LinkStatus == LinkStatusEnum.Error) return;
-    //     
-    //     var linkStatus = LinkStatusEnum.NotLinked;
-    //     var linked = false;
-    //     
-    //     if (movement.Relationships.Notifications.Data.Count > 0)
-    //     {
-    //         linkStatus = LinkStatusEnum.Linked;
-    //         linked = true;
-    //     }
-    //     
-    //     movement.BtmsStatus.LinkStatus = linkStatus;
-    //     movement.BtmsStatus.Linked = linked;
-    // }
-    
     public static string[] UniqueDocumentReferences(this Movement movement)
     {
         return movement.Items
@@ -67,10 +50,13 @@ public static class MovementExtensions
             .ToList();
     }
     
-    public static List<string> UniqueDocumentReferenceIds(this Movement movement)
+    public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this Movement movement)
     {
         return movement.Items
             .SelectMany(i => i.Documents ?? [])
+            // Only CHED document refs should result in links
+            .Where(d => d.DocumentReference != null && 
+                        d.DocumentReference.StartsWith("GBCHD"))
             .Select(d => d.DocumentReference!.TrimUniqueNumber())
             .Distinct()
             .ToList();

@@ -58,6 +58,16 @@ public class CancelledNotificationTestsScenarioGenerator(
     ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "CancelledNotification");
 
+public class MissingChedScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD48YGL8RMD6AR6");
+
+public class IuuScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBE2TF54PWDGXAR0");
+
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
