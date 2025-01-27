@@ -1,4 +1,5 @@
 using Btms.Types.Ipaffs;
+using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
@@ -63,12 +64,12 @@ public abstract class HoldScenarioGenerator(string filename, InspectionRequiredE
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var importNotification = GetNotificationBuilder($"AllChedsWithDecision/IPAFFS/{filename}")
+        var importNotification = BuilderHelpers.GetNotificationBuilder($"AllChedsWithDecision/IPAFFS/{filename}")
             .WithInspectionStatus(inspectionRequired)
             .WithImportNotificationStatus(importNotificationStatus)
             .ValidateAndBuild();    
         
-        var clearanceRequest = GetClearanceRequestBuilder($"AllChedsWithDecision/ALVS/cr-{filename}-match") 
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"AllChedsWithDecision/ALVS/cr-{filename}-match") 
             .ValidateAndBuild();
         
         return new GeneratorResult([
@@ -125,12 +126,12 @@ public abstract class ReleaseAndRefusalScenarioGenerator(string filename, Decisi
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var importNotification = GetNotificationBuilder($"AllChedsWithDecision/IPAFFS/{filename}")
+        var importNotification = BuilderHelpers.GetNotificationBuilder($"AllChedsWithDecision/IPAFFS/{filename}")
             .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
             .WithPartTwoDecision(decision)
             .ValidateAndBuild();    
         
-        var clearanceRequest = GetClearanceRequestBuilder($"AllChedsWithDecision/ALVS/cr-{filename}-match") 
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"AllChedsWithDecision/ALVS/cr-{filename}-match") 
             .ValidateAndBuild();
         
         return new GeneratorResult([
