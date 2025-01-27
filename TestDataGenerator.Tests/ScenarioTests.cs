@@ -1,5 +1,3 @@
-using Btms.BlobService;
-using Btms.BlobService.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TestDataGenerator.Extensions;

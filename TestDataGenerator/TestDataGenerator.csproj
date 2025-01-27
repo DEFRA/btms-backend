@@ -44,5 +44,10 @@
     
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Scenarios\Samples\MultiChedWorstCaseDecision\ChedD\IPAFFS\" />
+    <Folder Include="Scenarios\Samples\MultiChedWorstCaseDecision\ChedP\ALVS\" />
+  </ItemGroup>
+
 
 </Project>
