@@ -17,4 +17,15 @@ public static class ListExtensions
             await func(value);
         }
     }
+    
+    public static async IAsyncEnumerable<T> FlattenAsyncEnumerable<T>(this IEnumerable<IAsyncEnumerable<T>> list)
+    {
+        foreach (var asyncEnumerable in list)
+        {
+            await foreach (var value in asyncEnumerable)
+            {
+                yield return value;
+            }
+        }
+    }
 }

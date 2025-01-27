@@ -22,7 +22,7 @@ namespace Btms.Business.Tests.Commands
         {
             var clearanceRequest = ClearanceRequestBuilder.Default().Build();
             var command = new SyncDecisionsCommand();
-            var jobStore = new SyncJobStore();
+            var jobStore = new SyncJobStore(NullLogger<SyncJobStore>.Instance);
             jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "Test Job");
 
             var bus = Substitute.For<IPublishBus>();

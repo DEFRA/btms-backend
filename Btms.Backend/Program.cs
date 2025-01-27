@@ -38,6 +38,7 @@ using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 using Btms.Backend.Asb;
+using Btms.Business.Mediatr;
 using Btms.Common;
 
 //-------- Configure the WebApplication builder------------------//
