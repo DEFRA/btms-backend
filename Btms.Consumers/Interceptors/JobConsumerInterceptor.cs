@@ -1,12 +1,13 @@
 using Btms.Consumers.Extensions;
 using Btms.SyncJob;
+using Microsoft.Extensions.Options;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
 
 namespace Btms.Consumers.Interceptors;
 
 
-public class JobConsumerInterceptor<TMessage>(ISyncJobStore store) : IConsumerInterceptor<TMessage>
+public class JobConsumerInterceptor<TMessage>(ISyncJobStore store, IOptions<ConsumerOptions> options) : IConsumerInterceptor<TMessage>
 {
     public async Task<object> OnHandle(TMessage message, Func<Task<object>> next, IConsumerContext context)
     {
@@ -24,7 +25,7 @@ public class JobConsumerInterceptor<TMessage>(ISyncJobStore store) : IConsumerIn
         }
         catch (Exception)
         {
-            if (context.GetRetryAttempt() == 5)
+            if (context.GetRetryAttempt() > options.Value.ErrorRetries)
             {
                 job?.MessageFailed();
             }
