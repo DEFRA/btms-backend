@@ -1,5 +1,4 @@
 using Btms.BlobService;
-using Btms.Common.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;

@@ -1,33 +1,75 @@
 using Btms.Types.Ipaffs;
-using Microsoft.Extensions.Logging;
 using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
-public class ChedAh01ScenarioScenarioGenerator()
-    : H01ScenarioGenerator("cheda", inspectionRequired: InspectionRequiredEnum.NotRequired) { }
+public class ChedAh01ScenarioGenerator1()
+    : HoldScenarioGenerator("cheda", InspectionRequiredEnum.NotRequired, ImportNotificationStatusEnum.Submitted) { }
 
-public class ChedPh01ScenarioScenarioGenerator()
-    : H01ScenarioGenerator("chedp", includeImportNotificationStatus: false) { }
+public class ChedAh01ScenarioGenerator2()
+    : HoldScenarioGenerator("cheda", InspectionRequiredEnum.Inconclusive, ImportNotificationStatusEnum.Submitted) { }
 
-public class ChedDh01ScenarioScenarioGenerator()
-    : H01ScenarioGenerator("chedd") { }
+public class ChedAh01ScenarioGenerator3()
+    : HoldScenarioGenerator("cheda", InspectionRequiredEnum.NotRequired, ImportNotificationStatusEnum.InProgress) { }
 
-public abstract class H01ScenarioGenerator(string filename, InspectionRequiredEnum inspectionRequired = InspectionRequiredEnum.Inconclusive, bool includeImportNotificationStatus = true)
+public class ChedAh01ScenarioGenerator4()
+    : HoldScenarioGenerator("cheda", InspectionRequiredEnum.Inconclusive, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedPh01ScenarioGenerator1()
+    : HoldScenarioGenerator("chedp", InspectionRequiredEnum.NotRequired, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedPh01ScenarioGenerator2()
+    : HoldScenarioGenerator("chedp", InspectionRequiredEnum.Inconclusive, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedPh01ScenarioGenerator3()
+    : HoldScenarioGenerator("chedp", InspectionRequiredEnum.NotRequired, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedPh01ScenarioGenerator4()
+    : HoldScenarioGenerator("chedp", InspectionRequiredEnum.Inconclusive, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedDh01ScenarioGenerator1()
+    : HoldScenarioGenerator("chedd", InspectionRequiredEnum.NotRequired, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedDh01ScenarioGenerator2()
+    : HoldScenarioGenerator("chedd", InspectionRequiredEnum.Inconclusive, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedDh01ScenarioGenerator3()
+    : HoldScenarioGenerator("chedd", InspectionRequiredEnum.NotRequired, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedDh01ScenarioGenerator4()
+    : HoldScenarioGenerator("chedd", InspectionRequiredEnum.Inconclusive, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedAh02ScenarioGenerator1()
+    : HoldScenarioGenerator("cheda", InspectionRequiredEnum.Required, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedAh02ScenarioGenerator2()
+    : HoldScenarioGenerator("cheda", InspectionRequiredEnum.Required, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedDh02ScenarioGenerator1()
+    : HoldScenarioGenerator("chedd", InspectionRequiredEnum.Required, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedDh02ScenarioGenerator2()
+    : HoldScenarioGenerator("chedd", InspectionRequiredEnum.Required, ImportNotificationStatusEnum.InProgress) { }
+
+public class ChedPh02ScenarioGenerator1()
+    : HoldScenarioGenerator("chedp", InspectionRequiredEnum.Required, ImportNotificationStatusEnum.Submitted) { }
+
+public class ChedPh02ScenarioGenerator2()
+    : HoldScenarioGenerator("chedp", InspectionRequiredEnum.Required, ImportNotificationStatusEnum.InProgress) { }
+
+
+
+public abstract class HoldScenarioGenerator(string filename, InspectionRequiredEnum inspectionRequired, ImportNotificationStatusEnum importNotificationStatus )
     : ScenarioGenerator
 {
-    private const string AllChedsWithDecisionScenarioPath = "AllChedsWithDecision";
-
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var importNotification = BuilderHelpers.GetNotificationBuilder($"{AllChedsWithDecisionScenarioPath}/IPAFFS/{filename}")
+        var importNotification = BuilderHelpers.GetNotificationBuilder($"AllChedsWithDecision/IPAFFS/{filename}")
             .WithInspectionStatus(inspectionRequired)
-            .WithOptionalStep(includeImportNotificationStatus, 
-                a => a.WithImportNotificationStatus())
-            // .WithImportNotificationStatus()
+            .WithImportNotificationStatus(importNotificationStatus)
             .ValidateAndBuild();    
         
-        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"{AllChedsWithDecisionScenarioPath}/ALVS/cr-{filename}-match") 
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"AllChedsWithDecision/ALVS/cr-{filename}-match") 
             .ValidateAndBuild();
         
         return new GeneratorResult([
@@ -37,244 +79,64 @@ public abstract class H01ScenarioGenerator(string filename, InspectionRequiredEn
     }
 }
 
-public class AllChedsH01DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH01DecisionGenerator> logger)
-    : SpecificFilesScenarioGenerator(sp, logger)
-{
-    private const string AllChedsWithDecisionScenarioPath = "AllChedsWithDecision";
+public class ChedAc03ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("cheda", new Decision { ConsignmentAcceptable = true, DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket }) { }
 
-    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
-    {
-        var builders = GetBuilders(AllChedsWithDecisionScenarioPath).GetAwaiter().GetResult();
+public class ChedPc03ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedp", new Decision { ConsignmentAcceptable = true, DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket }) { }
 
-        logger.LogInformation("Created {builders} Builders",
-            builders.Count);
-        
-        var random = new Random();
-        var chedAImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "cheda.json"))
-                .builder)
-            .WithInspectionStatus(InspectionRequiredEnum.NotRequired)
-            .WithImportNotificationStatus()
-            .ValidateAndBuild();
+public class ChedDc03ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedd", new Decision { ConsignmentAcceptable = true, DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket }) { }
 
-        var chedPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "chedp.json"))
-                .builder)
-            .WithInspectionStatus(InspectionRequiredEnum.Inconclusive)
-            .ValidateAndBuild();
+public class ChedAc05ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("cheda", new Decision { ConsignmentAcceptable = true, DecisionEnum = DecisionDecisionEnum.AcceptableForTemporaryImport }) { }
 
-        var chedDImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "chedd.json"))
-                .builder)
-            .WithInspectionStatus(InspectionRequiredEnum.Inconclusive)
-            .WithImportNotificationStatus()
-            .ValidateAndBuild();
+public class ChedAc06ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("cheda", new Decision { ConsignmentAcceptable = true, DecisionEnum = DecisionDecisionEnum.HorseReEntry }) { }
 
+public class ChedPc06ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedp", new Decision { ConsignmentAcceptable = true, DecisionEnum = DecisionDecisionEnum.AcceptableIfChanneled }) { }
 
-        var chedAClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-cheda-match.json"))
-                .builder)
-            .ValidateAndBuild();
+public class ChedAn02ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("cheda", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Euthanasia }) { }
 
-        var chedPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-chedp-match.json"))
-                .builder)
-            .ValidateAndBuild();
+public class ChedAn04ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("cheda", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Reexport }) { }
 
-        var chedDClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-chedd-match.json"))
-                .builder)
-            .ValidateAndBuild();
+public class ChedDn02ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedd", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Destruction }) { }
 
+public class ChedDn04ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedd", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Redispatching }) { }
 
-        return new GeneratorResult([
-            chedAClearanceRequest, chedDClearanceRequest, chedPClearanceRequest, 
-            chedAImportNotification, chedDImportNotification, chedPImportNotification, 
-        ]);
-    }
-}
+public class ChedPn02ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedp", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Destruction }) { }
 
-public class ChedAh02ScenarioScenarioGenerator()
-    : H02ScenarioGenerator("cheda") { }
+public class ChedPn03ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedp", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Transformation }) { }
 
-public class ChedPh02ScenarioScenarioGenerator()
-    : H02ScenarioGenerator("chedp", includeImportNotificationStatusAndInspectionStatus : false) { }
+public class ChedPn04ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedp", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Reexport }) { }
 
-public class ChedDh02ScenarioScenarioGenerator()
-    : H02ScenarioGenerator("chedd") { }
+public class ChedPn07ScenarioGenerator()
+    : ReleaseAndRefusalScenarioGenerator("chedp", new Decision { ConsignmentAcceptable = false, NotAcceptableAction = DecisionNotAcceptableActionEnum.Other }) { }
 
-public abstract class H02ScenarioGenerator(string filename, bool includeImportNotificationStatusAndInspectionStatus = true)
+public abstract class ReleaseAndRefusalScenarioGenerator(string filename, Decision decision)
     : ScenarioGenerator
 {
-    private const string AllChedsWithDecisionScenarioPath = "AllChedsWithDecision";
-
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var importNotification = BuilderHelpers.GetNotificationBuilder($"{AllChedsWithDecisionScenarioPath}/IPAFFS/{filename}")
-            .WithOptionalStep(includeImportNotificationStatusAndInspectionStatus, 
-                a => a
-                    .WithInspectionStatus()
-                    .WithImportNotificationStatus()
-                )
+        var importNotification = BuilderHelpers.GetNotificationBuilder($"AllChedsWithDecision/IPAFFS/{filename}")
+            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
+            .WithPartTwoDecision(decision)
             .ValidateAndBuild();    
         
-        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"{AllChedsWithDecisionScenarioPath}/ALVS/cr-{filename}-match") 
+        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"AllChedsWithDecision/ALVS/cr-{filename}-match") 
             .ValidateAndBuild();
         
         return new GeneratorResult([
             clearanceRequest, 
             importNotification, 
-        ]);
-    }
-}
-
-public class AllChedsH02DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH02DecisionGenerator> logger)
-    : SpecificFilesScenarioGenerator(sp, logger)
-{
-    private const string AllChedsWithDecisionScenarioPath = "AllChedsWithDecision";
-
-    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
-    {
-        var builders = GetBuilders(AllChedsWithDecisionScenarioPath).GetAwaiter().GetResult();
-
-        logger.LogInformation("Created {builders} Builders",
-            builders.Count);
-
-        var random = new Random();
-        var chedAImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "cheda.json"))
-                .builder)
-            .WithInspectionStatus()
-            .WithImportNotificationStatus()
-            .ValidateAndBuild();
-
-        var chedPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "chedp.json"))
-                .builder)
-            .ValidateAndBuild();
-
-        var chedDImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "chedd.json"))
-                .builder)
-            .WithInspectionStatus()
-            .WithImportNotificationStatus()
-            .ValidateAndBuild();
-
-        var chedAClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-cheda-match.json"))
-                .builder)
-            .ValidateAndBuild();
-
-        var chedPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-chedp-match.json"))
-                .builder)
-            .ValidateAndBuild();
-
-        var chedDClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-chedd-match.json"))
-                .builder)
-            .ValidateAndBuild();
-
-
-        return new GeneratorResult([
-            chedAClearanceRequest, chedDClearanceRequest, chedPClearanceRequest, 
-            chedAImportNotification, chedDImportNotification, chedPImportNotification, 
-        ]);
-    }
-}
-
-public class ChedAc03ScenarioScenarioGenerator()
-    : C03ScenarioGenerator("cheda") { }
-
-public class ChedPc03ScenarioScenarioGenerator()
-    : C03ScenarioGenerator("chedp") { }
-
-public class ChedDc03ScenarioScenarioGenerator()
-    : C03ScenarioGenerator("chedd") { }
-
-public abstract class C03ScenarioGenerator(string filename)
-    : ScenarioGenerator
-{
-    private const string AllChedsWithDecisionScenarioPath = "AllChedsWithDecision";
-
-    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
-    {
-        var random = new Random();
-        var decision = new Decision();
-        decision.ConsignmentAcceptable = true;
-        decision.DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket;
-        
-        var importNotification = BuilderHelpers.GetNotificationBuilder($"{AllChedsWithDecisionScenarioPath}/IPAFFS/{filename}")
-            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
-            .WithPartTwoDecision(decision)
-            .ValidateAndBuild();    
-        
-        var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder($"{AllChedsWithDecisionScenarioPath}/ALVS/cr-{filename}-match") 
-            .ValidateAndBuild();
-        
-        return new GeneratorResult([
-            clearanceRequest, 
-            importNotification, 
-        ]);
-    }
-}
-
-public class AllChedsC03DecisionGenerator(IServiceProvider sp, ILogger<AllChedsH02DecisionGenerator> logger)
-    : SpecificFilesScenarioGenerator(sp, logger)
-{
-    private const string AllChedsWithDecisionScenarioPath = "AllChedsWithDecision";
-
-    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
-    {
-        var builders = GetBuilders(AllChedsWithDecisionScenarioPath).GetAwaiter().GetResult();
-
-        logger.LogInformation("Created {builders} Builders",
-            builders.Count);
-
-        var random = new Random();
-        var decision = new Decision();
-        decision.ConsignmentAcceptable = true;
-        decision.DecisionEnum = DecisionDecisionEnum.AcceptableForInternalMarket;
-        
-        var chedAImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "cheda.json"))
-                .builder)
-            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
-            .WithPartTwoDecision(decision)
-            .ValidateAndBuild();
-
-        var chedPImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "chedp.json"))
-                .builder)
-            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
-            .WithPartTwoDecision(decision)
-            .ValidateAndBuild();
-
-        var chedDImportNotification = ((ImportNotificationBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "IPAFFS", "chedd.json"))
-                .builder)
-            .WithImportNotificationStatus(ImportNotificationStatusEnum.Validated)
-            .WithPartTwoDecision(decision)
-            .ValidateAndBuild();
-
-        var chedAClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-cheda-match.json"))
-                .builder)
-            .ValidateAndBuild();
-
-        var chedPClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-chedp-match.json"))
-                .builder)
-            .ValidateAndBuild();
-
-        var chedDClearanceRequest = ((ClearanceRequestBuilder)builders
-                .Single(b => b.filePath == Path.Join(AllChedsWithDecisionScenarioPath, "ALVS", "cr-chedd-match.json"))
-                .builder)
-            .ValidateAndBuild();
-
-        return new GeneratorResult([
-            chedAClearanceRequest, chedDClearanceRequest, chedPClearanceRequest,
-            chedAImportNotification, chedDImportNotification, chedPImportNotification
         ]);
     }
 }
