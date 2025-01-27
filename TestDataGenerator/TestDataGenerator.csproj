@@ -48,6 +48,8 @@
     <Folder Include="Scenarios\Samples\IuuOutcomes\Iuuna\" />
     <Folder Include="Scenarios\Samples\IuuOutcomes\Iuuok\" />
     <Folder Include="Scenarios\Samples\IuuOutcomes\NoIuuInfo\" />
+    <Folder Include="Scenarios\Samples\MultiChedWorstCaseDecision\ChedD\IPAFFS\" />
+    <Folder Include="Scenarios\Samples\MultiChedWorstCaseDecision\ChedP\ALVS\" />
   </ItemGroup>
 
 
