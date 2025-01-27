@@ -44,7 +44,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             var chedTypes = m.BtmsStatus.ChedTypes;
             
             var notificationRelationshipIds = m.UniqueNotificationRelationshipIds();
-            var documentReferenceIds = m.UniqueDocumentReferenceIds();
+            var documentReferenceIds = m.UniqueDocumentReferenceIdsThatShouldLink();
 
             m.BtmsStatus = MovementStatus.Default();
             m.BtmsStatus.ChedTypes = chedTypes;
