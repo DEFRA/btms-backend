@@ -64,12 +64,13 @@ public static class AnalyticsEndpoints
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "country")] string? country,
         [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
-        [FromQuery(Name = "dateTo")] DateTime? dateTo)
+        [FromQuery(Name = "dateTo")] DateTime? dateTo,
+        [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
     {
         var result
             = await movementsService
                 .GetExceptions(dateFrom ?? DateTime.MinValue, dateTo ?? DateTime.Today, 
-                    chedTypes, country);
+                    finalisedOnly, chedTypes, country);
 
         return result.HasValue() ? 
             TypedResults.Json(result) : 
@@ -118,14 +119,15 @@ public static class AnalyticsEndpoints
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "coo")] string? countryOfOrigin,
         [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
-        [FromQuery(Name = "dateTo")] DateTime? dateTo)
+        [FromQuery(Name = "dateTo")] DateTime? dateTo,
+        [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
     {
         var logger = ApplicationLogging.CreateLogger("AnalyticsEndpoints");
         
         var result =
             await AnalyticsDashboards
                 .GetCharts(logger, importService, movementsService, chartsToRender,
-                    chedTypes, countryOfOrigin, dateFrom, dateTo);
+                    chedTypes, countryOfOrigin, dateFrom, dateTo, finalisedOnly);
         
         var options =
             new JsonSerializerOptions

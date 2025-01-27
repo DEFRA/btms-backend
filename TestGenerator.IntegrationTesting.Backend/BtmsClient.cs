@@ -124,16 +124,18 @@ public class BtmsClient
         ImportNotificationTypeEnum[]? chedTypes = null,
         string? country = null,
         DateTime? dateFrom = null,
-        DateTime? dateTo = null)
+        DateTime? dateTo = null,
+        bool finalisedOnly = false)
     {
         var chartsFilter = String.Join("&chartsToRender=", charts);
         var dateFromFilter = dateFrom.HasValue ? $"&dateFrom={dateFrom.Value:yyyy-MM-dd}" : "";
         var dateToFilter = dateTo.HasValue ? $"&dateTo={dateTo.Value:yyyy-MM-dd}" : "";
         var countryFilter = country != null ? $"&coo={country}" : "";
         var chedTypeFilter = chedTypes != null ? "&chedType=" + String.Join("&chedType=", chedTypes) : "";
+        var finalisedOnlyFilter = $"&finalisedOnly={finalisedOnly}";
 
         return client.GetAsync(
-            $"/analytics/dashboard?chartsToRender={chartsFilter}{dateFromFilter}{dateToFilter}{countryFilter}{chedTypeFilter}");
+            $"/analytics/dashboard?chartsToRender={chartsFilter}{dateFromFilter}{dateToFilter}{countryFilter}{chedTypeFilter}{finalisedOnlyFilter}");
     }
     
     private async Task<HttpResponseMessage> PostCommand<T>(T command, string uri)

@@ -199,11 +199,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return new EntityDataset<AuditHistory>(entries);
     }
 
-    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
-            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .GroupBy(n => new { MaxVersion =
                 n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber )
             })
@@ -216,11 +216,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
     
-    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
-            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .GroupBy(n => new { MaxVersion =
                 n.Decisions.Max(a => a.Header!.DecisionNumber )
             })
@@ -233,20 +233,20 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
 
-    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
         var (_, result) = movementExceptions
-            .GetAllExceptions(from, to, false, chedTypes, country);
+            .GetAllExceptions(from, to, finalisedOnly, false, chedTypes, country);
             
         return Task.FromResult(result);
     }
     
-    public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
         var (summary, _) = movementExceptions
-            .GetAllExceptions(from, to, true, chedTypes, country);
+            .GetAllExceptions(from, to, finalisedOnly, true, chedTypes, country);
             
         return Task.FromResult(summary);
     }
@@ -283,15 +283,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     /// </summary>
     /// <param name="from"></param>
     /// <param name="to"></param>
+    /// <param name="finalisedOnly"></param>
     /// <param name="chedTypes"></param>
     /// <param name="country"></param>
     /// <returns></returns>
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
-        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+        DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var mongoQuery = context
             .Movements
-            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .SelectMany(d => d
                 .AlvsDecisionStatus.Context.DecisionComparison!.Checks
                 .Select(c => new
@@ -367,11 +368,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     }
     
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> BySegment(DateTime from,
-        DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+        DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var mongoQuery = context
             .Movements
-            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .Select(m => new
             {
                 DecisionStatus = m.AlvsDecisionStatus.Context.DecisionComparison == null ?
@@ -383,7 +384,8 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .GroupBy(d => new
             {
-                Segment = d.BtmsStatus.Segment ?? MovementSegmentEnum.None,
+                d.BtmsStatus.Segment,
+                // Segment = d.BtmsStatus.Segment ?? MovementSegmentEnum.None,
                 d.BtmsStatus.LinkStatus,
                 d.BtmsStatus.Status,
                 d.DecisionStatus,
@@ -409,7 +411,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .OrderBy(s => s.Key)
             // .Where(g => g)
             .ToDictionary(
-                g => enumLookup.GetValue(g.Key),
+                g => enumLookup.GetValue(g.Key ?? MovementSegmentEnum.None),
                 g => g.Sum
             );
         
@@ -426,7 +428,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     Fields = new Dictionary<string, string>()
                     {
                         // { "Classification", enumLookup.GetValue(a.Key!.Segment) },
-                        { "Classification", enumLookup.GetValue(a.Key!.Segment!) },
+                        { "Classification", enumLookup.GetValue(a.Key.Segment ?? MovementSegmentEnum.None) },
                         // { "CheckCode", a.Key.CheckCode! },
                         // { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         // { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }

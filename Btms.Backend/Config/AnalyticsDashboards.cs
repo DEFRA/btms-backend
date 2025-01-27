@@ -17,7 +17,8 @@ public static class AnalyticsDashboards
         ImportNotificationTypeEnum[] chedTypes,
         string? country,
         DateTime? dateFrom,
-        DateTime? dateTo
+        DateTime? dateTo,
+        bool finalisedOnly
         )
     {
         var charts = new Dictionary<string, Func<Task<IDataset>>>
@@ -98,27 +99,27 @@ public static class AnalyticsDashboards
             },
             {
                 "decisionsByDecisionCode",
-                () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, chedTypes, country).AsIDataset()
+                () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
             },
-            // {
-            //     "movementsBySegment",
-            //     () => movementsService.BySegment(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, chedTypes, country).AsIDataset()
-            // },
+            {
+                "movementsBySegment",
+                () => movementsService.BySegment(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
+            },
             {
                 "importNotificationsByVersion",
-                () => importService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
+                () => importService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsByMaxEntryVersion",
-                () => movementsService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
+                () => movementsService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsByMaxDecisionNumber",
-                () => movementsService.ByMaxDecisionNumber(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
+                () => movementsService.ByMaxDecisionNumber(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsExceptions",
-                () => movementsService.ExceptionSummary(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, chedTypes, country).AsIDataset()
+                () => movementsService.ExceptionSummary(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             }
         };
         
