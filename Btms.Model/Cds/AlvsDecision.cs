@@ -234,18 +234,6 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Has Multiple Cheds")]
     HasMultipleCheds,
     
-    [EnumMember(Value = "Alvs Clearance Request Version 1 Not Present")]
-    AlvsClearanceRequestVersion1NotPresent,
-    
-    [EnumMember(Value = "Alvs Clearance Request Versions Not Complete")]
-    AlvsClearanceRequestVersionsNotComplete,
-    
-    [EnumMember(Value = "Alvs Decision Version 1 Not Present")]
-    AlvsDecisionVersion1NotPresent,
-    
-    [EnumMember(Value = "Alvs Decision Versions Not Complete")]
-    AlvsDecisionVersionsNotComplete,
-    
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded,
     

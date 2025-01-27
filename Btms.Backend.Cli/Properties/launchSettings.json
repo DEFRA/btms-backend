@@ -10,14 +10,9 @@
       "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBCSRYLJM7JCYAR3  --rootFolder PRODREDACTED-202412 --outputFolder C:\\temp\\downloads"
     },
 
-    "download-scenario-data-24GBDPN81VSULAGAR9": {
+    "download-scenario-data-24GBE2TF54PWDGXAR0": {
       "commandName": "Project",
-      //"commandLineArgs": "generate-ipaffs-model --schema D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Cli\\Features\\GenerateModels\\GenerateIpaffsModel\\\\jsonschema.json --outputPath D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Types\\Ipaffs\\"
-      //"commandLineArgs": "generate-ipaffs-model --schema D:\\repos\\esynergy\\btms-backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateIpaffsModel\\\\jsonschema.json"
-
-      // "commandLineArgs": "generate-vehicle-movement-model"
-      //"commandLineArgs": "generate-alvs-model"
-      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBDE3CF94H96TAR0 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBDE3CF94H96TAR0"
+      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBE2TF54PWDGXAR0 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBE2TF54PWDGXAR0"
     }
   }
 }

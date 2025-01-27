@@ -405,24 +405,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         {
             decisionStatus = DecisionStatusEnum.HasChedppChecks;
         }
-        else if (!_movement.ClearanceRequests.Exists(c => c.Header!.EntryVersionNumber == 1))
-        {
-            decisionStatus = DecisionStatusEnum.AlvsClearanceRequestVersion1NotPresent;
-        }
-        else if (!_movement.ClearanceRequests.AreNumbersComplete(c => c.Header!.EntryVersionNumber!.Value))
-        {
-            decisionStatus = DecisionStatusEnum.AlvsClearanceRequestVersionsNotComplete;
-        }
-        else if (alvsDecision.Context.AlvsDecisionNumber!.Value != 1 &&
-                 !_movement.AlvsDecisionStatus.Decisions
-                     .Exists(d => d.Context.AlvsDecisionNumber == 1))
-        {
-            decisionStatus = DecisionStatusEnum.AlvsDecisionVersion1NotPresent;
-        }
-        else if (_movement.AlvsDecisionStatus.Decisions.Count > 0 && !_movement.AlvsDecisionStatus.Decisions.AreNumbersComplete(d => d.Context.AlvsDecisionNumber))
-        {
-            decisionStatus = DecisionStatusEnum.AlvsDecisionVersionsNotComplete;
-        }
         
         alvsDecision.Context.DecisionComparison.DecisionStatus = decisionStatus;
     }
