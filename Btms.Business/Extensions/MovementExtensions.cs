@@ -6,29 +6,6 @@ namespace Btms.Business.Extensions;
 
 public static class MovementExtensions
 {
-    public static bool AreNumbersComplete<T>(this IEnumerable<T> source, Func<T, int?> getNumbers)
-    {
-        var numbers = source
-            .Select(getNumbers)
-            .Where(n => n.HasValue())
-            .Order()
-            .ToList();
-
-        if (numbers.Distinct().Count() != numbers.Count())
-        {
-            //Contains duplicates
-            return false;
-        }
-        else if (numbers.Count() != numbers.Last())
-        {
-            //Some missing
-            // should be contiguous
-
-            return false;
-        }
-
-        return true;
-    }
     
     public static string[] UniqueDocumentReferences(this Movement movement)
     {
@@ -50,13 +27,18 @@ public static class MovementExtensions
             .ToList();
     }
     
+    public static bool IsChed(this Document doc)
+    {
+        return doc.DocumentReference != null &&
+               doc.DocumentReference.ToUpper().StartsWith("GBCHD");
+    }
+    
     public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this Movement movement)
     {
         return movement.Items
             .SelectMany(i => i.Documents ?? [])
             // Only CHED document refs should result in links
-            .Where(d => d.DocumentReference != null && 
-                        d.DocumentReference.StartsWith("GBCHD"))
+            .Where(d => d.IsChed())
             .Select(d => d.DocumentReference!.TrimUniqueNumber())
             .Distinct()
             .ToList();
