@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Btms.Model;
+using Btms.Business.Extensions;
 
 namespace Btms.Business.Services.Matching;
 
@@ -14,7 +15,10 @@ public class MatchingService : IMatchingService
             {
                 if (item.Documents == null) continue;
 
-                foreach (var documentGroup in item.Documents.GroupBy(d => d.DocumentReference))
+                foreach (var documentGroup in item
+                             .Documents
+                             .Where(MovementExtensions.IsChed)
+                             .GroupBy(d => d.DocumentReference))
                 {
                     Debug.Assert(documentGroup.Key != null);
                     Debug.Assert(movement.Id != null, "movement.Id != null");

@@ -50,13 +50,18 @@ public static class MovementExtensions
             .ToList();
     }
     
+    public static bool IsChed(this Document doc)
+    {
+        return doc.DocumentReference != null &&
+               doc.DocumentReference.StartsWith("GBCHD");
+    }
+    
     public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this Movement movement)
     {
         return movement.Items
             .SelectMany(i => i.Documents ?? [])
             // Only CHED document refs should result in links
-            .Where(d => d.DocumentReference != null && 
-                        d.DocumentReference.StartsWith("GBCHD"))
+            .Where(IsChed)
             .Select(d => d.DocumentReference!.TrimUniqueNumber())
             .Distinct()
             .ToList();
