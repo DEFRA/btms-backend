@@ -73,7 +73,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         {
             exceptionsResult.AddRange(moreComplexMovementsQuery
                 .OrderBy(a => -a.Total)
-                .Take(10)
+                .Take(3)
                 .Execute(logger)
                 .Select(r =>
                     new ExceptionResult()
@@ -103,7 +103,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         {
             exceptionsResult.AddRange(movementsWhereAlvsLinksButNotBtmsQuery
                 .OrderBy(a => a.Total)
-                .Take(10)
+                .Take(3)
                 .Execute(logger)
                 .Select(r =>
                     new ExceptionResult()
@@ -135,7 +135,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         {
             exceptionsResult.AddRange(movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery
                 .OrderBy(a => a.Total)
-                .Take(10)
+                .Take(3)
                 .Execute(logger)
                 .Select(r =>
                     new ExceptionResult()
