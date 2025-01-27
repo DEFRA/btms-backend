@@ -1,11 +1,8 @@
-using System.Text.Json.Serialization;
 using Btms.BlobService;
 using Btms.Business.Mediatr;
-using Btms.Common.Extensions;
 using Btms.Metrics;
 using Btms.SensitiveData;
 using Btms.SyncJob;
-using Btms.Types.Alvs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SlimMessageBus;
@@ -38,24 +35,8 @@ public class InitialiseCommand : SyncCommand
             Logger.LogInformation("Started Notifications {0} and ClearanceRequests {1} sync jobs. Waiting on ClearanceRequests job to complete.", notifications.JobId, clearanceRequests.JobId);
 
             job.Start();
-            
-            var isComplete = false;
-            
-            while(!isComplete)
-            {
-                var clearanceRequestJob = SyncJobStore.GetJob(clearanceRequests.JobId)!;
 
-                Logger.LogInformation("ClearanceRequests sync jobs status {0}", clearanceRequestJob.Status);
-                
-                if (!clearanceRequestJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending))
-                {
-                    isComplete = true;
-                }
-                else
-                {
-                    Thread.Sleep(5000);
-                }
-            }
+            await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
             
             SyncDecisionsCommand decisions = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(decisions, cancellationToken);
@@ -64,28 +45,11 @@ public class InitialiseCommand : SyncCommand
             await mediator.SendSyncJob(finalisations, cancellationToken);
 
             Logger.LogInformation("ClearanceRequests sync job complete. Started Decisions {0} and Finalisations {1} sync jobs", decisions.JobId, finalisations.JobId);
-            
-            isComplete = false;
-            
-            while(!isComplete)
-            {
-                var decisionsJob = SyncJobStore.GetJob(decisions.JobId)!;
-                var finalisationsJob = SyncJobStore.GetJob(finalisations.JobId)!;
-                var notificationsJob = SyncJobStore.GetJob(notifications.JobId)!;
 
-                Logger.LogInformation("Decisions {0}, Finalisations {1}, Notifications {2}", decisionsJob.Status, finalisationsJob.Status, notificationsJob.Status);
-                
-                if (!decisionsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending) &&
-                    !finalisationsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending) &&
-                    !notificationsJob.Status.IsAny(SyncJobStatus.Running, SyncJobStatus.Pending))
-                {
-                    isComplete = true;
-                }
-                else
-                {
-                    Thread.Sleep(5000);
-                }
-            }
+            await Task.WhenAll(
+                SyncJobStore.WaitOnJobCompleting(decisions.JobId),
+                SyncJobStore.WaitOnJobCompleting(finalisations.JobId),
+                SyncJobStore.WaitOnJobCompleting(notifications.JobId));
             
             job.Complete();
         }
