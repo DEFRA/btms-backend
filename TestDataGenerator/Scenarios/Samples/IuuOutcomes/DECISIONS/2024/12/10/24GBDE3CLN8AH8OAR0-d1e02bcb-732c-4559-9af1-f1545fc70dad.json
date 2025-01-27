@@ -1,0 +1,33 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "ALVS",
+    "destinationSystem": "CDS",
+    "correlationId": "000",
+    "serviceCallTimestamp": 1733862479630
+  },
+  "header": {
+    "entryReference": "24GBDE3CLN8AH8OAR0",
+    "entryVersionNumber": 2,
+    "decisionNumber": 3
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H222",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        },
+        {
+          "checkCode": "H224",
+          "decisionCode": "C07",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    }
+  ]
+}

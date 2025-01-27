@@ -1,0 +1,64 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDS",
+    "destinationSystem": "ALVS",
+    "correlationId": "1333702",
+    "serviceCallTimestamp": 1733862468000
+  },
+  "header": {
+    "entryReference": "24GBDE3CLN8AH8OAR0",
+    "entryVersionNumber": 2,
+    "previousVersionNumber": 1,
+    "declarationUCR": "4GB155535602012-SID00040963",
+    "declarationPartNumber": null,
+    "declarationType": "S",
+    "arrivalDateTime": null,
+    "submitterTURN": "GB646552129000",
+    "declarantId": "GB646552129000",
+    "declarantName": "GB646552129000",
+    "dispatchCountryCode": "CN",
+    "goodsLocationCode": "FXTFXTFXT",
+    "masterUCR": "551851681"
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "customsProcedureCode": "4000000",
+      "taricCommodityCode": "0304720000",
+      "goodsDescription": "FROZEN HADDOCK FILLETS",
+      "consigneeId": "GB155535602012",
+      "consigneeName": "GB155535602012",
+      "itemNetMass": 24518.9,
+      "itemSupplementaryUnits": 0,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": "CN",
+      "documents": [
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUU-RU-MUR-2024-0238",
+          "documentStatus": "AE",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUURU-MUR-2023-5397",
+          "documentStatus": "AE",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "N853",
+          "documentReference": "GBCVD2024.5136690",
+          "documentStatus": "AE",
+          "documentControl": "P",
+          "documentQuantity": null
+        }
+      ],
+      "checks": [
+        { "checkCode": "H222", "departmentCode": "PHA" },
+        { "checkCode": "H224", "departmentCode": "PHA" }
+      ]
+    }
+  ]
+}

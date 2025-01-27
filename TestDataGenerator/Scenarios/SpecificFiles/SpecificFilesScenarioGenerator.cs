@@ -61,6 +61,11 @@ public class CancelledNotificationTestsScenarioGenerator(
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
+public class ChedPIuuDecisionTestsScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
