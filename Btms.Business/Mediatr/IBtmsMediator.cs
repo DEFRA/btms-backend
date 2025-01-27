@@ -1,7 +1,7 @@
 using Btms.SyncJob;
 using MediatR;
 
-namespace Btms.Backend.Mediatr;
+namespace Btms.Business.Mediatr;
 
 public interface IBtmsMediator
 {
@@ -10,9 +10,7 @@ public interface IBtmsMediator
 
     Task SendJob<TRequest>(TRequest request, CancellationToken cancellationToken = default)
         where TRequest : IRequest, ISyncJob;
-
-
-
+    
     /// <summary>
     /// Asynchronously send a request to a single handler
     /// </summary>

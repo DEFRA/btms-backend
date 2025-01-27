@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SlimMessageBus;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
+using Btms.Common.Extensions;
 using Btms.Metrics;
 using Microsoft.Extensions.Options;
 using IRequest = MediatR.IRequest;
@@ -16,6 +17,7 @@ public enum SyncPeriod
     Today,
     LastMonth,
     ThisMonth,
+    From202411,
     All
 }
 
@@ -57,7 +59,9 @@ public abstract class SyncCommand : IRequest, ISyncJob
         : MediatR.IRequestHandler<T>
         where T : IRequest
     {
-        protected readonly BusinessOptions Options = options.Value; 
+        protected readonly BusinessOptions Options = options.Value;
+        protected readonly ILogger<T> Logger = logger;
+        protected readonly ISyncJobStore SyncJobStore = syncJobStore;
         
         public const string ActivityName = "Btms.ProcessBlob";
 
@@ -65,10 +69,10 @@ public abstract class SyncCommand : IRequest, ISyncJob
 
         protected async Task SyncBlobPaths<TRequest>(SyncPeriod period, string topic, Guid jobId, CancellationToken cancellationToken, params string[] paths)
         {
-            var job = syncJobStore.GetJob(jobId);
+            var job = SyncJobStore.GetJob(jobId);
             job?.Start();
             var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobPaths);
-            using (logger.BeginScope(new List<KeyValuePair<string, object>>
+            using (Logger.BeginScope(new List<KeyValuePair<string, object>>
                    {
                        new("JobId", job?.JobId!),
                        new("SyncPeriod", period.ToString()),
@@ -77,14 +81,14 @@ public abstract class SyncCommand : IRequest, ISyncJob
                        new("Command", typeof(T).Name),
                    }))
             {
-                logger.SyncStarted(job?.JobId.ToString()!, period.ToString(), degreeOfParallelism, Environment.ProcessorCount, typeof(T).Name);
+                Logger.SyncStarted(job?.JobId.ToString()!, period.ToString(), degreeOfParallelism, Environment.ProcessorCount, typeof(T).Name);
                 try
                 {
                     await Parallel.ForEachAsync(paths,
                         new ParallelOptions { MaxDegreeOfParallelism = degreeOfParallelism },
                         async (path, _) =>
                         {
-                            using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("SyncPath", path), }))
+                            using (Logger.BeginScope(new List<KeyValuePair<string, object>> { new("SyncPath", path), }))
                             {
                                 await SyncBlobPath<TRequest>(path, period, topic, job!, cancellationToken);
                             }
@@ -93,22 +97,28 @@ public abstract class SyncCommand : IRequest, ISyncJob
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error syncing blob paths");
+                    Logger.LogError(ex, "Error syncing blob paths");
                 }
                 finally
                 {
                     job?.CompletedReadingBlobs();
-                    logger.LogInformation("Sync Handler Finished");
+                    Logger.LogInformation("Sync Handler Finished");
                 }
             }
         }
 
         protected async Task SyncBlobPath<TRequest>(string path, SyncPeriod period, string topic, SyncJob.SyncJob job, CancellationToken cancellationToken)
         {
-            var result = blobService.GetResourcesAsync($"{path}{period.GetPeriodPath()}", cancellationToken);
+            var paths = period.GetPeriodPaths();
             var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
 
-            await Parallel.ForEachAsync(result, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, _) =>
+            var tasks = paths
+                .Select((periodPath) =>
+                    blobService.GetResourcesAsync($"{path}{periodPath}", cancellationToken)
+                )
+                .FlattenAsyncEnumerable();
+            
+            await Parallel.ForEachAsync(tasks, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, _) =>
             {
                 await SyncBlob<TRequest>(path, topic, item, job, cancellationToken);
             });
@@ -116,11 +126,11 @@ public abstract class SyncCommand : IRequest, ISyncJob
 
         protected async Task SyncBlobs<TRequest>(SyncPeriod period, string topic, Guid jobId, CancellationToken cancellationToken, params string[] paths)
         {
-            var job = syncJobStore.GetJob(jobId);
+            var job = SyncJobStore.GetJob(jobId);
             var degreeOfParallelism = options.Value.GetConcurrency<T>(BusinessOptions.Feature.BlobItems);
 
             job?.Start();
-            logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={DegreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), degreeOfParallelism, Environment.ProcessorCount);
+            Logger.LogInformation("SyncNotifications period: {Period}, maxDegreeOfParallelism={DegreeOfParallelism}, Environment.ProcessorCount={ProcessorCount}", period.ToString(), degreeOfParallelism, Environment.ProcessorCount);
             try
             {
                 foreach (var path in paths)
@@ -134,7 +144,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error syncing blob paths");
+                Logger.LogError(ex, "Error syncing blob paths");
             }
             finally
             {
@@ -146,11 +156,11 @@ public abstract class SyncCommand : IRequest, ISyncJob
             CancellationToken cancellationToken)
         {
             var timer = Stopwatch.StartNew();
-            using (logger.BeginScope(new List<KeyValuePair<string, object>> { new("BlobPath", item.Name), }))
+            using (Logger.BeginScope(new List<KeyValuePair<string, object>> { new("BlobPath", item.Name), }))
             {
                 try
                 {
-                    logger.BlobStarted(job.JobId.ToString(), item.Name);
+                    Logger.BlobStarted(job.JobId.ToString(), item.Name);
                     syncMetrics.SyncStarted<T>(path, topic);
                     using (var activity = BtmsDiagnostics.ActivitySource.StartActivity(name: ActivityName,
                                kind: ActivityKind.Client, tags: new TagList { { "blob.name", item.Name } }))
@@ -176,7 +186,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
                 }
                 catch (Exception ex)
                 {
-                    logger.BlobFailed(ex, job.JobId.ToString(), item.Name);
+                    Logger.BlobFailed(ex, job.JobId.ToString(), item.Name);
 
                     syncMetrics.AddException<T>(ex, path, topic);
                     job.BlobFailed();
@@ -184,7 +194,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
                 finally
                 {
                     syncMetrics.SyncCompleted<T>(path, topic, timer);
-                    logger.BlobFinished(job.JobId.ToString(), item.Name);
+                    Logger.BlobFinished(job.JobId.ToString(), item.Name);
                 }
             }
         }

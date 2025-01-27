@@ -23,7 +23,7 @@ public class SyncNotificationsCommandTests(ITestOutputHelper outputHelper)
         // ARRANGE
         var notification = CreateImportNotification();
         var command = new SyncNotificationsCommand();
-        var jobStore = new SyncJobStore();
+        var jobStore = new SyncJobStore(NullLogger<SyncJobStore>.Instance);
         jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "Test Job");
 
         var bus = Substitute.For<IPublishBus>();

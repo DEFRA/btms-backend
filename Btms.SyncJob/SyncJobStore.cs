@@ -1,6 +1,9 @@
+using Microsoft.Extensions.Logging;
+using static System.Formats.Asn1.AsnWriter;
+
 namespace Btms.SyncJob;
 
-public class SyncJobStore : ISyncJobStore
+public class SyncJobStore(ILogger<SyncJobStore> logger) : ISyncJobStore
 {
     private readonly IDictionary<Guid, SyncJob> jobs = new Dictionary<Guid, SyncJob>();
     public SyncJob? GetJob(Guid id)
@@ -22,5 +25,26 @@ public class SyncJobStore : ISyncJobStore
     public void ClearSyncJobs()
     {
         jobs.Clear();
+    }
+
+    public async Task WaitOnJobCompleting(Guid jobId)
+    {
+        var runningStatues = new List<SyncJobStatus>() {SyncJobStatus.Pending, SyncJobStatus.Running};
+        var complete = false;
+        while (!complete)
+        {
+            var job = GetJob(jobId);
+            if (job != null)
+            {
+                logger.LogInformation("JobId {JobId} status {Status}", job.JobId, job.Status);
+
+                if (!runningStatues.Contains(job.Status))
+                {
+                    complete = true;
+                }
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(5));
+        }
     }
 }
