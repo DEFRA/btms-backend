@@ -14,7 +14,8 @@ public class Mrn24GBDE3CF94H96TAR0ModifiedScenarioGenerator(IServiceProvider sp,
             builders.Count);
 
         var decisionV1Builder =
-            (DecisionBuilder)builders.Single(b => b.filePath == Path.Join("Mrn-24GBDE3CF94H96TAR0", "DECISIONS", "2024", "12", "03", "24GBDE3CF94H96TAR0-0deb3808-c55e-4196-9270-50ff1ee2ce49.json")).builder;
+            (DecisionBuilder)builders.Single(b => b.filePath == 
+                                                  Path.Combine("Mrn-24GBDE3CF94H96TAR0", "DECISIONS", "2024", "12", "03", "24GBDE3CF94H96TAR0-0deb3808-c55e-4196-9270-50ff1ee2ce49.json")).builder;
 
         decisionV1Builder.Do(d =>
         {
