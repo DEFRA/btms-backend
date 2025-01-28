@@ -6,9 +6,10 @@ using MongoDB.Driver;
 
 namespace Btms.Backend.Data.Mongo;
 
-public class MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory) : IMongoDbContext
+public class MongoDbContext(IMongoDatabase database, TimeProvider timeProvider, ILoggerFactory loggerFactory) : IMongoDbContext
 {
     internal IMongoDatabase Database { get; } = database;
+    internal TimeProvider TimeProvider { get; } = timeProvider;
     internal MongoDbTransaction? ActiveTransaction { get; private set; }
 
 

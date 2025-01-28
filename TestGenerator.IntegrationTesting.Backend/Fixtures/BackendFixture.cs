@@ -108,7 +108,7 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
                     
                     var db = client.GetDatabase($"btms-{dbName}");
                    
-                    mongoDbContext = new MongoDbContext(db, testOutputHelper.GetLoggerFactory());
+                    mongoDbContext = new MongoDbContext(db, TimeProvider.System, testOutputHelper.GetLoggerFactory());
                     return db;
                 });
 

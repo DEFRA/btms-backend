@@ -18,15 +18,13 @@ public interface IIntegrationTestsApplicationFactory
 {
     ITestOutputHelper TestOutputHelper { get; set; }
     string DatabaseName { get; set; }
-
     BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options);
     IMongoDbContext GetDbContext();
+    IServiceProvider Services { get; }
 }
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
-    public DateTimeOffset TimeProviderStartDateTime { get; set; } = new(2025, 1, 28, 11, 30, 00, TimeSpan.Zero);
-    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -81,6 +79,8 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
     public ITestOutputHelper TestOutputHelper { get; set; } = null!;
 
     public string DatabaseName { get; set; } = null!;
+    
+    public DateTimeOffset TimeProviderStartDateTime { get; set; } = new(2025, 1, 28, 11, 30, 00, TimeSpan.Zero);
 
     public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
     {

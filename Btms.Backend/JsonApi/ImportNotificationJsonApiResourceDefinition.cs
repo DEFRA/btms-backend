@@ -10,14 +10,14 @@ namespace Btms.Backend.JsonApi;
 public class ImportNotificationJsonApiResourceDefinition(IResourceGraph resourceGraph)
     : JsonApiResourceDefinition<ImportNotification, string?>(resourceGraph)
 {
-    private const string RelationshipUpdated = "relationshipUpdated";
-    private const string GenericError = $"Invalid '{RelationshipUpdated}' query value";
+    private const string Updated = "updated";
+    private const string GenericError = $"Invalid '{Updated}' query value";
 
     public override QueryStringParameterHandlers<ImportNotification>
         OnRegisterQueryableHandlersForQueryStringParameters() =>
-        new() { [RelationshipUpdated] = HandleRelationshipUpdated, };
+        new() { [Updated] = HandleUpdated, };
 
-    private static IQueryable<ImportNotification> HandleRelationshipUpdated(IQueryable<ImportNotification> source, StringValues parameterValue)
+    private static IQueryable<ImportNotification> HandleUpdated(IQueryable<ImportNotification> source, StringValues parameterValue)
     {
         // The existence of a parameterValue will be validated by JsonApiDotNetCore
         // before we hit our own validation logic
@@ -25,7 +25,7 @@ public class ImportNotificationJsonApiResourceDefinition(IResourceGraph resource
         
         var range = value.Split(",");
         if (range.Length != 2)
-            throw new InvalidQueryStringParameterException(RelationshipUpdated,
+            throw new InvalidQueryStringParameterException(Updated,
                 GenericError,
                 $"Expected format is two UTC dates separated by a comma, but was '{value}'");
 
@@ -35,7 +35,9 @@ public class ImportNotificationJsonApiResourceDefinition(IResourceGraph resource
         EnsureUtc(nameof(from), from);
         EnsureUtc(nameof(to), to);
 
-        return source.Where(x => x.Relationships.Movements.Data.Any(y => y.Updated >= from && y.Updated < to));
+        return source.Where(x =>
+            x.Updated >= from && x.Updated < to ||
+            x.Relationships.Movements.Data.Any(y => y.Updated >= from && y.Updated < to));
     }
 
     private static DateTime ParseDateTime(string value)
@@ -46,7 +48,7 @@ public class ImportNotificationJsonApiResourceDefinition(IResourceGraph resource
         }
         catch (FormatException formatException)
         {
-            throw new InvalidQueryStringParameterException(RelationshipUpdated,
+            throw new InvalidQueryStringParameterException(Updated,
                 GenericError,
                 $"Expected DateTime, but was '{value}'", 
                 formatException);
@@ -56,7 +58,7 @@ public class ImportNotificationJsonApiResourceDefinition(IResourceGraph resource
     private static void EnsureUtc(string type, DateTime value)
     {
         if (value.Kind != DateTimeKind.Utc)
-            throw new InvalidQueryStringParameterException(RelationshipUpdated,
+            throw new InvalidQueryStringParameterException(Updated,
                 GenericError,
                 $"Expected {type} date as UTC, but was '{value:O}'");
     }

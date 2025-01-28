@@ -43,8 +43,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     public Task Insert(T item, IMongoDbTransaction? transaction, CancellationToken cancellationToken = default)
     {
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        item.Created = DateTime.UtcNow;
-        item.Updated = DateTime.UtcNow;
+        item.Created = item.Updated = dbContext.TimeProvider.GetUtcNow().UtcDateTime;
         
         var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
         
@@ -68,7 +67,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
         
         if (setUpdated)
-            item.Updated = DateTime.UtcNow;
+            item.Updated = dbContext.TimeProvider.GetUtcNow().UtcDateTime;
         
         var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
         var updateResult = session is not null
