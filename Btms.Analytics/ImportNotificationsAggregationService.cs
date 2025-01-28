@@ -163,7 +163,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
 
     public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
-        // TODO : At the moment this doesn't filter on finalisedOnly as thats not stored anywhere on the notification
+        // NB : At the moment this doesn't filter on finalisedOnly as thats not stored anywhere on the notification
         // we'd need to denormalise the field, perhaps onto the relationship, to allow this filtering.
         
         var data = context

@@ -10,84 +10,21 @@ using MongoDB.Driver.Linq;
 
 namespace Btms.Backend.Config;
 
-
-[ModelBinder(BinderType = typeof(DateRangeBinder))]
 public class DateRange {
     [FromQuery(Name = "dateFrom")] 
     public DateTime? From { get; set; }
     [FromQuery(Name = "dateTo")] 
     public DateTime? To { get; set; }
 
-    public static DateRange Default()
-    {
-        return new DateRange() { From = DateTime.Now, To = DateTime.Now };
-    }
-    public static bool TryParse(string query, out DateRange dateRange)
-    {
-        dateRange = new DateRange() { From = DateTime.Now, To = DateTime.Now };
-        return true;
-    }
-}
-
-public class DateRangeBinderProvider : IModelBinderProvider
-{
-    public DateRangeBinderProvider()
-    {
-        Console.WriteLine("Testing12");
-    }
-    public IModelBinder GetBinder(ModelBinderProviderContext context)
-    {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
-
-        if (context.Metadata.ModelType == typeof(DateRange))
-        {
-            return new BinderTypeModelBinder(typeof(DateRangeBinder));
-        }
-
-        return new BinderTypeModelBinder(context.Metadata.ModelType);
-        // ;
-        // return null!; //new BinderTypeModelBinder();
-    }
-}
-
-public class DateRangeBinder: IModelBinder
-{
-    public DateRangeBinder()
-    {
-        Console.WriteLine("Testing12");
-    }
-    public Task BindModelAsync(ModelBindingContext bindingContext)
-    {
-        if (bindingContext == null)
-        {
-            throw new ArgumentNullException(nameof(bindingContext));
-        }
-
-        var dateFrom = bindingContext.ValueProvider.GetValue("dateFrom").FirstValue;
-        var dateTo = bindingContext.ValueProvider.GetValue("dateTo").FirstValue;
-            
-        var dateRange = new DateRange()
-        {
-            From = DateTime.Now, To = DateTime.Now
-        };
-        // var name = bindingContext.ValueProvider.GetValue("name").FirstValue;
-        // var beginName = bindingContext.ValueProvider.GetValue("name:contains").FirstValue;
-        // var exactName = bindingContext.ValueProvider.GetValue("name:exact").FirstValue;
-        // if (name.ToLower().Contains("tom")) {
-        //     model1.name = name;
-        // }
-        // if (beginName.ToLower().StartsWith("tom")) {
-        //     model1.beginName = beginName;
-        // }
-        // if (exactName.Contains("Tom")) {
-        //     model1.exactName = exactName;
-        // }
-        bindingContext.Result = ModelBindingResult.Success(dateRange);
-        return Task.CompletedTask;
-    }
+    // public static DateRange Default()
+    // {
+    //     return new DateRange() { From = DateTime.Now, To = DateTime.Now };
+    // }
+    // public static bool TryParse(string query, out DateRange dateRange)
+    // {
+    //     dateRange = new DateRange() { From = DateTime.Now, To = DateTime.Now };
+    //     return true;
+    // }
 }
     
 public static class AnalyticsDashboards
