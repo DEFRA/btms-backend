@@ -81,7 +81,7 @@ public class AssociatedDataServiceTests
 
         existingNotification._Etag.Should().NotBe(etag);
         existingNotification.Relationships.Movements.Data.Should().ContainSingle();
-        existingNotification.Relationships.Movements.Data[0].Updated.Should().Be(_timeProviderNow.DateTime);
+        existingNotification.Relationships.Movements.Data[0].Updated.Should().Be(_timeProviderNow.UtcDateTime);
     }
 
     private async Task<AssociatedDataService> CreateSubject(Movement? movement = null)
