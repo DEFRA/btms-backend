@@ -80,7 +80,7 @@ public class DecisionServiceTests
 
         var act = () => decisionService.Process(decisionContext, CancellationToken.None);
         
-        await act.Should().NotThrowAsync<InvalidOperationException>();
+        await act.Should().NotThrowAsync<Exception>();
     }
 
     private const DecisionCode ChedDDecisionCode = DecisionCode.C05;
