@@ -59,12 +59,14 @@ public class AssociatedDataServiceTests
         existingNotification.Relationships.Movements.Data[0].Updated.Should().Be(_existingUpdated);
     }
 
-    [Fact]
-    public async Task UpdateRelationships_ExistingNotification_MatchingRelationships_ShouldUpdate()
+    [Theory]
+    [InlineData("123456789", "123456789")]
+    [InlineData("mrn", "MRN")]
+    public async Task UpdateRelationships_ExistingNotification_MatchingRelationships_ShouldUpdate(string existingId, string matchingId)
     {
         var movement = new Movement
         {
-            Id = "123456789",
+            Id = existingId,
             Updated = _existingUpdated,
             BtmsStatus = MovementStatus.Default()
         };
@@ -75,7 +77,7 @@ public class AssociatedDataServiceTests
         
         await subject.UpdateRelationships([existingNotification], new Movement
         {
-            Id = "123456789",
+            Id = matchingId,
             BtmsStatus = MovementStatus.Default()
         }, CancellationToken.None);
 

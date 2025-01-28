@@ -11,8 +11,9 @@ public class AssociatedDataService(IMongoDbContext mongoDbContext, TimeProvider 
         foreach (var notification in notifications)
         {
             var changed = false;
-            
-            foreach (var relationship in notification.Relationships.Movements.Data.Where(x => x.Id == movement.Id))
+
+            foreach (var relationship in notification.Relationships.Movements.Data.Where(x =>
+                         string.Equals(x.Id, movement.Id, StringComparison.OrdinalIgnoreCase)))
             {
                 relationship.Updated = timeProvider.GetUtcNow().UtcDateTime;
                 changed = true;
