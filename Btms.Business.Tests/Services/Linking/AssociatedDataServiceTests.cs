@@ -25,6 +25,7 @@ public class AssociatedDataServiceTests
         var existingNotification = await _mongoDbContext.Notifications.Find(x => x.Id == _existingId) ??
                                    throw new InvalidOperationException();
         var etag = existingNotification._Etag;
+        var updated = existingNotification.Updated;
         
         await subject.UpdateRelationships([existingNotification], new Movement
         {
@@ -32,6 +33,7 @@ public class AssociatedDataServiceTests
         }, CancellationToken.None);
 
         existingNotification._Etag.Should().Be(etag);
+        existingNotification.Updated.Should().Be(updated);
     }
 
     [Fact]
@@ -47,6 +49,7 @@ public class AssociatedDataServiceTests
         var existingNotification = await _mongoDbContext.Notifications.Find(x => x.Id == _existingId) ??
                                    throw new InvalidOperationException();
         var etag = existingNotification._Etag;
+        var updated = existingNotification.Updated;
         
         await subject.UpdateRelationships([existingNotification], new Movement
         {
@@ -55,6 +58,7 @@ public class AssociatedDataServiceTests
         }, CancellationToken.None);
 
         existingNotification._Etag.Should().Be(etag);
+        existingNotification.Updated.Should().Be(updated);
         existingNotification.Relationships.Movements.Data.Should().ContainSingle();
         existingNotification.Relationships.Movements.Data[0].Updated.Should().Be(_existingUpdated);
     }
@@ -74,6 +78,7 @@ public class AssociatedDataServiceTests
         var existingNotification = await _mongoDbContext.Notifications.Find(x => x.Id == _existingId) ??
                                    throw new InvalidOperationException();
         var etag = existingNotification._Etag;
+        var updated = existingNotification.Updated;
         
         await subject.UpdateRelationships([existingNotification], new Movement
         {
@@ -82,13 +87,14 @@ public class AssociatedDataServiceTests
         }, CancellationToken.None);
 
         existingNotification._Etag.Should().NotBe(etag);
+        existingNotification.Updated.Should().BeAfter(updated);
         existingNotification.Relationships.Movements.Data.Should().ContainSingle();
         existingNotification.Relationships.Movements.Data[0].Updated.Should().Be(_timeProviderNow.UtcDateTime);
     }
 
     private async Task<AssociatedDataService> CreateSubject(Movement? movement = null)
     {
-        var notification = new ImportNotification { Id = _existingId };
+        var notification = new ImportNotification { Id = _existingId, Updated = _existingUpdated };
 
         if (movement is not null)
             notification.AddRelationship(new TdmRelationshipObject
