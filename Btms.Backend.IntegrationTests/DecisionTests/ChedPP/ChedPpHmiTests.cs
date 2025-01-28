@@ -19,7 +19,7 @@ public class ChedPpHmiTests(ITestOutputHelper output) : MultipleScenarioGenerato
     [InlineData(typeof(ChedPpHmiDecisionTestsScenarioGenerator), "24GBD69TMXZ2TYCAR7", "H02")]
 
     //Movement With Different Ched Types, that caused a finder exceptions
-    [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerato), "24GBDY6XFF66H0XAR1", "C03")]
+    [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator), "24GBDY6XFF66H0XAR1", "C03")]
 public void DecisionShouldHaveCorrectDecisionCodeForSingleNotification(Type generatorType, string mrn, string decisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);

@@ -10,9 +10,9 @@
       "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBCSRYLJM7JCYAR3  --rootFolder PRODREDACTED-202412 --outputFolder C:\\temp\\downloads"
     },
 
-    "download-scenario-data-24GBE2TF54PWDGXAR0": {
+    "download-scenario-data-24GBDE8OLVKZXSYAR1": {
       "commandName": "Project",
-      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBE2TF54PWDGXAR0 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBE2TF54PWDGXAR0"
+      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBDE8OLVKZXSYAR1 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBDE8OLVKZXSYAR1"
     }
   }
 }

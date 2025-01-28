@@ -41,10 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\DataGenerator\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Btms.Business\Btms.Business.csproj" />
   </ItemGroup>
 </Project>
