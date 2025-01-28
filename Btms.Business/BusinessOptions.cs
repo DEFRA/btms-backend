@@ -35,7 +35,7 @@ public class BusinessOptions
                 }
             },
             {
-                nameof(SyncNotificationsCommand), new Dictionary<Feature, int>()
+                nameof(SyncDecisionsCommand), new Dictionary<Feature, int>()
                 {
                     { Feature.BlobPaths, defaultDegreeOfParallelism }, { Feature.BlobItems, defaultDegreeOfParallelism }
                 }
