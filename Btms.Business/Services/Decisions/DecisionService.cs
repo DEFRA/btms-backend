@@ -97,8 +97,9 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
     {
         var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCode)).ToArray();
 
-        if (finders.Length == 0) throw new InvalidOperationException("Invalid ImportNotificationType / IUUCheckRequired");
-
-        return finders.Select(x => x.FindDecision(notification, checkCode));
+        foreach (var finder in finders)
+        {
+            yield return finder.FindDecision(notification, checkCode);
+        }
     }
 }
