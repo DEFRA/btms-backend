@@ -1,0 +1,33 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "ALVS",
+    "destinationSystem": "CDS",
+    "correlationId": "000",
+    "serviceCallTimestamp": 1733141076254
+  },
+  "header": {
+    "entryReference": "24GBDCTQRGTJZI9AR4",
+    "entryVersionNumber": 1,
+    "decisionNumber": 1
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H222",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        },
+        {
+          "checkCode": "H224",
+          "decisionCode": "C08",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    }
+  ]
+}

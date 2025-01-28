@@ -87,7 +87,13 @@ public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<Duplic
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
 public class IuuOkScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
-    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuOK");
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuok");
+
+public class IuunaScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuna");
+
+public class NoIuuInfoScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/NoIuuInfo");
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {

@@ -1,0 +1,284 @@
+{
+  "id": 4249660,
+  "referenceNumber": "CHEDP.GB.2024.5249660",
+  "version": 1,
+  "lastUpdated": "2024-12-03T23:45:04.269219396Z",
+  "lastUpdatedBy": {
+    "displayName": "ebf2dc67f8457770643bb45d056c747b9e0e75f39ce8637b9a04539d0ab9978f",
+    "userId": "3dd4da71-8584-ef11-ac20-000d3a4c04ca"
+  },
+  "type": "CVEDP",
+  "status": "VALIDATED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "cc320eda-5255-4601-9992-2bc63c35cfa3"
+      }
+    ],
+    "assessmentDateTime": "2024-12-03T15:05:57.10690853"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-12-03T15:01:47.841"
+  },
+  "isHighRiskEuImport": true,
+  "partOne": {
+    "personResponsible": {
+      "name": "ebf2dc67f8457770643bb45d056c747b9e0e75f39ce8637b9a04539d0ab9978f",
+      "companyId": "7d0ff2cf-0f31-e911-a95c-000d3a454f67",
+      "companyName": "8b61a3b2254dc27aa0ca53220abacede71b8b41d774698952e8d4d46e8306322",
+      "address": [
+        "1383e7ae4de3d8d3540e10b56f70e44f89388bf12db801d064298ea488719ba9",
+        "21c02b1b6b127b3036032b7cf4588cda810eb2a9f56a09e59ea0fd4ff8bf1b1d",
+        "5bf6ab8c008607915f1511c8c0085f00a759d08b55b3e139c61be7146fb30440",
+        "bd6e58f61c602fe38d0e4b6488e4de0d56fd340843e6103d2265fafd4b72b116",
+        "3bf4979fe00a58ffd8362c0a3d0c368e17e4495937fd86a0fb7ac4a0af257974"
+      ],
+      "country": "GB-ENG",
+      "tracesID": 1001,
+      "phone": "98ea4f18b6b446396056da966e038be9d3f13c2a5b382a8f1dc65f547f03ea96",
+      "email": "d2fc871797bf6ba35ec3456a5dac0e578b45dc02649125617716169cdb3a371a",
+      "contactId": "3dd4da71-8584-ef11-ac20-000d3a4c04ca"
+    },
+    "consignor": {
+      "id": "b8a87ac6-76ab-4a8e-943d-e5cbbd5232f7",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "b3785a28950c640827ced8ffbcf8958f0a2ea9a7e296c17b0b41c02774986059",
+      "address": {
+        "addressLine1": "440f8d8954d4a7343c449d2527a1c5c436af81127721a69b7310e883d9288287",
+        "city": "aa998fcfdb6a3417b4bd1af35be2cb919e0f65098f43a32ee24498be031d51af",
+        "postalZipCode": "5a9be7203287de2643e92af7c05ba0e80bcc8a62e199676ad9b31682e2b0e373",
+        "countryISOCode": "PL",
+        "telephone": "d9ade14b4e98353cefecdeff1dc12f3b9b17eb9c35f9c566f07d2c5820342ac4",
+        "email": "c3e9bafd2a11f11e4b0b8ca002a083b47be8981e84cbdf399c53c06f36c85caa"
+      },
+      "tracesId": 10182364
+    },
+    "consignee": {
+      "id": "c8ece815-b80a-4bbd-ab3e-0357aa4fb334",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "f9cf4351e1694b5a6e1caacb61a08e628a721c7ddbd78fdbf4c807306f11b550",
+      "address": {
+        "addressLine1": "a6ea4b6824ed96d6e74578fa9bb28206fd88b843d45801c0601c3b9fc00bb8a2",
+        "city": "dacb204492f677440f0404de27372ece4f44dc1dd9ba034bf28c9a3c6b52068a",
+        "postalZipCode": "1cda0eb656b409b78b79082a36861efb61cae3a28d2823be4f135711a514de04",
+        "countryISOCode": "GB-ENG",
+        "telephone": "02f02b3072a9a6296ebf46c16f894385623bdfc3c830238a7e62c8fdd9709683",
+        "email": "f4363a23643f31b34eae4a96d37dd28212ebc2eaa9a71804ed33321783a4f431"
+      },
+      "tracesId": 10374636
+    },
+    "importer": {
+      "id": "c8ece815-b80a-4bbd-ab3e-0357aa4fb334",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "f9cf4351e1694b5a6e1caacb61a08e628a721c7ddbd78fdbf4c807306f11b550",
+      "address": {
+        "addressLine1": "a6ea4b6824ed96d6e74578fa9bb28206fd88b843d45801c0601c3b9fc00bb8a2",
+        "city": "dacb204492f677440f0404de27372ece4f44dc1dd9ba034bf28c9a3c6b52068a",
+        "postalZipCode": "1cda0eb656b409b78b79082a36861efb61cae3a28d2823be4f135711a514de04",
+        "countryISOCode": "GB-ENG",
+        "telephone": "02f02b3072a9a6296ebf46c16f894385623bdfc3c830238a7e62c8fdd9709683",
+        "email": "f4363a23643f31b34eae4a96d37dd28212ebc2eaa9a71804ed33321783a4f431"
+      },
+      "tracesId": 10374636
+    },
+    "placeOfDestination": {
+      "id": "c8ece815-b80a-4bbd-ab3e-0357aa4fb334",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "f9cf4351e1694b5a6e1caacb61a08e628a721c7ddbd78fdbf4c807306f11b550",
+      "address": {
+        "addressLine1": "a6ea4b6824ed96d6e74578fa9bb28206fd88b843d45801c0601c3b9fc00bb8a2",
+        "city": "dacb204492f677440f0404de27372ece4f44dc1dd9ba034bf28c9a3c6b52068a",
+        "postalZipCode": "1cda0eb656b409b78b79082a36861efb61cae3a28d2823be4f135711a514de04",
+        "countryISOCode": "GB-ENG",
+        "telephone": "02f02b3072a9a6296ebf46c16f894385623bdfc3c830238a7e62c8fdd9709683",
+        "email": "f4363a23643f31b34eae4a96d37dd28212ebc2eaa9a71804ed33321783a4f431"
+      },
+      "tracesId": 10374636
+    },
+    "commodities": {
+      "totalGrossWeight": 16334.5,
+      "totalNetWeight": 15467.15,
+      "numberOfPackages": 1456,
+      "temperature": "Frozen",
+      "commodityComplement": [
+        {
+          "commodityID": "020727",
+          "commodityDescription": "Cuts and offal, frozen",
+          "complementID": 3,
+          "complementName": "Meleagris gallopavo",
+          "speciesID": "315060",
+          "speciesName": "Meleagris gallopavo",
+          "speciesTypeName": "Fresh meat",
+          "speciesType": "23",
+          "speciesClass": "315060",
+          "speciesNomination": "Meleagris gallopavo",
+          "isCdsMatched": true
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "cc320eda-5255-4601-9992-2bc63c35cfa3",
+          "complementID": 3,
+          "speciesID": "315060",
+          "keyDataPair": [
+            { "key": "netweight", "data": "15467.15" },
+            { "key": "number_package", "data": "1456" },
+            { "key": "type_package", "data": "Carton" }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "PL",
+      "isLowRiskArticle72Country": false,
+      "regionOfOrigin": "PL-1",
+      "consignedCountry": "PL"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBSEV25",
+    "arrivalDate": "2024-12-04",
+    "arrivalTime": "00:59:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "wgm7066l/esi6y66",
+      "type": "Road Vehicle",
+      "document": "cmr attached"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "TDS~~548606~~Meat from poultry and lagomorphs",
+          "name": "HODOWLA I UB\u00D3J INDYKA \u0022BODAMA\u0022 SP. Z O.O.",
+          "country": "PL",
+          "types": ["Slaughterhouse", "Cutting Plant"],
+          "approvalNumber": "08120501",
+          "section": "Meat from poultry and lagomorphs"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "EXPORT.EU.PL.2024.0089644",
+          "documentIssueDate": "2024-12-03",
+          "attachmentId": "3884228c-5772-42ce-a290-2d6ce6a8ca0a",
+          "attachmentFilename": "EXPORT.EU.PL.2024.00896.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "3dd4da71-8584-ef11-ac20-000d3a4c04ca",
+          "uploadOrganisationId": "7d0ff2cf-0f31-e911-a95c-000d3a454f67"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "106/01/fex/2024",
+          "documentIssueDate": "2024-11-29",
+          "attachmentId": "54ef4659-f68b-4fb6-a156-4a0b302d84ed",
+          "attachmentFilename": "Scan .pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "3dd4da71-8584-ef11-ac20-000d3a4c04ca",
+          "uploadOrganisationId": "7d0ff2cf-0f31-e911-a95c-000d3a454f67"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "ips19578",
+    "submissionDate": "2024-12-03T15:05:56.307478327Z",
+    "submittedBy": {
+      "displayName": "ebf2dc67f8457770643bb45d056c747b9e0e75f39ce8637b9a04539d0ab9978f",
+      "userId": "3dd4da71-8584-ef11-ac20-000d3a4c04ca"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBSEV",
+    "contactDetails": {
+      "name": "emma lockwood",
+      "telephone": "07790026664",
+      "email": "emma@wilsonlogistics.co.uk"
+    },
+    "nominatedContacts": [
+      {
+        "name": "barry walne",
+        "telephone": "07983153982",
+        "email": "barry@wilsonlogistics.co.uk"
+      }
+    ],
+    "originalEstimatedDateTime": "2024-12-04T07:00:00Z",
+    "isGVMSRoute": true,
+    "isChargeable": true,
+    "wasChargeable": true,
+    "billingInformation": {
+      "isConfirmed": true,
+      "emailAddress": "admin@wilsonlogistics.co.uk",
+      "phoneNumber": "01394278866",
+      "postalAddress": {
+        "addressLine1": "WILSON GLOBAL LOGISTICS.CO.UK",
+        "addressLine2": "GULPHER BUSINESS PARK",
+        "addressLine3": "GULPHER ROAD",
+        "county": "SUFFOLK",
+        "cityOrTown": "FELIXSTOWE",
+        "postalCode": "IP11 9RB"
+      }
+    },
+    "commonUserCharge": { "wasSentToTradeCharge": true },
+    "provideCtcMrn": "NO"
+  },
+  "decisionBy": {
+    "displayName": "527035f6236754468bdfb7e55befb0d4337967ae9313a6f97a6762a92dc96eac",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-03T23:45:04.242946991Z",
+  "partTwo": {
+    "decision": {
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Not Done",
+      "identityCheckType": "Not Done",
+      "identityCheckResult": "Not Done",
+      "identityCheckNotDoneReason": "Reduced checks regime",
+      "physicalCheckResult": "Not Done",
+      "physicalCheckNotDoneReason": "Reduced checks regime"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "c7c5980c3e84c23887864409e65d9883d80b2f9f33f62a9b1a032c1936b1ff2d",
+        "lastName": "077e1ecd0cff5c9acb9ea35bdb1f03d30ca76eca02337a5fc5b5129af6e6cc60",
+        "email": "f93657efd01b541264aa58072355bad49b60ef8622d9ebfdce34d0ca04ac5b15",
+        "phone": "19f4bf0c478ffc90709fa1cdbb9bdde09ab388fe0968519d7e7c82f09a6f6738",
+        "signed": "2024-12-03T23:45:04.269187596"
+      },
+      "iuuCheckRequired": false
+    },
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable",
+        "message": "What is the decision for this consignment"
+      }
+    ],
+    "checkDate": "2024-12-03T23:45:04.202917234Z",
+    "inspectionRequired": "Not required",
+    "autoClearedDateTime": "2024-12-03T23:45:04.202960334Z"
+  },
+  "partThree": { "sealCheckRequired": false },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable",
+      "message": "What is the decision for this consignment"
+    }
+  ],
+  "etag": "00000000044F8732",
+  "riskDecisionLockingTime": "2024-12-03T22:59:00Z",
+  "isRiskDecisionLocked": true,
+  "isCdsFullMatched": true,
+  "chedTypeVersion": 1
+}

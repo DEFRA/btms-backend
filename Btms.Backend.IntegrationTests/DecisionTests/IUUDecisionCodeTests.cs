@@ -12,25 +12,29 @@ public class IUUDecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGe
 {
     [Theory]
     [InlineData(typeof(IuuOkScenarioGenerator), "C07")]
+    // No linked set of data for IUUNotCompliant scenario
+    [InlineData(typeof(IuunaScenarioGenerator),  "C08")]
+    [InlineData(typeof(NoIuuInfoScenarioGenerator),  "X00")]
     public void ShouldHaveCorrectIuuDecisionCode(Type generatorType, string decisionCode)
     {
-        base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
+        TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
         EnsureEnvironmentInitialised(generatorType);
-        CheckDecisionCode(decisionCode);
-    }
 
-    private void CheckDecisionCode(string expectedDecisionCode)
-    {
-        var movement =
-            Client
-                .GetSingleMovement();
-        
-        TestOutputHelper.WriteLine("MRN {0}, expectedDecisionCode {1}", movement.EntryReference, expectedDecisionCode);
-        
-        movement
-            .Decisions!.MaxBy(d => d.ServiceHeader!.ServiceCalled)?
-            .Items!.First()
-            .Checks!.First()
-            .DecisionCode.Should().Be(expectedDecisionCode);
+        var movement = Client
+            .GetSingleMovement();
+
+        var lastDecision = movement.Decisions.OrderByDescending(x => x.ServiceHeader?.ServiceCalled).First();
+
+
+        foreach (var item in lastDecision.Items!)
+        {
+            foreach (var itemCheck in item.Checks!)
+            {
+                if (itemCheck.CheckCode == "H224")
+                {
+                    itemCheck.DecisionCode.Should().Be(decisionCode);
+                }
+            }
+        }
     }
 }

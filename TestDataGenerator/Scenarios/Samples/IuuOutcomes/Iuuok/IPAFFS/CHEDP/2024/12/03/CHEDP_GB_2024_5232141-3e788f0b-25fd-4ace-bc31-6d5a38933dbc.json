@@ -1,0 +1,239 @@
+{
+  "id": 4251161,
+  "referenceNumber": "CHEDP.GB.2024.5232141",
+  "version": 4,
+  "lastUpdated": "2024-12-03T18:09:12.061340949Z",
+  "lastUpdatedBy": {
+    "displayName": "1eb9bd86c069af688c813497078919040d2c20844ca3b1ce369a68a957136153",
+    "userId": "4dff5080-723b-e911-a958-000d3a454e11"
+  },
+  "type": "CVEDP",
+  "status": "AMEND",
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-12-02T13:27:40.949"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "9dfcdcf4b869bd41470b1717ea3b38889a645c54a3850357cc18290c8659164c",
+      "companyId": "3cff5080-723b-e911-a958-000d3a454e11",
+      "companyName": "6eb95a7b16107351635fb28014021d16fcdf2f08eadf6d74acba840c9a9e3169",
+      "address": [
+        "b8b657faa0a3cac582748a7d162daf99be30ffd307f7f7083d87a5097dbfa691",
+        "e99e53e9477a2cb0039408f4caa0682ddeb6c8d7611be4499fa4d97564825d78",
+        "a82c82b47a1a3ceead78624c4de1b4b49761d87b8f4bb08ef40f8c6795ee8d01",
+        "6f8a62f0aba22a1b2cb745538548d2e289710962fc807a4d6c661c01b294e9af",
+        "7feaddb1eed27343a8ef04345613bf967c3fa72acbb45e3201db77fbdd4d1f5e"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "c8af52ee9147e2a65fb42c5a5f5035c6b4f9876c95cb0316a25043d3448a4815",
+      "email": "413e930e378cff65212ef34d4779a784a28ddb09609a4d13dcb531ae381fc126",
+      "contactId": "ff2c7b65-f74e-ed11-bba2-000d3aae41ef"
+    },
+    "consignor": {
+      "id": "b3817f91-1c69-4501-aeb7-fd44a9488f0c",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "6395b9bf309488eb5e1ff5b418fb391eb2442c1b4ace4104e82a6e32af93d61d",
+      "address": {
+        "addressLine1": "bebff1add60d4e63f45be28acf3c3af71769cff9d9f6c4a714b04f75435e1621",
+        "addressLine2": "a61264daf17d2c396ada745fb990084c116a5140bee3c26ffea3fa267932cfe0",
+        "city": "8abba993ed2b76599e66672137d26c01bb87468f17af91bb65c7af079f22f588",
+        "countryISOCode": "SC",
+        "telephone": "2cd0cc9690b25163be0d69424cffa25b3dcf37761813ae92480fce847e05db73",
+        "email": "686f32f56f4f5e5940ebbc5d8874e705ff0c5a436bf11b1b3b63003e6ed1c6a8"
+      },
+      "tracesId": 10168141
+    },
+    "consignee": {
+      "id": "0c7659df-abfe-464f-bebb-4ca952ee8ffe",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "2709b7dc6aa5ab484a536e43fcad66e801a2e286cab5680d206a4ec50f1b1a58",
+      "address": {
+        "addressLine1": "75f77c8e5089bd73df54920672ded43e591f70a5cc9405881734286998893179",
+        "addressLine2": "e99e53e9477a2cb0039408f4caa0682ddeb6c8d7611be4499fa4d97564825d78",
+        "addressLine3": "a82c82b47a1a3ceead78624c4de1b4b49761d87b8f4bb08ef40f8c6795ee8d01",
+        "city": "6f8a62f0aba22a1b2cb745538548d2e289710962fc807a4d6c661c01b294e9af",
+        "postalZipCode": "7feaddb1eed27343a8ef04345613bf967c3fa72acbb45e3201db77fbdd4d1f5e",
+        "countryISOCode": "GB",
+        "telephone": "2844275a6e9242061b096028a235fddadf73fc1bb811bd7ac4f51f547b9acadf",
+        "email": "ee5d9ea37a43898afeb9eaadd97e13d7095db6bf82123ee4fb24baacf1dc87e3"
+      },
+      "tracesId": 10004865
+    },
+    "importer": {
+      "id": "0c7659df-abfe-464f-bebb-4ca952ee8ffe",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "2709b7dc6aa5ab484a536e43fcad66e801a2e286cab5680d206a4ec50f1b1a58",
+      "address": {
+        "addressLine1": "75f77c8e5089bd73df54920672ded43e591f70a5cc9405881734286998893179",
+        "addressLine2": "e99e53e9477a2cb0039408f4caa0682ddeb6c8d7611be4499fa4d97564825d78",
+        "addressLine3": "a82c82b47a1a3ceead78624c4de1b4b49761d87b8f4bb08ef40f8c6795ee8d01",
+        "city": "6f8a62f0aba22a1b2cb745538548d2e289710962fc807a4d6c661c01b294e9af",
+        "postalZipCode": "7feaddb1eed27343a8ef04345613bf967c3fa72acbb45e3201db77fbdd4d1f5e",
+        "countryISOCode": "GB",
+        "telephone": "2844275a6e9242061b096028a235fddadf73fc1bb811bd7ac4f51f547b9acadf",
+        "email": "ee5d9ea37a43898afeb9eaadd97e13d7095db6bf82123ee4fb24baacf1dc87e3"
+      },
+      "tracesId": 10004865
+    },
+    "placeOfDestination": {
+      "id": "4028ded8-3a44-49bf-9473-ee4e931452c0",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "5c2d1863f7ace1a5b904ce6dd39dd33e7262dbcb8ab61934249d634e0349ba1d",
+      "address": {
+        "addressLine1": "8301170a066e808d4a63b15a749f73a8fb011ca8099881e8edf4770d4e292f06",
+        "addressLine2": "5882b69e050578dbf641167682e8a8fd3d8be09dbfe8dab4203c4d090c087bda",
+        "addressLine3": "3fba387b9131e2d1aa96c7f1081201796ffad759efcf19f26470d70540debb41",
+        "city": "c5a0d0ad7a5b0635bc6c0a3dd6998313d91476b55fa5dd78e287a6b5a7f23d2a",
+        "postalZipCode": "6d32b1ee9c80216f683664752b8011199e822309573d133ae77c9120b3dad0c9",
+        "countryISOCode": "GB-ENG",
+        "telephone": "3a0ed2e0b3bee86e6eb6b5048f495cff447d8854262c7f81e45f27bf45b2eec0",
+        "email": "263c6d468ed16b1fe046f10ec62393c7bb2eeef38586d36c2380a8296ba192cb"
+      },
+      "tracesId": 10001415
+    },
+    "commodities": {
+      "totalGrossWeight": 717.97,
+      "totalNetWeight": 614.57,
+      "numberOfPackages": 22,
+      "temperature": "Chilled",
+      "commodityComplement": [
+        {
+          "commodityID": "03044990",
+          "commodityDescription": "other than. 0304 49 10; 0304 49 50",
+          "complementID": 44712,
+          "complementName": "Thunnus albacares",
+          "speciesID": "123336",
+          "speciesName": "Thunnus albacares",
+          "speciesTypeName": "Wild stock",
+          "speciesType": "61",
+          "speciesClass": "17821",
+          "speciesNomination": "Thunnus albacares"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "ac733c2a-13eb-4ce1-a181-28cf54293d03",
+          "complementID": 44712,
+          "speciesID": "123336",
+          "keyDataPair": [
+            { "key": "netweight", "data": "614.57" },
+            { "key": "number_package", "data": "22" },
+            { "key": "type_package", "data": "Polystyrene Box" },
+            { "key": "is_catch_certificate_required", "data": "false" }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "SC",
+      "isLowRiskArticle72Country": false,
+      "consignedCountry": "SC"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBLHR4P",
+    "arrivalDate": "2024-12-03",
+    "arrivalTime": "13:50:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "EK0029",
+      "type": "Aeroplane",
+      "document": "176-7948 9992"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "2660c04e-52e5-15d1-df42-c5c7dc90dcc0",
+          "name": "Oceana Fisheries Co. Ltd",
+          "country": "SC",
+          "types": ["Processing Plant"],
+          "approvalNumber": "F.F.07",
+          "section": "Fishery products"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "OF/N219/2024",
+          "documentIssueDate": "2024-12-02"
+        }
+      ]
+    },
+    "submissionDate": "2024-12-02T13:36:01.801043318Z",
+    "submittedBy": {
+      "displayName": "9dfcdcf4b869bd41470b1717ea3b38889a645c54a3850357cc18290c8659164c",
+      "userId": "ff2c7b65-f74e-ed11-bba2-000d3aae41ef"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBLHRE",
+    "contactDetails": {
+      "name": "Peter lane",
+      "telephone": "01753681085",
+      "email": "mail@wilderlogistics.com"
+    },
+    "isCatchCertificateRequired": false,
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {},
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/physicalcheckdone",
+        "message": "Physical check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/documentcheckresult",
+        "message": "Documentary check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/identitycheckdone",
+        "message": "Identity check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/laboratorytestsrequired",
+        "message": "Are laboratory tests required"
+      }
+    ]
+  },
+  "partThree": { "sealCheckRequired": false },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/documentcheckresult",
+      "message": "Documentary check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/identitycheckdone",
+      "message": "Identity check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/physicalcheckdone",
+      "message": "Physical check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/laboratorytestsrequired",
+      "message": "Are laboratory tests required"
+    }
+  ],
+  "etag": "00000000044F2429",
+  "riskDecisionLockingTime": "2024-12-03T11:50:00Z",
+  "isRiskDecisionLocked": true,
+  "chedTypeVersion": 1,
+  "isAutoClearanceExempted": true
+}
