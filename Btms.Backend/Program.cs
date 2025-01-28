@@ -142,6 +142,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 		options.IncludeTotalResourceCount = true;
 		options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 		options.ClientIdGeneration = ClientIdGenerationMode.Allowed;
+        options.AllowUnknownQueryStringParameters = true;
 #if DEBUG
 		options.IncludeExceptionStackTraceInErrors = true;
 		options.IncludeRequestBodyInErrors = true;
@@ -151,6 +152,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
 	builder.Services.AddJsonApi(ConfigureJsonApiOptions,
 		discovery => discovery.AddAssembly(Assembly.Load("Btms.Model")));
+    builder.Services.AddResourceDefinition<ImportNotificationJsonApiResourceDefinition>();
 
 	builder.Services.AddJsonApiMongoDb();
 	builder.Services.AddScoped<IResponseModelAdapter, BtmsResponseModelAdapter>();

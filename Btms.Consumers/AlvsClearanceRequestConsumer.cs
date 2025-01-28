@@ -63,8 +63,11 @@ namespace Btms.Consumers;
                 {
                     return;
                 }
-                
-                await associatedDataService.Update(linkResult.Notifications, messageId, Context.CancellationToken);
+
+                await associatedDataService.UpdateRelationships(
+                    linkResult.Notifications, 
+                    preProcessingResult.Record,
+                    Context.CancellationToken);
 
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);

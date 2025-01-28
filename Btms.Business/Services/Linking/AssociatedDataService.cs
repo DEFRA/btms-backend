@@ -1,29 +1,31 @@
 using Btms.Backend.Data;
-using Btms.Model.Auditing;
+using Btms.Model;
 using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Linking;
 
-public class AssociatedDataService(IMongoDbContext mongoDbContext) : IAssociatedDataService
+public class AssociatedDataService(IMongoDbContext mongoDbContext, TimeProvider timeProvider) : IAssociatedDataService
 {
-    public async Task Update(
-        List<ImportNotification> notifications, 
-        string auditEntryId, 
-        CancellationToken cancellationToken)
+    public async Task UpdateRelationships(List<ImportNotification> notifications, Movement movement, CancellationToken cancellationToken)
     {
         foreach (var notification in notifications)
         {
-            var auditEntry = AuditEntry.CreateAssociatedUpdate(
-                auditEntryId,
-                notification.AuditEntries.LastOrDefault()?.Version + 1 ?? 1);
+            var changed = false;
             
-            notification.Changed(auditEntry);
-            
-            // Assumes the list of notifications exists in the DB already
-            await mongoDbContext.Notifications.Update(
-                notification, 
-                notification._Etag, 
-                cancellationToken: cancellationToken);
+            foreach (var relationship in notification.Relationships.Movements.Data.Where(x => x.Id == movement.Id))
+            {
+                relationship.Updated = timeProvider.GetUtcNow().DateTime;
+                changed = true;
+            }
+
+            if (changed)
+            {
+                // Assumes the list of notifications exists in the DB already
+                await mongoDbContext.Notifications.Update(
+                    notification, 
+                    notification._Etag, 
+                    cancellationToken: cancellationToken);
+            }
         }
     }
 }

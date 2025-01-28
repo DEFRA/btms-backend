@@ -19,7 +19,8 @@ public class JsonApiClient(HttpClient client)
         string path,
         Dictionary<string, string>? query = null,
         Dictionary<string, string>? headers = null,
-        IList<string>? relations = null)
+        IList<string>? relations = null,
+        bool assertStatusCode = true)
     {
         client.DefaultRequestHeaders.Accept.Add(ContentType);
 
@@ -48,9 +49,9 @@ public class JsonApiClient(HttpClient client)
 
         var responseMessage = client.GetAsync(uri).Result;
 
-        responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
-
-
+        if (assertStatusCode)
+            responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
+        
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
         return JsonSerializer.Deserialize<ManyItemsJsonApiDocument>(s,

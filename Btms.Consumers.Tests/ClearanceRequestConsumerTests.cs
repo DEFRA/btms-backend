@@ -103,8 +103,7 @@ public class ClearanceRequestConsumerTests
         await consumer.OnHandle(clearanceRequest);
 
         // ASSERT
-        await _associatedDataService.Received().Update(notifications, clearanceRequest.Header!.EntryReference!,
-            Arg.Any<CancellationToken>());
+        await _associatedDataService.Received().UpdateRelationships(notifications, movement, Arg.Any<CancellationToken>());
     }
 
     private static AlvsClearanceRequest CreateAlvsClearanceRequest()

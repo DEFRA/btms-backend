@@ -15,6 +15,8 @@ public sealed class RelationshipDataItem
     [Attr] public int? SourceItem { get; set; }
 
     [Attr] public int? DestinationItem { get; set; }
+    
+    [Attr] public DateTime? Updated { get; set; }
 
     public int? MatchingLevel { get; set; }
 
@@ -42,6 +44,11 @@ public sealed class RelationshipDataItem
             meta.Add("self", Links.Self);
         }
 
+        if (Updated.HasValue)
+        {
+            meta.Add("updated", Updated.Value.ToString("O"));
+        }
+
         return meta;
     }
 
@@ -60,7 +67,7 @@ public sealed class RelationshipDataItem
         };
     }
 
-    public static RelationshipDataItem CreateFromMovement(ImportNotification notification, Movement movement, string matchReference)
+    public static RelationshipDataItem CreateFromMovement(ImportNotification notification, Movement movement, string matchReference, DateTime updated)
     {
         return new RelationshipDataItem
         {
@@ -71,7 +78,8 @@ public sealed class RelationshipDataItem
                 .Find(x => x.Documents!.ToList().Exists(d => d.DocumentReference!.Contains(matchReference)))
                 ?.ItemNumber,
             Links = new ResourceLink { Self = LinksBuilder.Movement.BuildRelatedMovementLink(movement.Id!) },
-            MatchingLevel = 1
+            MatchingLevel = 1,
+            Updated = updated
         };
     }
 }

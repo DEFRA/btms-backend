@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
@@ -24,6 +25,8 @@ public interface IIntegrationTestsApplicationFactory
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
+    public DateTimeOffset TimeProviderStartDateTime { get; set; } = new(2025, 1, 28, 11, 30, 00, TimeSpan.Zero);
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -44,6 +47,11 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
             .UseConfiguration(configuration)
             .ConfigureServices(services =>
             {
+                // To allow tests to freeze time as application should not be using things like DateTime.UtcNow everywhere
+                // because it's not testable
+                services.Replace(
+                    ServiceDescriptor.Singleton<TimeProvider>(new FrozenTimeProvider(TimeProviderStartDateTime)));
+                
                 var mongoDatabaseDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IMongoDatabase))!;
                 services.Remove(mongoDatabaseDescriptor);
 

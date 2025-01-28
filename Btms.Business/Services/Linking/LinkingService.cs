@@ -105,7 +105,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             Data =
                             [
                                 RelationshipDataItem.CreateFromMovement(notification, movement,
-                                    notification._MatchReference)
+                                    notification._MatchReference, notification.Updated)
                             ]
                         });
 
