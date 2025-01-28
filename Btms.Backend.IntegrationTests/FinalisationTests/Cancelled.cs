@@ -11,7 +11,7 @@ namespace Btms.Backend.IntegrationTests.FinalisationTests;
 
 [Trait("Category", "Integration")]
 public class Cancelled(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDEJ9V2OD0BHAR0ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbdej9V2Od0Bhar0ScenarioGenerator>(output)
 {
     [Fact]
     public void FinalisedShouldBeSet()

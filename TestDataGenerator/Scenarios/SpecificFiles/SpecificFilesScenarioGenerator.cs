@@ -73,14 +73,14 @@ public class IuuScenarioGenerator(
     ILogger<IuuScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBE2TF54PWDGXAR0");
 
-public class Mrn24GBDE8OLVKZXSYAR1ScenarioGenerator(
+public class Mrn24Gbde8Olvkzxsyar1ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDE8OLVKZXSYAR1ScenarioGenerator> logger)
+    ILogger<Mrn24Gbde8Olvkzxsyar1ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE8OLVKZXSYAR1");
 
-public class Mrn24GBDEJ9V2OD0BHAR0ScenarioGenerator(
+public class Mrn24Gbdej9V2Od0Bhar0ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDEJ9V2OD0BHAR0ScenarioGenerator> logger)
+    ILogger<Mrn24Gbdej9V2Od0Bhar0ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJ9V2OD0BHAR0");
 
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)

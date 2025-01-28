@@ -11,7 +11,7 @@ namespace Btms.Backend.IntegrationTests.FinalisationTests;
 
 [Trait("Category", "Integration")]
 public class Destroyed(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDEJ9V2OD0BHAR0DestroyedScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator>(output)
 {
 
     [Fact]

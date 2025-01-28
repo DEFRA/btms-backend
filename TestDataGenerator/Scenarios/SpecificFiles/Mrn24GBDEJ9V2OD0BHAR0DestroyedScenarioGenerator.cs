@@ -4,7 +4,7 @@ using TestDataGenerator.Extensions;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
-public class Mrn24GBDEJ9V2OD0BHAR0DestroyedScenarioGenerator(IServiceProvider sp, ILogger<Mrn24GBDEJ9V2OD0BHAR0DestroyedScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger)
+public class Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

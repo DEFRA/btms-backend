@@ -11,7 +11,7 @@ namespace Btms.Backend.IntegrationTests.FinalisationTests;
 
 [Trait("Category", "Integration")]
 public class Cleared(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDE8OLVKZXSYAR1ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbde8Olvkzxsyar1ScenarioGenerator>(output)
 {
 
     [Fact]
