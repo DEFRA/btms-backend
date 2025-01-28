@@ -6,6 +6,7 @@ using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model.Ipaffs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 
 namespace Btms.Backend.Endpoints;
@@ -111,23 +112,28 @@ public static class AnalyticsEndpoints
         await importNotificationMetrics.RecordCurrentState();
         return Results.Ok();
     }
-
+    
     private static async Task<IResult> GetDashboard(
         [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
         [FromQuery] string[] chartsToRender,
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "coo")] string? countryOfOrigin,
-        [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
-        [FromQuery(Name = "dateTo")] DateTime? dateTo,
+        // DateRange dateRange,
+        // [FromQuery] DateRange? dateRange = DateRange.Default,
+        [ModelBinder(typeof(DateRangeBinder))] DateRange dateRange,
+        // DateRange dateRange,
+        // [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
+        // [FromQuery(Name = "dateTo")] DateTime? dateTo,
         [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
     {
         var logger = ApplicationLogging.CreateLogger("AnalyticsEndpoints");
         
+        
         var result =
             await AnalyticsDashboards
                 .GetCharts(logger, importService, movementsService, chartsToRender,
-                    chedTypes, countryOfOrigin, dateFrom, dateTo, finalisedOnly);
+                    chedTypes, countryOfOrigin, DateRange.Default(), finalisedOnly);
         
         var options =
             new JsonSerializerOptions

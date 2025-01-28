@@ -26,6 +26,7 @@ using JsonApiDotNetCore.Repositories;
 using JsonApiDotNetCore.Serialization.Response;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+// using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -102,6 +103,15 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Services.AddBusinessServices(builder.Configuration);
 	builder.Services.AddConsumers(builder.Configuration);
 
+    // var provider = new SimpleTypeModelBinderProvider(
+    //     typeof(DateRange), new AnalyticsEndpoints.DateRangeBinder());
+    //
+    // builder.Services.Insert(typeof(ModelBinderProvider), 0, provider);
+    builder.Services.AddControllers(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new DateRangeBinderProvider());
+    });
+    
 	ConfigureEndpoints(builder);
 
 	builder.Services.AddHttpClient();

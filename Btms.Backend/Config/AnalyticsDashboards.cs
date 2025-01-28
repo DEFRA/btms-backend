@@ -3,10 +3,93 @@ using Btms.Analytics.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using MongoDB.Driver.Linq;
 
 namespace Btms.Backend.Config;
 
+
+[ModelBinder(BinderType = typeof(DateRangeBinder))]
+public class DateRange {
+    [FromQuery(Name = "dateFrom")] 
+    public DateTime? From { get; set; }
+    [FromQuery(Name = "dateTo")] 
+    public DateTime? To { get; set; }
+
+    public static DateRange Default()
+    {
+        return new DateRange() { From = DateTime.Now, To = DateTime.Now };
+    }
+    public static bool TryParse(string query, out DateRange dateRange)
+    {
+        dateRange = new DateRange() { From = DateTime.Now, To = DateTime.Now };
+        return true;
+    }
+}
+
+public class DateRangeBinderProvider : IModelBinderProvider
+{
+    public DateRangeBinderProvider()
+    {
+        Console.WriteLine("Testing12");
+    }
+    public IModelBinder GetBinder(ModelBinderProviderContext context)
+    {
+        if (context == null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        if (context.Metadata.ModelType == typeof(DateRange))
+        {
+            return new BinderTypeModelBinder(typeof(DateRangeBinder));
+        }
+
+        return new BinderTypeModelBinder(context.Metadata.ModelType);
+        // ;
+        // return null!; //new BinderTypeModelBinder();
+    }
+}
+
+public class DateRangeBinder: IModelBinder
+{
+    public DateRangeBinder()
+    {
+        Console.WriteLine("Testing12");
+    }
+    public Task BindModelAsync(ModelBindingContext bindingContext)
+    {
+        if (bindingContext == null)
+        {
+            throw new ArgumentNullException(nameof(bindingContext));
+        }
+
+        var dateFrom = bindingContext.ValueProvider.GetValue("dateFrom").FirstValue;
+        var dateTo = bindingContext.ValueProvider.GetValue("dateTo").FirstValue;
+            
+        var dateRange = new DateRange()
+        {
+            From = DateTime.Now, To = DateTime.Now
+        };
+        // var name = bindingContext.ValueProvider.GetValue("name").FirstValue;
+        // var beginName = bindingContext.ValueProvider.GetValue("name:contains").FirstValue;
+        // var exactName = bindingContext.ValueProvider.GetValue("name:exact").FirstValue;
+        // if (name.ToLower().Contains("tom")) {
+        //     model1.name = name;
+        // }
+        // if (beginName.ToLower().StartsWith("tom")) {
+        //     model1.beginName = beginName;
+        // }
+        // if (exactName.Contains("Tom")) {
+        //     model1.exactName = exactName;
+        // }
+        bindingContext.Result = ModelBindingResult.Success(dateRange);
+        return Task.CompletedTask;
+    }
+}
+    
 public static class AnalyticsDashboards
 {
     public static async Task<IDictionary<string, IDataset>> GetCharts(
@@ -16,8 +99,9 @@ public static class AnalyticsDashboards
         string[] chartsToRender,
         ImportNotificationTypeEnum[] chedTypes,
         string? country,
-        DateTime? dateFrom,
-        DateTime? dateTo,
+        DateRange dateRange,
+        // DateTime? dateFrom,
+        // DateTime? dateTo,
         bool finalisedOnly
         )
     {
@@ -75,11 +159,11 @@ public static class AnalyticsDashboards
             },
             {
                 "uniqueDocumentReferenceCount",
-                () => movementsService.ByUniqueDocumentReferenceCount(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
+                () => movementsService.ByUniqueDocumentReferenceCount(dateRange.From ?? DateTime.Today.MonthAgo(), dateRange.To ?? DateTime.Now).AsIDataset()
             },
             {
                 "uniqueDocumentReferenceByMovementCount",
-                () => movementsService.UniqueDocumentReferenceByMovementCount(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
+                () => movementsService.UniqueDocumentReferenceByMovementCount(dateRange.From ?? DateTime.Today.MonthAgo(), dateRange.To ?? DateTime.Now).AsIDataset()
             },
             {
                 "lastMonthMovementsByUniqueDocumentReferenceCount",
@@ -87,7 +171,7 @@ public static class AnalyticsDashboards
             },
             {
                 "movementsByUniqueDocumentReferenceCount",
-                () => movementsService.ByUniqueDocumentReferenceCount(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now).AsIDataset()
+                () => movementsService.ByUniqueDocumentReferenceCount(dateRange.From ?? DateTime.Today.MonthAgo(), dateRange.To ?? DateTime.Now).AsIDataset()
             },
             {
                 "lastMonthUniqueDocumentReferenceByMovementCount",
@@ -99,27 +183,27 @@ public static class AnalyticsDashboards
             },
             {
                 "decisionsByDecisionCode",
-                () => movementsService.ByDecision(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
+                () => movementsService.ByDecision(dateRange.From ?? DateTime.Today.MonthAgo(), dateRange.To ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsBySegment",
-                () => movementsService.BySegment(dateFrom ?? DateTime.Today.MonthAgo(), dateTo ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
+                () => movementsService.BySegment(dateRange.From ?? DateTime.Today.MonthAgo(), dateRange.To ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "importNotificationsByVersion",
-                () => importService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
+                () => importService.ByMaxVersion(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsByMaxEntryVersion",
-                () => movementsService.ByMaxVersion(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
+                () => movementsService.ByMaxVersion(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsByMaxDecisionNumber",
-                () => movementsService.ByMaxDecisionNumber(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
+                () => movementsService.ByMaxDecisionNumber(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsExceptions",
-                () => movementsService.ExceptionSummary(dateFrom ?? DateTime.Today.AddMonths(-3), dateTo ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
+                () => movementsService.ExceptionSummary(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             }
         };
         
