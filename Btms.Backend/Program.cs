@@ -74,8 +74,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 	builder.Configuration.AddEnvironmentVariables();
     builder.Services.AddOutputCache(options =>
         {
-            // options.AddBasePolicy(builder =>
-            //     builder.Expire(TimeSpan.FromMinutes(10)));
             options.AddPolicy("Expire10Min", builder => 
                 builder.Expire(TimeSpan.FromMinutes(10)));
         }
@@ -101,7 +99,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
 	builder.Services.AddBusinessServices(builder.Configuration);
 	builder.Services.AddConsumers(builder.Configuration);
-
+    
 	ConfigureEndpoints(builder);
 
 	builder.Services.AddHttpClient();
