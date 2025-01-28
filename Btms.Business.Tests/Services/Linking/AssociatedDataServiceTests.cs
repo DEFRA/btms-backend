@@ -87,7 +87,7 @@ public class AssociatedDataServiceTests
         }, CancellationToken.None);
 
         existingNotification._Etag.Should().NotBe(etag);
-        existingNotification.Updated.Should().BeAfter(updated);
+        existingNotification.Updated.Should().Be(updated);
         existingNotification.Relationships.Movements.Data.Should().ContainSingle();
         existingNotification.Relationships.Movements.Data[0].Updated.Should().Be(_timeProviderNow.UtcDateTime);
     }

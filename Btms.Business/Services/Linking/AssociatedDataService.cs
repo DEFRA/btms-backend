@@ -25,6 +25,7 @@ public class AssociatedDataService(IMongoDbContext mongoDbContext, TimeProvider 
                 await mongoDbContext.Notifications.Update(
                     notification, 
                     notification._Etag, 
+                    setUpdated: false,
                     cancellationToken: cancellationToken);
             }
         }

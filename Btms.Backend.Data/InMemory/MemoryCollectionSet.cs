@@ -70,7 +70,9 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         }
 
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        item.Updated = DateTime.UtcNow;
+        
+        if (setUpdated)
+            item.Updated = DateTime.UtcNow;
         
         _data[_data.IndexOf(existingItem)] = item;
         

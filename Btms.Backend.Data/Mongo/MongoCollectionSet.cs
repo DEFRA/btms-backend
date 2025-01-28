@@ -66,7 +66,9 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
 
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        item.Updated = DateTime.UtcNow;
+        
+        if (setUpdated)
+            item.Updated = DateTime.UtcNow;
         
         var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
         var updateResult = session is not null
