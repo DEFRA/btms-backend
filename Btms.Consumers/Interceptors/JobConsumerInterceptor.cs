@@ -25,7 +25,7 @@ public class JobConsumerInterceptor<TMessage>(ISyncJobStore store, IOptions<Cons
         }
         catch (Exception)
         {
-            if (context.GetRetryAttempt() > options.Value.ErrorRetries)
+            if (context.GetRetryAttempt() == options.Value.ErrorRetries)
             {
                 job?.MessageFailed();
             }
