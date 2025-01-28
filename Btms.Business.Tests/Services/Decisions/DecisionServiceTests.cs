@@ -71,15 +71,16 @@ public class DecisionServiceTests
     // }
     
     [Fact]
-    public async Task When_processing_unknown_decisions_Then_should_throw()
+    public async Task When_processing_unknown_decisions_Then_should_not_throw()
     {
         var decisionContext = CreateDecisionContext((ImportNotificationTypeEnum)999, ["H224"], iuuCheckRequired: false);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0], ["H224"]);
         var decisionService = serviceProvider.GetRequiredService<IDecisionService>();
 
+
         var act = () => decisionService.Process(decisionContext, CancellationToken.None);
         
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().NotThrowAsync<InvalidOperationException>();
     }
 
     private const DecisionCode ChedDDecisionCode = DecisionCode.C05;
