@@ -73,6 +73,11 @@ public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
         return Do(x => x.Header!.EntryVersionNumber = version);
     }
     
+    public FinalisationBuilder<T> WithFinalState(int finalState = 0)
+    {
+        return Do(x => x.Header!.FinalState = finalState.ToString());
+    }
+    
     public FinalisationBuilder<T> WithDecisionVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.DecisionNumber = version);

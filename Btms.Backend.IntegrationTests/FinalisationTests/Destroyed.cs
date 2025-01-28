@@ -10,8 +10,8 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.FinalisationTests;
 
 [Trait("Category", "Integration")]
-public class Cleared(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24Gbde8Olvkzxsyar1ScenarioGenerator>(output)
+public class Destroyed(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator>(output)
 {
 
     [Fact]
@@ -29,7 +29,7 @@ public class Cleared(ITestOutputHelper output)
         Client
             .GetSingleMovement()
             .Finalisation!.FinalState
-            .Should().Be(FinalState.Cleared);
+            .Should().Be(FinalState.Destroyed);
     }
 
 }
