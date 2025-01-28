@@ -19,7 +19,7 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
         var result = (await GetImportNotificationsAggregationService()
-            .ByMaxVersion(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow()));
+            .ByMaxVersion(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow(), false));
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
         
@@ -31,7 +31,7 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
         var result = await ImportNotificationsAggregationService
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour());
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), false);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
@@ -43,7 +43,7 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
         var result = await ImportNotificationsAggregationService
-            .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue);
+            .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue, false);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
@@ -55,7 +55,7 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
         var result = await ImportNotificationsAggregationService
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), chedTypes: [ImportNotificationTypeEnum.Cveda]);
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), false, chedTypes: [ImportNotificationTypeEnum.Cveda]);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         
@@ -67,7 +67,7 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
         var result = await ImportNotificationsAggregationService
-            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), country: "ES");
+            .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), false, country: "ES");
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
         

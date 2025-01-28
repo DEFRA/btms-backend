@@ -161,11 +161,14 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         });
     }
 
-    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    public Task<SingleSeriesDataset> ByMaxVersion(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
+        // NB : At the moment this doesn't filter on finalisedOnly as thats not stored anywhere on the notification
+        // we'd need to denormalise the field, perhaps onto the relationship, to allow this filtering.
+        
         var data = context
             .Notifications
-            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .GroupBy(n => new { MaxVersion =
                 n.AuditEntries.Where(a => a.CreatedBy == CreatedBySystem.Ipaffs).Max(a => a.Version )
             })
