@@ -27,6 +27,7 @@ public static class ManagementEndpoints
             app.MapGet(BaseRoute + "/initialise", Initialise).AllowAnonymous();
             app.MapGet(BaseRoute + "/asb/start", StartAsb).AllowAnonymous();
             app.MapGet(BaseRoute + "/asb/stop", StopAsb).AllowAnonymous();
+            app.MapGet(BaseRoute + "/server/forcegc", ForceGC).AllowAnonymous();
 }
 	}
 
@@ -39,8 +40,8 @@ public static class ManagementEndpoints
 	{
 		return key.StartsWith("AZURE") ||
 			   key.StartsWith("BlobServiceOptions__Azure") ||
-               key.StartsWith("ServiceBusOptions__ConnectionString") ||
-			   key.StartsWith("AuthKeyStore__Credentials") ||
+               key.Contains("ConnectionString") ||
+               key.StartsWith("AuthKeyStore__Credentials") ||
                key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
 			   _keysToRedact.Contains(key);
 	}
@@ -124,6 +125,13 @@ public static class ManagementEndpoints
         }
 
         return Results.Ok();
+    }
+
+    private static Task<IResult> ForceGC()
+    {
+       GC.Collect();
+
+        return Task.FromResult(Results.Ok());
     }
 
     private static IResult GetEnvironment()
