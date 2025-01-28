@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Config;
 using Btms.Business.Commands;
 using Btms.Consumers;
@@ -27,6 +28,7 @@ public static class ManagementEndpoints
             app.MapGet(BaseRoute + "/initialise", Initialise).AllowAnonymous();
             app.MapGet(BaseRoute + "/asb/start", StartAsb).AllowAnonymous();
             app.MapGet(BaseRoute + "/asb/stop", StopAsb).AllowAnonymous();
+            app.MapGet(BaseRoute + "/server/forcegc", ForceGC).AllowAnonymous();
 }
 	}
 
@@ -39,8 +41,8 @@ public static class ManagementEndpoints
 	{
 		return key.StartsWith("AZURE") ||
 			   key.StartsWith("BlobServiceOptions__Azure") ||
-               key.StartsWith("ServiceBusOptions__ConnectionString") ||
-			   key.StartsWith("AuthKeyStore__Credentials") ||
+               key.Contains("ConnectionString") ||
+               key.StartsWith("AuthKeyStore__Credentials") ||
                key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
 			   _keysToRedact.Contains(key);
 	}
@@ -124,6 +126,16 @@ public static class ManagementEndpoints
         }
 
         return Results.Ok();
+    }
+
+    [SuppressMessage("SonarLint", "S1215",
+        Justification =
+            "Ignored this is as its a management function that will be explicity invoked")]
+    private static Task<IResult> ForceGC()
+    {
+       GC.Collect();
+
+        return Task.FromResult(Results.Ok());
     }
 
     private static IResult GetEnvironment()
