@@ -28,6 +28,9 @@ public static class BuilderExtensions
                     case DecisionBuilder builder:
                         return builder.Build();
                     
+                    case FinalisationBuilder builder:
+                        return builder.Build();
+                    
                     default:
                         throw new InvalidDataException($"Unexpected type {b.GetType().Name}");
                 }

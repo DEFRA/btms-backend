@@ -149,7 +149,7 @@ namespace Btms.Consumers.Extensions
                             .Produce<Finalisation>(x => x.DefaultTopic(nameof(Finalisation)))
                             .Consume<Finalisation>(x =>
                             {
-                                x.Instances(consumerOpts.InMemoryDecisions);
+                                x.Instances(consumerOpts.InMemoryFinalisations);
                                 x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
                             });
                     });

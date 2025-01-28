@@ -19,6 +19,9 @@ public static class MessageExtensions
             case Decision d:
                 return d.ServiceHeader!.ServiceCallTimestamp!.Value;
                     
+            case Finalisation d:
+                return d.ServiceHeader!.ServiceCallTimestamp!.Value;
+            
             default:
                 throw new InvalidDataException($"Unexpected type {m.GetType().Name}");
         }

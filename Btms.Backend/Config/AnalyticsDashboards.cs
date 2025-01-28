@@ -136,7 +136,7 @@ public static class AnalyticsDashboards
             },
             {
                 "movementsByMaxDecisionNumber",
-                () => movementsService.ByMaxDecisionNumber(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
+                () => movementsService.ByMaxAlvsDecisionNumber(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "movementsExceptions",

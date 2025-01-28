@@ -40,38 +40,48 @@ public class Mrn24GBDPN81VSULAGAR9ScenarioGenerator(
 
 public class ChedPpPhsiDecisionTestsScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<ChedPpPhsiDecisionTestsScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "ChedPpPhsiDecisionTests");
 
 public class ChedPpHmiDecisionTestsScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<ChedPpHmiDecisionTestsScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "ChedPpHmiDecisionTests");
 
-public class Mrn24Gbdy6Xff66H0Xar1ScenarioGenerato(
+public class Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24Gbdy6Xff66H0Xar1ScenarioGenerato> logger)
+    ILogger<Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDY6XFF66H0XAR1");
 
 public class DeletedNotificationTestsScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<DeletedNotificationTestsScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DeletedNotification");
 
 public class CancelledNotificationTestsScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<CancelledNotificationTestsScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "CancelledNotification");
 
 public class MissingChedScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<MissingChedScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD48YGL8RMD6AR6");
 
 public class IuuScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<IuuScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBE2TF54PWDGXAR0");
+
+public class Mrn24Gbde8Olvkzxsyar1ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbde8Olvkzxsyar1ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE8OLVKZXSYAR1");
+
+public class Mrn24Gbdej9V2Od0Bhar0ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbdej9V2Od0Bhar0ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJ9V2OD0BHAR0");
 
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
@@ -91,10 +101,12 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var clearanceRequestList = await GetBuildersForFolder($"{scenarioPath}/ALVS", BuilderHelpers.GetClearanceRequestBuilder, tokenSource.Token);
         var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", BuilderHelpers.GetNotificationBuilder, tokenSource.Token);
         var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", BuilderHelpers.GetDecisionBuilder, tokenSource.Token);
+        var finalisationList = await GetBuildersForFolder($"{scenarioPath}/FINALISATION", BuilderHelpers.GetFinalisationBuilder, tokenSource.Token);
 
         return clearanceRequestList
             .Concat(notificationList)
             .Concat(decisionList)
+            .Concat(finalisationList)
             .ToList();
     }
 

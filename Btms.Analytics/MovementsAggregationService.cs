@@ -232,6 +232,23 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
         });
     }
+    
+    public Task<SingleSeriesDataset> ByMaxAlvsDecisionNumber(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    {
+        var data = context
+            .Movements
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            .GroupBy(n => new { MaxVersion =
+                n.AlvsDecisionStatus.Decisions.Max(a => a.Decision.Header!.DecisionNumber )
+            })
+            .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
+            .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
+
+        return Task.FromResult(new SingleSeriesDataset
+        {
+            Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
+        });
+    }
 
     public Task<List<ExceptionResult>> GetExceptions(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
