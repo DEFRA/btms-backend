@@ -62,15 +62,14 @@ public static class AnalyticsEndpoints
 
     private static async Task<IResult> Exceptions(
         [FromServices] IMovementsAggregationService movementsService,
+        [AsParameters] DateRange dateRange,
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "country")] string? country,
-        [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
-        [FromQuery(Name = "dateTo")] DateTime? dateTo,
         [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
     {
         var result
             = await movementsService
-                .GetExceptions(dateFrom ?? DateTime.MinValue, dateTo ?? DateTime.Today, 
+                .GetExceptions(dateRange.From ?? DateTime.MinValue, dateRange.To ?? DateTime.Today, 
                     finalisedOnly, chedTypes, country);
 
         return result.HasValue() ? 
@@ -81,11 +80,10 @@ public static class AnalyticsEndpoints
     private static IResult Scenarios(
         [FromServices] IMovementsAggregationService movementsService,
         [FromServices] IImportNotificationsAggregationService importService,
-        [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
-        [FromQuery(Name = "dateTo")] DateTime? dateTo)
+        [AsParameters] DateRange dateRange)
     {
         var result
-            = importService.Scenarios(dateFrom, dateTo);
+            = importService.Scenarios(dateRange.From, dateRange.To);
 
         if (result.HasValue())
         {   
@@ -116,15 +114,10 @@ public static class AnalyticsEndpoints
     private static async Task<IResult> GetDashboard(
         [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
+        [AsParameters] DateRange dateRange,
         [FromQuery] string[] chartsToRender,
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
         [FromQuery(Name = "coo")] string? countryOfOrigin,
-        // DateRange dateRange,
-        // [FromQuery] DateRange? dateRange = DateRange.Default,
-        [ModelBinder(typeof(DateRangeBinder))] DateRange dateRange,
-        // DateRange dateRange,
-        // [FromQuery(Name = "dateFrom")] DateTime? dateFrom,
-        // [FromQuery(Name = "dateTo")] DateTime? dateTo,
         [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
     {
         var logger = ApplicationLogging.CreateLogger("AnalyticsEndpoints");
@@ -133,7 +126,7 @@ public static class AnalyticsEndpoints
         var result =
             await AnalyticsDashboards
                 .GetCharts(logger, importService, movementsService, chartsToRender,
-                    chedTypes, countryOfOrigin, DateRange.Default(), finalisedOnly);
+                    chedTypes, countryOfOrigin, dateRange, finalisedOnly);
         
         var options =
             new JsonSerializerOptions
