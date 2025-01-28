@@ -1,5 +1,4 @@
 using Btms.Backend.Data.InMemory;
-using Btms.Backend.Data;
 using Btms.Business.Services.Linking;
 using Btms.Metrics;
 using Btms.Model;
@@ -7,7 +6,6 @@ using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -15,9 +13,9 @@ namespace Btms.Business.Tests.Services.Linking;
 
 public class UnLinkingTests
 {
-    private static readonly Random Random = new();
-    protected readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
-    private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
+    private static readonly Random random = new();
+    private readonly MemoryMongoDbContext _dbContext = new();
+    private readonly LinkingMetrics _linkingMetrics = new(new DummyMeterFactory());
 
     private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
     private static string GenerateNotificationReference(int id) => $"CHEDP.GB.2024.{id}";
@@ -35,16 +33,16 @@ public class UnLinkingTests
         // Act
         await sut.UnLink(notificationCtx);
 
-        var loadedNotification = await dbContext.Notifications.Find(testData.Cheds[0].Id!);
+        var loadedNotification = await _dbContext.Notifications.Find(testData.Cheds[0].Id!);
         loadedNotification?.Relationships.Movements.Data.Should().BeNullOrEmpty();
 
-        var loadedMovements = dbContext.Movements.ToList();
+        var loadedMovements = _dbContext.Movements.ToList();
         loadedMovements.ForEach(m => m.Relationships.Notifications.Data.Should().BeNullOrEmpty());
     }
 
     protected LinkingService CreateLinkingService()
     {
-        return new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
+        return new LinkingService(_dbContext, _linkingMetrics, TimeProvider.System, NullLogger<LinkingService>.Instance);
     }
 
     protected async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<int> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1, int unMatchedChedsPerMovement = 0)
@@ -69,7 +67,7 @@ public class UnLinkingTests
 
             cheds.Add(ched);
 
-            await dbContext.Notifications.Insert(ched);
+            await _dbContext.Notifications.Insert(ched);
         }
 
         for (var i = 0; i < movementCount; i++)
@@ -119,7 +117,7 @@ public class UnLinkingTests
                     });
             }
 
-            await dbContext.Movements.Insert(mov);
+            await _dbContext.Movements.Insert(mov);
         }
 
         return (cheds, movements, unmatchedChedRefs);
@@ -131,7 +129,7 @@ public class UnLinkingTests
 
         for (var i = 0; i < 6; i++)
         {
-            intString += Random.Next(9).ToString();
+            intString += random.Next(9).ToString();
         }
 
         return int.Parse(intString);

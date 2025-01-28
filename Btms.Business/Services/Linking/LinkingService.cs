@@ -38,11 +38,15 @@ public static partial class LinkingServiceLogging
     internal static partial void LinkNotAttempted(this ILogger logger, string contextType, string matchIdentifier);
 }
 
-public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, ILogger<LinkingService> logger) : ILinkingService
+public class LinkingService(
+    IMongoDbContext dbContext, 
+    LinkingMetrics metrics, 
+    TimeProvider timeProvider, 
+    ILogger<LinkingService> logger) : ILinkingService
 {
     public async Task<LinkResult> Link(LinkContext linkContext, CancellationToken cancellationToken = default)
     {
-        var startedAt = TimeProvider.System.GetTimestamp();
+        var startedAt = timeProvider.GetTimestamp();
         LinkResult result;
         using (logger.BeginScope(new List<KeyValuePair<string, object>>
                {
@@ -135,7 +139,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
             finally
             {
-                var e = TimeProvider.System.GetElapsedTime(startedAt);
+                var e = timeProvider.GetElapsedTime(startedAt);
                 metrics.Completed(e.TotalMilliseconds);
                 logger.LinkingFinished(linkContext.GetType().Name, linkContext.GetIdentifiers());
             }
@@ -146,7 +150,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
 
     public async Task UnLink(ImportNotificationLinkContext linkContext, CancellationToken cancellationToken = default)
     {
-        var startedAt = TimeProvider.System.GetTimestamp();
+        var startedAt = timeProvider.GetTimestamp();
         using (logger.BeginScope(new List<KeyValuePair<string, object>>
                {
                    new("MatchIdentifier", linkContext.GetIdentifiers()),
@@ -180,7 +184,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
             finally
             {
-                var e = TimeProvider.System.GetElapsedTime(startedAt);
+                var e = timeProvider.GetElapsedTime(startedAt);
                 metrics.Completed(e.TotalMilliseconds);
                 logger.UnLinkingFinished(linkContext.GetType().Name, linkContext.GetIdentifiers());
             }
