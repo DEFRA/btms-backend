@@ -11,14 +11,14 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
     //Returns a summary of the exceptions or a list
     // Means we can share the same anonymous / query code without needing to create loads
     // of classes
-    public (SingleSeriesDataset summary, List<ExceptionResult>) GetAllExceptions(DateTime from, DateTime to, bool summary, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    public (SingleSeriesDataset summary, List<ExceptionResult>) GetAllExceptions(DateTime from, DateTime to, bool finalisedOnly, bool summary, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var exceptionsSummary = new SingleSeriesDataset();
         var exceptionsResult = new List<ExceptionResult>();
         
         var simplifiedMovementView = context
             .Movements
-            .WhereFilteredByCreatedDateAndParams(from, to, chedTypes, country)
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .Where(m => m.BtmsStatus.LinkStatus != LinkStatusEnum.AllLinked)
             .Select(m => new
             {
