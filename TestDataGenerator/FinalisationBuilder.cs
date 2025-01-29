@@ -78,6 +78,11 @@ public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
         return Do(x => x.Header!.FinalState = finalState.ToString());
     }
     
+    public FinalisationBuilder<T> WithManualAction(bool manualAction = false)
+    {
+        return Do(x => x.Header!.ManualAction = manualAction ? "Y" : "N");
+    }
+    
     public FinalisationBuilder<T> WithDecisionVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.DecisionNumber = version);
