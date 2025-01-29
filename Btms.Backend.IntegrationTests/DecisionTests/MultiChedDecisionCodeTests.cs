@@ -41,7 +41,7 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
             .All(i =>
             {
                 decision = i.Checks!.First().DecisionCode!;
-    
+
                 return decision.Equals(expectedDecision);
             }).Should().BeTrue($"Expected {expectedDecision}. Actually {{0}}", decision);
     }
