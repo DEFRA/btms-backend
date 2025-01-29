@@ -138,13 +138,31 @@ public class AuditEntry
     public static AuditEntry CreateLinked(string id, int version)
     {
         var t = DateTime.UtcNow;
+        
         return new AuditEntry
         {
             Id = id,
+            // Why is this specified but not used?
+            // Version = version,
             CreatedSource = t,
             CreatedBy = CreatedBySystem.Btms,
             CreatedLocal = t,
             Status = "Linked"
+        };
+    }
+
+    public static AuditEntry CreateRelatedDataChanged(string id, int version)
+    {
+        var t = DateTime.UtcNow;
+        
+        return new AuditEntry
+        {
+            Id = id,
+            Version = version,
+            CreatedSource = t,
+            CreatedBy = CreatedBySystem.Btms,
+            CreatedLocal = t,
+            Status = "RelatedDataChanged"
         };
     }
     

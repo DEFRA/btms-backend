@@ -8,18 +8,19 @@ using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
-using Btms.Model;
-using Btms.Model.Cds;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
-    internal class AlvsClearanceRequestConsumer(IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor, ILinkingService linkingService,
-        IMatchingService matchingService,
-        IDecisionService decisionService, 
-        IValidationService validationService,
-        ILogger<AlvsClearanceRequestConsumer> logger,
-        IMongoDbContext dbContext)
+internal class AlvsClearanceRequestConsumer(
+    IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor,
+    ILinkingService linkingService,
+    IMatchingService matchingService,
+    IDecisionService decisionService,
+    IValidationService validationService,
+    IAssociatedDataService associatedDataService,
+    IMongoDbContext dbContext,
+    ILogger<AlvsClearanceRequestConsumer> logger)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
     public async Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
@@ -50,32 +51,39 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
 
-                if (! await validationService.PostLinking(linkContext, linkResult, 
+                if (!await validationService.PostLinking(linkContext, linkResult,
                         triggeringMovement: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
                 {
-                    logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}", message.Header?.EntryReference, messageId);
+                    logger.LogWarning(
+                        "Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}",
+                        message.Header?.EntryReference, messageId);
                     await dbContext.SaveChangesAsync(Context.CancellationToken);
                     return;
                 }
 
-               
+                await associatedDataService.RelatedDataEntityChanged(linkResult.Notifications, messageId,
+                    Context.CancellationToken);
 
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
-                var decisionContext = new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true);
+                var decisionContext =
+                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
-                
+
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext);
+                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else
             {
-                logger.LogWarning("Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
+                logger.LogWarning(
+                    "Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}",
+                    message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(),
+                    preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
         }
     }
