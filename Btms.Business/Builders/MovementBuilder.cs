@@ -108,8 +108,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         var sourceSystem = clearanceRequest.ServiceHeader?.SourceSystem;
         var isAlvs = sourceSystem != "BTMS";
         var isBtms = sourceSystem == "BTMS";
-        // CdsClearanceRequest? btmsDecision = null;
-        // AlvsDecision? alvsDecision = null;
         DecisionContext context;
         
         if (isBtms)
@@ -143,8 +141,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
                 //Copy to top level status
                 _movement.AlvsDecisionStatus.Context = alvsDecision.Context;
             }
-
-            // _movement.AddLinkStatus();
         }
         else
         {
@@ -233,8 +229,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         return new DecisionContext()
         {
             EntryVersionNumber = clearanceRequest.Header!.EntryVersionNumber!.Value,
-            // DecisionComparison = 
-            // BtmsDecisionNumber = clearanceRequest.Header!.DecisionNumber!.Value
         };
     }
 
@@ -255,7 +249,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             .Decisions
             .SingleOrDefault(d =>
                     d.Context.DecisionComparison
-                        .HasValue() //&& d.Context.BtmsDecisionNumber == mostRecentBtmsDecision?.Header?.DecisionNumber
+                        .HasValue()
             );
 
         var shouldPair = mostRecentBtmsDecision.HasValue() && (!pairedAlvsDecision.HasValue() ||
@@ -336,8 +330,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             .Items!
             .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
             .ToDictionary(ic => (ic.Item.ItemNumber!.Value, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
-
-        // var alvsChecks = alvsDecision.Context.DecisionComparison.Checks;
 
         var alvsChecks = alvsDecision.Decision
             .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
