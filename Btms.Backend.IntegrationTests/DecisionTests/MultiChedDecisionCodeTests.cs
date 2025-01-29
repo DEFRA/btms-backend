@@ -22,17 +22,17 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
         CheckDecisionCode(expectedDecision);
     }
     
-    // [Theory]
-    // [InlineData(typeof(MultiChedPWorstCaseMatchScenarioGenerator), "N07")]
-    // [InlineData(typeof(MultiChedAWorstCaseMatchScenarioGenerator), "H02")]
-    // [InlineData(typeof(MultiChedDWorstCaseMatchScenarioGenerator), "N02")]
-    // public void MultiChed_WorstCaseDecisionCode(Type generatorType, string expectedDecision)
-    // {
-    //     base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecision);
-    //     EnsureEnvironmentInitialised(generatorType);
-    //     CheckDecisionCode(expectedDecision);
-    // }
-    //
+    [Theory (Skip = "Need to update data")]
+    [InlineData(typeof(MultiChedPWorstCaseMatchScenarioGenerator), "N07")]
+    [InlineData(typeof(MultiChedAWorstCaseMatchScenarioGenerator), "H02")]
+    [InlineData(typeof(MultiChedDWorstCaseMatchScenarioGenerator), "N02")]
+    public void MultiChed_WorstCaseDecisionCode(Type generatorType, string expectedDecision)
+    {
+        base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecision);
+        EnsureEnvironmentInitialised(generatorType);
+        CheckDecisionCode(expectedDecision);
+    }
+
     private void CheckDecisionCode(string expectedDecision)
     {
         var decision = "";
@@ -41,7 +41,7 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
             .All(i =>
             {
                 decision = i.Checks!.First().DecisionCode!;
-    
+
                 return decision.Equals(expectedDecision);
             }).Should().BeTrue($"Expected {expectedDecision}. Actually {{0}}", decision);
     }

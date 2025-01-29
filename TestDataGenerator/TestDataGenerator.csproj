@@ -45,9 +45,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Scenarios\Samples\IuuOutcomes\IuuOK\ALVS\" />
-    <Folder Include="Scenarios\Samples\IuuOutcomes\IuuOK\DECISIONS\" />
-    <Folder Include="Scenarios\Samples\IuuOutcomes\IuuOK\IPAFFS\" />
+    <Folder Include="Scenarios\Samples\MultiChedWorstCaseDecision\ChedD\IPAFFS\" />
+    <Folder Include="Scenarios\Samples\MultiChedWorstCaseDecision\ChedP\ALVS\" />
   </ItemGroup>
 
 
