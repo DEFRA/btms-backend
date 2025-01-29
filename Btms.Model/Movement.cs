@@ -46,7 +46,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     
     [Attr(PublicName = "updated")]
     [ChangeSetIgnore]
-    public DateTime UpdatedResource { get; set; }
+    public DateTime Updated { get; set; }
 
     [Attr] public string EntryReference { get; set; } = default!;
 

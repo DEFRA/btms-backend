@@ -46,7 +46,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     
     [Attr(PublicName = "updated")]
     [ChangeSetIgnore]
-    public DateTime UpdatedResource { get; set; }
+    public DateTime Updated { get; set; }
 
     [BsonIgnore]
     [NotMapped]
@@ -177,7 +177,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     public void Changed(AuditEntry auditEntry)
     {
         AuditEntries.Add(auditEntry);
-        UpdatedResource = DateTime.UtcNow;
+        Updated = DateTime.UtcNow;
     }
 
     public void Create(string auditId)

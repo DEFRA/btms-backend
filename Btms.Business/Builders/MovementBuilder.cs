@@ -172,7 +172,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         GuardNullMovement();
         
         _movement.AuditEntries.Add(auditEntry);
-        _movement.UpdatedResource = DateTime.UtcNow;
+        _movement.Updated = DateTime.UtcNow;
     }
 
     public AuditEntry CreateAuditEntry(string messageId, CreatedBySystem source)
