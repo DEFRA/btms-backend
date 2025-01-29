@@ -18,7 +18,7 @@ namespace Btms.Model;
 // https://eaflood.atlassian.net/wiki/spaces/TRADE/pages/5104664583/PHA+Port+Health+Authority+Integration+Data+Schema
 
 [Resource]
-public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
+public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
 {
     private List<string> matchReferences = [];
 
@@ -40,7 +40,14 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
 
     [Attr]
     public DateTime? UpdatedSource { get; set; }
-    [Attr] public DateTime? CreatedSource { get; set; }
+    
+    [Attr]
+    public DateTime? CreatedSource { get; set; }
+    
+    [Attr]
+    [ChangeSetIgnore]
+    [JsonPropertyName("updated")]
+    public DateTime? UpdatedResource { get; set; }
 
     [Attr] public string EntryReference { get; set; } = default!;
 
@@ -168,7 +175,8 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable
     public DateTime Created { get; set; }
 
     [Attr]
-    [ChangeSetIgnore] 
+    [ChangeSetIgnore]
+    [JsonPropertyName("updatedDocument")]
     public DateTime Updated { get; set; }
     
     [Attr]
