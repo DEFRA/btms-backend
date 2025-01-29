@@ -19,8 +19,7 @@ public class MovementPreProcessingTests
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
         var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance));
-            
-
+        
         // ACT
         var preProcessingResult = await preProcessor.Process(
             new PreProcessingContext<AlvsClearanceRequest>(clearanceRequest, "TestMessageId"));
@@ -31,6 +30,7 @@ public class MovementPreProcessingTests
         savedMovement.Should().NotBeNull();
         savedMovement?.AuditEntries.Count.Should().Be(1);
         savedMovement?.AuditEntries[0].Status.Should().Be("Created");
+        savedMovement?.UpdatedResource.Should().NotBeNull();
     }
 
     private static AlvsClearanceRequest CreateAlvsClearanceRequest()

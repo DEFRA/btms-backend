@@ -179,6 +179,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     public void Changed(AuditEntry auditEntry)
     {
         AuditEntries.Add(auditEntry);
+        UpdatedResource = DateTime.UtcNow;
     }
 
     public void Create(string auditId)
