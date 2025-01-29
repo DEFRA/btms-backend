@@ -29,7 +29,7 @@ public class NotificationsPreProcessingTests
         savedNotification.Should().NotBeNull();
         savedNotification?.AuditEntries.Count.Should().Be(1);
         savedNotification?.AuditEntries[0].Status.Should().Be("Created");
-        savedNotification?.UpdatedResource.Should().NotBeNull();
+        savedNotification?.UpdatedResource.Should().BeAfter(default);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class NotificationsPreProcessingTests
         savedNotification.Should().NotBeNull();
         savedNotification?.AuditEntries.Count.Should().Be(1);
         savedNotification?.AuditEntries[0].Status.Should().Be("Updated");
-        savedNotification?.UpdatedResource.Should().NotBeNull();
+        savedNotification?.UpdatedResource.Should().BeAfter(default);
     }
 
     private static ImportNotification CreateImportNotification()

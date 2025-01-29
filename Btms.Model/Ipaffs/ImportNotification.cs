@@ -40,15 +40,13 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     [ChangeSetIgnore]
     public DateTime Created { get; set; }
     
-    [Attr]
+    [Attr(PublicName = "updatedDocument")]
     [ChangeSetIgnore]
-    [JsonPropertyName("updatedDocument")]
     public DateTime Updated { get; set; }
     
-    [Attr]
+    [Attr(PublicName = "updated")]
     [ChangeSetIgnore]
-    [JsonPropertyName("updated")]
-    public DateTime? UpdatedResource { get; set; }
+    public DateTime UpdatedResource { get; set; }
 
     [BsonIgnore]
     [NotMapped]

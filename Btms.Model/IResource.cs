@@ -6,5 +6,5 @@ public interface IResource
 
     public DateTime? UpdatedSource { get; set; }
 
-    public DateTime? UpdatedResource { get; set; }
+    public DateTime UpdatedResource { get; set; }
 }

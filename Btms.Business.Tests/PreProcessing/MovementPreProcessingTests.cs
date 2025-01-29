@@ -30,7 +30,7 @@ public class MovementPreProcessingTests
         savedMovement.Should().NotBeNull();
         savedMovement?.AuditEntries.Count.Should().Be(1);
         savedMovement?.AuditEntries[0].Status.Should().Be("Created");
-        savedMovement?.UpdatedResource.Should().NotBeNull();
+        savedMovement?.UpdatedResource.Should().BeAfter(default);
     }
 
     private static AlvsClearanceRequest CreateAlvsClearanceRequest()

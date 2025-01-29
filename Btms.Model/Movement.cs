@@ -44,10 +44,9 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [Attr]
     public DateTime? CreatedSource { get; set; }
     
-    [Attr]
+    [Attr(PublicName = "updated")]
     [ChangeSetIgnore]
-    [JsonPropertyName("updated")]
-    public DateTime? UpdatedResource { get; set; }
+    public DateTime UpdatedResource { get; set; }
 
     [Attr] public string EntryReference { get; set; } = default!;
 
@@ -174,9 +173,8 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [ChangeSetIgnore]
     public DateTime Created { get; set; }
 
-    [Attr]
+    [Attr(PublicName = "updatedDocument")]
     [ChangeSetIgnore]
-    [JsonPropertyName("updatedDocument")]
     public DateTime Updated { get; set; }
     
     [Attr]
