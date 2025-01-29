@@ -212,8 +212,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
 
         var alvsDecision = _movement.AlvsDecisionStatus?.Decisions
             .SingleOrDefault(d => d.Context.DecisionComparison.HasValue());
-            // .Find(
-            // d => d.Context.EntryVersionNumber == _movement.EntryVersionNumber);
             
         if (alvsDecision != null)
         {
@@ -221,8 +219,11 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             
             // Updates the pair status if we've received a newer BTMS decision than that already paired. 
             SetDecisionComparison(alvsDecision, shouldPair, clearanceRequest.Header!.DecisionNumber!.Value);
-            
-            CompareDecisions(alvsDecision, clearanceRequest);
+
+            if (shouldPair)
+            {
+                CompareDecisions(alvsDecision, clearanceRequest);    
+            }
     
             return alvsDecision.Context;
         }
@@ -259,19 +260,13 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         var shouldPair = mostRecentBtmsDecision.HasValue() && (!pairedAlvsDecision.HasValue() ||
                                                                alvsDecision!.Decision.Header!.DecisionNumber
                                                                > pairedAlvsDecision!.Context.AlvsDecisionNumber);
-
-        // var shouldPair = mostRecentBtmsDecision.HasValue();
-        // && (!pairedAlvsDecision.HasValue() || 
-        //     pairedAlvsDecision.Context.BtmsDecisionNumber < clearanceRequest?.Header?.DecisionNumber);
-
+        
         if (shouldPair && pairedAlvsDecision.HasValue())
         {
             // A BTMS decision should only be paired with a single ALVS decision
             // So if its already paired, remove it.
             SetDecisionComparison(pairedAlvsDecision, false,
                 pairedAlvsDecision!.Context.DecisionComparison!.BtmsDecisionNumber!.Value);
-            // pairedAlvsDecision!.Context.Paired = false;
-            // pairedAlvsDecision!.Context.BtmsDecisionNumber = null;
         }
         
         SetDecisionComparison(alvsDecision, shouldPair, mostRecentBtmsDecision?.Header?.DecisionNumber);
