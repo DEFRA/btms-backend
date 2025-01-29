@@ -10,6 +10,7 @@ namespace Btms.Analytics;
 
 public class MovementExceptions(IMongoDbContext context, ILogger logger)
 {
+    private const string Movement = "Movement";
 
     private static string FormatUnmatched(DecisionStatusEnum decisionStatus, MovementStatusEnum? status, MovementSegmentEnum? segment)
     {
@@ -76,7 +77,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             .Where(r => !r.DecisionMatched)
             .GroupBy(r => new { r.DecisionStatus, r.Status, r.Segment })
             .Execute(logger);
-        
+
         if (summary)
         {
             foreach (var g in unMatchedGroupedByMrnStatus)
@@ -94,7 +95,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                     .Select(r =>
                         new ExceptionResult()
                         {
-                            Resource = "Movement",
+                            Resource = Movement,
                             Id = r.Id!,
                             UpdatedSource = r.UpdatedSource!.Value,
                             Updated = r.Updated,
@@ -126,7 +127,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 .Select(r =>
                     new ExceptionResult()
                     {
-                        Resource = "Movement",
+                        Resource = Movement,
                         Id = r.Id!,
                         UpdatedSource = r.UpdatedSource!.Value,
                         Updated = r.Updated,
@@ -156,7 +157,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 .Select(r =>
                     new ExceptionResult()
                     {
-                        Resource = "Movement",
+                        Resource = Movement,
                         Id = r.Id!,
                         UpdatedSource = r.UpdatedSource!.Value,
                         Updated = r.Updated,
@@ -189,7 +190,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 .Select(r =>
                     new ExceptionResult()
                     {
-                        Resource = "Movement",
+                        Resource = Movement,
                         Id = r.Id!,
                         UpdatedSource = r.UpdatedSource!.Value,
                         Updated = r.Updated,
