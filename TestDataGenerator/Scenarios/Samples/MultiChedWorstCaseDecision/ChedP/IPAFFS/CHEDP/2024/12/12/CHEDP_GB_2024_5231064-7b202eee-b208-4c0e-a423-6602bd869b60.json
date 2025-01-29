@@ -1,0 +1,316 @@
+{
+  "id": 4231064,
+  "referenceNumber": "CHEDP.GB.2024.5231064",
+  "version": 1,
+  "lastUpdated": "2024-12-12T16:07:12.830451812Z",
+  "lastUpdatedBy": {
+    "displayName": "39a8a6be96c2e993101148c933b1b57bc7d7beac8c5a4ecd1a88f035717db577",
+    "userId": "a090b87c-c006-ef11-9f89-6045bd948248"
+  },
+  "type": "CVEDP",
+  "status": "REJECTED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "REQUIRED",
+        "uniqueId": "9954d071-3902-4768-8954-61e9b7336159"
+      }
+    ],
+    "assessmentDateTime": "2024-12-02T14:46:22.534696364"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-12-02T11:26:53.378"
+  },
+  "isHighRiskEuImport": true,
+  "partOne": {
+    "personResponsible": {
+      "name": "130691e744876d2448b2b306e614dcc9d9a8a3ab1e6074998bc7bea11eaa4d4b",
+      "companyId": "5c3eac1c-f950-eb11-a812-000d3a447c3d",
+      "companyName": "c6110c92478bcd6a4484f96481902b8c5c789d51193027a73dc42abeb98d03ff",
+      "address": [
+        "dcd1fe149fe1f3feed714055d7f6bf61d66a6067da8760ab61232052d363c534",
+        "20a3f4b99f894bf91d7ee22ac75cb73982fd69890af2e340266eec7a5b85c9a4",
+        "d25f6568e54a052c76b956ab911ae9b29506819cec846a791c41e2f37676a44c",
+        "0f6fc0e2042de2940312ecd3debf48c1f40baa7f52f29c921503c8e5e61e9fe8"
+      ],
+      "country": "GB-ENG",
+      "tracesID": 1001,
+      "phone": "2ba0e7cf92c88897529666754650dedcb4034fc2b71d34b46d2bf68321428cb4",
+      "email": "2f3b51f89444bf9f9675871b9cb9d1c722a1150cbf233c3c71b309d8e55c157c",
+      "contactId": "503eac1c-f950-eb11-a812-000d3a447c3d"
+    },
+    "consignor": {
+      "id": "d767cfb1-bd14-4491-9404-432ec4be217c",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "0c010cffebe2bb284a762058d03ffba3c6c78d76ee0e597df99bf910f8e4a19f",
+      "address": {
+        "addressLine1": "3db128d5885d07331af8591386159fa48ebc26826cbc76795be83578a88d77ce",
+        "city": "582969a27a84f2b65970db6cb1907706e6518405ced1876352f6627d794b430e",
+        "postalZipCode": "b7e307660e1611cb42bcb28e4bb4a6465ccb5ec2e028ca4be8b84e8787929a38",
+        "countryISOCode": "BG",
+        "telephone": "3411b572852047f9581366aab50c3fe20d776152930199d70ca6e31d8acc74c2",
+        "email": "d407deb959e3e474f6d76c316e3c10af4e3539003eef6c1f79aa366828bdaeb8"
+      },
+      "tracesId": 10122382
+    },
+    "consignee": {
+      "id": "bfdd5d7c-0182-471f-9d51-91d8efd559e7",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "c6110c92478bcd6a4484f96481902b8c5c789d51193027a73dc42abeb98d03ff",
+      "address": {
+        "addressLine1": "dcd1fe149fe1f3feed714055d7f6bf61d66a6067da8760ab61232052d363c534",
+        "addressLine2": "20a3f4b99f894bf91d7ee22ac75cb73982fd69890af2e340266eec7a5b85c9a4",
+        "city": "b26c5c357fda2ba27a56604d067364f2082bce1527e1381dc3a2d5f64b93ef51",
+        "postalZipCode": "0f6fc0e2042de2940312ecd3debf48c1f40baa7f52f29c921503c8e5e61e9fe8",
+        "countryISOCode": "GB-ENG",
+        "telephone": "2b226bbcc2e378a77b533e5aa100f25f1560dadc6f5d9b7cb0b54455879fdb6a",
+        "email": "334a87c3fdda00bda7eaa7bdd30a39934ba6e9025e1d4b3b9a6254a23d0b1708"
+      },
+      "tracesId": 10105953
+    },
+    "importer": {
+      "id": "bfdd5d7c-0182-471f-9d51-91d8efd559e7",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "c6110c92478bcd6a4484f96481902b8c5c789d51193027a73dc42abeb98d03ff",
+      "address": {
+        "addressLine1": "dcd1fe149fe1f3feed714055d7f6bf61d66a6067da8760ab61232052d363c534",
+        "addressLine2": "20a3f4b99f894bf91d7ee22ac75cb73982fd69890af2e340266eec7a5b85c9a4",
+        "city": "b26c5c357fda2ba27a56604d067364f2082bce1527e1381dc3a2d5f64b93ef51",
+        "postalZipCode": "0f6fc0e2042de2940312ecd3debf48c1f40baa7f52f29c921503c8e5e61e9fe8",
+        "countryISOCode": "GB-ENG",
+        "telephone": "2b226bbcc2e378a77b533e5aa100f25f1560dadc6f5d9b7cb0b54455879fdb6a",
+        "email": "334a87c3fdda00bda7eaa7bdd30a39934ba6e9025e1d4b3b9a6254a23d0b1708"
+      },
+      "tracesId": 10105953
+    },
+    "placeOfDestination": {
+      "id": "bfdd5d7c-0182-471f-9d51-91d8efd559e7",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "c6110c92478bcd6a4484f96481902b8c5c789d51193027a73dc42abeb98d03ff",
+      "address": {
+        "addressLine1": "dcd1fe149fe1f3feed714055d7f6bf61d66a6067da8760ab61232052d363c534",
+        "addressLine2": "20a3f4b99f894bf91d7ee22ac75cb73982fd69890af2e340266eec7a5b85c9a4",
+        "city": "b26c5c357fda2ba27a56604d067364f2082bce1527e1381dc3a2d5f64b93ef51",
+        "postalZipCode": "0f6fc0e2042de2940312ecd3debf48c1f40baa7f52f29c921503c8e5e61e9fe8",
+        "countryISOCode": "GB-ENG",
+        "telephone": "2b226bbcc2e378a77b533e5aa100f25f1560dadc6f5d9b7cb0b54455879fdb6a",
+        "email": "334a87c3fdda00bda7eaa7bdd30a39934ba6e9025e1d4b3b9a6254a23d0b1708"
+      },
+      "tracesId": 10105953
+    },
+    "commodities": {
+      "totalGrossWeight": 647.53,
+      "totalNetWeight": 573.01,
+      "numberOfPackages": 66,
+      "temperature": "Chilled",
+      "commodityComplement": [
+        {
+          "commodityID": "160100",
+          "commodityDescription": "Sausages and similar products, of meat, meat offal or blood; food preparations based on these products",
+          "complementID": 5,
+          "complementName": "Aves",
+          "speciesID": "18020",
+          "speciesName": "Aves",
+          "speciesTypeName": "meat preparations",
+          "speciesType": "33",
+          "speciesClass": "492130",
+          "speciesNomination": "Aves",
+          "isCdsMatched": true
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "9954d071-3902-4768-8954-61e9b7336159",
+          "complementID": 5,
+          "speciesID": "18020",
+          "keyDataPair": [
+            { "key": "netweight", "data": "573.01" },
+            { "key": "number_package", "data": "66" },
+            { "key": "type_package", "data": "Package" }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "BG",
+      "isLowRiskArticle72Country": false,
+      "consignedCountry": "BG"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBSEV25",
+    "arrivalDate": "2024-12-04",
+    "arrivalTime": "05:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "CB1151CA/CB9054EA",
+      "type": "Road Vehicle",
+      "document": "CMR"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "TDS~~560412~~General activity establishment - EU",
+          "name": "FRESH LOGIC Ltd",
+          "country": "BG",
+          "types": ["Cold Stores"],
+          "approvalNumber": "BG1603034EO",
+          "section": "General activity establishment - EU"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "EXPORT.EU.BG.2024.0004380",
+          "documentIssueDate": "2024-11-28",
+          "attachmentId": "9b596593-cef0-4727-8c76-e240a48eeb84",
+          "attachmentFilename": "Bella HS2.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "503eac1c-f950-eb11-a812-000d3a447c3d",
+          "uploadOrganisationId": "5c3eac1c-f950-eb11-a812-000d3a447c3d"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "2000867228",
+          "documentIssueDate": "2024-11-28",
+          "attachmentId": "11defb03-243d-42e1-b55b-9e56b5203b3f",
+          "attachmentFilename": "Bella Invoice.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "503eac1c-f950-eb11-a812-000d3a447c3d",
+          "uploadOrganisationId": "5c3eac1c-f950-eb11-a812-000d3a447c3d"
+        },
+        {
+          "documentType": "other",
+          "documentReference": "packing list 2696397",
+          "documentIssueDate": "2024-11-28",
+          "attachmentId": "827427f2-5b04-45e6-a315-b32a3900a272",
+          "attachmentFilename": "Bella PL.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "503eac1c-f950-eb11-a812-000d3a447c3d",
+          "uploadOrganisationId": "5c3eac1c-f950-eb11-a812-000d3a447c3d"
+        },
+        {
+          "documentType": "other",
+          "documentReference": "cmr",
+          "documentIssueDate": "2024-11-28",
+          "attachmentId": "2abceb59-10b1-4a20-868f-c8cc5519aff0",
+          "attachmentFilename": "Bella CMR.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "503eac1c-f950-eb11-a812-000d3a447c3d",
+          "uploadOrganisationId": "5c3eac1c-f950-eb11-a812-000d3a447c3d"
+        },
+        {
+          "documentType": "other",
+          "documentReference": "TD 852610",
+          "documentIssueDate": "2024-11-28",
+          "attachmentId": "6efbd05a-237f-4ac0-8fe9-a484988d5e69",
+          "attachmentFilename": "Bella TD.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "503eac1c-f950-eb11-a812-000d3a447c3d",
+          "uploadOrganisationId": "5c3eac1c-f950-eb11-a812-000d3a447c3d"
+        }
+      ]
+    },
+    "submissionDate": "2024-12-02T14:46:21.97986166Z",
+    "submittedBy": {
+      "displayName": "130691e744876d2448b2b306e614dcc9d9a8a3ab1e6074998bc7bea11eaa4d4b",
+      "userId": "503eac1c-f950-eb11-a812-000d3a447c3d"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBSEV",
+    "contactDetails": {
+      "name": "Rumen Dimitrov",
+      "telephone": "07593962083",
+      "email": "office@lascalla.co.uk"
+    },
+    "originalEstimatedDateTime": "2024-12-03T12:00:00Z",
+    "isGVMSRoute": true,
+    "isChargeable": true,
+    "wasChargeable": true,
+    "billingInformation": {
+      "isConfirmed": true,
+      "emailAddress": "office@lascalla.co.uk",
+      "phoneNumber": "07593962083",
+      "postalAddress": {
+        "addressLine1": "UNIT 10",
+        "addressLine2": "LEA ROAD",
+        "county": "HERTFORDSHIRE",
+        "cityOrTown": "WALTHAM ABBEY",
+        "postalCode": "EN9 1AS"
+      }
+    },
+    "commonUserCharge": { "wasSentToTradeCharge": true },
+    "provideCtcMrn": "NO"
+  },
+  "decisionBy": {
+    "displayName": "39a8a6be96c2e993101148c933b1b57bc7d7beac8c5a4ecd1a88f035717db577",
+    "userId": "a090b87c-c006-ef11-9f89-6045bd948248"
+  },
+  "decisionDate": "2024-12-12T16:07:12.769197294Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": false,
+      "notAcceptableAction": "other",
+      "notAcceptableActionOtherReason": "Inland Referral",
+      "notAcceptableActionByDate": "2024-12-12",
+      "notAcceptableReasons": ["Other"],
+      "notAcceptableOtherReason": "Failure to attend for SPS checks at BCP",
+      "decision": "Non Acceptable"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Satisfactory",
+      "identityCheckType": "Not Done",
+      "identityCheckResult": "Not Done",
+      "identityCheckNotDoneReason": "Reduced checks regime",
+      "physicalCheckResult": "Not Done",
+      "physicalCheckNotDoneReason": "Other",
+      "physicalCheckOtherText": "Lorry not presented for inspection"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "a226a2084c6d83e72278aa2c0544817a6b22f4b76cfbf502178c6364abadc75f",
+        "lastName": "8d5c884a19b202c34a63176c3978c804f84de1aa955bea15e21827c2c07dec36",
+        "email": "c26c7e6d290b3da14cf46ae94693d8a1bfa392fa5cb7b0c84729b5893ac09375",
+        "phone": "7819f323efb091d90e28e14f5e2b403048a3ccec990c6f6f8187970f883e45e0",
+        "signed": "2024-12-12T16:07:12.803671854"
+      }
+    },
+    "bipLocalReferenceNumber": "269093",
+    "controlledDestination": {
+      "id": "1e3428da-a2a6-49ab-93ae-0e387af5ce9c",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "c6110c92478bcd6a4484f96481902b8c5c789d51193027a73dc42abeb98d03ff",
+      "otherIdentifier": "Other Controlled Destination",
+      "address": {
+        "addressLine1": "36166636bf1cd54fbef24b4456698eff868832050663ff0a84481799990ce42d",
+        "addressLine2": "20a3f4b99f894bf91d7ee22ac75cb73982fd69890af2e340266eec7a5b85c9a4",
+        "city": "b26c5c357fda2ba27a56604d067364f2082bce1527e1381dc3a2d5f64b93ef51",
+        "postalZipCode": "0f6fc0e2042de2940312ecd3debf48c1f40baa7f52f29c921503c8e5e61e9fe8",
+        "countryISOCode": "GB",
+        "ukTelephone": "2ba0e7cf92c88897529666754650dedcb4034fc2b71d34b46d2bf68321428cb4",
+        "email": "2f3b51f89444bf9f9675871b9cb9d1c722a1150cbf233c3c71b309d8e55c157c"
+      },
+      "tracesId": 10395766
+    },
+    "checkDate": "2024-12-12T16:07:00Z",
+    "inspectionRequired": "Required"
+  },
+  "partThree": { "controlStatus": "REQUIRED", "sealCheckRequired": false },
+  "etag": "00000000046252B1",
+  "riskDecisionLockingTime": "2024-12-04T03:00:00Z",
+  "isRiskDecisionLocked": true,
+  "isCdsFullMatched": true,
+  "chedTypeVersion": 1
+}

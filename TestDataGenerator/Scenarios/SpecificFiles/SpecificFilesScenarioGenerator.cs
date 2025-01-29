@@ -86,6 +86,21 @@ public class Mrn24Gbdej9V2Od0Bhar0ScenarioGenerator(
 public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
+public class IuuOkScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuok");
+
+public class IuunaScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuna");
+
+public class NoIuuInfoScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/NoIuuInfo");
+
+public class IuuNotCompletedScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompleted");
+
+public class IuuNotCompliantScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompliant");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
