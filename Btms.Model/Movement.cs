@@ -175,7 +175,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
 
     [Attr(PublicName = "updatedDocument")]
     [ChangeSetIgnore]
-    public DateTime Updated { get; set; }
+    public DateTime UpdatedEntity { get; set; }
     
     [Attr]
     [ChangeSetIgnore] 

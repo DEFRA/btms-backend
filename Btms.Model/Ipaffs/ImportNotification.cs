@@ -42,7 +42,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     
     [Attr(PublicName = "updatedDocument")]
     [ChangeSetIgnore]
-    public DateTime Updated { get; set; }
+    public DateTime UpdatedEntity { get; set; }
     
     [Attr(PublicName = "updated")]
     [ChangeSetIgnore]

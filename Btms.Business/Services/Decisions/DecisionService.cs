@@ -27,7 +27,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
                         Id = n.Id!,
                         Version = n.Version,
                         Created = n.Created,
-                        Updated = n.Updated,
+                        Updated = n.UpdatedEntity,
                         CreatedSource = n.CreatedSource!.Value,
                         UpdatedSource = n.UpdatedSource!.Value
                         })

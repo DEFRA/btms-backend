@@ -62,7 +62,7 @@ public class UnLinkingTests
             var matchingRef = GenerateRandomReference();
             var ched = new ImportNotification
             {
-                Updated = DateTime.UtcNow.AddHours(-1),
+                UpdatedEntity = DateTime.UtcNow.AddHours(-1),
                 ReferenceNumber = GenerateNotificationReference(matchingRef),
                 Commodities = []
             };
@@ -151,7 +151,7 @@ public class UnLinkingTests
         var notification = new ImportNotification
         {
             Id = GenerateNotificationReference(chedReference),
-            Updated = DateTime.UtcNow,
+            UpdatedEntity = DateTime.UtcNow,
             _Etag = etag,
             Commodities =
                 [new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }]
@@ -165,7 +165,7 @@ public class UnLinkingTests
             ? new ImportNotification
             {
                 Id = GenerateNotificationReference(chedReference),
-                Updated = DateTime.UtcNow,
+                UpdatedEntity = DateTime.UtcNow,
                 Commodities = c
             }
             : null;
