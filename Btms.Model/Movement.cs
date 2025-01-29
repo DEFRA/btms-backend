@@ -44,7 +44,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [Attr]
     public DateTime? CreatedSource { get; set; }
     
-    [Attr(PublicName = "updated")]
+    [Attr]
     [ChangeSetIgnore]
     public DateTime Updated { get; set; }
 
@@ -173,7 +173,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [ChangeSetIgnore]
     public DateTime Created { get; set; }
 
-    [Attr(PublicName = "updatedDocument")]
+    [Attr]
     [ChangeSetIgnore]
     public DateTime UpdatedEntity { get; set; }
     

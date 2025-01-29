@@ -52,13 +52,12 @@ public class SerializationTests(ApplicationFactory factory, ITestOutputHelper te
     {
         document.Data.Count.Should().BeGreaterThan(0);
         document.Data.First().Attributes.Should().ContainKey("updated");
-        document.Data.First().Attributes.Should().ContainKey("updatedDocument");
-        document.Data.First().Attributes.Should().NotContainKey("updatedResource");
+        document.Data.First().Attributes.Should().ContainKey("updatedEntity");
 
-        var updatedDocument = ParseDateTime(document, "updatedDocument");
+        var updatedEntity = ParseDateTime(document, "updatedEntity");
         var updated = ParseDateTime(document, "updated");
 
-        updatedDocument.Should().BeAfter(updated);
+        updatedEntity.Should().BeAfter(updated);
     }
 
     private static DateTime ParseDateTime(ManyItemsJsonApiDocument document, string field)
