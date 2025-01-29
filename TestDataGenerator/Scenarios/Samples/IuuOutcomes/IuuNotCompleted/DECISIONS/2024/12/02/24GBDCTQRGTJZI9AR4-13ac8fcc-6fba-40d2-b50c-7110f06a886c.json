@@ -3,10 +3,10 @@
     "sourceSystem": "ALVS",
     "destinationSystem": "CDS",
     "correlationId": "000",
-    "serviceCallTimestamp": 1733245433346
+    "serviceCallTimestamp": 1733141076254
   },
   "header": {
-    "entryReference": "24GBDEJU46ELQY3AR8",
+    "entryReference": "24GBDCTQRGTJZI9AR4",
     "entryVersionNumber": 1,
     "decisionNumber": 1
   },
@@ -23,7 +23,7 @@
         },
         {
           "checkCode": "H224",
-          "decisionCode": "X00",
+          "decisionCode": "C08",
           "decisionValidUntil": null,
           "decisionReasons": []
         }

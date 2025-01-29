@@ -11,8 +11,9 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class IUUDecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGeneratorBaseTest(output)
 {
     [Theory]
+    [InlineData(typeof(IuuNotCompletedScenarioGenerator), "X00")]
     [InlineData(typeof(IuuOkScenarioGenerator), "C07")]
-    // No linked set of data for IUUNotCompliant scenario
+    [InlineData(typeof(IuuNotCompliantScenarioGenerator),  "X00")]
     [InlineData(typeof(IuunaScenarioGenerator),  "C08")]
     [InlineData(typeof(NoIuuInfoScenarioGenerator),  "X00")]
     public void ShouldHaveCorrectIuuDecisionCode(Type generatorType, string decisionCode)
