@@ -160,4 +160,6 @@ public class BtmsClient
     {
         return new JsonApiClient.JsonApiClient(client);
     }
+
+    public HttpClient AsHttpClient() => client;
 }
