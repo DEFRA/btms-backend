@@ -33,7 +33,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
             .Select(m => new
             {
-                // TODO - we should think about pre-calculating this stuff and storing it on the movement...
+                // NB - we should think about pre-calculating this stuff and storing it on the movement...
 
                 m.Id,
                 m.UpdatedSource,
@@ -100,6 +100,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                             Resource = Movement,
                             Id = r.Id!,
                             UpdatedSource = r.UpdatedSource!.Value,
+                            UpdatedEntity = r.UpdatedEntity,
                             Updated = r.Updated,
                             ItemCount = r.ItemCount,
                             ChedTypes = r.ChedTypes!,
