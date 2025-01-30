@@ -26,6 +26,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
 
                 m.Id,
                 m.UpdatedSource,
+                m.UpdatedEntity,
                 m.Updated,
                 MaxDecisionNumber = m.Decisions.Max(d => d.Header!.DecisionNumber) ?? 0,
                 MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
@@ -45,8 +46,9 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             })
             .Select(m => new
             {
-                Id = m.Id,
+                m.Id,
                 m.UpdatedSource,
+                m.UpdatedEntity,
                 m.Updated,
                 m.MaxDecisionNumber,
                 m.MaxEntryVersion,
@@ -76,11 +78,12 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 .Take(3)
                 .Execute(logger)
                 .Select(r =>
-                    new ExceptionResult()
+                    new ExceptionResult
                     {
                         Resource = "Movement",
                         Id = r.Id!,
                         UpdatedSource = r.UpdatedSource!.Value,
+                        UpdatedEntity = r.UpdatedEntity,
                         Updated = r.Updated,
                         ItemCount = r.ItemCount,
                         ChedTypes = r.ChedTypes!,
@@ -106,11 +109,12 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 .Take(3)
                 .Execute(logger)
                 .Select(r =>
-                    new ExceptionResult()
+                    new ExceptionResult
                     {
                         Resource = "Movement",
                         Id = r.Id!,
                         UpdatedSource = r.UpdatedSource!.Value,
+                        UpdatedEntity = r.UpdatedEntity,
                         Updated = r.Updated,
                         ItemCount = r.ItemCount,
                         ChedTypes = r.ChedTypes!,
@@ -138,11 +142,12 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 .Take(3)
                 .Execute(logger)
                 .Select(r =>
-                    new ExceptionResult()
+                    new ExceptionResult
                     {
                         Resource = "Movement",
                         Id = r.Id!,
                         UpdatedSource = r.UpdatedSource!.Value,
+                        UpdatedEntity = r.UpdatedEntity,
                         Updated = r.Updated,
                         ItemCount = r.ItemCount,
                         ChedTypes = r.ChedTypes!,

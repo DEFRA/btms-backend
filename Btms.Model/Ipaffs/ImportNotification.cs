@@ -11,7 +11,7 @@ using Btms.Model.ChangeLog;
 namespace Btms.Model.Ipaffs;
 
 [Resource(PublicName = "import-notifications")]
-public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAuditable
+public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAuditable, IResource
 {
     private string? matchReference;
 
@@ -33,10 +33,16 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _Etag { get; set; } = default!;
     
-    [Attr] public DateTime? CreatedSource { get; set; }
+    [Attr]
+    public DateTime? CreatedSource { get; set; }
 
     [Attr]
-    [ChangeSetIgnore] public DateTime Created { get; set; }
+    [ChangeSetIgnore]
+    public DateTime Created { get; set; }
+    
+    [Attr]
+    [ChangeSetIgnore]
+    public DateTime UpdatedEntity { get; set; }
     
     [Attr]
     [ChangeSetIgnore]
@@ -171,6 +177,7 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     public void Changed(AuditEntry auditEntry)
     {
         AuditEntries.Add(auditEntry);
+        Updated = DateTime.UtcNow;
     }
 
     public void Create(string auditId)

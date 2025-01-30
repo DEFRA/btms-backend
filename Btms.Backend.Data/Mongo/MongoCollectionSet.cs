@@ -45,7 +45,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     {
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
         item.Created = DateTime.UtcNow;
-        item.Updated = DateTime.UtcNow;
+        item.UpdatedEntity = DateTime.UtcNow;
         var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
         return session is not null
             ? collection.InsertOneAsync(session, item, cancellationToken: cancellationToken)
@@ -68,7 +68,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
 
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        item.Updated = DateTime.UtcNow;
+        item.UpdatedEntity = DateTime.UtcNow;
         var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
         var updateResult = session is not null
             ? await collection.ReplaceOneAsync(session, filter, item,

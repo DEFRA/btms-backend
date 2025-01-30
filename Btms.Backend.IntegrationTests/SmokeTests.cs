@@ -97,7 +97,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     //             });
     // }
 
-    [Fact(Skip="Unclear how Checks was being set as it's not present in the clearance request text file :|")]
+    [Fact]
     public async Task SyncDecisions()
     {
         //Arrange 

@@ -131,6 +131,7 @@ public class DecisionServiceTests
                     Version = 1,
                     Created = DateTime.Now,
                     Updated = DateTime.Now,
+                    UpdatedEntity = DateTime.Now,
                     CreatedSource = DateTime.Now,
                     UpdatedSource = DateTime.Now,
                     PartTwo = new PartTwo
