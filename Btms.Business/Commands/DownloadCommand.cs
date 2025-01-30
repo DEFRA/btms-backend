@@ -45,6 +45,7 @@ public class DownloadCommand : IRequest, ISyncJob
 
     internal class Handler(ILogger<DownloadCommand> logger, IOptions<BusinessOptions> businessOptions, IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env, ISyncJobStore syncJobStore) : IRequestHandler<DownloadCommand>
     {
+// <<<<<<< HEAD
 
         private List<string> GetDataSets(DownloadCommand request)
         {
@@ -104,7 +105,6 @@ public class DownloadCommand : IRequest, ISyncJob
                     });
                 }
             });
-
 
             if (Directory.EnumerateFiles(rootFolder, "*.json", SearchOption.AllDirectories).Any())
             {

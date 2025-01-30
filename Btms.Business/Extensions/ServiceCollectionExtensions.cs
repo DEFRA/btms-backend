@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
         services.AddSingleton<ISensitiveFieldsProvider, SensitiveFieldsProvider>();
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SyncNotificationsCommand>());
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(ServiceCollectionExtensions)));
 
         // hard code list for now, get via config -> reflection later
         List<Type> rules =

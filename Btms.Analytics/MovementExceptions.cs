@@ -28,6 +28,18 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
     [SuppressMessage("SonarLint", "S3776",
         Justification =
             "Means we can share the same anonymous / query code without needing to create loads of classes for the intermediate state")]
+    /// <summary>
+    // Returns a summary of the exceptions or a list
+    // Means we can share the same anonymous / query code without needing to create loads
+    // of classes
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <param name="finalisedOnly"></param>
+    /// <param name="summary"></param>
+    /// <param name="chedTypes"></param>
+    /// <param name="country"></param>
+    /// <returns></returns>
     public (SingleSeriesDataset summary, List<ExceptionResult>) GetAllExceptions(DateTime from, DateTime to, bool finalisedOnly, bool summary, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var exceptionsSummary = new SingleSeriesDataset();

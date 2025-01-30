@@ -7,6 +7,7 @@ using Btms.Business.Commands;
 using Btms.Business.Mediatr;
 using Btms.Common.Extensions;
 using Btms.Consumers.MemoryQueue;
+using Btms.Replication.Commands;
 using Btms.SensitiveData;
 using Btms.SyncJob;
 using Btms.Types.Alvs;
@@ -51,7 +52,7 @@ public static class SyncEndpoints
         app.MapGet(BaseRoute + "/generate-download", GetGenerateDownload).AllowAnonymous();
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
         app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
-
+        app.MapGet(BaseRoute + "/replicate", ReplicateGet).AllowAnonymous();
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/clear", ClearSyncJobs).AllowAnonymous();
@@ -88,6 +89,15 @@ public static class SyncEndpoints
     {
         await mediator.SendJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
+    }
+
+    private static async Task<IResult> ReplicateGet(
+        [FromServices] IBtmsMediator mediator,
+        SyncPeriod syncPeriod)
+    {
+        ReplicateCommand command = new() { SyncPeriod = syncPeriod };
+        await mediator.SendJob(command);
+        return Results.Ok(command.JobId);
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)

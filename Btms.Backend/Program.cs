@@ -43,6 +43,7 @@ using Btms.Backend.Aws;
 using Btms.Business.Mediatr;
 using Btms.Backend.Swagger;
 using Btms.Common;
+using Btms.Replication.Extensions;
 using Microsoft.FeatureManagement;
 
 //-------- Configure the WebApplication builder------------------//
@@ -170,6 +171,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
     builder.Services.AddAnalyticsServices(builder.Configuration);
     builder.Services.AddAnalyticsExportServices(builder.Configuration);
+    builder.Services.AddReplicationServices(builder.Configuration);
 }
 
 [ExcludeFromCodeCoverage]

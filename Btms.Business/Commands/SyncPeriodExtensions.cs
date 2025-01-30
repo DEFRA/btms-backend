@@ -20,13 +20,24 @@ public static class SyncPeriodExtensions
         {
             return [DateTime.Today.ToString("/yyyy/MM/dd/")];
         }
+        else if (period == SyncPeriod.Yesterday)
+        {
+            return [DateTime.Today.AddDays(-1).ToString("/yyyy/MM/dd/")];
+        }
+        // else if (period == SyncPeriod.From202411)
+        // {
+        //     return DateTime.Today
+        //         .MonthsSince(new DateTime(2024, 11, 1, 0, 0, 0, DateTimeKind.Utc))
+        //         .Select(p => $"/{p.Year}/{p.Month:00}/")
+        //         .ToArray();
+        // }
         else if (period == SyncPeriod.All)
         {
             return ["/"];
         }
         else
         {
-            throw new ArgumentException($"Unexpected SyncPeriod {period}");
+            throw new ArgumentException($"SyncPeriod {period} has not been mapped to paths");
         }
     }
 }

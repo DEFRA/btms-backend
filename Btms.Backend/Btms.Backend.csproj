@@ -49,6 +49,7 @@
     <ProjectReference Include="..\Btms.Consumers\Btms.Consumers.csproj" />
     <ProjectReference Include="..\Btms.Emf\Btms.Emf.csproj" />
     <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
+    <ProjectReference Include="..\Btms.Replication\Btms.Replication.csproj" />
     <ProjectReference Include="..\Btms.SyncJob\Btms.SyncJob.csproj" />
   </ItemGroup>
 
