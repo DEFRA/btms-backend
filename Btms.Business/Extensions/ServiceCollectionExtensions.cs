@@ -32,6 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
         services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
+        services.BtmsAddOptions<ReplicationOptions>(configuration, ReplicationOptions.SectionName);
 
         services.AddMongoDbContext(configuration);
         services.AddBlobStorage(configuration);
