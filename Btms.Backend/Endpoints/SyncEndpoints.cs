@@ -38,7 +38,7 @@ public static class SyncEndpoints
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
         app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
         
-        
+        app.MapGet(BaseRoute + "/replicate", ReplicateGet).AllowAnonymous();
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/clear", ClearSyncJobs).AllowAnonymous();
@@ -68,6 +68,15 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)
     {
+        await mediator.SendJob(command);
+        return Results.Ok(command.JobId);
+    }
+
+    private static async Task<IResult> ReplicateGet(
+        [FromServices] IBtmsMediator mediator,
+        SyncPeriod syncPeriod)
+    {
+        ReplicateCommand command = new() { SyncPeriod = syncPeriod };
         await mediator.SendJob(command);
         return Results.Ok(command.JobId);
     }

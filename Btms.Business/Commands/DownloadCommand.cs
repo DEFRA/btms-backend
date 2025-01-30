@@ -26,6 +26,18 @@ public class DownloadCommand : IRequest, ISyncJob
 
     public string? RootFolder { get; set; }
 
+    public static List<(string path, Type dataType)> BlobFolders = new List<(string path, Type dataType)>()
+    {
+        ("IPAFFS/CHEDA", typeof(ImportNotification)),
+        ("IPAFFS/CHEDD", typeof(ImportNotification)),
+        ("IPAFFS/CHEDP", typeof(ImportNotification)),
+        ("IPAFFS/CHEDPP", typeof(ImportNotification)),
+        ("IPAFFS/ALVS", typeof(AlvsClearanceRequest)),
+        ("IPAFFS/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse)),
+        ("IPAFFS/DECISIONS", typeof(AlvsClearanceRequest)),
+        ("IPAFFS/FINALISATION", typeof(Finalisation))
+    };
+
     internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env, IOptions<BusinessOptions> businessOptions) : IRequestHandler<DownloadCommand>
     {
 
@@ -55,18 +67,10 @@ public class DownloadCommand : IRequest, ISyncJob
             }
             else
             {
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDA", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDD", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDP", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDPP", typeof(ImportNotification), null, cancellationToken);
-
-                await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), null, cancellationToken);
-
-                await Download(request, rootFolder, $"{blobContainer}/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), null, cancellationToken);
-
-                await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), null, cancellationToken);
-
-                await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), null, cancellationToken);
+                BlobFolders.ForEach(async f =>
+                {
+                    await Download(request, rootFolder, $"{blobContainer}/{f.path}", f.dataType, null, cancellationToken);
+                });
             }
 
 
