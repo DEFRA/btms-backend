@@ -15,6 +15,7 @@ namespace Btms.Business.Commands;
 public enum SyncPeriod
 {
     Today,
+    Yesterday,
     LastMonth,
     ThisMonth,
     From202411,

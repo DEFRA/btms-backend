@@ -20,6 +20,10 @@ public static class SyncPeriodExtensions
         {
             return [DateTime.Today.ToString("/yyyy/MM/dd/")];
         }
+        else if (period == SyncPeriod.Yesterday)
+        {
+            return [DateTime.Today.AddDays(-1).ToString("/yyyy/MM/dd/")];
+        }
         else if (period == SyncPeriod.From202411)
         {
             return DateTime.Today
