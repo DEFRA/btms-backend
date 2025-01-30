@@ -76,7 +76,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             });
 
         var unMatchedGroupedByMrnStatus = simplifiedMovementView
-            .Where(r => !r.DecisionMatched)
+            .Where(r => !r.DecisionMatched && r.LinkStatus == LinkStatusEnum.AllLinked)
             .GroupBy(r => new { r.DecisionStatus, r.Status, r.Segment })
             .Execute(logger);
 
