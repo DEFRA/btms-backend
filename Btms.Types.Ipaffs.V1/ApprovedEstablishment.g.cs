@@ -32,6 +32,7 @@ public partial class ApprovedEstablishment  //
         /// Name of approved establishment
         /// </summary>
     [JsonPropertyName("name")]
+    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 	

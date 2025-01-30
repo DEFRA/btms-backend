@@ -92,6 +92,32 @@ internal static class Bootstrap
                 map.MapProperty("agent").IsSensitive();
             });
 
+        GeneratorClassMap.RegisterClassMap("BillingInformation",
+            map =>
+            {
+                map.MapProperty("emailAddress").IsSensitive();
+                map.MapProperty("phoneNumber").IsSensitive();
+                map.MapProperty("contactName").IsSensitive();
+            });
+
+        GeneratorClassMap.RegisterClassMap("ApprovedEstablishment",
+            map =>
+            {
+                map.MapProperty("name").IsSensitive();
+            });
+
+        GeneratorClassMap.RegisterClassMap("PostalAddress",
+            map =>
+            {
+                map.MapProperty("addressLine1").IsSensitive();
+                map.MapProperty("addressLine2").IsSensitive();
+                map.MapProperty("addressLine3").IsSensitive();
+                map.MapProperty("addressLine4").IsSensitive();
+                map.MapProperty("county").IsSensitive();
+                map.MapProperty("cityOrTown").IsSensitive();
+                map.MapProperty("postalCode").IsSensitive();
+            });
+
         GeneratorClassMap.RegisterClassMap("Inspector",
             map =>
             {
