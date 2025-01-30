@@ -9,5 +9,5 @@ public interface IDataEntity
 
     public DateTime Created { get; set; }
 
-    public DateTime Updated { get; set; }
+    public DateTime UpdatedEntity { get; set; }
 }

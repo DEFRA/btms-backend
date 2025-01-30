@@ -29,6 +29,7 @@ public class NotificationsPreProcessingTests
         savedNotification.Should().NotBeNull();
         savedNotification?.AuditEntries.Count.Should().Be(1);
         savedNotification?.AuditEntries[0].Status.Should().Be("Created");
+        savedNotification?.Updated.Should().BeAfter(default);
     }
 
     [Fact]
@@ -40,8 +41,7 @@ public class NotificationsPreProcessingTests
         await dbContext.Notifications.Insert(notification.MapWithTransform());
         notification.LastUpdated = notification.LastUpdated?.AddHours(1);
         var preProcessor = new ImportNotificationPreProcessor(dbContext, NullLogger<ImportNotificationPreProcessor>.Instance);
-           
-
+        
         // ACT
         var preProcessingResult = await preProcessor.Process(
             new PreProcessingContext<ImportNotification>(notification, "TestMessageId"));
@@ -52,6 +52,7 @@ public class NotificationsPreProcessingTests
         savedNotification.Should().NotBeNull();
         savedNotification?.AuditEntries.Count.Should().Be(1);
         savedNotification?.AuditEntries[0].Status.Should().Be("Updated");
+        savedNotification?.Updated.Should().BeAfter(default);
     }
 
     private static ImportNotification CreateImportNotification()

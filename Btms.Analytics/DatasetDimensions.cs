@@ -17,6 +17,7 @@ public class ExceptionResult : IDimensionResult
     public required string Id { get; set; }
     public required string Resource { get; set; }
     public required DateTime UpdatedSource { get; set; }
+    public required DateTime UpdatedEntity { get; set; }
     public required DateTime Updated { get; set; }
     
     public required int ItemCount { get; set; }

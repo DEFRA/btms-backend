@@ -44,6 +44,7 @@ public class DecisionImportNotifications
     public required int? Version { get; set; }
     public required DateTime Created { get; set; }
     public required DateTime Updated { get; set; }
+    public required DateTime UpdatedEntity { get; set; }
     public required DateTime CreatedSource { get; set; }
     public required DateTime UpdatedSource { get; set; }
 }
