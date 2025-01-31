@@ -106,6 +106,9 @@ public class IuuNotCompletedScenarioGenerator(IServiceProvider sp, ILogger<Dupli
 public class IuuNotCompliantScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompliant");
 
+public class Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBEDS4W7DFRLMAR0");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
