@@ -205,16 +205,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
     {
         GuardNullMovement();
         
-        // New code
-        
-        // var alvsDecision = _movement.AlvsDecisionStatus?.Decisions
-        //     .MaxBy(d => d.Context.AlvsDecisionNumber);
-        //     
-        // if (alvsDecision != null)
-        // {
-        //     var shouldPair = btmsDecision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison?.BtmsDecisionNumber;
-        //     
-        
         var alvsDecision = _movement.AlvsDecisionStatus.Decisions
             .MaxBy(d => d.Context.DecisionComparison.HasValue());
             
@@ -239,7 +229,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             return alvsDecision.Context;
         }
         
-        // I'm Sure there's a better way to do this!
         return new DecisionContext()
         {
             EntryVersionNumber = btmsDecision.Header!.EntryVersionNumber!.Value,

@@ -7,7 +7,7 @@ namespace TestDataGenerator.Scenarios.SpecificFiles;
 
 public class Mrn24Gbde8Olvkzxsyar1ImportNotificationsAtEndScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbde8Olvkzxsyar1ImportNotificationsAtEndScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE8OLVKZXSYAR1")
 {
-    private class PutImportNotificationsAtEndComparer : IComparer<object>
+    private sealed class PutImportNotificationsAtEndComparer : IComparer<object>
     {
         public int Compare(object? x, object? y)
         {

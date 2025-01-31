@@ -32,7 +32,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
 
     [Attr] public List<CdsClearanceRequest> ClearanceRequests { get; init; } = default!;
 
-    [Attr] public List<CdsDecision> Decisions { get; set; } = default!;
+    [Attr] public List<CdsDecision> Decisions { get; set; } = new List<CdsDecision>();
 
     [Attr] public AlvsDecisionStatus AlvsDecisionStatus { get; set; } = new AlvsDecisionStatus();
     
