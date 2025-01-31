@@ -340,6 +340,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
         DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
+        
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
@@ -349,10 +350,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                 .Select(c => new
                 {
                     Movement = d, Check = c,
+                    
                     //Add additional analysis before building it into the write time analysis
-                    DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
-                                     DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs ? 
-                                        DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs :
+                    
+                    DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus != DecisionStatusEnum.InvestigationNeeded ?
+                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus :
                                         d.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
                                             DecisionStatusEnum.ReliesOnCDMS205 :
                                         d.BtmsStatus.Segment == MovementSegmentEnum.Cdms249? 

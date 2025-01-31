@@ -1,3 +1,4 @@
+using Btms.Model.Cds;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
@@ -76,7 +77,6 @@ public class DecisionFinalisationOrderTests(ITestOutputHelper output) : Multiple
             .Be(movement.Decisions.Max(d => d.Header.DecisionNumber));
     }
     
-    
     [Theory]
     [MemberData(nameof(Scenarios))]
     public void ShouldHaveMaximumAlvsDecisionCode(Type generatorType)
@@ -89,6 +89,34 @@ public class DecisionFinalisationOrderTests(ITestOutputHelper output) : Multiple
         movement.AlvsDecisionStatus.Context.AlvsDecisionNumber
             .Should()
             .Be(movement.AlvsDecisionStatus.Decisions.Max(d => d.Decision.Header.DecisionNumber));
+    }
+    
+    [Theory]
+    [MemberData(nameof(Scenarios))]
+    public void ShouldHaveDecisionMatched(Type generatorType)
+    {
+        EnsureEnvironmentInitialised(generatorType);
+        
+        var movement = Client
+            .GetSingleMovement();
+        
+        movement.AlvsDecisionStatus.Context.DecisionComparison?.DecisionMatched
+            .Should()
+            .BeTrue();
+    }
+    
+    [Theory]
+    [MemberData(nameof(Scenarios))]
+    public void ShouldHaveDecisionStatus(Type generatorType)
+    {
+        EnsureEnvironmentInitialised(generatorType);
+        
+        var movement = Client
+            .GetSingleMovement();
+        
+        movement.AlvsDecisionStatus.Context.DecisionComparison?.DecisionStatus
+            .Should()
+            .Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
 
 }

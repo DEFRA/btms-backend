@@ -383,20 +383,24 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         
         var decisionStatus = DecisionStatusEnum.InvestigationNeeded;
         var checksMatch = alvsChecks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
-        var checkPrefixesMatch = alvsChecks.All(c => c.AlvsDecisionCode.First() == c.BtmsDecisionCode?.First());
+        var checkTypesMatch = alvsChecks.All(c => c.AlvsDecisionCode.First() == c.BtmsDecisionCode?.First());
         
         if (checksMatch)
         {
             alvsDecision.Context.DecisionComparison.DecisionMatched = true;
             decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
         }
-        else if (checkPrefixesMatch)
+        else if (checkTypesMatch)
         {
-            decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionPrefixAsAlvs;
+            decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionTypeAsAlvs;
         }
         else if (_movement.Relationships.Notifications.Data.Count == 0)
         {
             decisionStatus = DecisionStatusEnum.NoImportNotificationsLinked;
+        }
+        else if (_movement.AlvsDecisionStatus.Decisions.Count == 0)
+        {
+            decisionStatus = DecisionStatusEnum.NoAlvsDecisions;
         }
         else if (_movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp))
         {
