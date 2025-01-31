@@ -35,7 +35,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
         // Arrange
-        await base.ClearDb();
+        await ClearDb();
 
         // Act
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
@@ -60,7 +60,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncNotifications_WithNoReferencedMovements_ShouldNotLink()
     {
         // Arrange
-        await base.ClearDb();
+        await ClearDb();
             
         // Act
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
@@ -81,7 +81,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncNotifications_WithReferencedMovements_ShouldLink()
     {
         // Arrange
-        await base.ClearDb();
+        await ClearDb();
             
         // Act
         await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
