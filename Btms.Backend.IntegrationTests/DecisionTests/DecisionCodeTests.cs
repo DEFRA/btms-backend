@@ -66,4 +66,26 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
             .Checks!.First()
             .DecisionCode.Should().Be(expectedDecisionCode);
     }
+    
+    [Theory]
+    [InlineData(typeof(Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator), "C03")]
+    public void ShouldProcess(Type generatorType, string expectedDecisionCode)
+    {
+        base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecisionCode);
+        EnsureEnvironmentInitialised(generatorType);
+        
+        var movement =
+            Client
+                .GetSingleMovement();
+
+        movement
+            .Decisions!.MaxBy(d => d.ServiceHeader!.ServiceCalled)?
+            .Items!.Should().AllSatisfy(i =>
+                i.Checks!.Should().AllSatisfy(c =>
+                    c.DecisionCode.Should().Be(expectedDecisionCode)
+                )
+            );
+
+
+    }
 }

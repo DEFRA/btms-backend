@@ -14,7 +14,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
 {
     public async Task OnHandle(Decision message)
     {
-        var internalClearanceRequest = DecisionMapper.Map(message);
+        var internalDecision = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
 
         if (existingMovement != null)
@@ -24,7 +24,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
             
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
-                .MergeDecision(auditId!, internalClearanceRequest, notificationContext);
+                .MergeDecision(auditId!, internalDecision, notificationContext);
             
             if (existingMovementBuilder.HasChanges)
             {

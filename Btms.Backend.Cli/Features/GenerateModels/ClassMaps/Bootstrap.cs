@@ -22,10 +22,6 @@ internal static class Bootstrap
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
-
-            map.AddProperty(new PropertyDescriptor("decisionNumber", "decisionNumber", "int",
-                "", false, false,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
         });
 
 
