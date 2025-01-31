@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Btms.Common.Extensions;
 using Btms.Metrics;
+using JsonApiDotNetCore.Services;
 using Microsoft.Extensions.Options;
 using IRequest = MediatR.IRequest;
 
@@ -32,7 +33,7 @@ internal static partial class SyncHandlerLogging
     [LoggerMessage(Level = LogLevel.Information, Message = "Processing Blob Finished {JobId} - {BlobPath}")]
     internal static partial void BlobFinished(this ILogger logger, string jobId, string blobPath);
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Processing Blob Failed {JobId} - {BlobPath}")]
+    [LoggerMessage(Level = LogLevel.Error, Message = "Processing Blob Failed {JobId} - {BlobPath}")]
     internal static partial void BlobFailed(this ILogger logger, Exception exception, string jobId, string blobPath);
 }
 
