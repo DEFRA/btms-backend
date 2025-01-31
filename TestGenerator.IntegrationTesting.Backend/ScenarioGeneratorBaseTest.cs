@@ -49,7 +49,7 @@ public abstract class ScenarioGeneratorBaseTest<T>
                 if (reloadData)
                 {
                     LoadedData = BackendFixture
-                        .LoadTestData(data)
+                        .LoadTestData(data, true)
                         .GetAwaiter()
                         .GetResult();
                 }
