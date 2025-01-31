@@ -202,7 +202,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         return fullPath.Replace("RAW/DECISIONS/", "");
     }
     
-    private DecisionContext FindAlvsPairAndUpdate(CdsDecision decision)
+    private DecisionContext FindAlvsPairAndUpdate(CdsDecision btmsDecision)
     {
         GuardNullMovement();
 
@@ -211,14 +211,14 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             
         if (alvsDecision != null)
         {
-            var shouldPair = decision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison!.BtmsDecisionNumber;
+            var shouldPair = btmsDecision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison!.BtmsDecisionNumber;
             
             // Updates the pair status if we've received a newer BTMS decision than that already paired. 
-            SetDecisionComparison(alvsDecision, shouldPair, decision.Header!.DecisionNumber!.Value);
+            SetDecisionComparison(alvsDecision, shouldPair, btmsDecision.Header!.DecisionNumber!.Value);
 
             if (shouldPair)
             {
-                CompareDecisions(alvsDecision, decision);    
+                CompareDecisions(alvsDecision, btmsDecision);    
             }
     
             return alvsDecision.Context;
@@ -227,7 +227,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         // I'm Sure there's a better way to do this!
         return new DecisionContext()
         {
-            EntryVersionNumber = decision.Header!.EntryVersionNumber!.Value,
+            EntryVersionNumber = btmsDecision.Header!.EntryVersionNumber!.Value,
         };
     }
 

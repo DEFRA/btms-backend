@@ -28,7 +28,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac3")]
 public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDPN81VSULAGAR9ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbdpn81Vsulagar9ScenarioGenerator>(output)
 {
 
     /// <summary>
