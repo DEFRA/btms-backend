@@ -54,6 +54,7 @@ namespace Btms.Consumers;
                         triggeringNotification: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
                 {
+                    logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Id} with MessageId {MessageId}", message.ReferenceNumber, messageId);
                     return;
                 }
 
@@ -72,6 +73,7 @@ namespace Btms.Consumers;
             }
             else
             {
+                logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Record.GetLatestAuditEntry().Status);
                 LogStatus("IsCreatedOrChanged=false", message);
             }
 

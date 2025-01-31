@@ -1,0 +1,69 @@
+db = db.getSiblingDB("btms-backend");
+db.getCollection("Movement").aggregate(
+    [
+        {
+            "$match" : {
+                "alvsDecisionStatus.decisions.0" : {
+                    "$exists" : false
+                },
+                "decisions.0" : {
+                    "$exists" : true
+                }
+            }
+        }, 
+        {
+            "$facet" : {
+                "metadata" : [
+                    {
+                        "$count" : "total"
+                    },
+                    {
+                        "$addFields" : {
+                            "page" : NumberInt(1)
+                        }
+                    }
+                ],
+                "data" : [
+                    {
+                        "$skip" : NumberInt(0)
+                    },
+                    {
+                        "$limit" : NumberInt(10)
+                    }
+                ]
+            }
+        }, 
+        {
+            "$project" : {
+                "metadata" : NumberInt(1),
+                "data._id" : NumberInt(1)
+            }
+        }
+    ], 
+    {
+        "allowDiskUse" : false
+    }
+);
+
+
+  
+  { _id: '24GBBRKNU654QT3AR9' },
+  { _id: '24GBC1PZJWPL2NBAR3' },
+  { _id: '24GBC4CDEJ62U9JAR0' },
+  { _id: '24GBC4EHEHUKP6GAR5' },
+  { _id: '24GBC8OKFO2V9T3AR6' },
+  { _id: '24GBC8WWTCY646GAR3' },
+  { _id: '24GBC91KQQSBNXFAR3' },
+  { _id: '24GBC9253HHI7N1AR5' },
+  { _id: '24GBC92COBLSQPFAR0' },
+  { _id: '24GBC95ER377ZEEAR4' },
+  { _id: '24GB92EOIAUS3GOAR7' },
+  { _id: '24GBCA3QBHTWOY1AR0' },
+  { _id: '24GBCA5AFYQY2UMAR9' },
+  { _id: '24GBCA5TQ6Z5DJRAR6' },
+  { _id: '24GBCA790PQ8HC9AR0' },
+  { _id: '24GBCA7ZSRS7PTMAR9' },
+  { _id: '24GBCAC2F69YIRXAR1' },
+  { _id: '24GBCAFACQ2QBT0AR1' },
+  { _id: '24GBCAJ7H1V4ASKAR8' },
+  { _id: '24GBCAKF7N79BUMAR4' }

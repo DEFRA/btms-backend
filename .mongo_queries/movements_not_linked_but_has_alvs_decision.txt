@@ -1,0 +1,63 @@
+db = db.getSiblingDB("btms-backend");
+db.getCollection("Movement").aggregate(
+    [
+        {
+            "$match" : {
+                "alvsDecisionStatus.decisions.0" : {
+                    "$exists" : true
+                },
+                "relationships.notifications.links" : null
+            }
+        }, 
+        {
+            "$facet" : {
+                "metadata" : [
+                    {
+                        "$count" : "total"
+                    },
+                    {
+                        "$addFields" : {
+                            "page" : NumberInt(1)
+                        }
+                    }
+                ],
+                "data" : [
+                    {
+                        "$skip" : NumberInt(0)
+                    },
+                    {
+                        "$limit" : NumberInt(10)
+                    }
+                ]
+            }
+        }, 
+        {
+            "$project" : {
+                "metadata" : NumberInt(1),
+                "data._id" : NumberInt(1)
+            }
+        }
+    ], 
+    {
+        "allowDiskUse" : false
+    }
+);
+
+
+[
+  {
+    metadata: [ { total: 1716, page: 1 } ],
+    data: [
+      { _id: '24GBBIXHTYLCSDHAR7' },
+      { _id: '24GBBINTRDQ6CK5AR0' },
+      { _id: '24GBBHGYRJU3WUVAR7' },
+      { _id: '24GBBIOY8JPKA7XAR7' },
+      { _id: '24GBBJ2DKYEA5N7AR1' },
+      { _id: '24GBBHV3ZBHD9ARAR0' },
+      { _id: '24GBBK1DRV019YGAR5' },
+      { _id: '24GBBGGTXE70V22AR6' },
+      { _id: '24GBBGBKDATDR7IAR7' },
+      { _id: '24GBBKEU5Y35N3IAR5' }
+    ]
+  }
+]
