@@ -65,7 +65,7 @@ public abstract class MultipleScenarioGeneratorBaseTest
                 if (ReloadData)
                 {
                     LoadedData = BackendFixture
-                        .LoadTestData(data)
+                        .LoadTestData(data, true)
                         .GetAwaiter()
                         .GetResult();
                 }

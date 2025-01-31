@@ -1,20 +1,17 @@
-using Btms.Common.Extensions;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
-using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
-using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration"), Trait("Segment", "CDMS-249")]
-public class Mrn24GBDYHI8LMFLDQAR6Tests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator>(output)
+public class Mrn24Gbdyhi8Lmfldqar6Tests(ITestOutputHelper output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbdyhi8Lmfldqar6ScenarioGenerator>(output)
 {
     [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
     // [Fact]

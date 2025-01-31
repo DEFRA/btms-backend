@@ -13,30 +13,34 @@ namespace Btms.Consumers.Extensions;
 /// </summary>
 public static class MessageRoutingExtensions
 {
-    private const string MESSAGE_ID_HEADER_KEY = "messageId";
+    private const string MessageIdHeaderKey = "messageId";
     
     public static async Task PushToConsumers(this IServiceProvider sp, 
         ILogger logger, IEnumerable<object> messages,
-        int sleepMs = 1000, bool synchronous = false)
+        bool maintainOrder = false)
     {
-        var output = new List<object>();
-        await PushMessagesToConsumers(sp, logger, messages
-                .Where(m => m is AlvsClearanceRequest or ImportNotification),
-            sleepMs, synchronous);
+        if (maintainOrder)
+        {
+            // Allow the data generator to control the ordering
+            await PushMessagesToConsumers(sp, logger, messages);
+        }
+        else
+        {
+            await PushMessagesToConsumers(sp, logger, messages
+                    .Where(m => m is AlvsClearanceRequest or ImportNotification));
 
-        await PushMessagesToConsumers(sp, logger, messages
-                .Where(m => m is Decision),
-            sleepMs, synchronous);
+            await PushMessagesToConsumers(sp, logger, messages
+                    .Where(m => m is Decision));
         
-        await PushMessagesToConsumers(sp, logger, messages
-                .Where(m => m is Finalisation),
-            sleepMs, synchronous);
+            await PushMessagesToConsumers(sp, logger, messages
+                    .Where(m => m is Finalisation));
+        }
+        
     }
-    public static async Task PushMessagesToConsumers(this IServiceProvider sp, 
-        ILogger logger, IEnumerable<object> messages, 
-        int sleepMs = 1000, bool synchronous = false)
+
+    private static async Task PushMessagesToConsumers(this IServiceProvider sp, 
+        ILogger logger, IEnumerable<object> messages)
     {
-        var output = new List<object>();
         
         foreach (var message in messages)
         {
@@ -46,28 +50,28 @@ public static class MessageRoutingExtensions
             switch (message)
             {
                 case null:
-                    throw new ArgumentNullException();
-
+                    throw new ArgumentException($"Unexpected null message");
+                
                 case ImportNotification n:
-                    headers.Add(MESSAGE_ID_HEADER_KEY, n.ReferenceNumber!);
+                    headers.Add(MessageIdHeaderKey, n.ReferenceNumber!);
                     await bus.Publish(n, "NOTIFICATIONS", headers);
                     logger.LogInformation("Sent notification {0} to consumer", n.ReferenceNumber!);
                     break;
 
                 case AlvsClearanceRequest cr:
-                    headers.Add(MESSAGE_ID_HEADER_KEY, cr.Header!.EntryReference!);
+                    headers.Add(MessageIdHeaderKey, cr.Header!.EntryReference!);
                     await bus.Publish(cr, "CLEARANCEREQUESTS", headers);
                     logger.LogInformation("Sent cr {0} to consumer", cr.Header!.EntryReference!);
                     break;
 
                 case Decision d:
-                    headers.Add(MESSAGE_ID_HEADER_KEY, d.Header!.EntryReference!);
+                    headers.Add(MessageIdHeaderKey, d.Header!.EntryReference!);
                     await bus.Publish(d, "DECISIONS", headers);
                     logger.LogInformation("Sent decision {0} to consumer", d.Header!.EntryReference!);
                     break;
 
                 case Finalisation d:
-                    headers.Add(MESSAGE_ID_HEADER_KEY, d.Header!.EntryReference!);
+                    headers.Add(MessageIdHeaderKey, d.Header!.EntryReference!);
                     await bus.Publish(d, "FINALISATIONS", headers);
                     logger.LogInformation("Sent finalisation {0} to consumer", d.Header!.EntryReference!);
                     break;

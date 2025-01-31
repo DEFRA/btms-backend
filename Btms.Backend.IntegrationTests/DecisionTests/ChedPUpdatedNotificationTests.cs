@@ -46,9 +46,8 @@ public class ChedPUpdatedNotificationTests
                 (CreatedBySystem.Btms, "Decision", 1, null),
                 (CreatedBySystem.Btms, "Linked", null, null), //TODO : can we get context in here including the notification info
                 (CreatedBySystem.Btms, "Decision", 2, 1),
-                (CreatedBySystem.Btms, "Decision", 3, 2),
                 (CreatedBySystem.Alvs, "Decision", 1, null), //TODO : we should be able to use the IBM provided file to get some context
-
+                (CreatedBySystem.Btms, "Decision", 3, 2),
             ]);
     }
 
