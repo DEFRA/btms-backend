@@ -18,14 +18,14 @@ namespace Btms.Model.Cds;
 /// <summary>
 /// 
 /// </summary>
-public partial class CdsClearanceRequest  //
+public partial class CdsDecision  //
 {
     /// <summary>
     /// 
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public ServiceHeader? ServiceHeader { get; set; }
+    public required ServiceHeader ServiceHeader { get; set; }
 
 	
     /// <summary>
@@ -33,7 +33,7 @@ public partial class CdsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Header? Header { get; set; }
+    public required DecisionHeader Header { get; set; }
 
 	
     /// <summary>
@@ -41,7 +41,7 @@ public partial class CdsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Items[]? Items { get; set; }
+    public required DecisionItems[] Items { get; set; }
 }
 
 

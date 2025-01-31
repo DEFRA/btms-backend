@@ -18,30 +18,20 @@ namespace Btms.Model.Cds;
 /// <summary>
 /// 
 /// </summary>
-public partial class CdsClearanceRequest  //
+public partial class DecisionItems  //
 {
     /// <summary>
     /// 
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public ServiceHeader? ServiceHeader { get; set; }
+    public int ItemNumber { get; set; }
 
-	
     /// <summary>
     /// 
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Header? Header { get; set; }
+    public Check[]? Checks { get; set; }
 
-	
-    /// <summary>
-    /// 
-    /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Items[]? Items { get; set; }
 }
-
-
