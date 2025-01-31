@@ -58,6 +58,7 @@ namespace Btms.Consumers;
                         triggeringMovement: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
                 {
+                    logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}", message.Header?.EntryReference, messageId);
                     return;
                 }
 
@@ -67,6 +68,10 @@ namespace Btms.Consumers;
                 var decisionResult = await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true), Context.CancellationToken);
                 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+            }
+            else
+            {
+                logger.LogWarning("Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} Because Last AuditState was {AuditState}", message.Header?.EntryReference, messageId, preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
         }
     }

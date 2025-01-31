@@ -28,6 +28,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
         {
             internalNotification.AuditEntries = existingNotification.AuditEntries;
             internalNotification.CreatedSource = existingNotification.CreatedSource;
+            internalNotification.Relationships = existingNotification.Relationships;
 
             var changeSet = internalNotification.GenerateChangeSet(existingNotification);
 
