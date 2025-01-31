@@ -1,12 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using Btms.Common.Extensions;
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
-using Microsoft.Extensions.Logging;
-using Btms.Business.Extensions;
-using Btms.Model;
 using Btms.Model.Ipaffs;
+using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Builders;
 
@@ -99,14 +98,14 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         return this;
     }
 
-    public MovementBuilder MergeDecision(string path, Model.Cds.CdsDecision decision, List<DecisionImportNotifications>? notificationContext)
+    public MovementBuilder MergeDecision(string path, CdsDecision decision, List<DecisionImportNotifications>? notificationContext)
     {
         GuardNullMovement();
         
         HasChanges = true;
         
         var sourceSystem = decision.ServiceHeader?.SourceSystem;
-        var isAlvs = sourceSystem != "BTMS";
+        var isAlvs = sourceSystem == "ALVS";
         var isBtms = sourceSystem == "BTMS";
         DecisionContext context;
         
@@ -205,14 +204,28 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
     private DecisionContext FindAlvsPairAndUpdate(CdsDecision btmsDecision)
     {
         GuardNullMovement();
-
-        var alvsDecision = _movement.AlvsDecisionStatus?.Decisions
-            .SingleOrDefault(d => d.Context.DecisionComparison.HasValue());
+        
+        // New code
+        
+        // var alvsDecision = _movement.AlvsDecisionStatus?.Decisions
+        //     .MaxBy(d => d.Context.AlvsDecisionNumber);
+        //     
+        // if (alvsDecision != null)
+        // {
+        //     var shouldPair = btmsDecision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison?.BtmsDecisionNumber;
+        //     
+        
+        var alvsDecision = _movement.AlvsDecisionStatus.Decisions
+            .MaxBy(d => d.Context.DecisionComparison.HasValue());
             
+        logger.LogInformation("FindAlvsPairAndUpdate btmsDecision number {BtmsDecisionNumber}, alvs paired decision number {PairedDecisionNumber}", btmsDecision.Header!.DecisionNumber, alvsDecision?.Context.DecisionComparison!.BtmsDecisionNumber);
+        
         if (alvsDecision != null)
         {
             var shouldPair = btmsDecision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison!.BtmsDecisionNumber;
             
+            logger.LogInformation("FindAlvsPairAndUpdate ShouldPair {ShouldPair}", shouldPair);
+
             // Updates the pair status if we've received a newer BTMS decision than that already paired. 
             SetDecisionComparison(alvsDecision, shouldPair, btmsDecision.Header!.DecisionNumber!.Value);
 
@@ -220,7 +233,9 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             {
                 CompareDecisions(alvsDecision, btmsDecision);    
             }
-    
+
+            _movement.AlvsDecisionStatus.Context = alvsDecision.Context;
+            
             return alvsDecision.Context;
         }
         
@@ -291,7 +306,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
 
     private void SetDecisionComparison(AlvsDecision decision, bool paired, int? btmsDecisionNumber)
     {
-        logger.LogInformation("SetPairStatus {decision}, {paired} {btmsDecisionNumber}",
+        logger.LogInformation("SetDecisionComparison SetPairStatus AlvsDecision {AlvsDecision}, Paired {Paired} BtmsDecisionNumber {BtmsDecisionNumber}",
             decision.Context.AlvsDecisionNumber, paired, btmsDecisionNumber);
         
         decision.Context.DecisionComparison = !paired ? null : new DecisionComparison()

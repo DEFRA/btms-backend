@@ -123,11 +123,23 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", BuilderHelpers.GetDecisionBuilder, tokenSource.Token);
         var finalisationList = await GetBuildersForFolder($"{scenarioPath}/FINALISATION", BuilderHelpers.GetFinalisationBuilder, tokenSource.Token);
 
-        return clearanceRequestList
+        return ModifyBuilders(clearanceRequestList
             .Concat(notificationList)
             .Concat(decisionList)
             .Concat(finalisationList)
-            .ToList();
+            .ToList());
+    }
+
+    protected virtual List<(string filePath, IBaseBuilder builder)> ModifyBuilders(
+        List<(string filePath, IBaseBuilder builder)> builders)
+    {
+        return builders;
+    }
+
+    protected virtual List<object> ModifyMessages(
+        List<object> messages)
+    {
+        return messages;
     }
 
     private async Task<List<(string file, IBaseBuilder builder)>> GetBuildersForFolder(string scenarioFolder, Func<string, string, IBaseBuilder> createBuilder, CancellationToken token)
@@ -159,10 +171,10 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         logger.LogInformation("Created {builders} Builders", 
             builders.Count);
 
-        var messages = builders
+        var messages = ModifyMessages(builders
             .Select(b => b.builder)
             .ToArray()
-            .BuildAll()
+            .BuildAll())
             .ToArray();
         
         return new GeneratorResult(messages);

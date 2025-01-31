@@ -19,7 +19,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDE3CF94H96TAR0ModifiedScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbde3Cf94H96Tar0ModifiedScenarioGenerator>(output)
 {
 
     [Fact]

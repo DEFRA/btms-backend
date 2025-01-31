@@ -43,11 +43,11 @@ public class BackendFixture
         
     }
 
-    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData)
+    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData, bool maintainMessageOrder = false)
     {
         await BtmsClient.ClearDb();
         
-        await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), _consumerPushDelayMs);
+        await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), maintainMessageOrder);
         
         return testData;
     }

@@ -1,14 +1,11 @@
-using Btms.Common.Extensions;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
-using Btms.Types.Ipaffs;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
-using ImportNotificationTypeEnum = Btms.Model.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
