@@ -77,10 +77,10 @@ public class BlobService(
 
         await foreach (var item in files)
         {
-            if (item.Properties.ContentLength is not 0)
+            if (item.Properties.ContentLength is not 0 && item.Name.EndsWith(".json"))
             {
                 yield return
-                    new BtmsBlobItem { Name = item.Name };
+                    new BtmsBlobItem { Name = item.Name, CreatedOn = item.Properties.CreatedOn};
                 itemCount++;
             }
         }
