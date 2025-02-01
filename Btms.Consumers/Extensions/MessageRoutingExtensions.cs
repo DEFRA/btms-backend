@@ -45,9 +45,6 @@ public static class MessageRoutingExtensions
             var headers = new Dictionary<string, object>();
             switch (message)
             {
-                case null:
-                    throw new ArgumentNullException();
-
                 case ImportNotification n:
                     headers.Add(MESSAGE_ID_HEADER_KEY, n.ReferenceNumber!);
                     await bus.Publish(n, "NOTIFICATIONS", headers);
