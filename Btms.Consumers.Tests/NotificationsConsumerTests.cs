@@ -38,7 +38,7 @@ public class NotificationsConsumerTests : ConsumerTests
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
-        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance);
+        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, null!);
         consumer.Context = new ConsumerContext
         {
             Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
@@ -77,7 +77,7 @@ public class NotificationsConsumerTests : ConsumerTests
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance)
+                validationService, NullLogger<NotificationConsumer>.Instance, null!)
             {
                 Context = new ConsumerContext
                 {

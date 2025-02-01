@@ -8,7 +8,7 @@ using SlimMessageBus;
 
 namespace Btms.Business.Services.Decisions;
 
-public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, IEnumerable<IDecisionFinder> decisionFinders) : IDecisionService
+public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecisionFinder> decisionFinders) : IDecisionService
 {
     public async Task<DecisionResult> Process(DecisionContext decisionContext, CancellationToken cancellationToken)
     {
@@ -18,24 +18,7 @@ public class DecisionService(ILogger<DecisionService> logger, IPublishBus bus, I
 
         foreach (var message in messages)
         {
-            var headers = new Dictionary<string, object>
-            {
-                { "messageId", Guid.NewGuid() },
-                { "notifications", decisionContext.Notifications
-                    .Select(n => new DecisionImportNotifications
-                    {
-                        Id = n.Id!,
-                        Version = n.Version,
-                        Created = n.Created,
-                        Updated = n.Updated,
-                        UpdatedEntity = n.UpdatedEntity,
-                        CreatedSource = n.CreatedSource!.Value,
-                        UpdatedSource = n.UpdatedSource!.Value
-                        })
-                    .ToList()
-                },
-            };
-            await bus.Publish(message, "DECISIONS", headers: headers, cancellationToken: cancellationToken);
+            decisionResult.AddDecisionMessage(message);
         }
 
         return decisionResult;

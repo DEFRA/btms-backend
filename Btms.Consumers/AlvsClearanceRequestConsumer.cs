@@ -1,3 +1,4 @@
+using Btms.Backend.Data;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
@@ -17,7 +18,8 @@ namespace Btms.Consumers;
         IMatchingService matchingService,
         IDecisionService decisionService, 
         IValidationService validationService,
-        ILogger<AlvsClearanceRequestConsumer> logger)
+        ILogger<AlvsClearanceRequestConsumer> logger,
+        IMongoDbContext dbContext)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
     public async Task OnHandle(AlvsClearanceRequest message)
@@ -62,12 +64,39 @@ namespace Btms.Consumers;
                     return;
                 }
 
+               
+
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
-                var decisionResult = await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true), Context.CancellationToken);
+                var decisionContext = new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true);
+                var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
                 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
+
+                foreach (var decisionMessage in decisionResult.DecisionsMessages)
+                {
+                    var headers = new Dictionary<string, object>
+                    {
+                        { "messageId", Guid.NewGuid() },
+                        { "notifications", decisionContext.Notifications
+                            .Select(n => new DecisionImportNotifications
+                            {
+                                Id = n.Id!,
+                                Version = n.Version,
+                                Created = n.Created,
+                                Updated = n.Updated,
+                                UpdatedEntity = n.UpdatedEntity,
+                                CreatedSource = n.CreatedSource!.Value,
+                                UpdatedSource = n.UpdatedSource!.Value
+                            })
+                            .ToList()
+                        },
+                    };
+                    await Context.Bus.Publish(decisionMessage, "DECISIONS", headers: headers, cancellationToken: Context.CancellationToken);
+                }
             }
             else
             {

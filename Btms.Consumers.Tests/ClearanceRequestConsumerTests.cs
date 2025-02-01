@@ -46,7 +46,7 @@ public class ClearanceRequestConsumerTests
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(outcome, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance, null!)
                 {
                     Context = new ConsumerContext
                     {
@@ -92,7 +92,7 @@ public class ClearanceRequestConsumerTests
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance, null!)
                 {
                     Context = new ConsumerContext
                     {

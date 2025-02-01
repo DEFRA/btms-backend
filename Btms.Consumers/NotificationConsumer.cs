@@ -1,3 +1,4 @@
+using Btms.Backend.Data;
 using Btms.Types.Ipaffs;
 using SlimMessageBus;
 using Btms.Consumers.Extensions;
@@ -7,6 +8,9 @@ using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Model.Cds;
+using Microsoft.EntityFrameworkCore;
+using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
@@ -14,7 +18,8 @@ namespace Btms.Consumers;
         IMatchingService matchingService,
         IDecisionService decisionService,
         IValidationService validationService,
-        ILogger<NotificationConsumer> logger)
+        ILogger<NotificationConsumer> logger,
+        IMongoDbContext dbContext)
     : IConsumer<ImportNotification>, IConsumerWithContext
 {
     public async Task OnHandle(ImportNotification message)
@@ -61,15 +66,42 @@ namespace Btms.Consumers;
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
-                var decisionResult = await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult), Context.CancellationToken);
+                var decisionContext = new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult);
+                var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
                 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
+
+                foreach (var decisionMessage in decisionResult.DecisionsMessages)
+                {
+                    var headers = new Dictionary<string, object>
+                    {
+                        { "messageId", Guid.NewGuid() },
+                        { "notifications", decisionContext.Notifications
+                            .Select(n => new DecisionImportNotifications
+                            {
+                                Id = n.Id!,
+                                Version = n.Version,
+                                Created = n.Created,
+                                Updated = n.Updated,
+                                UpdatedEntity = n.UpdatedEntity,
+                                CreatedSource = n.CreatedSource!.Value,
+                                UpdatedSource = n.UpdatedSource!.Value
+                                })
+                            .ToList()
+                        },
+                    };
+                    await Context.Bus.Publish(decisionMessage, "DECISIONS", headers: headers, cancellationToken: Context.CancellationToken);
+                }
             }
             else if (preProcessingResult.IsDeleted())
             {
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
                 await linkingService.UnLink(linkContext, Context.CancellationToken);
+
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
             }
             else
             {
