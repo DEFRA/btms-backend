@@ -77,6 +77,6 @@ public static class MessageRoutingExtensions
             }
         }
 
-        await Task.Delay(sleepMs);
+        await Task.Delay(1000);
     }
 }
