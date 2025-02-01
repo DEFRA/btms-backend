@@ -36,6 +36,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
                     movement.AlvsDecisionStatus.Context.AlvsDecisionNumber);
 
                 await dbContext.Movements.Update(movement, existingMovement._Etag);
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
             }
             else
             {
