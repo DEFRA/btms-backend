@@ -28,7 +28,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration"), Trait("Segment", "CDMS-205-Ac3")]
 public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDPN81VSULAGAR9ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbdpn81Vsulagar9ScenarioGenerator>(output)
 {
 
     /// <summary>
@@ -105,9 +105,9 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
         decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Should()
-            .Equal([
+            .Equal(
                 ( notification.ReferenceNumber!, 1 )
-            ]);
+            );
     }
     
     // [Fact]
@@ -124,7 +124,7 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
     public void ShouldHaveDecisionMatched()
     {
-        var movement = Client
+        Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
@@ -132,7 +132,7 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
     
     // [Fact]
     [FailingFact(jiraTicket:"CDMS-205", "Has Ched PP Checks"), Trait("JiraTicket", "CDMS-205")]
-    public void ShouldHaveChedPPDecisionStatus()
+    public void ShouldHaveChedPpDecisionStatus()
     {
         Client
             .GetSingleMovement()
@@ -169,8 +169,6 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
     [Fact]
     public async Task ShouldNotHaveExceptions()
     {
-        // TestOutputHelper.WriteLine("Querying for aggregated data");
-
         var result = await Client
             .GetExceptions();
         

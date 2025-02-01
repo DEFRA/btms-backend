@@ -21,7 +21,6 @@ namespace Btms.Model.Cds;
 public partial class Check  //
 {
 
-
     /// <summary>
     /// 
     /// </summary>

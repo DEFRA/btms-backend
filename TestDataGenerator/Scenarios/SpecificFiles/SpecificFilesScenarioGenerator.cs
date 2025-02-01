@@ -8,34 +8,34 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
-public class Mrn24GBDEEA43OY1CQAR7ScenarioGenerator(
+public class Mrn24Gbdeea43Oy1Cqar7ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDEEA43OY1CQAR7ScenarioGenerator> logger)
+    ILogger<Mrn24Gbdeea43Oy1Cqar7ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEEA43OY1CQAR7");
 
-public class Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator(
+public class Mrn24Gbdehmfc4Wgxvar7ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDEHMFC4WGXVAR7ScenarioGenerator> logger)
+    ILogger<Mrn24Gbdehmfc4Wgxvar7ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEHMFC4WGXVAR7");
 
-public class Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator(
+public class Mrn24Gbddjer3Zfrmzar9ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator> logger) : SpecificFilesScenarioGenerator(
+    ILogger<Mrn24Gbddjer3Zfrmzar9ScenarioGenerator> logger) : SpecificFilesScenarioGenerator(
     sp, logger, "Mrn-24GBDDJER3ZFRMZAR9");
 
-public class Mrn24GBDE3CF94H96TAR0ScenarioGenerator(
+public class Mrn24Gbde3Cf94H96Tar0ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDE3CF94H96TAR0ScenarioGenerator> logger)
+    ILogger<Mrn24Gbde3Cf94H96Tar0ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE3CF94H96TAR0");
 
-public class Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator(
+public class Mrn24Gbdyhi8Lmfldqar6ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDYHI8LMFLDQAR6ScenarioGenerator> logger)
+    ILogger<Mrn24Gbdyhi8Lmfldqar6ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDYHI8LMFLDQAR6");
 
-public class Mrn24GBDPN81VSULAGAR9ScenarioGenerator(
+public class Mrn24Gbdpn81Vsulagar9ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDPN81VSULAGAR9ScenarioGenerator> logger)
+    ILogger<Mrn24Gbdpn81Vsulagar9ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDPN81VSULAGAR9");
 
 public class ChedPpPhsiDecisionTestsScenarioGenerator(
@@ -88,23 +88,26 @@ public class Mrn24Gbd46Kpsvz3Dfar2ScenarioGenerator(
     ILogger<Mrn24Gbd46Kpsvz3Dfar2ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD46KPSVZ3DFAR2");
 
-public class DuplicateMovementItems_CDMS_211(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+public class DuplicateMovementItemsCdms211(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
-public class IuuOkScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+public class IuuOkScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuok");
 
-public class IuunaScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+public class IuunaScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuna");
 
-public class NoIuuInfoScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+public class NoIuuInfoScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/NoIuuInfo");
 
-public class IuuNotCompletedScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+public class IuuNotCompletedScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompleted");
 
-public class IuuNotCompliantScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItems_CDMS_211> logger)
+public class IuuNotCompliantScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompliant");
+
+public class Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBEDS4W7DFRLMAR0");
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
@@ -120,11 +123,23 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", BuilderHelpers.GetDecisionBuilder, tokenSource.Token);
         var finalisationList = await GetBuildersForFolder($"{scenarioPath}/FINALISATION", BuilderHelpers.GetFinalisationBuilder, tokenSource.Token);
 
-        return clearanceRequestList
+        return ModifyBuilders(clearanceRequestList
             .Concat(notificationList)
             .Concat(decisionList)
             .Concat(finalisationList)
-            .ToList();
+            .ToList());
+    }
+
+    protected virtual List<(string filePath, IBaseBuilder builder)> ModifyBuilders(
+        List<(string filePath, IBaseBuilder builder)> builders)
+    {
+        return builders;
+    }
+
+    protected virtual List<object> ModifyMessages(
+        List<object> messages)
+    {
+        return messages;
     }
 
     private async Task<List<(string file, IBaseBuilder builder)>> GetBuildersForFolder(string scenarioFolder, Func<string, string, IBaseBuilder> createBuilder, CancellationToken token)
@@ -156,10 +171,10 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         logger.LogInformation("Created {builders} Builders", 
             builders.Count);
 
-        var messages = builders
+        var messages = ModifyMessages(builders
             .Select(b => b.builder)
             .ToArray()
-            .BuildAll()
+            .BuildAll())
             .ToArray();
         
         return new GeneratorResult(messages);

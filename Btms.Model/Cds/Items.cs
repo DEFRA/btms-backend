@@ -33,7 +33,7 @@ public partial class Items  //
         return list.ToList();
     }
 
-    public void MergeChecks(Items decisionItems)
+    public void MergeChecks(DecisionItems decisionItems)
     {
         var checks = Checks?.ToList();
         if (checks == null)

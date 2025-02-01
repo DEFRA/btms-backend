@@ -14,7 +14,7 @@ using TestGenerator.IntegrationTesting.Backend.Extensions;
 namespace Btms.Analytics.Tests;
 
 public class MovementsByUniqueDocumentReferenceTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbddjer3Zfrmzar9ScenarioGenerator>(output)
 {
     [Fact]
     public async Task ShouldReturnExpectedAggregation()

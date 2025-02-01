@@ -25,7 +25,7 @@ public class SpecificFilesScenarioGeneratorTests
             .ConfigureTestGenerationServices()
             .BuildServiceProvider();
         
-        var scenario = new DuplicateMovementItems_CDMS_211(sp, NullLogger<DuplicateMovementItems_CDMS_211>.Instance);
+        var scenario = new DuplicateMovementItemsCdms211(sp, NullLogger<DuplicateMovementItemsCdms211>.Instance);
 
         var config = new ScenarioConfig()
         {
