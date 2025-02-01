@@ -11,6 +11,7 @@ internal class GmrConsumer(IMongoDbContext dbContext)
 {
     public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message)
     {
+       
         foreach (var gmr in message.Gmrs!)
         {
             var internalGmr = GrmWithTransformMapper.MapWithTransform(gmr);
@@ -42,6 +43,8 @@ internal class GmrConsumer(IMongoDbContext dbContext)
                 }
             }
         }
+
+        await dbContext.SaveChangesAsync(Context.CancellationToken);
     }
 
     public IConsumerContext Context { get; set; } = null!;

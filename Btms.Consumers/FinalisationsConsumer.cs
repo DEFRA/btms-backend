@@ -34,6 +34,7 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
             if (existingMovementBuilder.HasChanges)
             {
                 await dbContext.Movements.Update(existingMovementBuilder.Build(), existingMovement._Etag);
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
             }
         }
     }
