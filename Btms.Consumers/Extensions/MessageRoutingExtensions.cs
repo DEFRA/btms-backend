@@ -76,5 +76,7 @@ public static class MessageRoutingExtensions
                     throw new ArgumentException($"Unexpected type {message.GetType().Name}");
             }
         }
+
+        await Task.Delay(sleepMs);
     }
 }
