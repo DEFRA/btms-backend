@@ -61,6 +61,7 @@ namespace Btms.Consumers;
                         cancellationToken: Context.CancellationToken))
                 {
                     logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}", message.Header?.EntryReference, messageId);
+                    await dbContext.SaveChangesAsync(Context.CancellationToken);
                     return;
                 }
 
