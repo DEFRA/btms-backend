@@ -75,7 +75,7 @@ namespace Btms.Consumers;
             }
             else
             {
-                logger.LogWarning("Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} Because Last AuditState was {AuditState}", message.Header?.EntryReference, messageId, preProcessingResult.Record.GetLatestAuditEntry().Status);
+                logger.LogWarning("Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
         }
     }

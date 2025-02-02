@@ -4,7 +4,6 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Btms.Backend.Data.Mongo;
 
@@ -90,13 +89,6 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     {
         _entitiesToInsert.Add(item);
         return Task.CompletedTask;
-        ////item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        ////item.Created = DateTime.UtcNow;
-        ////item.UpdatedEntity = DateTime.UtcNow;
-        ////var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
-        ////return session is not null
-        ////    ? collection.InsertOneAsync(session, item, cancellationToken: cancellationToken)
-        ////    : collection.InsertOneAsync(item, cancellationToken: cancellationToken);
     }
 
     public async Task Update(T item, CancellationToken cancellationToken = default)
@@ -110,30 +102,11 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         {
             return Task.CompletedTask;
         }
-        // etag = etag ?? 
+
         ArgumentNullException.ThrowIfNull(etag);
         _entitiesToUpdate.RemoveAll(x => x.Item.Id == item.Id);
         _entitiesToUpdate.Add(new ValueTuple<T, string>(item, etag));
         return Task.CompletedTask;
-
-       
-        ////var builder = Builders<T>.Filter;
-
-        ////var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
-
-        ////item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        ////item.UpdatedEntity = DateTime.UtcNow;
-        ////var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
-        ////var updateResult = session is not null
-        ////    ? await collection.ReplaceOneAsync(session, filter, item,
-        ////        cancellationToken: cancellationToken)
-        ////    : await collection.ReplaceOneAsync(filter, item,
-        ////        cancellationToken: cancellationToken);
-
-        ////if (updateResult.ModifiedCount == 0)
-        ////{
-        ////    throw new ConcurrencyException(item.Id!, etag);
-        ////}
     }
 
     public IAggregateFluent<T> Aggregate()

@@ -87,7 +87,7 @@ namespace Btms.Consumers;
             else
             {
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
-                logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Record.GetLatestAuditEntry().Status);
+                logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
                 LogStatus("IsCreatedOrChanged=false", message);
             }
 

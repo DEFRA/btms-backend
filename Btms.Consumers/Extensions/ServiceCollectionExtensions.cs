@@ -44,7 +44,6 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
-            ////services.AddScoped(typeof(IConsumerInterceptor<>), typeof(DbContextSaveInterceptor<>));
             
 
             //Message Bus
@@ -123,7 +122,7 @@ namespace Btms.Consumers.Extensions
                                 cfg.EnableMessageHeaders = true;
                             })
                             .AddServicesFromAssemblyContaining<NotificationConsumer>(
-                                consumerLifetime: ServiceLifetime.Scoped).PerMessageScopeEnabled(true)
+                                consumerLifetime: ServiceLifetime.Scoped).PerMessageScopeEnabled()
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {

@@ -77,7 +77,7 @@ public static class DecisionMessageBuilder
                 yield return new Check
                 {
                     CheckCode = checkCode,
-                    DecisionCode = maxDecisionResult?.DecisionCode.ToString(),
+                    DecisionCode = maxDecisionResult.DecisionCode.ToString(),
                     DecisionReasons = BuildDecisionReasons(item, maxDecisionResult!)
                 };
             }

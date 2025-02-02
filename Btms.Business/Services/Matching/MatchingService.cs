@@ -27,17 +27,26 @@ public class MatchingService : IMatchingService
                     Debug.Assert(movement.Id != null, "movement.Id != null");
                     Debug.Assert(item.ItemNumber != null, "item.ItemNumber != null");
 
-                    var notification = matchingContext.Notifications.Find(x =>
-                        x._MatchReference == MatchIdentifier.FromCds(documentGroup).Identifier);
-
-                    if (notification is null)
+                    if (MatchIdentifier.TryFromCds(documentGroup!, out var identifier))
                     {
-                        matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
+                        var notification = matchingContext.Notifications.Find(x =>
+                            x._MatchReference == identifier.Identifier);
+
+                        if (notification is null)
+                        {
+                            matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
+                        }
+                        else
+                        {
+                            Debug.Assert(notification?.Id != null, "notification.Id != null");
+                            matchingResult.AddMatch(notification.Id, movement.Id, item.ItemNumber.Value, documentGroup);
+                        }
+
+
                     }
                     else
                     {
-                        Debug.Assert(notification?.Id != null, "notification.Id != null");
-                        matchingResult.AddMatch(notification.Id, movement.Id, item.ItemNumber.Value, documentGroup);
+                        matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
                     }
                 }
             }
