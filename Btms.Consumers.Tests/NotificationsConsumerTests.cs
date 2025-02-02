@@ -1,3 +1,4 @@
+using Btms.Backend.Data.InMemory;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
@@ -77,7 +78,7 @@ public class NotificationsConsumerTests : ConsumerTests
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance, null!)
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext())
             {
                 Context = new ConsumerContext
                 {

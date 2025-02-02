@@ -1,3 +1,4 @@
+using Btms.Backend.Data.InMemory;
 using Btms.Business.Builders;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
@@ -92,7 +93,7 @@ public class ClearanceRequestConsumerTests
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance, null!)
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance, new MemoryMongoDbContext())
                 {
                     Context = new ConsumerContext
                     {
