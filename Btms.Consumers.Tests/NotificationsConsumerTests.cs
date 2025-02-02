@@ -39,7 +39,7 @@ public class NotificationsConsumerTests : ConsumerTests
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
-        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, null!);
+        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext());
         consumer.Context = new ConsumerContext
         {
             Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
