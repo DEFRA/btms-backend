@@ -74,27 +74,7 @@ namespace Btms.Consumers;
 
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                foreach (var decisionMessage in decisionResult.DecisionsMessages)
-                {
-                    var headers = new Dictionary<string, object>
-                    {
-                        { "messageId", Guid.NewGuid() },
-                        { "notifications", decisionContext.Notifications
-                            .Select(n => new DecisionImportNotifications
-                            {
-                                Id = n.Id!,
-                                Version = n.Version,
-                                Created = n.Created,
-                                Updated = n.Updated,
-                                UpdatedEntity = n.UpdatedEntity,
-                                CreatedSource = n.CreatedSource!.Value,
-                                UpdatedSource = n.UpdatedSource!.Value
-                                })
-                            .ToList()
-                        },
-                    };
-                    await Context.Bus.Publish(decisionMessage, "DECISIONS", headers: headers, cancellationToken: Context.CancellationToken);
-                }
+                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext);
             }
             else if (preProcessingResult.IsDeleted())
             {
