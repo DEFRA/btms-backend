@@ -71,13 +71,16 @@ public static class DecisionMessageBuilder
         
         foreach (var checkCode in item.Checks.Select(x => x.CheckCode))
         {
-            var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).First();
-            yield return new Check
+            var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).FirstOrDefault();
+            if (maxDecisionResult is not null)
             {
-                CheckCode = checkCode,
-                DecisionCode = maxDecisionResult.DecisionCode.ToString(),
-                DecisionReasons = BuildDecisionReasons(item, maxDecisionResult)
-            };
+                yield return new Check
+                {
+                    CheckCode = checkCode,
+                    DecisionCode = maxDecisionResult?.DecisionCode.ToString(),
+                    DecisionReasons = BuildDecisionReasons(item, maxDecisionResult!)
+                };
+            }
         }
     }
 
