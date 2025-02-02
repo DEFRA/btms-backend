@@ -101,11 +101,12 @@ namespace Btms.Consumers;
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
                 await linkingService.UnLink(linkContext, Context.CancellationToken);
-
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
+
             }
             else
             {
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
                 logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Record.GetLatestAuditEntry().Status);
                 LogStatus("IsCreatedOrChanged=false", message);
             }
