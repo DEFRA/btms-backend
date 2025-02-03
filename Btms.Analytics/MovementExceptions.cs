@@ -31,6 +31,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         var simplifiedMovementView = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            // .Where(m => m.Id == "24GBE3BA7NHLFZMAR1")
             .Select(m => new
             {
                 // NB - we should think about pre-calculating this stuff and storing it on the movement...
@@ -47,8 +48,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.BtmsStatus.LinkStatus,
                 m.BtmsStatus.Status,
                 m.BtmsStatus.Segment,
-                m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus,
-                m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionMatched,
+                m.AlvsDecisionStatus.Context.DecisionComparison,
                 HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
                 ContiguousAlvsClearanceRequestVersionsFrom1 = 
                     m.ClearanceRequests.Select(c => c.Header!.EntryVersionNumber)
@@ -67,8 +67,8 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.LinkStatus,
                 m.Status,
                 m.Segment,
-                m.DecisionStatus,
-                m.DecisionMatched,
+                DecisionStatus = (m.DecisionComparison == null) ? DecisionStatusEnum.None : m.DecisionComparison!.DecisionStatus,
+                DecisionMatched = (m.DecisionComparison != null) && m.DecisionComparison!.DecisionMatched,
                 m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
                 TotalDocumentVersions = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds,
@@ -76,7 +76,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             });
 
         var unMatchedGroupedByMrnStatus = simplifiedMovementView
-            .Where(r => !r.DecisionMatched && r.LinkStatus == LinkStatusEnum.AllLinked)
+            .Where(r => !r.DecisionMatched)
             .GroupBy(r => new { r.DecisionStatus, r.Status, r.Segment })
             .Execute(logger);
 

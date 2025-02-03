@@ -294,6 +294,39 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
+    
+    public Task<SingleSeriesDataset> ByAlvsDecision(DateTime from,
+        DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    {
+        var mongoQuery = context
+            .Movements
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            .Select(m => new {
+                m.Id, 
+                Decisions = m.AlvsDecisionStatus.Decisions
+                    .Select(d => new
+                    {
+                        Min = d.Decision.Items.Min(i => i.ItemNumber),
+                        Max =  d.Decision.Items.Max(i => i.ItemNumber),
+                        ItemCount = d.Decision.Items.Count()
+                    })
+            })
+            .Select(m => new
+            {
+                m.Id,
+                m.Decisions,
+                DistinctCount = m.Decisions.Distinct().Count(),
+                DecisionsCount = m.Decisions.Count(),
+                Same = m.Decisions.Distinct().Count() <= 1
+            })
+            .GroupBy(m => m.Same)
+            .Execute(logger);
+        
+        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+
+        var r = new SingleSeriesDataset();
+        return Task.FromResult(r);
+    }
 
     /// <summary>
     /// Finds the most recent decision from Alvs and BTMS
@@ -310,6 +343,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            // .Where(m => m.Id == "24GBE3BA7NHLFZMAR1")
             .SelectMany(d => d
                 .AlvsDecisionStatus.Context.DecisionComparison!.Checks
                 .Select(c => new
