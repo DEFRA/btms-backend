@@ -22,7 +22,7 @@ namespace Btms.Consumers;
         IMongoDbContext dbContext)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
-    public async Task OnHandle(AlvsClearanceRequest message)
+    public async Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
     {
         var messageId = Context.GetMessageId();
         using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.Header?.EntryReference!))

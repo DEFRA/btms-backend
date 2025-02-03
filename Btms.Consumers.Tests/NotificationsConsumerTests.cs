@@ -4,6 +4,7 @@ using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
 using Btms.Model.Auditing;
 using Btms.Types.Ipaffs;
@@ -29,6 +30,10 @@ public class NotificationsConsumerTests : ConsumerTests
         // ARRANGE
         var notification = CreateImportNotification();
         var modelNotification = notification.MapWithTransform();
+        modelNotification.PartTwo!.AutoClearedOn = null;
+        var v = modelNotification.PartTwo!.AutoClearedOn!.HasValue();
+        Console.Write(v);
+
         modelNotification.Changed(AuditEntry.CreateLinked("Test", 1));
         var mockLinkingService = Substitute.For<ILinkingService>();
         var decisionService = Substitute.For<IDecisionService>();
@@ -46,7 +51,7 @@ public class NotificationsConsumerTests : ConsumerTests
         };
 
         // ACT
-        await consumer.OnHandle(notification);
+        await consumer.OnHandle(notification, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsLinked().Should().BeFalse();
@@ -87,7 +92,7 @@ public class NotificationsConsumerTests : ConsumerTests
             };
 
         // ACT
-        await consumer.OnHandle(notification);
+        await consumer.OnHandle(notification, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsPreProcessed().Should().BeTrue();

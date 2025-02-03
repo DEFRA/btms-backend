@@ -59,7 +59,7 @@ public class ClearanceRequestConsumerTests
                 };
 
         // ACT
-        await consumer.OnHandle(clearanceRequest);
+        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsLinked().Should().BeFalse();
@@ -105,7 +105,7 @@ public class ClearanceRequestConsumerTests
                 };
 
         // ACT
-        await consumer.OnHandle(clearanceRequest);
+        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsPreProcessed().Should().BeTrue();

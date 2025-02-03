@@ -9,7 +9,7 @@ namespace Btms.Consumers;
 internal class GmrConsumer(IMongoDbContext dbContext)
     : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumerWithContext
 {
-    public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message)
+    public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message, CancellationToken cancellationToken)
     {
        
         foreach (var gmr in message.Gmrs!)

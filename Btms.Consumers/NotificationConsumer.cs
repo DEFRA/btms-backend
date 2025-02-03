@@ -22,7 +22,7 @@ namespace Btms.Consumers;
         IMongoDbContext dbContext)
     : IConsumer<ImportNotification>, IConsumerWithContext
 {
-    public async Task OnHandle(ImportNotification message)
+    public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
     {
         var messageId = Context.GetMessageId();
         using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.ReferenceNumber!))

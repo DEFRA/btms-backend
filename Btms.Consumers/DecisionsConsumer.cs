@@ -12,7 +12,7 @@ namespace Btms.Consumers;
 public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory movementBuilderFactory, ILogger<DecisionsConsumer> logger)
     : IConsumer<Decision>, IConsumerWithContext
 {
-    public async Task OnHandle(Decision message)
+    public async Task OnHandle(Decision message, CancellationToken cancellationToken)
     {
         var internalDecision = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
