@@ -51,7 +51,7 @@ public static class MessageRoutingExtensions
             {
                 case null:
                     throw new ArgumentException($"Unexpected null message");
-                
+
                 case ImportNotification n:
                     headers.Add(MessageIdHeaderKey, n.ReferenceNumber!);
                     await bus.Publish(n, "NOTIFICATIONS", headers);

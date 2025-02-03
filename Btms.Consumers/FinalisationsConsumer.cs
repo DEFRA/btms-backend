@@ -16,7 +16,7 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
     ILogger<FinalisationsConsumer> logger)
     : IConsumer<Finalisation>, IConsumerWithContext
 {
-    public async Task OnHandle(Finalisation message)
+    public async Task OnHandle(Finalisation message, CancellationToken cancellationToken)
     {
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
         var internalFinalisation = FinalisationMapper.Map(message);
@@ -34,6 +34,7 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
             if (existingMovementBuilder.HasChanges)
             {
                 await dbContext.Movements.Update(existingMovementBuilder.Build(), existingMovement._Etag);
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
             }
         }
     }

@@ -141,25 +141,26 @@ public static class AnalyticsDashboards
             {
                 "movementsExceptions",
                 () => movementsService.ExceptionSummary(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
+            },
+            {
+                "movementsByAlvsDecisionItemNumbers",
+                () => movementsService.ByAlvsDecision(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             }
         };
-        
         var chartsToReturn = chartsToRender.Length == 0
-            ? charts
-            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key));
-            
-        var taskList = chartsToReturn.Select(r => new KeyValuePair<string, Task<IDataset>>(key:r.Key, value: r.Value()));
+            ? charts.ToList()
+            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key)).ToList();
+      
+        var taskList = chartsToReturn.Select(r => r.Value()).ToList();
         
-        // TODO - have just noticed this executes each chart twice
-        // once during Task.WhenAll and again on the following line - revisit
-        await Task.WhenAll(taskList.Select(r => r.Value));
+        await Task.WhenAll(taskList);
 
-        var output = taskList
-            .ToDictionary(t => t.Key, t => t.Value.Result);
-        
+        var output = chartsToReturn
+            .Select((x, i) => new { Key = x.Key, Index = i })
+            .ToDictionary(t => t.Key, t => taskList[t.Index].Result);
+  
         logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
 
         return output;
-        
     }
 }

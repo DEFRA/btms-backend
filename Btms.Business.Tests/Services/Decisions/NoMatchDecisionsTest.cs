@@ -25,9 +25,8 @@ public class NoMatchDecisionsTest
     {
         // Arrange
         var movements = GenerateMovements(false);
-        var publishBus = Substitute.For<IPublishBus>();
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus, Array.Empty<IDecisionFinder>());
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, Array.Empty<IDecisionFinder>());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
@@ -38,8 +37,7 @@ public class NoMatchDecisionsTest
         // Assert
         decisionResult.Should().NotBeNull();
         decisionResult.Decisions.Count.Should().Be(0);
-        await publishBus.Received(0).Publish(Arg.Any<Decision>(), Arg.Any<string>(),
-            Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
+       
         await Task.CompletedTask;
     }
 
@@ -49,9 +47,8 @@ public class NoMatchDecisionsTest
         // Arrange
         var movements = GenerateMovements(true);
         movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
-        var publishBus = Substitute.For<IPublishBus>();
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, publishBus, Array.Empty<IDecisionFinder>());
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance,  Array.Empty<IDecisionFinder>());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
@@ -64,8 +61,6 @@ public class NoMatchDecisionsTest
         decisionResult.Decisions.Count.Should().Be(1);
         decisionResult.Decisions[0].DecisionCode.Should().Be(DecisionCode.X00);
         
-        await publishBus.Received().Publish(Arg.Any<Types.Alvs.Decision>(), Arg.Any<string>(),
-            Arg.Any<IDictionary<string, object>>(), Arg.Any<CancellationToken>());
         await Task.CompletedTask;
     }
 

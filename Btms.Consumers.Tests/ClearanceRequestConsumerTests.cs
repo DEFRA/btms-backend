@@ -1,3 +1,4 @@
+using Btms.Backend.Data.InMemory;
 using Btms.Business.Builders;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
@@ -46,7 +47,7 @@ public class ClearanceRequestConsumerTests
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(outcome, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance, null!)
                 {
                     Context = new ConsumerContext
                     {
@@ -58,7 +59,7 @@ public class ClearanceRequestConsumerTests
                 };
 
         // ACT
-        await consumer.OnHandle(clearanceRequest);
+        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsLinked().Should().BeFalse();
@@ -92,7 +93,7 @@ public class ClearanceRequestConsumerTests
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
 
         var consumer =
-                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+                new AlvsClearanceRequestConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<AlvsClearanceRequestConsumer>.Instance, new MemoryMongoDbContext())
                 {
                     Context = new ConsumerContext
                     {
@@ -104,7 +105,7 @@ public class ClearanceRequestConsumerTests
                 };
 
         // ACT
-        await consumer.OnHandle(clearanceRequest);
+        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsPreProcessed().Should().BeTrue();

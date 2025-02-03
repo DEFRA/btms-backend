@@ -10,20 +10,20 @@ namespace Btms.Consumers;
 internal class AlvsAsbConsumer(IServiceProvider serviceProvider) : IConsumer<object>, IConsumerWithContext
 {
     private readonly ISensitiveDataSerializer _serializer = serviceProvider.GetRequiredService<ISensitiveDataSerializer>();
-    public Task OnHandle(object message)
+    public Task OnHandle(object message, CancellationToken cancellationToken)
     {
         var messageType = Context.GetMessageType();
 
         return messageType switch
         {
-            AlvsMessageTypes.ALVSClearanceRequest => ProcessMessage<AlvsClearanceRequest>(message),
-            AlvsMessageTypes.ALVSDecisionNotification => ProcessMessage<Decision>(message),
+            AlvsMessageTypes.ALVSClearanceRequest => ProcessMessage<AlvsClearanceRequest>(message, cancellationToken),
+            AlvsMessageTypes.ALVSDecisionNotification => ProcessMessage<Decision>(message, cancellationToken),
             ////AlvsMessageTypes.FinalisationNotificationRequest => ProcessMessage<ImportNotification>(message),
             _ => Task.CompletedTask
         };
     }
 
-    private Task ProcessMessage<T>(object message)
+    private Task ProcessMessage<T>(object message, CancellationToken cancellationToken)
     {
         var newMessage = _serializer.Deserialize<T>(message.ToString() ?? throw new InvalidOperationException());
         var consumer = serviceProvider.GetRequiredService<IConsumer<T>>();
@@ -32,7 +32,7 @@ internal class AlvsAsbConsumer(IServiceProvider serviceProvider) : IConsumer<obj
             consumerWithContext.Context = Context;
         }
 
-        return consumer.OnHandle(newMessage);
+        return consumer.OnHandle(newMessage, cancellationToken);
     }
 
     public IConsumerContext Context { get; set; } = null!;
