@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Data;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
+[SuppressMessage("SonarLint", "S107", Justification = "Ignore constructor limit of 7")]
 internal class AlvsClearanceRequestConsumer(
     IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor,
     ILinkingService linkingService,
