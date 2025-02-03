@@ -97,6 +97,14 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         await Update(item, item._Etag, cancellationToken);
     }
 
+    public async Task Update(List<T> items, CancellationToken cancellationToken = default)
+    {
+        foreach (var item in items)
+        {
+            await Update(item, cancellationToken);
+        }
+    }
+
     public Task Update(T item, string etag,  CancellationToken cancellationToken = default)
     {
         if (_entitiesToInsert.Exists(x => x.Id == item.Id))

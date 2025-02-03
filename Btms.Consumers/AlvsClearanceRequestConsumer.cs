@@ -13,14 +13,12 @@ using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
-[SuppressMessage("SonarLint", "S107", Justification = "Ignore constructor limit of 7")]
 internal class AlvsClearanceRequestConsumer(
     IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor,
     ILinkingService linkingService,
     IMatchingService matchingService,
     IDecisionService decisionService,
     IValidationService validationService,
-    IRelatedDataService relatedDataService,
     IMongoDbContext dbContext,
     ILogger<AlvsClearanceRequestConsumer> logger)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
@@ -64,8 +62,10 @@ internal class AlvsClearanceRequestConsumer(
                     return;
                 }
 
-                await relatedDataService.RelatedDataEntityChanged(linkResult.Notifications,
-                    Context.CancellationToken);
+                // We need to mark the entity as updated even if the conceptual resource has not changed
+                // so that consumers of BTMS can query notifications where related data has changed but
+                // the resource itself hasn't
+                await dbContext.Notifications.Update(linkResult.Notifications, Context.CancellationToken);
 
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);

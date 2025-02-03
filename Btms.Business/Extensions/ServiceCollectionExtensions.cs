@@ -65,7 +65,6 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ILinkingService, LinkingService>();
-        services.AddScoped<IRelatedDataService, RelatedDataService>();
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<IDecisionService, DecisionService>();
         services.AddScoped<IMatchingService, MatchingService>();

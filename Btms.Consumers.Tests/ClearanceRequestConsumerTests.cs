@@ -1,5 +1,4 @@
 using Btms.Backend.Data;
-using Btms.Backend.Data.InMemory;
 using Btms.Business.Builders;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
@@ -9,7 +8,6 @@ using Btms.Business.Services.Validating;
 using Btms.Consumers.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
-using Btms.Model.Ipaffs;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using FluentAssertions;
@@ -27,7 +25,6 @@ public class ClearanceRequestConsumerTests
     private readonly IDecisionService _decisionService = Substitute.For<IDecisionService>();
     private readonly IMatchingService _matchingService = Substitute.For<IMatchingService>();
     private readonly IValidationService _validationService = Substitute.For<IValidationService>();
-    private readonly IRelatedDataService _relatedDataService = Substitute.For<IRelatedDataService>();
     private readonly IMongoDbContext _mongoDbContext = Substitute.For<IMongoDbContext>();
     private readonly IPreProcessor<AlvsClearanceRequest, Movement> _preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Movement>>();
 
@@ -80,38 +77,6 @@ public class ClearanceRequestConsumerTests
         await _mockLinkingService.Received().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
-    public async Task WhenPreProcessingSucceeds_AndLinked_AndPostLinkValidated_ThenRelatedDataUpdated()
-    {
-        // ARRANGE
-        var clearanceRequest = CreateAlvsClearanceRequest();
-        var mbFactory = new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance);
-        var mb = mbFactory.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
-        mb.Update(mb.CreateAuditEntry("Test",  CreatedBySystem.Cds));
-        var movement = mb.Build();
-        var notifications = new List<ImportNotification> { new() };
-        _preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
-            .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));
-        _mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)
-            {
-                Notifications = notifications
-            }));
-        _validationService.PostLinking(Arg.Any<LinkContext>(), Arg.Any<LinkResult>(), Arg.Any<Movement?>(),
-            Arg.Any<ImportNotification?>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(true));
-        _decisionService.Process(Arg.Any<DecisionContext>(), Arg.Any<CancellationToken>())
-            .Returns(new DecisionResult());
-        var consumer = CreateSubject(clearanceRequest.Header!.EntryReference!);
-
-        // ACT
-        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
-
-        // ASSERT
-        await _relatedDataService.Received().RelatedDataEntityChanged(notifications,
-            Arg.Any<CancellationToken>());
-    }
-
     private static AlvsClearanceRequest CreateAlvsClearanceRequest()
     {
         return ClearanceRequestBuilder.Default()
@@ -121,7 +86,7 @@ public class ClearanceRequestConsumerTests
     private AlvsClearanceRequestConsumer CreateSubject(string messageId)
     {
         return new AlvsClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
-            _validationService, _relatedDataService, _mongoDbContext, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+            _validationService, _mongoDbContext, NullLogger<AlvsClearanceRequestConsumer>.Instance)
         {
             Context = new ConsumerContext
             {
