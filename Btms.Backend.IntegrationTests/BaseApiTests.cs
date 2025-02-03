@@ -1,5 +1,4 @@
 using Btms.Backend.IntegrationTests.Helpers;
-using Microsoft.AspNetCore.Mvc.Testing;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
@@ -22,6 +21,6 @@ public abstract class BaseApiTests
         Factory = factory;
         Factory.TestOutputHelper = testOutputHelper;
         Factory.DatabaseName = databaseName;
-        Client = Factory.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        Client = Factory.CreateBtmsClient();
     }
 }

@@ -17,8 +17,7 @@ public interface IIntegrationTestsApplicationFactory
 {
     ITestOutputHelper TestOutputHelper { get; set; }
     string DatabaseName { get; set; }
-
-    BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options);
+    BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null);
     IMongoDbContext GetDbContext();
 }
 
@@ -74,9 +73,9 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
     public string DatabaseName { get; set; } = null!;
 
-    public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions options)
+    public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null)
     {
-        return new BtmsClient(base.CreateClient(options));
+        return new BtmsClient(CreateClient(options ?? new WebApplicationFactoryClientOptions { AllowAutoRedirect = false }));
     }
 
     public IMongoDbContext GetDbContext()
