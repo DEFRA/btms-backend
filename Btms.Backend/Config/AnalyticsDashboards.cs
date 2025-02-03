@@ -148,16 +148,16 @@ public static class AnalyticsDashboards
             }
         };
         var chartsToReturn = chartsToRender.Length == 0
-            ? charts
-            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key));
+            ? charts.ToList()
+            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key)).ToList();
       
-        var taskList = chartsToReturn.Select(r => r.Value());
+        var taskList = chartsToReturn.Select(r => r.Value()).ToList();
         
         await Task.WhenAll(taskList);
 
         var output = chartsToReturn
             .Select((x, i) => new { Key = x.Key, Index = i })
-            .ToDictionary(t => t.Key, t => taskList.ElementAt(t.Index).Result);
+            .ToDictionary(t => t.Key, t => taskList[t.Index].Result);
   
         logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
 
