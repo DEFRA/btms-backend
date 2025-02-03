@@ -30,9 +30,6 @@ public class NotificationsConsumerTests : ConsumerTests
         // ARRANGE
         var notification = CreateImportNotification();
         var modelNotification = notification.MapWithTransform();
-        modelNotification.PartTwo!.AutoClearedOn = null;
-        var v = modelNotification.PartTwo!.AutoClearedOn!.HasValue();
-        Console.Write(v);
 
         modelNotification.Changed(AuditEntry.CreateLinked("Test", 1));
         var mockLinkingService = Substitute.For<ILinkingService>();
