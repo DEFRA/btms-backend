@@ -10,8 +10,8 @@ namespace Btms.Backend.IntegrationTests.Helpers;
 
 public static class ServiceBusHelper
 {
-    private static string _connectionString =
-        "Endpoint=sb://host.docker.internal:5672;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
+    private const string ConnectionString =
+        "Endpoint=sb://127.0.0.1:5672;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
 
     public static Task PublishClearanceRequest(AlvsClearanceRequest request)
     {
@@ -30,7 +30,7 @@ public static class ServiceBusHelper
 
     private static async Task PublishMessage<T>(T request, string topicName, string? messageType = null)
     {
-        await using var client = new ServiceBusClient(_connectionString);
+        await using var client = new ServiceBusClient(ConnectionString);
         
         var sender = client.CreateSender(topicName);
         var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(request)))
