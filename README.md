@@ -2,55 +2,29 @@
 
 Core delivery C# ASP.NET backend template.
 
-* [Install MongoDB](#install-mongodb)
-* [Inspect MongoDB](#inspect-mongodb)
+* [MongoDB](#mongodb)
 * [Testing](#testing)
 * [Running](#running)
-* [Dependabot](#dependabot)
 * [Test Data](#test-data)
 
-# Install MongoDB
-- Install [MongoDB](https://www.mongodb.com/docs/manual/tutorial/#installation) on your local machine
-- Start MongoDB:
-```bash
-sudo mongod --dbpath ~/mongodb-cdp
-```
+# MongoDB
 
-# Inspect MongoDB
-
-To inspect the Database and Collections locally:
-```bash
-mongosh
-```
+Run MongoDB as a container. See btms-frontend repository for necessary compose configuration.
 
 # Testing
 
-Run the tests with:
+If running integration tests, start the MongoDB dependencies as noted above.
 
-Tests run by running a full `WebApplication` backed by [Ephemeral MongoDB](https://github.com/asimmon/ephemeral-mongo).
-Tests do not use mocking of any sort and read and write from the in-memory database.
+Also start the Azure Service Bus emulator included in the compose.yml file.
 
-```bash
-dotnet test
-````
+All tests within the solution should then run locally.
 
 # Running
 
-Run CDP-Deployments application:
-```bash
-dotnet run --project Btms.Backend --launch-profile Btms.Backend
-```
+Open the btms-backend solution and run the Btms.Backend profile.
 
-# SonarCloud
 
-Example SonarCloud configuration are available in the GitHub Action workflows.
-
-# Dependabot
-
-We have added an example dependabot configuration file to the repository. You can enable it by renaming
-the [.github/example.dependabot.yml](.github/example.dependabot.yml) to `.github/dependabot.yml`
-
-# Test data
+# Test Data
 We are able to obtain test data to use in our tests a few ways.
 
 ## Canned test data
