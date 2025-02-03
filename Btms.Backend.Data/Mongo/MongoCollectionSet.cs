@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 namespace Btms.Backend.Data.Mongo;
 
 public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionName = null!)
-    : IMongoCollectionSet<T> where T : IDataEntity
+    : IMongoCollectionSet<T> where T : class, IDataEntity
 {
     private readonly IMongoCollection<T> _collection = string.IsNullOrEmpty(collectionName)
         ? dbContext.Database.GetCollection<T>(typeof(T).Name)
