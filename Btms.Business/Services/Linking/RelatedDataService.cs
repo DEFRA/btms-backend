@@ -3,23 +3,17 @@ using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Linking;
 
-public class AssociatedDataService(IMongoDbContext mongoDbContext) : IAssociatedDataService
+public class RelatedDataService(IMongoDbContext mongoDbContext) : IRelatedDataService
 {
     /// <inheritdoc />
     public async Task RelatedDataEntityChanged(
         List<ImportNotification> notifications, 
-        string auditId, 
         CancellationToken cancellationToken)
     {
         foreach (var notification in notifications)
         {
-            notification.RelatedDataChanged(auditId);
-            
             // Assumes the list of notifications exists in the DB already
-            await mongoDbContext.Notifications.Update(
-                notification, 
-                notification._Etag, 
-                cancellationToken: cancellationToken);
+            await mongoDbContext.Notifications.Update(notification, cancellationToken: cancellationToken);
         }
     }
 }

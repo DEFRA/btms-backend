@@ -27,7 +27,7 @@ public class ClearanceRequestConsumerTests
     private readonly IDecisionService _decisionService = Substitute.For<IDecisionService>();
     private readonly IMatchingService _matchingService = Substitute.For<IMatchingService>();
     private readonly IValidationService _validationService = Substitute.For<IValidationService>();
-    private readonly IAssociatedDataService _associatedDataService = Substitute.For<IAssociatedDataService>();
+    private readonly IRelatedDataService _relatedDataService = Substitute.For<IRelatedDataService>();
     private readonly IMongoDbContext _mongoDbContext = Substitute.For<IMongoDbContext>();
     private readonly IPreProcessor<AlvsClearanceRequest, Movement> _preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Movement>>();
 
@@ -81,7 +81,7 @@ public class ClearanceRequestConsumerTests
     }
 
     [Fact]
-    public async Task WhenPreProcessingSucceeds_AndLinked_AndPostLinkValidated_ThenAssociatedDataUpdated()
+    public async Task WhenPreProcessingSucceeds_AndLinked_AndPostLinkValidated_ThenRelatedDataUpdated()
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
@@ -108,7 +108,7 @@ public class ClearanceRequestConsumerTests
         await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
-        await _associatedDataService.Received().RelatedDataEntityChanged(notifications, clearanceRequest.Header!.EntryReference!,
+        await _relatedDataService.Received().RelatedDataEntityChanged(notifications,
             Arg.Any<CancellationToken>());
     }
 
@@ -121,7 +121,7 @@ public class ClearanceRequestConsumerTests
     private AlvsClearanceRequestConsumer CreateSubject(string messageId)
     {
         return new AlvsClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
-            _validationService, _associatedDataService, _mongoDbContext, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+            _validationService, _relatedDataService, _mongoDbContext, NullLogger<AlvsClearanceRequestConsumer>.Instance)
         {
             Context = new ConsumerContext
             {

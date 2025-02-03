@@ -18,7 +18,7 @@ internal class AlvsClearanceRequestConsumer(
     IMatchingService matchingService,
     IDecisionService decisionService,
     IValidationService validationService,
-    IAssociatedDataService associatedDataService,
+    IRelatedDataService relatedDataService,
     IMongoDbContext dbContext,
     ILogger<AlvsClearanceRequestConsumer> logger)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
@@ -62,7 +62,7 @@ internal class AlvsClearanceRequestConsumer(
                     return;
                 }
 
-                await associatedDataService.RelatedDataEntityChanged(linkResult.Notifications, messageId,
+                await relatedDataService.RelatedDataEntityChanged(linkResult.Notifications,
                     Context.CancellationToken);
 
                 var matchResult = await matchingService.Process(

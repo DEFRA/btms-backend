@@ -174,11 +174,6 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));
     }
 
-    public void RelatedDataChanged(string auditId)
-    {
-        AuditEntries.Add(AuditEntry.CreateRelatedDataChanged(auditId, Version.GetValueOrDefault()));
-    }
-
     public void Changed(AuditEntry auditEntry)
     {
         AuditEntries.Add(auditEntry);
