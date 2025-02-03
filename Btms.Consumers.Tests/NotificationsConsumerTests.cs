@@ -1,8 +1,10 @@
+using Btms.Backend.Data.InMemory;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
 using Btms.Model.Auditing;
 using Btms.Types.Ipaffs;
@@ -28,6 +30,7 @@ public class NotificationsConsumerTests : ConsumerTests
         // ARRANGE
         var notification = CreateImportNotification();
         var modelNotification = notification.MapWithTransform();
+
         modelNotification.Changed(AuditEntry.CreateLinked("Test", 1));
         var mockLinkingService = Substitute.For<ILinkingService>();
         var decisionService = Substitute.For<IDecisionService>();
@@ -38,14 +41,14 @@ public class NotificationsConsumerTests : ConsumerTests
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
-        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance);
+        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext());
         consumer.Context = new ConsumerContext
         {
             Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
         };
 
         // ACT
-        await consumer.OnHandle(notification);
+        await consumer.OnHandle(notification, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsLinked().Should().BeFalse();
@@ -77,7 +80,7 @@ public class NotificationsConsumerTests : ConsumerTests
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance)
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext())
             {
                 Context = new ConsumerContext
                 {
@@ -86,7 +89,7 @@ public class NotificationsConsumerTests : ConsumerTests
             };
 
         // ACT
-        await consumer.OnHandle(notification);
+        await consumer.OnHandle(notification, CancellationToken.None);
 
         // ASSERT
         consumer.Context.IsPreProcessed().Should().BeTrue();

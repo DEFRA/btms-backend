@@ -1,3 +1,4 @@
+using Btms.Backend.Data;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus;
@@ -17,10 +18,11 @@ namespace Btms.Consumers;
         IMatchingService matchingService,
         IDecisionService decisionService, 
         IValidationService validationService,
-        ILogger<AlvsClearanceRequestConsumer> logger)
+        ILogger<AlvsClearanceRequestConsumer> logger,
+        IMongoDbContext dbContext)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
-    public async Task OnHandle(AlvsClearanceRequest message)
+    public async Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
     {
         var messageId = Context.GetMessageId();
         using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.Header?.EntryReference!))
@@ -48,30 +50,32 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
 
-                // var m = new Movement()
-                // {
-                //     BtmsStatus = MovementStatus.Default()
-                // };
-                // (Movement)preProcessingResult.Record
-                // 
                 if (! await validationService.PostLinking(linkContext, linkResult, 
                         triggeringMovement: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
                 {
                     logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}", message.Header?.EntryReference, messageId);
+                    await dbContext.SaveChangesAsync(Context.CancellationToken);
                     return;
                 }
+
+               
 
                 var matchResult = await matchingService.Process(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
-                var decisionResult = await decisionService.Process(new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true), Context.CancellationToken);
+                var decisionContext = new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true);
+                var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
                 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
+
+                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext);
             }
             else
             {
-                logger.LogWarning("Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} Because Last AuditState was {AuditState}", message.Header?.EntryReference, messageId, preProcessingResult.Record.GetLatestAuditEntry().Status);
+                logger.LogWarning("Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
         }
     }

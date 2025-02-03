@@ -9,8 +9,9 @@ namespace Btms.Consumers;
 internal class GmrConsumer(IMongoDbContext dbContext)
     : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumerWithContext
 {
-    public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message)
+    public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message, CancellationToken cancellationToken)
     {
+       
         foreach (var gmr in message.Gmrs!)
         {
             var internalGmr = GrmWithTransformMapper.MapWithTransform(gmr);
@@ -42,6 +43,8 @@ internal class GmrConsumer(IMongoDbContext dbContext)
                 }
             }
         }
+
+        await dbContext.SaveChangesAsync(Context.CancellationToken);
     }
 
     public IConsumerContext Context { get; set; } = null!;

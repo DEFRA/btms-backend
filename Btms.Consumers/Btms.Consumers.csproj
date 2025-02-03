@@ -21,10 +21,10 @@
 
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.4" />
-    <PackageReference Include="SlimMessageBus" Version="2.0.4" />
-    <PackageReference Include="SlimMessageBus.Host.AzureServiceBus" Version="2.7.0" />
-    <PackageReference Include="SlimMessageBus.Host.Memory" Version="2.5.3" />
-    <PackageReference Include="SlimMessageBus.Host.Serialization.SystemTextJson" Version="2.7.0" />
+    <PackageReference Include="SlimMessageBus" Version="3.0.0" />
+    <PackageReference Include="SlimMessageBus.Host.AzureServiceBus" Version="3.0.0" />
+    <PackageReference Include="SlimMessageBus.Host.Memory" Version="3.0.0" />
+    <PackageReference Include="SlimMessageBus.Host.Serialization.SystemTextJson" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
