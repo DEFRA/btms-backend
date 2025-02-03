@@ -23,11 +23,13 @@ public interface IIntegrationTestsApplicationFactory
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
+    public Action<IConfigurationBuilder> ConfigureHostConfiguration { get; set; } = _ => { };
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
         // And we don't want to load the backend ini file 
-        var configurationValues = new Dictionary<string, string>
+        var configurationValues = new Dictionary<string, string?>
         {
             { "DisableLoadIniFile", "true" },
             { "BlobServiceOptions:CachePath", "../../../Fixtures" },
@@ -35,12 +37,13 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
             { "AuthKeyStore:Credentials:IntTest", "Password" }
         };
 
-        var configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(configurationValues!)
-            .Build();
+        var configurationBuilder = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationValues);
+        
+        ConfigureHostConfiguration(configurationBuilder);
 
         builder
-            .UseConfiguration(configuration)
+            .UseConfiguration(configurationBuilder.Build())
             .ConfigureServices(services =>
             {
                 var mongoDatabaseDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IMongoDatabase))!;
