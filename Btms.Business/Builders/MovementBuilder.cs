@@ -208,16 +208,17 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         var alvsDecision = _movement.AlvsDecisionStatus.Decisions
             .MaxBy(d => d.Context.DecisionComparison.HasValue());
             
-        logger.LogInformation("FindAlvsPairAndUpdate btmsDecision number {BtmsDecisionNumber}, alvs paired decision number {PairedDecisionNumber}", btmsDecision.Header!.DecisionNumber, alvsDecision?.Context.DecisionComparison!.BtmsDecisionNumber);
+        logger.LogInformation("FindAlvsPairAndUpdate btmsDecision number {BtmsDecisionNumber}, alvs paired decision number {PairedDecisionNumber}", 
+            btmsDecision.Header!.DecisionNumber, alvsDecision?.Context.DecisionComparison?.BtmsDecisionNumber);
         
         if (alvsDecision != null)
         {
-            var shouldPair = btmsDecision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison!.BtmsDecisionNumber;
+            var shouldPair = btmsDecision.Header!.DecisionNumber > alvsDecision.Context.DecisionComparison?.BtmsDecisionNumber;
             
             logger.LogInformation("FindAlvsPairAndUpdate ShouldPair {ShouldPair}", shouldPair);
 
             // Updates the pair status if we've received a newer BTMS decision than that already paired. 
-            SetDecisionComparison(alvsDecision, shouldPair, btmsDecision.Header!.DecisionNumber!.Value);
+            SetDecisionComparison(alvsDecision, shouldPair, btmsDecision.Header.DecisionNumber);
 
             if (shouldPair)
             {
