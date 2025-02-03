@@ -26,6 +26,7 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
 
         try
         {
+            await Task.Delay(retryCount * 2000);
             await retry();
         }
         catch (Exception e)

@@ -86,7 +86,12 @@ namespace Btms.Consumers;
             }
             else
             {
-                await dbContext.SaveChangesAsync(Context.CancellationToken);
+                if (preProcessingResult.Outcome != PreProcessingOutcome.Skipped ||
+                    preProcessingResult.Outcome != PreProcessingOutcome.AlreadyProcessed)
+                {
+                    await dbContext.SaveChangesAsync(Context.CancellationToken);
+                }
+
                 logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
                 LogStatus("IsCreatedOrChanged=false", message);
             }
