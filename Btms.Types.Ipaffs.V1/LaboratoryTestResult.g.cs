@@ -46,6 +46,7 @@ public partial class LaboratoryTestResult  //
         /// Result of test
         /// </summary>
     [JsonPropertyName("results")]
+    [SensitiveData.SensitiveData]
     public string? Results { get; set; }
 
 	

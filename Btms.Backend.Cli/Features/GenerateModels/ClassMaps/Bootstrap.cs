@@ -88,6 +88,23 @@ internal static class Bootstrap
                 map.MapProperty("agent").IsSensitive();
             });
 
+        GeneratorClassMap.RegisterClassMap("Applicant",
+            map =>
+            {
+                map.MapProperty("laboratoryAddress").IsSensitive();
+                map.MapProperty("laboratoryIdentification").IsSensitive();
+                map.MapProperty("laboratoryIdentification").IsSensitive();
+                map.MapProperty("laboratoryPhoneNumber").IsSensitive();
+                map.MapProperty("laboratoryEmail").IsSensitive();
+                map.MapProperty("sampleBatchNumber").IsSensitive();
+            });
+
+        GeneratorClassMap.RegisterClassMap("LaboratoryTestResult",
+            map =>
+            {
+                map.MapProperty("results").IsSensitive();
+            });
+
         GeneratorClassMap.RegisterClassMap("BillingInformation",
             map =>
             {
