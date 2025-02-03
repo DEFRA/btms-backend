@@ -17,7 +17,8 @@ namespace Btms.Analytics;
 
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
-        
+    private const string AggregatedMessage = "Aggregated Data {Result}";
+    
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>
@@ -290,7 +291,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(status => mongoResult.AsDataset(dateRange, enumLookup.GetValue(status)))
             .AsOrderedArray(m => m.Name);
         
-        logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
+        logger.LogDebug(AggregatedMessage, output.ToList().ToJsonString());
         
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
@@ -322,7 +323,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .GroupBy(m => m.Same)
             .Execute(logger);
         
-        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var r = new SingleSeriesDataset();
         return Task.FromResult(r);
@@ -344,7 +345,6 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            // .Where(m => m.Id == "24GBE3BA7NHLFZMAR1")
             .SelectMany(d => d
                 .AlvsDecisionStatus.Context.DecisionComparison!.Checks
                 .Select(c => new
@@ -381,7 +381,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .Execute(logger);
         
-        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var enumLookup = new JsonStringEnumConverterEx<DecisionStatusEnum>();
         var summaryValues = mongoQuery
@@ -438,16 +438,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .GroupBy(d => new
             {
                 d.BtmsStatus.Segment,
-                // Segment = d.BtmsStatus.Segment ?? MovementSegmentEnum.None,
                 d.BtmsStatus.LinkStatus,
                 d.BtmsStatus.Status,
                 d.DecisionStatus,
-                // d.AlvsDecisionStatus.Context.DecisionComparison != null ? d.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus.ToString() : "None",
                 d.DecisionMatched,
-                // d.AlvsDecisionStatus?.Context?.DecisionComparison?.DecisionMatched
-                // d.Check.CheckCode,
-                // d.Check.AlvsDecisionCode,
-                // d.Check.BtmsDecisionCode
             })
             .Select(g => new
             {
@@ -455,7 +449,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .Execute(logger);
         
-        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var enumLookup = new JsonStringEnumConverterEx<MovementSegmentEnum>();
         var summaryValues = mongoQuery
