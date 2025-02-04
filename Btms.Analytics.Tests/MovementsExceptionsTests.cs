@@ -17,7 +17,7 @@ namespace Btms.Analytics.Tests;
 public class MovementsExceptionsTests(ITestOutputHelper output) : MultipleScenarioGeneratorBaseTest(output)
 {
     static readonly List<object[]> scenarios = [
-        [typeof(Mrn24Gbd46Kpsvz3Dfar2ScenarioGenerator), "HasChedppChecks FeatureMissing : Cdms205Ac5"],
+        [typeof(Mrn24GBD46KPSVZ3DFAR2ModifiedAlvsDecisionCodeScenarioGenerator), "HasChedppChecks FeatureMissing : Cdms205Ac5"],
         [typeof(CrNoMatchSingleItemWithDecisionScenarioGenerator), "Alvs has match decisions but no Btms links"]
     ];
 

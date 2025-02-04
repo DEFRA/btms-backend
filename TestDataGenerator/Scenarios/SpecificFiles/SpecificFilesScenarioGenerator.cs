@@ -38,6 +38,11 @@ public class Mrn24Gbdpn81Vsulagar9ScenarioGenerator(
     ILogger<Mrn24Gbdpn81Vsulagar9ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDPN81VSULAGAR9");
 
+public class Mrn24Gbdev7Bgq1L0Oar4ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<ChedPpPhsiDecisionTestsScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEV7BGQ1L0OAR4");
+
 public class ChedPpPhsiDecisionTestsScenarioGenerator(
     IServiceProvider sp,
     ILogger<ChedPpPhsiDecisionTestsScenarioGenerator> logger)

@@ -33,6 +33,20 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
         CheckDecisionCode(expectedDecision);
     }
 
+    [Theory]
+    [InlineData(typeof(Mrn24Gbdev7Bgq1L0Oar4ScenarioGenerator))]
+    public void MultiChed_DecisionCode_ShouldContainAllItems(Type generatorType)
+    {
+        EnsureEnvironmentInitialised(generatorType);
+
+        var movement = Client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>().Single();
+
+        foreach (var movementDecision in movement.Decisions)
+        {
+            movementDecision.Items.Length.Should().Be(movement.Items.Count);
+        }
+    }
+
     private void CheckDecisionCode(string expectedDecision)
     {
         var decision = "";
