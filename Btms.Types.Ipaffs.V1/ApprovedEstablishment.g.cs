@@ -54,6 +54,7 @@ public partial class ApprovedEstablishment  //
         /// Approval number
         /// </summary>
     [JsonPropertyName("approvalNumber")]
+        [Btms.SensitiveData.SensitiveData]
     public string? ApprovalNumber { get; set; }
 
 	

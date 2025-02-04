@@ -263,6 +263,7 @@ public partial class PartOne  //
         /// Reference number added by the importer
         /// </summary>
     [JsonPropertyName("importerLocalReferenceNumber")]
+        [Btms.SensitiveData.SensitiveData]
     public string? ImporterLocalReferenceNumber { get; set; }
 
 	
