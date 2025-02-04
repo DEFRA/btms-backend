@@ -278,6 +278,7 @@ public class DecisionComparison
     
     [Attr]
     [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public DecisionStatusEnum DecisionStatus { get; set; }
     
     [Attr]

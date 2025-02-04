@@ -63,13 +63,6 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                     };
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
-
-                    var enumStringConvention = new ConventionPack
-                    {
-                        new EnumRepresentationConvention(BsonType.String)
-                    };
-
-                    ConventionRegistry.Register("EnumStringConvention", enumStringConvention, t => true);
                     
                     var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
                     return client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
