@@ -211,6 +211,10 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision Type As Alvs")]
     BtmMadeSameDecisionTypeAsAlvs,
     
+    //Obsolete:
+    [EnumMember(Value = "Btms Made Same Decision Prefix As Alvs")]
+    BtmMadeSameDecisionPrefixAsAlvs,
+    
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,
     
@@ -274,7 +278,6 @@ public class DecisionComparison
     
     [Attr]
     [System.ComponentModel.Description("")]
-    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public DecisionStatusEnum DecisionStatus { get; set; }
     
     [Attr]

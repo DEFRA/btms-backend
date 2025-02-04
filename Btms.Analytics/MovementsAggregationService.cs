@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
@@ -341,33 +342,22 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
         DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
+        var nullChecks = new List<ItemCheck>();
         
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            .Select(m => new { Movement = m, Checks = 
+                m.AlvsDecisionStatus.Context.DecisionComparison == null ? nullChecks : 
+                    m.AlvsDecisionStatus.Context.DecisionComparison.Checks })
             .SelectMany(d => d
-                .AlvsDecisionStatus.Context.DecisionComparison!.Checks
-                .Select(c => new
-                {
-                    Movement = d, Check = c,
-                    
-                    //Add additional analysis before building it into the write time analysis
-                    
-                    DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus != DecisionStatusEnum.InvestigationNeeded ?
-                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus :
-                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
-                                            DecisionStatusEnum.ReliesOnCDMS205 :
-                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms249? 
-                                            DecisionStatusEnum.ReliesOnCDMS249 :
-                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
-                                        DecisionStatusEnum.HasChedppChecks ? 
-                                            DecisionStatusEnum.HasChedppChecks :
-                                        c.BtmsDecisionCode == "E99" ? DecisionStatusEnum.HasGenericDataErrors :
-                                        c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith("E9") ? DecisionStatusEnum.HasOtherDataErrors :
-                                        d.BtmsStatus.ChedTypes.Length > 1 ? DecisionStatusEnum.HasMultipleChedTypes :
-                                        d.Relationships.Notifications.Data.Count > 1 ? DecisionStatusEnum.HasMultipleCheds :
-                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
-                }))
+                .Checks
+                    .Select(c => new MovementExtensions.ReadTimeDecisionStatusState<DecisionStatusEnum?>()
+                    {
+                        Movement = d.Movement, Check = c, DecisionStatus = null
+                    })
+            )
+            .WithReadTimeDecisionStatus()
             .GroupBy(d => new
             {
                 d.DecisionStatus,
@@ -490,6 +480,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(r);
     }
 
+    [SuppressMessage("SonarLint", "S107",
+        Justification =
+            "Allow us to return a valid result from an aggregation during development before we have real data")]
     private static Task<TabularDataset<ByNameDimensionResult>> DefaultTabularDatasetByNameDimensionResult()
     {
         return Task.FromResult(new TabularDataset<ByNameDimensionResult>()
@@ -501,6 +494,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
 
+    [SuppressMessage("SonarLint", "S107",
+        Justification =
+            "Allow us to return a valid result from an aggregation during development before we have real data")]
     private static Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> DefaultSummarisedBucketResult()
     {
         return Task.FromResult(new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
