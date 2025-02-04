@@ -8,16 +8,16 @@ using System.Linq.Expressions;
 namespace Btms.Backend.Data.Mongo;
 
 public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionName = null!)
-    : IMongoCollectionSet<T> where T : IDataEntity
+    : IMongoCollectionSet<T> where T : class, IDataEntity
 {
-    private readonly IMongoCollection<T> collection = string.IsNullOrEmpty(collectionName)
+    private readonly IMongoCollection<T> _collection = string.IsNullOrEmpty(collectionName)
         ? dbContext.Database.GetCollection<T>(typeof(T).Name)
         : dbContext.Database.GetCollection<T>(collectionName);
 
     private readonly List<T> _entitiesToInsert = [];
     private readonly List<(T Item, string Etag)> _entitiesToUpdate = [];
 
-    private IMongoQueryable<T> EntityQueryable => collection.AsQueryable();
+    private IMongoQueryable<T> EntityQueryable => _collection.AsQueryable();
         
     public IEnumerator<T> GetEnumerator()
     {
@@ -50,9 +50,9 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
             foreach (var item in _entitiesToInsert)
             {
                 item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-                item.Created = DateTime.UtcNow;
-                item.UpdatedEntity = DateTime.UtcNow;
-                await collection.InsertOneAsync(dbContext.ActiveTransaction?.Session, item, cancellationToken: cancellationToken);
+                item.Created = item.UpdatedEntity = DateTime.UtcNow;
+                
+                await _collection.InsertOneAsync(dbContext.ActiveTransaction?.Session, item, cancellationToken: cancellationToken);
             }
 
             _entitiesToInsert.Clear();
@@ -68,11 +68,12 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
 
                 item.Item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
                 item.Item.UpdatedEntity = DateTime.UtcNow;
+                
                 var session = dbContext.ActiveTransaction?.Session;
                 var updateResult = session is not null
-                    ? await collection.ReplaceOneAsync(session, filter, item.Item,
+                    ? await _collection.ReplaceOneAsync(session, filter, item.Item,
                         cancellationToken: cancellationToken)
-                    : await collection.ReplaceOneAsync(filter, item.Item,
+                    : await _collection.ReplaceOneAsync(filter, item.Item,
                         cancellationToken: cancellationToken);
 
                 if (updateResult.ModifiedCount == 0)
@@ -96,6 +97,14 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         await Update(item, item._Etag, cancellationToken);
     }
 
+    public async Task Update(List<T> items, CancellationToken cancellationToken = default)
+    {
+        foreach (var item in items)
+        {
+            await Update(item, cancellationToken);
+        }
+    }
+
     public Task Update(T item, string etag,  CancellationToken cancellationToken = default)
     {
         if (_entitiesToInsert.Exists(x => x.Id == item.Id))
@@ -111,6 +120,6 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
 
     public IAggregateFluent<T> Aggregate()
     {
-        return collection.Aggregate();
+        return _collection.Aggregate();
     }
 }
