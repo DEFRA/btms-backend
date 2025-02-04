@@ -12,6 +12,8 @@ public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
     Task Insert(T item, CancellationToken cancellationToken = default);
 
     Task Update(T item, CancellationToken cancellationToken = default);
+
+    Task Update(List<T> items, CancellationToken cancellationToken = default);
     
     Task Update(T item, string etag, CancellationToken cancellationToken = default);
     
