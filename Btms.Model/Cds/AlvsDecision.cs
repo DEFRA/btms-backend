@@ -208,8 +208,18 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
     
+    [EnumMember(Value = "Btms Made Same Decision Type As Alvs")]
+    BtmMadeSameDecisionTypeAsAlvs,
+    
+    //Obsolete:
     [EnumMember(Value = "Btms Made Same Decision Prefix As Alvs")]
     BtmMadeSameDecisionPrefixAsAlvs,
+    
+    [EnumMember(Value = "No Import Notifications Linked")]
+    NoImportNotificationsLinked,
+    
+    [EnumMember(Value = "No Alvs Decisions")]
+    NoAlvsDecisions,
     
     [EnumMember(Value = "CDMS-205")]
     ReliesOnCDMS205,
@@ -217,11 +227,9 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "CDMS-249")]
     ReliesOnCDMS249,
     
-    [EnumMember(Value = "Has Ched PP Checks")]
+    [EnumMember(Value = "Has Ched PP Checkxs")]
     HasChedppChecks,
     
-    [EnumMember(Value = "No Import Notifications Linked")]
-    NoImportNotificationsLinked,
     
     [EnumMember(Value = "Has Other E9X Data Errors")]
     HasOtherDataErrors,
@@ -229,8 +237,6 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Has Generic E99 Data Errors")]
     HasGenericDataErrors,
     
-    [EnumMember(Value = "No Alvs Decisions")]
-    NoAlvsDecisions,
     
     [EnumMember(Value = "Has Multiple Ched Types")]
     HasMultipleChedTypes,
