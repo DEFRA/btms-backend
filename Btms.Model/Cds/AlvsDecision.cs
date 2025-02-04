@@ -208,6 +208,9 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
     
+    [EnumMember(Value = "Btms Made Same Decision Prefix As Alvs")]
+    BtmMadeSameDecisionPrefixAsAlvs,
+    
     [EnumMember(Value = "CDMS-205")]
     ReliesOnCDMS205,
     
@@ -323,7 +326,7 @@ public partial class AlvsDecision  //
 {
     [Attr]
     [System.ComponentModel.Description("")]
-    public required CdsClearanceRequest Decision { get; set; }
+    public required CdsDecision Decision { get; set; }
 
     [Attr]
     [System.ComponentModel.Description("")]

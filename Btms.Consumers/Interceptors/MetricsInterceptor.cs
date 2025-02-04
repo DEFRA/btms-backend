@@ -2,12 +2,13 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using Btms.Consumers.Extensions;
 using Btms.Metrics;
+using Microsoft.Extensions.Options;
 using SlimMessageBus;
 using SlimMessageBus.Host.Interceptor;
 
 namespace Btms.Consumers.Interceptors;
 
-public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, ConsumerMetrics consumerMetrics) : IPublishInterceptor<TMessage>, IConsumerInterceptor<TMessage> where TMessage : notnull
+public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, ConsumerMetrics consumerMetrics, IOptions<ConsumerOptions> options) : IPublishInterceptor<TMessage>, IConsumerInterceptor<TMessage> where TMessage : notnull
 {
     public const string ActivityName = "Btms.Consumer";
     public const string TimeInQueueActivityName = "Btms.TimeInQueue";
@@ -53,18 +54,22 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
                 {
                     consumerMetrics.Skipped<TMessage>(context.Path, context.Consumer.GetType().Name);
                 }
+                queueMetrics.Completed();
                 return result;
             }
         }
         catch (Exception exception)
         {
             consumerMetrics.Faulted<TMessage>(context.Path, context.Consumer.GetType().Name, exception);
+            if (context.GetRetryAttempt() == options.Value.ErrorRetries)
+            {
+                queueMetrics.Completed();
+            }
             throw;
         }
         finally
         {
             consumerMetrics.Complete<TMessage>(context.Path, context.Consumer.GetType().Name, timer.ElapsedMilliseconds);
-            queueMetrics.Completed();
         }
     }
 

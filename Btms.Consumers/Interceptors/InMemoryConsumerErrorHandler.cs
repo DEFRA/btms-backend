@@ -7,11 +7,9 @@ using SlimMessageBus.Host.Memory;
 
 namespace Btms.Consumers.Interceptors;
 
-public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger, IOptions<ConsumerOptions> options)
-    : IMemoryConsumerErrorHandler<T>
+public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandler<T>> logger, IOptions<ConsumerOptions> options) : IMemoryConsumerErrorHandler<T>
 {
-    private async Task<ConsumerErrorHandlerResult> AttemptRetry(IConsumerContext consumerContext,
-        Func<Task<object>> retry, Exception exception)
+    private async Task<ProcessResult> AttemptRetry(IConsumerContext consumerContext, Exception exception)
     {
         consumerContext.IncrementRetryAttempt();
         var retryCount = consumerContext.GetRetryAttempt();
@@ -19,31 +17,31 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
         if (retryCount > options.Value.ErrorRetries)
         {
             logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
-            return ConsumerErrorHandlerResult.Failure;
+            return ProcessResult.Failure;
         }
 
         logger.LogWarning(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);
 
         try
         {
-            await retry();
+            await Task.Delay(retryCount * 2000);
+            return ProcessResult.Retry;
         }
         catch (Exception e)
         {
-            await AttemptRetry(consumerContext, retry, e);
+            await AttemptRetry(consumerContext, e);
         }
 
-        return ConsumerErrorHandlerResult.Success;
+        return ProcessResult.Success;
     }
 
-    public Task<ConsumerErrorHandlerResult> OnHandleError(T message, Func<Task<object>> retry,
-        IConsumerContext consumerContext, Exception exception)
+    public Task<ProcessResult> OnHandleError(T message, IConsumerContext consumerContext, Exception exception, int attempts)
     {
         if (!consumerContext.Properties.ContainsKey(MessageBusHeaders.RetryCount))
         {
             consumerContext.Properties.Add(MessageBusHeaders.RetryCount, 0);
         }
 
-        return AttemptRetry(consumerContext, retry, exception);
+        return AttemptRetry(consumerContext, exception);
     }
 }

@@ -19,7 +19,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class Mrn24Gbde3Cf94H96Tar0Tests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<Mrn24GBDE3CF94H96TAR0ScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<Mrn24Gbde3Cf94H96Tar0ScenarioGenerator>(output)
 {
     [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     // [Fact]

@@ -11,7 +11,7 @@ namespace Btms.Backend.IntegrationTests.PreprocessingTests;
 
 [Trait("Category", "Integration")]
 public class EnsureDuplicateItemsAreNotCreatedTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<DuplicateMovementItems_CDMS_211>(output)
+    : ScenarioGeneratorBaseTest<DuplicateMovementItemsCdms211>(output)
 {
     [Fact]
     public void ShouldNotCreateDuplicateItems()

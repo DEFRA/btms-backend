@@ -17,8 +17,8 @@ namespace Btms.Analytics.Tests;
 public class FinalisedOnlyTests(ITestOutputHelper output) : MultipleScenarioGeneratorBaseTest(output)
 {
     [Theory]
-    [InlineData(typeof(Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator), false, true)]
-    [InlineData(typeof(Mrn24GBDDJER3ZFRMZAR9ScenarioGenerator), true, false)]
+    [InlineData(typeof(Mrn24Gbddjer3Zfrmzar9ScenarioGenerator), false, true)]
+    [InlineData(typeof(Mrn24Gbddjer3Zfrmzar9ScenarioGenerator), true, false)]
     public async Task ShouldReturnCorrectAggregation(Type generatorType, bool finalisedOnly, bool returnsResults)
     {
         EnsureEnvironmentInitialised(generatorType);

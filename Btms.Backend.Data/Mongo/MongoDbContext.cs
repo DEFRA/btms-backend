@@ -6,17 +6,31 @@ using MongoDB.Driver;
 
 namespace Btms.Backend.Data.Mongo;
 
-public class MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory) : IMongoDbContext
+public class MongoDbContext : IMongoDbContext
 {
-    internal IMongoDatabase Database { get; } = database;
+    private readonly ILoggerFactory _loggerFactory;
+#pragma warning disable S1144
+    private readonly Guid _instance = Guid.NewGuid();
+#pragma warning restore S1144
+
+    public MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory)
+    {
+        _loggerFactory = loggerFactory;
+        Database = database;
+        Notifications = new MongoCollectionSet<ImportNotification>(this);
+        Movements = new MongoCollectionSet<Movement>(this);
+        Gmrs = new MongoCollectionSet<Gmr>(this);
+    }
+
+    internal IMongoDatabase Database { get; }
     internal MongoDbTransaction? ActiveTransaction { get; private set; }
 
 
-    public IMongoCollectionSet<ImportNotification> Notifications => new MongoCollectionSet<ImportNotification>(this);
+    public IMongoCollectionSet<ImportNotification> Notifications { get; }
 
-    public IMongoCollectionSet<Movement> Movements => new MongoCollectionSet<Movement>(this);
+    public IMongoCollectionSet<Movement> Movements { get; }
 
-    public IMongoCollectionSet<Gmr> Gmrs => new MongoCollectionSet<Gmr>(this);
+    public IMongoCollectionSet<Gmr> Gmrs { get; }
 
     public async Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default)
     {
@@ -35,6 +49,23 @@ public class MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactor
             await Database.DropCollectionAsync(collection["name"].ToString(), cancellationToken);
         }
 
-        await new MongoIndexService(Database, loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(cancellationToken);
+        await new MongoIndexService(Database, _loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(cancellationToken);
+    }
+
+    public async Task SaveChangesAsync(CancellationToken cancellation = default)
+    {
+        using var transaction = await StartTransaction(cancellation);
+        try
+        {
+            await Notifications.PersistAsync(cancellation);
+            await Movements.PersistAsync(cancellation);
+            await Gmrs.PersistAsync(cancellation);
+            await transaction.CommitTransaction(cancellation);
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackTransaction(cancellation);
+            throw;
+        }
     }
 }

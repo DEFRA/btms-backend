@@ -27,7 +27,6 @@ public class BackendFixture
     public readonly BtmsClient BtmsClient;
     
     private BackendFactory WebApp { get; set; }
-    private readonly int _consumerPushDelayMs;
     private readonly ILogger Logger;
     
     public readonly ITestOutputHelper TestOutputHelper;
@@ -36,18 +35,16 @@ public class BackendFixture
     {
         TestOutputHelper = testOutputHelper;
         Logger = TestOutputHelper.GetLogger<BackendFixture>();
-        _consumerPushDelayMs = consumerPushDelayMs;
         
         WebApp = new BackendFactory(databaseName, testOutputHelper, configOverrides: backendConfigOverrides);
         (MongoDbContext, BtmsClient) = WebApp.Start();
-        
     }
 
-    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData)
+    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData, bool maintainMessageOrder = false)
     {
         await BtmsClient.ClearDb();
         
-        await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), _consumerPushDelayMs);
+        await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), maintainMessageOrder);
         
         return testData;
     }
@@ -55,9 +52,8 @@ public class BackendFixture
 
 public class BackendFactory(string databaseName, ITestOutputHelper testOutputHelper, Dictionary<string, string>? configOverrides = null) : WebApplicationFactory<Program> 
 {
-    private IMongoDbContext? mongoDbContext;
-    private ILogger Logger = testOutputHelper.GetLogger<BackendFactory>();
-
+    private IMongoDbContext? _mongoDbContext;
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -96,8 +92,8 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
                     var settings = MongoClientSettings.FromConnectionString(options.Value.DatabaseUri);
                     var client = new MongoClient(settings);
 
-                    // _mongoDbContext = client
                     var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
+                    
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
 
@@ -108,7 +104,7 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
                     
                     var db = client.GetDatabase($"btms-{dbName}");
                    
-                    mongoDbContext = new MongoDbContext(db, testOutputHelper.GetLoggerFactory());
+                    _mongoDbContext = new MongoDbContext(db, testOutputHelper.GetLoggerFactory());
                     return db;
                 });
 
@@ -132,7 +128,7 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
         var client = this.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         var btmsClient = new BtmsClient(client);
 
-        return (mongoDbContext!, btmsClient);
+        return (_mongoDbContext!, btmsClient);
     }
 
 }

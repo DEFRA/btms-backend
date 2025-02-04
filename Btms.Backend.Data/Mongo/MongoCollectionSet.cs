@@ -4,7 +4,6 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Btms.Backend.Data.Mongo;
 
@@ -14,6 +13,9 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     private readonly IMongoCollection<T> collection = string.IsNullOrEmpty(collectionName)
         ? dbContext.Database.GetCollection<T>(typeof(T).Name)
         : dbContext.Database.GetCollection<T>(collectionName);
+
+    private readonly List<T> _entitiesToInsert = [];
+    private readonly List<(T Item, string Etag)> _entitiesToUpdate = [];
 
     private IMongoQueryable<T> EntityQueryable => collection.AsQueryable();
         
@@ -41,45 +43,70 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         return await EntityQueryable.FirstOrDefaultAsync(query);
     }
 
-    public Task Insert(T item, IMongoDbTransaction? transaction, CancellationToken cancellationToken = default)
+    public async Task PersistAsync(CancellationToken cancellationToken)
     {
-        item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        item.Created = DateTime.UtcNow;
-        item.UpdatedEntity = DateTime.UtcNow;
-        var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
-        return session is not null
-            ? collection.InsertOneAsync(session, item, cancellationToken: cancellationToken)
-            : collection.InsertOneAsync(item, cancellationToken: cancellationToken);
-    }
+        if (_entitiesToInsert.Any())
+        {
+            foreach (var item in _entitiesToInsert)
+            {
+                item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+                item.Created = DateTime.UtcNow;
+                item.UpdatedEntity = DateTime.UtcNow;
+                await collection.InsertOneAsync(dbContext.ActiveTransaction?.Session, item, cancellationToken: cancellationToken);
+            }
 
-    public async Task Update(T item, IMongoDbTransaction? transaction = null,
-        CancellationToken cancellationToken = default)
-    {
-        await Update(item, item._Etag, transaction, cancellationToken);
-    }
+            _entitiesToInsert.Clear();
+        }
 
-    public async Task Update(T item, string etag, IMongoDbTransaction? transaction = null, CancellationToken cancellationToken = default)
-    {
-        // etag = etag ?? 
-        
-        ArgumentNullException.ThrowIfNull(etag);
         var builder = Builders<T>.Filter;
 
-        var filter = builder.Eq(x => x.Id, item.Id) & builder.Eq(x => x._Etag, etag);
-
-        item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-        item.UpdatedEntity = DateTime.UtcNow;
-        var session = transaction is null ? dbContext.ActiveTransaction?.Session : transaction.Session;
-        var updateResult = session is not null
-            ? await collection.ReplaceOneAsync(session, filter, item,
-                cancellationToken: cancellationToken)
-            : await collection.ReplaceOneAsync(filter, item,
-                cancellationToken: cancellationToken);
-
-        if (updateResult.ModifiedCount == 0)
+        if (_entitiesToUpdate.Any())
         {
-            throw new ConcurrencyException(item.Id!, etag);
+            foreach (var item in _entitiesToUpdate)
+            {
+                var filter = builder.Eq(x => x.Id, item.Item.Id) & builder.Eq(x => x._Etag, item.Etag);
+
+                item.Item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+                item.Item.UpdatedEntity = DateTime.UtcNow;
+                var session = dbContext.ActiveTransaction?.Session;
+                var updateResult = session is not null
+                    ? await collection.ReplaceOneAsync(session, filter, item.Item,
+                        cancellationToken: cancellationToken)
+                    : await collection.ReplaceOneAsync(filter, item.Item,
+                        cancellationToken: cancellationToken);
+
+                if (updateResult.ModifiedCount == 0)
+                {
+                    throw new ConcurrencyException(item.Item.Id!, item.Etag);
+                }
+            }
+
+            _entitiesToUpdate.Clear();
         }
+    }
+
+    public Task Insert(T item, CancellationToken cancellationToken = default)
+    {
+        _entitiesToInsert.Add(item);
+        return Task.CompletedTask;
+    }
+
+    public async Task Update(T item, CancellationToken cancellationToken = default)
+    {
+        await Update(item, item._Etag, cancellationToken);
+    }
+
+    public Task Update(T item, string etag,  CancellationToken cancellationToken = default)
+    {
+        if (_entitiesToInsert.Exists(x => x.Id == item.Id))
+        {
+            return Task.CompletedTask;
+        }
+
+        ArgumentNullException.ThrowIfNull(etag);
+        _entitiesToUpdate.RemoveAll(x => x.Item.Id == item.Id);
+        _entitiesToUpdate.Add(new ValueTuple<T, string>(item, etag));
+        return Task.CompletedTask;
     }
 
     public IAggregateFluent<T> Aggregate()

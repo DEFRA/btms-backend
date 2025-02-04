@@ -32,6 +32,7 @@ public partial class Identifiers  //
         /// List of identifiers and their keys
         /// </summary>
     [JsonPropertyName("data")]
+        [Btms.SensitiveData.SensitiveData]
     public IDictionary<string, string>? Data { get; set; }
 
 	

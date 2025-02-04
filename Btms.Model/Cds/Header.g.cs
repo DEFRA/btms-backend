@@ -125,12 +125,12 @@ public partial class Header  //
     [System.ComponentModel.Description("")]
     public string? MasterUcr { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public int? DecisionNumber { get; set; }
+    // /// <summary>
+    // /// 
+    // /// </summary
+    // [Attr]
+    // [System.ComponentModel.Description("")]
+    // public int? DecisionNumber { get; set; }
 
 }
 

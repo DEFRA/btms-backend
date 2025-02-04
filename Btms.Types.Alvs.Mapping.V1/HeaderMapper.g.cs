@@ -34,7 +34,7 @@ to.EntryReference = from.EntryReference;
             to.DispatchCountryCode = from.DispatchCountryCode;
             to.GoodsLocationCode = from.GoodsLocationCode;
             to.MasterUcr = from.MasterUcr;
-            to.DecisionNumber = from.DecisionNumber;
+        
             	return to;
 	}
 }
