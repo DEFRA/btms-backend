@@ -1,6 +1,8 @@
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
+using Btms.Model.Ipaffs;
+using Items = Btms.Types.Alvs.Items;
 
 namespace Btms.Business.Extensions;
 
@@ -33,14 +35,38 @@ public static class MovementExtensions
                doc.DocumentReference.ToUpper().StartsWith("GBCHD");
     }
     
-    public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this Movement movement)
+    public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this List<Btms.Model.Cds.Items> items)
     {
-        return movement.Items
+        return items
             .SelectMany(i => i.Documents ?? [])
             // Only CHED document refs should result in links
             .Where(d => d.IsChed())
             .Select(d => d.DocumentReference!.TrimUniqueNumber())
             .Distinct()
             .ToList();
+    }
+    
+    public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this Movement movement)
+    {
+        return movement.Items
+            .UniqueDocumentReferenceIdsThatShouldLink();
+    }
+
+    public static MovementStatus GetMovementStatus(ImportNotificationTypeEnum[] chedTypes, List<string> documentReferenceIds, List<string> notificationRelationshipIds)
+    {
+        return new MovementStatus()
+        {
+            ChedTypes = chedTypes,
+            LinkStatus = documentReferenceIds.Count == 0
+                ? LinkStatusEnum.NoLinks
+                : notificationRelationshipIds.Count() == documentReferenceIds.Count() &&
+                  notificationRelationshipIds.All(documentReferenceIds.Contains)
+                    ? LinkStatusEnum.AllLinked
+                    : notificationRelationshipIds.Count == 0 && documentReferenceIds.Count != 0
+                        ? LinkStatusEnum.MissingLinks
+                        : notificationRelationshipIds.Count < documentReferenceIds.Count()
+                            ? LinkStatusEnum.PartiallyLinked
+                            : LinkStatusEnum.Investigate
+        };
     }
 }
