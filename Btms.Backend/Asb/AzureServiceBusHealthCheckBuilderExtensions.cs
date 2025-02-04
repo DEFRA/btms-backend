@@ -22,7 +22,7 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
 {
     public static IHealthChecksBuilder AddBtmsAzureServiceBusSubscription(
         this IHealthChecksBuilder builder,
-        TimeSpan? timeout = default)
+        TimeSpan? timeout = null)
     {
         builder.Add(new HealthCheckRegistration(
             "azuresubscription_alvs",
@@ -37,8 +37,8 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
                 };
                 return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
             },
-            default,
-            default,
+            null,
+            null,
             timeout));
 
         return builder.Add(new HealthCheckRegistration(
@@ -54,8 +54,8 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
                 };
                 return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
             },
-            default,
-            default,
+            null,
+            null,
             timeout));
     }
 }
