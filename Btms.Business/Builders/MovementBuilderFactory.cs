@@ -12,6 +12,10 @@ public class MovementBuilderFactory(ILogger<MovementBuilder> logger)
     public MovementBuilder From(CdsClearanceRequest request)
     {
         logger.LogInformation("Creating movement from clearance request {0}", request.Header!.EntryReference);
+        var items = request.Items?.ToList()!;
+        var documentReferenceIds = items.UniqueDocumentReferenceIdsThatShouldLink();
+        var notificationRelationshipIds = new List<string>();
+        
         var movement = new Movement()
         {
             Id = request.Header!.EntryReference,
@@ -28,13 +32,8 @@ public class MovementBuilderFactory(ILogger<MovementBuilder> logger)
             DispatchCountryCode = request.Header.DispatchCountryCode!,
             GoodsLocationCode = request.Header.GoodsLocationCode!,
             ClearanceRequests = [request],
-            Items = request.Items?.ToList()!,
-            BtmsStatus = new MovementStatus()
-            {
-                ChedTypes = GetChedTypes(request.Items!.ToList()),
-                // Linked = false,
-                LinkStatus = LinkStatusEnum.NotLinked
-            }
+            Items = items!,
+            BtmsStatus = MovementExtensions.GetMovementStatus(GetChedTypes(request.Items!.ToList()), documentReferenceIds, notificationRelationshipIds)
         };
 
         return new MovementBuilder(logger, movement, true);
