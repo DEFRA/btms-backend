@@ -91,23 +91,26 @@ public class Mrn24Gbd46Kpsvz3Dfar2ScenarioGenerator(
 public class DuplicateMovementItemsCdms211(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
-public class IuuOkScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+public class IuuOkScenarioGenerator(IServiceProvider sp, ILogger<IuuOkScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuok");
 
-public class IuunaScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+public class IuunaScenarioGenerator(IServiceProvider sp, ILogger<IuunaScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/Iuuna");
 
-public class NoIuuInfoScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+public class NoIuuInfoScenarioGenerator(IServiceProvider sp, ILogger<NoIuuInfoScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/NoIuuInfo");
 
-public class IuuNotCompletedScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+public class IuuNotCompletedScenarioGenerator(IServiceProvider sp, ILogger<IuuNotCompletedScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompleted");
 
-public class IuuNotCompliantScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+public class IuuNotCompliantScenarioGenerator(IServiceProvider sp, ILogger<IuuNotCompliantScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "IuuOutcomes/IuuNotCompliant");
 
-public class Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
+public class Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBEDS4W7DFRLMAR0");
+
+public class Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDZSRXDXTBVKAR6");
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
