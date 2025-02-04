@@ -69,6 +69,7 @@ public partial class EconomicOperator  //
         /// Approval Number which identifies an Economic Operator unambiguously per type of organisation per country.
         /// </summary>
     [JsonPropertyName("approvalNumber")]
+        [Btms.SensitiveData.SensitiveData]
     public string? ApprovalNumber { get; set; }
 
 	
@@ -76,6 +77,7 @@ public partial class EconomicOperator  //
         /// Optional Business General Number, often named Aggregation Code, which identifies an Economic Operator.
         /// </summary>
     [JsonPropertyName("otherIdentifier")]
+        [Btms.SensitiveData.SensitiveData]
     public string? OtherIdentifier { get; set; }
 
 	

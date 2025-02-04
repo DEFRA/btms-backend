@@ -25,6 +25,7 @@ public partial class SealContainer  //
         /// 
         /// </summary>
     [JsonPropertyName("sealNumber")]
+        [Btms.SensitiveData.SensitiveData]
     public string? SealNumber { get; set; }
 
 	
@@ -32,6 +33,7 @@ public partial class SealContainer  //
         /// 
         /// </summary>
     [JsonPropertyName("containerNumber")]
+        [Btms.SensitiveData.SensitiveData]
     public string? ContainerNumber { get; set; }
 
 	
@@ -46,6 +48,7 @@ public partial class SealContainer  //
         /// 
         /// </summary>
     [JsonPropertyName("resealedSealNumber")]
+        [Btms.SensitiveData.SensitiveData]
     public string? ResealedSealNumber { get; set; }
 
 	}

@@ -25,6 +25,7 @@ public partial class IdentificationDetails  //
         /// Identification detail
         /// </summary>
     [JsonPropertyName("identificationDetail")]
+        [Btms.SensitiveData.SensitiveData]
     public string? IdentificationDetail { get; set; }
 
 	
@@ -32,6 +33,7 @@ public partial class IdentificationDetails  //
         /// Identification description
         /// </summary>
     [JsonPropertyName("identificationDescription")]
+        [Btms.SensitiveData.SensitiveData]
     public string? IdentificationDescription { get; set; }
 
 	}
