@@ -14,6 +14,7 @@ public class ConsumerOptions
     
     public int AsbAlvsMessages { get; set; } = 20;
     public int AsbNotifications { get; set; } = 20;
+    public int AsbGmrs { get; set; } = 20;
 
     public int ErrorRetries { get; set; } = 10;
 
