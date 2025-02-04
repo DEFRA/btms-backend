@@ -1,13 +1,8 @@
-using Azure.Messaging.ServiceBus;
-using Btms.Backend.Config;
 using HealthChecks.AzureServiceBus;
 using HealthChecks.AzureServiceBus.Configuration;
-using Microsoft.Azure.Amqp.Framing;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using System.Net;
-using System.Text.Json;
-using System.Threading;
 using Btms.Consumers;
 
 namespace Btms.Backend.Asb;
@@ -22,40 +17,43 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
 {
     public static IHealthChecksBuilder AddBtmsAzureServiceBusSubscription(
         this IHealthChecksBuilder builder,
-        TimeSpan? timeout = default)
+        TimeSpan? timeout = null)
     {
         builder.Add(new HealthCheckRegistration(
             "azuresubscription_alvs",
-            sp =>
-            {
-                var sbOptions = sp.GetRequiredService<IOptions<ServiceBusOptions>>();
-                var subscription = sbOptions.Value.AlvsSubscription;
-                var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
-                {
-                    ConnectionString = sbOptions.Value.AlvsSubscription.ConnectionString,
-                    UsePeekMode = true
-                };
-                return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
-            },
-            default,
-            default,
+            sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.AlvsSubscription),
+            null,
+            null,
+            timeout));
+        
+        builder.Add(new HealthCheckRegistration(
+            "azuresubscription_notification",
+            sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.NotificationSubscription),
+            null,
+            null,
             timeout));
 
-        return builder.Add(new HealthCheckRegistration(
-            "azuresubscription_notification",
-            sp =>
-            {
-                var sbOptions = sp.GetRequiredService<IOptions<ServiceBusOptions>>();
-                var subscription = sbOptions.Value.NotificationSubscription;
-                var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
-                {
-                    ConnectionString = sbOptions.Value.NotificationSubscription.ConnectionString,
-                    UsePeekMode = true
-                };
-                return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
-            },
-            default,
-            default,
+        builder.Add(new HealthCheckRegistration(
+            "azuresubscription_gmr",
+            sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.GmrSubscription),
+            null,
+            null,
             timeout));
+
+        return builder;
+    }
+
+    private static AzureServiceBusSubscriptionHealthCheck CreateHealthCheck(
+        IServiceProvider sp,
+        ServiceBusSubscriptionOptions subscription)
+    {
+        var options =
+            new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
+            {
+                ConnectionString = subscription.ConnectionString, UsePeekMode = true
+            };
+
+        return new AzureServiceBusSubscriptionHealthCheck(options,
+            new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
     }
 }
