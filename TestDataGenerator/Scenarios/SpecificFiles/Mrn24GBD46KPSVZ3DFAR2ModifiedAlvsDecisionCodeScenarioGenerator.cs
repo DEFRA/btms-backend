@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
-public class Mrn24GBD46KPSVZ3DFAR2ExceptionEndScenarioGenerator(IServiceProvider sp, ILogger<Mrn24GBD46KPSVZ3DFAR2ExceptionEndScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD46KPSVZ3DFAR2")
+public class Mrn24GBD46KPSVZ3DFAR2ModifiedAlvsDecisionCodeScenarioGenerator(IServiceProvider sp, ILogger<Mrn24GBD46KPSVZ3DFAR2ModifiedAlvsDecisionCodeScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD46KPSVZ3DFAR2")
 {
 
     protected override List<object> ModifyMessages(List<object> messages)
