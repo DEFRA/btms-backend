@@ -1,13 +1,8 @@
-using Azure.Messaging.ServiceBus;
-using Btms.Backend.Config;
 using HealthChecks.AzureServiceBus;
 using HealthChecks.AzureServiceBus.Configuration;
-using Microsoft.Azure.Amqp.Framing;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using System.Net;
-using System.Text.Json;
-using System.Threading;
 using Btms.Consumers;
 
 namespace Btms.Backend.Asb;
@@ -40,8 +35,8 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
             null,
             null,
             timeout));
-
-        return builder.Add(new HealthCheckRegistration(
+        
+        builder.Add(new HealthCheckRegistration(
             "azuresubscription_notification",
             sp =>
             {
@@ -57,5 +52,24 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
             null,
             null,
             timeout));
+        
+        builder.Add(new HealthCheckRegistration(
+            "azuresubscription_gmr",
+            sp =>
+            {
+                var sbOptions = sp.GetRequiredService<IOptions<ServiceBusOptions>>();
+                var subscription = sbOptions.Value.GmrSubscription;
+                var options = new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
+                {
+                    ConnectionString = sbOptions.Value.GmrSubscription.ConnectionString,
+                    UsePeekMode = true
+                };
+                return new AzureServiceBusSubscriptionHealthCheck(options, new BtmsServiceBusClientProvider(sp.GetRequiredService<IWebProxy>()));
+            },
+            null,
+            null,
+            timeout));
+
+        return builder;
     }
 }
