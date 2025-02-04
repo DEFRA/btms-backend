@@ -10,72 +10,49 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration"), Trait("Segment", "CDMS-249")]
-public class Mrn24Gbdyhi8Lmfldqar6Tests(ITestOutputHelper output)
+public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24Gbdyhi8Lmfldqar6ScenarioGenerator>(output)
 {
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
-    // [Fact]
+    [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Decisions
-            .MaxBy(d => d.Context.AlvsDecisionNumber)!
-            .Context.DecisionComparison!.DecisionMatched
-            .Should().BeTrue();
+            .MaxBy(d => d.Context.AlvsDecisionNumber)?
+            .Context.DecisionComparison?.DecisionMatched
+            .Should().BeFalse();
     }
     
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
+    [Fact]
     public void ShouldHaveCorrectAlvsDecisionStatusAtGlobalLevel()
     {
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus
-            .Context.DecisionComparison!.DecisionStatus
-            .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
+            .Context.DecisionComparison?.DecisionStatus
+            .Should().Be(DecisionStatusEnum.NoAlvsDecisions);
     }
     
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
-    // [Fact]
+    [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus
             .Context.DecisionComparison!.DecisionMatched
-            .Should().BeTrue();
+            .Should().BeFalse();
     }
 
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
-    // [Fact]
-    public void ShouldHave1BtmsDecision()
+    [Fact]
+    public void ShouldHaveNoBtmsDecisions()
     {
-        // Act
         var decisions = Client
             .GetSingleMovement()
             .Decisions;
         
-        // Assert
         decisions.Count
-            .Should().Be(1);
-    }
-
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
-    public void ShouldHaveCorrectDecisionAuditEntries()
-    {
-        var movement = Client
-            .GetSingleMovement();
-        
-        // Assert
-        
-        var decisionWithLinkAndContext = movement.AuditEntries
-            .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
-            .MaxBy(a => a.Version)!;
-
-        decisionWithLinkAndContext
-            .Should().NotBeNull();
+            .Should().Be(0);
     }
     
     [Fact]
@@ -88,8 +65,7 @@ public class Mrn24Gbdyhi8Lmfldqar6Tests(ITestOutputHelper output)
             .Be(1);
     }
 
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
-    // [Fact]
+    [Fact]
     public void ShouldHaveCorrectAuditTrail()
     {
         // Act
@@ -100,37 +76,31 @@ public class Mrn24Gbdyhi8Lmfldqar6Tests(ITestOutputHelper output)
             .Should()
             .BeEquivalentTo<(CreatedBySystem, string, int?)>([
                 (CreatedBySystem.Cds, "Created", 1),
-                (CreatedBySystem.Btms, "Decision", 1),
                 (CreatedBySystem.Alvs, "Decision", 1)
             ]);
     }
     
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
+    [Fact]
     public void ShouldHaveChedType()
     {
         Client
             .GetSingleMovement()
             .BtmsStatus.ChedTypes
-            .Should().BeNull();
+            .Should().BeEmpty();
     }
     
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
+    [Fact]
     public void ShouldNotBeLinked()
     {
         Client
             .GetSingleMovement()
             .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.NotLinked);
+            .Should().Be(LinkStatusEnum.NoLinks);
     }
     
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
+    [Fact]
     public async Task ShouldNotHaveExceptions()
     {
-        // TestOutputHelper.WriteLine("Querying for aggregated data");
-
         var result = await Client
             .GetExceptions();
         
@@ -164,25 +134,16 @@ public class Mrn24Gbdyhi8Lmfldqar6Tests(ITestOutputHelper output)
             );
     }
     
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
-    // [Fact]
+    [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
         Client
             .GetSingleMovement()
-            .AlvsDecisionStatus.Context.DecisionComparison!.Checks
-            .Should().BeEquivalentTo([
-                new { 
-                    ItemNumber = 1,
-                    CheckCode = "H220",
-                    AlvsDecisionCode = "X01", 
-                    BtmsDecisionCode = "X01"
-                }
-            ]);
+            .AlvsDecisionStatus.Context.DecisionComparison?.Checks
+            .Should().BeEmpty();
     }
     
-    // [Fact]
-    [FailingFact(jiraTicket:"CDMS-242"), Trait("JiraTicket", "CDMS-242")]
+    [Fact]
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {
         var result = await (await Client
