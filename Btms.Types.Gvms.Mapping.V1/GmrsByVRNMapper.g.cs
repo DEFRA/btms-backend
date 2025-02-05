@@ -22,6 +22,7 @@ public static class GmrsByVrnMapper
 	}
 		var to = new Btms.Model.Gvms.GmrsByVrn ();
 to.Vrn = from?.Vrn;
+            to.Gmrs = from?.Gmrs;
             	return to;
 	}
 }

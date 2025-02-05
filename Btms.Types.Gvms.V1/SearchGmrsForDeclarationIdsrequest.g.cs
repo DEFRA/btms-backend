@@ -20,6 +20,13 @@ namespace Btms.Types.Gvms;
 public partial class SearchGmrsForDeclarationIdsrequest  //
 {
 
-}
+
+        /// <summary>
+        /// A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).
+        /// </summary>
+    [JsonPropertyName("declarationIds")]
+    public string[]? DeclarationIds { get; set; }
+
+	}
 
 

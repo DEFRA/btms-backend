@@ -22,6 +22,7 @@ public static class GmrByDeclarationIdMapper
 	}
 		var to = new Btms.Model.Gvms.GmrByDeclarationId ();
 to.Dec = from?.Dec;
+            to.Gmrs = from?.Gmrs;
             	return to;
 	}
 }

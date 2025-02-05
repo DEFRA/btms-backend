@@ -21,7 +21,8 @@ public static class SearchGmrsForVRNrequestMapper
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.SearchGmrsForVRNrequest ();
-	return to;
+to.Vrns = from?.Vrns;
+            	return to;
 	}
 }
 

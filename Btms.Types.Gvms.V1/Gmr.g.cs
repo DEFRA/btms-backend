@@ -92,6 +92,20 @@ public partial class Gmr  //
 
 	
         /// <summary>
+        /// For vehicles carrying trailers, the trailer registration number of each trailer.  If isUnaccompanied is set to true then trailerRegistrationNums or containerReferenceNums must be provided before check-in.
+        /// </summary>
+    [JsonPropertyName("trailerRegistrationNums")]
+    public string[]? TrailerRegistrationNums { get; set; }
+
+	
+        /// <summary>
+        /// For vehicles arriving with containers that will be detached and loaded, the container reference number of each container in the movement. If isUnaccompanied is set to true then trailerRegistrationNums or containerReferenceNums must be provided before check-in.
+        /// </summary>
+    [JsonPropertyName("containerReferenceNums")]
+    public string[]? ContainerReferenceNums { get; set; }
+
+	
+        /// <summary>
         /// 
         /// </summary>
     [JsonPropertyName("plannedCrossing")]

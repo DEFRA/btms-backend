@@ -21,7 +21,8 @@ public static class SearchGmrsForDeclarationIdsrequestMapper
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.SearchGmrsForDeclarationIdsrequest ();
-	return to;
+to.DeclarationIds = from?.DeclarationIds;
+            	return to;
 	}
 }
 

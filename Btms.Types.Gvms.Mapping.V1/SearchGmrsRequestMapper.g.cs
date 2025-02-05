@@ -21,7 +21,8 @@ public static class SearchGmrsRequestMapper
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.SearchGmrsRequest ();
-	return to;
+to.TrailerRegistrationNums = from?.TrailerRegistrationNums;
+            	return to;
 	}
 }
 

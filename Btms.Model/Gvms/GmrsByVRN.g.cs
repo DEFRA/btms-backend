@@ -29,6 +29,14 @@ public partial class GmrsByVrn  //
     [System.ComponentModel.Description("This is the identifier for a Vehicle Registration Number")]
     public string? Vrn { get; set; }
 
+	
+        /// <summary>
+        /// 
+        /// </summary>
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public string[]? Gmrs { get; set; }
+
 	}
 
 

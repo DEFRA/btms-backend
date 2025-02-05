@@ -22,6 +22,7 @@ public static class ReportToLocationsMapper
 	}
 		var to = new Btms.Model.Gvms.ReportToLocations ();
 to.InspectionTypeId = from?.InspectionTypeId;
+            to.LocationIds = from?.LocationIds;
             	return to;
 	}
 }
