@@ -1,3 +1,4 @@
+using Btms.Model;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
@@ -25,8 +26,10 @@ public void DecisionShouldHaveCorrectDecisionCodeForSingleNotification(Type gene
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
         EnsureEnvironmentInitialised(generatorType);
 
-        var movement = Client
+        var apiResponse = Client
             .GetMovementByMrn(mrn);
+
+        var movement = apiResponse.GetResourceObject<Movement>();
 
         var lastDecision = movement.Decisions.OrderByDescending(x => x.ServiceHeader?.ServiceCalled).First();
 

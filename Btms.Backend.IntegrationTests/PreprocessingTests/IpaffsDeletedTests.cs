@@ -1,3 +1,4 @@
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
@@ -18,11 +19,14 @@ public class IpaffsDeletedTests(ITestOutputHelper output)
     public void NotificationShouldBeDeleted_AndRelationshipsRemoved_AndHaveAuditEntries()
     {
         // Assert
-        var notification = Client
-            .GetFirstImportNotification();
+        var resource = Client
+            .GetNotificationById("CHEDD.GB.2024.5256764");
+
+        var notification = resource.GetResourceObject<ImportNotification>();
+
+        resource.Data.Relationships!.First().Value!.Data.ManyValue!.Count.Should().Be(0);
 
         notification.Status.Should().Be(ImportNotificationStatusEnum.Deleted);
-        notification.Relationships.Should().BeEquivalentTo(new NotificationTdmRelationships());
         notification.AuditEntries.Count(x => x.Status == "Unlinked").Should().Be(1);
         notification.AuditEntries.Count(x => x.Status == "Deleted").Should().Be(1);
     }
@@ -34,10 +38,10 @@ public class IpaffsDeletedTests(ITestOutputHelper output)
         var movement1 = Client.GetMovementByMrn("24GBDHDJXQ5TCDBAR1");
         var movement2 = Client.GetMovementByMrn("24GBDPN9J48XRW5AR0");
 
-        movement1.Relationships.Should().BeEquivalentTo(new MovementTdmRelationships());
-        movement1.AuditEntries.Count(x => x.Status == "Unlinked").Should().Be(1);
+        movement1.Data.Relationships!.First().Value!.Data.ManyValue!.Count.Should().Be(0);
+        movement1.GetResourceObject<Movement>().AuditEntries.Count(x => x.Status == "Unlinked").Should().Be(1);
 
-        movement2.Relationships.Should().BeEquivalentTo(new MovementTdmRelationships());
-        movement2.AuditEntries.Count(x => x.Status == "Unlinked").Should().Be(1);
+        movement2.Data.Relationships!.First().Value!.Data.ManyValue!.Count.Should().Be(0);
+        movement2.GetResourceObject<Movement>().AuditEntries.Count(x => x.Status == "Unlinked").Should().Be(1);
     }
 }

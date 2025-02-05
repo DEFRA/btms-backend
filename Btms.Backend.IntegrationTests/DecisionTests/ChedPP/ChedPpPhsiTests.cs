@@ -1,3 +1,4 @@
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
@@ -26,8 +27,10 @@ public class ChedPpPhsiTests(ITestOutputHelper output) : MultipleScenarioGenerat
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
         EnsureEnvironmentInitialised(generatorType);
 
-        var movement = Client
+        var apiResponse = Client
             .GetMovementByMrn(mrn);
+
+        var movement = apiResponse.GetResourceObject<Movement>();
 
         var lastDecision = movement.Decisions.OrderByDescending(x => x.ServiceHeader?.ServiceCalled).First();
 
