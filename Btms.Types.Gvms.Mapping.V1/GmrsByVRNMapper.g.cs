@@ -14,14 +14,14 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class GmrsByVrnMapper
 {
-	public static Btms.Model.Gvms.GmrsByVrn Map(Btms.Types.Gvms.GmrsByVrn from)
+	public static Btms.Model.Gvms.GmrsByVrn Map(Btms.Types.Gvms.GmrsByVrn? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.GmrsByVrn ();
-to.Vrn = from.Vrn;
+to.Vrn = from?.Vrn;
             	return to;
 	}
 }

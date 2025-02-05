@@ -14,14 +14,14 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class ErrorResponseMapper
 {
-	public static Btms.Model.Gvms.ErrorResponse Map(Btms.Types.Gvms.ErrorResponse from)
+	public static Btms.Model.Gvms.ErrorResponse Map(Btms.Types.Gvms.ErrorResponse? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.ErrorResponse ();
-to.Code = from.Code;
+to.Code = from?.Code;
             	return to;
 	}
 }

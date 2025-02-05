@@ -14,14 +14,14 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class TransitsMapper
 {
-	public static Btms.Model.Gvms.Transits Map(Btms.Types.Gvms.Transits from)
+	public static Btms.Model.Gvms.Transits Map(Btms.Types.Gvms.Transits? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.Transits ();
-to.Id = from.Id;
+to.Id = from?.Id;
             	return to;
 	}
 }

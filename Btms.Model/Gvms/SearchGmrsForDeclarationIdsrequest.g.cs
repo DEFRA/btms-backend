@@ -18,25 +18,9 @@ namespace Btms.Model.Gvms;
 /// <summary>
 /// 
 /// </summary>
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsForDeclarationIdsrequest  //
 {
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public GmrsByVrn[]? GmrsByVrns { get; set; }
-
-	
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Gmr[]? Gmrs { get; set; }
-
-	}
+}
 
 

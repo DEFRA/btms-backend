@@ -14,14 +14,14 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class GmrByDeclarationIdMapper
 {
-	public static Btms.Model.Gvms.GmrByDeclarationId Map(Btms.Types.Gvms.GmrByDeclarationId from)
+	public static Btms.Model.Gvms.GmrByDeclarationId Map(Btms.Types.Gvms.GmrByDeclarationId? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.GmrByDeclarationId ();
-to.Dec = from.Dec;
+to.Dec = from?.Dec;
             	return to;
 	}
 }

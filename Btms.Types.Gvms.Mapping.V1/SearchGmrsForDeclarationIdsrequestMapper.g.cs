@@ -12,18 +12,16 @@
 
 namespace Btms.Types.Gvms.Mapping;
 
-public static class ActualCrossingMapper
+public static class SearchGmrsForDeclarationIdsrequestMapper
 {
-	public static Btms.Model.Gvms.ActualCrossing Map(Btms.Types.Gvms.ActualCrossing? from)
+	public static Btms.Model.Gvms.SearchGmrsForDeclarationIdsrequest Map(Btms.Types.Gvms.SearchGmrsForDeclarationIdsrequest? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
-		var to = new Btms.Model.Gvms.ActualCrossing ();
-to.RouteId = from?.RouteId;
-            to.ArrivesAt = from?.ArrivesAt;
-            	return to;
+		var to = new Btms.Model.Gvms.SearchGmrsForDeclarationIdsrequest ();
+	return to;
 	}
 }
 
