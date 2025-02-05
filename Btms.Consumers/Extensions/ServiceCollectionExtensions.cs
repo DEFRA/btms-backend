@@ -78,7 +78,7 @@ namespace Btms.Consumers.Extensions
                         cbb.Consume<Gmr>(x => x
                             .Topic(serviceBusOptions.GmrSubscription.Topic)
                             .SubscriptionName(serviceBusOptions.GmrSubscription.Subscription)
-                            .WithConsumer<GmrAsbConsumer>()
+                            .WithConsumer<GmrConsumer>()
                             .Instances(consumerOpts.AsbGmrs));
                     });
                 }
