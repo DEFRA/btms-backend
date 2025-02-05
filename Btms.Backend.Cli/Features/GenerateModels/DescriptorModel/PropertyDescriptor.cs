@@ -29,11 +29,11 @@ public class PropertyDescriptor
         _isArray = isArray;
         _classNamePrefix = classNamePrefix;
         Type = type;
-        Description = description;
+        Description = description?.Replace("\n", " ");
         IsReferenceType = isReferenceType;
         IsArray = isArray;
         SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
-        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description?.Replace("\n", " ")}\")]"];
+        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]"];
 
         if (type.EndsWith("Enum"))
         {
