@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Btms.Business.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Builders;
 
-public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement, bool hasChanges = false)
+public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFinder decisionStatusFinder, Movement movement, bool hasChanges = false)
 {
     private Movement? _movement = movement;
     public bool HasChanges = hasChanges;
@@ -364,56 +365,69 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             throw new InvalidDataException("Should only be comparing when it's been paired");
         }
         
-        var btmsCheckDictionary = btmsDecision
-            .Items!
-            .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
-            .ToDictionary(ic => (ic.Item.ItemNumber, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
+        var btmsCheckDictionary = btmsDecision.GetCheckDictionary();
+        //
+        // var btmsCheckDictionary = btmsDecision
+        //     .Items!
+        //     .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+        //     .ToDictionary(ic => (ic.Item.ItemNumber, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
 
-        var alvsChecks = alvsDecision.Decision
-            .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
-            .Select(ic =>
-            {
-                var decisionCode =
-                    btmsCheckDictionary!.GetValueOrDefault((ic.Item.ItemNumber, ic.Check.CheckCode!), null);
-                return new ItemCheck()
-                {
-                    ItemNumber = ic.Item!.ItemNumber,
-                    CheckCode = ic.Check!.CheckCode!,
-                    AlvsDecisionCode = ic.Check!.DecisionCode!,
-                    BtmsDecisionCode = decisionCode
-                };
-            })
-            .ToList();
+        var alvsChecks = alvsDecision.GetItemChecks(btmsCheckDictionary);
+        // var alvsChecks = alvsDecision.Decision
+        //     .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+        //     .Select(ic =>
+        //     {
+        //         var decisionCode =
+        //             btmsCheckDictionary!.GetValueOrDefault((ic.Item.ItemNumber, ic.Check.CheckCode!), null);
+        //         return new ItemCheck()
+        //         {
+        //             ItemNumber = ic.Item!.ItemNumber,
+        //             CheckCode = ic.Check!.CheckCode!,
+        //             AlvsDecisionCode = ic.Check!.DecisionCode!,
+        //             BtmsDecisionCode = decisionCode
+        //         };
+        //     })
+        //     .ToList();
         
         alvsDecision.Context.DecisionComparison.Checks = alvsChecks;
         alvsDecision.Context.AlvsCheckStatus = GetAlvsCheckStatus(alvsChecks);
         alvsDecision.Context.BtmsCheckStatus = GeBtmsCheckStatus(alvsChecks);
-        
-        var decisionStatus = DecisionStatusEnum.InvestigationNeeded;
-        var checksMatch = alvsChecks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
-        var checkTypesMatch = alvsChecks.All(c => c.AlvsDecisionCode.First() == c.BtmsDecisionCode?.First());
-        
-        if (checksMatch)
+
+        var decisionStatus =
+            decisionStatusFinder.GetDecisionStatus(_movement, alvsDecision);
+
+        if (decisionStatus == DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)
         {
             alvsDecision.Context.DecisionComparison.DecisionMatched = true;
-            decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
         }
-        else if (checkTypesMatch)
-        {
-            decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionTypeAsAlvs;
-        }
-        else if (_movement.Relationships.Notifications.Data.Count == 0)
-        {
-            decisionStatus = DecisionStatusEnum.NoImportNotificationsLinked;
-        }
-        else if (_movement.AlvsDecisionStatus.Decisions.Count == 0)
-        {
-            decisionStatus = DecisionStatusEnum.NoAlvsDecisions;
-        }
-        else if (_movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp))
-        {
-            decisionStatus = DecisionStatusEnum.HasChedppChecks;
-        }
+        // var checksMatch = alvsChecks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
+
+        // if (checksMatch)
+        // {
+        //     alvsDecision.Context.DecisionComparison.DecisionMatched = true;
+        //     decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
+        // }
+        // else
+        // {
+        //     decisionStatus = decisionStatusFinder.GetDecisionStatus(_movement, alvsDecision);
+        // }
+
+        // else if (checkTypesMatch)
+        // {
+        //     decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionTypeAsAlvs;
+        // }
+        // else if (_movement.Relationships.Notifications.Data.Count == 0)
+        // {
+        //     decisionStatus = DecisionStatusEnum.NoImportNotificationsLinked;
+        // }
+        // else if (_movement.AlvsDecisionStatus.Decisions.Count == 0)
+        // {
+        //     decisionStatus = DecisionStatusEnum.NoAlvsDecisions;
+        // }
+        // else if (_movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp))
+        // {
+        //     decisionStatus = DecisionStatusEnum.HasChedppChecks;
+        // }
         
         alvsDecision.Context.DecisionComparison.DecisionStatus = decisionStatus;
     }

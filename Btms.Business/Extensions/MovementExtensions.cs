@@ -69,4 +69,31 @@ public static class MovementExtensions
                             : LinkStatusEnum.Investigate
         };
     }
+
+    public static Dictionary<(int, string), string?> GetCheckDictionary(this CdsDecision decision)
+    {
+        return decision
+            .Items!
+            .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+            .ToDictionary(ic => (ic.Item.ItemNumber, ic.Check.CheckCode!), ic => ic.Check.DecisionCode);
+    }
+    
+    public static List<ItemCheck> GetItemChecks(this AlvsDecision alvsDecision, IReadOnlyDictionary<(int, string), string?> compareTo)
+    {
+        return alvsDecision.Decision
+            .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
+            .Select(ic =>
+            {
+                var decisionCode =
+                    compareTo.GetValueOrDefault((ic.Item.ItemNumber, ic.Check.CheckCode!), null);
+                return new ItemCheck()
+                {
+                    ItemNumber = ic.Item!.ItemNumber,
+                    CheckCode = ic.Check!.CheckCode!,
+                    AlvsDecisionCode = ic.Check!.DecisionCode!,
+                    BtmsDecisionCode = decisionCode
+                };
+            })
+            .ToList();
+    }
 }
