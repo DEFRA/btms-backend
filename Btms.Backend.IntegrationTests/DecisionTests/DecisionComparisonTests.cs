@@ -59,7 +59,10 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
     
     [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), DecisionStatusEnum.HasChedppChecks)]
     [InlineData(typeof(Mrn24Gbdshixsy6Rckar3ScenarioGenerator), DecisionStatusEnum.AlvsX00NotBtms)]
-    
+
+    [InlineData(typeof(Mrn24GBDC4TW6DUQYIAR5ScenarioGenerator), DecisionStatusEnum.AlvsX00CaseSensitivity)]
+    [InlineData(typeof(Mrn24GBDSHIXSY6RCKAR3ScenarioGenerator), DecisionStatusEnum.AlvsX00WrongDocumentReferenceFormat)]
+
     public void ShouldHaveCorrectDecisionCode(Type generatorType, DecisionStatusEnum decisionStatus)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Status : {1}", generatorType!.FullName, decisionStatus);
