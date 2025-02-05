@@ -17,11 +17,14 @@ public class IpaffsCancelledTests(ITestOutputHelper output)
     public void NotificationShouldBeDeleted_AndRelationshipsRemoved_AndHaveAuditEntries()
     {
         // Assert
-        var notification = Client
+        var resource = Client
             .GetNotificationById("CHEDD.GB.2024.5246106");
 
+        var notification = resource.GetResourceObject<ImportNotification>();
+
+        resource.Data.Relationships!.First().Value!.Data.ManyValue!.Count.Should().Be(1);
+
         notification.Status.Should().Be(ImportNotificationStatusEnum.Cancelled);
-        notification.Relationships.Should().BeEquivalentTo(new NotificationTdmRelationships());
         notification.AuditEntries.Count(x => x.Status == "Unlinked").Should().Be(0);
         notification.AuditEntries.Count(x => x.Status == "Cancelled").Should().Be(1);
     }
