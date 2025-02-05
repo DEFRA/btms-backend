@@ -71,10 +71,23 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                             isReferenceType: true,
                             isArray: true,
                             classNamePrefix: ClassNamePrefix);
+                        
                         classDescriptor.Properties.Add(propertyDescriptor);
 
-                        //build class
                         BuildClass(cSharpDescriptor, property.Key, property.Value.Items);
+                    }
+                    
+                    if (arrayType == "string")
+                    {
+                        var propertyDescriptor = new PropertyDescriptor(
+                            sourceName: property.Key,
+                            type: "string",
+                            description: property.Value.Description,
+                            isReferenceType: false,
+                            isArray: true,
+                            classNamePrefix: ClassNamePrefix);
+                        
+                        classDescriptor.Properties.Add(propertyDescriptor);
                     }
                 }
                 else if (property.Value.IsObject())
@@ -86,6 +99,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                         isReferenceType: true,
                         isArray: false,
                         classNamePrefix: ClassNamePrefix);
+                    
                     classDescriptor.Properties.Add(propertyDescriptor);
 
                     BuildClass(cSharpDescriptor, property.Key, property.Value);
@@ -94,7 +108,9 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                 {
                     var enumDescriptor = new EnumDescriptor(property.Key, null!, SourceNamespace, InternalNamespace,
                         ClassNamePrefix);
+                    
                     cSharpDescriptor.AddEnumDescriptor(enumDescriptor);
+                    
                     foreach (var oneOfSchema in property.Value.OneOf)
                     {
                         var values = oneOfSchema.Enum.Select(x => ((OpenApiString)x).Value).ToList();
@@ -109,6 +125,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                         isReferenceType: true,
                         isArray: false,
                         classNamePrefix: ClassNamePrefix);
+                    
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }
                 else
