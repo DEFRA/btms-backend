@@ -1,4 +1,3 @@
-using Btms.Model;
 using Btms.Model.Gvms;
 
 namespace Btms.Backend.OpenApi;

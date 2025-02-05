@@ -29,5 +29,14 @@ public class DocumentFilter : IDocumentFilter
             operationDescription: "Get Movements",
             referenceId: "MovementResourceResponse",
             tag: "Movements");
+        
+        context.SchemaGenerator.GenerateSchema(typeof(GoodsMovementResourceResponse), context.SchemaRepository);
+        
+        swaggerDoc.AddPath(
+            path: "goods-movements",
+            pathDescription: "Goods Movement Operations",
+            operationDescription: "Get Goods Movements",
+            referenceId: "GoodsMovementResourceResponse",
+            tag: "GoodsMovements");
     }
 }
