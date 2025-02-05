@@ -12,7 +12,6 @@ internal class GmrConsumer(IMongoDbContext dbContext)
 {
     public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message, CancellationToken cancellationToken)
     {
-       
         foreach (var gmr in message.Gmrs!)
         {
             await SaveOrUpdateGmr(gmr);
