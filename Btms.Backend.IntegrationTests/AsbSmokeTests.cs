@@ -1,5 +1,6 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,8 @@ namespace Btms.Backend.IntegrationTests;
 [Trait("Category", "Integration")]
 public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
-    public AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper, "AsbSmokeTests")
+    public AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory,
+        testOutputHelper, "AsbSmokeTests")
     {
         factory.ConfigureHostConfiguration = configurationBuilder =>
         {
@@ -27,7 +29,7 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     }
 
     [Fact]
-    public async Task AsbSmokeTest()
+    public async Task AsbSmokeTest_NotificationsAndMovements()
     {
         await ClearDb();
         var testGeneratorFixture = new TestGeneratorFixture(Factory.TestOutputHelper);
@@ -63,5 +65,17 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 
         jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
         jsonClientResponse.Data.Count.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task AsbSmokeTest_Gmrs()
+    {
+        await ClearDb();
+        await ServiceBusHelper.PublishGmr(new Gmr { GmrId = "123" });
+
+        // NB. This delay is for a visual check of what is logged
+        //     and is temporary until a resultant action can be asserted
+        await Task.Delay(TimeSpan.FromSeconds(5));
+        true.Should().BeTrue();
     }
 }

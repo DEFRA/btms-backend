@@ -3,6 +3,7 @@ using System.Text.Json;
 using Azure.Messaging.ServiceBus;
 using Btms.Consumers;
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Decision = Btms.Types.Alvs.Decision;
 
@@ -26,6 +27,11 @@ public static class ServiceBusHelper
     public static Task PublishNotification(ImportNotification request)
     {
         return PublishMessage(request, "dev_notification_topic_vnet");
+    }
+
+    public static Task PublishGmr(Gmr request)
+    {
+        return PublishMessage(request, "dev_gmr_topic_vnet");
     }
 
     private static async Task PublishMessage<T>(T request, string topicName, string? messageType = null)

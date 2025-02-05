@@ -1,4 +1,5 @@
 using Btms.Backend.Data;
+using Btms.Backend.Data.Extensions;
 using Btms.Types.Ipaffs;
 using SlimMessageBus;
 using Btms.Consumers.Extensions;
@@ -9,7 +10,6 @@ using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
 using Btms.Model.Cds;
-using Microsoft.EntityFrameworkCore;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
@@ -64,17 +64,19 @@ namespace Btms.Consumers;
                     return;
                 }
 
-                var matchResult = await matchingService.Process(
-                    new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
+                var notifications = await LoadAllNotificationReferenced(cancellationToken, linkResult);
 
-                var decisionContext = new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult);
+                var matchResult = await matchingService.Process(
+                    new MatchingContext(notifications, linkResult.Movements), Context.CancellationToken);
+               
+                var decisionContext = new DecisionContext(notifications, linkResult.Movements, matchResult);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
                 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext);
+                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else if (preProcessingResult.IsDeleted())
             {
@@ -97,6 +99,18 @@ namespace Btms.Consumers;
             }
 
         }
+    }
+
+    private async Task<List<Model.Ipaffs.ImportNotification>> LoadAllNotificationReferenced(CancellationToken cancellationToken, LinkResult linkResult)
+    {
+        var movementMatchReferences = linkResult.Movements.SelectMany(x => x._MatchReferences).ToList();
+        var notificationIdentifiers = linkResult.Notifications.Select(x => x._MatchReference);
+        var missingIdentifiers = movementMatchReferences.Except(notificationIdentifiers).ToList();
+        var notifications = await dbContext.Notifications
+            .Where(x => missingIdentifiers.Contains(x._MatchReference))
+            .ToListAsync(cancellationToken);
+        notifications.AddRange(linkResult.Notifications);
+        return notifications;
     }
 
     private void LogStatus(string state, ImportNotification message)

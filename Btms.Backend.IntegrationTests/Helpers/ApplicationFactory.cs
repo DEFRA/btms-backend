@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -58,10 +59,13 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                     var settings = MongoClientSettings.FromConnectionString(options.Value.DatabaseUri);
                     var client = new MongoClient(settings);
 
-                    var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
+                    var camelCaseConvention = new ConventionPack
+                    {
+                        new CamelCaseElementNameConvention()
+                    };
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
-
+                    
                     var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
                     return client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
                 });

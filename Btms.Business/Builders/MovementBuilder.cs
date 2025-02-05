@@ -320,6 +320,40 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
                 "Can't call this without first calling 'From' to initialise the builder.");
         }
     }
+
+    private StatusChecker GetAlvsCheckStatus(List<ItemCheck> alvsChecks)
+    {
+        return  new StatusChecker()
+        {
+            AllMatch = alvsChecks.All(c => !c.AlvsDecisionCode.StartsWith('X')),
+            AnyMatch = alvsChecks.Any(c => !c.AlvsDecisionCode.StartsWith('X')),
+            AllNoMatch = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('X')),
+            AnyNoMatch = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('X')),
+            AllRefuse = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('N')),
+            AnyRefuse = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('N')),
+            AllRelease = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('C')),
+            AnyRelease = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('C')),
+            AllHold = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('H')),
+            AnyHold = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('H'))
+        };
+    }
+
+    private StatusChecker GeBtmsCheckStatus(List<ItemCheck> alvsChecks)
+    {
+        return new StatusChecker()
+        {
+            AllMatch = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
+            AnyMatch = alvsChecks.Any(c => !(c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X'))),
+            AllNoMatch = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
+            AnyNoMatch = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
+            AllRefuse = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('N')),
+            AnyRefuse = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('N')),
+            AllRelease = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('C')),
+            AnyRelease = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('C')),
+            AllHold = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H')),
+            AnyHold = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H'))
+        };
+    }
     
     private void CompareDecisions(AlvsDecision alvsDecision, CdsDecision btmsDecision)
     {
@@ -352,51 +386,29 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
             .ToList();
         
         alvsDecision.Context.DecisionComparison.Checks = alvsChecks;
-        
-        alvsDecision.Context.AlvsCheckStatus = new StatusChecker()
-        {
-            AllMatch = alvsChecks.All(c => !c.AlvsDecisionCode.StartsWith('X')),
-            AnyMatch = alvsChecks.Any(c => !c.AlvsDecisionCode.StartsWith('X')),
-            AllNoMatch = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('X')),
-            AnyNoMatch = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('X')),
-            AllRefuse = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('N')),
-            AnyRefuse = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('N')),
-            AllRelease = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('C')),
-            AnyRelease = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('C')),
-            AllHold = alvsChecks.All(c => c.AlvsDecisionCode.StartsWith('H')),
-            AnyHold = alvsChecks.Any(c => c.AlvsDecisionCode.StartsWith('H'))
-        };
-        
-        alvsDecision.Context.BtmsCheckStatus = new StatusChecker()
-        {
-            AllMatch = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
-            AnyMatch = alvsChecks.Any(c => !(c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X'))),
-            AllNoMatch = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
-            AnyNoMatch = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('X')),
-            AllRefuse = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('N')),
-            AnyRefuse = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('N')),
-            AllRelease = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('C')),
-            AnyRelease = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('C')),
-            AllHold = alvsChecks.All(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H')),
-            AnyHold = alvsChecks.Any(c => c.BtmsDecisionCode.HasValue() && c.BtmsDecisionCode.StartsWith('H'))
-        };
+        alvsDecision.Context.AlvsCheckStatus = GetAlvsCheckStatus(alvsChecks);
+        alvsDecision.Context.BtmsCheckStatus = GeBtmsCheckStatus(alvsChecks);
         
         var decisionStatus = DecisionStatusEnum.InvestigationNeeded;
         var checksMatch = alvsChecks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
-        var checkPrefixesMatch = alvsChecks.All(c => c.AlvsDecisionCode.First() == c.BtmsDecisionCode?.First());
+        var checkTypesMatch = alvsChecks.All(c => c.AlvsDecisionCode.First() == c.BtmsDecisionCode?.First());
         
         if (checksMatch)
         {
             alvsDecision.Context.DecisionComparison.DecisionMatched = true;
             decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
         }
-        else if (checkPrefixesMatch)
+        else if (checkTypesMatch)
         {
-            decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionPrefixAsAlvs;
+            decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionTypeAsAlvs;
         }
         else if (_movement.Relationships.Notifications.Data.Count == 0)
         {
             decisionStatus = DecisionStatusEnum.NoImportNotificationsLinked;
+        }
+        else if (_movement.AlvsDecisionStatus.Decisions.Count == 0)
+        {
+            decisionStatus = DecisionStatusEnum.NoAlvsDecisions;
         }
         else if (_movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp))
         {

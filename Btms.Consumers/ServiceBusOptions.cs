@@ -12,6 +12,8 @@ public class ServiceBusOptions
     public ServiceBusSubscriptionOptions AlvsSubscription => Subscriptions["alvs"];
 
     public ServiceBusSubscriptionOptions NotificationSubscription => Subscriptions["notification"];
+
+    public ServiceBusSubscriptionOptions GmrSubscription => Subscriptions["gmr"];
 }
 
 public class ServiceBusSubscriptionOptions

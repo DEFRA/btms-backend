@@ -19,7 +19,7 @@ public class PropertyDescriptor
     {
     }
 
-    public PropertyDescriptor(string sourceName, string internalName, string type, string description,
+    public PropertyDescriptor(string sourceName, string internalName, string type, string? description,
         bool isReferenceType, bool isArray, string classNamePrefix)
     {
         SourceName = sourceName;
@@ -29,7 +29,7 @@ public class PropertyDescriptor
         _isArray = isArray;
         _classNamePrefix = classNamePrefix;
         Type = type;
-        Description = description;
+        Description = description?.Replace("\n", " ");
         IsReferenceType = isReferenceType;
         IsArray = isArray;
         SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
@@ -47,7 +47,7 @@ public class PropertyDescriptor
 
     public string Type { get; set; }
 
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     public List<string> SourceAttributes { get; set; }
 

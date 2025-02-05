@@ -51,6 +51,14 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         return Update(item, item._Etag, cancellationToken);
     }
 
+    public async Task Update(List<T> items, CancellationToken cancellationToken = default)
+    {
+        foreach (var item in items)
+        {
+            await Update(item, cancellationToken);
+        }
+    }
+
     [SuppressMessage("SonarLint", "S2955",
         Justification =
             "IEquatable<T> would need to be implemented on every data entity just to stop sonar complaining about a null check. Nope.")]

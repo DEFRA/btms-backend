@@ -28,6 +28,7 @@ public static class MessageBusExtensions
                     .ToList()
                 },
             };
+            
             await bus.Publish(decisionMessage, "DECISIONS", headers: headers, cancellationToken: cancellationToken);
         }
     }
