@@ -11,26 +11,25 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class StateEnumMapper
 {
-    public static Btms.Model.Gvms.StateEnum? Map(Btms.Types.Gvms.StateEnum? from)
-    {
-        if (from == null)
-        {
-            return default!;
-        }
-
-        return from switch
-        {
-            Btms.Types.Gvms.StateEnum.NotFinalisable => Btms.Model.Gvms.StateEnum.NotFinalisable,
-            Btms.Types.Gvms.StateEnum.Open => Btms.Model.Gvms.StateEnum.Open,
-            Btms.Types.Gvms.StateEnum.Finalised => Btms.Model.Gvms.StateEnum.Finalised,
-            Btms.Types.Gvms.StateEnum.CheckedIn => Btms.Model.Gvms.StateEnum.CheckedIn,
-            Btms.Types.Gvms.StateEnum.Embarked => Btms.Model.Gvms.StateEnum.Embarked,
-            Btms.Types.Gvms.StateEnum.Completed => Btms.Model.Gvms.StateEnum.Completed,
-
-            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
-        };
-    }
-
+public static Btms.Model.Gvms.StateEnum? Map(Btms.Types.Gvms.StateEnum? from)
+{
+if(from == null)
+{
+return default!;
+}
+return from switch
+{
+Btms.Types.Gvms.StateEnum.NotFinalisable => Btms.Model.Gvms.StateEnum.NotFinalisable,
+    Btms.Types.Gvms.StateEnum.Open => Btms.Model.Gvms.StateEnum.Open,
+    Btms.Types.Gvms.StateEnum.Finalised => Btms.Model.Gvms.StateEnum.Finalised,
+    Btms.Types.Gvms.StateEnum.CheckedIn => Btms.Model.Gvms.StateEnum.CheckedIn,
+    Btms.Types.Gvms.StateEnum.Embarked => Btms.Model.Gvms.StateEnum.Embarked,
+    Btms.Types.Gvms.StateEnum.Completed => Btms.Model.Gvms.StateEnum.Completed,
+    
+_ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+};
+}
+        
 
 }
 

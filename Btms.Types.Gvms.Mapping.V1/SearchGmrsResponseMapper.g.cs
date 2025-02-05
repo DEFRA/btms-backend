@@ -14,7 +14,7 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class SearchGmrsResponseMapper
 {
-	public static Btms.Model.Gvms.SearchGmrsResponse Map(Btms.Types.Gvms.SearchGmrsResponse from)
+	public static Btms.Model.Gvms.SearchGmrsResponse Map(Btms.Types.Gvms.SearchGmrsResponse? from)
 	{
 	if(from is null)
 	{
