@@ -396,7 +396,7 @@ internal static class Bootstrap
             map.MapProperty("gmrId").SetInternalName("id");
             map.MapProperty("haulierEORI").SetName("haulierEori");
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
-            map.MapProperty("updatedDateTime").SetName("lastUpdated").IsDateTime();
+            map.MapProperty("updatedDateTime").SetName("updatedSource").IsDateTime();
             map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
             map.MapProperty("declarations").ExcludeFromInternal();
         });
