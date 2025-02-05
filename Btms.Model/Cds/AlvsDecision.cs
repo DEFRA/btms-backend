@@ -209,15 +209,23 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision Type As Alvs")]
     BtmMadeSameDecisionTypeAsAlvs,
     
-    //Obsolete:
-    // [EnumMember(Value = "Btms Made Same Decision Prefix As Alvs")]
-    // BtmMadeSameDecisionPrefixAsAlvs,
     
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,
     
     [EnumMember(Value = "No Alvs Decisions")]
     NoAlvsDecisions,
+    
+    
+    [EnumMember(Value = "ALVS X00 Case Sensitivity")]
+    AlvsX00CaseSensitivity,
+    
+    [EnumMember(Value = "ALVS X00 Wrong Document Reference Format")]
+    AlvsX00WrongDocumentReferenceFormat,
+    
+    [EnumMember(Value = "ALVS X00 But Not BTMS")]
+    AlvsX00NotBtms,
+    
     
     [EnumMember(Value = "CDMS-205")]
     ReliesOnCDMS205,
