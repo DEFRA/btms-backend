@@ -19,7 +19,7 @@ public class PropertyDescriptor
     {
     }
 
-    public PropertyDescriptor(string sourceName, string internalName, string type, string description,
+    public PropertyDescriptor(string sourceName, string internalName, string type, string? description,
         bool isReferenceType, bool isArray, string classNamePrefix)
     {
         SourceName = sourceName;
@@ -33,7 +33,7 @@ public class PropertyDescriptor
         IsReferenceType = isReferenceType;
         IsArray = isArray;
         SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
-        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]"];
+        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description?.Replace("\n", " ")}\")]"];
 
         if (type.EndsWith("Enum"))
         {
@@ -47,7 +47,7 @@ public class PropertyDescriptor
 
     public string Type { get; set; }
 
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     public List<string> SourceAttributes { get; set; }
 
