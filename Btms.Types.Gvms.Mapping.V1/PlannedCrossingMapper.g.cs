@@ -14,15 +14,15 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class PlannedCrossingMapper
 {
-	public static Btms.Model.Gvms.PlannedCrossing Map(Btms.Types.Gvms.PlannedCrossing from)
+	public static Btms.Model.Gvms.PlannedCrossing Map(Btms.Types.Gvms.PlannedCrossing? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.PlannedCrossing ();
-to.RouteId = from.RouteId;
-            to.DepartsAt = from.DepartsAt;
+to.RouteId = from?.RouteId;
+            to.DepartsAt = from?.DepartsAt;
             	return to;
 	}
 }

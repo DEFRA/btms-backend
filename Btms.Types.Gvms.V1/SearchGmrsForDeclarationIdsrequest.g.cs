@@ -8,34 +8,24 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
-using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Gvms;
+namespace Btms.Types.Gvms;
 
 /// <summary>
 /// 
 /// </summary>
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsForDeclarationIdsrequest  //
 {
 
 
         /// <summary>
-        /// 
+        /// A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).
         /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public GmrsByVrn[]? GmrsByVrns { get; set; }
-
-	
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Gmr[]? Gmrs { get; set; }
+    [JsonPropertyName("declarationIds")]
+    public string[]? DeclarationIds { get; set; }
 
 	}
 

@@ -11,26 +11,25 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class HaulierTypeEnumMapper
 {
-    public static Btms.Model.Gvms.HaulierTypeEnum? Map(Btms.Types.Gvms.HaulierTypeEnum? from)
-    {
-        if (from == null)
-        {
-            return default!;
-        }
-
-        return from switch
-        {
-            Btms.Types.Gvms.HaulierTypeEnum.Standard => Btms.Model.Gvms.HaulierTypeEnum.Standard,
-            Btms.Types.Gvms.HaulierTypeEnum.FpoAsn => Btms.Model.Gvms.HaulierTypeEnum.FpoAsn,
-            Btms.Types.Gvms.HaulierTypeEnum.FpoOther => Btms.Model.Gvms.HaulierTypeEnum.FpoOther,
-            Btms.Types.Gvms.HaulierTypeEnum.NatoMod => Btms.Model.Gvms.HaulierTypeEnum.NatoMod,
-            Btms.Types.Gvms.HaulierTypeEnum.Rmg => Btms.Model.Gvms.HaulierTypeEnum.Rmg,
-            Btms.Types.Gvms.HaulierTypeEnum.Etoe => Btms.Model.Gvms.HaulierTypeEnum.Etoe,
-
-            _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
-        };
-    }
-
+public static Btms.Model.Gvms.HaulierTypeEnum? Map(Btms.Types.Gvms.HaulierTypeEnum? from)
+{
+if(from == null)
+{
+return default!;
+}
+return from switch
+{
+Btms.Types.Gvms.HaulierTypeEnum.Standard => Btms.Model.Gvms.HaulierTypeEnum.Standard,
+    Btms.Types.Gvms.HaulierTypeEnum.FpoAsn => Btms.Model.Gvms.HaulierTypeEnum.FpoAsn,
+    Btms.Types.Gvms.HaulierTypeEnum.FpoOther => Btms.Model.Gvms.HaulierTypeEnum.FpoOther,
+    Btms.Types.Gvms.HaulierTypeEnum.NatoMod => Btms.Model.Gvms.HaulierTypeEnum.NatoMod,
+    Btms.Types.Gvms.HaulierTypeEnum.Rmg => Btms.Model.Gvms.HaulierTypeEnum.Rmg,
+    Btms.Types.Gvms.HaulierTypeEnum.Etoe => Btms.Model.Gvms.HaulierTypeEnum.Etoe,
+    
+_ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
+};
+}
+        
 
 }
 

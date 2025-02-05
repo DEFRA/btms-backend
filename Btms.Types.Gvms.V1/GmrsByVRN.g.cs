@@ -27,6 +27,13 @@ public partial class GmrsByVrn  //
     [JsonPropertyName("vrn")]
     public string? Vrn { get; set; }
 
+	
+        /// <summary>
+        /// 
+        /// </summary>
+    [JsonPropertyName("gmrs")]
+    public string[]? Gmrs { get; set; }
+
 	}
 
 
