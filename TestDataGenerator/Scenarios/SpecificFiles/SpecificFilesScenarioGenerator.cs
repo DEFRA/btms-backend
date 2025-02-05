@@ -184,7 +184,7 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         if (!sampleFolder.HasValue())
         {
             throw new InvalidOperationException(
-                "Either need to specify the scenarioPath in the constructor, or ovrride the generate function.");
+                "Either need to specify the scenarioPath in the constructor, or override the generate function.");
         }
         var builders =  GetBuilders(sampleFolder)
             .GetAwaiter().GetResult();

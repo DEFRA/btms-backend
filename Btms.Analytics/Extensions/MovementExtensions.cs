@@ -40,23 +40,10 @@ public static class MovementExtensions
              Check   = t.Check,
              Movement = t.Movement,
              
-             DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null || t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus == DecisionStatusEnum.InvestigationNeeded ?
-                                 DecisionStatusEnum.InvestigationNeeded :
-                                 // d.Movement.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus :
-                                 // t.Movement.AlvsDecisionStatus.Context.DecisionComparison.
-                                 t.Movement.AlvsDecisionStatus.Context.DecisionComparison.Checks.Any(c => c.AlvsDecisionCode == "X00" && c.BtmsDecisionCode != "X00") ? DecisionStatusEnum.AlvsX00NotBtms :
-                                 t.Movement.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
-                                     DecisionStatusEnum.ReliesOnCDMS205 :
-                                 t.Movement.BtmsStatus.Segment == MovementSegmentEnum.Cdms249 ?
-                                     DecisionStatusEnum.ReliesOnCDMS249 :
-                                 t.Movement.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
-                                 DecisionStatusEnum.HasChedppChecks ?
-                                     DecisionStatusEnum.HasChedppChecks :
-                                 t.Check.BtmsDecisionCode == "E99" ? DecisionStatusEnum.HasGenericDataErrors :
-                                 t.Check.BtmsDecisionCode != null && t.Check.BtmsDecisionCode.StartsWith("E9") ? DecisionStatusEnum.HasOtherDataErrors :
-                                 t.Movement.BtmsStatus.ChedTypes.Length > 1 ? DecisionStatusEnum.HasMultipleChedTypes :
-                                 t.Movement.Relationships.Notifications.Data.Count > 1 ? DecisionStatusEnum.HasMultipleCheds :
-                                 t.Movement.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+             DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null ? DecisionStatusEnum.InvestigationNeeded : t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus
+             
+             //                     t.Movement.Relationships.Notifications.Data.Count > 1 ? DecisionStatusEnum.HasMultipleCheds :
+             //                     t.Movement.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
         });
     }
     

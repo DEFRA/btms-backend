@@ -13,7 +13,7 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, I
     {
         logger.LogInformation("Creating movement from clearance request {0}", request.Header!.EntryReference);
         var items = request.Items?.ToList()!;
-        var documentReferenceIds = items.UniqueDocumentReferenceIdsThatShouldLink();
+        var documentReferenceIds = items.UniqueDocumentReferenceIds();
         var notificationRelationshipIds = new List<string>();
         
         var movement = new Movement()

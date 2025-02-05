@@ -28,28 +28,29 @@ public static class MovementExtensions
             .Distinct() // We may end up with multiple relationships for the same ID if multiple items link to it?
             .ToList();
     }
+
+    // private const string[] ChedDocCodes = new[] { "" };
     
     public static bool IsChed(this Document doc)
     {
         return doc.DocumentReference != null &&
-               doc.DocumentReference.ToUpper().StartsWith("GBCHD");
+               // ChedDocCodes.Contains(doc.DocumentCode);
+            doc.DocumentReference.ToUpper().StartsWith("GBCHD");
     }
     
-    public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this List<Btms.Model.Cds.Items> items)
+    public static List<string> UniqueDocumentReferenceIds(this List<Btms.Model.Cds.Items> items)
     {
         return items
             .SelectMany(i => i.Documents ?? [])
-            // Only CHED document refs should result in links
-            .Where(d => d.IsChed())
             .Select(d => d.DocumentReference!.TrimUniqueNumber())
             .Distinct()
             .ToList();
     }
     
-    public static List<string> UniqueDocumentReferenceIdsThatShouldLink(this Movement movement)
+    public static List<string> UniqueDocumentReferenceIds(this Movement movement)
     {
         return movement.Items
-            .UniqueDocumentReferenceIdsThatShouldLink();
+            .UniqueDocumentReferenceIds();
     }
 
     public static MovementStatus GetMovementStatus(ImportNotificationTypeEnum[] chedTypes, List<string> documentReferenceIds, List<string> notificationRelationshipIds)

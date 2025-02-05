@@ -366,28 +366,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
         }
         
         var btmsCheckDictionary = btmsDecision.GetCheckDictionary();
-        //
-        // var btmsCheckDictionary = btmsDecision
-        //     .Items!
-        //     .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
-        //     .ToDictionary(ic => (ic.Item.ItemNumber, ic.Check.CheckCode!), ic => ic.Check.DecisionCode!);
-
         var alvsChecks = alvsDecision.GetItemChecks(btmsCheckDictionary);
-        // var alvsChecks = alvsDecision.Decision
-        //     .Items!.SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
-        //     .Select(ic =>
-        //     {
-        //         var decisionCode =
-        //             btmsCheckDictionary!.GetValueOrDefault((ic.Item.ItemNumber, ic.Check.CheckCode!), null);
-        //         return new ItemCheck()
-        //         {
-        //             ItemNumber = ic.Item!.ItemNumber,
-        //             CheckCode = ic.Check!.CheckCode!,
-        //             AlvsDecisionCode = ic.Check!.DecisionCode!,
-        //             BtmsDecisionCode = decisionCode
-        //         };
-        //     })
-        //     .ToList();
         
         alvsDecision.Context.DecisionComparison.Checks = alvsChecks;
         alvsDecision.Context.AlvsCheckStatus = GetAlvsCheckStatus(alvsChecks);

@@ -15,14 +15,14 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
     [InlineData(typeof(ChedAh01ScenarioGenerator1), DecisionStatusEnum.NoAlvsDecisions)]
     
     [InlineData(typeof(MissingChedScenarioGenerator), DecisionStatusEnum.NoImportNotificationsLinked)]
-    [InlineData(typeof(IuuScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
+    [InlineData(typeof(IuuScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
     
     [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), DecisionStatusEnum.HasChedppChecks)]
     
     // Failing due to CDMS-319 & CDMS-314
-    // [InlineData(typeof(Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator), DecisionStatusEnum.AlvsX00CaseSensitivity)]
-    // [InlineData(typeof(Mrn24Gbdshixsy6Rckar3ScenarioGenerator), DecisionStatusEnum.AlvsX00WrongDocumentReferenceFormat)]
-    // [InlineData(typeof(ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator), DecisionStatusEnum.AlvsX00WrongDocumentReferenceFormat)]
+    [InlineData(typeof(Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
+    [InlineData(typeof(Mrn24Gbdshixsy6Rckar3ScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
+    [InlineData(typeof(ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
     
     public void ShouldHaveCorrectDecisionCode(Type generatorType, DecisionStatusEnum decisionStatus)
     {
@@ -37,7 +37,7 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
             Client
                 .GetSingleMovement();
 
-        TestOutputHelper.WriteLine("MRN {0}, expectedDecisionCode {1}", movement.EntryReference, decisionStatus);
+        TestOutputHelper.WriteLine("MRN {0}, expectedDecisionStatus {1}", movement.EntryReference, decisionStatus);
 
         movement
             .AlvsDecisionStatus.Context.DecisionComparison?.DecisionStatus
