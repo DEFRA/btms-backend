@@ -98,14 +98,9 @@ public class Mrn24Gbdshixsy6Rckar3ScenarioGenerator(
     ILogger<Mrn24Gbdshixsy6Rckar3ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDSHIXSY6RCKAR3");
 
-public class Mrn24GBDSHIXSY6RCKAR3ScenarioGenerator(
+public class Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24GBDSHIXSY6RCKAR3ScenarioGenerator> logger)
-    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDSHIXSY6RCKAR3");
-
-internal class Mrn24GBDC4TW6DUQYIAR5ScenarioGenerator(
-    IServiceProvider sp,
-    ILogger<Mrn24GBDC4TW6DUQYIAR5ScenarioGenerator> logger)
+    ILogger<Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDC4TW6DUQYIAR5");
 
 public class DuplicateMovementItemsCdms211(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
@@ -131,6 +126,9 @@ public class Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator(IServiceProvider sp, ILogger
 
 public class Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDZSRXDXTBVKAR6");
+
+public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
