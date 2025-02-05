@@ -1,4 +1,5 @@
 using Btms.Backend.Data;
+using Btms.Consumers.Extensions;
 using Btms.Model.Auditing;
 using Btms.Types.Gvms;
 using Btms.Types.Gvms.Mapping;
@@ -7,47 +8,54 @@ using SearchGmrsForDeclarationIdsResponse = Btms.Types.Gvms.SearchGmrsForDeclara
 
 namespace Btms.Consumers;
 
-internal class GmrConsumer(IMongoDbContext dbContext)
+internal class GmrConsumer(IMongoDbContext mongoDbContext)
     : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumerWithContext
 {
     public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message, CancellationToken cancellationToken)
     {
         foreach (var gmr in message.Gmrs!)
         {
-            await SaveOrUpdateGmr(gmr);
+            await SaveOrUpdateGmr(gmr, Context.GetMessageId(), Context.CancellationToken);
         }
 
-        await dbContext.SaveChangesAsync(Context.CancellationToken);
+        await mongoDbContext.SaveChangesAsync(Context.CancellationToken);
     }
 
-    private async Task SaveOrUpdateGmr(Gmr gmr)
+    private async Task SaveOrUpdateGmr(Gmr message, string auditId, CancellationToken cancellationToken)
     {
-        var internalGmr = GrmWithTransformMapper.MapWithTransform(gmr);
-        var existingGmr = await dbContext.Gmrs.Find(internalGmr.Id!);
-        var auditId = Context.Headers["messageId"].ToString();
+        var mappedGmr = GrmWithTransformMapper.MapWithTransform(message);
+        var existingGmr = await mongoDbContext.Gmrs.Find(mappedGmr.Id!);
+
         if (existingGmr is null)
         {
-            var auditEntry =
-                AuditEntry.CreateCreatedEntry(internalGmr, auditId!, 1, gmr.UpdatedSource, CreatedBySystem.Gvms);
-            internalGmr.AuditEntries.Add(auditEntry);
-            await dbContext.Gmrs.Insert(internalGmr);
+            var auditEntry = AuditEntry.CreateCreatedEntry(
+                mappedGmr,
+                auditId,
+                1,
+                message.UpdatedSource,
+                CreatedBySystem.Gvms);
+
+            mappedGmr.AuditEntries.Add(auditEntry);
+
+            await mongoDbContext.Gmrs.Insert(mappedGmr, cancellationToken);
         }
         else
         {
-            if (gmr.UpdatedSource > existingGmr.UpdatedSource)
+            if (message.UpdatedSource > existingGmr.UpdatedSource)
             {
-                internalGmr.AuditEntries = existingGmr.AuditEntries;
+                mappedGmr.AuditEntries = existingGmr.AuditEntries;
+
                 var auditEntry = AuditEntry.CreateUpdated(
-                    previous: existingGmr,
-                    current: internalGmr,
-                    id: auditId!,
-                    version: internalGmr.AuditEntries.Count + 1,
-                    lastUpdated: gmr.UpdatedSource, 
+                    existingGmr,
+                    mappedGmr,
+                    auditId,
+                    mappedGmr.AuditEntries.Count + 1,
+                    message.UpdatedSource,
                     CreatedBySystem.Gvms);
-                    
-                internalGmr.AuditEntries.Add(auditEntry);
-                    
-                await dbContext.Gmrs.Update(internalGmr, existingGmr._Etag);
+
+                mappedGmr.AuditEntries.Add(auditEntry);
+
+                await mongoDbContext.Gmrs.Update(mappedGmr, existingGmr._Etag, cancellationToken);
             }
         }
     }
