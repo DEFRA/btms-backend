@@ -14,25 +14,23 @@ internal class GenerateVehicleMovementModelCommand : IRequest
     public const string SourceNamespace = "Btms.Types.Gvms";
     public const string InternalNamespace = "Btms.Model.Gvms";
     public const string ClassNamePrefix = "";
+    public const string SolutionPath = "../../../../";
 
-    public string SourceOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Gvms.V1\\";
+    public string SchemaFile { get; set; } =
+        $"{SolutionPath}/Btms.Backend.Cli/Features/GenerateModels/GenerateVehicleMovementModel/Goods-Vehicle-Movement-Search-1.0-Open-API-Spec.yaml";
 
-    public string InternalOutputPath { get; set; } =
-        "D:\\repos\\esynergy\\Btms-Backend\\Btms.Model\\Gvms\\";
+    public string SourceOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Gvms.V1/";
 
-    public string MappingOutputPath { get; set; } =
-        "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Gvms.Mapping.V1\\";
+    public string InternalOutputPath { get; set; } = $"{SolutionPath}/Btms.Model/Gvms/";
+
+    public string MappingOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Gvms.Mapping.V1/";
 
     public class Handler : IRequestHandler<GenerateVehicleMovementModelCommand>
     {
         public async Task Handle(GenerateVehicleMovementModelCommand request,
             CancellationToken cancellationToken)
         {
-            using var streamReader =
-                new StreamReader(
-#pragma warning disable S1075
-                    "D:\\repos\\esynergy\\btms-backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateVehicleMovementModel\\Goods-Vehicle-Movement-Search-1.0-Open-API-Spec.yaml");
-#pragma warning restore S1075
+            using var streamReader = new StreamReader(request.SchemaFile);
             var reader = new OpenApiStreamReader();
             var document = reader.Read(streamReader.BaseStream, out _);
 
