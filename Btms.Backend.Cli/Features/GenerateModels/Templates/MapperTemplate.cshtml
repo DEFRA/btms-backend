@@ -22,7 +22,7 @@ namespace @ns
 
 public static class @Model.GetClassName()Mapper
 {
-	public static @Model.GetInternalFullClassName() Map(@Model.GetSourceFullClassName() from)
+	public static @Model.GetInternalFullClassName() Map(@Model.GetSourceFullClassName()? from)
 	{
 	if(from is null)
 	{
@@ -69,7 +69,7 @@ public static class @Model.GetClassName()Mapper
         }
         else
         {
-            <text>to.@property.GetInternalPropertyName() = from.@property.GetSourcePropertyName();
+            <text>to.@property.GetInternalPropertyName() = from?.@property.GetSourcePropertyName();
             </text>
         }
     }

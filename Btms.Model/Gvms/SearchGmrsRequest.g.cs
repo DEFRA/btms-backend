@@ -18,24 +18,16 @@ namespace Btms.Model.Gvms;
 /// <summary>
 /// 
 /// </summary>
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsRequest  //
 {
 
 
         /// <summary>
-        /// 
+        /// A list of TRNs to search for GMRs.
         /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
-    public GmrsByVrn[]? GmrsByVrns { get; set; }
-
-	
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Gmr[]? Gmrs { get; set; }
+    [System.ComponentModel.Description("A list of TRNs to search for GMRs.")]
+    public string[]? TrailerRegistrationNums { get; set; }
 
 	}
 

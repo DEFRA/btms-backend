@@ -27,6 +27,13 @@ public partial class ReportToLocations  //
     [JsonPropertyName("inspectionTypeId")]
     public string? InspectionTypeId { get; set; }
 
+	
+        /// <summary>
+        /// A list of locationIds from GVMS Reference Data that are available to perform this type of inspection.
+        /// </summary>
+    [JsonPropertyName("locationIds")]
+    public string[]? LocationIds { get; set; }
+
 	}
 
 

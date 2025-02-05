@@ -8,34 +8,24 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
-using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
 
 
-namespace Btms.Model.Gvms;
+namespace Btms.Types.Gvms;
 
 /// <summary>
 /// 
 /// </summary>
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsForVRNrequest  //
 {
 
 
         /// <summary>
-        /// 
+        /// A list of VRN to search for GMRs.
         /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public GmrsByVrn[]? GmrsByVrns { get; set; }
-
-	
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Gmr[]? Gmrs { get; set; }
+    [JsonPropertyName("vrns")]
+    public string[]? Vrns { get; set; }
 
 	}
 

@@ -18,24 +18,16 @@ namespace Btms.Model.Gvms;
 /// <summary>
 /// 
 /// </summary>
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsForDeclarationIdsrequest  //
 {
 
 
         /// <summary>
-        /// 
+        /// A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).
         /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
-    public GmrsByVrn[]? GmrsByVrns { get; set; }
-
-	
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Gmr[]? Gmrs { get; set; }
+    [System.ComponentModel.Description("A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).")]
+    public string[]? DeclarationIds { get; set; }
 
 	}
 

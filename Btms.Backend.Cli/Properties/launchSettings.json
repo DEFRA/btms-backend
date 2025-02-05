@@ -4,10 +4,9 @@
       "commandName": "Project",
       //"commandLineArgs": "generate-ipaffs-model --schema D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Cli\\Features\\GenerateModels\\GenerateIpaffsModel\\\\jsonschema.json --outputPath D:\\repos\\esynergy\\tdm-prototype-backend\\TdmPrototypeBackend.Types\\Ipaffs\\"
       //"commandLineArgs": "generate-ipaffs-model --schema D:\\repos\\esynergy\\btms-backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateIpaffsModel\\\\jsonschema.json"
-
-      // "commandLineArgs": "generate-vehicle-movement-model"
+      "commandLineArgs": "generate-vehicle-movement-model"
       //"commandLineArgs": "generate-alvs-model"
-      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBCSRYLJM7JCYAR3  --rootFolder PRODREDACTED-202412 --outputFolder C:\\temp\\downloads"
+      //"commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBCSRYLJM7JCYAR3  --rootFolder PRODREDACTED-202412 --outputFolder C:\\temp\\downloads"
     },
 
     "download-scenario-data-24GBDZSRXDXTBVKAR6": {

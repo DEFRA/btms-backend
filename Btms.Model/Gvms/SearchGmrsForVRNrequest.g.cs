@@ -18,24 +18,16 @@ namespace Btms.Model.Gvms;
 /// <summary>
 /// 
 /// </summary>
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsForVRNrequest  //
 {
 
 
         /// <summary>
-        /// 
+        /// A list of VRN to search for GMRs.
         /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
-    public GmrsByVrn[]? GmrsByVrns { get; set; }
-
-	
-        /// <summary>
-        /// 
-        /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    public Gmr[]? Gmrs { get; set; }
+    [System.ComponentModel.Description("A list of VRN to search for GMRs.")]
+    public string[]? Vrns { get; set; }
 
 	}
 

@@ -14,7 +14,7 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class DeclarationsMapper
 {
-	public static Btms.Model.Gvms.Declarations Map(Btms.Types.Gvms.Declarations from)
+	public static Btms.Model.Gvms.Declarations Map(Btms.Types.Gvms.Declarations? from)
 	{
 	if(from is null)
 	{
