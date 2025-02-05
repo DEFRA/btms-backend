@@ -76,8 +76,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
 
                         BuildClass(cSharpDescriptor, property.Key, property.Value.Items);
                     }
-                    
-                    if (arrayType == "string")
+                    else if (arrayType == "string")
                     {
                         var propertyDescriptor = new PropertyDescriptor(
                             sourceName: property.Key,
@@ -89,6 +88,8 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                         
                         classDescriptor.Properties.Add(propertyDescriptor);
                     }
+                    else
+                        throw new NotImplementedException($"{arrayType} is not implemented");
                 }
                 else if (property.Value.IsObject())
                 {
