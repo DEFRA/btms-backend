@@ -43,6 +43,8 @@ public static class MovementExtensions
              DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null || t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus == DecisionStatusEnum.InvestigationNeeded ?
                                  DecisionStatusEnum.InvestigationNeeded :
                                  // d.Movement.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus :
+                                 // t.Movement.AlvsDecisionStatus.Context.DecisionComparison.
+                                 t.Movement.AlvsDecisionStatus.Context.DecisionComparison.Checks.Any(c => c.AlvsDecisionCode == "X00" && c.BtmsDecisionCode != "X00") ? DecisionStatusEnum.AlvsX00NotBtms :
                                  t.Movement.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
                                      DecisionStatusEnum.ReliesOnCDMS205 :
                                  t.Movement.BtmsStatus.Segment == MovementSegmentEnum.Cdms249 ?
