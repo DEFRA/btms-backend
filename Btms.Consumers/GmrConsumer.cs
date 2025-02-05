@@ -9,7 +9,7 @@ using SearchGmrsForDeclarationIdsResponse = Btms.Types.Gvms.SearchGmrsForDeclara
 namespace Btms.Consumers;
 
 internal class GmrConsumer(IMongoDbContext mongoDbContext)
-    : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumerWithContext
+    : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumer<Gmr>, IConsumerWithContext
 {
     public async Task OnHandle(SearchGmrsForDeclarationIdsResponse message, CancellationToken cancellationToken)
     {
@@ -18,6 +18,12 @@ internal class GmrConsumer(IMongoDbContext mongoDbContext)
             await SaveOrUpdateGmr(gmr, Context.GetMessageId(), Context.CancellationToken);
         }
 
+        await mongoDbContext.SaveChangesAsync(Context.CancellationToken);
+    }
+    
+    public async Task OnHandle(Gmr message, CancellationToken cancellationToken)
+    {
+        await SaveOrUpdateGmr(message, Context.GetMessageId(), Context.CancellationToken);
         await mongoDbContext.SaveChangesAsync(Context.CancellationToken);
     }
 
