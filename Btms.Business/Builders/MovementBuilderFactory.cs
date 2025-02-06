@@ -7,13 +7,13 @@ using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Builders;
 
-public class MovementBuilderFactory(ILogger<MovementBuilder> logger)
+public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, ILogger<MovementBuilder> logger)
 {
     public MovementBuilder From(CdsClearanceRequest request)
     {
         logger.LogInformation("Creating movement from clearance request {0}", request.Header!.EntryReference);
         var items = request.Items?.ToList()!;
-        var documentReferenceIds = items.UniqueDocumentReferenceIdsThatShouldLink();
+        var documentReferenceIds = items.UniqueDocumentReferenceIds();
         var notificationRelationshipIds = new List<string>();
         
         var movement = new Movement()
@@ -36,12 +36,12 @@ public class MovementBuilderFactory(ILogger<MovementBuilder> logger)
             BtmsStatus = MovementExtensions.GetMovementStatus(GetChedTypes(request.Items!.ToList()), documentReferenceIds, notificationRelationshipIds)
         };
 
-        return new MovementBuilder(logger, movement, true);
+        return new MovementBuilder(logger, decisionStatusFinder, movement, true);
     }
     
     public MovementBuilder From(Movement movement)
     {
-        return new MovementBuilder(logger, movement, true);
+        return new MovementBuilder(logger, decisionStatusFinder, movement, true);
     }
 
     private ImportNotificationTypeEnum[] GetChedTypes(List<Items>? items = null)

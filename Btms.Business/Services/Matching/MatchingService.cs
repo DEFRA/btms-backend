@@ -18,7 +18,7 @@ public class MatchingService : IMatchingService
 
                 var groupedDocuments = item
                     .Documents
-                    .Where(d => d.IsChed())
+                    // .Where(d => d.IsChed())
                     .GroupBy(d => d.DocumentReference)
                     .Select(d => d.Key);
 
