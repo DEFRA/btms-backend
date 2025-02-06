@@ -303,12 +303,9 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
           BtmsDecisionNumber = btmsDecisionNumber
         };
 
-        if (!btmsDecisionNumber.HasValue)
+        if (!btmsDecisionNumber.HasValue && decision.Context?.DecisionComparison != null)
         {
-            if (decision.Context?.DecisionComparison != null)
-            {
-                decision.Context.DecisionComparison.DecisionStatus = DecisionStatusEnum.NoBtmsDecisions;
-            }
+            decision.Context.DecisionComparison.DecisionStatus = DecisionStatusEnum.NoBtmsDecisions;
         }
         
         // TODO:
