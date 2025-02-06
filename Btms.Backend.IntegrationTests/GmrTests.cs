@@ -44,7 +44,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
         
         // The exact input provided by HMRC should be retained
-        result.Should().Contain("\"localDepartsAt\": \"2024-11-11T00:25\"");
+        result.Should().Contain("\"departsAt\": \"2024-11-11T00:25\"");
 
         var gmr = Factory.GetDbContext().Gmrs
             .FirstOrDefault(x => x.Id != null && x.Id.Equals("GMRAPOQSPDUG", StringComparison.OrdinalIgnoreCase));
@@ -53,6 +53,6 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         // Local it would serialize differently from the locale of this API.
         gmr.Should().NotBeNull();
         gmr?.PlannedCrossing.Should().NotBeNull();
-        gmr?.PlannedCrossing?.LocalDepartsAt.GetValueOrDefault().DateTime.Kind.Should().Be(DateTimeKind.Unspecified);
+        gmr?.PlannedCrossing?.DepartsAt.GetValueOrDefault().DateTime.Kind.Should().Be(DateTimeKind.Unspecified);
     }
 }

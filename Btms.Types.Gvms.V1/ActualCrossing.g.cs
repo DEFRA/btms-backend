@@ -32,6 +32,6 @@ public partial class ActualCrossing  //
     /// The planned date and time of arrival, in local time of the arrival port. Must not include seconds, time zone or UTC marker
     /// </summary>
     [JsonPropertyName("localDateTimeOfArrival")]
-    public DateTimeOffset? LocalArrivesAt { get; set; }
+    public DateTimeOffset? ArrivesAt { get; set; }
 
 }

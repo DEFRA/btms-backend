@@ -36,6 +36,6 @@ public partial class CheckedInCrossing  //
     [Attr]
     [System.ComponentModel.Description("The planned date and time of arrival, in local time of the arrival port. Must not include seconds, time zone or UTC marker")]
     [JsonConverter(typeof(LocalDateTimeNoSecondsJsonConverter))]
-    public DateTimeOffset? LocalArrivesAt { get; set; }
+    public DateTimeOffset? ArrivesAt { get; set; }
 
 }

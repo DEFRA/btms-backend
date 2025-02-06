@@ -22,7 +22,7 @@ public static class PlannedCrossingMapper
         }
         var to = new Btms.Model.Gvms.PlannedCrossing();
         to.RouteId = from?.RouteId;
-        to.LocalDepartsAt = from?.LocalDepartsAt;
+        to.DepartsAt = from?.DepartsAt;
         return to;
     }
 }
