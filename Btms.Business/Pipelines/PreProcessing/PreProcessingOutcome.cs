@@ -5,5 +5,6 @@ public enum PreProcessingOutcome
     New,
     Changed,
     Skipped,
-    AlreadyProcessed
+    AlreadyProcessed,
+    NotProcessed
 }

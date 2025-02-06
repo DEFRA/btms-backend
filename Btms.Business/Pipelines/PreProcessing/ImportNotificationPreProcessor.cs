@@ -12,6 +12,13 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
 {
     public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(PreProcessingContext<ImportNotification> preProcessingContext)
     {
+        if (preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Amend
+            || preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Draft)
+        {
+            return PreProcessResult.NotProcessed<Model.Ipaffs.ImportNotification>();
+        }
+
+
         var internalNotification = preProcessingContext.Message.MapWithTransform();
         var existingNotification = await dbContext.Notifications.Find(preProcessingContext.Message.ReferenceNumber!);
 
