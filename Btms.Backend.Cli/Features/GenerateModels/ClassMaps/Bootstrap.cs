@@ -405,12 +405,15 @@ internal static class Bootstrap
         GeneratorClassMap.RegisterClassMap("searchGmrsResponse", map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
 
         GeneratorClassMap.RegisterClassMap("plannedCrossing",
-            map => { map.MapProperty("localDateTimeOfDeparture").SetName("localDepartsAt"); });
+            map =>
+            {
+                map.MapProperty("localDateTimeOfDeparture").IsLocalDateTimeNoSeconds().SetName("localDepartsAt");
+            });
 
         GeneratorClassMap.RegisterClassMap("actualCrossing",
-            map => { map.MapProperty("localDateTimeOfArrival").SetName("localArrivesAt"); });
+            map => { map.MapProperty("localDateTimeOfArrival").IsLocalDateTimeNoSeconds().SetName("localArrivesAt"); });
 
         GeneratorClassMap.RegisterClassMap("checkedInCrossing",
-            map => { map.MapProperty("localDateTimeOfArrival").SetName("localArrivesAt"); });
+            map => { map.MapProperty("localDateTimeOfArrival").IsLocalDateTimeNoSeconds().SetName("localArrivesAt"); });
     }
 }

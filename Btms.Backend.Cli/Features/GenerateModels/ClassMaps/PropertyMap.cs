@@ -70,6 +70,12 @@ internal class PropertyMap(string name)
         return this;
     }
 
+    public PropertyMap IsDateTimeOffset()
+    {
+        SetType("DateTimeOffset");
+        return this;
+    }
+
     public PropertyMap IsDate()
     {
         SetType("DateOnly");
@@ -180,6 +186,13 @@ internal class PropertyMap(string name)
 
         AttributesOverwritten = true;
         NoAttributes = true;
+        return this;
+    }
+
+    public PropertyMap IsLocalDateTimeNoSeconds()
+    {
+        IsDateTimeOffset();
+        AddAttribute("[JsonConverter(typeof(LocalDateTimeNoSecondsJsonConverter))]", Model.Internal);
         return this;
     }
 }

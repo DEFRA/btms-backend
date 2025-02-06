@@ -45,5 +45,14 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         
         // The exact input provided by HMRC should be retained
         result.Should().Contain("\"localDepartsAt\": \"2024-11-11T00:25\"");
+
+        var gmr = Factory.GetDbContext().Gmrs
+            .FirstOrDefault(x => x.Id != null && x.Id.Equals("GMRAPOQSPDUG", StringComparison.OrdinalIgnoreCase));
+        
+        // Strong DateTime should stay as Unspecified as that is how incoming values are deserialized and if it were
+        // Local it would serialize differently from the locale of this API.
+        gmr.Should().NotBeNull();
+        gmr?.PlannedCrossing.Should().NotBeNull();
+        gmr?.PlannedCrossing?.LocalDepartsAt.GetValueOrDefault().DateTime.Kind.Should().Be(DateTimeKind.Unspecified);
     }
 }
