@@ -11,18 +11,28 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
     : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
     [Fact]
-    public async Task GmrImport_ShouldFindGmr()
+    public async Task GmrImport_ShouldCreateAndThenUpdate()
     {
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
+        document.Data.Attributes?["state"]?.ToString().Should().Be("Finalised");
+        
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All, RootFolder = "Linking"
+        });
+        
+        document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+
+        document.Data.Id.Should().Be("GMRAPOQSPDUG");
+        document.Data.Attributes?["state"]?.ToString().Should().Be("Embarked");
     }
 
     [Fact]
@@ -31,8 +41,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
         });
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
