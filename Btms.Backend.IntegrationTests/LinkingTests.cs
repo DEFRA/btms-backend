@@ -152,4 +152,41 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         updatedPostLink.Should().Be(updatedPostMovementUpdate);
         updatedEntityPostLink.Should().BeBefore(updatedEntityPostMovementUpdate);
     }
+
+    [Fact]
+    public async Task SyncGmrs_WithReferenceNotifications_ShouldLink()
+    {
+        await Client.ClearDb();
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
+        });
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
+        });
+
+        var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+
+        document.Data.Id.Should().Be("GMRAPOQSPDUG");
+
+        document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
+
+        document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
+        document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
+
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
+        });
+
+        document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
+
+        document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
+        document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainSingle().And
+            .ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
+    }
 }
