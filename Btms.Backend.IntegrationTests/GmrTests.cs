@@ -43,7 +43,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
         
-        // Current MongoDB write/read converts the local date time into UTC
-        result.Should().Contain("\"departsAt\": \"2024-11-11T00:25:00Z\"");
+        // The exact input provided by HMRC should be retained
+        result.Should().Contain("\"localDepartsAt\": \"2024-11-11T00:25\"");
     }
 }

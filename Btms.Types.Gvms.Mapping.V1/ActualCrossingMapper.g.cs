@@ -22,7 +22,7 @@ public static class ActualCrossingMapper
         }
         var to = new Btms.Model.Gvms.ActualCrossing();
         to.RouteId = from?.RouteId;
-        to.ArrivesAt = from?.ArrivesAt;
+        to.LocalArrivesAt = from?.LocalArrivesAt;
         return to;
     }
 }

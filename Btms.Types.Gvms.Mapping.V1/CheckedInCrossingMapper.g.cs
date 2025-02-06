@@ -22,7 +22,7 @@ public static class CheckedInCrossingMapper
         }
         var to = new Btms.Model.Gvms.CheckedInCrossing();
         to.RouteId = from?.RouteId;
-        to.ArrivesAt = from?.ArrivesAt;
+        to.LocalArrivesAt = from?.LocalArrivesAt;
         return to;
     }
 }
