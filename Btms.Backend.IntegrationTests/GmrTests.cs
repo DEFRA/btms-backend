@@ -30,4 +30,20 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Id.Should().Be("56GB123456789AB043");
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
     }
+    
+    [Fact]
+    public async Task GmrImport_PreservesLocalDateTimes()
+    {
+        await Client.ClearDb();
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
+        });
+
+        var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
+        
+        // Current MongoDB write/read converts the local date time into UTC
+        result.Should().Contain("\"departsAt\": \"2024-11-11T00:25:00Z\"");
+    }
 }
