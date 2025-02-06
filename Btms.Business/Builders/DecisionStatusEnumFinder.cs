@@ -40,7 +40,7 @@ public class DecisionStatusFinder
         
         if (missing.Any())
         {
-            throw new Exception("Decision Status Finders missing in DecisionStatusFinder");
+            throw new InvalidOperationException("Decision Status Finders missing in DecisionStatusFinder");
         }
     }
 

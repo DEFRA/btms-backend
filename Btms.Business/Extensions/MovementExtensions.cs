@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
@@ -29,12 +30,9 @@ public static class MovementExtensions
             .ToList();
     }
 
-    // private const string[] ChedDocCodes = new[] { "" };
-    
     public static bool IsChed(this Document doc)
     {
         return doc.DocumentReference != null &&
-               // ChedDocCodes.Contains(doc.DocumentCode);
             doc.DocumentReference.ToUpper().StartsWith("GBCHD");
     }
     
@@ -53,6 +51,9 @@ public static class MovementExtensions
             .UniqueDocumentReferenceIds();
     }
 
+    [SuppressMessage("SonarLint", "S3358",
+         Justification =
+             "This is a linq expression tree, unsure how to make it independent expressions")]
     public static MovementStatus GetMovementStatus(ImportNotificationTypeEnum[] chedTypes, List<string> documentReferenceIds, List<string> notificationRelationshipIds)
     {
         return new MovementStatus()
@@ -60,12 +61,12 @@ public static class MovementExtensions
             ChedTypes = chedTypes,
             LinkStatus = documentReferenceIds.Count == 0
                 ? LinkStatusEnum.NoLinks
-                : notificationRelationshipIds.Count() == documentReferenceIds.Count() &&
+                : notificationRelationshipIds.Count == documentReferenceIds.Count &&
                   notificationRelationshipIds.All(documentReferenceIds.Contains)
                     ? LinkStatusEnum.AllLinked
-                    : notificationRelationshipIds.Count == 0 && documentReferenceIds.Count != 0
+                    : notificationRelationshipIds.Count == 0
                         ? LinkStatusEnum.MissingLinks
-                        : notificationRelationshipIds.Count < documentReferenceIds.Count()
+                        : notificationRelationshipIds.Count < documentReferenceIds.Count
                             ? LinkStatusEnum.PartiallyLinked
                             : LinkStatusEnum.Investigate
         };

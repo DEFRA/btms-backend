@@ -40,10 +40,9 @@ public static class MovementExtensions
              Check   = t.Check,
              Movement = t.Movement,
              
-             DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null ? DecisionStatusEnum.InvestigationNeeded : t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus
-             
-             //                     t.Movement.Relationships.Notifications.Data.Count > 1 ? DecisionStatusEnum.HasMultipleCheds :
-             //                     t.Movement.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
+             DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null ?
+                 DecisionStatusEnum.InvestigationNeeded :
+                 t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus
         });
     }
     

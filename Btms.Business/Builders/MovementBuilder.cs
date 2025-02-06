@@ -12,7 +12,7 @@ namespace Btms.Business.Builders;
 
 public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFinder decisionStatusFinder, Movement movement, bool hasChanges = false)
 {
-    private Movement? _movement = movement;
+    private readonly Movement? _movement = movement;
     public bool HasChanges = hasChanges;
 
     public string Id
@@ -284,7 +284,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
         
         var alvsDecisionWithContext = new AlvsDecision()
         {
-            Decision = alvsDecision!, //TODO : not sure how this can be null...
+            Decision = alvsDecision,
             Context = new DecisionContext()
             {
                 AlvsDecisionNumber = alvsDecision!.Header!.DecisionNumber!,
@@ -305,11 +305,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
           Paired  = paired,
           BtmsDecisionNumber = btmsDecisionNumber
         };
-        
-        // TODO:
-        // decision.Context.BtmsDecisionNumber = paired ? btmsDecisionNumber : null;
-        // decision.Context.DecisionStatus
-        // decision.Context.DecisionMatched
     }
 
     [MemberNotNull(nameof(_movement))]
@@ -379,34 +374,6 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
         {
             alvsDecision.Context.DecisionComparison.DecisionMatched = true;
         }
-        // var checksMatch = alvsChecks.All(c => c.AlvsDecisionCode == c.BtmsDecisionCode);
-
-        // if (checksMatch)
-        // {
-        //     alvsDecision.Context.DecisionComparison.DecisionMatched = true;
-        //     decisionStatus = DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs;
-        // }
-        // else
-        // {
-        //     decisionStatus = decisionStatusFinder.GetDecisionStatus(_movement, alvsDecision);
-        // }
-
-        // else if (checkTypesMatch)
-        // {
-        //     decisionStatus = DecisionStatusEnum.BtmMadeSameDecisionTypeAsAlvs;
-        // }
-        // else if (_movement.Relationships.Notifications.Data.Count == 0)
-        // {
-        //     decisionStatus = DecisionStatusEnum.NoImportNotificationsLinked;
-        // }
-        // else if (_movement.AlvsDecisionStatus.Decisions.Count == 0)
-        // {
-        //     decisionStatus = DecisionStatusEnum.NoAlvsDecisions;
-        // }
-        // else if (_movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp))
-        // {
-        //     decisionStatus = DecisionStatusEnum.HasChedppChecks;
-        // }
         
         alvsDecision.Context.DecisionComparison.DecisionStatus = decisionStatus;
     }
