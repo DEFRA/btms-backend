@@ -74,7 +74,7 @@ public class NoMatchDecisionsTest
             
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
         
-        var movementBuilderFactory = new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var generatorResult = generator
             .Generate(1, 1, DateTime.UtcNow, config)
             .First(x => x is AlvsClearanceRequest);
