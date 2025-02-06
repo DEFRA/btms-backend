@@ -215,8 +215,11 @@ public enum DecisionStatusEnum
     
     [EnumMember(Value = "No Alvs Decisions")]
     NoAlvsDecisions,
-    
-    
+
+    [EnumMember(Value = "No Btms Decisions")]
+    NoBtmsDecisions,
+
+
     [EnumMember(Value = "ALVS X00 Case Sensitivity")]
     AlvsX00CaseSensitivity,
     

@@ -251,10 +251,8 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         var pairedAlvsDecision = _movement
             .AlvsDecisionStatus
             .Decisions
-            .SingleOrDefault(d =>
-                    d.Context.DecisionComparison
-                        .HasValue()
-            );
+            .OrderByDescending(d => d.Decision.Header.DecisionNumber)
+            .FirstOrDefault(d => d.Context?.DecisionComparison != null);
 
         var shouldPair = mostRecentBtmsDecision.HasValue() && (!pairedAlvsDecision.HasValue() ||
                                                                alvsDecision!.Decision.Header!.DecisionNumber
@@ -299,11 +297,19 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, Movement movement,
         logger.LogInformation("SetDecisionComparison SetPairStatus AlvsDecision {AlvsDecision}, Paired {Paired} BtmsDecisionNumber {BtmsDecisionNumber}",
             decision.Context.AlvsDecisionNumber, paired, btmsDecisionNumber);
         
-        decision.Context.DecisionComparison = !paired ? null : new DecisionComparison()
+        decision.Context.DecisionComparison = new DecisionComparison()
         {
           Paired  = paired,
           BtmsDecisionNumber = btmsDecisionNumber
         };
+
+        if (!btmsDecisionNumber.HasValue)
+        {
+            if (decision.Context?.DecisionComparison != null)
+            {
+                decision.Context.DecisionComparison.DecisionStatus = DecisionStatusEnum.NoBtmsDecisions;
+            }
+        }
         
         // TODO:
         // decision.Context.BtmsDecisionNumber = paired ? btmsDecisionNumber : null;
