@@ -220,11 +220,11 @@ public enum DecisionStatusEnum
     NoBtmsDecisions,
 
 
-    [EnumMember(Value = "ALVS X00 Case Sensitivity")]
-    AlvsX00CaseSensitivity,
+    [EnumMember(Value = "Document Reference Format Incorrect")]
+    DocumentReferenceFormatIncorrect,
     
-    [EnumMember(Value = "ALVS X00 Wrong Document Reference Format")]
-    AlvsX00WrongDocumentReferenceFormat,
+    [EnumMember(Value = "Document Reference Case Incorrect")]
+    DocumentReferenceCaseIncorrect,
     
     [EnumMember(Value = "ALVS X00 But Not BTMS")]
     AlvsX00NotBtms,

@@ -73,9 +73,14 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         await ClearDb();
         await ServiceBusHelper.PublishGmr(new Gmr { GmrId = "123" });
 
-        // NB. This delay is for a visual check of what is logged
-        //     and is temporary until a resultant action can be asserted
-        await Task.Delay(TimeSpan.FromSeconds(5));
-        true.Should().BeTrue();
+        await ShouldEventually.Be(() =>
+            {
+                var jsonClientResponse = Client.AsJsonApiClient().Get("api/gmrs");
+                jsonClientResponse.Data.Count.Should().Be(1);
+
+                return Task.CompletedTask;
+            },
+            retries: 30,
+            wait: TimeSpan.FromSeconds(1));
     }
 }

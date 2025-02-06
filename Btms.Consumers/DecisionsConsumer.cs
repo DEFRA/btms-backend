@@ -17,6 +17,11 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
         var internalDecision = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
 
+        logger.LogInformation("OnHandle Decision SourceSystem {SourceSystem}, EntryReference {EntryReference} DecisionNumber {DecisionNumber}",
+            message.ServiceHeader?.SourceSystem,
+            message.Header.EntryReference,
+            message.Header.DecisionNumber);
+
         if (existingMovement != null)
         {
             var auditId = Context.GetMessageId();
