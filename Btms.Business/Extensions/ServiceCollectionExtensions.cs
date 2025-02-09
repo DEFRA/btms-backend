@@ -20,6 +20,7 @@ using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 
 namespace Btms.Business.Extensions;
 
@@ -80,6 +81,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<MovementBuilderFactory>();
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
         services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
+        services.AddScoped<IPreProcessor<Gmr, Model.Gvms.Gmr>, GmrPreProcessor>();
 
         return services;
     }

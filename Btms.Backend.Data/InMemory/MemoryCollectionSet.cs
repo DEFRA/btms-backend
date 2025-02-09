@@ -26,12 +26,13 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public Type ElementType => EntityQueryable.ElementType;
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;
-    public Task<T?> Find(string id)
+    
+    public Task<T?> Find(string id, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(data.Find(x => x.Id == id));
     }
 
-    public Task<T?> Find(Expression<Func<T, bool>> query)
+    public Task<T?> Find(Expression<Func<T, bool>> query, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(data.Find(i => query.Compile()(i)));
     }
