@@ -1,0 +1,77 @@
+using Btms.Backend.Data;
+using Btms.Model.Auditing;
+using Btms.Model.ChangeLog;
+using Btms.Types.Gvms;
+using Btms.Types.Gvms.Mapping;
+
+namespace Btms.Business.Pipelines.PreProcessing;
+
+public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr, Model.Gvms.Gmr>
+{
+    public async Task<PreProcessingResult<Model.Gvms.Gmr>> Process(PreProcessingContext<Gmr> preProcessingContext,
+        CancellationToken cancellationToken)
+    {
+        var message = preProcessingContext.Message;
+
+        // Pre-processing needs to be able to skip if input data is incorrect, however the current
+        // pattern mandates a record, which in turn mandates an audit entry
+        if (message.GmrId is null)
+            return PreProcessResult.Skipped(new Model.Gvms.Gmr { AuditEntries = [new AuditEntry()] });
+        
+        var existingGmr = await mongoDbContext.Gmrs.Find(message.GmrId, cancellationToken);
+
+        if (existingGmr is null)
+            return await Insert(preProcessingContext, cancellationToken);
+
+        if (message.UpdatedSource > existingGmr.UpdatedSource)
+            return await Update(preProcessingContext, existingGmr, cancellationToken);
+
+        return PreProcessResult.Skipped(existingGmr);
+    }
+
+    private async Task<PreProcessingResult<Model.Gvms.Gmr>> Insert(
+        PreProcessingContext<Gmr> preProcessingContext,
+        CancellationToken cancellationToken)
+    {
+        var mappedGmr = GrmWithTransformMapper.MapWithTransform(preProcessingContext.Message);
+        var auditId = preProcessingContext.MessageId;
+        
+        var auditEntry = AuditEntry.CreateCreatedEntry(
+            mappedGmr,
+            auditId,
+            1,
+            preProcessingContext.Message.UpdatedSource,
+            CreatedBySystem.Gvms);
+
+        mappedGmr.AuditEntries.Add(auditEntry);
+
+        await mongoDbContext.Gmrs.Insert(mappedGmr, cancellationToken);
+            
+        return PreProcessResult.New(mappedGmr);
+    }
+
+    private async Task<PreProcessingResult<Model.Gvms.Gmr>> Update(
+        PreProcessingContext<Gmr> preProcessingContext,
+        Model.Gvms.Gmr existingGmr,
+        CancellationToken cancellationToken)
+    {
+        var mappedGmr = GrmWithTransformMapper.MapWithTransform(preProcessingContext.Message);
+        var auditId = preProcessingContext.MessageId;
+        
+        mappedGmr.AuditEntries = existingGmr.AuditEntries;
+
+        var auditEntry = AuditEntry.CreateUpdated(
+            existingGmr,
+            mappedGmr,
+            auditId,
+            mappedGmr.AuditEntries.Count + 1,
+            preProcessingContext.Message.UpdatedSource,
+            CreatedBySystem.Gvms);
+
+        mappedGmr.AuditEntries.Add(auditEntry);
+
+        await mongoDbContext.Gmrs.Update(mappedGmr, existingGmr._Etag, cancellationToken);
+            
+        return PreProcessResult.Changed(mappedGmr, mappedGmr.GenerateChangeSet(existingGmr));
+    }
+}

@@ -10,7 +10,8 @@ namespace Btms.Business.Pipelines.PreProcessing;
 
 public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<ImportNotificationPreProcessor> logger) : IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>
 {
-    public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(PreProcessingContext<ImportNotification> preProcessingContext)
+    public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(
+        PreProcessingContext<ImportNotification> preProcessingContext, CancellationToken cancellationToken = default)
     {
         if (preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Amend
             || preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Draft)

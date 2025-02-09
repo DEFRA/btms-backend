@@ -10,6 +10,7 @@
   
   <ItemGroup>
     <InternalsVisibleTo Include="Btms.Backend.IntegrationTests" />
+    <InternalsVisibleTo Include="Btms.Business.Tests" />
   </ItemGroup>
 
   <ItemGroup>
