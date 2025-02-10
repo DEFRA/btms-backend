@@ -28,11 +28,10 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         };
     }
 
-    [Fact(Skip = "Failed on CI")]
+    [Fact]
     public async Task AsbSmokeTest_NotificationsAndMovements()
     {
         await ClearDb();
-        await WaitUntilHealthy();
         var testGeneratorFixture = new TestGeneratorFixture(Factory.TestOutputHelper);
         var generatorResult = testGeneratorFixture.GenerateTestData<SimpleMatchScenarioGenerator>();
 
@@ -68,11 +67,10 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         jsonClientResponse.Data.Count.Should().Be(1);
     }
 
-    [Fact(Skip = "Failed on CI")]
+    [Fact]
     public async Task AsbSmokeTest_Gmrs()
     {
         await ClearDb();
-        await WaitUntilHealthy();
         await ServiceBusHelper.PublishGmr(new Gmr { GmrId = "123" });
 
         await ShouldEventually.Be(() =>
