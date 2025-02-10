@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         services.BtmsAddOptions<BlobServiceOptions>(configuration, BlobServiceOptions.SectionName);
 
         var blobOptions = config.Get<BlobServiceOptions>()!;
-            
+
         if (blobOptions.CacheReadEnabled || blobOptions.CacheWriteEnabled)
         {
             services.AddKeyedSingleton<IBlobService, BlobService>("base");
@@ -24,9 +24,9 @@ public static class ServiceCollectionExtensions
         {
             services.AddSingleton<IBlobService, BlobService>();
         }
-            
+
         services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
-            
+
         return services;
     }
 }

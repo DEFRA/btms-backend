@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum PurposeForImportOrAdmissionEnum
 {
 
-		[EnumMember(Value = "Definitive import")]
-		DefinitiveImport,
-	
-		[EnumMember(Value = "Horses Re-entry")]
-		HorsesReEntry,
-	
-		[EnumMember(Value = "Temporary admission horses")]
-		TemporaryAdmissionHorses,
-	
+    [EnumMember(Value = "Definitive import")]
+    DefinitiveImport,
+
+    [EnumMember(Value = "Horses Re-entry")]
+    HorsesReEntry,
+
+    [EnumMember(Value = "Temporary admission horses")]
+    TemporaryAdmissionHorses,
+
 }
-
-

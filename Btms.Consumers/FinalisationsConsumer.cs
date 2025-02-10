@@ -12,7 +12,7 @@ using Finalisation = Btms.Types.Alvs.Finalisation;
 namespace Btms.Consumers;
 
 public class FinalisationsConsumer(IMongoDbContext dbContext,
-    MovementBuilderFactory movementBuilderFactory, 
+    MovementBuilderFactory movementBuilderFactory,
     ILogger<FinalisationsConsumer> logger)
     : IConsumer<Finalisation>, IConsumerWithContext
 {
@@ -20,17 +20,17 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
     {
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
         var internalFinalisation = FinalisationMapper.Map(message);
-        
+
         if (existingMovement != null)
         {
             logger.LogInformation("Finalisation received");
-            
+
             var auditId = Context.GetMessageId();
-            
+
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeFinalisation(auditId!, internalFinalisation);
-            
+
             if (existingMovementBuilder.HasChanges)
             {
                 await dbContext.Movements.Update(existingMovementBuilder.Build(), existingMovement._Etag);

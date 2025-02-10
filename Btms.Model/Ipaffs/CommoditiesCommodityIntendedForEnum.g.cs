@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum CommoditiesCommodityIntendedForEnum
 {
 
-		Human,
-	
-		Feedingstuff,
-	
-		Further,
-	
-		Other,
-	
+    Human,
+
+    Feedingstuff,
+
+    Further,
+
+    Other,
+
 }
-
-

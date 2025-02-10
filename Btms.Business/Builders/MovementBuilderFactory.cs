@@ -15,7 +15,7 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, I
         var items = request.Items?.ToList()!;
         var documentReferenceIds = items.UniqueDocumentReferenceIds();
         var notificationRelationshipIds = new List<string>();
-        
+
         var movement = new Movement()
         {
             Id = request.Header!.EntryReference,
@@ -38,7 +38,7 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, I
 
         return new MovementBuilder(logger, decisionStatusFinder, movement, true);
     }
-    
+
     public MovementBuilder From(Movement movement)
     {
         return new MovementBuilder(logger, decisionStatusFinder, movement, true);

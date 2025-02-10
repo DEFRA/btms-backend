@@ -21,7 +21,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
     /// <param name="linkContext"></param>
     /// <param name="linkResult"></param>
     /// <param name="cancellationToken"></param>
-    public async Task<bool> PostLinking(LinkContext linkContext, LinkResult linkResult, 
+    public async Task<bool> PostLinking(LinkContext linkContext, LinkResult linkResult,
         Movement? triggeringMovement = null, ImportNotification? triggeringNotification = null,
         CancellationToken cancellationToken = default)
     {
@@ -30,37 +30,37 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             throw new InvalidOperationException(
                 "Can't call PostLinking without either a movement or notification.");
         }
-        
+
         logger.LogInformation("PreMatching");
-        
+
         var valid = true;
-        
+
         var hasNotifications = linkResult.Notifications.Count != 0;
-        
+
         await Task.WhenAll(linkResult.Movements.Select(async m =>
         {
             if (m.BtmsStatus.LinkStatus == LinkStatusEnum.Error) return;
-            
+
             var chedTypes = m.BtmsStatus.ChedTypes;
-            
+
             var notificationRelationshipIds = m.UniqueNotificationRelationshipIds();
             var documentReferenceIds = m.UniqueDocumentReferenceIds();
 
             m.BtmsStatus = MovementExtensions.GetMovementStatus(chedTypes, documentReferenceIds, notificationRelationshipIds);
-                
+
             if (m.Items.Any(i => i.Documents?.Length == 0))
             {
                 // One of the error states from CDMS-242
                 // https://eaflood.atlassian.net/wiki/spaces/ALVS/pages/5400723501/To-be+HMRCErrorNotification+-+Error+Codes
-                
+
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
                 m.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
                 m.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
-                
+
                 valid = false;
             }
-            else if (hasNotifications && 
-                     documentReferenceIds.Count == 1 && 
+            else if (hasNotifications &&
+                     documentReferenceIds.Count == 1 &&
                      m.Items.Any(i => i.Checks?.Any(d => d.CheckCode == "H219") ?? false))
             {
                 m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
@@ -73,7 +73,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                     _ => null
                 };
             }
-            else if (hasNotifications && 
+            else if (hasNotifications &&
                      m.UniqueDocumentReferences().Length > 1 &&
                      m.Items
                          .SelectMany(i => (i.Checks ?? []).Select(d => d.CheckCode!))
@@ -84,20 +84,20 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             }
 
             await dbContext.Movements.Update(m, cancellationToken: cancellationToken);
-            
+
         }));
-        
+
         metrics.Validated();
 
         return valid;
     }
-    
+
     public async Task<bool> PostDecision(LinkResult linkResult, DecisionResult decision, CancellationToken cancellationToken = default)
     {
         logger.LogInformation("PostDecision");
-        
+
         metrics.Validated();
-        
+
         return await Task.FromResult(true);
     }
 }

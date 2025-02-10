@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum PartThreeControlStatusEnum
 {
 
-		[EnumMember(Value = "REQUIRED")]
-		Required,
-	
-		[EnumMember(Value = "COMPLETED")]
-		Completed,
-	
+    [EnumMember(Value = "REQUIRED")]
+    Required,
+
+    [EnumMember(Value = "COMPLETED")]
+    Completed,
+
 }
-
-

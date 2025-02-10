@@ -27,10 +27,10 @@ public class FinalisedOnlyTests(ITestOutputHelper output) : MultipleScenarioGene
             .GetAnalyticsDashboard(["decisionsByDecisionCode"],
                 dateFrom: DateTime.MinValue, dateTo: DateTime.MaxValue,
                 finalisedOnly: finalisedOnly);
-        
+
         var chart = await result
             .AnalyticsChartAs<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>>("decisionsByDecisionCode")!;
-        
+
         chart.Summary.Values.Count
             .Should().Be(returnsResults ? 1 : 0);
     }

@@ -21,21 +21,19 @@ public partial class IdentificationDetails  //
 {
 
 
-        /// <summary>
-        /// Identification detail
-        /// </summary>
+    /// <summary>
+    /// Identification detail
+    /// </summary>
     [JsonPropertyName("identificationDetail")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? IdentificationDetail { get; set; }
 
-	
-        /// <summary>
-        /// Identification description
-        /// </summary>
+
+    /// <summary>
+    /// Identification description
+    /// </summary>
     [JsonPropertyName("identificationDescription")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? IdentificationDescription { get; set; }
 
-	}
-
-
+}

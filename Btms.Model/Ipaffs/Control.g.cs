@@ -22,38 +22,36 @@ public partial class Control  //
 {
 
 
-        /// <summary>
-        /// Feedback information of Control
-        /// </summary>
+    /// <summary>
+    /// Feedback information of Control
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Feedback information of Control")]
     public FeedbackInformation? FeedbackInformation { get; set; }
 
-	
-        /// <summary>
-        /// Details on re-export
-        /// </summary>
+
+    /// <summary>
+    /// Details on re-export
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Details on re-export")]
     public DetailsOnReExport? DetailsOnReExport { get; set; }
 
-	
-        /// <summary>
-        /// Official inspector
-        /// </summary>
+
+    /// <summary>
+    /// Official inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Official inspector")]
     public OfficialInspector? OfficialInspector { get; set; }
 
-	
-        /// <summary>
-        /// Is the consignment leaving UK borders?
-        /// </summary>
+
+    /// <summary>
+    /// Is the consignment leaving UK borders?
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Is the consignment leaving UK borders?")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ControlConsignmentLeaveEnum? ConsignmentLeave { get; set; }
 
-	}
-
-
+}

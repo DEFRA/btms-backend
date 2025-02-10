@@ -13,7 +13,7 @@ public class ChedPDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Ced, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H222")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H222")]
-    
+
     [InlineData(ImportNotificationTypeEnum.Cvedp, true, null)]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H224")]
     public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
@@ -28,7 +28,7 @@ public class ChedPDecisionFinderTests
 
         result.Should().Be(expectedResult);
     }
-    
+
     [Theory]
     [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, DecisionCode.C03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, DecisionCode.E03)]

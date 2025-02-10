@@ -27,7 +27,7 @@ public static class JsonClientExtensions
         var results = client.AsJsonApiClient()
             .Get("api/import-notifications")
             .GetResourceObjects<ImportNotification>();
-            
+
         return results.First();
     }
 

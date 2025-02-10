@@ -22,45 +22,43 @@ public partial class ImpactOfTransportOnAnimals  //
 {
 
 
-        /// <summary>
-        /// Number of dead animals specified by units
-        /// </summary>
+    /// <summary>
+    /// Number of dead animals specified by units
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Number of dead animals specified by units")]
     public int? NumberOfDeadAnimals { get; set; }
 
-	
-        /// <summary>
-        /// Unit used for specifying number of dead animals (percent or units)
-        /// </summary>
+
+    /// <summary>
+    /// Unit used for specifying number of dead animals (percent or units)
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Unit used for specifying number of dead animals (percent or units)")]
     public string? NumberOfDeadAnimalsUnit { get; set; }
 
-	
-        /// <summary>
-        /// Number of unfit animals
-        /// </summary>
+
+    /// <summary>
+    /// Number of unfit animals
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Number of unfit animals")]
     public int? NumberOfUnfitAnimals { get; set; }
 
-	
-        /// <summary>
-        /// Unit used for specifying number of unfit animals (percent or units)
-        /// </summary>
+
+    /// <summary>
+    /// Unit used for specifying number of unfit animals (percent or units)
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Unit used for specifying number of unfit animals (percent or units)")]
     public string? NumberOfUnfitAnimalsUnit { get; set; }
 
-	
-        /// <summary>
-        /// Number of births or abortions (unit)
-        /// </summary>
+
+    /// <summary>
+    /// Number of births or abortions (unit)
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Number of births or abortions (unit)")]
     public int? NumberOfBirthOrAbortion { get; set; }
 
-	}
-
-
+}

@@ -22,29 +22,27 @@ public partial class Inspector  //
 {
 
 
-        /// <summary>
-        /// Name of inspector
-        /// </summary>
+    /// <summary>
+    /// Name of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Name of inspector")]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Phone number of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Phone number of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Phone number of inspector")]
     public string? Phone { get; set; }
 
-	
-        /// <summary>
-        /// Email address of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Email address of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Email address of inspector")]
     public string? Email { get; set; }
 
-	}
-
-
+}

@@ -9,14 +9,12 @@ namespace Btms.Model.Gvms;
 public enum DirectionEnum
 {
 
-		UkInbound,
-	
-		UkOutbound,
-	
-		GbToNi,
-	
-		NiToGb,
-	
+    UkInbound,
+
+    UkOutbound,
+
+    GbToNi,
+
+    NiToGb,
+
 }
-
-

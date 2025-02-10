@@ -15,7 +15,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrDecisionWithoutV1ScenarioGenerator>(output)
 {
-    
+
     [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -23,21 +23,23 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.Checks
             .Should().BeEquivalentTo([
-                new { 
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H222",
-                    AlvsDecisionCode = "H01", 
+                    AlvsDecisionCode = "H01",
                     BtmsDecisionCode = "X00"
                 },
-                new {
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H224",
-                    AlvsDecisionCode = "H01", 
+                    AlvsDecisionCode = "H01",
                     BtmsDecisionCode = "X00"
                 }
             ]);
     }
-    
+
     [Fact]
     public void ShouldHave1AlvsDecision()
     {
@@ -49,7 +51,7 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
             .Should()
             .Be(1);
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
@@ -61,7 +63,7 @@ public class AlvsDecisionNumber1Missing(ITestOutputHelper output)
             .Should()
             .Equal(2);
     }
-    
+
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {

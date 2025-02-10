@@ -21,61 +21,59 @@ public partial class PostalAddress  //
 {
 
 
-        /// <summary>
-        /// 1st line of address
-        /// </summary>
+    /// <summary>
+    /// 1st line of address
+    /// </summary>
     [JsonPropertyName("addressLine1")]
     [Btms.SensitiveData.SensitiveData]
     public string? AddressLine1 { get; set; }
 
-	
-        /// <summary>
-        /// 2nd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 2nd line of address
+    /// </summary>
     [JsonPropertyName("addressLine2")]
     [Btms.SensitiveData.SensitiveData]
     public string? AddressLine2 { get; set; }
 
-	
-        /// <summary>
-        /// 3rd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 3rd line of address
+    /// </summary>
     [JsonPropertyName("addressLine3")]
     [Btms.SensitiveData.SensitiveData]
     public string? AddressLine3 { get; set; }
 
-	
-        /// <summary>
-        /// 4th line of address
-        /// </summary>
+
+    /// <summary>
+    /// 4th line of address
+    /// </summary>
     [JsonPropertyName("addressLine4")]
     [Btms.SensitiveData.SensitiveData]
     public string? AddressLine4 { get; set; }
 
-	
-        /// <summary>
-        /// 3rd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 3rd line of address
+    /// </summary>
     [JsonPropertyName("county")]
     [Btms.SensitiveData.SensitiveData]
     public string? County { get; set; }
 
-	
-        /// <summary>
-        /// City or town name
-        /// </summary>
+
+    /// <summary>
+    /// City or town name
+    /// </summary>
     [JsonPropertyName("cityOrTown")]
     [Btms.SensitiveData.SensitiveData]
     public string? CityOrTown { get; set; }
 
-	
-        /// <summary>
-        /// Post code
-        /// </summary>
+
+    /// <summary>
+    /// Post code
+    /// </summary>
     [JsonPropertyName("postalCode")]
     [Btms.SensitiveData.SensitiveData]
     public string? PostalCode { get; set; }
 
-	}
-
-
+}

@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum ControlConsignmentLeaveEnum
 {
 
-		Yes,
-	
-		No,
-	
-		ItHasBeenDestroyed,
-	
+    Yes,
+
+    No,
+
+    ItHasBeenDestroyed,
+
 }
-
-

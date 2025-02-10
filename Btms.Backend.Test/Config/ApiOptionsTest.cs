@@ -7,7 +7,7 @@ namespace Btms.Backend.Test.Config;
 public class ApiOptionsTest
 {
     private readonly IValidateOptions<ApiOptions> validator = new ApiOptions.Validator();
-    
+
     [Fact]
     public void ShouldSucceedIfNoCdsProxy()
     {
@@ -15,15 +15,15 @@ public class ApiOptionsTest
 
         validator.Validate("", c).Should().Be(ValidateOptionsResult.Success);
     }
-    
+
     [Fact]
     public void ShouldFailIfCdsProxyDoesntHaveProtocol()
     {
         var c = new ApiOptions { CdpHttpsProxy = "aaa" };
-        
+
         validator.Validate("", c).Failed.Should().BeTrue();
     }
-    
+
     [Fact]
     public void ShouldSetHttpsProxyIfCdsProxyPresent()
     {
@@ -31,7 +31,7 @@ public class ApiOptionsTest
 
         c.HttpsProxy.Should().Be("aaa");
     }
-    
+
     [Fact]
     public void ShouldNotSetHttpsProxyIfCdsProxyPresent()
     {

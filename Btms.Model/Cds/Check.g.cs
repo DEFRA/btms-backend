@@ -28,7 +28,7 @@ public partial class Check  //
     [System.ComponentModel.Description("")]
     public string? CheckCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -56,5 +56,3 @@ public partial class Check  //
     public string[]? DecisionReasons { get; set; }
 
 }
-
-

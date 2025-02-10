@@ -22,13 +22,11 @@ public partial class ErrorResponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? Code { get; set; }
 
-	}
-
-
+}

@@ -3,7 +3,7 @@ using TestDataGenerator;
 namespace TestGenerator.IntegrationTesting.Backend.Fixtures;
 
 public class BackendGeneratorFixture<T>(
-    TestGeneratorFixture testGenerator, 
+    TestGeneratorFixture testGenerator,
     BackendFixture backend
 )
     where T : ScenarioGenerator

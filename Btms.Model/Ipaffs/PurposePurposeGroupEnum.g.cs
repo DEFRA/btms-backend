@@ -9,24 +9,22 @@ namespace Btms.Model.Ipaffs;
 public enum PurposePurposeGroupEnum
 {
 
-		ForImport,
-	
-		ForNONConformingConsignments,
-	
-		ForTranshipmentTo,
-	
-		ForTransitTo3rdCountry,
-	
-		ForReImport,
-	
-		ForPrivateImport,
-	
-		ForTransferTo,
-	
-		ForImportReConformityCheck,
+    ForImport,
 
-        ForImportNonInternalMarket,
+    ForNONConformingConsignments,
+
+    ForTranshipmentTo,
+
+    ForTransitTo3rdCountry,
+
+    ForReImport,
+
+    ForPrivateImport,
+
+    ForTransferTo,
+
+    ForImportReConformityCheck,
+
+    ForImportNonInternalMarket,
 
 }
-
-

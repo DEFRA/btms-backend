@@ -22,29 +22,27 @@ public partial class Phsi  //
 {
 
 
-        /// <summary>
-        /// Whether or not a documentary check is required for PHSI
-        /// </summary>
+    /// <summary>
+    /// Whether or not a documentary check is required for PHSI
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Whether or not a documentary check is required for PHSI")]
     public bool? DocumentCheck { get; set; }
 
-	
-        /// <summary>
-        /// Whether or not an identity check is required for PHSI
-        /// </summary>
+
+    /// <summary>
+    /// Whether or not an identity check is required for PHSI
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Whether or not an identity check is required for PHSI")]
     public bool? IdentityCheck { get; set; }
 
-	
-        /// <summary>
-        /// Whether or not a physical check is required for PHSI
-        /// </summary>
+
+    /// <summary>
+    /// Whether or not a physical check is required for PHSI
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Whether or not a physical check is required for PHSI")]
     public bool? PhysicalCheck { get; set; }
 
-	}
-
-
+}

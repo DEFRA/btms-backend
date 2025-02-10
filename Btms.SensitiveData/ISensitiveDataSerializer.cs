@@ -8,4 +8,3 @@ public interface ISensitiveDataSerializer
 
     string RedactRawJson(string json, Type type);
 }
-

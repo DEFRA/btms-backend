@@ -9,18 +9,16 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionFreeCirculationPurposeEnum
 {
 
-		AnimalFeedingStuff,
-	
-		HumanConsumption,
-	
-		PharmaceuticalUse,
-	
-		TechnicalUse,
-	
-		FurtherProcess,
-	
-		Other,
-	
+    AnimalFeedingStuff,
+
+    HumanConsumption,
+
+    PharmaceuticalUse,
+
+    TechnicalUse,
+
+    FurtherProcess,
+
+    Other,
+
 }
-
-

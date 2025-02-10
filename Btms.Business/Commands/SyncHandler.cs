@@ -63,7 +63,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
         protected readonly BusinessOptions Options = options.Value;
         protected readonly ILogger<T> Logger = logger;
         protected readonly ISyncJobStore SyncJobStore = syncJobStore;
-        
+
         public const string ActivityName = "Btms.ProcessBlob";
 
         public abstract Task Handle(T request, CancellationToken cancellationToken);
@@ -118,7 +118,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
                     blobService.GetResourcesAsync($"{path}{periodPath}", cancellationToken)
                 )
                 .FlattenAsyncEnumerable();
-            
+
             await Parallel.ForEachAsync(tasks, new ParallelOptions() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = degreeOfParallelism }, async (item, _) =>
             {
                 await SyncBlob<TRequest>(path, topic, item, job, cancellationToken);

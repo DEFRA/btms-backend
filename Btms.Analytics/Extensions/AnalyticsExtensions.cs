@@ -23,9 +23,9 @@ public static class AnalyticsExtensions
         // To revisit in future 
         if (EnableMetrics)
         {
-            services.TryAddScoped<ImportNotificationMetrics>();    
+            services.TryAddScoped<ImportNotificationMetrics>();
         }
-        
+
         return services;
     }
 
@@ -35,7 +35,7 @@ public static class AnalyticsExtensions
     }
 
     public static int Periods(this TimeSpan t, AggregationPeriod aggregateBy) => Convert.ToInt32(aggregateBy == AggregationPeriod.Hour ? t.TotalHours : t.TotalDays);
-    
+
     public static DateTime Increment(this DateTime d, int offset, AggregationPeriod aggregateBy) => aggregateBy == AggregationPeriod.Hour ? d.AddHours(offset) : d.AddDays(offset);
 
     public static Dictionary<string, BsonDocument> GetAggregatedRecordsDictionary<T>(
@@ -104,17 +104,17 @@ public static class AnalyticsExtensions
             var aggregatedData = source.ToList();
             return aggregatedData;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
-        finally 
+        finally
         {
             logger.LogExecutedMongoString(source);
         }
     }
-    
+
     /// <summary>
     /// Gives us an opportunity to hook into the mongo execution and
     /// grab the query as a string after it's been executed
@@ -132,7 +132,7 @@ public static class AnalyticsExtensions
             var aggregatedData = source.ToList();
             return aggregatedData;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
@@ -143,7 +143,7 @@ public static class AnalyticsExtensions
             // logger.LogExecutedMongoString((IQueryable)source);
         }
     }
-    
+
     /// <summary>
     /// Gives us an opportunity to hook into the mongo execution and
     /// grab the query as a string after it's been executed 
@@ -170,12 +170,12 @@ public static class AnalyticsExtensions
                 .ToDictionary(keySelector, elementSelector);
             return aggregatedData;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
-        finally 
+        finally
         {
             logger.LogExecutedMongoString((IQueryable)source);
         }
@@ -206,32 +206,32 @@ public static class AnalyticsExtensions
                 .ToImmutableSortedDictionary(keySelector, elementSelector);
             return aggregatedData;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
-        finally 
+        finally
         {
             logger.LogExecutedMongoString((IQueryable)source);
         }
     }
-    
+
     internal static IEnumerable<TSource> Execute<TSource>(
-        this IQueryable<TSource> source, ILogger logger) 
+        this IQueryable<TSource> source, ILogger logger)
     {
-        
+
         try
         {
             var aggregatedData = source.ToList();
             return aggregatedData;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, "Error querying Mongo : {Message}", ex.Message);
             throw new AnalyticsException("Error querying Mongo", ex);
         }
-        finally 
+        finally
         {
             logger.LogExecutedMongoString(source);
         }
@@ -249,7 +249,7 @@ public static class AnalyticsExtensions
         var query = string.Join(",", stages.Select(s => s.ToString()).ToArray());
         logger.LogInformation("[{Query}]", query);
     }
-    
+
     public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDatetimeDataset> ms)
     {
         await ms;
@@ -261,7 +261,7 @@ public static class AnalyticsExtensions
         await ms;
         return (IDataset)ms.Result;
     }
-    
+
     public static async Task<IDataset> AsIDataset(this Task<TabularDataset<ByNameDimensionResult>> ms)
     {
         await ms;
@@ -273,8 +273,8 @@ public static class AnalyticsExtensions
         await ms;
         return (IDataset)ms.Result;
     }
-    
-    public static async Task<IDataset> AsIDataset<TSummary,TResult>(this Task<SummarisedDataset<TSummary, TResult>> ms)
+
+    public static async Task<IDataset> AsIDataset<TSummary, TResult>(this Task<SummarisedDataset<TSummary, TResult>> ms)
         where TResult : IDimensionResult
         where TSummary : IDimensionResult
     {

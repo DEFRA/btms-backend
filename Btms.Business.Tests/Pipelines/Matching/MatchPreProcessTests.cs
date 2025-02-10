@@ -15,12 +15,12 @@ public class MatchPreProcessTests
         {
             MatchReference = "ABC123"
         });
-        
+
         var expectedRecord = $"Did pre-processing with initial request [{request.Context.MatchReference}]";
-        
+
         // Act
         await sut.Process(request, CancellationToken.None);
-        
+
         // Assert
         request.Context.Record.Should().StartWith(expectedRecord);
     }

@@ -21,27 +21,25 @@ public partial class UserInformation  //
 {
 
 
-        /// <summary>
-        /// Display name
-        /// </summary>
+    /// <summary>
+    /// Display name
+    /// </summary>
     [JsonPropertyName("displayName")]
     [Btms.SensitiveData.SensitiveData]
     public string? DisplayName { get; set; }
 
-	
-        /// <summary>
-        /// User ID
-        /// </summary>
+
+    /// <summary>
+    /// User ID
+    /// </summary>
     [JsonPropertyName("userId")]
     public string? UserId { get; set; }
 
-	
-        /// <summary>
-        /// Is this user a control
-        /// </summary>
+
+    /// <summary>
+    /// Is this user a control
+    /// </summary>
     [JsonPropertyName("isControlUser")]
     public bool? IsControlUser { get; set; }
 
-	}
-
-
+}

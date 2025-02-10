@@ -10,21 +10,19 @@ namespace Btms.Types.Ipaffs;
 public enum ImportNotificationTypeEnum
 {
 
-		[EnumMember(Value = "CVEDA")]
-		Cveda,
-	
-		[EnumMember(Value = "CVEDP")]
-		Cvedp,
-	
-		[EnumMember(Value = "CHEDPP")]
-		Chedpp,
-	
-		[EnumMember(Value = "CED")]
-		Ced,
-	
-		[EnumMember(Value = "IMP")]
-		Imp,
-	
+    [EnumMember(Value = "CVEDA")]
+    Cveda,
+
+    [EnumMember(Value = "CVEDP")]
+    Cvedp,
+
+    [EnumMember(Value = "CHEDPP")]
+    Chedpp,
+
+    [EnumMember(Value = "CED")]
+    Ced,
+
+    [EnumMember(Value = "IMP")]
+    Imp,
+
 }
-
-

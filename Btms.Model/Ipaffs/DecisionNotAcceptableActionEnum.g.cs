@@ -9,32 +9,30 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionNotAcceptableActionEnum
 {
 
-		Slaughter,
-	
-		Reexport,
-	
-		Euthanasia,
-	
-		Redispatching,
-	
-		Destruction,
-	
-		Transformation,
-	
-		Other,
-	
-		EntryRefusal,
-	
-		QuarantineImposed,
-	
-		SpecialTreatment,
-	
-		IndustrialProcessing,
-	
-		ReDispatch,
-	
-		UseForOtherPurposes,
-	
+    Slaughter,
+
+    Reexport,
+
+    Euthanasia,
+
+    Redispatching,
+
+    Destruction,
+
+    Transformation,
+
+    Other,
+
+    EntryRefusal,
+
+    QuarantineImposed,
+
+    SpecialTreatment,
+
+    IndustrialProcessing,
+
+    ReDispatch,
+
+    UseForOtherPurposes,
+
 }
-
-

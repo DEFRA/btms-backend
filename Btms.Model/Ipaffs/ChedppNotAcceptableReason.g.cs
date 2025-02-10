@@ -22,23 +22,21 @@ public partial class ChedppNotAcceptableReason  //
 {
 
 
-        /// <summary>
-        /// reason for refusal
-        /// </summary>
+    /// <summary>
+    /// reason for refusal
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("reason for refusal")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ChedppNotAcceptableReasonReasonEnum? Reason { get; set; }
 
-	
-        /// <summary>
-        /// commodity or package
-        /// </summary>
+
+    /// <summary>
+    /// commodity or package
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("commodity or package")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ChedppNotAcceptableReasonCommodityOrPackageEnum? CommodityOrPackage { get; set; }
 
-	}
-
-
+}

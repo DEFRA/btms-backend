@@ -46,7 +46,7 @@ public class ChedPpPhsiDecisionFinderTests
     {
         var notification = new ImportNotification
         {
-           Status = status
+            Status = status
         };
         var sut = new ChedPPDecisionFinder();
 

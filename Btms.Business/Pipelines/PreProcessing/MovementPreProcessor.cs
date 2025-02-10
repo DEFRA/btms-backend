@@ -21,12 +21,12 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         if (existingMovement is null)
         {
             // ArgumentNullException.ThrowIfNull(movement);
-            
+
             var auditEntry = mb.CreateAuditEntry(
                 preProcessingContext.MessageId,
                 CreatedBySystem.Cds
             );
-            
+
             mb.Update(auditEntry);
             var movement = mb.Build();
             await dbContext.Movements.Insert(movement);
@@ -39,7 +39,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             var existingBuilder = movementBuilderFactory.From(existingMovement);
             // var changeSet = movement.ClearanceRequests[^1].GenerateChangeSet(existingMovement.ClearanceRequests[0]);
             var changeSet = mb.GenerateChangeSet(existingBuilder);
-            
+
             var auditEntry = mb.UpdateAuditEntry(
                 preProcessingContext.MessageId,
                 CreatedBySystem.Cds,
@@ -49,14 +49,14 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             existingBuilder.Update(auditEntry);
 
             existingBuilder.ReplaceClearanceRequests(mb);
-            
+
             // existingMovement.ClearanceRequests.RemoveAll(x =>
             //     x.Header?.EntryReference ==
             //     movement.ClearanceRequests[0].Header?.EntryReference);
             // existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
             //
             // existingMovement.Items.AddRange(movement.Items);
-            
+
             await dbContext.Movements.Update(existingMovement);
 
             return PreProcessResult.Changed(existingMovement, changeSet);
@@ -69,6 +69,6 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
         logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.Header?.EntryReference!);
         return PreProcessResult.Skipped(existingMovement);
-        
+
     }
 }

@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum PurposeForNonConformingEnum
 {
 
-		CustomsWarehouse,
-	
-		FreeZoneOrFreeWarehouse,
-	
-		ShipSupplier,
-	
-		Ship,
-	
+    CustomsWarehouse,
+
+    FreeZoneOrFreeWarehouse,
+
+    ShipSupplier,
+
+    Ship,
+
 }
-
-

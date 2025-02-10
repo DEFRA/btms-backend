@@ -16,7 +16,7 @@ public class TerminatePipelineBaseTests
 
         var sut = new PipelineTestHelpers.MockTerminatePipeline();
         var request = new PipelineTestHelpers.MockRequest(new PipelineTestHelpers.MockContext());
-        
+
         // Act
         var result = await sut.Handle(request, mockNextDelegate, CancellationToken.None);
 

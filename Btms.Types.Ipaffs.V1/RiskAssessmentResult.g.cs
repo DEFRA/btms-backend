@@ -21,19 +21,17 @@ public partial class RiskAssessmentResult  //
 {
 
 
-        /// <summary>
-        /// List of risk assessed commodities
-        /// </summary>
+    /// <summary>
+    /// List of risk assessed commodities
+    /// </summary>
     [JsonPropertyName("commodityResults")]
     public CommodityRiskResult[]? CommodityResults { get; set; }
 
-	
-        /// <summary>
-        /// Date and time of assessment
-        /// </summary>
+
+    /// <summary>
+    /// Date and time of assessment
+    /// </summary>
     [JsonPropertyName("assessmentDateTime")]
     public DateTime? AssessmentDateTime { get; set; }
 
-	}
-
-
+}

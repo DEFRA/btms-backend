@@ -10,14 +10,14 @@ public static class TestOutputHelperExtensions
     {
         var loggerProvider = new XUnitLoggerProvider(helper, new XUnitLoggerOptions());
         var factory = new LoggerFactory([loggerProvider]);
-        
+
         return factory;
     }
-    
+
     public static ILogger<T> GetLogger<T>(this ITestOutputHelper helper)
     {
         var factory = helper.GetLoggerFactory();
-        
+
         return factory.CreateLogger<T>();
     }
 }

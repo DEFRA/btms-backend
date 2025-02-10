@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum ApplicantAnalysisTypeEnum
 {
 
-		[EnumMember(Value = "Initial analysis")]
-		InitialAnalysis,
-	
-		[EnumMember(Value = "Counter analysis")]
-		CounterAnalysis,
-	
-		[EnumMember(Value = "Second expert analysis")]
-		SecondExpertAnalysis,
-	
+    [EnumMember(Value = "Initial analysis")]
+    InitialAnalysis,
+
+    [EnumMember(Value = "Counter analysis")]
+    CounterAnalysis,
+
+    [EnumMember(Value = "Second expert analysis")]
+    SecondExpertAnalysis,
+
 }
-
-

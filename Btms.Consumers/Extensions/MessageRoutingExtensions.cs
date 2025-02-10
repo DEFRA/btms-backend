@@ -14,8 +14,8 @@ namespace Btms.Consumers.Extensions;
 public static class MessageRoutingExtensions
 {
     private const string MessageIdHeaderKey = "messageId";
-    
-    public static async Task PushToConsumers(this IServiceProvider sp, 
+
+    public static async Task PushToConsumers(this IServiceProvider sp,
         ILogger logger, IEnumerable<object> messages,
         bool maintainOrder = false)
     {
@@ -31,17 +31,17 @@ public static class MessageRoutingExtensions
 
             await PushMessagesToConsumers(sp, logger, messages
                     .Where(m => m is Decision));
-        
+
             await PushMessagesToConsumers(sp, logger, messages
                     .Where(m => m is Finalisation));
         }
-        
+
     }
 
-    private static async Task PushMessagesToConsumers(this IServiceProvider sp, 
+    private static async Task PushMessagesToConsumers(this IServiceProvider sp,
         ILogger logger, IEnumerable<object> messages)
     {
-        
+
         foreach (var message in messages)
         {
             var scope = sp.CreateScope();

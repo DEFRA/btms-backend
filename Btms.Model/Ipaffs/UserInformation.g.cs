@@ -22,29 +22,27 @@ public partial class UserInformation  //
 {
 
 
-        /// <summary>
-        /// Display name
-        /// </summary>
+    /// <summary>
+    /// Display name
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Display name")]
     public string? DisplayName { get; set; }
 
-	
-        /// <summary>
-        /// User ID
-        /// </summary>
+
+    /// <summary>
+    /// User ID
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("User ID")]
     public string? UserId { get; set; }
 
-	
-        /// <summary>
-        /// Is this user a control
-        /// </summary>
+
+    /// <summary>
+    /// Is this user a control
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Is this user a control")]
     public bool? IsControlUser { get; set; }
 
-	}
-
-
+}

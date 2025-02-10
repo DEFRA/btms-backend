@@ -22,21 +22,19 @@ public partial class GmrsByVrn  //
 {
 
 
-        /// <summary>
-        /// This is the identifier for a Vehicle Registration Number
-        /// </summary>
+    /// <summary>
+    /// This is the identifier for a Vehicle Registration Number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("This is the identifier for a Vehicle Registration Number")]
     public string? Vrn { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string[]? Gmrs { get; set; }
 
-	}
-
-
+}

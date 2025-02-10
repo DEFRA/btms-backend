@@ -16,13 +16,13 @@ public static class OptionsExtensions
     }
 
     public static OptionsBuilder<TOptions> BtmsAddOptions<TOptions>(this IServiceCollection services, IConfiguration configuration, string section)
-        where TOptions : class 
+        where TOptions : class
     {
         var s = services
             .AddOptions<TOptions>()
             .Bind(configuration.GetSection(section))
             .ValidateDataAnnotations();
-        
+
         return s;
     }
 }

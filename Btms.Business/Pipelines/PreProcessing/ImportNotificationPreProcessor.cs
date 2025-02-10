@@ -29,7 +29,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             return PreProcessResult.New(internalNotification);
         }
 
-        
+
         if (internalNotification.UpdatedSource.TrimMicroseconds() >
             existingNotification.UpdatedSource.TrimMicroseconds())
         {
@@ -53,20 +53,20 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
                     break;
             }
 
-            
+
             await dbContext.Notifications.Update(internalNotification, existingNotification._Etag);
 
             return PreProcessResult.Changed(internalNotification, changeSet);
         }
-        
+
         if (internalNotification.UpdatedSource.TrimMicroseconds() ==
                  existingNotification.UpdatedSource.TrimMicroseconds())
         {
             return PreProcessResult.AlreadyProcessed(existingNotification);
         }
-        
+
         logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.ReferenceNumber!);
         return PreProcessResult.Skipped(existingNotification);
-        
+
     }
 }

@@ -6,7 +6,7 @@ namespace Btms.Business.Services.Decisions.Finders;
 // ReSharper disable once InconsistentNaming
 public class ChedPPDecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string? checkCode) => 
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
         notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && checkCode?.GetChedTypeFromCheckCode() == ImportNotificationTypeEnum.Chedpp;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
