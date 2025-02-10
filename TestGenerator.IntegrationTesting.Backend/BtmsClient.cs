@@ -90,7 +90,7 @@ public class BtmsClient
         return client.GetAsync(
             $"/analytics/dashboard");
     }
-
+    
     public Task<HttpResponseMessage> CancelJob(string? jobId)
     {
         return client.GetAsync($"/sync/jobs/{jobId}/cancel");
