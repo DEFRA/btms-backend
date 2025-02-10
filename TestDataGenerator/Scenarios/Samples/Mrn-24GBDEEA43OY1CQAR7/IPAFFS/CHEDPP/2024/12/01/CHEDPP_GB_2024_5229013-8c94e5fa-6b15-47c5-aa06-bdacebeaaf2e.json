@@ -1,1 +1,225 @@
-{"id":4229013,"referenceNumber":"CHEDPP.GB.2024.5229013","agencyOrganisationId":"4fad43cb-204b-e911-a957-000d3a454330","version":1,"lastUpdated":"2024-12-01T10:23:56.932156481Z","lastUpdatedBy":{"displayName":"3c3528ed5e5963831a8013820b23852b44d06ab3cbe348c8051cda5aa4e3bbeb","userId":"cbb28012-12e5-ee11-904c-6045bdf29764"},"type":"CHEDPP","status":"SUBMITTED","partOne":{"personResponsible":{"name":"38892a45eae99152107c7cf0499ed06c00d5ce98f0201802d6f0f523f916d1f8","companyId":"b46d0553-0419-ef11-9f89-000d3a2b6b27","companyName":"4ab1f0d59af9708238ad4ca3b2b43130a8167ff6d95834a8df7591f9995ade7e","address":["198650d94cef725e264cfebe3f4eca3ae44827f0995ecdfd774f98c9f98ee77d","1f134569343d6081bd49c520d11c1adf1ab8fb941b2b24cfb3559ff71a5c1d09","b2b8343a18342275bc33d70ed8e126240b0010c91c029a9bc0bbd31848b35c0b","3e613288cbc226922f9ed033f875c32a40911c9e57907bd343890b5a0767d8a2","082b1fa56c2c37f4a30c0663101d4d7f686fee5ce339e5f2ef0f30c613ec95bb","b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960"],"country":"GB","tracesID":1001,"phone":"adf7cee4d812316cfbd4497e696df19ad1006e339709e297684e71e7c7f7d0ab","email":"79faa0629813eb08a6d9a590f4d7acf88b0a4ba48d674c327822f28dbc35db94","contactId":"a4d41dbb-fa18-ef11-9f89-000d3a4aeb0e"},"consignor":{"id":"c0f0df2f-8279-4c18-8468-f170fd8c9951","type":"exporter","status":"nonapproved","companyName":"75ef9f5363dc6138122ecc8108b6d28ab6e92440989c4dc16b3af83b6e2f0e74","address":{"addressLine1":"9ef9895f488f67aac86bfb70497c56bcd27e1065496b648cf0d1f59713e401a5","city":"797137e31555a022e5dfce179e10cc2434116b973bbef5cec0d68ecdadbbaac2","postalZipCode":"adebc4c5d022ace5b3b7a6354f54e8f0a2de781d01ceb51b8299d79a31cc5fae","countryISOCode":"EG","telephone":"e2f79e5b60330bba4c289962231b6ba2957d0b14e7deb3110417003c79dea635","email":"d72c9131a3ed4ed95c69bfcd3add31806433363869fa2e4159b229f41ea9e7cb"},"tracesId":10326824},"consignee":{"id":"b46d0553-0419-ef11-9f89-000d3a2b6b27","type":"consignee","companyName":"4ab1f0d59af9708238ad4ca3b2b43130a8167ff6d95834a8df7591f9995ade7e","address":{"addressLine1":"198650d94cef725e264cfebe3f4eca3ae44827f0995ecdfd774f98c9f98ee77d","addressLine2":"1f134569343d6081bd49c520d11c1adf1ab8fb941b2b24cfb3559ff71a5c1d09","city":"3e613288cbc226922f9ed033f875c32a40911c9e57907bd343890b5a0767d8a2","postalZipCode":"082b1fa56c2c37f4a30c0663101d4d7f686fee5ce339e5f2ef0f30c613ec95bb","countryISOCode":"GB","telephone":"adf7cee4d812316cfbd4497e696df19ad1006e339709e297684e71e7c7f7d0ab","email":"79faa0629813eb08a6d9a590f4d7acf88b0a4ba48d674c327822f28dbc35db94"},"tracesId":10342769},"importer":{"id":"b46d0553-0419-ef11-9f89-000d3a2b6b27","type":"importer","companyName":"4ab1f0d59af9708238ad4ca3b2b43130a8167ff6d95834a8df7591f9995ade7e","address":{"addressLine1":"198650d94cef725e264cfebe3f4eca3ae44827f0995ecdfd774f98c9f98ee77d","addressLine2":"1f134569343d6081bd49c520d11c1adf1ab8fb941b2b24cfb3559ff71a5c1d09","city":"3e613288cbc226922f9ed033f875c32a40911c9e57907bd343890b5a0767d8a2","postalZipCode":"082b1fa56c2c37f4a30c0663101d4d7f686fee5ce339e5f2ef0f30c613ec95bb","countryISOCode":"GB","telephone":"adf7cee4d812316cfbd4497e696df19ad1006e339709e297684e71e7c7f7d0ab","email":"79faa0629813eb08a6d9a590f4d7acf88b0a4ba48d674c327822f28dbc35db94"},"tracesId":10342769},"placeOfDestination":{"id":"4873ea81-ac05-41c4-8114-b7d3d946ca08","type":"destination","status":"nonapproved","companyName":"75ef9f5363dc6138122ecc8108b6d28ab6e92440989c4dc16b3af83b6e2f0e74","address":{"addressLine1":"a9170d231cd179ce7dff7fa9e0431b287ffcab5db773be40fcaa3f79982e7ca4","addressLine2":"228e554fb8f62173002a111987a0126dd52bd61eb5ca5d54dde7d6ce08acdab2","addressLine3":"ece016aa6c66d65452ef3bc01215262a40d49e8e4e8e59ea6dbc5064e92a549b","city":"abb054406cedcef12b9b184ac07d5eb2525fb67fc7612409ea99c0cd0efd4d6c","postalZipCode":"082b1fa56c2c37f4a30c0663101d4d7f686fee5ce339e5f2ef0f30c613ec95bb","countryISOCode":"GB-ENG","telephone":"1879672798d4d1ccadc263c52a3482f55352815bb45108abb4b3a5b80c186a90","email":"d72c9131a3ed4ed95c69bfcd3add31806433363869fa2e4159b229f41ea9e7cb"},"tracesId":10327444},"commodities":{"totalGrossWeight":5355,"totalNetWeight":4086,"numberOfPackages":900,"commodityComplement":[{"commodityID":"08101000","commodityDescription":"Strawberries","complementID":1,"complementName":"Fragaria x ananassa","eppoCode":"FRAAN","speciesID":"60518","speciesName":"Fragaria x ananassa","speciesClass":"340015","speciesNomination":"Fragaria x ananassa"}],"complementParameterSet":[{"uniqueComplementID":"ada34b96-412d-44cf-b3de-472220eb8946","complementID":1,"speciesID":"60518","keyDataPair":[{"key":"marketing_standard","data":"SMS"},{"key":"validity_period","data":"3"},{"key":"regulatory_authority","data":"JOINT"},{"key":"variety","data":"None"},{"key":"class","data":"Class I"},{"key":"type_package","data":"Package"},{"key":"netweight","data":"4086"},{"key":"number_package","data":"900"},{"key":"quantity","data":"5355"},{"key":"type_quantity","data":"Kilograms"},{"key":"commodity_group","data":"Fruit and nuts"},{"key":"low_risk_article72_commodity","data":"true"}]}],"includeNonAblactedAnimals":false,"countryOfOrigin":"EG","countryOfOriginIsPodCountry":false,"consignedCountry":"EG","consignedCountryInChargeGroup":false},"purpose":{"purposeGroup":"For Import"},"pointOfEntry":"CONPNT","pointOfEntryControlPoint":"INSPPML2","arrivalDate":"2024-12-01","arrivalTime":"14:00:00","meansOfTransport":{},"meansOfTransportFromEntryPoint":{"id":"MS5060","type":"Road Vehicle","document":"077-51278371"},"veterinaryInformation":{"accompanyingDocuments":[{"documentType":"phytosanitaryCertificate","documentReference":"1054533","documentIssueDate":"2024-12-01","attachmentId":"d48e26e8-bdcb-4030-a021-c6cd92e94854","attachmentFilename":"SKM_C450i24120110120.pdf","attachmentContentType":"application/pdf","uploadUserId":"cbb28012-12e5-ee11-904c-6045bdf29764","uploadOrganisationId":"4fad43cb-204b-e911-a957-000d3a454330"}]},"importerLocalReferenceNumber":"24243894","submissionDate":"2024-12-01T10:23:56.904083806Z","submittedBy":{"displayName":"3c3528ed5e5963831a8013820b23852b44d06ab3cbe348c8051cda5aa4e3bbeb","userId":"cbb28012-12e5-ee11-904c-6045bdf29764"},"complexCommoditySelected":true,"contactDetails":{"name":"JOE BRITNELL","telephone":"02088932666","email":"roadfreightkent@pml-ltd.com","agent":"PML SEAFRIGO"},"nominatedContacts":[{"name":"TULPIN","email":"customs@maa.nl"}],"isGVMSRoute":false,"provideCtcMrn":"NO"},"etag":"00000000044A7FCB","chedTypeVersion":1}
+{
+  "id": 4229013,
+  "referenceNumber": "CHEDPP.GB.2024.5229013",
+  "agencyOrganisationId": "4fad43cb-204b-e911-a957-000d3a454330",
+  "version": 1,
+  "lastUpdated": "2024-12-01T10:23:56.932156481Z",
+  "lastUpdatedBy": {
+    "displayName": "80629a9b330bdda1ae9701c64f9c384631e3a837a1a886a73ca8062c014f20b8",
+    "userId": "cbb28012-12e5-ee11-904c-6045bdf29764"
+  },
+  "type": "CHEDPP",
+  "status": "SUBMITTED",
+  "partOne": {
+    "personResponsible": {
+      "name": "49e7374d18caacdb95a3e9280cd7721382e22b7b3301074ee1c49d31a973f94f",
+      "companyId": "b46d0553-0419-ef11-9f89-000d3a2b6b27",
+      "companyName": "82b1c9dcbba8fa9bbbf51da6d6ae35c987b6de1b7be5c2ba1b635caccc38c5bb",
+      "address": [
+        "59d0510e5d7c35a2d7a2494b0c481d4a3c3d430261aa1afe44f463ed3fbdb47a",
+        "7be4db20ef2037e73d3631d1e84796b8d3597a8070fea76ef4c867fdf59ff447",
+        "ff26b966607b3c7cf5eb4cb50da0f19ccf24f6ff2c5be38797386f1d4ba7bd9b",
+        "1e1fc44b443254e6f0dd88542d215c61ddedec041bc29683c7c560f7f9d60b7f",
+        "cfffbc4fb73d68544d1a0b9179f73b5106f7512af334b9e2701f6a9c854ff500",
+        "27e9b1d33d45324da5086191087d0a466e658c5357b68f0fea4678cb9cba0bee"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "60844af5efdff297e817e27cf0f43c6cd056a4a53a7f69045a62ec6f33c1e230",
+      "email": "91841286fa9bce5887266e995ffe37db41a356e0dee5d1f389049f4c1d0ba16a",
+      "contactId": "a4d41dbb-fa18-ef11-9f89-000d3a4aeb0e"
+    },
+    "consignor": {
+      "id": "c0f0df2f-8279-4c18-8468-f170fd8c9951",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "a77d75e9f2a67366650ccece33257ed149d2de7a3ef0fd5f72c23cf6d839d292",
+      "address": {
+        "addressLine1": "d248bbd0bf1439b10487b53fb5da0a8901b3fc4d1ad0a6d365ae5b6d5d6f8014",
+        "city": "18aa553e933b207df4b93747d6810eb757d22df2d7bc89023f5662dd60514537",
+        "postalZipCode": "faf9461de51b76a475800cee479264035a9b573940e02e00ff1a4d381d436de2",
+        "countryISOCode": "0388936d46334a080fef755323951c78d970d37c2af9119b8a3b399fcbd767a0",
+        "telephone": "fa1045212e20767621ce521f6e03ca7a68c12b7a4152c6e49009817eb66025d2",
+        "email": "b2f50b6831af871dbc2119b24acdaf9bbf7d1ecf0ade397e5cb1149402d45021"
+      },
+      "tracesId": 10326824
+    },
+    "consignee": {
+      "id": "b46d0553-0419-ef11-9f89-000d3a2b6b27",
+      "type": "consignee",
+      "companyName": "82b1c9dcbba8fa9bbbf51da6d6ae35c987b6de1b7be5c2ba1b635caccc38c5bb",
+      "address": {
+        "addressLine1": "59d0510e5d7c35a2d7a2494b0c481d4a3c3d430261aa1afe44f463ed3fbdb47a",
+        "addressLine2": "7be4db20ef2037e73d3631d1e84796b8d3597a8070fea76ef4c867fdf59ff447",
+        "city": "1e1fc44b443254e6f0dd88542d215c61ddedec041bc29683c7c560f7f9d60b7f",
+        "postalZipCode": "cfffbc4fb73d68544d1a0b9179f73b5106f7512af334b9e2701f6a9c854ff500",
+        "countryISOCode": "6caef311bdd4c03236c207130f4877a41c1152edffa457c868c2c34ffeb4dd0d",
+        "telephone": "60844af5efdff297e817e27cf0f43c6cd056a4a53a7f69045a62ec6f33c1e230",
+        "email": "91841286fa9bce5887266e995ffe37db41a356e0dee5d1f389049f4c1d0ba16a"
+      },
+      "tracesId": 10342769
+    },
+    "importer": {
+      "id": "b46d0553-0419-ef11-9f89-000d3a2b6b27",
+      "type": "importer",
+      "companyName": "82b1c9dcbba8fa9bbbf51da6d6ae35c987b6de1b7be5c2ba1b635caccc38c5bb",
+      "address": {
+        "addressLine1": "59d0510e5d7c35a2d7a2494b0c481d4a3c3d430261aa1afe44f463ed3fbdb47a",
+        "addressLine2": "7be4db20ef2037e73d3631d1e84796b8d3597a8070fea76ef4c867fdf59ff447",
+        "city": "1e1fc44b443254e6f0dd88542d215c61ddedec041bc29683c7c560f7f9d60b7f",
+        "postalZipCode": "cfffbc4fb73d68544d1a0b9179f73b5106f7512af334b9e2701f6a9c854ff500",
+        "countryISOCode": "6caef311bdd4c03236c207130f4877a41c1152edffa457c868c2c34ffeb4dd0d",
+        "telephone": "60844af5efdff297e817e27cf0f43c6cd056a4a53a7f69045a62ec6f33c1e230",
+        "email": "91841286fa9bce5887266e995ffe37db41a356e0dee5d1f389049f4c1d0ba16a"
+      },
+      "tracesId": 10342769
+    },
+    "placeOfDestination": {
+      "id": "4873ea81-ac05-41c4-8114-b7d3d946ca08",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "a77d75e9f2a67366650ccece33257ed149d2de7a3ef0fd5f72c23cf6d839d292",
+      "address": {
+        "addressLine1": "183e2cee85da322d6fb7cfc033ab6873a1a97174c91dabcc525059a63dea0ed6",
+        "addressLine2": "e6bb614fa7d46e6279864046a6651f98579aecdeace9c7797964727468291f4d",
+        "addressLine3": "d3468f5bd4d1f366836af0eba32fc5fae3771b9dabde319b64a9af816abe9be8",
+        "city": "5967484d9c5e5c619ca892407898fd3b05531b9381489ab3a6e1ea7ab82bc55d",
+        "postalZipCode": "cfffbc4fb73d68544d1a0b9179f73b5106f7512af334b9e2701f6a9c854ff500",
+        "countryISOCode": "32562f69602cf317eab2be934866e56a6ed3f82d2d376dd0503b7cf84ee9e31a",
+        "telephone": "c68831f9481227ed2d1d0512ca4448b0581e26eedde828dcd397d9509ff720ad",
+        "email": "b2f50b6831af871dbc2119b24acdaf9bbf7d1ecf0ade397e5cb1149402d45021"
+      },
+      "tracesId": 10327444
+    },
+    "commodities": {
+      "totalGrossWeight": 5355,
+      "totalNetWeight": 4086,
+      "numberOfPackages": 900,
+      "commodityComplement": [
+        {
+          "commodityID": "08101000",
+          "commodityDescription": "Strawberries",
+          "complementID": 1,
+          "complementName": "Fragaria x ananassa",
+          "eppoCode": "FRAAN",
+          "speciesID": "60518",
+          "speciesName": "Fragaria x ananassa",
+          "speciesClass": "340015",
+          "speciesNomination": "Fragaria x ananassa"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "ada34b96-412d-44cf-b3de-472220eb8946",
+          "complementID": 1,
+          "speciesID": "60518",
+          "keyDataPair": [
+            {
+              "key": "marketing_standard",
+              "data": "SMS"
+            },
+            {
+              "key": "validity_period",
+              "data": "3"
+            },
+            {
+              "key": "regulatory_authority",
+              "data": "JOINT"
+            },
+            {
+              "key": "variety",
+              "data": "None"
+            },
+            {
+              "key": "class",
+              "data": "Class I"
+            },
+            {
+              "key": "type_package",
+              "data": "Package"
+            },
+            {
+              "key": "netweight",
+              "data": "4086"
+            },
+            {
+              "key": "number_package",
+              "data": "900"
+            },
+            {
+              "key": "quantity",
+              "data": "5355"
+            },
+            {
+              "key": "type_quantity",
+              "data": "Kilograms"
+            },
+            {
+              "key": "commodity_group",
+              "data": "Fruit and nuts"
+            },
+            {
+              "key": "low_risk_article72_commodity",
+              "data": "true"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "EG",
+      "countryOfOriginIsPodCountry": false,
+      "consignedCountry": "EG",
+      "consignedCountryInChargeGroup": false
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "CONPNT",
+    "pointOfEntryControlPoint": "INSPPML2",
+    "arrivalDate": "2024-12-01",
+    "arrivalTime": "14:00:00",
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "9750157fd6c0f4869c0e50e37765852eba25b88b2fbfaff769af01d0a3042a84",
+      "type": "Road Vehicle",
+      "document": "75e1b32b12a1a1743a88deca0be607bbc3dc248e299939bb8a343fbe2156bdd5"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "phytosanitaryCertificate",
+          "documentReference": "1054533",
+          "documentIssueDate": "2024-12-01",
+          "attachmentId": "d48e26e8-bdcb-4030-a021-c6cd92e94854",
+          "attachmentFilename": "SKM_C450i24120110120.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "cbb28012-12e5-ee11-904c-6045bdf29764",
+          "uploadOrganisationId": "4fad43cb-204b-e911-a957-000d3a454330"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "f2fbf891b630bef92a2438348751a72eab177894f36bf44bd4f36ad63f42d410",
+    "submissionDate": "2024-12-01T10:23:56.904083806Z",
+    "submittedBy": {
+      "displayName": "80629a9b330bdda1ae9701c64f9c384631e3a837a1a886a73ca8062c014f20b8",
+      "userId": "cbb28012-12e5-ee11-904c-6045bdf29764"
+    },
+    "complexCommoditySelected": true,
+    "contactDetails": {
+      "name": "78c28c1f87a51a16d93a76a57b318759defe36841251a9b0f7e3061b315bdbd7",
+      "telephone": "0dec02ddac763b4583bd12a4873df82ee91a736a1dd28171956f06a31254cef7",
+      "email": "22c8ab65be0c1f19a6d78d4416276c6c854e2c2d7c75cbdc2d1a7db3a4b2cd5b",
+      "agent": "e0c338a1918cf0f69f50dc9a41c281174fe6ff93ddc8058fb9ebadd715630aef"
+    },
+    "nominatedContacts": [
+      {
+        "name": "TULPIN",
+        "email": "customs@maa.nl"
+      }
+    ],
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "etag": "00000000044A7FCB",
+  "chedTypeVersion": 1
+}
