@@ -21,12 +21,7 @@ namespace @Model.InternalNamespace;
 /// <summary>
 /// @Model.Description
 /// </summary>
-@if (Model.IsResource)
-{
-    <text>     [Resource] 
-    </text>
-}
-public partial class @Model.GetClassName()  //@if (Model.IsResource) { <text>: CustomStringMongoIdentifiable</text> }
+public partial class @Model.GetInternalClassName()  //@if (Model.IsResource) { <text>: CustomStringMongoIdentifiable</text> }
 
 {
 @* @if (Model.IsResource)
@@ -39,7 +34,7 @@ public partial class @Model.GetClassName()  //@if (Model.IsResource) { <text>: C
 
 @foreach(var property in Model.Properties.Where(x => !x.ExcludedFromInternal))
 {
-	var t = new HtmlString(property.GetPropertyType());
+	var t = new HtmlString(property.GetInternalPropertyType());
     <text>
         /// <summary>
         /// @property.Description

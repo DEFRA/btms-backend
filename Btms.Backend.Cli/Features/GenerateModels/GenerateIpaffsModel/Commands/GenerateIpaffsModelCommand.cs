@@ -7,19 +7,21 @@ namespace Btms.Backend.Cli.Features.GenerateModels.GenerateIpaffsModel.Commands;
 [Verb("generate-ipaffs-model", isDefault: false, HelpText = "Generates Csharp Ipaffs classes from Json Schema.")]
 internal class GenerateIpaffsModelCommand : IRequest
 {
-    [Option('s', "schema", Required = true,
+    public const string SourceNamespace = "Btms.Types.Ipaffs";
+    public const string InternalNamespace = "Btms.Model.Ipaffs";
+    public const string ClassNamePrefix = "";
+    public const string SolutionPath = "../../../../";
+
+    [Option('s', "schema",
         HelpText = "The Json schema file, which to use to generate the csharp classes.")]
-    public string SchemaFile { get; set; } = null!;
+    public string SchemaFile { get; set; } =
+        $"{SolutionPath}/Btms.Backend.Cli/Features/GenerateModels/GenerateIpaffsModel/jsonschema.json";
 
-    // [Option('o', "sourceOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string SourceOutputPath { get; set; } = "D:\\repos\\esynergy\\btms-backend\\Btms.Types.Ipaffs.V1\\";
+    public string SourceOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Ipaffs.V1/";
 
-    // [Option('i', "internalOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string InteralOutputPath { get; set; } = "D:\\repos\\esynergy\\btms-backend\\Btms.Model\\Ipaffs\\";
+    public string InternalOutputPath { get; set; } = $"{SolutionPath}/Btms.Model/Ipaffs/";
 
-    // [Option('i', "internalOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string MappingOutputPath { get; set; } =
-        "D:\\repos\\esynergy\\btms-backend\\Btms.Types.Ipaffs.Mapping.V1\\";
+    public string MappingOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Ipaffs.Mapping.V1/";
 
     public class Handler : IRequestHandler<GenerateIpaffsModelCommand>
     {
@@ -31,7 +33,7 @@ internal class GenerateIpaffsModelCommand : IRequest
 
             var model = builder.Build(await File.ReadAllTextAsync(request.SchemaFile, cancellationToken));
 
-            await CSharpFileBuilder.Build(model, request.SourceOutputPath, request.InteralOutputPath,
+            await CSharpFileBuilder.Build(model, request.SourceOutputPath, request.InternalOutputPath,
                 request.MappingOutputPath);
         }
     }

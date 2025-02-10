@@ -28,12 +28,14 @@ public class PropertyDescriptor
         _isReferenceType = isReferenceType;
         _isArray = isArray;
         _classNamePrefix = classNamePrefix;
+
         Type = type;
+
         Description = description?.Replace("\n", " ");
         IsReferenceType = isReferenceType;
         IsArray = isArray;
         SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
-        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]"];
+        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]", $"[JsonPropertyName(\"{sourceName}\")]"];
 
         if (type.EndsWith("Enum"))
         {
@@ -46,6 +48,8 @@ public class PropertyDescriptor
     public string InternalName { get; set; }
 
     public string Type { get; set; }
+
+    public string? InternalType { get; set; }
 
     public string? Description { get; set; }
 
@@ -67,9 +71,10 @@ public class PropertyDescriptor
 
     public bool ExcludedFromSource { get; set; }
 
-    public void OverrideType(string type)
+    public void OverrideType(string type, string internalType)
     {
         Type = type;
+        InternalType = internalType;
         _typeOverridden = true;
     }
 
@@ -127,10 +132,18 @@ public class PropertyDescriptor
         return n;
     }
 
-    public string GetPropertyType()
+    public string GetInternalPropertyType()
     {
-        var t = Type;
+        return GetPropertyType(InternalType ?? Type);
+    }
 
+    public string GetSourcePropertyType()
+    {
+        return GetPropertyType(Type);
+    }
+
+    private string GetPropertyType(string t)
+    {
         if (_typeOverridden)
         {
             return t;
@@ -150,8 +163,13 @@ public class PropertyDescriptor
         return t;
     }
 
-    public string GetPropertyTypeName()
+    public string GetSourcePropertyTypeName()
     {
-        return GetPropertyType().Replace("[]", "");
+        return GetSourcePropertyType().Replace("[]", "");
+    }
+
+    public string GetInternalPropertyTypeName()
+    {
+        return GetInternalPropertyType().Replace("[]", "");
     }
 }
