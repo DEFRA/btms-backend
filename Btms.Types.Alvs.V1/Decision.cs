@@ -13,7 +13,7 @@ namespace Btms.Types.Alvs;
 /// selecting consumers via the DI container. We'll also start to
 /// Plan is to follow the same approach as other types (currently generated) in time.
 /// </summary>
-public class Decision  //
+public class Decision //
 {
 
 
@@ -23,20 +23,20 @@ public class Decision  //
     [JsonPropertyName("serviceHeader")]
     public ServiceHeader? ServiceHeader { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("header")]
     public Header? Header { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("items")]
     public Items[]? Items { get; set; }
 
-	}
+}
 
 

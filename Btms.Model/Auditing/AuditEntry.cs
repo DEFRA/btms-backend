@@ -175,7 +175,7 @@ public class AuditEntry
     }
 
     public static AuditEntry CreateDecision(string id, int version,
-        DateTime? lastUpdated, string lastUpdatedBy, DecisionContext context, bool isAlvs)
+        DateTime? lastUpdated, DecisionContext context, bool isAlvs)
     {
         return new AuditEntry()
         {

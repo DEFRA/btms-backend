@@ -9,13 +9,15 @@ public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
     Task<T?> Find(string id);
     Task<T?> Find(Expression<Func<T, bool>> query);
     
-    Task Insert(T item, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default);
+    Task Insert(T item, CancellationToken cancellationToken = default);
 
-    Task Update(T item, IMongoDbTransaction transaction = default!,
-        CancellationToken cancellationToken = default);
+    Task Update(T item, CancellationToken cancellationToken = default);
+
+    Task Update(List<T> items, CancellationToken cancellationToken = default);
     
-    Task Update(T item, string etag, IMongoDbTransaction transaction = default!,
-        CancellationToken cancellationToken = default);
+    Task Update(T item, string etag, CancellationToken cancellationToken = default);
     
     IAggregateFluent<T> Aggregate();
+
+    Task PersistAsync(CancellationToken cancellationToken);
 }

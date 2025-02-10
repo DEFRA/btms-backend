@@ -1,53 +1,27 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class GmrTests :
-    IClassFixture<ApplicationFactory>, IAsyncLifetime
+public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
-    private readonly BtmsClient _client;
-    private IIntegrationTestsApplicationFactory _factory;
-
-    public GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
+    [Fact]
+    public async Task FetchSingleGmrTest()
     {
-        factory.TestOutputHelper = testOutputHelper;
-        factory.DatabaseName = "GmrTests";
-        _client = factory.CreateBtmsClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        // _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        // var credentials = "IntTest:Password";
-        // var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
-        // var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
-        // _client.DefaultRequestHeaders.Authorization =
-        //     new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
-        _factory = factory;
-    }
-
-    public async Task InitializeAsync()
-    {
-        await _client.ClearDb();
-
-        await _client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        await Client.ClearDb();
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
         });
-
-        // Assert
-        await Task.Delay(TimeSpan.FromSeconds(1));
-    }
-
-    [Fact]
-    public void FetchSingleGmrTest()
-    {
+        
         //Act
-        var jsonClientResponse = _client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+        var jsonClientResponse = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         // Assert
         jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
@@ -55,10 +29,5 @@ public class GmrTests :
 
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Id.Should().Be("56GB123456789AB043");
         jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
-    }
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

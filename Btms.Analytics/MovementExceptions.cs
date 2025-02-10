@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
@@ -20,9 +21,10 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
 
         return matched.ToString();
     }
-    //Returns a summary of the exceptions or a list
-    // Means we can share the same anonymous / query code without needing to create loads
-    // of classes
+    
+    [SuppressMessage("SonarLint", "S3776",
+        Justification =
+            "Means we can share the same anonymous / query code without needing to create loads of classes for the intermediate state")]
     public (SingleSeriesDataset summary, List<ExceptionResult>) GetAllExceptions(DateTime from, DateTime to, bool finalisedOnly, bool summary, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var exceptionsSummary = new SingleSeriesDataset();
@@ -47,8 +49,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.BtmsStatus.LinkStatus,
                 m.BtmsStatus.Status,
                 m.BtmsStatus.Segment,
-                m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus,
-                m.AlvsDecisionStatus.Context.DecisionComparison!.DecisionMatched,
+                m.AlvsDecisionStatus.Context.DecisionComparison,
                 HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
                 ContiguousAlvsClearanceRequestVersionsFrom1 = 
                     m.ClearanceRequests.Select(c => c.Header!.EntryVersionNumber)
@@ -67,8 +68,8 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.LinkStatus,
                 m.Status,
                 m.Segment,
-                m.DecisionStatus,
-                m.DecisionMatched,
+                DecisionStatus = (m.DecisionComparison == null) ? DecisionStatusEnum.None : m.DecisionComparison!.DecisionStatus,
+                DecisionMatched = (m.DecisionComparison != null) && m.DecisionComparison!.DecisionMatched,
                 m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
                 TotalDocumentVersions = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds,
@@ -76,7 +77,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             });
 
         var unMatchedGroupedByMrnStatus = simplifiedMovementView
-            .Where(r => !r.DecisionMatched && r.LinkStatus == LinkStatusEnum.AllLinked)
+            .Where(r => !r.DecisionMatched)
             .GroupBy(r => new { r.DecisionStatus, r.Status, r.Segment })
             .Execute(logger);
 

@@ -16,7 +16,7 @@ internal static class DecisionFinderExtensions
             acceptable = consignmentAcceptable.Value; 
             return true;
         }
-        else if (notification.PartTwo!.AutoClearedOn!.HasValue())
+        else if (notification.PartTwo != null && notification.PartTwo.AutoClearedOn.HasValue())
         {
             acceptable = true;
             return true;

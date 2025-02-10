@@ -39,6 +39,7 @@ public partial class LaboratoryTestResult  //
         /// Laboratory test method
         /// </summary>
     [JsonPropertyName("laboratoryTestMethod")]
+        [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryTestMethod { get; set; }
 
 	
@@ -46,6 +47,7 @@ public partial class LaboratoryTestResult  //
         /// Result of test
         /// </summary>
     [JsonPropertyName("results")]
+    [SensitiveData.SensitiveData]
     public string? Results { get; set; }
 
 	

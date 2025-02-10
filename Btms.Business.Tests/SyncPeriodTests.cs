@@ -12,6 +12,6 @@ public class SyncPeriodTests
     {
         var paths = SyncPeriod.From202411.GetPeriodPaths();
 
-        paths.Should().Equal("/2024/11/", "/2024/12/", "/2025/01/");
+        paths.Should().Equal("/2024/11/", "/2024/12/", "/2025/01/", "/2025/02/");
     }
 }

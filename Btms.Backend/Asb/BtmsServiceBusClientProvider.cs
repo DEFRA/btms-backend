@@ -15,8 +15,7 @@ public class BtmsServiceBusClientProvider(IWebProxy proxy) : ServiceBusClientPro
             WebProxy = proxy,
             TransportType = ServiceBusTransportType.AmqpWebSockets,
         };
+        
         return new ServiceBusClient(connectionString, clientOptions);
     }
-
-
 }

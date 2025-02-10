@@ -8,6 +8,7 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
+using System.ComponentModel;
 using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
@@ -143,7 +144,7 @@ public class MovementStatus
         return new MovementStatus()
         {
             ChedTypes = [],
-            LinkStatus = LinkStatusEnum.NotLinked
+            LinkStatus = LinkStatusEnum.NoLinks
         };
     }
     
@@ -183,16 +184,13 @@ public enum LinkStatusEnum
     [EnumMember(Value = "Error")]
     Error,
     
-    [EnumMember(Value = "Not Linked")]
-    NotLinked,
-    
-    [EnumMember(Value = "Partially Linked")]
+    [EnumMember(Value = "Partially Linked"), Description("There are document refs that look like CHEDs present, but we haven't linked all of them")]
     PartiallyLinked,
     
-    [EnumMember(Value = "Missing Links")]
+    [EnumMember(Value = "Missing Links"), Description("There are document refs that look like CHEDs present, but we don't have any linked")]
     MissingLinks,
     
-    [EnumMember(Value = "No Links")]
+    [EnumMember(Value = "No Links"), Description("There are no document refs that look like CHED references present")]
     NoLinks,
     
     [EnumMember(Value = "All Linked")]
@@ -208,17 +206,36 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Btms Made Same Decision As Alvs")]
     BtmsMadeSameDecisionAsAlvs,
     
+    [EnumMember(Value = "Btms Made Same Decision Type As Alvs")]
+    BtmMadeSameDecisionTypeAsAlvs,
+    
+    
+    [EnumMember(Value = "No Import Notifications Linked")]
+    NoImportNotificationsLinked,
+    
+    [EnumMember(Value = "No Alvs Decisions")]
+    NoAlvsDecisions,
+    
+    
+    [EnumMember(Value = "Document Reference Format Incorrect")]
+    DocumentReferenceFormatIncorrect,
+    
+    [EnumMember(Value = "Document Reference Case Incorrect")]
+    DocumentReferenceCaseIncorrect,
+    
+    [EnumMember(Value = "ALVS X00 But Not BTMS")]
+    AlvsX00NotBtms,
+    
+    
     [EnumMember(Value = "CDMS-205")]
     ReliesOnCDMS205,
     
     [EnumMember(Value = "CDMS-249")]
     ReliesOnCDMS249,
     
-    [EnumMember(Value = "Has Ched PP Checks")]
+    [EnumMember(Value = "Has Ched PP Checkxs")]
     HasChedppChecks,
     
-    [EnumMember(Value = "No Import Notifications Linked")]
-    NoImportNotificationsLinked,
     
     [EnumMember(Value = "Has Other E9X Data Errors")]
     HasOtherDataErrors,
@@ -226,8 +243,6 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Has Generic E99 Data Errors")]
     HasGenericDataErrors,
     
-    [EnumMember(Value = "No Alvs Decisions")]
-    NoAlvsDecisions,
     
     [EnumMember(Value = "Has Multiple Ched Types")]
     HasMultipleChedTypes,
@@ -323,7 +338,7 @@ public partial class AlvsDecision  //
 {
     [Attr]
     [System.ComponentModel.Description("")]
-    public required CdsClearanceRequest Decision { get; set; }
+    public required CdsDecision Decision { get; set; }
 
     [Attr]
     [System.ComponentModel.Description("")]

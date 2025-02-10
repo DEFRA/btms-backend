@@ -4,6 +4,7 @@ using Btms.Backend.Data.Extensions;
 using Btms.Business.Extensions;
 using Btms.Metrics;
 using Btms.Model;
+using Btms.Model.Auditing;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using Btms.Model.Relationships;
@@ -94,7 +95,6 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 metrics.Linked<Movement>(result.Movements.Count);
                 metrics.Linked<ImportNotification>(result.Notifications.Count);
 
-                using var transaction = await dbContext.StartTransaction(cancellationToken);
                 foreach (var movement in result.Movements)
                 {
                     foreach (var notification in result.Notifications)
@@ -119,13 +119,14 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             ]
                         });
 
-                        await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
-                        await dbContext.Notifications.Update(notification, transaction: transaction, cancellationToken: cancellationToken);
+                        
+                        await dbContext.Notifications.Update(notification, cancellationToken: cancellationToken);
                         
                     }
+
+                    await dbContext.Movements.Update(movement, cancellationToken: cancellationToken);
                 }
 
-                await transaction.CommitTransaction(cancellationToken);
             }
             catch (Exception e)
             {
@@ -158,19 +159,17 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             {
                 var result = await FindImportNotificationLinks(linkContext.PersistedImportNotification, cancellationToken);
 
-                using var transaction = await dbContext.StartTransaction(cancellationToken);
                 foreach (var movement in result.Movements)
                 {
                     await RemoveNotificationLinkFromMovement(movement,
                         linkContext.PersistedImportNotification._MatchReference, cancellationToken);
-                    await dbContext.Movements.Update(movement, transaction: transaction, cancellationToken: cancellationToken);
+                    await dbContext.Movements.Update(movement, cancellationToken: cancellationToken);
                 }
 
                 linkContext.PersistedImportNotification.RemoveAllRelationships();
 
-                await dbContext.Notifications.Update(linkContext.PersistedImportNotification, transaction: transaction, cancellationToken: cancellationToken);
+                await dbContext.Notifications.Update(linkContext.PersistedImportNotification, cancellationToken: cancellationToken);
 
-                await transaction.CommitTransaction(cancellationToken);
             }
             catch (Exception e)
             {

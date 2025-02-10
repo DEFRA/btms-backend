@@ -34,7 +34,7 @@ namespace Btms.Consumers.Extensions
 
             var serviceBusOptions = configuration
                 .GetSection(ServiceBusOptions.SectionName)
-                .Get<ServiceBusOptions>();
+                .Get<ServiceBusOptions>() ?? throw new InvalidOperationException("Service bus options not found");
 
             services.AddBtmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
@@ -44,71 +44,42 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
-
-            //Message Bus
+            
             services.AddSlimMessageBus(mbb =>
             {
                 if (consumerOpts.EnableAsbConsumers)
                 {
                     mbb.AddChildBus("ASB_Notification", cbb =>
                     {
-                        cbb.WithProviderServiceBus(cfg =>
-                        {
-                            cfg.TopologyProvisioning = new ServiceBusTopologySettings { Enabled = false };
-
-                            cfg.ClientFactory = (sp, settings) =>
-                            {
-                                var clientOptions = sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
-                                    ? new ServiceBusClientOptions()
-                                    : new ServiceBusClientOptions
-                                    {
-                                        WebProxy = sp.GetRequiredService<IWebProxy>(),
-                                        TransportType = ServiceBusTransportType.AmqpWebSockets,
-                                    };
-                                
-                                return new ServiceBusClient(settings.ConnectionString, clientOptions);
-                            };
-                            cfg.ConnectionString = serviceBusOptions?.NotificationSubscription.ConnectionString;
-                        });
-                        cbb.AddJsonSerializer();
+                        ConfigureServiceBusClient(cbb, serviceBusOptions.NotificationSubscription.ConnectionString);
 
                         cbb.Consume<ImportNotification>(x => x
-                            .Topic(serviceBusOptions?.NotificationSubscription.Topic)
-                            .SubscriptionName(serviceBusOptions?.NotificationSubscription.Subscription)
+                            .Topic(serviceBusOptions.NotificationSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions.NotificationSubscription.Subscription)
                             .WithConsumer<NotificationConsumer>()
                             .Instances(consumerOpts.AsbNotifications));
                     });
 
                     mbb.AddChildBus("ASB_Alvs", cbb =>
                     {
-                        cbb.WithProviderServiceBus(cfg =>
-                        {
-                            cfg.TopologyProvisioning = new ServiceBusTopologySettings
-                            {
-                                Enabled = false
-                            };
-
-                            cfg.ClientFactory = (sp, settings) =>
-                            {
-                                var clientOptions = sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
-                                    ? new ServiceBusClientOptions()
-                                    : new ServiceBusClientOptions
-                                    {
-                                        WebProxy = sp.GetRequiredService<IWebProxy>(),
-                                        TransportType = ServiceBusTransportType.AmqpWebSockets,
-                                    };
-
-                                return new ServiceBusClient(settings.ConnectionString, clientOptions);
-                            };
-                            cfg.ConnectionString = serviceBusOptions?.AlvsSubscription.ConnectionString;
-                        });
-                        cbb.AddJsonSerializer();
+                        ConfigureServiceBusClient(cbb, serviceBusOptions.AlvsSubscription.ConnectionString);
 
                         cbb.Consume<object>(x => x
-                            .Topic(serviceBusOptions?.AlvsSubscription.Topic)
-                            .SubscriptionName(serviceBusOptions?.AlvsSubscription.Subscription)
+                            .Topic(serviceBusOptions.AlvsSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions.AlvsSubscription.Subscription)
                             .WithConsumer<AlvsAsbConsumer>()
                             .Instances(consumerOpts.AsbAlvsMessages));
+                    });
+
+                    mbb.AddChildBus("ASB_Gmr", cbb =>
+                    {
+                        ConfigureServiceBusClient(cbb, serviceBusOptions.GmrSubscription.ConnectionString);
+
+                        cbb.Consume<Gmr>(x => x
+                            .Topic(serviceBusOptions.GmrSubscription.Topic)
+                            .SubscriptionName(serviceBusOptions.GmrSubscription.Subscription)
+                            .WithConsumer<GmrConsumer>()
+                            .Instances(consumerOpts.AsbGmrs));
                     });
                 }
 
@@ -121,7 +92,7 @@ namespace Btms.Consumers.Extensions
                                 cfg.EnableMessageHeaders = true;
                             })
                             .AddServicesFromAssemblyContaining<NotificationConsumer>(
-                                consumerLifetime: ServiceLifetime.Scoped)
+                                consumerLifetime: ServiceLifetime.Scoped).PerMessageScopeEnabled()
                             .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
                             .Consume<ImportNotification>(x =>
                             {
@@ -153,11 +124,31 @@ namespace Btms.Consumers.Extensions
                                 x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
                             });
                     });
-
-                    
             });
 
             return services;
+
+            void ConfigureServiceBusClient(MessageBusBuilder cbb, string connectionString)
+            {
+                cbb.WithProviderServiceBus(cfg =>
+                {
+                    cfg.TopologyProvisioning = new ServiceBusTopologySettings { Enabled = false };
+                    cfg.ClientFactory = (sp, settings) =>
+                    {
+                        var clientOptions = sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
+                            ? new ServiceBusClientOptions()
+                            : new ServiceBusClientOptions
+                            {
+                                WebProxy = sp.GetRequiredService<IWebProxy>(),
+                                TransportType = ServiceBusTransportType.AmqpWebSockets,
+                            };
+
+                        return new ServiceBusClient(settings.ConnectionString, clientOptions);
+                    };
+                    cfg.ConnectionString = connectionString;
+                });
+                cbb.AddJsonSerializer();
+            }
         }
     }
 }

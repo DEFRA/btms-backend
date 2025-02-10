@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
@@ -19,12 +21,42 @@ public static class MovementExtensions
                             m.BtmsStatus.ChedTypes!.Any(c => chedTypes!.Contains(c))));
 
     }
+
+    public class ReadTimeDecisionStatusState<T>
+    {
+        public required Movement Movement { get; init; }
+        public required ItemCheck Check { get; init; }
+        public required T DecisionStatus { get; init; }
+    }
+    
+    [SuppressMessage("SonarLint", "S3358",
+        Justification =
+            "This is a linq expression tree, unsure how to make it independent expressions"), SuppressMessage("SonarLint", "S3776",
+         Justification =
+             "Unsure how to make this less complex as its a linq expression")]
+    public static IQueryable<ReadTimeDecisionStatusState<DecisionStatusEnum>> WithReadTimeDecisionStatus(this IQueryable<ReadTimeDecisionStatusState<DecisionStatusEnum?>> source) {
+        
+        return source.Select(t => new ReadTimeDecisionStatusState<DecisionStatusEnum>() {
+             Check   = t.Check,
+             Movement = t.Movement,
+             
+             DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null ?
+                 DecisionStatusEnum.InvestigationNeeded :
+                 t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus
+        });
+    }
+    
+    [Pure]
+    public static DecisionStatusEnum GetDecisionStatus([Pure] ItemCheck? c)
+    {
+        return DecisionStatusEnum.None;
+    }
     
     public class MovementWithLinkStatus
     {
-        public required Movement Movement;
-        public required DateTime CreatedSource;
-        public required LinkStatusEnum Status;
+        public required Movement Movement { get; set; }
+        public required DateTime CreatedSource { get; set; }
+        public required LinkStatusEnum Status { get; set; }
     }
     
     public static IQueryable<MovementWithLinkStatus> SelectLinkStatus(this IQueryable<Movement> source)

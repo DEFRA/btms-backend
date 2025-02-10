@@ -32,6 +32,7 @@ public partial class MeansOfTransport  //
         /// Document for transport
         /// </summary>
     [JsonPropertyName("document")]
+        [Btms.SensitiveData.SensitiveData]
     public string? Document { get; set; }
 
 	
@@ -39,6 +40,7 @@ public partial class MeansOfTransport  //
         /// ID of transport
         /// </summary>
     [JsonPropertyName("id")]
+        [Btms.SensitiveData.SensitiveData]
     public string? Id { get; set; }
 
 	}

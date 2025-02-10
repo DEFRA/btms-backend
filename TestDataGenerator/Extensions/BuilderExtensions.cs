@@ -10,7 +10,7 @@ namespace TestDataGenerator.Extensions;
 
 public static class BuilderExtensions
 {
-    public static object[] BuildAll(this IBaseBuilder[] builders)
+    public static List<object> BuildAll(this IBaseBuilder[] builders)
     {
         var messages = builders
             .Select<IBaseBuilder,object>(b =>
@@ -36,10 +36,10 @@ public static class BuilderExtensions
                 }
                 
             });
-        
+
         return messages
             .OrderBy(m => m.CreatedDate())
-            .ToArray();
+            .ToList();
     }
 
     /// <summary>

@@ -36,7 +36,7 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         return Task.FromResult(data.Find(i => query.Compile()(i)));
     }
 
-    public Task Insert(T item, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default)
+    public Task Insert(T item, CancellationToken cancellationToken = default)
     {
         item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
         data.Add(item);
@@ -46,16 +46,23 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     [SuppressMessage("SonarLint", "S2955",
         Justification =
             "IEquatable<T> would need to be implemented on every data entity just to stop sonar complaining about a null check. Nope.")]
-    public Task Update(T item, IMongoDbTransaction transaction = default!,
-        CancellationToken cancellationToken = default)
+    public Task Update(T item, CancellationToken cancellationToken = default)
     {
-        return Update(item, item._Etag, transaction, cancellationToken);
+        return Update(item, item._Etag, cancellationToken);
+    }
+
+    public async Task Update(List<T> items, CancellationToken cancellationToken = default)
+    {
+        foreach (var item in items)
+        {
+            await Update(item, cancellationToken);
+        }
     }
 
     [SuppressMessage("SonarLint", "S2955",
         Justification =
             "IEquatable<T> would need to be implemented on every data entity just to stop sonar complaining about a null check. Nope.")]
-    public Task Update(T item, string etag, IMongoDbTransaction transaction = default!, CancellationToken cancellationToken = default)
+    public Task Update(T item, string etag,CancellationToken cancellationToken = default)
     {
         etag = etag ?? item._Etag;
         
@@ -75,5 +82,10 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public IAggregateFluent<T> Aggregate()
     {
         throw new NotImplementedException();
+    }
+
+    public Task PersistAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 }

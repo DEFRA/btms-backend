@@ -20,8 +20,6 @@ namespace Btms.Model.Cds;
 /// </summary>
 public partial class CdsClearanceRequest  //
 {
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -44,7 +42,6 @@ public partial class CdsClearanceRequest  //
     [Attr]
     [System.ComponentModel.Description("")]
     public Items[]? Items { get; set; }
-
-	}
+}
 
 

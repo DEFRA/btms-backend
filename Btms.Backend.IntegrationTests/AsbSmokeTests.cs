@@ -1,9 +1,12 @@
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using TestDataGenerator.Scenarios.ChedP;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
+using TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 using Xunit;
 using Xunit.Abstractions;
 using Decision = Btms.Types.Alvs.Decision;
@@ -11,12 +14,24 @@ using Decision = Btms.Types.Alvs.Decision;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : BaseApiTests(factory, testOutputHelper, "AsbSmokeTests"), IClassFixture<ApplicationFactory>
+public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
-    [Fact(Skip = "Do not run correctly on github at the moment")]
-    public async Task AsbSmokeTest()
+    public AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory,
+        testOutputHelper, "AsbSmokeTests")
     {
-        await base.ClearDb();
+        factory.ConfigureHostConfiguration = configurationBuilder =>
+        {
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "ConsumerOptions:EnableAsbConsumers", "true" }
+            });
+        };
+    }
+
+    [Fact]
+    public async Task AsbSmokeTest_NotificationsAndMovements()
+    {
+        await ClearDb();
         var testGeneratorFixture = new TestGeneratorFixture(Factory.TestOutputHelper);
         var generatorResult = testGeneratorFixture.GenerateTestData<SimpleMatchScenarioGenerator>();
 
@@ -36,14 +51,36 @@ public class AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOut
             }
         }
 
-        await Task.Delay(TimeSpan.FromSeconds(30));
+        ManyItemsJsonApiDocument jsonClientResponse;
 
+        await ShouldEventually.Be(() =>
+            {
+                jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
+                jsonClientResponse.Data.Count.Should().Be(1);
 
-        // Check Api
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
-        jsonClientResponse.Data.Count.Should().Be(1);
+                return Task.CompletedTask;
+            },
+            retries: 30,
+            wait: TimeSpan.FromSeconds(1));
 
         jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
         jsonClientResponse.Data.Count.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task AsbSmokeTest_Gmrs()
+    {
+        await ClearDb();
+        await ServiceBusHelper.PublishGmr(new Gmr { GmrId = "123" });
+
+        await ShouldEventually.Be(() =>
+            {
+                var jsonClientResponse = Client.AsJsonApiClient().Get("api/gmrs");
+                jsonClientResponse.Data.Count.Should().Be(1);
+
+                return Task.CompletedTask;
+            },
+            retries: 30,
+            wait: TimeSpan.FromSeconds(1));
     }
 }

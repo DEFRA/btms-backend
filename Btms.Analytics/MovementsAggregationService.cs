@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
@@ -17,7 +18,8 @@ namespace Btms.Analytics;
 
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
-        
+    private const string AggregatedMessage = "Aggregated Data {Result}";
+    
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>
@@ -290,9 +292,42 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(status => mongoResult.AsDataset(dateRange, enumLookup.GetValue(status)))
             .AsOrderedArray(m => m.Name);
         
-        logger.LogDebug("Aggregated Data {Result}", output.ToList().ToJsonString());
+        logger.LogDebug(AggregatedMessage, output.ToList().ToJsonString());
         
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
+    }
+    
+    public Task<SingleSeriesDataset> ByAlvsDecision(DateTime from,
+        DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
+    {
+        var mongoQuery = context
+            .Movements
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            .Select(m => new {
+                m.Id, 
+                Decisions = m.AlvsDecisionStatus.Decisions
+                    .Select(d => new
+                    {
+                        Min = d.Decision.Items.Min(i => i.ItemNumber),
+                        Max =  d.Decision.Items.Max(i => i.ItemNumber),
+                        ItemCount = d.Decision.Items.Count()
+                    })
+            })
+            .Select(m => new
+            {
+                m.Id,
+                m.Decisions,
+                DistinctCount = m.Decisions.Distinct().Count(),
+                DecisionsCount = m.Decisions.Count(),
+                Same = m.Decisions.Distinct().Count() <= 1
+            })
+            .GroupBy(m => m.Same)
+            .Execute(logger);
+        
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
+
+        var r = new SingleSeriesDataset();
+        return Task.FromResult(r);
     }
 
     /// <summary>
@@ -307,31 +342,22 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from,
         DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
+        var nullChecks = new List<ItemCheck>();
+        
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            .Select(m => new { Movement = m, Checks = 
+                m.AlvsDecisionStatus.Context.DecisionComparison == null ? nullChecks : 
+                    m.AlvsDecisionStatus.Context.DecisionComparison.Checks })
             .SelectMany(d => d
-                .AlvsDecisionStatus.Context.DecisionComparison!.Checks
-                .Select(c => new
-                {
-                    Movement = d, Check = c,
-                    //Add additional analysis before building it into the write time analysis
-                    DecisionStatus = d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
-                                     DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs ? 
-                                        DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs :
-                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1 ?
-                                            DecisionStatusEnum.ReliesOnCDMS205 :
-                                        d.BtmsStatus.Segment == MovementSegmentEnum.Cdms249? 
-                                            DecisionStatusEnum.ReliesOnCDMS249 :
-                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus ==
-                                        DecisionStatusEnum.HasChedppChecks ? 
-                                            DecisionStatusEnum.HasChedppChecks :
-                                        c.BtmsDecisionCode == "E99" ? DecisionStatusEnum.HasGenericDataErrors :
-                                        c.BtmsDecisionCode != null && c.BtmsDecisionCode.StartsWith("E9") ? DecisionStatusEnum.HasOtherDataErrors :
-                                        d.BtmsStatus.ChedTypes.Length > 1 ? DecisionStatusEnum.HasMultipleChedTypes :
-                                        d.Relationships.Notifications.Data.Count > 1 ? DecisionStatusEnum.HasMultipleCheds :
-                                        d.AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
-                }))
+                .Checks
+                    .Select(c => new MovementExtensions.ReadTimeDecisionStatusState<DecisionStatusEnum?>()
+                    {
+                        Movement = d.Movement, Check = c, DecisionStatus = null
+                    })
+            )
+            .WithReadTimeDecisionStatus()
             .GroupBy(d => new
             {
                 d.DecisionStatus,
@@ -345,7 +371,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .Execute(logger);
         
-        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var enumLookup = new JsonStringEnumConverterEx<DecisionStatusEnum>();
         var summaryValues = mongoQuery
@@ -402,16 +428,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .GroupBy(d => new
             {
                 d.BtmsStatus.Segment,
-                // Segment = d.BtmsStatus.Segment ?? MovementSegmentEnum.None,
                 d.BtmsStatus.LinkStatus,
                 d.BtmsStatus.Status,
                 d.DecisionStatus,
-                // d.AlvsDecisionStatus.Context.DecisionComparison != null ? d.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus.ToString() : "None",
                 d.DecisionMatched,
-                // d.AlvsDecisionStatus?.Context?.DecisionComparison?.DecisionMatched
-                // d.Check.CheckCode,
-                // d.Check.AlvsDecisionCode,
-                // d.Check.BtmsDecisionCode
             })
             .Select(g => new
             {
@@ -419,7 +439,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .Execute(logger);
         
-        logger.LogDebug("Aggregated Data {Result}", mongoQuery.ToJsonString());
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var enumLookup = new JsonStringEnumConverterEx<MovementSegmentEnum>();
         var summaryValues = mongoQuery
@@ -460,6 +480,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         return Task.FromResult(r);
     }
 
+    [SuppressMessage("SonarLint", "S107",
+        Justification =
+            "Allow us to return a valid result from an aggregation during development before we have real data")]
     private static Task<TabularDataset<ByNameDimensionResult>> DefaultTabularDatasetByNameDimensionResult()
     {
         return Task.FromResult(new TabularDataset<ByNameDimensionResult>()
@@ -471,6 +494,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         });
     }
 
+    [SuppressMessage("SonarLint", "S107",
+        Justification =
+            "Allow us to return a valid result from an aggregation during development before we have real data")]
     private static Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> DefaultSummarisedBucketResult()
     {
         return Task.FromResult(new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()

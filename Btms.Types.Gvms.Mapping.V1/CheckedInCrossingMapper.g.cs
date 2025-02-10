@@ -14,15 +14,15 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class CheckedInCrossingMapper
 {
-	public static Btms.Model.Gvms.CheckedInCrossing Map(Btms.Types.Gvms.CheckedInCrossing from)
+	public static Btms.Model.Gvms.CheckedInCrossing Map(Btms.Types.Gvms.CheckedInCrossing? from)
 	{
 	if(from is null)
 	{
 		return default!;
 	}
 		var to = new Btms.Model.Gvms.CheckedInCrossing ();
-to.RouteId = from.RouteId;
-            to.ArrivesAt = from.ArrivesAt;
+to.RouteId = from?.RouteId;
+            to.ArrivesAt = from?.ArrivesAt;
             	return to;
 	}
 }

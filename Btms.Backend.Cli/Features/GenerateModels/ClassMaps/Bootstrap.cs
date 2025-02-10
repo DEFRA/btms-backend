@@ -22,10 +22,6 @@ internal static class Bootstrap
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
-
-            map.AddProperty(new PropertyDescriptor("decisionNumber", "decisionNumber", "int",
-                "", false, false,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
         });
 
 
@@ -83,6 +79,45 @@ internal static class Bootstrap
 
     public static void RegisterIpaffsClassMaps()
     {
+        GeneratorClassMap.RegisterClassMap("SealContainer",
+            map =>
+            {
+                map.MapProperty("sealNumber").IsSensitive();
+                map.MapProperty("containerNumber").IsSensitive();
+                map.MapProperty("resealedSealNumber").IsSensitive();
+            });
+
+        GeneratorClassMap.RegisterClassMap("IdentificationDetails",
+            map =>
+            {
+                map.MapProperty("identificationDetail").IsSensitive();
+                map.MapProperty("identificationDescription").IsSensitive();
+            });
+
+        GeneratorClassMap.RegisterClassMap("AccompanyingDocument",
+            map =>
+            {
+                map.MapProperty("documentReference").IsSensitive();
+                map.MapProperty("attachmentId").IsSensitive();
+                map.MapProperty("attachmentFilename").IsSensitive();
+                map.MapProperty("uploadUserId").IsSensitive();
+                map.MapProperty("uploadOrganisationId").IsSensitive();
+                map.MapProperty("documentIssueDate").IsDateTime().SetInternalName("documentIssuedOn");
+            });
+
+        GeneratorClassMap.RegisterClassMap("MeansOfTransport",
+            map =>
+            {
+                map.MapProperty("document").IsSensitive();
+                map.MapProperty("id").IsSensitive();
+            });
+
+        GeneratorClassMap.RegisterClassMap("Identifiers",
+            map =>
+            {
+                map.MapProperty("data").IsSensitive();
+            });
+
         GeneratorClassMap.RegisterClassMap("ContactDetails",
             map =>
             {
@@ -92,6 +127,23 @@ internal static class Bootstrap
                 map.MapProperty("agent").IsSensitive();
             });
 
+        GeneratorClassMap.RegisterClassMap("Applicant",
+            map =>
+            {
+                map.MapProperty("laboratoryAddress").IsSensitive();
+                map.MapProperty("laboratoryIdentification").IsSensitive();
+                map.MapProperty("laboratoryIdentification").IsSensitive();
+                map.MapProperty("laboratoryPhoneNumber").IsSensitive();
+                map.MapProperty("laboratoryEmail").IsSensitive();
+                map.MapProperty("sampleBatchNumber").IsSensitive();
+                map.MapProperty("laboratory").IsSensitive();
+                map.MapProperty("sampleType").IsSensitive(); 
+                map.MapProperty("sampleDate").IsDate();
+                map.MapProperty("sampleTime").IsTime();
+                map.MapDateOnlyAndTimeOnlyToDateTimeProperty("sampleDate", "sampleTime", "sampledOn");
+            });
+
+        
         GeneratorClassMap.RegisterClassMap("BillingInformation",
             map =>
             {
@@ -104,6 +156,7 @@ internal static class Bootstrap
             map =>
             {
                 map.MapProperty("name").IsSensitive();
+                map.MapProperty("approvalNumber").IsSensitive();
             });
 
         GeneratorClassMap.RegisterClassMap("PostalAddress",
@@ -152,9 +205,6 @@ internal static class Bootstrap
             map.MapProperty("ExitBIP").SetName("ExitBip");
         });
 
-        GeneratorClassMap.RegisterClassMap("AccompanyingDocument",
-            map => { map.MapProperty("documentIssueDate").IsDateTime().SetInternalName("documentIssuedOn"); });
-
         GeneratorClassMap.RegisterClassMap("VeterinaryInformation",
             map =>
             {
@@ -174,6 +224,8 @@ internal static class Bootstrap
         {
             map.MapProperty("releasedDate").IsDateTime().SetInternalName("releasedOn");
             map.MapProperty("labTestCreatedDate").IsDateTime().SetInternalName("labTestCreatedOn");
+            map.MapProperty("results").IsSensitive();
+            map.MapProperty("laboratoryTestMethod").IsSensitive();
         });
 
         GeneratorClassMap.RegisterClassMap("DetailsOnReExport", map =>
@@ -203,6 +255,17 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("CommodityComplement", map =>
         {
+            map.MapProperty("speciesName").IsSensitive();
+            map.MapProperty("speciesID").IsSensitive();
+            map.MapProperty("speciesNomination").IsSensitive();
+            map.MapProperty("speciesType").IsSensitive();
+            map.MapProperty("speciesClassName").IsSensitive();
+            map.MapProperty("speciesClass").IsSensitive();
+            map.MapProperty("speciesFamilyName").IsSensitive();
+            map.MapProperty("speciesFamily").IsSensitive();
+            map.MapProperty("speciesCommonName").IsSensitive();
+
+
             map.AddProperty(new PropertyDescriptor("additionalData", "additionalData", "IDictionary<string, object>",
                 "", false, false,
                 IpaffsDescriptorBuilder.ClassNamePrefix));
@@ -224,6 +287,7 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("PartOne", map =>
         {
+            map.MapProperty("importerLocalReferenceNumber").IsSensitive();
             map.MapProperty("commodities").ExcludeFromInternal();
             map.MapProperty("originalEstimatedDateTime").SetName("originalEstimatedOn").IsDateTime();
             map.MapProperty("submissionDate").SetName("SubmittedOn").IsDateTime();
@@ -234,15 +298,9 @@ internal static class Bootstrap
             map.MapDateOnlyAndTimeOnlyToDateTimeProperty("departureDate", "departureTime", "departedOn");
         });
 
-        GeneratorClassMap.RegisterClassMap("Applicant", map =>
-        {
-            map.MapProperty("sampleDate").IsDate();
-            map.MapProperty("sampleTime").IsTime();
-            map.MapDateOnlyAndTimeOnlyToDateTimeProperty("sampleDate", "sampleTime", "sampledOn");
-        });
-
         GeneratorClassMap.RegisterClassMap("PartTwo", map =>
         {
+            map.MapProperty("bipLocalReferenceNumber").IsSensitive();
             map.MapProperty("commodityChecks").ExcludeFromInternal();
             map.MapProperty("autoClearedDateTime").IsDateTime().SetInternalName("autoClearedOn");
             map.MapProperty("checkDate").IsDateTime().SetInternalName("checkedOn");
@@ -266,6 +324,8 @@ internal static class Bootstrap
         {
             map.MapProperty("individualName").IsSensitive();
             map.MapProperty("companyName").IsSensitive();
+            map.MapProperty("approvalNumber").IsSensitive();
+            map.MapProperty("otherIdentifier").IsSensitive();
         });
 
         GeneratorClassMap.RegisterClassMap("Address", map =>
@@ -336,7 +396,7 @@ internal static class Bootstrap
             map.MapProperty("gmrId").SetInternalName("id");
             map.MapProperty("haulierEORI").SetName("haulierEori");
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
-            map.MapProperty("updatedDateTime").SetName("lastUpdated").IsDateTime();
+            map.MapProperty("updatedDateTime").SetName("updatedSource").IsDateTime();
             map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
             map.MapProperty("declarations").ExcludeFromInternal();
         });

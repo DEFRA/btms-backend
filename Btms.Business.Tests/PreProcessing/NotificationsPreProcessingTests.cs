@@ -62,6 +62,7 @@ public class NotificationsPreProcessingTests
             .WithRandomCommodities(1, 2)
             .Do(x =>
             {
+                x.Status = ImportNotificationStatusEnum.Submitted;
                 foreach (var parameterSet in x.PartOne?.Commodities?.ComplementParameterSets!)
                 {
                     parameterSet.KeyDataPairs = null;

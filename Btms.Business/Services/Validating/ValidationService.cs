@@ -44,20 +44,9 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
             var chedTypes = m.BtmsStatus.ChedTypes;
             
             var notificationRelationshipIds = m.UniqueNotificationRelationshipIds();
-            var documentReferenceIds = m.UniqueDocumentReferenceIdsThatShouldLink();
+            var documentReferenceIds = m.UniqueDocumentReferenceIds();
 
-            m.BtmsStatus = MovementStatus.Default();
-            m.BtmsStatus.ChedTypes = chedTypes;
-            m.BtmsStatus.LinkStatus = documentReferenceIds.Count == 0
-                ? LinkStatusEnum.NoLinks
-                : notificationRelationshipIds.Count() == documentReferenceIds.Count() &&
-                  notificationRelationshipIds.All(documentReferenceIds.Contains)
-                    ? LinkStatusEnum.AllLinked
-                    : notificationRelationshipIds.Count == 0 && documentReferenceIds.Count != 0
-                        ? LinkStatusEnum.MissingLinks
-                        : notificationRelationshipIds.Count < documentReferenceIds.Count()
-                            ? LinkStatusEnum.PartiallyLinked
-                            : LinkStatusEnum.Investigate;
+            m.BtmsStatus = MovementExtensions.GetMovementStatus(chedTypes, documentReferenceIds, notificationRelationshipIds);
                 
             if (m.Items.Any(i => i.Documents?.Length == 0))
             {
