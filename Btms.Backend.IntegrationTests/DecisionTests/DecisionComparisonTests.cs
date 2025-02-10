@@ -23,6 +23,7 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
     [InlineData(typeof(Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
     [InlineData(typeof(Mrn24Gbdshixsy6Rckar3ScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
     [InlineData(typeof(ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
+    [InlineData(typeof(Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
     
     public void ShouldHaveCorrectDecisionCode(Type generatorType, DecisionStatusEnum decisionStatus)
     {
