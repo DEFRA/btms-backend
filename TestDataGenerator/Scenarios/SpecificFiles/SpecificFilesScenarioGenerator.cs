@@ -98,6 +98,11 @@ public class Mrn24Gbdshixsy6Rckar3ScenarioGenerator(
     ILogger<Mrn24Gbdshixsy6Rckar3ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDSHIXSY6RCKAR3");
 
+public class Mrn24Gbei6Oisht38Mar9ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbei6Oisht38Mar9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBEI6OISHT38MAR9");
+
 public class Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator(
     IServiceProvider sp,
     ILogger<Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator> logger)

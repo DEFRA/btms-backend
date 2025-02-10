@@ -30,6 +30,12 @@ namespace Btms.Consumers;
             var preProcessingResult = await preProcessor
                 .Process(new PreProcessingContext<ImportNotification>(message, messageId));
 
+            if (preProcessingResult.Outcome == PreProcessingOutcome.NotProcessed)
+            {
+                LogStatus("Not Processed due to being in DRAFT or AMEND state", message);
+                return;
+            }
+
             if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
             {
                 LogStatus("Skipped", message);
