@@ -21,6 +21,7 @@ namespace Btms.Model.Cds;
 public partial class Check  //
 {
 
+
     /// <summary>
     /// 
     /// </summary>
@@ -36,11 +37,13 @@ public partial class Check  //
     [System.ComponentModel.Description("")]
     public string? DepartmentCode { get; set; }
 
+
     /// <summary>
     /// 
     /// </summary>
     [Attr]
     [JsonPropertyName("decisionCode")]
+    [System.ComponentModel.Description("")]
     public string? DecisionCode { get; set; }
 
 
@@ -49,10 +52,16 @@ public partial class Check  //
     /// </summary>
     [Attr]
     [JsonPropertyName("decisionsValidUntil")]
+    [System.ComponentModel.Description("")]
     public DateTime? DecisionsValidUntil { get; set; }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [JsonPropertyName("decisionReasons")]
+    [System.ComponentModel.Description("")]
     public string[]? DecisionReasons { get; set; }
 
 }

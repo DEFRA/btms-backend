@@ -26,10 +26,10 @@ internal class GeneratorClassMap
 
     public List<PropertyDescriptor> NewProperties { get; private set; } = new();
 
-    public GeneratorClassMap SetClassName(string className)
+    public GeneratorClassMap SetClassName(string className, string? internalClassName = null)
     {
         SetSourceClassName(className);
-        SetInternalClassName(className);
+        SetInternalClassName(internalClassName ?? className);
         return this;
     }
 
@@ -76,8 +76,8 @@ internal class GeneratorClassMap
     {
         MapProperty(timeOnlyProperty).IsTime().ExcludeFromInternal();
         MapProperty(dateOnlyProperty).IsDate().ExcludeFromInternal();
-        AddProperty(new PropertyDescriptor(dateTimeProperty, "DateTime",
-            "DateTime", false, false, "")
+        AddProperty(new PropertyDescriptor(dateTimeProperty, dateTimeProperty,
+            "DateTime", "DateTime", false, false, "")
         {
             ExcludedFromSource = true,
             Mapper =

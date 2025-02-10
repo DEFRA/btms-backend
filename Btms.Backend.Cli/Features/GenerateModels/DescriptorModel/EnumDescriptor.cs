@@ -4,7 +4,7 @@ using Humanizer;
 namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 
 [DebuggerDisplay("{Name}")]
-public class EnumDescriptor(string name, string parentName, string sourceNamespace, string internalNamespace, string classNamePrefix)
+public class EnumDescriptor(string name, string? parentName, string sourceNamespace, string internalNamespace, string classNamePrefix)
 {
     private const string Suffix = "Enum";
 
@@ -82,7 +82,7 @@ public class EnumDescriptor(string name, string parentName, string sourceNamespa
         }
     }
 
-    public static string BuildEnumName(string name, string parentName, string classNamePrefix)
+    public static string BuildEnumName(string name, string? parentName, string classNamePrefix)
     {
         if (string.IsNullOrEmpty(parentName))
         {

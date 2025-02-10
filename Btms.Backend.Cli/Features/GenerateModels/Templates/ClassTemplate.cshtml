@@ -20,29 +20,17 @@ namespace @Model.SourceNamespace;
 /// <summary>
 /// @Model.Description
 /// </summary>
-@* @if (Model.IsResource)
-{
-    <text>     [Resource] 
-    </text>
-} *@
 public partial class @Model.GetClassName()  //@if (Model.IsResource) { <text>: CustomStringMongoIdentifiable</text> }
 
 {
-@* @if (Model.IsResource)
-{
-    <text>
-        // This field is used by the jsonapi-consumer to control the correct casing in the type field
-        public string Type { get; set; } = "@Model.Name";
-    </text>
-} *@
 
 @foreach (var property in Model.Properties.Where(x => !x.ExcludedFromSource))
 {
-	var t = new HtmlString(property.GetPropertyType());
+	var t = new HtmlString(property.GetSourcePropertyType());
     <text>
-        /// <summary>
-        /// @property.Description
-        /// </summary>
+/// <summary>
+/// @property.Description
+/// </summary>
     </text>
         @foreach (var attr in property.SourceAttributes)
         {

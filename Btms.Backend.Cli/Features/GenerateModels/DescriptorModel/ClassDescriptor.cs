@@ -4,9 +4,11 @@ using Humanizer;
 namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 
 [DebuggerDisplay("{Name}")]
-public class ClassDescriptor(string name, string sourceNamespace, string internalNamespace, string classNamePrefix)
+public class ClassDescriptor(string name, string sourceNamespace, string internalNamespace, string classNamePrefix, string? internalName = null)
 {
     public string Name { get; set; } = name;
+
+    public string InternalName { get; set; } = internalName ?? name;
 
     public bool IgnoreInternalClass { get; set; }
     public string SourceNamespace { get; } = sourceNamespace;
@@ -32,6 +34,11 @@ public class ClassDescriptor(string name, string sourceNamespace, string interna
         return BuildClassName(Name, classNamePrefix, IsResource);
     }
 
+    public string GetInternalClassName()
+    {
+        return BuildClassName(InternalName, classNamePrefix, IsResource);
+    }
+
     public string GetSourceFullClassName()
     {
         return $"{SourceNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
@@ -39,7 +46,7 @@ public class ClassDescriptor(string name, string sourceNamespace, string interna
 
     public string GetInternalFullClassName()
     {
-        return $"{InternalNamespace}.{BuildClassName(Name, classNamePrefix, IsResource)}";
+        return $"{InternalNamespace}.{BuildClassName(InternalName, classNamePrefix, IsResource)}";
     }
 
     public static string BuildClassName(string name, string? classNamePrefix, bool isResource = false)

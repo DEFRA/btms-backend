@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace @Model.InternalNamespace;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum @Model.GetEnumName()
 {
 @foreach(var item in Model.Values)
