@@ -1,3 +1,5 @@
+using Btms.Common.Extensions;
+
 namespace Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 
 public enum Model
@@ -5,6 +7,13 @@ public enum Model
     Source,
     Internal,
     Both
+}
+
+public enum DatetimeType
+{
+    Epoch,
+    Local,
+    Utc
 }
 
 internal class PropertyMap(string name)
@@ -55,18 +64,22 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap SetType(string type)
+    public PropertyMap SetType(string type, string? internalType = null)
     {
         Type = type ?? throw new ArgumentNullException("type");
-        InternalType = Type;
-        InternalTypeOverwritten = true;
+        InternalType = internalType ?? type;
+        InternalTypeOverwritten = internalType.HasValue();
         TypeOverwritten = true;
         return this;
     }
 
-    public PropertyMap IsDateTime()
+    public PropertyMap IsDateTime(DatetimeType? type = null)
     {
         SetType("DateTime");
+        if (type == DatetimeType.Epoch)
+        {
+            AddAttribute("[JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]", Model.Source);
+        }
         return this;
     }
 
@@ -82,10 +95,10 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap SetName(string name)
+    public PropertyMap SetName(string name, string? internalName = null)
     {
         SetSourceName(name);
-        SetInternalName(name);
+        SetInternalName(internalName ?? name);
         return this;
     }
 

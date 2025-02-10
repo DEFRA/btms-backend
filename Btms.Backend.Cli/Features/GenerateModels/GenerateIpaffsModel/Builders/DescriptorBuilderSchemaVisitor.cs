@@ -185,7 +185,8 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
         {
             var values = enumKeyword.Values.Select(x => new EnumDescriptor.EnumValueDescriptor(x!.ToString()))
                 .ToList();
-            cSharpDescriptor.AddEnumDescriptor(new EnumDescriptor(name, classDescriptor.Name, IpaffsDescriptorBuilder.SourceNamespace, IpaffsDescriptorBuilder.InternalNamespace, IpaffsDescriptorBuilder.ClassNamePrefix) { Values = values });
+
+            cSharpDescriptor.AddEnumDescriptor(new EnumDescriptor(name, classDescriptor?.Name, IpaffsDescriptorBuilder.SourceNamespace, IpaffsDescriptorBuilder.InternalNamespace, IpaffsDescriptorBuilder.ClassNamePrefix) { Values = values });
         }
     }
 }

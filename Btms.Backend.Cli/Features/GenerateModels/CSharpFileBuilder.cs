@@ -31,9 +31,9 @@ internal class CSharpFileBuilder
             if (!@class.IgnoreInternalClass)
             {
                 contents = await engine.CompileRenderAsync("InternalClassTemplate", @class);
-                await File.WriteAllTextAsync(Path.Combine(internalOutputPath, $"{@class.GetClassName()}.g.cs"),
+                await File.WriteAllTextAsync(Path.Combine(internalOutputPath, $"{@class.GetInternalClassName()}.g.cs"),
                     contents, cancellationToken);
-                Console.WriteLine($"Created file: {@class.GetClassName()}.cs");
+                Console.WriteLine($"Created file: {@class.GetInternalClassName()}.cs");
 
                 contents = await engine.CompileRenderAsync("MapperTemplate", @class);
                 await File.WriteAllTextAsync(Path.Combine(mappingOutputPath, $"{@class.GetClassName()}Mapper.g.cs"),
@@ -73,6 +73,7 @@ internal class CSharpFileBuilder
         if (classMap is not null)
         {
             @class.Name = classMap.SourceClassName;
+            @class.InternalName = classMap.InternalClassName;
             @class.IgnoreInternalClass = classMap.IgnoreInternalClass;
 
             foreach (var propertyMap in classMap.Properties)
@@ -84,7 +85,7 @@ internal class CSharpFileBuilder
                 {
                     if (propertyMap.TypeOverwritten)
                     {
-                        propertyDescriptor.OverrideType(propertyMap.Type);
+                        propertyDescriptor.OverrideType(propertyMap.Type, propertyMap.InternalType);
                     }
 
                     if (propertyMap.SourceNameOverwritten)

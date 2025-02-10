@@ -10,25 +10,27 @@ namespace Btms.Backend.Cli.Features.GenerateModels.GenerateAlvsModel.Commands;
 internal class GenerateAlvsModelCommand : IRequest
 {
     public const string SourceNamespace = "Btms.Types.Alvs";
-    public const string InternalNamespace = "Btms.Model.Alvs";
+    public const string InternalNamespace = "Btms.Model.Cds";
     public const string ClassNamePrefix = "";
+    public const string SolutionPath = "../../../../";
 
-    //[Option('o', "sourceOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string SourceOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Alvs.V1\\";
+    [Option('s', "schema",
+        HelpText = "The xsd file, which to use to generate the csharp classes.")]
+    public string SchemaFile { get; set; } =
+        $"{SolutionPath}/Btms.Backend.Cli/Features/GenerateModels/GenerateAlvsModel/sendALVSClearanceRequest.xsd";
 
-    // [Option('i', "internalOutputPath", Required = true, HelpText = "The path to save the generated csharp classes.")]
-    public string InternalOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Model\\Alvs\\";
+    public string SourceOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Alvs.V1/";
 
-    public string MappingOutputPath { get; set; } = "D:\\repos\\esynergy\\Btms-Backend\\Btms.Types.Alvs.Mapping.V1\\";
+    public string InternalOutputPath { get; set; } = $"{SolutionPath}/Btms.Model/Cds/";
+
+    public string MappingOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Alvs.Mapping.V1/";
 
     public class Handler : IRequestHandler<GenerateAlvsModelCommand>
     {
         public async Task Handle(GenerateAlvsModelCommand request, CancellationToken cancellationToken)
         {
-#pragma warning disable S1075
-            var reader = new XmlTextReader("D:\\repos\\esynergy\\Btms-Backend\\Btms.Backend.Cli\\Features\\GenerateModels\\GenerateAlvsModel\\sendALVSClearanceRequest.xsd");
-#pragma warning restore S1075
-            var schema = XmlSchema.Read(reader, ValidationCallback!)!;
+            using var streamReader = new StreamReader(request.SchemaFile);
+            var schema = XmlSchema.Read(streamReader, ValidationCallback!)!;
 
             var csharpDescriptor = new CSharpDescriptor();
 

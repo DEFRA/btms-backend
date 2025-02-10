@@ -54,14 +54,14 @@ public static class @Model.GetClassName()Mapper
         {
             if (property.IsArray)
             {
-                var line = $"to.{property.GetInternalPropertyName()} = from?.{property.GetSourcePropertyName()}?.Select(x => {property.GetPropertyTypeName()}Mapper.Map(x)).ToArray();";
+                var line = $"to.{property.GetInternalPropertyName()} = from?.{property.GetSourcePropertyName()}?.Select(x => {property.GetSourcePropertyTypeName()}Mapper.Map(x)).ToArray();";
                 <text>@line
                 </text>
 
             }
             else 
             {
-                <text>to.@property.GetInternalPropertyName() = @property.GetPropertyTypeName()Mapper.Map(from?.@property.GetSourcePropertyName());
+                <text>to.@property.GetInternalPropertyName() = @property.GetSourcePropertyTypeName()Mapper.Map(from?.@property.GetSourcePropertyName());
                 </text>
             }
 
