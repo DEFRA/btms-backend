@@ -19,29 +19,6 @@ public abstract class BaseApiTests
         await Client.ClearDb();
     }
 
-    protected async Task WaitUntilHealthy()
-    {
-        var response = await Client.GetHealth();
-
-        var task = Task.Run(async () =>
-        {
-            while (!response.IsSuccessStatusCode)
-            {
-                await Task.Delay(3000);
-                response = await Client.GetHealth();
-            }
-        });
-
-        var winner = await Task.WhenAny(
-            task,
-            Task.Delay(TimeSpan.FromMinutes(5)));
-
-        if (winner != task)
-        {
-            throw new TimeoutException("Timeout waiting for service to become healthy");
-        }
-    }
-
     protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper, string databaseName = "SmokeTests")
     {
         Factory = factory;

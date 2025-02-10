@@ -91,12 +91,6 @@ public class BtmsClient
             $"/analytics/dashboard");
     }
 
-    public Task<HttpResponseMessage> GetHealth()
-    {
-        return client.GetAsync(
-            $"/health-dotnet");
-    }
-
     public Task<HttpResponseMessage> CancelJob(string? jobId)
     {
         return client.GetAsync($"/sync/jobs/{jobId}/cancel");
