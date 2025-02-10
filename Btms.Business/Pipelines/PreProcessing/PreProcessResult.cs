@@ -24,4 +24,9 @@ public abstract record PreProcessResult
     {
         return new PreProcessingResult<T>(PreProcessingOutcome.New, record, null);
     }
+
+    public static PreProcessingResult<T> NotProcessed<T>() where T : IAuditable
+    {
+        return new PreProcessingResult<T>(PreProcessingOutcome.NotProcessed, default(T)!, null);
+    }
 }
