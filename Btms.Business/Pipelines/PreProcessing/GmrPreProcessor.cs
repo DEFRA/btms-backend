@@ -59,6 +59,8 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         var auditId = preProcessingContext.MessageId;
         
         mappedGmr.AuditEntries = existingGmr.AuditEntries;
+        mappedGmr.Relationships = existingGmr.Relationships;
+        mappedGmr._Etag = existingGmr._Etag;
 
         var auditEntry = AuditEntry.CreateUpdated(
             existingGmr,
@@ -70,7 +72,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
 
         mappedGmr.AuditEntries.Add(auditEntry);
 
-        await mongoDbContext.Gmrs.Update(mappedGmr, existingGmr._Etag, cancellationToken);
+        await mongoDbContext.Gmrs.Update(mappedGmr, cancellationToken);
             
         return PreProcessResult.Changed(mappedGmr, mappedGmr.GenerateChangeSet(existingGmr));
     }
