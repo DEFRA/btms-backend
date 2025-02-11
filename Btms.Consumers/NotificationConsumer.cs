@@ -82,13 +82,13 @@ internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaf
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
-               
 
-               
+
+
 
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                
+
 
                 ////await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
