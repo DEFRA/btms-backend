@@ -4,7 +4,7 @@
   "version": 1,
   "lastUpdated": "2024-12-04T07:09:21.079739046Z",
   "lastUpdatedBy": {
-    "displayName": "7caea828596f0ebc7f6d45e5a13ec86c9ccc8c6b3a9a206047562db97c8e203d",
+    "displayName": "2179e783aad0d7888df45146014c23d8f46e31e3f52d68bbe0bf4e72357665a0",
     "userId": "61f1f907-3b36-eb11-a813-000d3aab241b"
   },
   "type": "CVEDP",
@@ -17,31 +17,31 @@
   "isHighRiskEuImport": false,
   "partOne": {
     "personResponsible": {
-      "name": "7caea828596f0ebc7f6d45e5a13ec86c9ccc8c6b3a9a206047562db97c8e203d",
+      "name": "2179e783aad0d7888df45146014c23d8f46e31e3f52d68bbe0bf4e72357665a0",
       "companyId": "afc30e3d-da50-e911-a958-000d3a454330",
-      "companyName": "9f2fe873fc594ec1b59dbe5c3e6ca19c106953e5e2da2bc1eb2c6ea68ebc29b8",
+      "companyName": "6c21b368339193bd7e178c7bcfaabb39008590594748efa8b1a2d3366d27eac2",
       "address": [
-        "163a8ec295037d456c36f7bd63ed8897e7bacd67faf57a74d4056a6ff0505c9a",
-        "85c6843be75a190c66dc9296aa72b01a3da78009b0ee0060e567b3f6767549df",
-        "6eb84701503e3b91cf3342fc0d116eb757480c2e4709a01e3807a50a734141a5"
+        "b84e0638f782b78e8554833027527dda9cb79215ce0af63924ed7648efb2d0d8",
+        "1fa3b7a958908e4e6a0697907f678f94efbd2b146083209a5e4abdc71f5dda3e",
+        "4ecd05ea1860baacd8f622c26209893a04a6c00ea2f3457b1ea8003598d306b7"
       ],
       "country": "GB",
       "tracesID": 1001,
-      "phone": "5e32e7f8a00c2e89995e1509e59eded2b47a578327b9302eac53ef385087021e",
-      "email": "22dbdf83f6d3f5b8d15b17b4740ab3879a1fc5988cca5a52fee4c3f5131cc235",
+      "phone": "ae19de4eee3dc018d60135168d366bc24011ea0eb27bf03bdc23480cab400c94",
+      "email": "9c2ce1fb304b02be36cc66d32237ddc5b9d4eed9e68331a6b93fad55052f05c8",
       "contactId": "61f1f907-3b36-eb11-a813-000d3aab241b"
     },
     "consignor": {
       "id": "dda7b621-6bcc-4605-ab70-6d50dfd9cdcc",
       "type": "exporter",
       "status": "nonapproved",
-      "companyName": "b2da0b621c49ef8255462930951f112bdca422401f9d8c6f7b62d5d5840731cb",
+      "companyName": "7194a7025be6f44b43ef45d6bd37a8fb96d62c9438ce184f8305c4759f78a1c7",
       "address": {
-        "addressLine1": "f3c6b476f3c9857f1c60925923d29f6285c8a8b362dd48508e809c0914b1891f",
-        "city": "16d189a2511036240fc1741c4c06b451a83378cf73e0df7551d9afde7caff769",
-        "countryISOCode": "f1a7eb59f63cb4ad4e0986e19a9b3e452859631e7c3a65faf2dbeaf05528131e",
-        "telephone": "83310dec0c1af6ecdfd21f88dc89b01fd83e1353f6ac67597313d3fa90b690e0",
-        "email": "0d7fd61d624fd43803f4ce5e2fcc4ff187a281bdba3483926067c6f5bf094824"
+        "addressLine1": "9e414268ff36daae13dcadcc71850094c526fe7b80b63738298f27f31280e4c7",
+        "city": "1aa8b01317da7d6396c1d6580d9d09b709c5fddd25dfbd88e0c5baa8f34bf64f",
+        "countryISOCode": "524b08f3907101f1e744067371b35ae309049040e269b5259dcc45bc6226f7ad",
+        "telephone": "f7e3add91aaf27547c2ebe853b66190e9e4b9be15b41e82ba8aaf323216b4d3e",
+        "email": "d7ed05f4e62736fff417f4eea2e51ab53b21cd3b6f997d30ab22473f9ff897a1"
       },
       "tracesId": 10063457
     },
@@ -49,14 +49,14 @@
       "id": "cc80e1ce-36be-4bd4-9f5e-a47322620add",
       "type": "consignee",
       "status": "nonapproved",
-      "companyName": "f0c5627ad73cd951931b3daadadaaad5b963152a2a91a6b903ec253845c5ec2d",
+      "companyName": "bd08e4da758153f940d01fba941794242edc0a6ced4bc0d466a119522a70b6f1",
       "address": {
-        "addressLine1": "960531f4ce1e038f339c1d080e19fb34642d0976f8093c9da8650c894e44f96f",
-        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
-        "postalZipCode": "69b8e11c2777ca4a6a7debfd39e5e93f029cdc04ede75d7bb45d40d641b28b4d",
-        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
-        "telephone": "dd944d7c3dd95e2b84d824b86398540d8a3b4e17424926e1deebce95fd53d458",
-        "email": "1a1edc67646e09294199898667780d74f91f150fa91b5438941835342f91f5b2"
+        "addressLine1": "b6841392b628c69d8c05d466017f72a8d7e16aeae157f0f2a6c0b9c7188d195f",
+        "city": "51a3e9e41cad456ea3c60ed15bee48cb02aee0e48224f3850b1349f28340e278",
+        "postalZipCode": "13e9103033bbe6b3bde6f1cad012ae901c5b306390a3891ac2b1dabc3d721196",
+        "countryISOCode": "b206cb754a34adc076738dff8a4c632f3a25a548070a54c5590d6b11bd20b74c",
+        "telephone": "8f8a876c2673e0c9a2f9c91e6e05b0a1944b2eee7411bf71038a94e541c2ef85",
+        "email": "d4d8aa610574a7ceaabc296683a6ea7367e8f6b9b84c3221f11fff6871215546"
       },
       "tracesId": 10278900
     },
@@ -64,14 +64,14 @@
       "id": "cc80e1ce-36be-4bd4-9f5e-a47322620add",
       "type": "consignee",
       "status": "nonapproved",
-      "companyName": "f0c5627ad73cd951931b3daadadaaad5b963152a2a91a6b903ec253845c5ec2d",
+      "companyName": "bd08e4da758153f940d01fba941794242edc0a6ced4bc0d466a119522a70b6f1",
       "address": {
-        "addressLine1": "960531f4ce1e038f339c1d080e19fb34642d0976f8093c9da8650c894e44f96f",
-        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
-        "postalZipCode": "69b8e11c2777ca4a6a7debfd39e5e93f029cdc04ede75d7bb45d40d641b28b4d",
-        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
-        "telephone": "dd944d7c3dd95e2b84d824b86398540d8a3b4e17424926e1deebce95fd53d458",
-        "email": "1a1edc67646e09294199898667780d74f91f150fa91b5438941835342f91f5b2"
+        "addressLine1": "b6841392b628c69d8c05d466017f72a8d7e16aeae157f0f2a6c0b9c7188d195f",
+        "city": "51a3e9e41cad456ea3c60ed15bee48cb02aee0e48224f3850b1349f28340e278",
+        "postalZipCode": "13e9103033bbe6b3bde6f1cad012ae901c5b306390a3891ac2b1dabc3d721196",
+        "countryISOCode": "b206cb754a34adc076738dff8a4c632f3a25a548070a54c5590d6b11bd20b74c",
+        "telephone": "8f8a876c2673e0c9a2f9c91e6e05b0a1944b2eee7411bf71038a94e541c2ef85",
+        "email": "d4d8aa610574a7ceaabc296683a6ea7367e8f6b9b84c3221f11fff6871215546"
       },
       "tracesId": 10278900
     },
@@ -79,14 +79,14 @@
       "id": "95801c97-bd28-457a-bfb3-cb2d7153ba12",
       "type": "consignee",
       "status": "nonapproved",
-      "companyName": "52e773bccf26a6624ebd25d9e123a72082956f51b6bed592fbc455437c738578",
+      "companyName": "af8e1a4371269b03e761bff736a8075e18da9feaa8a93246cb210703a71fc79b",
       "address": {
-        "addressLine1": "c8fb54dd42f6131001401fa9707597195be165997ba8f859485291a564c50e88",
-        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
-        "postalZipCode": "8373de74f5344f03254adc56089e6111b3c5e3d6f6b22d11cf0644c564b48145",
-        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
-        "telephone": "e85ac65eeec74601b627f80fc51cd9a8bd671841a89a6f80c30e1c48112a49a5",
-        "email": "a2d5ec2841ddbc76a2753948c822b47e13f6ac60fdc428f9e9066737c420ae3a"
+        "addressLine1": "7fec778d8e991a00dc09d36d64e155ad9e0371db85ed0fde615f6f01ce91e4a3",
+        "city": "51a3e9e41cad456ea3c60ed15bee48cb02aee0e48224f3850b1349f28340e278",
+        "postalZipCode": "dee63ca1098ad8ac12dbf54ad47c4700d0e8c1abc5ae3dce80a8afdbf55ee020",
+        "countryISOCode": "4201fd485fee4ab1fd8d001c68d0aa0e6c5bb7fc81c5c4e088757c0060790b2e",
+        "telephone": "6c779b788e85a0239397f6b1111f202a182a9807e8789d550c6feebc0a70df0a",
+        "email": "6a2af79fb2762c0c2bc32056b4bbc959fdfec5ca044a3be7dd66a73dfe6c4d53"
       },
       "tracesId": 10003572
     },
@@ -127,10 +127,22 @@
           "complementID": 144869,
           "speciesID": "453558",
           "keyDataPair": [
-            { "key": "netweight", "data": "828" },
-            { "key": "number_package", "data": "138" },
-            { "key": "type_package", "data": "Polystyrene Box" },
-            { "key": "is_catch_certificate_required", "data": "false" }
+            {
+              "key": "netweight",
+              "data": "828"
+            },
+            {
+              "key": "number_package",
+              "data": "138"
+            },
+            {
+              "key": "type_package",
+              "data": "Polystyrene Box"
+            },
+            {
+              "key": "is_catch_certificate_required",
+              "data": "false"
+            }
           ]
         },
         {
@@ -138,10 +150,22 @@
           "complementID": 144870,
           "speciesID": "95751",
           "keyDataPair": [
-            { "key": "netweight", "data": "270" },
-            { "key": "number_package", "data": "45" },
-            { "key": "type_package", "data": "Polystyrene Box" },
-            { "key": "is_catch_certificate_required", "data": "false" }
+            {
+              "key": "netweight",
+              "data": "270"
+            },
+            {
+              "key": "number_package",
+              "data": "45"
+            },
+            {
+              "key": "type_package",
+              "data": "Polystyrene Box"
+            },
+            {
+              "key": "is_catch_certificate_required",
+              "data": "false"
+            }
           ]
         }
       ],
@@ -161,9 +185,9 @@
     "transporterDetailsRequired": false,
     "meansOfTransport": {},
     "meansOfTransportFromEntryPoint": {
-      "id": "35ASA900",
+      "id": "c5f731a384ebbd168fa328363bce854f838c3dc0140060d9dd044bf0b5a8dce3",
       "type": "Road Vehicle",
-      "document": "24/12/100/02206-0003157"
+      "document": "4e9425cc5ae08c649a8ff67671c38eda473e27702fd7082e4ac0ba8769d4a57e"
     },
     "veterinaryInformation": {
       "establishmentsOfOrigin": [
@@ -171,7 +195,9 @@
           "id": "aaa8f438-75a8-642d-2cd0-6e3723c3b25e",
           "name": "\u00C7amli Yem Besicilik San. ve Tic. A.S. (Isikkent Subesi)",
           "country": "TR",
-          "types": ["Processing Plant"],
+          "types": [
+            "Processing Plant"
+          ],
           "approvalNumber": "TR 35-1130",
           "section": "Fishery products"
         }
@@ -218,15 +244,15 @@
     ],
     "submissionDate": "2024-12-04T07:09:21.044674784Z",
     "submittedBy": {
-      "displayName": "7caea828596f0ebc7f6d45e5a13ec86c9ccc8c6b3a9a206047562db97c8e203d",
+      "displayName": "2179e783aad0d7888df45146014c23d8f46e31e3f52d68bbe0bf4e72357665a0",
       "userId": "61f1f907-3b36-eb11-a813-000d3aab241b"
     },
     "complexCommoditySelected": true,
     "portOfEntry": "GBFOLS",
     "contactDetails": {
-      "name": "77531577816db9050a9b35b405cdf43ac670fb8074ee999558a6235c2c85583f",
-      "telephone": "053ae3a769f88c6685900dc1f8bcd1a84ac1a18c5058e7d2569e718555bd675c",
-      "email": "56eae88a4c34b5ce1a82b263e552afc54da7fc62fec6cb5f84414d2067b47daf"
+      "name": "ae603d0d8ff9261bf9efb9ac53250cb4ab025f8a1c86d91a229a4402c55f5c24",
+      "telephone": "87a45303a849256fe07cf1fb6d6f3cad512f7e63c87da0f4382b945b55b1f8a7",
+      "email": "931cfe95a1b6aadcb5d3c5994beb643cbb414e64fe1289fc36e2d30d50b6f6a0"
     },
     "isCatchCertificateRequired": false,
     "isGVMSRoute": true,
@@ -234,18 +260,20 @@
     "wasChargeable": true,
     "billingInformation": {
       "isConfirmed": true,
-      "emailAddress": "accounts@d-g-l.co.uk",
-      "phoneNumber": "02035002308",
+      "emailAddress": "6ebd19b131ced337fd2dce66e6d1723e568117f3807dcbf4a799fd2ef1bce8d6",
+      "phoneNumber": "52d750db7f501ca6e92987aa2d0f65ae8e7abef3080912c0954e085bf97e1519",
       "postalAddress": {
-        "addressLine1": "162-164",
-        "addressLine2": "STOKE NEWINGTON HIGH STREET",
-        "addressLine3": "AKDENIZ SEAFOOD LTD",
-        "county": "GREATER LONDON",
-        "cityOrTown": "LONDON",
-        "postalCode": "N16 7JL"
+        "addressLine1": "7c6305f1a7dcdaa8c8a09ada8dd4bab6d4ce6dd31be4927247fe9baa7a1be16f",
+        "addressLine2": "ecd38266b5f38aca42097550b6ba7dd0baf5f107fc757cf956d392cd429e4ac4",
+        "addressLine3": "2d2d1fdee6cd6f1d4bab7cf4bc101d51180502776528ff9cc705d23c4ba13b1b",
+        "county": "4c006152e139b66dd74399eb4ed45f1639cb973ec4979964c553171838adae00",
+        "cityOrTown": "7069b36a98db9457ed7d38416653acaeb3e2ab4d9b965421b5199e6dc3456190",
+        "postalCode": "d0c76cfa2e8d996d025fb8e1c4dd16c6336d099cf60188a244060a75579fc5bc"
       }
     },
-    "commonUserCharge": { "wasSentToTradeCharge": true },
+    "commonUserCharge": {
+      "wasSentToTradeCharge": true
+    },
     "provideCtcMrn": "NO"
   },
   "etag": "00000000044FA8CB",

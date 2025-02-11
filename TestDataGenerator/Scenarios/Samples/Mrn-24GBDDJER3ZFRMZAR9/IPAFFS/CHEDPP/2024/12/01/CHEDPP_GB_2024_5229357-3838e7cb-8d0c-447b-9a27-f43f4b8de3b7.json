@@ -1,1 +1,327 @@
-{"id":4229357,"referenceNumber":"CHEDPP.GB.2024.5229357","agencyOrganisationId":"b111f19a-86cc-eb11-bacc-000d3a2b5777","version":1,"lastUpdated":"2024-12-01T15:28:56.910586616Z","lastUpdatedBy":{"displayName":"72d5cc95a1e8210985d2f0a5b1ec7f49938da38083a835e56f556edc8fff4f97","userId":"2829cbec-9dbb-ee11-a569-000d3aaf289d"},"type":"CHEDPP","status":"SUBMITTED","riskAssessment":{"commodityResults":[{"hmiDecision":"NOTREQUIRED","phsiDecision":"REQUIRED","phsiClassification":"Reduced","phsi":{"documentCheck":true,"identityCheck":false,"physicalCheck":false},"uniqueId":"ef4468da-b996-4541-998c-391f111d7ecf","eppoCode":"ROSSS","indoorOutdoor":"None","propagation":"None","phsiRuleType":"Commodity"},{"hmiDecision":"NOTREQUIRED","phsiDecision":"REQUIRED","phsiClassification":"Reduced","phsi":{"documentCheck":true,"identityCheck":false,"physicalCheck":false},"uniqueId":"5fcce232-3d39-4585-822d-89bdc18d4e00","eppoCode":"SOOSS","indoorOutdoor":"None","propagation":"None","phsiRuleType":"Commodity"}],"assessmentDateTime":"2024-12-01T15:28:56.844220814"},"partOne":{"personResponsible":{"name":"b5601e51ad1a2f564479229d26cbcc86b5305c8443b14b8b1c531d8e4d250881","companyId":"e606e56a-731c-ed11-b83d-000d3abdd29d","companyName":"39b63316967c9bca824da92ec82a7490c2008c4fbdf1e7bfec0d1d406f522c1e","address":["6fa9dc4853cfd69fba83fb2fdc6d38c4874fb60a8e0364354ed4e680c80081bb","01aa9dc48d1bd47256811ef8e9fec8bc973cabbc8cb12725b5bff2f03d169bb1","d495619831bbe3eef32db68516933e01e243522efd7f43c8441101cb7364b6a2","3aea2ab1cffd48fd637b4482639cdf8cb413049a8bc59dbe898598832781d145","90d4b213600fd992dda8c3ac1a002d9be3895f73fe55b8245908609e5bd5d1f7","66dad5835c43b6cc41d16b81421c34b2ad417f60e2ed28dbf327f67ab9a860cb","b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960"],"country":"GB","tracesID":1001,"phone":"35982332508338068ace67c0e8e0bc5aa2e636392ce7573c0db5ce4a1d3b4f60","email":"e1f32c7739ee7ecde331d001910265245baa4c6003de1d41a533856bb3c872ce","contactId":"8006e56a-731c-ed11-b83d-000d3abdd29d"},"consignor":{"id":"bfed53c2-a6a8-4c6d-9938-b4a54151940d","type":"exporter","status":"nonapproved","companyName":"188bf190bb17c8ef36f89e7f533039ddab1c58cd3be92ea24f48fbac27f44bb5","address":{"addressLine1":"188bf190bb17c8ef36f89e7f533039ddab1c58cd3be92ea24f48fbac27f44bb5","addressLine2":"c5210025cd6275c99ecc63232dbb4bb1a7636b5532a1073a2b508ca19af16fd4","addressLine3":"6f81453a4a688a8e7251466d93c4160c4eb5c9cff718b4491794058ae571885a","city":"74fb386d31e0af97a2131dc4ce642b3ac2bdf458c399648486b77cba421fcad7","countryISOCode":"KE","telephone":"b4d1511c95e212f7856f910532163bae8bf8201906cead5c540fa75ceb9e554a","email":"74abf7d003593471f3515bd31d39efe547a5aa17cd88fdc6603a421d56eebf07"},"tracesId":10321056},"consignee":{"id":"e606e56a-731c-ed11-b83d-000d3abdd29d","type":"consignee","companyName":"39b63316967c9bca824da92ec82a7490c2008c4fbdf1e7bfec0d1d406f522c1e","address":{"addressLine1":"6fa9dc4853cfd69fba83fb2fdc6d38c4874fb60a8e0364354ed4e680c80081bb","addressLine2":"01aa9dc48d1bd47256811ef8e9fec8bc973cabbc8cb12725b5bff2f03d169bb1","addressLine3":"d495619831bbe3eef32db68516933e01e243522efd7f43c8441101cb7364b6a2","city":"90d4b213600fd992dda8c3ac1a002d9be3895f73fe55b8245908609e5bd5d1f7","postalZipCode":"66dad5835c43b6cc41d16b81421c34b2ad417f60e2ed28dbf327f67ab9a860cb","countryISOCode":"GB","telephone":"35982332508338068ace67c0e8e0bc5aa2e636392ce7573c0db5ce4a1d3b4f60","email":"e1f32c7739ee7ecde331d001910265245baa4c6003de1d41a533856bb3c872ce"}},"importer":{"id":"e606e56a-731c-ed11-b83d-000d3abdd29d","type":"importer","companyName":"39b63316967c9bca824da92ec82a7490c2008c4fbdf1e7bfec0d1d406f522c1e","address":{"addressLine1":"6fa9dc4853cfd69fba83fb2fdc6d38c4874fb60a8e0364354ed4e680c80081bb","addressLine2":"01aa9dc48d1bd47256811ef8e9fec8bc973cabbc8cb12725b5bff2f03d169bb1","addressLine3":"d495619831bbe3eef32db68516933e01e243522efd7f43c8441101cb7364b6a2","city":"90d4b213600fd992dda8c3ac1a002d9be3895f73fe55b8245908609e5bd5d1f7","postalZipCode":"66dad5835c43b6cc41d16b81421c34b2ad417f60e2ed28dbf327f67ab9a860cb","countryISOCode":"GB","telephone":"35982332508338068ace67c0e8e0bc5aa2e636392ce7573c0db5ce4a1d3b4f60","email":"e1f32c7739ee7ecde331d001910265245baa4c6003de1d41a533856bb3c872ce"}},"placeOfDestination":{"id":"fc290d8a-5324-4100-b2e6-762a268e456d","type":"destination","status":"nonapproved","companyName":"468f0f4f3029d669333b3d90d2918f329165c4ac98131661436bc2d7fee883ac","address":{"addressLine1":"ec0a78e45a91e9fa5e5cb880ef1572ef1bd836aaf51b2bd633ed784bc1c363ee","addressLine2":"b71f187504dd715f85ca4fe6f4bfba96886747ede18438d24545a633e3d6745f","city":"b8c35fe77e0485130ba93837cea79b27422e57f10d4b044de753777abec5d843","postalZipCode":"79010425d5d53aa20db32387b776f91534601f22481fbff231a4a86ae08acd1b","countryISOCode":"GB-ENG","telephone":"0ac2fe8ff6f385653a24dda4e11d5226413e842e0556cca3e9973ad563097ed5","email":"123f971c38b984ea325a5c936292ef22bb7735250191889f206a31ab04e6ba5a"},"tracesId":10319102},"commodities":{"totalGrossWeight":166,"totalNetWeight":91,"numberOfPackages":13,"commodityComplement":[{"commodityID":"06031100","commodityDescription":"Roses","complementID":1,"complementName":"Rosa sp.","eppoCode":"ROSSS","speciesID":"1383846","speciesName":"Rosa sp.","speciesNomination":"Rosa sp."},{"commodityID":"0603197090","commodityDescription":"Other","complementID":2,"complementName":"Solidago sp.","eppoCode":"SOOSS","speciesID":"1406421","speciesName":"Solidago sp.","speciesNomination":"Solidago sp."}],"complementParameterSet":[{"uniqueComplementID":"ef4468da-b996-4541-998c-391f111d7ecf","complementID":1,"speciesID":"1383846","keyDataPair":[{"key":"regulatory_authority","data":"PHSI"},{"key":"type_package","data":"Box"},{"key":"commodity_group","data":"Cut Flowers and flower buds"},{"key":"netweight","data":"84"},{"key":"number_package","data":"12"},{"key":"quantity","data":"3800"},{"key":"type_quantity","data":"Stems"}]},{"uniqueComplementID":"5fcce232-3d39-4585-822d-89bdc18d4e00","complementID":2,"speciesID":"1406421","keyDataPair":[{"key":"regulatory_authority","data":"PHSI"},{"key":"type_package","data":"Box"},{"key":"netweight","data":"7"},{"key":"number_package","data":"1"},{"key":"quantity","data":"300"},{"key":"type_quantity","data":"Stems"},{"key":"commodity_group","data":"Cut Flowers and flower buds"}]}],"includeNonAblactedAnimals":false,"countryOfOrigin":"KE","countryOfOriginIsPodCountry":false,"consignedCountry":"KE","consignedCountryInChargeGroup":false},"purpose":{"purposeGroup":"For Import"},"pointOfEntry":"CONPNT","pointOfEntryControlPoint":"IPGBRFS1","arrivalDate":"2024-12-01","arrivalTime":"20:00:00","meansOfTransport":{},"meansOfTransportFromEntryPoint":{"id":"ZF2606","type":"Road Vehicle","document":"925-00691810"},"veterinaryInformation":{"accompanyingDocuments":[{"documentType":"phytosanitaryCertificate","documentReference":"KEPHIS/EXP/2024/1905658","documentIssueDate":"2024-11-30","attachmentId":"c5d50540-091a-48e0-ad7f-1aa6eec5726c","attachmentFilename":"IPL Equator 1063520223.pdf","attachmentContentType":"application/pdf","uploadUserId":"2829cbec-9dbb-ee11-a569-000d3aaf289d","uploadOrganisationId":"b111f19a-86cc-eb11-bacc-000d3a2b5777"}]},"importerLocalReferenceNumber":"925-00691810","submissionDate":"2024-12-01T15:28:54.719486681Z","submittedBy":{"displayName":"72d5cc95a1e8210985d2f0a5b1ec7f49938da38083a835e56f556edc8fff4f97","userId":"2829cbec-9dbb-ee11-a569-000d3aaf289d"},"complexCommoditySelected":true,"contactDetails":{"name":"ROBERT PARKER","telephone":"01753980983","email":"robert@cc-logistics.co.uk","agent":"COMPLETE CLEAR LOGISTICS"},"nominatedContacts":[{"name":"ZEESHAN WARIS","email":"zeeshan@cc-logistics.co.uk"}],"isGVMSRoute":true,"provideCtcMrn":"NO"},"partTwo":{"commodityChecks":[{"uniqueComplementId":"ef4468da-b996-4541-998c-391f111d7ecf","checks":[{"type":"PHSI_DOCUMENT","status":"To do"},{"type":"PHSI_IDENTITY","status":"Auto cleared"},{"type":"PHSI_PHYSICAL","status":"Auto cleared"}]},{"uniqueComplementId":"5fcce232-3d39-4585-822d-89bdc18d4e00","checks":[{"type":"PHSI_DOCUMENT","status":"To do"},{"type":"PHSI_IDENTITY","status":"Auto cleared"},{"type":"PHSI_PHYSICAL","status":"Auto cleared"}]}],"inspectionRequired":"Required"},"partThree":{},"etag":"00000000044AA6AE","riskDecisionLockingTime":"2024-12-01T18:00:00Z","isRiskDecisionLocked":false,"chedTypeVersion":1}
+{
+  "id": 4229357,
+  "referenceNumber": "CHEDPP.GB.2024.5229357",
+  "agencyOrganisationId": "b111f19a-86cc-eb11-bacc-000d3a2b5777",
+  "version": 1,
+  "lastUpdated": "2024-12-01T15:28:56.910586616Z",
+  "lastUpdatedBy": {
+    "displayName": "440e94c9d2f00c1c92eb6c585649ae7f59507280194d70a078591e5fc709d3c5",
+    "userId": "2829cbec-9dbb-ee11-a569-000d3aaf289d"
+  },
+  "type": "CHEDPP",
+  "status": "SUBMITTED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "hmiDecision": "NOTREQUIRED",
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "phsi": {
+          "documentCheck": true,
+          "identityCheck": false,
+          "physicalCheck": false
+        },
+        "uniqueId": "ef4468da-b996-4541-998c-391f111d7ecf",
+        "eppoCode": "ROSSS",
+        "indoorOutdoor": "None",
+        "propagation": "None",
+        "phsiRuleType": "Commodity"
+      },
+      {
+        "hmiDecision": "NOTREQUIRED",
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "phsi": {
+          "documentCheck": true,
+          "identityCheck": false,
+          "physicalCheck": false
+        },
+        "uniqueId": "5fcce232-3d39-4585-822d-89bdc18d4e00",
+        "eppoCode": "SOOSS",
+        "indoorOutdoor": "None",
+        "propagation": "None",
+        "phsiRuleType": "Commodity"
+      }
+    ],
+    "assessmentDateTime": "2024-12-01T15:28:56.844220814"
+  },
+  "partOne": {
+    "personResponsible": {
+      "name": "38aef400a6ec1db8b6152c8bfaace7cde3dfdeb6cf67f30516bf66368c968b30",
+      "companyId": "e606e56a-731c-ed11-b83d-000d3abdd29d",
+      "companyName": "06dddef638dcf73ba399240c7590626ce470a61bc7a8829c7667cb90e8c49492",
+      "address": [
+        "226b95fefc841d007a514c4dc49a7d919b9e3b6ae033a6aba83263751c44f65c",
+        "5a64070c47a3ec8551b04dd6bf9a0acbcc549087e3051de7f4c9c8eb77594be1",
+        "3ed85905aed11f85192c820d3412ac443e8409ebfb41fa4870c4c3fd4b2e6408",
+        "c9d885b04f8a973cf5ca0ce93a932befb0350ee4f3f78831e8bb771e469f0ba3",
+        "125c87b83455e0becfc5678deb474c8c8347dd7ad81ed51402608256fd0eabac",
+        "da26eff6fa6546de62754196bd82b536f6986ba19695feb8b6a5a4f075d834fe",
+        "27e9b1d33d45324da5086191087d0a466e658c5357b68f0fea4678cb9cba0bee"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "54a3a9d38677324f0a037e4b32419cc77e81aeec8f5fc32bd389920e5b2dcb68",
+      "email": "5851d7f795def0ad3e86d20950fe5f5e563d4e8bc5a2e673d40c2cd3ec7b7194",
+      "contactId": "8006e56a-731c-ed11-b83d-000d3abdd29d"
+    },
+    "consignor": {
+      "id": "bfed53c2-a6a8-4c6d-9938-b4a54151940d",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "09ed056afdee2af6920bbecb2f0ce9fb67568410c769d92a351f6c2d05f86101",
+      "address": {
+        "addressLine1": "09ed056afdee2af6920bbecb2f0ce9fb67568410c769d92a351f6c2d05f86101",
+        "addressLine2": "599b81a0db80f00193083730bc85dbecbfb9748c14e03731196b1718de9931e6",
+        "addressLine3": "70de9fd94ada74fb1f1baeba7d24bdfcbb635e2b7901dcc43963dd121a927ab4",
+        "city": "43f8ea3ed5a1d6ef41fddb561810b24f9a75615b3a768926581f1db6ab7ba86e",
+        "countryISOCode": "5d47cc451eddc30bbc641b0747331866f4d2753f4bfea7ed66bc7c03fc43bba4",
+        "telephone": "82cd00c55524acd6177f55337a07ca661b5ffae3571b46716f9dd28c5cf8e3cc",
+        "email": "c2160556a99d5368bf05800bd1ce8502106a6dd326f773fd3fc9373bb2f2d576"
+      },
+      "tracesId": 10321056
+    },
+    "consignee": {
+      "id": "e606e56a-731c-ed11-b83d-000d3abdd29d",
+      "type": "consignee",
+      "companyName": "06dddef638dcf73ba399240c7590626ce470a61bc7a8829c7667cb90e8c49492",
+      "address": {
+        "addressLine1": "226b95fefc841d007a514c4dc49a7d919b9e3b6ae033a6aba83263751c44f65c",
+        "addressLine2": "5a64070c47a3ec8551b04dd6bf9a0acbcc549087e3051de7f4c9c8eb77594be1",
+        "addressLine3": "3ed85905aed11f85192c820d3412ac443e8409ebfb41fa4870c4c3fd4b2e6408",
+        "city": "125c87b83455e0becfc5678deb474c8c8347dd7ad81ed51402608256fd0eabac",
+        "postalZipCode": "da26eff6fa6546de62754196bd82b536f6986ba19695feb8b6a5a4f075d834fe",
+        "countryISOCode": "6caef311bdd4c03236c207130f4877a41c1152edffa457c868c2c34ffeb4dd0d",
+        "telephone": "54a3a9d38677324f0a037e4b32419cc77e81aeec8f5fc32bd389920e5b2dcb68",
+        "email": "5851d7f795def0ad3e86d20950fe5f5e563d4e8bc5a2e673d40c2cd3ec7b7194"
+      }
+    },
+    "importer": {
+      "id": "e606e56a-731c-ed11-b83d-000d3abdd29d",
+      "type": "importer",
+      "companyName": "06dddef638dcf73ba399240c7590626ce470a61bc7a8829c7667cb90e8c49492",
+      "address": {
+        "addressLine1": "226b95fefc841d007a514c4dc49a7d919b9e3b6ae033a6aba83263751c44f65c",
+        "addressLine2": "5a64070c47a3ec8551b04dd6bf9a0acbcc549087e3051de7f4c9c8eb77594be1",
+        "addressLine3": "3ed85905aed11f85192c820d3412ac443e8409ebfb41fa4870c4c3fd4b2e6408",
+        "city": "125c87b83455e0becfc5678deb474c8c8347dd7ad81ed51402608256fd0eabac",
+        "postalZipCode": "da26eff6fa6546de62754196bd82b536f6986ba19695feb8b6a5a4f075d834fe",
+        "countryISOCode": "6caef311bdd4c03236c207130f4877a41c1152edffa457c868c2c34ffeb4dd0d",
+        "telephone": "54a3a9d38677324f0a037e4b32419cc77e81aeec8f5fc32bd389920e5b2dcb68",
+        "email": "5851d7f795def0ad3e86d20950fe5f5e563d4e8bc5a2e673d40c2cd3ec7b7194"
+      }
+    },
+    "placeOfDestination": {
+      "id": "fc290d8a-5324-4100-b2e6-762a268e456d",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "321e5c7f5c4bf791398df98da17b330f55731d8bb521dc65b7f86ef8c4986f83",
+      "address": {
+        "addressLine1": "db2078abbdaa8cd60638a8b1cfae310cbb1b947439217568cccb1334a5ff7e34",
+        "addressLine2": "7ad6f284010a07584166951fcd7b8b9ad1f123a7d99c2896bbef80fecbc7c4ca",
+        "city": "2492a9d342c9dcc97da2fe5aabb69fe0017444fe82866039731823cbe4bbbe7e",
+        "postalZipCode": "d3d58735f0307562d67cabb6e33e4126f27578c64fb1e6f26cbfa9001557e8ad",
+        "countryISOCode": "32562f69602cf317eab2be934866e56a6ed3f82d2d376dd0503b7cf84ee9e31a",
+        "telephone": "79f0d9bed0a8a3947a4dc7585eb38a821ac96bc52367ffb6b5065695a5dca99a",
+        "email": "2967ac24b135cdbe026fbb8726555f9f0c27cccb0be9bec557bd75901d0399cb"
+      },
+      "tracesId": 10319102
+    },
+    "commodities": {
+      "totalGrossWeight": 166,
+      "totalNetWeight": 91,
+      "numberOfPackages": 13,
+      "commodityComplement": [
+        {
+          "commodityID": "06031100",
+          "commodityDescription": "Roses",
+          "complementID": 1,
+          "complementName": "Rosa sp.",
+          "eppoCode": "ROSSS",
+          "speciesID": "1383846",
+          "speciesName": "Rosa sp.",
+          "speciesNomination": "Rosa sp."
+        },
+        {
+          "commodityID": "0603197090",
+          "commodityDescription": "Other",
+          "complementID": 2,
+          "complementName": "Solidago sp.",
+          "eppoCode": "SOOSS",
+          "speciesID": "1406421",
+          "speciesName": "Solidago sp.",
+          "speciesNomination": "Solidago sp."
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "ef4468da-b996-4541-998c-391f111d7ecf",
+          "complementID": 1,
+          "speciesID": "1383846",
+          "keyDataPair": [
+            {
+              "key": "regulatory_authority",
+              "data": "PHSI"
+            },
+            {
+              "key": "type_package",
+              "data": "Box"
+            },
+            {
+              "key": "commodity_group",
+              "data": "Cut Flowers and flower buds"
+            },
+            {
+              "key": "netweight",
+              "data": "84"
+            },
+            {
+              "key": "number_package",
+              "data": "12"
+            },
+            {
+              "key": "quantity",
+              "data": "3800"
+            },
+            {
+              "key": "type_quantity",
+              "data": "Stems"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "5fcce232-3d39-4585-822d-89bdc18d4e00",
+          "complementID": 2,
+          "speciesID": "1406421",
+          "keyDataPair": [
+            {
+              "key": "regulatory_authority",
+              "data": "PHSI"
+            },
+            {
+              "key": "type_package",
+              "data": "Box"
+            },
+            {
+              "key": "netweight",
+              "data": "7"
+            },
+            {
+              "key": "number_package",
+              "data": "1"
+            },
+            {
+              "key": "quantity",
+              "data": "300"
+            },
+            {
+              "key": "type_quantity",
+              "data": "Stems"
+            },
+            {
+              "key": "commodity_group",
+              "data": "Cut Flowers and flower buds"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "KE",
+      "countryOfOriginIsPodCountry": false,
+      "consignedCountry": "KE",
+      "consignedCountryInChargeGroup": false
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "CONPNT",
+    "pointOfEntryControlPoint": "IPGBRFS1",
+    "arrivalDate": "2024-12-01",
+    "arrivalTime": "20:00:00",
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "5b9ce1e9d8091c96becafd86dbadc5c3407b3ff56e5bf93ac00ef6a59ef07810",
+      "type": "Road Vehicle",
+      "document": "c9a2454fd3187766258d9d50e5fef4172376c0949ed3533c99117afff9723e06"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "phytosanitaryCertificate",
+          "documentReference": "KEPHIS/EXP/2024/1905658",
+          "documentIssueDate": "2024-11-30",
+          "attachmentId": "c5d50540-091a-48e0-ad7f-1aa6eec5726c",
+          "attachmentFilename": "IPL Equator 1063520223.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "2829cbec-9dbb-ee11-a569-000d3aaf289d",
+          "uploadOrganisationId": "b111f19a-86cc-eb11-bacc-000d3a2b5777"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "c9a2454fd3187766258d9d50e5fef4172376c0949ed3533c99117afff9723e06",
+    "submissionDate": "2024-12-01T15:28:54.719486681Z",
+    "submittedBy": {
+      "displayName": "440e94c9d2f00c1c92eb6c585649ae7f59507280194d70a078591e5fc709d3c5",
+      "userId": "2829cbec-9dbb-ee11-a569-000d3aaf289d"
+    },
+    "complexCommoditySelected": true,
+    "contactDetails": {
+      "name": "730083942ea244a63f4bf768caac592d5904b990b5241abf197ec464f096fd60",
+      "telephone": "f12bd3555af83c20ac8e59e3cddfbe52063f41ae539a117cfdae8e042a2103b0",
+      "email": "599dad699a0fe50bdc6ea6fb8f38a23cd620fc05df293d4e84af898a54227fdc",
+      "agent": "69645548582309b89a4ab3a8809ed85c805cca298aec1311a0c662f6bec02265"
+    },
+    "nominatedContacts": [
+      {
+        "name": "ZEESHAN WARIS",
+        "email": "zeeshan@cc-logistics.co.uk"
+      }
+    ],
+    "isGVMSRoute": true,
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "commodityChecks": [
+      {
+        "uniqueComplementId": "ef4468da-b996-4541-998c-391f111d7ecf",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "To do"
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "Auto cleared"
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "Auto cleared"
+          }
+        ]
+      },
+      {
+        "uniqueComplementId": "5fcce232-3d39-4585-822d-89bdc18d4e00",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "To do"
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "Auto cleared"
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "Auto cleared"
+          }
+        ]
+      }
+    ],
+    "inspectionRequired": "Required"
+  },
+  "partThree": {},
+  "etag": "00000000044AA6AE",
+  "riskDecisionLockingTime": "2024-12-01T18:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 1
+}
