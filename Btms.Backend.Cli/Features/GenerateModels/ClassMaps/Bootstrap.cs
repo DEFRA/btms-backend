@@ -18,10 +18,19 @@ internal static class Bootstrap
     {
         GeneratorClassMap.RegisterClassMap("Header", map =>
         {
-            map.MapProperty("ArrivalDateTime").IsDateTime().SetInternalName("ArrivesAt");
+            map.MapProperty("ArrivalDateTime")
+                .IsDateTime(DatetimeType.Epoch)
+                .SetInternalName("ArrivesAt");
+            
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
+        });
+        
+        GeneratorClassMap.RegisterClassMap("Items", map =>
+        {
+            map.MapProperty("Documents");
+            map.MapProperty("Checks");
         });
 
         GeneratorClassMap.RegisterClassMap("Check", map =>
