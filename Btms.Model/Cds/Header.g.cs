@@ -27,6 +27,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("entryReference")]
     public string? EntryReference { get; set; }
 
 
@@ -35,6 +36,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("entryVersionNumber")]
     public int? EntryVersionNumber { get; set; }
 
 
@@ -43,6 +45,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("previousVersionNumber")]
     public int? PreviousVersionNumber { get; set; }
 
 
@@ -51,6 +54,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarationUcr")]
     public string? DeclarationUcr { get; set; }
 
 
@@ -59,6 +63,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarationPartNumber")]
     public string? DeclarationPartNumber { get; set; }
 
 
@@ -67,6 +72,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarationType")]
     public string? DeclarationType { get; set; }
 
 
@@ -75,6 +81,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("arrivesAt")]
     public DateTime? ArrivesAt { get; set; }
 
 
@@ -83,6 +90,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("submitterTurn")]
     public string? SubmitterTurn { get; set; }
 
 
@@ -91,6 +99,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarantId")]
     public string? DeclarantId { get; set; }
 
 
@@ -99,6 +108,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarantName")]
     public string? DeclarantName { get; set; }
 
 
@@ -107,6 +117,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("dispatchCountryCode")]
     public string? DispatchCountryCode { get; set; }
 
 
@@ -115,6 +126,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("goodsLocationCode")]
     public string? GoodsLocationCode { get; set; }
 
 
@@ -123,13 +135,7 @@ public partial class Header  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("masterUcr")]
     public string? MasterUcr { get; set; }
-
-    // /// <summary>
-    // /// 
-    // /// </summary
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public int? DecisionNumber { get; set; }
 
 }

@@ -20,11 +20,10 @@ public static class AlvsClearanceRequestMapper
         {
             return default!;
         }
-
         var to = new Btms.Model.Cds.CdsClearanceRequest();
-        to.ServiceHeader = ServiceHeaderMapper.Map(from?.ServiceHeader!);
-        to.Header = HeaderMapper.Map(from?.Header!);
-        to.Items = from?.Items?.Select(x => ItemsMapper.Map(x)).ToArray();
+        to.ServiceHeader = ServiceHeaderMapper.Map(from.ServiceHeader!);
+        to.Header = HeaderMapper.Map(from.Header!);
+        to.Items = from.Items?.Select(x => ItemsMapper.Map(x)).ToArray();
         return to;
     }
 }

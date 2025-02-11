@@ -34,7 +34,6 @@ public static class HeaderMapper
         to.DispatchCountryCode = from.DispatchCountryCode;
         to.GoodsLocationCode = from.GoodsLocationCode;
         to.MasterUcr = from.MasterUcr;
-
         return to;
     }
 }

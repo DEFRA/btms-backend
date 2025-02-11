@@ -20,14 +20,12 @@ public static class CheckMapper
         {
             return default!;
         }
-
         var to = new Btms.Model.Cds.Check();
         to.CheckCode = from.CheckCode;
         to.DepartmentCode = from.DepartmentCode;
         to.DecisionCode = from.DecisionCode;
-
-        to.DecisionReasons = from.DecisionReasons;
         to.DecisionsValidUntil = from.DecisionsValidUntil;
+        to.DecisionReasons = from.DecisionReasons;
         return to;
     }
 }

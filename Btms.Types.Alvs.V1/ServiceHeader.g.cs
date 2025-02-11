@@ -10,7 +10,6 @@
 
 using System.Text.Json.Serialization;
 using System.Dynamic;
-using Btms.Types.Alvs.V1;
 
 
 namespace Btms.Types.Alvs;

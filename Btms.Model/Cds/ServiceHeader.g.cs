@@ -27,6 +27,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("sourceSystem")]
     public string? SourceSystem { get; set; }
 
 
@@ -35,6 +36,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("destinationSystem")]
     public string? DestinationSystem { get; set; }
 
 
@@ -43,6 +45,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("correlationId")]
     public string? CorrelationId { get; set; }
 
 
@@ -51,6 +54,7 @@ public partial class ServiceHeader  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("serviceCalled")]
     public DateTime? ServiceCalled { get; set; }
 
 }

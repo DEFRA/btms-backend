@@ -31,8 +31,8 @@ public static class ItemsMapper
         to.ItemSupplementaryUnits = from.ItemSupplementaryUnits;
         to.ItemThirdQuantity = from.ItemThirdQuantity;
         to.ItemOriginCountryCode = from.ItemOriginCountryCode;
-        to.Documents = from?.Documents?.Select(x => DocumentMapper.Map(x)).ToArray();
-        to.Checks = from?.Checks?.Select(x => CheckMapper.Map(x)).ToArray();
+        to.Documents = from.Documents?.Select(x => DocumentMapper.Map(x)).ToArray();
+        to.Checks = from.Checks?.Select(x => CheckMapper.Map(x)).ToArray();
         return to;
     }
 }

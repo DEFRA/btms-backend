@@ -20,11 +20,14 @@ namespace Btms.Model.Cds;
 /// </summary>
 public partial class CdsClearanceRequest  //
 {
+
+
     /// <summary>
     /// 
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("serviceHeader")]
     public ServiceHeader? ServiceHeader { get; set; }
 
 
@@ -33,6 +36,7 @@ public partial class CdsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("header")]
     public Header? Header { get; set; }
 
 
@@ -41,5 +45,7 @@ public partial class CdsClearanceRequest  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("items")]
     public Items[]? Items { get; set; }
+
 }

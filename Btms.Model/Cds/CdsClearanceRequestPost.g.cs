@@ -27,6 +27,7 @@ public partial class CdsClearanceRequestPost  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("xmlSchemaVersion")]
     public string? XmlSchemaVersion { get; set; }
 
 
@@ -35,6 +36,7 @@ public partial class CdsClearanceRequestPost  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("userIdentification")]
     public string? UserIdentification { get; set; }
 
 
@@ -43,6 +45,7 @@ public partial class CdsClearanceRequestPost  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("userPassword")]
     public string? UserPassword { get; set; }
 
 
@@ -51,6 +54,7 @@ public partial class CdsClearanceRequestPost  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("sentOn")]
     public DateTime? SentOn { get; set; }
 
 
@@ -59,6 +63,7 @@ public partial class CdsClearanceRequestPost  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("alvsClearanceRequest")]
     public CdsClearanceRequest? AlvsClearanceRequest { get; set; }
 
 }

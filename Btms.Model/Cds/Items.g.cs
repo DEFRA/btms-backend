@@ -27,6 +27,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemNumber")]
     public int? ItemNumber { get; set; }
 
 
@@ -35,6 +36,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("customsProcedureCode")]
     public string? CustomsProcedureCode { get; set; }
 
 
@@ -43,6 +45,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("taricCommodityCode")]
     public string? TaricCommodityCode { get; set; }
 
 
@@ -51,6 +54,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("goodsDescription")]
     public string? GoodsDescription { get; set; }
 
 
@@ -59,6 +63,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("consigneeId")]
     public string? ConsigneeId { get; set; }
 
 
@@ -67,6 +72,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("consigneeName")]
     public string? ConsigneeName { get; set; }
 
 
@@ -75,6 +81,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemNetMass")]
     public decimal? ItemNetMass { get; set; }
 
 
@@ -83,6 +90,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemSupplementaryUnits")]
     public decimal? ItemSupplementaryUnits { get; set; }
 
 
@@ -91,6 +99,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemThirdQuantity")]
     public decimal? ItemThirdQuantity { get; set; }
 
 
@@ -99,6 +108,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemOriginCountryCode")]
     public string? ItemOriginCountryCode { get; set; }
 
 
@@ -107,6 +117,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("documents")]
     public Document[]? Documents { get; set; }
 
 
@@ -115,6 +126,7 @@ public partial class Items  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("checks")]
     public Check[]? Checks { get; set; }
 
 }

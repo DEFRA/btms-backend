@@ -20,13 +20,12 @@ public static class AlvsClearanceRequestPostMapper
         {
             return default!;
         }
-
         var to = new Btms.Model.Cds.CdsClearanceRequestPost();
         to.XmlSchemaVersion = from.XmlSchemaVersion;
         to.UserIdentification = from.UserIdentification;
         to.UserPassword = from.UserPassword;
         to.SentOn = from.SendingDate;
-        to.AlvsClearanceRequest = AlvsClearanceRequestMapper.Map(from?.AlvsClearanceRequest!);
+        to.AlvsClearanceRequest = AlvsClearanceRequestMapper.Map(from.AlvsClearanceRequest!);
         return to;
     }
 }

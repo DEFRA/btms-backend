@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Btms.Types.Alvs.V1;
+namespace Btms.Types.Alvs;
 
 public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
 {

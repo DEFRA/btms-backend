@@ -34,4 +34,25 @@ public partial class Check  //
     [JsonPropertyName("departmentCode")]
     public string? DepartmentCode { get; set; }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [JsonPropertyName("decisionCode")]
+    public string? DecisionCode { get; set; }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [JsonPropertyName("decisionsValidUntil")]
+    public DateTime? DecisionsValidUntil { get; set; }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [JsonPropertyName("decisionReasons")]
+    public string[]? DecisionReasons { get; set; }
+
 }

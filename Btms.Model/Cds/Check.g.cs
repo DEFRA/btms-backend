@@ -27,6 +27,7 @@ public partial class Check  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("checkCode")]
     public string? CheckCode { get; set; }
 
 
@@ -35,6 +36,7 @@ public partial class Check  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("departmentCode")]
     public string? DepartmentCode { get; set; }
 
 
@@ -42,8 +44,8 @@ public partial class Check  //
     /// 
     /// </summary>
     [Attr]
-    [JsonPropertyName("decisionCode")]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("decisionCode")]
     public string? DecisionCode { get; set; }
 
 
@@ -51,8 +53,8 @@ public partial class Check  //
     /// 
     /// </summary>
     [Attr]
-    [JsonPropertyName("decisionsValidUntil")]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("decisionsValidUntil")]
     public DateTime? DecisionsValidUntil { get; set; }
 
 
@@ -60,8 +62,8 @@ public partial class Check  //
     /// 
     /// </summary>
     [Attr]
-    [JsonPropertyName("decisionReasons")]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("decisionReasons")]
     public string[]? DecisionReasons { get; set; }
 
 }

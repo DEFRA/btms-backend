@@ -21,12 +21,12 @@ internal static class Bootstrap
             map.MapProperty("ArrivalDateTime")
                 .IsDateTime(DatetimeType.Epoch)
                 .SetInternalName("ArrivesAt");
-            
+
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
         });
-        
+
         GeneratorClassMap.RegisterClassMap("Items", map =>
         {
             map.MapProperty("Documents");

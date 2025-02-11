@@ -27,6 +27,7 @@ public partial class Document  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentCode")]
     public string? DocumentCode { get; set; }
 
 
@@ -35,6 +36,7 @@ public partial class Document  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentReference")]
     public string? DocumentReference { get; set; }
 
 
@@ -43,6 +45,7 @@ public partial class Document  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentStatus")]
     public string? DocumentStatus { get; set; }
 
 
@@ -51,6 +54,7 @@ public partial class Document  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentControl")]
     public string? DocumentControl { get; set; }
 
 
@@ -59,6 +63,7 @@ public partial class Document  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentQuantity")]
     public decimal? DocumentQuantity { get; set; }
 
 }
