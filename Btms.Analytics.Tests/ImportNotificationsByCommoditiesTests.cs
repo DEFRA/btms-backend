@@ -14,7 +14,7 @@ namespace Btms.Analytics.Tests;
 public class ImportNotificationsByCommoditiesTests(ITestOutputHelper output)
     : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
-    
+
     [Fact]
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
@@ -26,16 +26,16 @@ public class ImportNotificationsByCommoditiesTests(ITestOutputHelper output)
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Count);
         TestOutputHelper.WriteLine(result.ToJsonString());
-        
+
         result.Count().Should().Be(8);
         result.Select(r => r.Name).Order().Should().Equal(AnalyticsHelpers.GetImportNotificationSegments().Order());
-        
+
         result.Should().AllSatisfy(r =>
         {
             r.Dimension.Should().Be("ItemCount");
             r.Results.Count().Should().NotBe(0);
         });
-        
+
         result.Should().HaveResults();
         result.Should().BeSameLength();
     }

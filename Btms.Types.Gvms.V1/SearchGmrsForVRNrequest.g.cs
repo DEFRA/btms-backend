@@ -21,12 +21,10 @@ public partial class SearchGmrsForVRNrequest  //
 {
 
 
-        /// <summary>
-        /// A list of VRN to search for GMRs.
-        /// </summary>
+    /// <summary>
+    /// A list of VRN to search for GMRs.
+    /// </summary>
     [JsonPropertyName("vrns")]
     public string[]? Vrns { get; set; }
 
-	}
-
-
+}

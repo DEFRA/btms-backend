@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum ConsignmentCheckPhysicalCheckNotDoneReasonEnum
 {
 
-		[EnumMember(Value = "Reduced checks regime")]
-		ReducedChecksRegime,
-	
-		[EnumMember(Value = "Other")]
-		Other,
-	
+    [EnumMember(Value = "Reduced checks regime")]
+    ReducedChecksRegime,
+
+    [EnumMember(Value = "Other")]
+    Other,
+
 }
-
-

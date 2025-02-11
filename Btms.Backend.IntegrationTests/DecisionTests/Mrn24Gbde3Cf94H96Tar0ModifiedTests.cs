@@ -27,14 +27,14 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
     {
         var movement = Client
             .GetSingleMovement();
-            
+
         movement
             .AlvsDecisionStatus.Decisions
             .First(d => d.Context.AlvsDecisionNumber == 2)
             .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnPreviousDecison()
     {
@@ -45,7 +45,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .Context.DecisionComparison
             .Should().BeNull();
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
@@ -56,7 +56,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHave1BtmsDecision()
     {
         Client
@@ -73,26 +73,26 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
                 d is { Message: ImportNotification }
             )
             .Message;
-        
+
         // Assert
         var movement = Client
             .GetSingleMovement();
-        
+
         var decisionWithLinkAndContext = movement.AuditEntries
             .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
-        
+
         decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications
             .Should().NotBeNull();
-        
+
         decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Should()
             .Equal([
-                ( notification.ReferenceNumber!, 3 )
+                (notification.ReferenceNumber!, 3)
             ]);
     }
-    
+
     [Fact]
     public void ShouldHave2AlvsDecisions()
     {
@@ -105,7 +105,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .Be(2);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -130,7 +130,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionStatus()
     {
@@ -139,7 +139,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
-    
+
     [Fact]
     public void ShouldHaveChedType()
     {
@@ -148,7 +148,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .BtmsStatus.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Cvedp);
     }
-    
+
     [Fact]
     public void ShouldBeLinked()
     {
@@ -157,21 +157,21 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .BtmsStatus.LinkStatus
             .Should().Be(LinkStatusEnum.AllLinked);
     }
-    
+
     [Fact]
     public async Task ShouldNotHaveExceptions()
     {
         var result = await Client
             .GetExceptions();
-        
+
         TestOutputHelper.WriteLine($"{result.StatusCode} status");
         result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
-        
+
         (await result.GetString())
             .Should()
             .Be("[]");
     }
-    
+
     [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -179,15 +179,16 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.Checks
             .Should().BeEquivalentTo([
-                new { 
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H222",
-                    AlvsDecisionCode = "C03", 
+                    AlvsDecisionCode = "C03",
                     BtmsDecisionCode = "C03"
                 }
             ]);
     }
-    
+
     [Fact]
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {

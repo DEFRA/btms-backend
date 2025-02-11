@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum ChedppNotAcceptableReasonCommodityOrPackageEnum
 {
 
-		[EnumMember(Value = "c")]
-		C,
-	
-		[EnumMember(Value = "p")]
-		P,
-	
-		[EnumMember(Value = "cp")]
-		Cp,
-	
+    [EnumMember(Value = "c")]
+    C,
+
+    [EnumMember(Value = "p")]
+    P,
+
+    [EnumMember(Value = "cp")]
+    Cp,
+
 }
-
-

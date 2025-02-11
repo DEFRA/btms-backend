@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum InspectionCheckTypeEnum
 {
 
-		PhsiDocument,
-	
-		PhsiIdentity,
-	
-		PhsiPhysical,
-	
-		Hmi,
-	
+    PhsiDocument,
+
+    PhsiIdentity,
+
+    PhsiPhysical,
+
+    Hmi,
+
 }
-
-

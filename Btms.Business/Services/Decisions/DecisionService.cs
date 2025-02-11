@@ -39,12 +39,12 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         foreach (var match in decisionContext.MatchingResult.Matches)
         {
             if (!decisionContext.HasChecks(match.MovementId, match.ItemNumber)) continue;
-            
+
             var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
             var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
             var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
             var decisionCodes = GetDecisions(notification, checkCodes);
-            foreach (var decisionCode in decisionCodes) 
+            foreach (var decisionCode in decisionCodes)
                 decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
         }
 
@@ -70,7 +70,7 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         foreach (var result in results)
             logger.LogInformation("Decision finder result {ItemNum} of {NumItems} for Notification {Id} Decision {Decision} - ConsignmentAcceptable {ConsignmentAcceptable}: DecisionEnum {DecisionEnum}: NotAcceptableAction {NotAcceptableAction}",
                 item++, results.Count, notification.Id, result.DecisionCode.ToString(), notification.PartTwo?.Decision?.ConsignmentAcceptable, notification.PartTwo?.Decision?.DecisionEnum.ToString(), notification.PartTwo?.Decision?.NotAcceptableAction?.ToString());
-     
+
         return results.ToArray();
     }
 

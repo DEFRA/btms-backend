@@ -21,19 +21,17 @@ public partial class PlannedCrossing  //
 {
 
 
-        /// <summary>
-        /// The ID of the crossing route, using a routeId from the GVMS reference data
-        /// </summary>
+    /// <summary>
+    /// The ID of the crossing route, using a routeId from the GVMS reference data
+    /// </summary>
     [JsonPropertyName("routeId")]
     public string? RouteId { get; set; }
 
-	
-        /// <summary>
-        /// The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker
-        /// </summary>
+
+    /// <summary>
+    /// The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker
+    /// </summary>
     [JsonPropertyName("localDateTimeOfDeparture")]
     public DateTime? DepartsAt { get; set; }
 
-	}
-
-
+}

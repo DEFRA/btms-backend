@@ -81,15 +81,15 @@ public class DownloadCommand : IRequest, ISyncJob
         private async Task Download(DownloadCommand request, string rootFolder, string folder, Type type, string[]? filenameFilter, CancellationToken cancellationToken)
         {
             ParallelOptions options = new() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = 10 };
-            
+
             var paths = request.SyncPeriod.GetPeriodPaths();
-            
+
             var tasks = paths
                 .Select((periodPath) =>
                     blobService.GetResourcesAsync($"{folder}{periodPath}", cancellationToken)
                 )
                 .FlattenAsyncEnumerable();
-            
+
             //Write local files
             await Parallel.ForEachAsync(tasks, options, async (item, _) =>
             {

@@ -37,7 +37,7 @@ public static class ServiceExtensions
             });
 
         services.AddSingleton<MsalHttpClientFactoryAdapter>();
-        
+
         // services.AddSingleton(sp => new MsalCl
     }
 }

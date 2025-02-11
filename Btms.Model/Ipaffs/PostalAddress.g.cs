@@ -22,61 +22,59 @@ public partial class PostalAddress  //
 {
 
 
-        /// <summary>
-        /// 1st line of address
-        /// </summary>
+    /// <summary>
+    /// 1st line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("1st line of address")]
     public string? AddressLine1 { get; set; }
 
-	
-        /// <summary>
-        /// 2nd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 2nd line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("2nd line of address")]
     public string? AddressLine2 { get; set; }
 
-	
-        /// <summary>
-        /// 3rd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 3rd line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("3rd line of address")]
     public string? AddressLine3 { get; set; }
 
-	
-        /// <summary>
-        /// 4th line of address
-        /// </summary>
+
+    /// <summary>
+    /// 4th line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("4th line of address")]
     public string? AddressLine4 { get; set; }
 
-	
-        /// <summary>
-        /// 3rd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 3rd line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("3rd line of address")]
     public string? County { get; set; }
 
-	
-        /// <summary>
-        /// City or town name
-        /// </summary>
+
+    /// <summary>
+    /// City or town name
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("City or town name")]
     public string? CityOrTown { get; set; }
 
-	
-        /// <summary>
-        /// Post code
-        /// </summary>
+
+    /// <summary>
+    /// Post code
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Post code")]
     public string? PostalCode { get; set; }
 
-	}
-
-
+}

@@ -5,7 +5,7 @@ namespace Btms.Consumers;
 public class ServiceBusOptions
 {
     public static readonly string SectionName = nameof(ServiceBusOptions);
-    
+
     [Required]
     public required Dictionary<string, ServiceBusSubscriptionOptions> Subscriptions { get; set; }
 

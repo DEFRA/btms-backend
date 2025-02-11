@@ -9,10 +9,8 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionIfChanneledOptionEnum
 {
 
-		Article8,
-	
-		Article15,
-	
+    Article8,
+
+    Article15,
+
 }
-
-

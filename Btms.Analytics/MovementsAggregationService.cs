@@ -19,7 +19,7 @@ namespace Btms.Analytics;
 public class MovementsAggregationService(IMongoDbContext context, ILogger<MovementsAggregationService> logger) : IMovementsAggregationService
 {
     private const string AggregatedMessage = "Aggregated Data {Result}";
-    
+
     /// <summary>
     /// Aggregates movements by createdSource and returns counts by date period. Could be refactored to use a generic/interface in time
     /// </summary>
@@ -30,7 +30,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
     public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
     {
         var dateRange = AnalyticsHelpers.CreateDateRange(from, to, aggregateBy);
-        
+
         Expression<Func<Movement, bool>> matchFilter = n =>
             n.CreatedSource >= from && n.CreatedSource < to;
 
@@ -48,9 +48,9 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .GroupBy(m => m.Status)
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => g.Key, g => g.Count);
-            
+
         var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-        
+
         return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers
@@ -67,38 +67,38 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .SelectLinkStatus()
             .GroupBy(m => new { LinkStatus = m.Status, ItemCount = m.Movement.Items.Count })
             .Select(g => new { g.Key.LinkStatus, g.Key.ItemCount, Count = g.Count() });
-            
+
         var mongoResult = mongoQuery
             .Execute(logger)
             .ToList();
-            
+
         var dictionary = mongoResult
             .ToDictionary(g => new { g.LinkStatus, g.ItemCount }, g => g.Count);
-            
+
         var maxCount = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.Count) : 0;
 
         var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-        
+
         return Task.FromResult(new MultiSeriesDataset<ByNumericDimensionResult>()
         {
             Series = AnalyticsHelpers.GetMovementStatusSegments()
                 .Select(status => new Series<ByNumericDimensionResult>()
-                    {
-                        Name = enumLookup.GetValue(status),
-                        Dimension = "Item Count",
-                        Results = Enumerable.Range(0, maxCount + 1)
+                {
+                    Name = enumLookup.GetValue(status),
+                    Dimension = "Item Count",
+                    Results = Enumerable.Range(0, maxCount + 1)
                             .Select(i => new ByNumericDimensionResult
                             {
                                 Dimension = i,
                                 Value = dictionary.GetValueOrDefault(new { LinkStatus = status, ItemCount = i }, 0)
                             }).ToList()
-                    }
+                }
                 )
-                .ToList()    
+                .ToList()
         });
     }
-    
+
     public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByUniqueDocumentReferenceCount(DateTime from, DateTime to)
     {
         var mongoQuery = context
@@ -109,14 +109,14 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             {
                 LinkStatus = m.Status,
                 DocumentReferenceCount = m.Movement.Items
-                    .SelectMany(i => i.Documents == null ? new string[] {} : i.Documents.Select(d => d.DocumentReference))
+                    .SelectMany(i => i.Documents == null ? new string[] { } : i.Documents.Select(d => d.DocumentReference))
                     .Distinct()
                     .Count()
             })
             .Select(g => new { g.Key.LinkStatus, g.Key.DocumentReferenceCount, MovementCount = g.Count() });
-            
+
         var mongoResult = mongoQuery.Execute(logger).ToList();
-        
+
         var dictionary = mongoResult
             .ToDictionary(
                 g => new { LinkStatus = g.LinkStatus, g.DocumentReferenceCount },
@@ -126,7 +126,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             mongoResult.Max(r => r.DocumentReferenceCount) : 0;
 
         var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-        
+
         return Task.FromResult(new MultiSeriesDataset<ByNumericDimensionResult>()
         {
             Series = AnalyticsHelpers.GetMovementStatusSegments()
@@ -159,16 +159,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(d => new { DocumentReference = d.Key, MovementCount = d.Count() })
             .GroupBy(d => d.MovementCount)
             .Select(d => new { MovementCount = d.Key, DocumentReferenceCount = d.Count() });
-            
-            var mongoResult = mongoQuery
-                .Execute(logger)
-                .ToDictionary(
-                    r =>r.MovementCount.ToString(),
-                    r=> r.DocumentReferenceCount);
 
-            var result = new SingleSeriesDataset { Values = mongoResult };
-            
-            return Task.FromResult(result);
+        var mongoResult = mongoQuery
+            .Execute(logger)
+            .ToDictionary(
+                r => r.MovementCount.ToString(),
+                r => r.DocumentReferenceCount);
+
+        var result = new SingleSeriesDataset { Values = mongoResult };
+
+        return Task.FromResult(result);
     }
 
     public async Task<EntityDataset<AuditHistory>?> GetHistory(string movementId)
@@ -181,23 +181,23 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         {
             return null;
         }
-        
+
         var notificationIds = movement!.Relationships.Notifications.Data.Select(n => n.Id);
 
         var notificationEntries = context.Notifications
             .Where(n => notificationIds.Contains(n.Id))
             .SelectMany(n => n.AuditEntries
-                .Select(a => 
+                .Select(a =>
                     new AuditHistory(a, "ImportNotification", "import-notifications", n.Id!)
                 )
             );
-        
+
         var entries = movement!.AuditEntries
             .Select(a => new AuditHistory(a, "Movement", "movements", movementId))
             .Concat(notificationEntries);
 
         entries = entries.OrderBy(a => a.AuditEntry.CreatedSource);
-        
+
         return new EntityDataset<AuditHistory>(entries);
     }
 
@@ -206,8 +206,10 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var data = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            .GroupBy(n => new { MaxVersion =
-                n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber )
+            .GroupBy(n => new
+            {
+                MaxVersion =
+                n.ClearanceRequests.Max(a => a.Header!.EntryVersionNumber)
             })
             .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
             .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
@@ -217,14 +219,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
         });
     }
-    
+
     public Task<SingleSeriesDataset> ByMaxDecisionNumber(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            .GroupBy(n => new { MaxVersion =
-                n.Decisions.Max(a => a.Header!.DecisionNumber )
+            .GroupBy(n => new
+            {
+                MaxVersion =
+                n.Decisions.Max(a => a.Header!.DecisionNumber)
             })
             .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
             .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
@@ -234,14 +238,16 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             Values = data.ToDictionary(d => d.Key.ToString(), d => d.Value)
         });
     }
-    
+
     public Task<SingleSeriesDataset> ByMaxAlvsDecisionNumber(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var data = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            .GroupBy(n => new { MaxVersion =
-                n.AlvsDecisionStatus.Decisions.Max(a => a.Decision.Header!.DecisionNumber )
+            .GroupBy(n => new
+            {
+                MaxVersion =
+                n.AlvsDecisionStatus.Decisions.Max(a => a.Decision.Header!.DecisionNumber)
             })
             .Select(g => new { MaxVersion = g.Key.MaxVersion ?? 0, Count = g.Count() })
             .ExecuteAsSortedDictionary(logger, g => g.MaxVersion, g => g.Count);
@@ -257,28 +263,28 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var movementExceptions = new MovementExceptions(context, logger);
         var (_, result) = movementExceptions
             .GetAllExceptions(from, to, finalisedOnly, false, chedTypes, country);
-            
+
         return Task.FromResult(result);
     }
-    
+
     public Task<SingleSeriesDataset> ExceptionSummary(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var movementExceptions = new MovementExceptions(context, logger);
         var (summary, _) = movementExceptions
             .GetAllExceptions(from, to, finalisedOnly, true, chedTypes, country);
-            
+
         return Task.FromResult(summary);
     }
 
     private Task<MultiSeriesDatetimeDataset> Aggregate(DateTime[] dateRange, Func<BsonDocument, string> createDatasetName, Expression<Func<Movement, bool>> filter, string dateField, AggregationPeriod aggregateBy)
     {
         var truncateBy = aggregateBy == AggregationPeriod.Hour ? "hour" : "day";
-        
+
         ProjectionDefinition<Movement> projection = "{linked:{ $ne: [0, { $size: '$relationships.notifications.data'}]}, dateToUse: { $dateTrunc: { date: '" + dateField + "', unit: '" + truncateBy + "'}}}";
-        
+
         // First aggregate the dataset by whether its matched and the date it arrives. Count the number in each bucket.
         ProjectionDefinition<BsonDocument> group = "{_id: { linked: '$linked', dateToUse: '$dateToUse' }, count: { $count: { } }}";
-        
+
         // Then further group by whether its matched and get the count to give us the structure we need in our chart
         ProjectionDefinition<BsonDocument> datasetGroup = "{_id: { linked: '$_id.linked'}, dates: { $push: { dateToUse: '$_id.dateToUse', count: '$count' }}}";
 
@@ -287,29 +293,30 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .GetAggregatedRecordsDictionary(logger, filter, projection, group, datasetGroup, createDatasetName);
 
         var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-        
+
         var output = AnalyticsHelpers.GetMovementStatusSegments()
             .Select(status => mongoResult.AsDataset(dateRange, enumLookup.GetValue(status)))
             .AsOrderedArray(m => m.Name);
-        
+
         logger.LogDebug(AggregatedMessage, output.ToList().ToJsonString());
-        
+
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
     }
-    
+
     public Task<SingleSeriesDataset> ByAlvsDecision(DateTime from,
         DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            .Select(m => new {
-                m.Id, 
+            .Select(m => new
+            {
+                m.Id,
                 Decisions = m.AlvsDecisionStatus.Decisions
                     .Select(d => new
                     {
                         Min = d.Decision.Items.Min(i => i.ItemNumber),
-                        Max =  d.Decision.Items.Max(i => i.ItemNumber),
+                        Max = d.Decision.Items.Max(i => i.ItemNumber),
                         ItemCount = d.Decision.Items.Count()
                     })
             })
@@ -323,7 +330,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .GroupBy(m => m.Same)
             .Execute(logger);
-        
+
         logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var r = new SingleSeriesDataset();
@@ -343,18 +350,24 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
         var nullChecks = new List<ItemCheck>();
-        
+
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            .Select(m => new { Movement = m, Checks = 
-                m.AlvsDecisionStatus.Context.DecisionComparison == null ? nullChecks : 
-                    m.AlvsDecisionStatus.Context.DecisionComparison.Checks })
+            .Select(m => new
+            {
+                Movement = m,
+                Checks =
+                m.AlvsDecisionStatus.Context.DecisionComparison == null ? nullChecks :
+                    m.AlvsDecisionStatus.Context.DecisionComparison.Checks
+            })
             .SelectMany(d => d
                 .Checks
                     .Select(c => new MovementExtensions.ReadTimeDecisionStatusState<DecisionStatusEnum?>()
                     {
-                        Movement = d.Movement, Check = c, DecisionStatus = null
+                        Movement = d.Movement,
+                        Check = c,
+                        DecisionStatus = null
                     })
             )
             .WithReadTimeDecisionStatus()
@@ -367,49 +380,51 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .Select(g => new
             {
-                g.Key, Count = g.Count()
+                g.Key,
+                Count = g.Count()
             })
             .Execute(logger);
-        
+
         logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var enumLookup = new JsonStringEnumConverterEx<DecisionStatusEnum>();
         var summaryValues = mongoQuery
             .GroupBy(q => q.Key.DecisionStatus)
-            .Select(g => new {g.Key, Sum = g.Sum(k => k.Count)})
+            .Select(g => new { g.Key, Sum = g.Sum(k => k.Count) })
             .OrderBy(s => s.Key)
             .ToDictionary(
                 g => enumLookup.GetValue(g.Key),
                 g => g.Sum
             );
-        
+
         // Works
-        var summary = new SingleSeriesDataset() {
+        var summary = new SingleSeriesDataset()
+        {
             Values = summaryValues
         };
-        
+
         var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
         {
             Summary = summary,
             Result = mongoQuery.Select(a => new StringBucketDimensionResult()
-                {
-                    Fields = new Dictionary<string, string>()
+            {
+                Fields = new Dictionary<string, string>()
                     {
                         { "Classification", enumLookup.GetValue(a.Key.DecisionStatus) },
                         { "CheckCode", a.Key.CheckCode! },
                         { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
                     },
-                    Value = a.Count
-                })
+                Value = a.Count
+            })
                 .OrderBy(r => r.Value)
                 .Reverse()
                 .ToList()
         };
-        
+
         return Task.FromResult(r);
     }
-    
+
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> BySegment(DateTime from,
         DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
@@ -419,7 +434,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(m => new
             {
                 DecisionStatus = m.AlvsDecisionStatus.Context.DecisionComparison == null ?
-                    DecisionStatusEnum.None:
+                    DecisionStatusEnum.None :
                     m.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus,
                 DecisionMatched = false,
                 m.BtmsStatus,
@@ -435,34 +450,36 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             })
             .Select(g => new
             {
-                g.Key, Count = g.Count()
+                g.Key,
+                Count = g.Count()
             })
             .Execute(logger);
-        
+
         logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
         var enumLookup = new JsonStringEnumConverterEx<MovementSegmentEnum>();
         var summaryValues = mongoQuery
             .GroupBy(q => q.Key.Segment)
-            .Select(g => new {g.Key, Sum = g.Sum(k => k.Count)})
+            .Select(g => new { g.Key, Sum = g.Sum(k => k.Count) })
             .OrderBy(s => s.Key)
             // .Where(g => g)
             .ToDictionary(
                 g => enumLookup.GetValue(g.Key ?? MovementSegmentEnum.None),
                 g => g.Sum
             );
-        
+
         // Works
-        var summary = new SingleSeriesDataset() {
+        var summary = new SingleSeriesDataset()
+        {
             Values = summaryValues
         };
-        
+
         var r = new SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>()
         {
             Summary = summary,
             Result = mongoQuery.Select(a => new StringBucketDimensionResult()
-                {
-                    Fields = new Dictionary<string, string>()
+            {
+                Fields = new Dictionary<string, string>()
                     {
                         // { "Classification", enumLookup.GetValue(a.Key!.Segment) },
                         { "Classification", enumLookup.GetValue(a.Key.Segment ?? MovementSegmentEnum.None) },
@@ -470,13 +487,13 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                         // { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         // { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
                     },
-                    Value = a.Count
-                })
+                Value = a.Count
+            })
                 .OrderBy(r => r.Value)
                 .Reverse()
                 .ToList()
         };
-        
+
         return Task.FromResult(r);
     }
 

@@ -21,19 +21,17 @@ public partial class CatchCertificates  //
 {
 
 
-        /// <summary>
-        /// The catch certificate number
-        /// </summary>
+    /// <summary>
+    /// The catch certificate number
+    /// </summary>
     [JsonPropertyName("certificateNumber")]
     public string? CertificateNumber { get; set; }
 
-	
-        /// <summary>
-        /// The catch certificate weight number
-        /// </summary>
+
+    /// <summary>
+    /// The catch certificate weight number
+    /// </summary>
     [JsonPropertyName("weight")]
     public double? Weight { get; set; }
 
-	}
-
-
+}

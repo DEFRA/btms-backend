@@ -9,16 +9,16 @@ namespace Btms.Backend.IntegrationTests;
 public abstract class BaseApiTests
 {
     private BtmsClient? _client;
-    
+
     protected BtmsClient Client => _client ??= Factory.CreateBtmsClient();
-    
+
     protected IIntegrationTestsApplicationFactory Factory { get; }
-    
+
     protected async Task ClearDb()
     {
         await Client.ClearDb();
     }
-    
+
     protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper, string databaseName = "SmokeTests")
     {
         Factory = factory;

@@ -12,7 +12,7 @@ public class IuuDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H224")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, false, null)]
-    
+
     [InlineData(ImportNotificationTypeEnum.Cveda, false, "H224")]
     [InlineData(ImportNotificationTypeEnum.Ced, false, "H224")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H224")]
@@ -29,7 +29,7 @@ public class IuuDecisionFinderTests
 
         result.Should().Be(expectedResult);
     }
-    
+
     [Theory]
     [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU Compliant")]
     [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not compliant")]

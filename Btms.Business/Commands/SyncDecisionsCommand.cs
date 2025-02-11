@@ -27,7 +27,7 @@ public class SyncDecisionsCommand : SyncCommand
                 ? Options.DmpBlobRootFolder
                 : request.RootFolder;
             await SyncBlobPaths<Decision>(request.SyncPeriod, "DECISIONS", request.JobId,
-                cancellationToken,$"{rootFolder}/DECISIONS");
+                cancellationToken, $"{rootFolder}/DECISIONS");
         }
     }
 

@@ -36,7 +36,7 @@ public abstract class ScenarioGenerator
                 {
                     throw new Exception($"Unexpected GeneratorResult type {o.GetType().Name}");
                 }
-                
+
             }
         }
 
@@ -46,12 +46,12 @@ public abstract class ScenarioGenerator
         {
             Messages.AddRange(importNotifications);
         }
-        
+
         public void Add(AlvsClearanceRequest[] clearanceRequests)
         {
             Messages.AddRange(clearanceRequests);
         }
-        
+
         public void Add(Btms.Types.Alvs.Decision[] decisions)
         {
             Messages.AddRange(decisions);
@@ -61,9 +61,9 @@ public abstract class ScenarioGenerator
         {
             return Messages.GetEnumerator();
         }
-        
+
         public int Count => Messages.Count;
-        
+
         public IEnumerator GetEnumerator()
         {
             return Messages.GetEnumerator();

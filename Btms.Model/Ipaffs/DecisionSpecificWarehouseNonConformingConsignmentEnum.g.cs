@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionSpecificWarehouseNonConformingConsignmentEnum
 {
 
-		CustomWarehouse,
-	
-		FreeZoneOrFreeWarehouse,
-	
-		ShipSupplier,
-	
-		Ship,
-	
+    CustomWarehouse,
+
+    FreeZoneOrFreeWarehouse,
+
+    ShipSupplier,
+
+    Ship,
+
 }
-
-

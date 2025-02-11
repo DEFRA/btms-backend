@@ -9,26 +9,24 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionDecisionEnum
 {
 
-		NonAcceptable,
-	
-		AcceptableForInternalMarket,
-	
-		AcceptableIfChanneled,
-	
-		AcceptableForTranshipment,
-	
-		AcceptableForTransit,
-	
-		AcceptableForTemporaryImport,
-	
-		AcceptableForSpecificWarehouse,
-	
-		AcceptableForPrivateImport,
-	
-		AcceptableForTransfer,
-	
-		HorseReEntry,
-	
+    NonAcceptable,
+
+    AcceptableForInternalMarket,
+
+    AcceptableIfChanneled,
+
+    AcceptableForTranshipment,
+
+    AcceptableForTransit,
+
+    AcceptableForTemporaryImport,
+
+    AcceptableForSpecificWarehouse,
+
+    AcceptableForPrivateImport,
+
+    AcceptableForTransfer,
+
+    HorseReEntry,
+
 }
-
-

@@ -9,22 +9,20 @@ namespace Btms.Model.Ipaffs;
 public enum MeansOfTransportTypeEnum
 {
 
-		Aeroplane,
-	
-		RoadVehicle,
-	
-		RailwayWagon,
-	
-		Ship,
-	
-		Other,
-	
-		RoadVehicleAeroplane,
-	
-		ShipRailwayWagon,
-	
-		ShipRoadVehicle,
-	
+    Aeroplane,
+
+    RoadVehicle,
+
+    RailwayWagon,
+
+    Ship,
+
+    Other,
+
+    RoadVehicleAeroplane,
+
+    ShipRailwayWagon,
+
+    ShipRoadVehicle,
+
 }
-
-

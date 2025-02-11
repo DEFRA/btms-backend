@@ -13,7 +13,7 @@ namespace Btms.Analytics.Tests;
 public class MovementsByItemsTests(ITestOutputHelper output)
     : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
-    
+
     [Fact]
     public async Task WhenCalledLastWeek_ReturnExpectedAggregation()
     {
@@ -24,7 +24,7 @@ public class MovementsByItemsTests(ITestOutputHelper output)
             .ToList();
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Count);
-        
+
         result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }

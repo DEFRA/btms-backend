@@ -9,18 +9,16 @@ namespace Btms.Model.Gvms;
 public enum HaulierTypeEnum
 {
 
-		Standard,
-	
-		FpoAsn,
-	
-		FpoOther,
-	
-		NatoMod,
-	
-		Rmg,
-	
-		Etoe,
-	
+    Standard,
+
+    FpoAsn,
+
+    FpoOther,
+
+    NatoMod,
+
+    Rmg,
+
+    Etoe,
+
 }
-
-

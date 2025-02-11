@@ -22,37 +22,35 @@ public partial class SealCheck  //
 {
 
 
-        /// <summary>
-        /// Is seal check satisfactory
-        /// </summary>
+    /// <summary>
+    /// Is seal check satisfactory
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Is seal check satisfactory")]
     public bool? Satisfactory { get; set; }
 
-	
-        /// <summary>
-        /// reason for not satisfactory
-        /// </summary>
+
+    /// <summary>
+    /// reason for not satisfactory
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("reason for not satisfactory")]
     public string? Reason { get; set; }
 
-	
-        /// <summary>
-        /// Official inspector
-        /// </summary>
+
+    /// <summary>
+    /// Official inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Official inspector")]
     public OfficialInspector? OfficialInspector { get; set; }
 
-	
-        /// <summary>
-        /// date and time of seal check
-        /// </summary>
+
+    /// <summary>
+    /// date and time of seal check
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("date and time of seal check")]
     public DateTime? CheckedOn { get; set; }
 
-	}
-
-
+}

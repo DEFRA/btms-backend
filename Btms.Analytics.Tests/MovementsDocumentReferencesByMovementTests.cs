@@ -20,7 +20,7 @@ public class MovementsDocumentReferencesByMovementTests(ITestOutputHelper output
             .UniqueDocumentReferenceByMovementCount(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
-        
+
         result.Should().HaveResults();
     }
 }

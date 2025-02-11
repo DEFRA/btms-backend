@@ -37,7 +37,7 @@ public static class ServiceBusHelper
     private static async Task PublishMessage<T>(T request, string topicName, string? messageType = null)
     {
         await using var client = new ServiceBusClient(ConnectionString);
-        
+
         var sender = client.CreateSender(topicName);
         var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(request)))
         {

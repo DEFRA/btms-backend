@@ -9,10 +9,8 @@ namespace Btms.Model.Ipaffs;
 public enum CommodityRiskResultPhsiDecisionEnum
 {
 
-		Required,
-	
-		Notrequired,
-	
+    Required,
+
+    Notrequired,
+
 }
-
-

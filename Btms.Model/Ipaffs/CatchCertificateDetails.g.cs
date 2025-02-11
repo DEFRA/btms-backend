@@ -22,45 +22,43 @@ public partial class CatchCertificateDetails  //
 {
 
 
-        /// <summary>
-        /// The UUID of the catch certificate
-        /// </summary>
+    /// <summary>
+    /// The UUID of the catch certificate
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The UUID of the catch certificate")]
     public string? CatchCertificateId { get; set; }
 
-	
-        /// <summary>
-        /// Catch certificate reference
-        /// </summary>
+
+    /// <summary>
+    /// Catch certificate reference
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Catch certificate reference")]
     public string? CatchCertificateReference { get; set; }
 
-	
-        /// <summary>
-        /// Catch certificate date of issue
-        /// </summary>
+
+    /// <summary>
+    /// Catch certificate date of issue
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Catch certificate date of issue")]
     public DateTime? IssuedOn { get; set; }
 
-	
-        /// <summary>
-        /// Catch certificate flag state of catching vessel(s)
-        /// </summary>
+
+    /// <summary>
+    /// Catch certificate flag state of catching vessel(s)
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Catch certificate flag state of catching vessel(s)")]
     public string? FlagState { get; set; }
 
-	
-        /// <summary>
-        /// List of species imported under this catch certificate
-        /// </summary>
+
+    /// <summary>
+    /// List of species imported under this catch certificate
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("List of species imported under this catch certificate")]
     public string[]? Species { get; set; }
 
-	}
-
-
+}

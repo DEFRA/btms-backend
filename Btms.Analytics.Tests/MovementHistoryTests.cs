@@ -21,19 +21,19 @@ public class MovementHistoryTests(ITestOutputHelper output)
             m =>
             m.Relationships.Notifications.Data.Count > 0
             && m.Decisions.Count > 0);
-        
+
         ArgumentNullException.ThrowIfNull(movement);
-        
+
         TestOutputHelper.WriteLine("Querying for history");
         var result = await GetMovementsAggregationService()
             .GetHistory(movement.Id!);
 
         TestOutputHelper.WriteLine("{0} history items found", result!.Items.Count());
-        
+
         result.Items.Should().HasValue();
         result.Items.Select(a => a.AuditEntry.CreatedSource).Should().BeInAscendingOrder();
     }
-    
+
     [Fact]
     public async Task WhenCalledWithAFakeMovementID_ReturnsNoHistory()
     {

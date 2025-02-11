@@ -11,10 +11,10 @@ public class ValidationMetrics
     public ValidationMetrics(IMeterFactory meterFactory)
     {
         var meter = meterFactory.Create(MetricNames.MeterName);
-        
+
         _total = meter.CreateCounter<long>("btms.validation.total", description: "Number of times validation occurred");
         _failed = meter.CreateCounter<long>("btms.validation.failed", description: "Number of times validation failed");
-        
+
     }
     public void Failed(Exception exception)
     {
@@ -22,7 +22,7 @@ public class ValidationMetrics
         tagList.Add(MetricNames.CommonTags.ExceptionType, exception.GetType().Name);
         _failed.Add(1, tagList);
     }
-    
+
     public void Validated()
     {
         var tagList = BuildTags();

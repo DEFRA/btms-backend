@@ -22,109 +22,107 @@ public partial class Address  //
 {
 
 
-        /// <summary>
-        /// Street
-        /// </summary>
+    /// <summary>
+    /// Street
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Street")]
     public string? Street { get; set; }
 
-	
-        /// <summary>
-        /// City
-        /// </summary>
+
+    /// <summary>
+    /// City
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("City")]
     public string? City { get; set; }
 
-	
-        /// <summary>
-        /// Country
-        /// </summary>
+
+    /// <summary>
+    /// Country
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Country")]
     public string? Country { get; set; }
 
-	
-        /// <summary>
-        /// Postal Code
-        /// </summary>
+
+    /// <summary>
+    /// Postal Code
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Postal Code")]
     public string? PostalCode { get; set; }
 
-	
-        /// <summary>
-        /// 1st line of address
-        /// </summary>
+
+    /// <summary>
+    /// 1st line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("1st line of address")]
     public string? AddressLine1 { get; set; }
 
-	
-        /// <summary>
-        /// 2nd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 2nd line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("2nd line of address")]
     public string? AddressLine2 { get; set; }
 
-	
-        /// <summary>
-        /// 3rd line of address
-        /// </summary>
+
+    /// <summary>
+    /// 3rd line of address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("3rd line of address")]
     public string? AddressLine3 { get; set; }
 
-	
-        /// <summary>
-        /// Post / zip code
-        /// </summary>
+
+    /// <summary>
+    /// Post / zip code
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Post / zip code")]
     public string? PostalZipCode { get; set; }
 
-	
-        /// <summary>
-        /// country 2-digits ISO code
-        /// </summary>
+
+    /// <summary>
+    /// country 2-digits ISO code
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("country 2-digits ISO code")]
     public string? CountryIsoCode { get; set; }
 
-	
-        /// <summary>
-        /// Email address
-        /// </summary>
+
+    /// <summary>
+    /// Email address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Email address")]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// UK phone number
-        /// </summary>
+
+    /// <summary>
+    /// UK phone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("UK phone number")]
     public string? UkTelephone { get; set; }
 
-	
-        /// <summary>
-        /// Telephone number
-        /// </summary>
+
+    /// <summary>
+    /// Telephone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Telephone number")]
     public string? Telephone { get; set; }
 
-	
-        /// <summary>
-        /// International phone number
-        /// </summary>
+
+    /// <summary>
+    /// International phone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("International phone number")]
     public InternationalTelephone? InternationalTelephone { get; set; }
 
-	}
-
-
+}

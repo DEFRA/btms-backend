@@ -19,9 +19,9 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithVersionNumber()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification.ReferenceNumber);
-        
+
         var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
@@ -40,7 +40,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithItemAndCheck(1, "H222", "H01")
             .WithItemAndCheck(1, "H224", "C07")
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
 
         return new GeneratorResult([clearanceRequest, notification, alvsDecision]);

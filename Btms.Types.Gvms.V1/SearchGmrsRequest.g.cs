@@ -21,12 +21,10 @@ public partial class SearchGmrsRequest  //
 {
 
 
-        /// <summary>
-        /// A list of TRNs to search for GMRs.
-        /// </summary>
+    /// <summary>
+    /// A list of TRNs to search for GMRs.
+    /// </summary>
     [JsonPropertyName("trailerRegistrationNums")]
     public string[]? TrailerRegistrationNums { get; set; }
 
-	}
-
-
+}

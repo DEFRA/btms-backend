@@ -16,11 +16,11 @@ public class Datasets(IHost app)
 {
     public const string FunctionalAnalyticsDatasetName = "Functional-Analytics";
     public const string FunctionalAnalyticsDecisionsDatasetName = "Functional-Analytics-Decisions";
-    
+
     public static Dataset[] GetDatasets(IHost app)
     {
         var ds = new Datasets(app);
-        
+
         return
         [
             ds.EndToEndIbm,
@@ -58,14 +58,14 @@ public class Datasets(IHost app)
             app.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 2, arrivalDateRange: 10)
         }
     };
-    
+
     public readonly Dataset FunctionalAnalyticsDecisions = new()
     {
         Name = FunctionalAnalyticsDecisionsDatasetName,
         Description = "Functional Testing Analytics Dataset for testing decision analytics",
         RootPath = "FUNCTIONAL-ANALYTICS-DECISIONS",
         Scenarios = new[]
-        {   
+        {
             app.Services.CreateScenarioConfig<CrNoMatchSingleItemWithDecisionScenarioGenerator>(2, 2, arrivalDateRange: 0),
             app.Services.CreateScenarioConfig<CrNoMatchNoDecisionScenarioGenerator>(2, 2, arrivalDateRange: 2),
         }

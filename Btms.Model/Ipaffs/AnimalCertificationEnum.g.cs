@@ -9,60 +9,58 @@ namespace Btms.Model.Ipaffs;
 public enum AnimalCertificationEnum
 {
 
-		AnimalFeedingStuff,
-	
-		Approved,
-	
-		ArtificialReproduction,
-	
-		Breeding,
-	
-		Circus,
-	
-		CommercialSale,
-	
-		CommercialSaleOrChangeOfOwnership,
-	
-		Fattening,
-	
-		GameRestocking,
-	
-		HumanConsumption,
-	
-		InternalMarket,
-	
-		Other,
-	
-		PersonallyOwnedPetsNotForRehoming,
-	
-		Pets,
-	
-		Production,
-	
-		Quarantine,
-	
-		RacingCompetition,
-	
-		RegisteredEquidae,
-	
-		Registered,
-	
-		RejectedOrReturnedConsignment,
-	
-		Relaying,
-	
-		RescueRehoming,
-	
-		Research,
-	
-		Slaughter,
-	
-		TechnicalPharmaceuticalUse,
-	
-		Transit,
-	
-		ZooCollection,
-	
+    AnimalFeedingStuff,
+
+    Approved,
+
+    ArtificialReproduction,
+
+    Breeding,
+
+    Circus,
+
+    CommercialSale,
+
+    CommercialSaleOrChangeOfOwnership,
+
+    Fattening,
+
+    GameRestocking,
+
+    HumanConsumption,
+
+    InternalMarket,
+
+    Other,
+
+    PersonallyOwnedPetsNotForRehoming,
+
+    Pets,
+
+    Production,
+
+    Quarantine,
+
+    RacingCompetition,
+
+    RegisteredEquidae,
+
+    Registered,
+
+    RejectedOrReturnedConsignment,
+
+    Relaying,
+
+    RescueRehoming,
+
+    Research,
+
+    Slaughter,
+
+    TechnicalPharmaceuticalUse,
+
+    Transit,
+
+    ZooCollection,
+
 }
-
-

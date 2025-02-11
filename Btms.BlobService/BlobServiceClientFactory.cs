@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace Btms.BlobService;
 
 public class BlobServiceClientFactory(
-    IServiceProvider serviceProvider, 
+    IServiceProvider serviceProvider,
     IOptions<BlobServiceOptions> options,
     ILogger<BlobServiceClientFactory> logger,
     IHttpClientFactory? clientFactory = null)
@@ -17,9 +17,9 @@ public class BlobServiceClientFactory(
         // Allow timeout and retry to be overridden, e.g. from healthchecker
         timeout = timeout > 0 ? timeout : options.Value.Timeout;
         retries = retries > 0 ? retries : options.Value.Retries;
-        
+
         logger.LogInformation("CreateBlobServiceClient timeout={Timeout}, retries={Retries}", timeout, retries);
-        
+
         var bcOptions = new BlobClientOptions
         {
             Transport = Transport!,
@@ -29,7 +29,7 @@ public class BlobServiceClientFactory(
             },
             Diagnostics = { IsLoggingContentEnabled = true, IsLoggingEnabled = true }
         };
-        
+
 
         return new BlobServiceClient(
             new Uri(options.Value.DmpBlobUri),

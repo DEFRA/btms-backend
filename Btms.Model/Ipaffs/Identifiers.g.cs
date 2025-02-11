@@ -22,37 +22,35 @@ public partial class Identifiers  //
 {
 
 
-        /// <summary>
-        /// Number used to identify which item the identifiers are related to
-        /// </summary>
+    /// <summary>
+    /// Number used to identify which item the identifiers are related to
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Number used to identify which item the identifiers are related to")]
     public int? SpeciesNumber { get; set; }
 
-	
-        /// <summary>
-        /// List of identifiers and their keys
-        /// </summary>
+
+    /// <summary>
+    /// List of identifiers and their keys
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("List of identifiers and their keys")]
     public IDictionary<string, string>? Data { get; set; }
 
-	
-        /// <summary>
-        /// Is the place of destination the permanent address?
-        /// </summary>
+
+    /// <summary>
+    /// Is the place of destination the permanent address?
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Is the place of destination the permanent address?")]
     public bool? IsPlaceOfDestinationThePermanentAddress { get; set; }
 
-	
-        /// <summary>
-        /// Permanent address of the species
-        /// </summary>
+
+    /// <summary>
+    /// Permanent address of the species
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Permanent address of the species")]
     public EconomicOperator? PermanentAddress { get; set; }
 
-	}
-
-
+}

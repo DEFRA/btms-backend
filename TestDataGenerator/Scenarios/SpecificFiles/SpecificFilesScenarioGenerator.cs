@@ -138,7 +138,7 @@ public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServi
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
-    
+
     internal async Task<List<(string filePath, IBaseBuilder builder)>> GetBuilders(string scenarioPath)
     {
         var tokenSource = new CancellationTokenSource();
@@ -173,9 +173,9 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var blobs = blobService.GetResourcesAsync(scenarioFolder, token);
 
         var list = new List<(string, IBaseBuilder)>();
-        
+
         await foreach (var blobItem in blobs)
-        {   
+        {
             logger.LogInformation("Found blob item {name}", blobItem.Name);
             var builder = createBuilder(blobItem.Name, "");
             list.Add((blobItem.Name, builder!));
@@ -183,7 +183,7 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
 
         return list;
     }
-    
+
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         if (!sampleFolder.HasValue())
@@ -191,10 +191,10 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
             throw new InvalidOperationException(
                 "Either need to specify the scenarioPath in the constructor, or override the generate function.");
         }
-        var builders =  GetBuilders(sampleFolder)
+        var builders = GetBuilders(sampleFolder)
             .GetAwaiter().GetResult();
-        
-        logger.LogInformation("Created {builders} Builders", 
+
+        logger.LogInformation("Created {builders} Builders",
             builders.Count);
 
         var messages = ModifyMessages(builders
@@ -202,8 +202,8 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
             .ToArray()
             .BuildAll())
             .ToArray();
-        
+
         return new GeneratorResult(messages);
     }
-    
+
 }

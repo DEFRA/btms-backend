@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum EconomicOperatorStatusEnum
 {
 
-		[EnumMember(Value = "approved")]
-		Approved,
-	
-		[EnumMember(Value = "nonapproved")]
-		Nonapproved,
-	
-		[EnumMember(Value = "suspended")]
-		Suspended,
-	
+    [EnumMember(Value = "approved")]
+    Approved,
+
+    [EnumMember(Value = "nonapproved")]
+    Nonapproved,
+
+    [EnumMember(Value = "suspended")]
+    Suspended,
+
 }
-
-
