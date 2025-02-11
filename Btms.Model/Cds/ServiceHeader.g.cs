@@ -29,7 +29,7 @@ public partial class ServiceHeader  //
     [System.ComponentModel.Description("")]
     public string? SourceSystem { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,7 +37,7 @@ public partial class ServiceHeader  //
     [System.ComponentModel.Description("")]
     public string? DestinationSystem { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -45,7 +45,7 @@ public partial class ServiceHeader  //
     [System.ComponentModel.Description("")]
     public string? CorrelationId { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -53,6 +53,4 @@ public partial class ServiceHeader  //
     [System.ComponentModel.Description("")]
     public DateTime? ServiceCalled { get; set; }
 
-	}
-
-
+}

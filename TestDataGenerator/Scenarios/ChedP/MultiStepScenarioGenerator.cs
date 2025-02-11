@@ -17,11 +17,11 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithInspectionStatus(InspectionRequiredEnum.NotRequired) //NB, the examples in the redacted data are title case, but code is uppercase CDMS-210
             .WithIuuOption(ControlAuthorityIuuOptionEnum.Iuuok)
             .WithVersionNumber();
-            
+
         var notification = notificationBuilder
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification.ReferenceNumber);
 
         var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
@@ -41,11 +41,11 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithDecisionVersionNumber()
             .WithTunaChecks()
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
 
         var uniqueCommodityId = Guid.NewGuid();
-        
+
         var updatedNotification = notificationBuilder
             .Clone()
             .WithCreationDate(entryDate)
@@ -53,8 +53,8 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithRiskAssesment(uniqueCommodityId, CommodityRiskResultRiskDecisionEnum.Notrequired)
             .WithVersionNumber(2)
             .Build();
-        
-        logger.LogInformation("Created version {Version} of notification {NotificationReferenceNumber}", 
+
+        logger.LogInformation("Created version {Version} of notification {NotificationReferenceNumber}",
             notification.Version, notification.ReferenceNumber);
 
         return new GeneratorResult([clearanceRequest, notification, alvsDecision, updatedNotification]);

@@ -22,78 +22,76 @@ public partial class AccompanyingDocument  //
 {
 
 
-        /// <summary>
-        /// Additional document type
-        /// </summary>
+    /// <summary>
+    /// Additional document type
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Additional document type")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public AccompanyingDocumentDocumentTypeEnum? DocumentType { get; set; }
 
-	
-        /// <summary>
-        /// Additional document reference
-        /// </summary>
+
+    /// <summary>
+    /// Additional document reference
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Additional document reference")]
     public string? DocumentReference { get; set; }
 
-	
-        /// <summary>
-        /// Additional document issue date
-        /// </summary>
+
+    /// <summary>
+    /// Additional document issue date
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Additional document issue date")]
     public DateTime? DocumentIssuedOn { get; set; }
 
-	
-        /// <summary>
-        /// The UUID used for the uploaded file in blob storage
-        /// </summary>
+
+    /// <summary>
+    /// The UUID used for the uploaded file in blob storage
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The UUID used for the uploaded file in blob storage")]
     public string? AttachmentId { get; set; }
 
-	
-        /// <summary>
-        /// The original filename of the uploaded file
-        /// </summary>
+
+    /// <summary>
+    /// The original filename of the uploaded file
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The original filename of the uploaded file")]
     public string? AttachmentFilename { get; set; }
 
-	
-        /// <summary>
-        /// The MIME type of the uploaded file
-        /// </summary>
+
+    /// <summary>
+    /// The MIME type of the uploaded file
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The MIME type of the uploaded file")]
     public string? AttachmentContentType { get; set; }
 
-	
-        /// <summary>
-        /// The UUID for the user that uploaded the file
-        /// </summary>
+
+    /// <summary>
+    /// The UUID for the user that uploaded the file
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The UUID for the user that uploaded the file")]
     public string? UploadUserId { get; set; }
 
-	
-        /// <summary>
-        /// The UUID for the organisation that the upload user is associated with
-        /// </summary>
+
+    /// <summary>
+    /// The UUID for the organisation that the upload user is associated with
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The UUID for the organisation that the upload user is associated with")]
     public string? UploadOrganisationId { get; set; }
 
-	
-        /// <summary>
-        /// External reference of accompanying document, which relates to a downstream service
-        /// </summary>
+
+    /// <summary>
+    /// External reference of accompanying document, which relates to a downstream service
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("External reference of accompanying document, which relates to a downstream service")]
     public ExternalReference? ExternalReference { get; set; }
 
-	}
-
-
+}

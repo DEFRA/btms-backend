@@ -22,61 +22,59 @@ public partial class OfficialInspector  //
 {
 
 
-        /// <summary>
-        /// First name of inspector
-        /// </summary>
+    /// <summary>
+    /// First name of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("First name of inspector")]
     public string? FirstName { get; set; }
 
-	
-        /// <summary>
-        /// Last name of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Last name of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Last name of inspector")]
     public string? LastName { get; set; }
 
-	
-        /// <summary>
-        /// Email of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Email of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Email of inspector")]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Phone number of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Phone number of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Phone number of inspector")]
     public string? Phone { get; set; }
 
-	
-        /// <summary>
-        /// Fax number of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Fax number of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Fax number of inspector")]
     public string? Fax { get; set; }
 
-	
-        /// <summary>
-        /// Address of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Address of inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Address of inspector")]
     public Address? Address { get; set; }
 
-	
-        /// <summary>
-        /// Date of sign
-        /// </summary>
+
+    /// <summary>
+    /// Date of sign
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date of sign")]
     public string? Signed { get; set; }
 
-	}
-
-
+}

@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum CommodityRiskResultPhsiClassificationEnum
 {
 
-		[EnumMember(Value = "Mandatory")]
-		Mandatory,
-	
-		[EnumMember(Value = "Reduced")]
-		Reduced,
-	
-		[EnumMember(Value = "Controlled")]
-		Controlled,
-	
+    [EnumMember(Value = "Mandatory")]
+    Mandatory,
+
+    [EnumMember(Value = "Reduced")]
+    Reduced,
+
+    [EnumMember(Value = "Controlled")]
+    Controlled,
+
 }
-
-

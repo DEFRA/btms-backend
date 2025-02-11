@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum CommodityRiskResultPhsiClassificationEnum
 {
 
-		Mandatory,
-	
-		Reduced,
-	
-		Controlled,
-	
+    Mandatory,
+
+    Reduced,
+
+    Controlled,
+
 }
-
-

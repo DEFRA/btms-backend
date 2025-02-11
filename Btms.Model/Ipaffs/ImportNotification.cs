@@ -28,22 +28,22 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
         get => ReferenceNumber!;
         set => ReferenceNumber = value;
     }
-    
+
     [ChangeSetIgnore]
     // ReSharper disable once InconsistentNaming - want to use Mongo DB convention to indicate none core schema properties
     public string _Etag { get; set; } = default!;
-    
+
     [Attr]
     public DateTime? CreatedSource { get; set; }
 
     [Attr]
     [ChangeSetIgnore]
     public DateTime Created { get; set; }
-    
+
     [Attr]
     [ChangeSetIgnore]
     public DateTime UpdatedEntity { get; set; }
-    
+
     [Attr]
     [ChangeSetIgnore]
     public DateTime Updated { get; set; }
@@ -145,23 +145,23 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
             Relationships.Movements.Data.AddRange(dataItems);
             linked = true;
         }
-        
+
         if (linked)
         {
             AuditEntries.Add(AuditEntry.CreateLinked(string.Empty, Version.GetValueOrDefault()));
         }
     }
-    
+
     public void RemoveRelationship(RelationshipDataItem relationship)
     {
         var unlinked = false;
-        
+
         if (Relationships.Movements.Data.Contains(relationship))
         {
             Relationships.Movements.Data.Remove(relationship);
             unlinked = true;
         }
-        
+
         if (unlinked)
         {
             AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, Version.GetValueOrDefault(), UpdatedSource));

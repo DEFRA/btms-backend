@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionNotAcceptableActionSpecialTreatmentReasonEnum
 {
 
-		ContaminatedProducts,
-	
-		InterceptedPart,
-	
-		PackagingMaterial,
-	
-		Other,
-	
+    ContaminatedProducts,
+
+    InterceptedPart,
+
+    PackagingMaterial,
+
+    Other,
+
 }
-
-

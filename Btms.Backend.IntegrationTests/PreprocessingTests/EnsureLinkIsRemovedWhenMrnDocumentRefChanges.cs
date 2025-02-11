@@ -14,8 +14,8 @@ public class EnsureLinkIsRemovedWhenMrnDocumentRefChanges(ITestOutputHelper outp
     [Fact]
     public void ShouldClearLinkingWhenMrnDocumentRefChanges()
     {
-       var movement = Client.GetSingleMovement();
-        
+        var movement = Client.GetSingleMovement();
+
         //Assert Audit entries to ensure we first Linked and then Update received
         movement.AuditEntries
             .Count(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Linked" })
@@ -23,7 +23,7 @@ public class EnsureLinkIsRemovedWhenMrnDocumentRefChanges(ITestOutputHelper outp
         movement.AuditEntries
             .Count(a => a is { CreatedBy: CreatedBySystem.Cds, Status: "Updated" })
             .Should().Be(1);
-        
+
         //Assert that the link was cleared after the updated mrn is processed
         movement.Relationships.Notifications.Data.Count.Should().Be(0);
     }

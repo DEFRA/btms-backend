@@ -16,7 +16,7 @@ public class LinkingMetrics
 
         total = meter.CreateCounter<long>("btms.linking.total", description: "Number of links generated");
         faulted = meter.CreateCounter<long>("btms.linking.faulted", description: "Number of times linking errored");
-        
+
     }
     public void Faulted(Exception exception)
     {

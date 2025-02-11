@@ -16,7 +16,7 @@ namespace Btms.Business.Tests.Services.Linking;
 
 public class LinkingServiceTests
 {
-    private static readonly Random Random = new ();
+    private static readonly Random Random = new();
     protected readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
     private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
@@ -28,14 +28,14 @@ public class LinkingServiceTests
         // Arrange
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var ctx = new BadContext();
-        
+
         // Act
         var test = () => sut.Link(ctx);
 
         // Assert
         await test.Should().ThrowAsync<LinkException>();
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_AddedInitialDocuments_AddsNotificationLinks()
     {
@@ -43,33 +43,33 @@ public class LinkingServiceTests
         var testData = await AddTestData(3, 1, 0);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-            
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContextWithDocuments(testData.Movements[0], [], [testData.Cheds[0], testData.Cheds[1]]);
-        
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(2);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // added cheds
         beforeLinkChedRelCounts[0].Should().Be(0);
         afterChedRelCounts[0].Should().Be(1);
         beforeLinkChedRelCounts[1].Should().Be(0);
         afterChedRelCounts[1].Should().Be(1);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[2].Should().Be(0);
         afterChedRelCounts[2].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_AddedInitialItems_AddsNotificationLinks()
     {
@@ -77,189 +77,189 @@ public class LinkingServiceTests
         var testData = await AddTestData(3, 1, 0);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-            
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContextWithItems(testData.Movements[0], [], [testData.Cheds[0], testData.Cheds[1]]);
-    
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(2);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // added cheds
         beforeLinkChedRelCounts[0].Should().Be(0);
         afterChedRelCounts[0].Should().Be(1);
         beforeLinkChedRelCounts[1].Should().Be(0);
         afterChedRelCounts[1].Should().Be(1);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[2].Should().Be(0);
         afterChedRelCounts[2].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_AddedSomeDocuments_AddsNotificationLinks()
     {
         // Arrange
         var testData = await AddTestData(3, 1, 0);
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
-        
+
         // establish existing links
         var movementCtx = CreateMovementContextWithDocuments(testData.Movements[0], [], [testData.Cheds[0]]);
         var prelink = await sut.Link(movementCtx);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // Act
         movementCtx = CreateMovementContextWithDocuments(prelink.Movements[0], [testData.Cheds[0]], [testData.Cheds[0], testData.Cheds[1]]);
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(2);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // unchanged ched
         beforeLinkChedRelCounts[0].Should().Be(1);
         afterChedRelCounts[0].Should().Be(1);
-        
+
         // added ched
         beforeLinkChedRelCounts[1].Should().Be(0);
         afterChedRelCounts[1].Should().Be(1);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[2].Should().Be(0);
         afterChedRelCounts[2].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_AddedSomeItems_AddsNotificationLinks()
     {
         // Arrange
         var testData = await AddTestData(3, 1, 0);
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
-        
+
         // establish existing links
         var movementCtx = CreateMovementContextWithItems(testData.Movements[0], [], [testData.Cheds[0]]);
         var prelink = await sut.Link(movementCtx);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // Act
         movementCtx = CreateMovementContextWithItems(prelink.Movements[0], [testData.Cheds[0]], [testData.Cheds[0], testData.Cheds[1]]);
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(2);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // unchanged ched
         beforeLinkChedRelCounts[0].Should().Be(1);
         afterChedRelCounts[0].Should().Be(1);
-        
+
         // added ched
         beforeLinkChedRelCounts[1].Should().Be(0);
         afterChedRelCounts[1].Should().Be(1);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[2].Should().Be(0);
         afterChedRelCounts[2].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_ChangedSomeDocuments_RemovesAndAddsNotificationLinks()
     {
         // Arrange
         var testData = await AddTestData(3, 1, 0);
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
-        
+
         // establish existing links
         var movementCtx = CreateMovementContextWithDocuments(testData.Movements[0], [], [testData.Cheds[0]]);
         var prelink = await sut.Link(movementCtx);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // Act
         movementCtx = CreateMovementContextWithDocuments(prelink.Movements[0], [testData.Cheds[0]], [testData.Cheds[1]]);
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // removed cheds
         beforeLinkChedRelCounts[0].Should().Be(1);
         afterChedRelCounts[0].Should().Be(0);
-        
+
         // added cheds
         beforeLinkChedRelCounts[1].Should().Be(0);
         afterChedRelCounts[1].Should().Be(1);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[2].Should().Be(0);
         afterChedRelCounts[2].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_ChangedSomeItems_RemovesAndAddsNotificationLinks()
     {
         // Arrange
         var testData = await AddTestData(3, 1, 0);
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
-        
+
         // establish existing links
         var movementCtx = CreateMovementContextWithItems(testData.Movements[0], [], [testData.Cheds[0]]);
         var prelink = await sut.Link(movementCtx);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // Act
         movementCtx = CreateMovementContextWithItems(prelink.Movements[0], [testData.Cheds[0]], [testData.Cheds[1]]);
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // removed cheds
         beforeLinkChedRelCounts[0].Should().Be(1);
         afterChedRelCounts[0].Should().Be(0);
-        
+
         // added cheds
         beforeLinkChedRelCounts[1].Should().Be(0);
         afterChedRelCounts[1].Should().Be(1);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[2].Should().Be(0);
         afterChedRelCounts[2].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_MatchingCHEDs_AddsAllToLinkResult()
     {
@@ -277,7 +277,7 @@ public class LinkingServiceTests
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_NoMatchingCHEDs_NoMatchingTriggered()
     {
@@ -285,111 +285,111 @@ public class LinkingServiceTests
         var testData = await AddTestData();
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(testData.Movements[0], [null], true, false);
-        
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(0);
         linkResult.Movements.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_RemovedSomeDocuments_RemovesNotificationLinks()
     {
         // Arrange
         var testData = await AddTestData(4, 1, 0);
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
-        
+
         // establish existing links
         var movementCtx = CreateMovementContextWithDocuments(testData.Movements[0], [], [testData.Cheds[0], testData.Cheds[1], testData.Cheds[2]]);
         var prelink = await sut.Link(movementCtx);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // Act
         movementCtx = CreateMovementContextWithDocuments(prelink.Movements[0], [testData.Cheds[0], testData.Cheds[1], testData.Cheds[2]], [testData.Cheds[0]]);
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // unchanged ched
         beforeLinkChedRelCounts[0].Should().Be(1);
         afterChedRelCounts[0].Should().Be(1);
-        
+
         // removed cheds
         beforeLinkChedRelCounts[1].Should().Be(1);
         afterChedRelCounts[1].Should().Be(0);
         beforeLinkChedRelCounts[2].Should().Be(1);
         afterChedRelCounts[2].Should().Be(0);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[3].Should().Be(0);
         afterChedRelCounts[3].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_IncludesFieldsOfInterest_RemovedSomeItems_RemovesNotificationLinks()
     {
         // Arrange
         var testData = await AddTestData(4, 1, 0);
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
-        
+
         // establish existing links
         var movementCtx = CreateMovementContextWithItems(testData.Movements[0], [], [testData.Cheds[0], testData.Cheds[1], testData.Cheds[2]]);
         var prelink = await sut.Link(movementCtx);
         var beforeLinkChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // Act
         movementCtx = CreateMovementContextWithItems(prelink.Movements[0], [testData.Cheds[0], testData.Cheds[1], testData.Cheds[2]], [testData.Cheds[0]]);
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
-        
+
         var afterChedRelCounts = testData.Cheds.Select(c =>
             dbContext.Notifications.Single(x => x.Id == c.Id).Relationships.Movements.Data.Count).ToList();
-        
+
         // unchanged ched
         beforeLinkChedRelCounts[0].Should().Be(1);
         afterChedRelCounts[0].Should().Be(1);
-        
+
         // removed cheds
         beforeLinkChedRelCounts[1].Should().Be(1);
         afterChedRelCounts[1].Should().Be(0);
         beforeLinkChedRelCounts[2].Should().Be(1);
         afterChedRelCounts[2].Should().Be(0);
-        
+
         // unlinked ched
         beforeLinkChedRelCounts[3].Should().Be(0);
         afterChedRelCounts[3].Should().Be(0);
     }
-    
+
     [Fact]
     public async Task LinkMovement_ExistingRequest_NoFieldsOfInterest_NoMatchingTriggered()
     {
         // Arrange
         var testData = await AddTestData();
-        
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(testData.Movements[0], [testData.Cheds[0]], true, true);
-        
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.LinksExist);
@@ -402,20 +402,20 @@ public class LinkingServiceTests
     {
         // Arrange
         var testData = await AddTestData();
-        
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(null, [testData.Cheds[0]], true, false);
-        
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task LinkMovement_NewRequest_MultipleMatchingCHEDs_AddsAllToLinkResult()
     {
@@ -424,34 +424,34 @@ public class LinkingServiceTests
 
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(null, [testData.Cheds[0], testData.Cheds[1]], false, true);
-        
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(2);
         linkResult.Movements.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task LinkMovement_NewRequest_NoMatchingCHEDs_NoMatchingTriggered()
     {
         // Arrange
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var movementCtx = CreateMovementContext(null, [null], true, false);
-        
+
         // Act
         var linkResult = await sut.Link(movementCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
         linkResult.Notifications.Count.Should().Be(0);
         linkResult.Movements.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task LinkNotification_ExistingNotification_IncludesFieldsOfInterest_MatchingMRN_AddsAllToLinkResult()
     {
@@ -460,10 +460,10 @@ public class LinkingServiceTests
 
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, true);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
@@ -475,33 +475,33 @@ public class LinkingServiceTests
     public async Task LinkNotification_ExistingNotification_IncludesFieldsOfInterest_MultipleMatchingMRNs_AddsAllToLinkResult()
     {
         // Arrange
-        var testData = await AddTestData(2,2,2);
-        
+        var testData = await AddTestData(2, 2, 2);
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, true);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(2);
     }
-    
+
     [Fact]
     public async Task LinkNotification_ExistingNotification_IncludesFieldsOfInterest_NoMatchingMRNs_NoMatchingTriggered()
     {
         // Arrange
         var testData = await AddTestData(1, 1, 0);
-        
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, true);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
@@ -514,13 +514,13 @@ public class LinkingServiceTests
     {
         // Arrange
         var testData = await AddTestData(2, 2, 2);
-        
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.Cheds[0], true, false);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.LinksExist);
@@ -532,14 +532,14 @@ public class LinkingServiceTests
     public async Task LinkNotification_NewNotification_MatchingMRN_AddsAllToLinkResult()
     {
         // Arrange
-        var testData = await AddTestData(0,4,0, 1);
-        
+        var testData = await AddTestData(0, 4, 0, 1);
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.UnmatchedChedRefs[0], string.Empty, false, true);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
@@ -551,31 +551,31 @@ public class LinkingServiceTests
     public async Task LinkNotification_NewNotification_MultipleMatchingMRNs_AddsAllToLinkResult()
     {
         // Arrange
-        var testData = await AddTestData(0,1,0, 1);
-        
+        var testData = await AddTestData(0, 1, 0, 1);
+
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(testData.UnmatchedChedRefs[0], string.Empty, false, true);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.Linked);
         linkResult.Notifications.Count.Should().Be(1);
         linkResult.Movements.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task LinkNotification_NewNotification_NoMatchingMRNs_NoMatchingTriggered()
     {
         // Arrange
         var sut = new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
         var notificationCtx = CreateNotificationContext(null, false, false);
-        
+
         // Act
         var linkResult = await sut.Link(notificationCtx);
-        
+
         // Assert
         linkResult.Should().NotBeNull();
         linkResult.Outcome.Should().Be(LinkOutcome.NotLinked);
@@ -598,7 +598,7 @@ public class LinkingServiceTests
         var receivedChedReferences = receivedCheds
             .Select(x => x != null ? x._MatchReference : $"{GenerateRandomReference()}")
             .Select(y => int.Parse(y)).ToList();
-        
+
         var mov = new Movement
         {
             Id = entryReference,
@@ -606,30 +606,30 @@ public class LinkingServiceTests
             _Etag = etag,
             Items = receivedChedReferences.Select(x => new Items
             {
-                Documents = [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
+                Documents = [new Document { DocumentReference = GenerateDocumentReference(x) }]
             }).ToList(),
             ClearanceRequests = new(),
             BtmsStatus = MovementStatus.Default()
         };
-    
+
         var existingMovement = new Movement
+        {
+            Id = entryReference,
+            EntryReference = entryReference,
+            Items = existingChedReferences.Select(x => new Items
             {
-                Id = entryReference,
-                EntryReference = entryReference,
-                Items = existingChedReferences.Select(x => new Items
-                {
-                    Documents = [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
-                }).ToList(),
-                ClearanceRequests = new(),
-                BtmsStatus = MovementStatus.Default()
-            };
-        
+                Documents = [new Document { DocumentReference = GenerateDocumentReference(x) }]
+            }).ToList(),
+            ClearanceRequests = new(),
+            BtmsStatus = MovementStatus.Default()
+        };
+
         var changeSet = mov.GenerateChangeSet(existingMovement);
         var output = LinkContext.ForMovement(mov, changeSet);
-        
+
         return output;
     }
-    
+
     protected MovementLinkContext CreateMovementContextWithDocuments(Movement? movement, List<ImportNotification?> existingCheds, List<ImportNotification?> receivedCheds)
     {
         var entryReference = movement != null ? movement.EntryReference : $"TEST{GenerateRandomReference()}";
@@ -640,7 +640,7 @@ public class LinkingServiceTests
         var receivedChedReferences = receivedCheds
             .Select(x => x != null ? x._MatchReference : $"{GenerateRandomReference()}")
             .Select(y => int.Parse(y)).ToList();
-        
+
         var mov = new Movement
         {
             Id = entryReference,
@@ -650,13 +650,13 @@ public class LinkingServiceTests
                 new Items
                 {
                     Documents = receivedChedReferences
-                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x)})
+                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x) })
                         .ToArray()
                 }],
             ClearanceRequests = new(),
             BtmsStatus = MovementStatus.Default()
         };
-    
+
         var existingMovement = new Movement
         {
             Id = entryReference,
@@ -665,20 +665,20 @@ public class LinkingServiceTests
                 new Items
                 {
                     Documents = existingChedReferences
-                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x)})
+                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x) })
                         .ToArray()
                 }],
             ClearanceRequests = new(),
             BtmsStatus = MovementStatus.Default()
         };
-        
+
         var changeSet = mov.GenerateChangeSet(existingMovement);
         var output = LinkContext.ForMovement(mov, changeSet);
-        
+
         return output;
     }
-    
-    
+
+
     protected MovementLinkContext CreateMovementContext(Movement? movement, List<ImportNotification?> cheds, bool createExistingMovement, bool existingDocs, bool newDocs = true)
     {
         var entryReference = movement != null ? movement.EntryReference : $"TEST{GenerateRandomReference()}";
@@ -686,7 +686,7 @@ public class LinkingServiceTests
         var chedReferences = cheds
             .Select(x => x != null ? x._MatchReference : $"{GenerateRandomReference()}")
             .Select(y => int.Parse(y)).ToList();
-        
+
         var mov = new Movement
         {
             Id = entryReference,
@@ -695,14 +695,14 @@ public class LinkingServiceTests
             Items = chedReferences.Select(x => new Items
             {
                 Documents = newDocs
-                ? [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
+                ? [new Document { DocumentReference = GenerateDocumentReference(x) }]
                 : []
             }).ToList(),
             ClearanceRequests = new(),
             BtmsStatus = MovementStatus.Default()
         };
 
-        var existingMovement = createExistingMovement ? 
+        var existingMovement = createExistingMovement ?
             new Movement
             {
                 Id = entryReference,
@@ -710,7 +710,7 @@ public class LinkingServiceTests
                 Items = chedReferences.Select(x => new Items
                 {
                     Documents = existingDocs
-                        ? [ new Document { DocumentReference = GenerateDocumentReference(x) } ]
+                        ? [new Document { DocumentReference = GenerateDocumentReference(x) }]
                         : []
                 }).ToList(),
                 ClearanceRequests = new(),
@@ -720,7 +720,7 @@ public class LinkingServiceTests
 
         var changeSet = mov.GenerateChangeSet(existingMovement);
         var output = LinkContext.ForMovement(mov, createExistingMovement ? changeSet : null);
-        
+
         return output;
     }
 
@@ -741,7 +741,7 @@ public class LinkingServiceTests
             UpdatedEntity = DateTime.UtcNow,
             _Etag = etag,
             Commodities =
-                [ new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }]
+                [new CommodityComplement { CommodityId = "1234567", CommodityDescription = "Definitely real things" }]
         };
 
         CommodityComplement[] c = fieldsOfInterest
@@ -763,16 +763,16 @@ public class LinkingServiceTests
         return output;
     }
 
-    protected async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<int> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1,  int unMatchedChedsPerMovement = 0)
+    protected async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<int> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1, int unMatchedChedsPerMovement = 0)
     {
         matchedChedsPerMovement = int.Min(matchedChedsPerMovement, chedCount);
         var movements = new List<Movement>();
         var cheds = new List<ImportNotification>();
-        
+
         var unmatchedChedRefs = Enumerable
             .Range(0, unMatchedChedsPerMovement)
             .Select(_ => GenerateRandomReference()).ToList();
-        
+
         for (var i = 0; i < chedCount; i++)
         {
             var matchingRef = GenerateRandomReference();
@@ -782,9 +782,9 @@ public class LinkingServiceTests
                 ReferenceNumber = GenerateNotificationReference(matchingRef),
                 Commodities = []
             };
-            
+
             cheds.Add(ched);
-            
+
             await dbContext.Notifications.Insert(ched);
         }
 
@@ -802,17 +802,17 @@ public class LinkingServiceTests
                         Header = new() { EntryReference = entryRef, EntryVersionNumber = 3, DeclarationType = "F" }
                     }
                 ],
-                Items = new (),
+                Items = new(),
                 BtmsStatus = MovementStatus.Default()
             };
-            
+
             movements.Add(mov);
-            
+
             for (var j = 0; j < matchedChedsPerMovement; j++)
             {
                 var matchRef = cheds[j]._MatchReference;
                 var refNo = int.Parse(matchRef);
-                
+
                 mov.Items.Add(
                     new Items
                     {
@@ -822,7 +822,7 @@ public class LinkingServiceTests
                         ]
                     });
             }
-            
+
             foreach (var refNo in unmatchedChedRefs)
             {
                 mov.Items.Add(
@@ -837,19 +837,19 @@ public class LinkingServiceTests
 
             await dbContext.Movements.Insert(mov);
         }
-        
+
         return (cheds, movements, unmatchedChedRefs);
     }
-    
+
     private static int GenerateRandomReference()
     {
         var intString = "1";
-        
+
         for (var i = 0; i < 6; i++)
         {
             intString += Random.Next(9).ToString();
         }
-        
+
         return int.Parse(intString);
     }
 }

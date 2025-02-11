@@ -39,7 +39,7 @@ public static class XmlSchemaExtensions
             return schemaElement.SchemaTypeName.Name;
         }
 
-        if (schemaElement.SchemaTypeName.Name == "dateTime" )
+        if (schemaElement.SchemaTypeName.Name == "dateTime")
         {
             return "DateTime";
         }

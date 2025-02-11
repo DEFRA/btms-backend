@@ -37,7 +37,7 @@ public class MultiChedPWorstCaseMatchScenarioGenerator(
     ILogger<MultiChedPWorstCaseMatchScenarioGenerator> logger)
     : MultiChedMatchScenarioGenerator(sp, logger, "MultiChedWorstCaseDecision/ChedP")
 {
-    
+
 }
 
 

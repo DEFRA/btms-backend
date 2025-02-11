@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum UnitEnum
 {
 
-		[EnumMember(Value = "percent")]
-		Percent,
-	
-		[EnumMember(Value = "number")]
-		Number,
-	
+    [EnumMember(Value = "percent")]
+    Percent,
+
+    [EnumMember(Value = "number")]
+    Number,
+
 }
-
-

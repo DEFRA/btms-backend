@@ -9,10 +9,8 @@ namespace Btms.Model.Ipaffs;
 public enum PartyTypeEnum
 {
 
-		CommercialTransporter,
-	
-		PrivateTransporter,
-	
+    CommercialTransporter,
+
+    PrivateTransporter,
+
 }
-
-

@@ -17,7 +17,7 @@ public class ClearLinksDueToMrnDocumentRefChange(ILogger<ClearLinksDueToMrnDocum
             .WithVersionNumber()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification.ReferenceNumber);
 
         var clearanceRequestBuilder = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
@@ -26,16 +26,16 @@ public class ClearLinksDueToMrnDocumentRefChange(ILogger<ClearLinksDueToMrnDocum
             .WithReferenceNumberOneToOne(notification.ReferenceNumber!)
             .WithEntryVersionNumber(1)
             .WithTunaItem();
-            
+
         var clearanceRequest = clearanceRequestBuilder.ValidateAndBuild();
-        
+
         var updatedClearanceRequest = clearanceRequestBuilder
             .Clone()
             .WithEntryVersionNumber(2)
             .WithCreationDate(entryDate.AddHours(4), false)
             .WithItemDocumentRef("GBCHD2024.001239999999") // Updating to trigger a no match
             .Build();
-    
+
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
         return new GeneratorResult([clearanceRequest, notification, updatedClearanceRequest]);

@@ -9,20 +9,18 @@ namespace Btms.Model.Ipaffs;
 public enum DetailsOnReExportTransportTypeEnum
 {
 
-		Rail,
-	
-		Plane,
-	
-		Ship,
-	
-		Road,
-	
-		Other,
-	
-		CShipRoad,
-	
-		CShipRail,
-	
+    Rail,
+
+    Plane,
+
+    Ship,
+
+    Road,
+
+    Other,
+
+    CShipRoad,
+
+    CShipRail,
+
 }
-
-

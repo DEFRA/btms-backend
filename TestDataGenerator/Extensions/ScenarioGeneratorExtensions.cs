@@ -18,7 +18,7 @@ public static class IScenarioGeneratorExtensions
             .WithInspectionStatus(InspectionRequiredEnum.NotRequired)
             .WithVersionNumber();
     }
-    
+
     public static ClearanceRequestBuilder<AlvsClearanceRequest> GetSimpleClearanceRequest(this ScenarioGenerator generator, int scenario, int item, DateTime entryDate, ScenarioConfig config, ImportNotification notification)
     {
         return BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")

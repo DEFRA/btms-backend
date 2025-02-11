@@ -16,7 +16,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class NoMatch(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchSingleItemWithDecisionScenarioGenerator>(output)
 {
-    
+
     [Fact]
     public void ShouldNotHaveLinked()
     {
@@ -25,7 +25,7 @@ public class NoMatch(ITestOutputHelper output)
             .BtmsStatus.LinkStatus
             .Should().Be(LinkStatusEnum.MissingLinks);
     }
-    
+
     [Fact]
     public void ShouldHaveAlvsDecision()
     {
@@ -34,7 +34,7 @@ public class NoMatch(ITestOutputHelper output)
             .AlvsDecisionStatus.Decisions.Count
             .Should().Be(1);
     }
-    
+
     [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -42,22 +42,24 @@ public class NoMatch(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.Checks
             .Should().BeEquivalentTo([
-                new { 
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H222",
-                    AlvsDecisionCode = "H01", 
+                    AlvsDecisionCode = "H01",
                     BtmsDecisionCode = "X00"
                 },
-                new {
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H224",
-                    AlvsDecisionCode = "H01", 
+                    AlvsDecisionCode = "H01",
                     BtmsDecisionCode = "X00"
-                    
+
                 }
             ]);
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionStatus()
     {
@@ -66,7 +68,7 @@ public class NoMatch(ITestOutputHelper output)
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.NoImportNotificationsLinked);
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionAuditChecks()
     {
@@ -76,7 +78,7 @@ public class NoMatch(ITestOutputHelper output)
             .Context.As<DecisionContext>()?.DecisionComparison?.Checks
             .Should().NotBeNull();
     }
-    
+
     [Fact]
     public void ShouldNotHaveDecisionAuditNotifications()
     {
@@ -86,7 +88,7 @@ public class NoMatch(ITestOutputHelper output)
             .Context.As<DecisionContext>()?.ImportNotifications
             .Should().BeEmpty();
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionMatchedFalse()
     {

@@ -15,7 +15,7 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .WithVersionNumber()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification.ReferenceNumber);
 
         var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
@@ -31,9 +31,9 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
             .WithReferenceNumber(notification.ReferenceNumber!)
             .WithDecisionVersionNumber()
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
-        
+
         return new GeneratorResult([clearanceRequest, notification, finalisation]);
     }
 }

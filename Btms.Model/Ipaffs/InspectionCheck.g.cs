@@ -22,55 +22,53 @@ public partial class InspectionCheck  //
 {
 
 
-        /// <summary>
-        /// Type of check
-        /// </summary>
+    /// <summary>
+    /// Type of check
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Type of check")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public InspectionCheckTypeEnum? Type { get; set; }
 
-	
-        /// <summary>
-        /// Status of the check
-        /// </summary>
+
+    /// <summary>
+    /// Status of the check
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Status of the check")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public InspectionCheckStatusEnum? Status { get; set; }
 
-	
-        /// <summary>
-        /// Reason for the status if applicable
-        /// </summary>
+
+    /// <summary>
+    /// Reason for the status if applicable
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Reason for the status if applicable")]
     public string? Reason { get; set; }
 
-	
-        /// <summary>
-        /// Other reason text when selected reason is &#x27;Other&#x27;
-        /// </summary>
+
+    /// <summary>
+    /// Other reason text when selected reason is &#x27;Other&#x27;
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Other reason text when selected reason is 'Other'")]
     public string? OtherReason { get; set; }
 
-	
-        /// <summary>
-        /// Has commodity been selected for checks?
-        /// </summary>
+
+    /// <summary>
+    /// Has commodity been selected for checks?
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Has commodity been selected for checks?")]
     public bool? IsSelectedForChecks { get; set; }
 
-	
-        /// <summary>
-        /// Has commodity completed this type of check
-        /// </summary>
+
+    /// <summary>
+    /// Has commodity completed this type of check
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Has commodity completed this type of check")]
     public bool? HasChecksComplete { get; set; }
 
-	}
-
-
+}

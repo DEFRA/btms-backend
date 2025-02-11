@@ -23,7 +23,7 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
             .Context.DecisionComparison?.DecisionMatched
             .Should().BeFalse();
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionStatusAtGlobalLevel()
     {
@@ -33,7 +33,7 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
             .Context.DecisionComparison?.DecisionStatus
             .Should().Be(DecisionStatusEnum.NoAlvsDecisions);
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
@@ -50,11 +50,11 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
         var decisions = Client
             .GetSingleMovement()
             .Decisions;
-        
+
         decisions.Count
             .Should().Be(0);
     }
-    
+
     [Fact]
     public void ShouldHave1AlvsDecision()
     {
@@ -79,7 +79,7 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
                 (CreatedBySystem.Alvs, "Decision", 1)
             ]);
     }
-    
+
     [Fact]
     public void ShouldHaveChedType()
     {
@@ -88,7 +88,7 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
             .BtmsStatus.ChedTypes
             .Should().BeEmpty();
     }
-    
+
     [Fact]
     public void ShouldNotBeLinked()
     {
@@ -97,21 +97,21 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
             .BtmsStatus.LinkStatus
             .Should().Be(LinkStatusEnum.NoLinks);
     }
-    
+
     [Fact]
     public async Task ShouldNotHaveExceptions()
     {
         var result = await Client
             .GetExceptions();
-        
+
         TestOutputHelper.WriteLine($"{result.StatusCode} status");
         result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
-        
+
         (await result.GetString())
             .Should()
             .Be("[]");
     }
-    
+
     /// <summary>
     /// Ensures we capture the error status of the movement
     /// but will likely need to change as part of the error code work
@@ -119,21 +119,22 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
     [Fact]
     public void ShouldHaveCorrectBtmsStatus()
     {
-        var movement = 
+        var movement =
         Client
             .GetSingleMovement();
-            
+
         movement
             .BtmsStatus
             .Should().BeEquivalentTo(
-                new { 
+                new
+                {
                     LinkStatus = LinkStatusEnum.NoLinks,
                     LinkStatusDescription = "ALVSVAL318",
                     Segment = MovementSegmentEnum.Cdms249
                 }
             );
     }
-    
+
     [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -142,7 +143,7 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
             .AlvsDecisionStatus.Context.DecisionComparison?.Checks
             .Should().BeEmpty();
     }
-    
+
     [Fact]
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {

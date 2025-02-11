@@ -21,8 +21,8 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
         EnsureEnvironmentInitialised(generatorType);
         CheckDecisionCode(expectedDecision);
     }
-    
-    [Theory (Skip = "Need to update data")]
+
+    [Theory(Skip = "Need to update data")]
     [InlineData(typeof(MultiChedPWorstCaseMatchScenarioGenerator), "N07")]
     [InlineData(typeof(MultiChedAWorstCaseMatchScenarioGenerator), "H02")]
     [InlineData(typeof(MultiChedDWorstCaseMatchScenarioGenerator), "N02")]

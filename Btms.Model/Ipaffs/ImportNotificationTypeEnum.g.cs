@@ -10,16 +10,14 @@ namespace Btms.Model.Ipaffs;
 public enum ImportNotificationTypeEnum
 {
 
-		Cveda,
-	
-		Cvedp,
-	
-		Chedpp,
-	
-		Ced,
-	
-		Imp,
-	
+    Cveda,
+
+    Cvedp,
+
+    Chedpp,
+
+    Ced,
+
+    Imp,
+
 }
-
-

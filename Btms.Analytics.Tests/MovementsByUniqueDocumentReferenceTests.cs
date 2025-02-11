@@ -23,15 +23,15 @@ public class MovementsByUniqueDocumentReferenceTests(ITestOutputHelper output)
         var result = await Client
             .GetAnalyticsDashboard(["movementsByUniqueDocumentReferenceCount"],
                 dateFrom: DateTime.MinValue, dateTo: DateTime.MaxValue);
-           
+
         TestOutputHelper.WriteLine($"{result.StatusCode} status");
         result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
-        
+
         var chart = await result
-            .AnalyticsMultiSeriesChartAs<MultiSeriesDataset<ByNumericDimensionResult>,ByNumericDimensionResult>("movementsByUniqueDocumentReferenceCount")!;
+            .AnalyticsMultiSeriesChartAs<MultiSeriesDataset<ByNumericDimensionResult>, ByNumericDimensionResult>("movementsByUniqueDocumentReferenceCount")!;
 
         TestOutputHelper.WriteLine("{0} aggregated items found", chart.Series!.Count);
-        
+
         chart.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }

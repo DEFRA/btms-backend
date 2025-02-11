@@ -10,7 +10,7 @@ public interface IBtmsMediator
 
     Task SendJob<TRequest>(TRequest request, CancellationToken cancellationToken = default)
         where TRequest : IRequest, ISyncJob;
-    
+
     /// <summary>
     /// Asynchronously send a request to a single handler
     /// </summary>

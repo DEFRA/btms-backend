@@ -22,29 +22,27 @@ public partial class CommodityChecks  //
 {
 
 
-        /// <summary>
-        /// UUID used to match the commodityChecks to the commodityComplement
-        /// </summary>
+    /// <summary>
+    /// UUID used to match the commodityChecks to the commodityComplement
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("UUID used to match the commodityChecks to the commodityComplement")]
     public string? UniqueComplementId { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public InspectionCheck[]? Checks { get; set; }
 
-	
-        /// <summary>
-        /// Manually entered validity period, allowed if risk decision is INSPECTION_REQUIRED and HMI check status &#x27;Compliant&#x27; or &#x27;Not inspected&#x27;
-        /// </summary>
+
+    /// <summary>
+    /// Manually entered validity period, allowed if risk decision is INSPECTION_REQUIRED and HMI check status &#x27;Compliant&#x27; or &#x27;Not inspected&#x27;
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Manually entered validity period, allowed if risk decision is INSPECTION_REQUIRED and HMI check status 'Compliant' or 'Not inspected'")]
     public int? ValidityPeriod { get; set; }
 
-	}
-
-
+}

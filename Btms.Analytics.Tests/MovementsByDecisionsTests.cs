@@ -21,7 +21,7 @@ public class MovementsByDecisionsTests(ITestOutputHelper output)
             .ByDecision(DateTime.MinValue, DateTime.MaxValue, false)!;
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result!.Result.Count());
-        
+
         result.Result.Count.Should().BeGreaterThan(1);
     }
 }

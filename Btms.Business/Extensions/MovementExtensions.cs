@@ -9,7 +9,7 @@ namespace Btms.Business.Extensions;
 
 public static class MovementExtensions
 {
-    
+
     public static string[] UniqueDocumentReferences(this Movement movement)
     {
         return movement.Items
@@ -17,7 +17,7 @@ public static class MovementExtensions
             .Select(d => d.DocumentReference!)
             .ToArray();
     }
-    
+
     private static string TrimUniqueNumber(this string id)
     {
         return id.Substring(id.LastIndexOf(".") + 1);
@@ -35,7 +35,7 @@ public static class MovementExtensions
         return doc.DocumentReference != null &&
             doc.DocumentReference.ToUpper().StartsWith("GBCHD");
     }
-    
+
     public static List<string> UniqueDocumentReferenceIds(this List<Btms.Model.Cds.Items> items)
     {
         return items
@@ -44,7 +44,7 @@ public static class MovementExtensions
             .Distinct()
             .ToList();
     }
-    
+
     public static List<string> UniqueDocumentReferenceIds(this Movement movement)
     {
         return movement.Items
@@ -79,7 +79,7 @@ public static class MovementExtensions
             .SelectMany(i => i.Checks!.Select(c => new { Item = i, Check = c }))
             .ToDictionary(ic => (ic.Item.ItemNumber, ic.Check.CheckCode!), ic => ic.Check.DecisionCode);
     }
-    
+
     public static List<ItemCheck> GetItemChecks(this AlvsDecision alvsDecision, IReadOnlyDictionary<(int, string), string?> compareTo)
     {
         return alvsDecision.Decision

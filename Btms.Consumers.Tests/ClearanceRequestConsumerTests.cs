@@ -60,7 +60,7 @@ public class ClearanceRequestConsumerTests
         var clearanceRequest = CreateAlvsClearanceRequest();
         var mbFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var mb = mbFactory.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
-        mb.Update(mb.CreateAuditEntry("Test",  CreatedBySystem.Cds));
+        mb.Update(mb.CreateAuditEntry("Test", CreatedBySystem.Cds));
         var movement = mb.Build();
         _preProcessor.Process(Arg.Any<PreProcessingContext<AlvsClearanceRequest>>())
             .Returns(Task.FromResult(new PreProcessingResult<Movement>(PreProcessingOutcome.New, movement, null)));

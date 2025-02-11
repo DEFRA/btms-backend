@@ -17,15 +17,15 @@ namespace Btms.Analytics.Tests.Helpers;
 public static class TestDataGeneratorHelpers
 {
     private static int scenarioIndex;
-    
+
     public static async Task<IServiceProvider> GeneratorPushToConsumers(this IServiceProvider sp, ILogger logger, ScenarioConfig scenario)
     {
         var generatorResults = scenario.Generate(logger, scenarioIndex);
         scenarioIndex++;
-        
+
         // var logger = app.Services.GetRequiredService<ILogger<ScenarioGenerator>>();
         // var bus = sp.GetRequiredService<IPublishBus>();
-        
+
         foreach (var generatorResult in generatorResults)
         {
             foreach (var message in generatorResult)
@@ -64,8 +64,8 @@ public static class TestDataGeneratorHelpers
         }
 
         return sp;
-    } 
-    
+    }
+
     // public static ScenarioGenerator.GeneratorResult[] Generate(this IServiceProvider sp, scenarioIndex, ILogger logger, ScenarioConfig scenario)
     // {
     //     var days = scenario.CreationDateRange;

@@ -21,59 +21,57 @@ public partial class OfficialInspector  //
 {
 
 
-        /// <summary>
-        /// First name of inspector
-        /// </summary>
+    /// <summary>
+    /// First name of inspector
+    /// </summary>
     [JsonPropertyName("firstName")]
     [Btms.SensitiveData.SensitiveData]
     public string? FirstName { get; set; }
 
-	
-        /// <summary>
-        /// Last name of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Last name of inspector
+    /// </summary>
     [JsonPropertyName("lastName")]
     [Btms.SensitiveData.SensitiveData]
     public string? LastName { get; set; }
 
-	
-        /// <summary>
-        /// Email of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Email of inspector
+    /// </summary>
     [JsonPropertyName("email")]
     [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Phone number of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Phone number of inspector
+    /// </summary>
     [JsonPropertyName("phone")]
     [Btms.SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
-	
-        /// <summary>
-        /// Fax number of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Fax number of inspector
+    /// </summary>
     [JsonPropertyName("fax")]
     [Btms.SensitiveData.SensitiveData]
     public string? Fax { get; set; }
 
-	
-        /// <summary>
-        /// Address of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Address of inspector
+    /// </summary>
     [JsonPropertyName("address")]
     public Address? Address { get; set; }
 
-	
-        /// <summary>
-        /// Date of sign
-        /// </summary>
+
+    /// <summary>
+    /// Date of sign
+    /// </summary>
     [JsonPropertyName("signed")]
     public string? Signed { get; set; }
 
-	}
-
-
+}

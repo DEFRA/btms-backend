@@ -10,27 +10,25 @@ namespace Btms.Types.Ipaffs;
 public enum InspectionCheckStatusEnum
 {
 
-		[EnumMember(Value = "To do")]
-		ToDo,
-	
-		[EnumMember(Value = "Compliant")]
-		Compliant,
-	
-		[EnumMember(Value = "Auto cleared")]
-		AutoCleared,
-	
-		[EnumMember(Value = "Non compliant")]
-		NonCompliant,
-	
-		[EnumMember(Value = "Not inspected")]
-		NotInspected,
-	
-		[EnumMember(Value = "To be inspected")]
-		ToBeInspected,
-	
-		[EnumMember(Value = "Hold")]
-		Hold,
-	
+    [EnumMember(Value = "To do")]
+    ToDo,
+
+    [EnumMember(Value = "Compliant")]
+    Compliant,
+
+    [EnumMember(Value = "Auto cleared")]
+    AutoCleared,
+
+    [EnumMember(Value = "Non compliant")]
+    NonCompliant,
+
+    [EnumMember(Value = "Not inspected")]
+    NotInspected,
+
+    [EnumMember(Value = "To be inspected")]
+    ToBeInspected,
+
+    [EnumMember(Value = "Hold")]
+    Hold,
+
 }
-
-

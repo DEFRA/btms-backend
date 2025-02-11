@@ -1,4 +1,4 @@
-﻿namespace Btms.Backend.BackgroundTaskQueue;
+namespace Btms.Backend.BackgroundTaskQueue;
 
 internal interface IBackgroundTaskQueue
 {

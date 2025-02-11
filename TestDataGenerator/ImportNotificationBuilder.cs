@@ -7,7 +7,7 @@ namespace TestDataGenerator;
 
 public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotification>
 {
-    private ImportNotificationBuilder(): base()
+    private ImportNotificationBuilder() : base()
     {
     }
 
@@ -31,14 +31,14 @@ public class ImportNotificationBuilder : ImportNotificationBuilder<ImportNotific
 public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBuilder<T>>
     where T : ImportNotification, new()
 {
-    protected ImportNotificationBuilder(): base()
+    protected ImportNotificationBuilder() : base()
     {
     }
 
     protected ImportNotificationBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
     {
     }
-    
+
     /// <summary>
     /// build, serialise and then deserialise the object to break any byref type relationships
     /// </summary>
@@ -47,12 +47,12 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
     {
 
         var json = JsonSerializer.Serialize(this.Build());
-        
-        var builder =  new ImportNotificationBuilder<T>(itemJson: json);
-        
+
+        var builder = new ImportNotificationBuilder<T>(itemJson: json);
+
         return builder;
     }
-    
+
     /// <summary>
     ///     Allows any customisations needed, such as removing problems with serialisation, e.g Do(n =>
     ///     Array.ForEach(n.PartOne!.Commodities!.ComplementParameterSets!, x => x.KeyDataPairs = null));
@@ -75,7 +75,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             n.PartOne!.Commodities!.CommodityComplements = commodities;
         });
     }
-    
+
     public ImportNotificationBuilder<T> WithReferenceNumber(ImportNotificationTypeEnum chedType, int scenario,
          DateTime created, int item)
     {
@@ -89,15 +89,15 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             // We don't want documents created in the future!
             entryDate.RandomTime(entryDate.Date == DateTime.Today ? DateTime.Now.AddHours(-2).Hour : 23)
             : entryDate;
-        
+
         return Do(x => x.LastUpdated = entry);
     }
 
-    public ImportNotificationBuilder<T> WithRandomArrivalDateTime(int maxDays, int maxHours=6)
+    public ImportNotificationBuilder<T> WithRandomArrivalDateTime(int maxDays, int maxHours = 6)
     {
         var dayOffset = CreateRandomInt(maxDays * -1, maxDays);
         var hourOffset = CreateRandomInt(maxHours * -1, maxHours);
-        
+
         return Do(x =>
         {
             var dt = DateTime.Today.AddDays(dayOffset).AddHours(hourOffset);
@@ -106,7 +106,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.PartOne!.ArrivalTime = dt.ToTime();
         });
     }
-    
+
     public ImportNotificationBuilder<T> WithSimpleCommodity(string commodityCode, string description, int netWeight, Guid? uniqueComplementId = null)
     {
         return Do(n =>
@@ -139,28 +139,28 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
                 ],
                 TotalNetWeight = netWeight,
                 TotalGrossWeight = netWeight,
-                
+
             };
         });
     }
-    
+
     public ImportNotificationBuilder<T> WithNoCommodities()
     {
         return Do(n =>
         {
-            
+
             n.RiskAssessment = null;
             n.PartOne!.Commodities!.CommodityComplements = [];
         });
     }
-    
+
     public ImportNotificationBuilder<T> WithRiskAssesment(Guid uniqueComplementId, CommodityRiskResultRiskDecisionEnum riskDecision)
     {
         return Do(n =>
         {
             n.RiskAssessment = new RiskAssessmentResult
             {
-                CommodityResults = new []
+                CommodityResults = new[]
                 {
                     new CommodityRiskResult
                     {
@@ -172,14 +172,14 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
 
         });
     }
-    
+
     public ImportNotificationBuilder<T> WithOptionalStep(bool execute, Func<ImportNotificationBuilder<T>, ImportNotificationBuilder<T>> func)
     {
         if (!execute) return this;
 
         return func(this);
     }
-    
+
     public ImportNotificationBuilder<T> WithInspectionStatus(InspectionRequiredEnum inspectionRequired = InspectionRequiredEnum.Required)
     {
         return Do(x =>
@@ -187,7 +187,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.PartTwo!.InspectionRequired = inspectionRequired;
         });
     }
-    
+
     public ImportNotificationBuilder<T> WithImportNotificationStatus(ImportNotificationStatusEnum importNotificationStatus = ImportNotificationStatusEnum.Submitted)
     {
         return Do(x =>
@@ -220,7 +220,7 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             x.Version = version;
         });
     }
-    
+
     protected override ImportNotificationBuilder<T> Validate()
     {
         return Do(n =>
@@ -229,13 +229,13 @@ public class ImportNotificationBuilder<T> : BuilderBase<T, ImportNotificationBui
             n.PartOne!.ArrivalDate.AssertHasValue("Import Notification PartOne ArrivalDate missing");
             n.PartOne!.ArrivalTime.AssertHasValue("Import Notification PartOne ArrivalTime missing");
             n.Version.AssertHasValue("Import Notification Version missing");
-            
+
             // NB - this may not be correct...
             // if (n.ImportNotificationType != ImportNotificationTypeEnum.Cveda && n.PartTwo.HasValue())
             // {
             //     n.PartTwo!.InspectionRequired.AssertHasValue($"Import Notification {n.ImportNotificationType} {n.ReferenceNumber} PartTwo InspectionRequired missing");    
             // }
-            
+
         });
     }
 }

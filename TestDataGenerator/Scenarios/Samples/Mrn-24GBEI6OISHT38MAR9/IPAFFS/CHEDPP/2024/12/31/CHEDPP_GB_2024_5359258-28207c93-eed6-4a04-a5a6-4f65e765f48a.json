@@ -1,1 +1,415 @@
-{"id":4359258,"referenceNumber":"CHEDPP.GB.2024.5359258","agencyOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf","externalReferences":[{"system":"NCTS","reference":"24TR070200000479M9","exactMatch":true,"verifiedByImporter":true,"verifiedByInspector":false}],"version":1,"lastUpdated":"2024-12-31T10:28:18.993618497Z","lastUpdatedBy":{"displayName":"b77d840a9d25c0bbe0f689c0e2b82ea99413bb59950b9497f69f3d609c859150","userId":"4c140504-35a8-eb11-b1ac-00224881badf"},"type":"CHEDPP","status":"IN_PROGRESS","riskAssessment":{"commodityResults":[{"hmiDecision":"NOTREQUIRED","phsiDecision":"REQUIRED","phsiClassification":"Reduced","phsi":{"documentCheck":true,"identityCheck":true,"physicalCheck":true},"uniqueId":"fde35c87-00ef-4399-adb4-88b948639154","eppoCode":"DINBA","indoorOutdoor":"None","propagation":"None","phsiRuleType":"Commodity"},{"hmiDecision":"NOTREQUIRED","phsiDecision":"REQUIRED","phsiClassification":"Reduced","phsi":{"documentCheck":true,"identityCheck":false,"physicalCheck":false},"uniqueId":"49f75a74-aaf9-4885-8294-4c437e438b30","eppoCode":"DINCA","indoorOutdoor":"None","propagation":"None","phsiRuleType":"Commodity"}],"assessmentDateTime":"2024-12-31T10:26:36.448143848"},"partOne":{"personResponsible":{"name":"e7202cfacaf35cdd98c4bf9bac9056d8d2a346d53697d5efd4b3d1fda58ed9cd","companyId":"b24beb85-29c0-ee11-9079-000d3abd8f0e","companyName":"1735012966daf26a68baed643950785c36a607279e3bb931073d0b75a008aae1","address":["8eb828bc5c6718b8c73be2a860ba2a169a7aff96dddbb0a494d82a03cd4f190f","72eaf20e3a768c821b91e634e819e02baccbdaaebd5287fa15db77511dd31cf7","5116c6b91d1b825aa26df865e2868603316a6b98b39784d8bd56af97780351a1","e300fcca0d30bb0f40019bc5f968a61cd3784bbc51cea887dc6b829b8c06b9c3","d72c0f3a68102b9001d35cce6e75688fc9e8a192af29c1ad0392e53d3b4a831b","85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe"],"country":"GB","tracesID":1001,"phone":"4323634ed8e14d476fd1165a2b28093852e34cbfbec02ad87af2534a9f80c7e6","email":"f835863429143345f1c95e914437514e8a776054adca715f7ed7d6c931a0538f","contactId":"d5490cb1-5007-ed11-82e5-6045bd8b9148"},"consignor":{"id":"b27bfd76-7fff-4ce2-9a1c-81681aa354c7","type":"exporter","status":"nonapproved","companyName":"0b1b81f2a20a01ca78e9b72afd113903c56a54bce65cf7f9c1c2e79603b57aae","address":{"addressLine1":"1858b9eba33a475f2f95bda92499b86d76fc29279ac4d3b3eecb47a4655c0ce2","addressLine2":"0925555815dca835af6e5bbc933765a0dcd3df6f991074ddd5d3bea24746567f","addressLine3":"36a837eeb43ee92f4e3a7058a43a6601e8a6a5b0d5c53842b368d9bf86063311","city":"6b4dbe6165b1aa2141764a3e36dcf99bb620075590057c7edf796aded2797da1","postalZipCode":"b181dc8020c2ecba71b50ce6be6531af8fbbb3bf216edf1d5785f98c2b1e81e4","countryISOCode":"22ca9cf39e4466983a65465a5510483eb2b4893d2287204eb4addeca68a872fe","telephone":"8a27ffc241a37c9ec78af870af342a04ace1f518df56ca885788353f8b02da39","email":"9e867f8167400918271a77f0a9646b33a23c10bb6f5d44316afd01f18c06edc2"},"tracesId":10241988},"consignee":{"id":"b24beb85-29c0-ee11-9079-000d3abd8f0e","type":"consignee","companyName":"1735012966daf26a68baed643950785c36a607279e3bb931073d0b75a008aae1","address":{"addressLine1":"8eb828bc5c6718b8c73be2a860ba2a169a7aff96dddbb0a494d82a03cd4f190f","addressLine2":"72eaf20e3a768c821b91e634e819e02baccbdaaebd5287fa15db77511dd31cf7","city":"e300fcca0d30bb0f40019bc5f968a61cd3784bbc51cea887dc6b829b8c06b9c3","postalZipCode":"d72c0f3a68102b9001d35cce6e75688fc9e8a192af29c1ad0392e53d3b4a831b","countryISOCode":"b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960","telephone":"abf32a0df2d1735f48ecbee46dee362c94b038ca2180709e0f398cfcbcf82b36","email":"8a29308f4df5d72e539c4e6805b8dbc64583b478660df3b89e7abc041d0148df"},"tracesId":10301276},"importer":{"id":"b24beb85-29c0-ee11-9079-000d3abd8f0e","type":"importer","companyName":"1735012966daf26a68baed643950785c36a607279e3bb931073d0b75a008aae1","address":{"addressLine1":"8eb828bc5c6718b8c73be2a860ba2a169a7aff96dddbb0a494d82a03cd4f190f","addressLine2":"72eaf20e3a768c821b91e634e819e02baccbdaaebd5287fa15db77511dd31cf7","city":"e300fcca0d30bb0f40019bc5f968a61cd3784bbc51cea887dc6b829b8c06b9c3","postalZipCode":"d72c0f3a68102b9001d35cce6e75688fc9e8a192af29c1ad0392e53d3b4a831b","countryISOCode":"b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960","telephone":"abf32a0df2d1735f48ecbee46dee362c94b038ca2180709e0f398cfcbcf82b36","email":"8a29308f4df5d72e539c4e6805b8dbc64583b478660df3b89e7abc041d0148df"},"tracesId":10301276},"placeOfDestination":{"id":"b24beb85-29c0-ee11-9079-000d3abd8f0e","type":"destination","companyName":"1735012966daf26a68baed643950785c36a607279e3bb931073d0b75a008aae1","address":{"addressLine1":"8eb828bc5c6718b8c73be2a860ba2a169a7aff96dddbb0a494d82a03cd4f190f","addressLine2":"72eaf20e3a768c821b91e634e819e02baccbdaaebd5287fa15db77511dd31cf7","city":"e300fcca0d30bb0f40019bc5f968a61cd3784bbc51cea887dc6b829b8c06b9c3","postalZipCode":"d72c0f3a68102b9001d35cce6e75688fc9e8a192af29c1ad0392e53d3b4a831b","countryISOCode":"b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960","telephone":"abf32a0df2d1735f48ecbee46dee362c94b038ca2180709e0f398cfcbcf82b36","email":"8a29308f4df5d72e539c4e6805b8dbc64583b478660df3b89e7abc041d0148df"},"tracesId":10301276},"commodities":{"totalGrossWeight":8910,"totalNetWeight":8217,"numberOfPackages":693,"commodityComplement":[{"commodityID":"06031200","commodityDescription":"Carnations","complementID":1,"complementName":"Dianthus barbatus","eppoCode":"DINBA","speciesID":"1372695","speciesName":"Dianthus barbatus","speciesNomination":"Dianthus barbatus"},{"commodityID":"06031200","commodityDescription":"Carnations","complementID":2,"complementName":"Dianthus caryophyllus","eppoCode":"DINCA","speciesID":"1406969","speciesName":"Dianthus caryophyllus","speciesNomination":"Dianthus caryophyllus"}],"complementParameterSet":[{"uniqueComplementID":"fde35c87-00ef-4399-adb4-88b948639154","complementID":1,"speciesID":"1372695","keyDataPair":[{"key":"regulatory_authority","data":"PHSI"},{"key":"type_package","data":"Carton"},{"key":"netweight","data":"231"},{"key":"number_package","data":"33"},{"key":"quantity","data":"13200"},{"key":"type_quantity","data":"Stems"},{"key":"container","data":"1372695"},{"key":"commodity_group","data":"Cut Flowers and flower buds"}]},{"uniqueComplementID":"49f75a74-aaf9-4885-8294-4c437e438b30","complementID":2,"speciesID":"1406969","keyDataPair":[{"key":"regulatory_authority","data":"PHSI"},{"key":"type_package","data":"Carton"},{"key":"netweight","data":"7986"},{"key":"number_package","data":"660"},{"key":"quantity","data":"369403"},{"key":"type_quantity","data":"Stems"},{"key":"container","data":"1406969"},{"key":"commodity_group","data":"Cut Flowers and flower buds"}]}],"includeNonAblactedAnimals":false,"countryOfOrigin":"TR","countryOfOriginIsPodCountry":false,"consignedCountry":"TR","consignedCountryInChargeGroup":false},"purpose":{"purposeGroup":"For Import"},"pointOfEntry":"GBDOVE2","pointOfEntryControlPoint":"INSPSEV1","arrivalDate":"2024-12-31","arrivalTime":"12:00:00","meansOfTransport":{},"meansOfTransportFromEntryPoint":{"id":"dc6743eb2890b0426c422a047cbcabe5d62201569efef7da62cde9cb4a7dbded","type":"Road Vehicle","document":"d2cb04306d26f53c0314cab5c7ad98c3adc6c1ba2990cdf84e05d2a6829d1e23"},"veterinaryInformation":{"accompanyingDocuments":[{"documentType":"other","documentReference":"24TR070200000479M9","documentIssueDate":"2024-12-31","attachmentId":"c2fdb800-02d1-4e71-b757-71312595e008","attachmentFilename":"T1.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"},{"documentType":"commercialInvoice","documentReference":"CCK2024000000855","documentIssueDate":"2024-12-31","attachmentId":"934a11db-b1fe-4f76-add5-fe21612a3f4f","attachmentFilename":"CCK855.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"},{"documentType":"phytosanitaryCertificate","documentReference":"5890835","documentIssueDate":"2024-12-31","attachmentId":"b4a4c205-107d-4aee-bbe5-58f0b9d21dbf","attachmentFilename":"5890835.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"},{"documentType":"commercialInvoice","documentReference":"CCK2024000000854","documentIssueDate":"2024-12-31","attachmentId":"c1c7a758-2318-4e62-a6cf-7ad119601407","attachmentFilename":"CCK854.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"},{"documentType":"phytosanitaryCertificate","documentReference":"5890833","documentIssueDate":"2024-12-31","attachmentId":"9310936f-5db6-46b5-86ce-0b4abdf1372e","attachmentFilename":"5890833.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"},{"documentType":"commercialInvoice","documentReference":"CCK2024000000853","documentIssueDate":"2024-12-31","attachmentId":"0134a21a-e2cb-4d24-8c13-e2e7c75a1eea","attachmentFilename":"CCK853.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"},{"documentType":"phytosanitaryCertificate","documentReference":"5890834","documentIssueDate":"2024-12-31","attachmentId":"39545752-15bf-4033-9722-dbdfc27a5942","attachmentFilename":"5890834.PDF","attachmentContentType":"application/pdf","uploadUserId":"4c140504-35a8-eb11-b1ac-00224881badf","uploadOrganisationId":"58140504-35a8-eb11-b1ac-00224881badf"}]},"importerLocalReferenceNumber":"b5574d9918eecba0c8b91bdb8e14ddf556a7a44830e35b18f238befc4bbe8722","submissionDate":"2024-12-31T10:26:33.7642769Z","submittedBy":{"displayName":"b77d840a9d25c0bbe0f689c0e2b82ea99413bb59950b9497f69f3d609c859150","userId":"4c140504-35a8-eb11-b1ac-00224881badf"},"complexCommoditySelected":true,"contactDetails":{"name":"274371c47015a7252f609ae1e9d54d19b702b8e2de56baa39a7b800cebcfeae9","telephone":"20e4af3eed397d875845a3dbe4ae4fe601082ef2369baab88eca0319bf469ddd","email":"cad4ec73cb1fd7eedecb14d014918f1797f6c54928eb061c047d43817c5ed962"},"isGVMSRoute":false,"isChargeable":true,"wasChargeable":true,"billingInformation":{"isConfirmed":true,"emailAddress":"cad4ec73cb1fd7eedecb14d014918f1797f6c54928eb061c047d43817c5ed962","phoneNumber":"2d5977c6b465d5c2e529502a4517387e03d7a29793bf4b3cab0a9423a6e066f1","postalAddress":{"addressLine1":"f493ff186eebc7d8723da537acdf6a84d78755bd248597bff7050d8643610b4b","addressLine2":"6a5af734a44bf16d5b52e4134eb32a0317c7ea30b9371185b812bfc549181102","addressLine3":"01d12f1723b4327a127397a221f870611683f30cd672f3c7f1f6a3183df3d1a9","addressLine4":"9a2bc54c3eea3c22a2787ccb1300d2c969905ce05cedb8999fe5ee6fb884cb90","county":"ea29da4bc1ad9ee055015c85df285421650acc46bfcebf339a18b4fb6523476d","cityOrTown":"c8cd394093cdfde659b587d33008c58f7329e24bc7e5ca062e4c38025d97348b","postalCode":"45a3fcd634fd53ae6cc7be0448d42f8c3eca418eb42a8ef55dbaa14809f8060d"}},"commonUserCharge":{"wasSentToTradeCharge":true},"provideCtcMrn":"YES"},"partTwo":{"commodityChecks":[{"uniqueComplementId":"fde35c87-00ef-4399-adb4-88b948639154","checks":[{"type":"PHSI_DOCUMENT","status":"To do"},{"type":"PHSI_IDENTITY","status":"To do"},{"type":"PHSI_PHYSICAL","status":"To do"}]},{"uniqueComplementId":"49f75a74-aaf9-4885-8294-4c437e438b30","checks":[{"type":"PHSI_DOCUMENT","status":"To do"},{"type":"PHSI_IDENTITY","status":"Auto cleared"},{"type":"PHSI_PHYSICAL","status":"Auto cleared"}]}],"inspectionRequired":"Required"},"partThree":{},"etag":"00000000047B29D9","riskDecisionLockingTime":"2024-12-31T10:00:00Z","isRiskDecisionLocked":true,"chedTypeVersion":1}
+{
+  "id": 4359258,
+  "referenceNumber": "CHEDPP.GB.2024.5359258",
+  "agencyOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf",
+  "externalReferences": [
+    {
+      "system": "NCTS",
+      "reference": "24TR070200000479M9",
+      "exactMatch": true,
+      "verifiedByImporter": true,
+      "verifiedByInspector": false
+    }
+  ],
+  "version": 1,
+  "lastUpdated": "2024-12-31T10:28:18.993618497Z",
+  "lastUpdatedBy": {
+    "displayName": "910cef2725aba2954118a5e4caa46713ebd7924345371403ed6855a8e400bcff",
+    "userId": "4c140504-35a8-eb11-b1ac-00224881badf"
+  },
+  "type": "CHEDPP",
+  "status": "IN_PROGRESS",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "hmiDecision": "NOTREQUIRED",
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "phsi": {
+          "documentCheck": true,
+          "identityCheck": true,
+          "physicalCheck": true
+        },
+        "uniqueId": "fde35c87-00ef-4399-adb4-88b948639154",
+        "eppoCode": "DINBA",
+        "indoorOutdoor": "None",
+        "propagation": "None",
+        "phsiRuleType": "Commodity"
+      },
+      {
+        "hmiDecision": "NOTREQUIRED",
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "phsi": {
+          "documentCheck": true,
+          "identityCheck": false,
+          "physicalCheck": false
+        },
+        "uniqueId": "49f75a74-aaf9-4885-8294-4c437e438b30",
+        "eppoCode": "DINCA",
+        "indoorOutdoor": "None",
+        "propagation": "None",
+        "phsiRuleType": "Commodity"
+      }
+    ],
+    "assessmentDateTime": "2024-12-31T10:26:36.448143848"
+  },
+  "partOne": {
+    "personResponsible": {
+      "name": "cf2d5c10d109ea910b2a877a9ea0590fdb398d70f8398df86ad6f4677b6b403d",
+      "companyId": "b24beb85-29c0-ee11-9079-000d3abd8f0e",
+      "companyName": "12c9a90670c313c7048d365fe92a5cdbd882b9ec6fbbea9267bd54176c710e0a",
+      "address": [
+        "17de0a467c8ebda92f0529d8baeb1188ebe6fbd9f5cb0ef8fc78bf25b3fc18e4",
+        "34e15e798aeecab6869ad1b9d336f2b4b8a88e90dbdda4eea6e69da6b56a5fa7",
+        "b2c734c1c543eb439c2c4510967e47751e2a39edaa7586d11e68a7a1db38ddbb",
+        "ab70b37a773dc3d84ac8d9c9d000989817ebdd2440c962fe3daa89849d471c55",
+        "2947ea0e0e0fe1202f9aa649a32a0dba363170db00edaf587f9a152290863b1e",
+        "6caef311bdd4c03236c207130f4877a41c1152edffa457c868c2c34ffeb4dd0d"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "b7076824325a2cf969e47830d3cdc16996c17405d44deed6b895fe311340a588",
+      "email": "78f0c5b8fb335972f7bffd9b73d3f016e1521995350c74941c7b3b6f2a32a734",
+      "contactId": "d5490cb1-5007-ed11-82e5-6045bd8b9148"
+    },
+    "consignor": {
+      "id": "b27bfd76-7fff-4ce2-9a1c-81681aa354c7",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "9ac7d01cb0d541a51acdc75a0c36029fb058f80de3bd43fadc1e6180681e2cc4",
+      "address": {
+        "addressLine1": "b28aafb8cf93d8bff2cb2b4d63d693a7dc40261212bde7ee217c8243f0c194b2",
+        "addressLine2": "d9fd405dff9e55c2b643c21776b09f08a6d4dbab9a9391f06e229c8a69a8fa53",
+        "addressLine3": "52ffcc78466ef7bc3240e832ab5886e19b614edc076cb730cedcd9c87d3eb964",
+        "city": "80b933834464176029e30f49febc841eef27f24d64797d985dfc4c455dacdd1a",
+        "postalZipCode": "44d7f7044c8d58de11325904635e09b3d1d72f85999b0c3892ce3556dba0328c",
+        "countryISOCode": "6d82097aeebab8a605dbebbf190706a5d2b66d85b0b324b4a471af3650b6e881",
+        "telephone": "99e5ebddfb44ff87757df691d09f6a616d9dd72de39105c82d34a56887333473",
+        "email": "0a72d99ac14502892829308c4337646c2e999a4301968fe049997eea952173f0"
+      },
+      "tracesId": 10241988
+    },
+    "consignee": {
+      "id": "b24beb85-29c0-ee11-9079-000d3abd8f0e",
+      "type": "consignee",
+      "companyName": "12c9a90670c313c7048d365fe92a5cdbd882b9ec6fbbea9267bd54176c710e0a",
+      "address": {
+        "addressLine1": "17de0a467c8ebda92f0529d8baeb1188ebe6fbd9f5cb0ef8fc78bf25b3fc18e4",
+        "addressLine2": "34e15e798aeecab6869ad1b9d336f2b4b8a88e90dbdda4eea6e69da6b56a5fa7",
+        "city": "ab70b37a773dc3d84ac8d9c9d000989817ebdd2440c962fe3daa89849d471c55",
+        "postalZipCode": "2947ea0e0e0fe1202f9aa649a32a0dba363170db00edaf587f9a152290863b1e",
+        "countryISOCode": "22004e7b51845da7c49c3527be39dbb2b527154ecf7ce2b12b4a5c3403fc1db3",
+        "telephone": "1551614cf131f8a6563c188a56756b8a5c86919b2efb16e9802c2acec61589f2",
+        "email": "4baf655023a24f058118a5f768c89ca2cf7159f90ddcbe28cf38c327972ded7f"
+      },
+      "tracesId": 10301276
+    },
+    "importer": {
+      "id": "b24beb85-29c0-ee11-9079-000d3abd8f0e",
+      "type": "importer",
+      "companyName": "12c9a90670c313c7048d365fe92a5cdbd882b9ec6fbbea9267bd54176c710e0a",
+      "address": {
+        "addressLine1": "17de0a467c8ebda92f0529d8baeb1188ebe6fbd9f5cb0ef8fc78bf25b3fc18e4",
+        "addressLine2": "34e15e798aeecab6869ad1b9d336f2b4b8a88e90dbdda4eea6e69da6b56a5fa7",
+        "city": "ab70b37a773dc3d84ac8d9c9d000989817ebdd2440c962fe3daa89849d471c55",
+        "postalZipCode": "2947ea0e0e0fe1202f9aa649a32a0dba363170db00edaf587f9a152290863b1e",
+        "countryISOCode": "22004e7b51845da7c49c3527be39dbb2b527154ecf7ce2b12b4a5c3403fc1db3",
+        "telephone": "1551614cf131f8a6563c188a56756b8a5c86919b2efb16e9802c2acec61589f2",
+        "email": "4baf655023a24f058118a5f768c89ca2cf7159f90ddcbe28cf38c327972ded7f"
+      },
+      "tracesId": 10301276
+    },
+    "placeOfDestination": {
+      "id": "b24beb85-29c0-ee11-9079-000d3abd8f0e",
+      "type": "destination",
+      "companyName": "12c9a90670c313c7048d365fe92a5cdbd882b9ec6fbbea9267bd54176c710e0a",
+      "address": {
+        "addressLine1": "17de0a467c8ebda92f0529d8baeb1188ebe6fbd9f5cb0ef8fc78bf25b3fc18e4",
+        "addressLine2": "34e15e798aeecab6869ad1b9d336f2b4b8a88e90dbdda4eea6e69da6b56a5fa7",
+        "city": "ab70b37a773dc3d84ac8d9c9d000989817ebdd2440c962fe3daa89849d471c55",
+        "postalZipCode": "2947ea0e0e0fe1202f9aa649a32a0dba363170db00edaf587f9a152290863b1e",
+        "countryISOCode": "22004e7b51845da7c49c3527be39dbb2b527154ecf7ce2b12b4a5c3403fc1db3",
+        "telephone": "1551614cf131f8a6563c188a56756b8a5c86919b2efb16e9802c2acec61589f2",
+        "email": "4baf655023a24f058118a5f768c89ca2cf7159f90ddcbe28cf38c327972ded7f"
+      },
+      "tracesId": 10301276
+    },
+    "commodities": {
+      "totalGrossWeight": 8910,
+      "totalNetWeight": 8217,
+      "numberOfPackages": 693,
+      "commodityComplement": [
+        {
+          "commodityID": "06031200",
+          "commodityDescription": "Carnations",
+          "complementID": 1,
+          "complementName": "Dianthus barbatus",
+          "eppoCode": "DINBA",
+          "speciesID": "1372695",
+          "speciesName": "Dianthus barbatus",
+          "speciesNomination": "Dianthus barbatus"
+        },
+        {
+          "commodityID": "06031200",
+          "commodityDescription": "Carnations",
+          "complementID": 2,
+          "complementName": "Dianthus caryophyllus",
+          "eppoCode": "DINCA",
+          "speciesID": "1406969",
+          "speciesName": "Dianthus caryophyllus",
+          "speciesNomination": "Dianthus caryophyllus"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "fde35c87-00ef-4399-adb4-88b948639154",
+          "complementID": 1,
+          "speciesID": "1372695",
+          "keyDataPair": [
+            {
+              "key": "regulatory_authority",
+              "data": "PHSI"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            },
+            {
+              "key": "netweight",
+              "data": "231"
+            },
+            {
+              "key": "number_package",
+              "data": "33"
+            },
+            {
+              "key": "quantity",
+              "data": "13200"
+            },
+            {
+              "key": "type_quantity",
+              "data": "Stems"
+            },
+            {
+              "key": "container",
+              "data": "1372695"
+            },
+            {
+              "key": "commodity_group",
+              "data": "Cut Flowers and flower buds"
+            }
+          ]
+        },
+        {
+          "uniqueComplementID": "49f75a74-aaf9-4885-8294-4c437e438b30",
+          "complementID": 2,
+          "speciesID": "1406969",
+          "keyDataPair": [
+            {
+              "key": "regulatory_authority",
+              "data": "PHSI"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            },
+            {
+              "key": "netweight",
+              "data": "7986"
+            },
+            {
+              "key": "number_package",
+              "data": "660"
+            },
+            {
+              "key": "quantity",
+              "data": "369403"
+            },
+            {
+              "key": "type_quantity",
+              "data": "Stems"
+            },
+            {
+              "key": "container",
+              "data": "1406969"
+            },
+            {
+              "key": "commodity_group",
+              "data": "Cut Flowers and flower buds"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "TR",
+      "countryOfOriginIsPodCountry": false,
+      "consignedCountry": "TR",
+      "consignedCountryInChargeGroup": false
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBDOVE2",
+    "pointOfEntryControlPoint": "INSPSEV1",
+    "arrivalDate": "2024-12-31",
+    "arrivalTime": "12:00:00",
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "a3e7fa9cd87e517a929244d0074be54e5bd79628c2911ed571704414353897cd",
+      "type": "Road Vehicle",
+      "document": "95425f8b04cfc923443aa3a81ed943849fd880207a5bb94f374e93b39449ac1a"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "other",
+          "documentReference": "24TR070200000479M9",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "c2fdb800-02d1-4e71-b757-71312595e008",
+          "attachmentFilename": "T1.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "CCK2024000000855",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "934a11db-b1fe-4f76-add5-fe21612a3f4f",
+          "attachmentFilename": "CCK855.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        },
+        {
+          "documentType": "phytosanitaryCertificate",
+          "documentReference": "5890835",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "b4a4c205-107d-4aee-bbe5-58f0b9d21dbf",
+          "attachmentFilename": "5890835.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "CCK2024000000854",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "c1c7a758-2318-4e62-a6cf-7ad119601407",
+          "attachmentFilename": "CCK854.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        },
+        {
+          "documentType": "phytosanitaryCertificate",
+          "documentReference": "5890833",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "9310936f-5db6-46b5-86ce-0b4abdf1372e",
+          "attachmentFilename": "5890833.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "CCK2024000000853",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "0134a21a-e2cb-4d24-8c13-e2e7c75a1eea",
+          "attachmentFilename": "CCK853.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        },
+        {
+          "documentType": "phytosanitaryCertificate",
+          "documentReference": "5890834",
+          "documentIssueDate": "2024-12-31",
+          "attachmentId": "39545752-15bf-4033-9722-dbdfc27a5942",
+          "attachmentFilename": "5890834.PDF",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "4c140504-35a8-eb11-b1ac-00224881badf",
+          "uploadOrganisationId": "58140504-35a8-eb11-b1ac-00224881badf"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "2f74bd9520b2fb1dd1c75a09d5f232972f5dd96381acb68e6a255cdd8ac8c481",
+    "submissionDate": "2024-12-31T10:26:33.7642769Z",
+    "submittedBy": {
+      "displayName": "910cef2725aba2954118a5e4caa46713ebd7924345371403ed6855a8e400bcff",
+      "userId": "4c140504-35a8-eb11-b1ac-00224881badf"
+    },
+    "complexCommoditySelected": true,
+    "contactDetails": {
+      "name": "f488b831a0803a740866d77a8a21910471d7893161421af97bda2886b1daf6ba",
+      "telephone": "d79bd264436a1d54d9d78b1e5f9a7e442eea37446edcdc4e825e4657fcae31b5",
+      "email": "8cf4e22ac3f9bdcbcc2f9c66c04dc326709f12f5d867fa3354d385ee1bbcf10b"
+    },
+    "isGVMSRoute": false,
+    "isChargeable": true,
+    "wasChargeable": true,
+    "billingInformation": {
+      "isConfirmed": true,
+      "emailAddress": "8cf4e22ac3f9bdcbcc2f9c66c04dc326709f12f5d867fa3354d385ee1bbcf10b",
+      "phoneNumber": "73602f22a208dfd583474be0b381788d5d30e7be335e330f9d56de74adc4846e",
+      "postalAddress": {
+        "addressLine1": "ffc6418241f15b26d190143e08bf7fb0c12e3ae9c784bb0f621c0fb07b989e95",
+        "addressLine2": "2f9e140e0b669d442f83057da39271fc955a16142268c82ff8e801e8cbfafdec",
+        "addressLine3": "6debddc0626ca050b7814c0e69d22ff9fb0c6cd07b473a74b4a3ebfbb246e136",
+        "addressLine4": "8d9a8b8f6ea6f48e3069f929e7478ce2710966c59bd3bd2c8a2a803cd32df269",
+        "county": "83c332bc6d0ae6d90d9b51e6d711340b0812d24128612cd785d8bba3d32cd0ec",
+        "cityOrTown": "60b48c0f16910af9901ad07511278593577003889ca08d5f40ec501ab1ede44e",
+        "postalCode": "833ca64270e0bdd84aa89e1569964eabd1db523cfd6d8255d7d699f086b0b160"
+      }
+    },
+    "commonUserCharge": {
+      "wasSentToTradeCharge": true
+    },
+    "provideCtcMrn": "YES"
+  },
+  "partTwo": {
+    "commodityChecks": [
+      {
+        "uniqueComplementId": "fde35c87-00ef-4399-adb4-88b948639154",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "To do"
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "To do"
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "To do"
+          }
+        ]
+      },
+      {
+        "uniqueComplementId": "49f75a74-aaf9-4885-8294-4c437e438b30",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "To do"
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "Auto cleared"
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "Auto cleared"
+          }
+        ]
+      }
+    ],
+    "inspectionRequired": "Required"
+  },
+  "partThree": {},
+  "etag": "00000000047B29D9",
+  "riskDecisionLockingTime": "2024-12-31T10:00:00Z",
+  "isRiskDecisionLocked": true,
+  "chedTypeVersion": 1
+}

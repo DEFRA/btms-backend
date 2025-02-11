@@ -13,10 +13,10 @@ public class Level1Rule8Tests
         // Arrange
         var sut = new Level1Rule8();
         var context = new MatchContext();
-        
+
         // Act
         var result = await sut.ProcessFilter(context);
-        
+
         // Assert
         result.Should().NotBeNull();
         result.ExitPipeline.Should().BeFalse();
@@ -35,9 +35,9 @@ public class Level1Rule8Tests
         // Sixteen matches in total
 
         // Arrange
-        
+
         // Act
-        
+
         // Assert
         Assert.True(true);
         await Task.CompletedTask;

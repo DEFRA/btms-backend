@@ -53,6 +53,6 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
         {
             logger.LogError(e, "Failed to Create index {Name} on {Collection}", name, typeof(T).Name);
         }
-       
+
     }
 }

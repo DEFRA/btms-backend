@@ -9,10 +9,8 @@ namespace Btms.Model.Ipaffs;
 public enum ConsignmentCheckPhysicalCheckNotDoneReasonEnum
 {
 
-		ReducedChecksRegime,
-	
-		Other,
-	
+    ReducedChecksRegime,
+
+    Other,
+
 }
-
-

@@ -22,13 +22,11 @@ public partial class SearchGmrsResponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Gmr[]? Gmrs { get; set; }
 
-	}
-
-
+}

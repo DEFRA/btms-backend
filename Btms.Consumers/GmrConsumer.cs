@@ -20,7 +20,7 @@ internal class GmrConsumer(IMongoDbContext mongoDbContext)
 
         await mongoDbContext.SaveChangesAsync(Context.CancellationToken);
     }
-    
+
     public async Task OnHandle(Gmr message, CancellationToken cancellationToken)
     {
         await SaveOrUpdateGmr(message, Context.GetMessageId(), Context.CancellationToken);

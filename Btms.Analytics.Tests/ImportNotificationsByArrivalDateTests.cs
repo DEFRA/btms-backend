@@ -12,21 +12,21 @@ namespace Btms.Analytics.Tests;
 public class ImportNotificationsByArrivalDateTests(ITestOutputHelper output)
     : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
-    
+
     [Fact]
     public async Task WhenCalledNextMonth_ReturnExpectedAggregation()
     {
         TestOutputHelper.WriteLine("Querying for aggregated data");
-        
+
         var result = (await GetImportNotificationsAggregationService()
             .ByArrival(DateTime.Today, DateTime.Today.MonthLater()))
             .Series
             .ToList();
 
         TestOutputHelper.WriteLine($"{result.Count} aggregated items found");
-            
+
         result.Count.Should().Be(8);
-        
+
         result.Should().AllSatisfy(r =>
         {
             r.Periods.Should().AllSatisfy(p =>
