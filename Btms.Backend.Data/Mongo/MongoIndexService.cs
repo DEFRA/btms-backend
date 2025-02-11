@@ -12,18 +12,20 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
     {
         return Task.WhenAll(
             CreateIndex("MatchReferenceIdx",
-                Builders<ImportNotification>.IndexKeys.Ascending(n => n._MatchReference), cancellationToken),
+                Builders<ImportNotification>.IndexKeys.Ascending(n => n._MatchReference), cancellationToken: cancellationToken),
             CreateIndex("Created",
-                Builders<ImportNotification>.IndexKeys.Ascending(n => n.Created), cancellationToken),
+                Builders<ImportNotification>.IndexKeys.Ascending(n => n.Created), cancellationToken: cancellationToken),
             CreateIndex("CreatedSource",
-                Builders<ImportNotification>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken),
+                Builders<ImportNotification>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken: cancellationToken),
 
             CreateIndex("MatchReferenceIdx",
-                Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken),
+                Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken: cancellationToken),
             CreateIndex("Created",
-                Builders<Movement>.IndexKeys.Ascending(m => m.Created), cancellationToken),
+                Builders<Movement>.IndexKeys.Ascending(m => m.Created), cancellationToken: cancellationToken),
             CreateIndex("CreatedSource",
-                Builders<Movement>.IndexKeys.Ascending(m => m.CreatedSource), cancellationToken)
+                Builders<Movement>.IndexKeys.Ascending(m => m.CreatedSource), cancellationToken: cancellationToken),
+            CreateIndex("UniqueDecisionNumber",
+                Builders<Movement>.IndexKeys.Ascending(new StringFieldDefinition<Movement>("decisions.header.decisionNumber")), true, cancellationToken)
 
         );
 
@@ -34,7 +36,7 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
         return Task.CompletedTask;
     }
 
-    private async Task CreateIndex<T>(string name, IndexKeysDefinition<T> keys, CancellationToken cancellationToken)
+    private async Task CreateIndex<T>(string name, IndexKeysDefinition<T> keys, bool unique = false, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -43,6 +45,7 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 {
                     Name = name,
                     Background = true,
+                    Unique = unique,
                 });
             await database.GetCollection<T>(typeof(T).Name).Indexes.CreateOneAsync(indexModel, cancellationToken: cancellationToken);
         }
