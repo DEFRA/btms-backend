@@ -26,6 +26,7 @@ public partial class PartTwo  //
     /// Decision on the consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("decision")]
     [System.ComponentModel.Description("Decision on the consignment")]
     public Decision? Decision { get; set; }
 
@@ -34,6 +35,7 @@ public partial class PartTwo  //
     /// Consignment check
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignmentCheck")]
     [System.ComponentModel.Description("Consignment check")]
     public ConsignmentCheck? ConsignmentCheck { get; set; }
 
@@ -42,6 +44,7 @@ public partial class PartTwo  //
     /// Checks of impact of transport on animals
     /// </summary>
     [Attr]
+    [JsonPropertyName("impactOfTransportOnAnimals")]
     [System.ComponentModel.Description("Checks of impact of transport on animals")]
     public ImpactOfTransportOnAnimals? ImpactOfTransportOnAnimals { get; set; }
 
@@ -50,6 +53,7 @@ public partial class PartTwo  //
     /// Are laboratory tests required
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryTestsRequired")]
     [System.ComponentModel.Description("Are laboratory tests required")]
     public bool? LaboratoryTestsRequired { get; set; }
 
@@ -58,6 +62,7 @@ public partial class PartTwo  //
     /// Laboratory tests information details
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryTests")]
     [System.ComponentModel.Description("Laboratory tests information details")]
     public LaboratoryTests? LaboratoryTests { get; set; }
 
@@ -66,6 +71,7 @@ public partial class PartTwo  //
     /// Are the containers resealed
     /// </summary>
     [Attr]
+    [JsonPropertyName("resealedContainersIncluded")]
     [System.ComponentModel.Description("Are the containers resealed")]
     public bool? ResealedContainersIncluded { get; set; }
 
@@ -74,6 +80,7 @@ public partial class PartTwo  //
     /// (Deprecated - To be removed as part of IMTA-6256) Resealed containers information details
     /// </summary>
     [Attr]
+    [JsonPropertyName("resealedContainers")]
     [System.ComponentModel.Description("(Deprecated - To be removed as part of IMTA-6256) Resealed containers information details")]
     public string[]? ResealedContainers { get; set; }
 
@@ -82,6 +89,7 @@ public partial class PartTwo  //
     /// Resealed containers information details
     /// </summary>
     [Attr]
+    [JsonPropertyName("resealedContainersMappings")]
     [System.ComponentModel.Description("Resealed containers information details")]
     public SealContainer[]? ResealedContainersMappings { get; set; }
 
@@ -90,6 +98,7 @@ public partial class PartTwo  //
     /// Control Authority information details
     /// </summary>
     [Attr]
+    [JsonPropertyName("controlAuthority")]
     [System.ComponentModel.Description("Control Authority information details")]
     public ControlAuthority? ControlAuthority { get; set; }
 
@@ -98,6 +107,7 @@ public partial class PartTwo  //
     /// Controlled destination
     /// </summary>
     [Attr]
+    [JsonPropertyName("controlledDestination")]
     [System.ComponentModel.Description("Controlled destination")]
     public EconomicOperator? ControlledDestination { get; set; }
 
@@ -106,6 +116,7 @@ public partial class PartTwo  //
     /// Local reference number at BIP
     /// </summary>
     [Attr]
+    [JsonPropertyName("bipLocalReferenceNumber")]
     [System.ComponentModel.Description("Local reference number at BIP")]
     public string? BipLocalReferenceNumber { get; set; }
 
@@ -114,6 +125,7 @@ public partial class PartTwo  //
     /// Part 2 - Sometimes other user can sign decision on behalf of another user
     /// </summary>
     [Attr]
+    [JsonPropertyName("signedOnBehalfOf")]
     [System.ComponentModel.Description("Part 2 - Sometimes other user can sign decision on behalf of another user")]
     public string? SignedOnBehalfOf { get; set; }
 
@@ -122,6 +134,7 @@ public partial class PartTwo  //
     /// Onward transportation
     /// </summary>
     [Attr]
+    [JsonPropertyName("onwardTransportation")]
     [System.ComponentModel.Description("Onward transportation")]
     public string? OnwardTransportation { get; set; }
 
@@ -130,6 +143,7 @@ public partial class PartTwo  //
     /// Validation messages for Part 2 - Decision
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignmentValidations")]
     [System.ComponentModel.Description("Validation messages for Part 2 - Decision")]
     public ValidationMessageCode[]? ConsignmentValidations { get; set; }
 
@@ -138,6 +152,7 @@ public partial class PartTwo  //
     /// User entered date when the checks were completed
     /// </summary>
     [Attr]
+    [JsonPropertyName("checkedOn")]
     [System.ComponentModel.Description("User entered date when the checks were completed")]
     public DateTime? CheckedOn { get; set; }
 
@@ -146,6 +161,7 @@ public partial class PartTwo  //
     /// Accompanying documents
     /// </summary>
     [Attr]
+    [JsonPropertyName("accompanyingDocuments")]
     [System.ComponentModel.Description("Accompanying documents")]
     public AccompanyingDocument[]? AccompanyingDocuments { get; set; }
 
@@ -154,6 +170,7 @@ public partial class PartTwo  //
     /// Have the PHSI regulated commodities been auto cleared?
     /// </summary>
     [Attr]
+    [JsonPropertyName("phsiAutoCleared")]
     [System.ComponentModel.Description("Have the PHSI regulated commodities been auto cleared?")]
     public bool? PhsiAutoCleared { get; set; }
 
@@ -162,6 +179,7 @@ public partial class PartTwo  //
     /// Have the HMI regulated commodities been auto cleared?
     /// </summary>
     [Attr]
+    [JsonPropertyName("hmiAutoCleared")]
     [System.ComponentModel.Description("Have the HMI regulated commodities been auto cleared?")]
     public bool? HmiAutoCleared { get; set; }
 
@@ -170,6 +188,7 @@ public partial class PartTwo  //
     /// Inspection required
     /// </summary>
     [Attr]
+    [JsonPropertyName("inspectionRequired")]
     [System.ComponentModel.Description("Inspection required")]
     public InspectionRequiredEnum? InspectionRequired { get; set; }
 
@@ -178,6 +197,7 @@ public partial class PartTwo  //
     /// Details about the manual inspection override
     /// </summary>
     [Attr]
+    [JsonPropertyName("inspectionOverride")]
     [System.ComponentModel.Description("Details about the manual inspection override")]
     public InspectionOverride? InspectionOverride { get; set; }
 
@@ -186,6 +206,7 @@ public partial class PartTwo  //
     /// Date of autoclearance
     /// </summary>
     [Attr]
+    [JsonPropertyName("autoClearedOn")]
     [System.ComponentModel.Description("Date of autoclearance")]
     public DateTime? AutoClearedOn { get; set; }
 

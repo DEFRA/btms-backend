@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PurposeMapper
 {
-    public static Btms.Model.Ipaffs.Purpose Map(Btms.Types.Ipaffs.Purpose from)
+    public static Btms.Model.Ipaffs.Purpose Map(Btms.Types.Ipaffs.Purpose? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.Purpose();
         to.ConformsToEU = from?.ConformsToEU;
         to.InternalMarketPurpose = PurposeInternalMarketPurposeEnumMapper.Map(from?.InternalMarketPurpose);

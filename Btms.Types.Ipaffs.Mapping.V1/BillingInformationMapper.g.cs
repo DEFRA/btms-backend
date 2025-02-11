@@ -14,19 +14,18 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class BillingInformationMapper
 {
-    public static Btms.Model.Ipaffs.BillingInformation Map(Btms.Types.Ipaffs.BillingInformation from)
+    public static Btms.Model.Ipaffs.BillingInformation Map(Btms.Types.Ipaffs.BillingInformation? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.BillingInformation();
         to.IsConfirmed = from?.IsConfirmed;
         to.EmailAddress = from?.EmailAddress;
         to.PhoneNumber = from?.PhoneNumber;
         to.ContactName = from?.ContactName;
-        to.PostalAddress = PostalAddressMapper.Map(from?.PostalAddress!);
+        to.PostalAddress = PostalAddressMapper.Map(from?.PostalAddress);
         return to;
     }
 }

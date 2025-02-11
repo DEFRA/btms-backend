@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CommonUserChargeMapper
 {
-    public static Btms.Model.Ipaffs.CommonUserCharge Map(Btms.Types.Ipaffs.CommonUserCharge from)
+    public static Btms.Model.Ipaffs.CommonUserCharge Map(Btms.Types.Ipaffs.CommonUserCharge? from)
     {
         if (from is null)
         {

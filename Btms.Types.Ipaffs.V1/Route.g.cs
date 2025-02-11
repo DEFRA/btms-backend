@@ -14,16 +14,13 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Contains countries and transfer points that consignment is going through
 /// </summary>
 public partial class Route  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("transitingStates")]
     public string[]? TransitingStates { get; set; }
 

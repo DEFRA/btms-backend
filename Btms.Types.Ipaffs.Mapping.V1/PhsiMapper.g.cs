@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PhsiMapper
 {
-    public static Btms.Model.Ipaffs.Phsi Map(Btms.Types.Ipaffs.Phsi from)
+    public static Btms.Model.Ipaffs.Phsi Map(Btms.Types.Ipaffs.Phsi? from)
     {
         if (from is null)
         {

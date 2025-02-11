@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Btms.Model.Ipaffs;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum PurposePurposeGroupEnum
 {
 
@@ -24,7 +25,5 @@ public enum PurposePurposeGroupEnum
     ForTransferTo,
 
     ForImportReConformityCheck,
-
-    ForImportNonInternalMarket,
 
 }

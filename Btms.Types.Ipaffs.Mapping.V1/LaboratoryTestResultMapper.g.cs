@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class LaboratoryTestResultMapper
 {
-    public static Btms.Model.Ipaffs.LaboratoryTestResult Map(Btms.Types.Ipaffs.LaboratoryTestResult from)
+    public static Btms.Model.Ipaffs.LaboratoryTestResult Map(Btms.Types.Ipaffs.LaboratoryTestResult? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.LaboratoryTestResult();
         to.SampleUseByDate = from?.SampleUseByDate;
         to.ReleasedOn = from?.ReleasedDate;

@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class IdentificationDetails  //
 {
 
@@ -26,6 +22,7 @@ public partial class IdentificationDetails  //
     /// Identification detail
     /// </summary>
     [Attr]
+    [JsonPropertyName("identificationDetail")]
     [System.ComponentModel.Description("Identification detail")]
     public string? IdentificationDetail { get; set; }
 
@@ -34,6 +31,7 @@ public partial class IdentificationDetails  //
     /// Identification description
     /// </summary>
     [Attr]
+    [JsonPropertyName("identificationDescription")]
     [System.ComponentModel.Description("Identification description")]
     public string? IdentificationDescription { get; set; }
 

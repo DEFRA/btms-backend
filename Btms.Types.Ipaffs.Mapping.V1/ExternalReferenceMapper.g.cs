@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ExternalReferenceMapper
 {
-    public static Btms.Model.Ipaffs.ExternalReference Map(Btms.Types.Ipaffs.ExternalReference from)
+    public static Btms.Model.Ipaffs.ExternalReference Map(Btms.Types.Ipaffs.ExternalReference? from)
     {
         if (from is null)
         {

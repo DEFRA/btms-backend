@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ContactDetailsMapper
 {
-    public static Btms.Model.Ipaffs.ContactDetails Map(Btms.Types.Ipaffs.ContactDetails from)
+    public static Btms.Model.Ipaffs.ContactDetails Map(Btms.Types.Ipaffs.ContactDetails? from)
     {
         if (from is null)
         {

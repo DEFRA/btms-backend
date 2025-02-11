@@ -14,18 +14,17 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class IdentifiersMapper
 {
-    public static Btms.Model.Ipaffs.Identifiers Map(Btms.Types.Ipaffs.Identifiers from)
+    public static Btms.Model.Ipaffs.Identifiers Map(Btms.Types.Ipaffs.Identifiers? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.Identifiers();
         to.SpeciesNumber = from?.SpeciesNumber;
         to.Data = from?.Data;
         to.IsPlaceOfDestinationThePermanentAddress = from?.IsPlaceOfDestinationThePermanentAddress;
-        to.PermanentAddress = EconomicOperatorMapper.Map(from?.PermanentAddress!);
+        to.PermanentAddress = EconomicOperatorMapper.Map(from?.PermanentAddress);
         return to;
     }
 }

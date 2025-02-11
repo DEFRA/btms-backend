@@ -26,6 +26,7 @@ public partial class ChedppNotAcceptableReason  //
     /// reason for refusal
     /// </summary>
     [Attr]
+    [JsonPropertyName("reason")]
     [System.ComponentModel.Description("reason for refusal")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ChedppNotAcceptableReasonReasonEnum? Reason { get; set; }
@@ -35,6 +36,7 @@ public partial class ChedppNotAcceptableReason  //
     /// commodity or package
     /// </summary>
     [Attr]
+    [JsonPropertyName("commodityOrPackage")]
     [System.ComponentModel.Description("commodity or package")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ChedppNotAcceptableReasonCommodityOrPackageEnum? CommodityOrPackage { get; set; }

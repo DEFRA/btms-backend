@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CommoditiesMapper
 {
-    public static Btms.Model.Ipaffs.Commodities Map(Btms.Types.Ipaffs.Commodities from)
+    public static Btms.Model.Ipaffs.Commodities Map(Btms.Types.Ipaffs.Commodities? from)
     {
         if (from is null)
         {

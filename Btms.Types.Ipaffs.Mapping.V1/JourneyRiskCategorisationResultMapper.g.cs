@@ -14,14 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class JourneyRiskCategorisationResultMapper
 {
-    public static Btms.Model.Ipaffs.JourneyRiskCategorisationResult Map(
-        Btms.Types.Ipaffs.JourneyRiskCategorisationResult from)
+    public static Btms.Model.Ipaffs.JourneyRiskCategorisationResult Map(Btms.Types.Ipaffs.JourneyRiskCategorisationResult? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.JourneyRiskCategorisationResult();
         to.RiskLevel = JourneyRiskCategorisationResultRiskLevelEnumMapper.Map(from?.RiskLevel);
         to.RiskLevelMethod = JourneyRiskCategorisationResultRiskLevelMethodEnumMapper.Map(from?.RiskLevelMethod);

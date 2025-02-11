@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class CatchCertificates  //
 {
 
@@ -26,6 +22,7 @@ public partial class CatchCertificates  //
     /// The catch certificate number
     /// </summary>
     [Attr]
+    [JsonPropertyName("certificateNumber")]
     [System.ComponentModel.Description("The catch certificate number")]
     public string? CertificateNumber { get; set; }
 
@@ -34,6 +31,7 @@ public partial class CatchCertificates  //
     /// The catch certificate weight number
     /// </summary>
     [Attr]
+    [JsonPropertyName("weight")]
     [System.ComponentModel.Description("The catch certificate weight number")]
     public double? Weight { get; set; }
 

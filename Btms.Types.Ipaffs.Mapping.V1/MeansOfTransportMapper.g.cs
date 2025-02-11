@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class MeansOfTransportMapper
 {
-    public static Btms.Model.Ipaffs.MeansOfTransport Map(Btms.Types.Ipaffs.MeansOfTransport from)
+    public static Btms.Model.Ipaffs.MeansOfTransport Map(Btms.Types.Ipaffs.MeansOfTransport? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.MeansOfTransport();
         to.Type = MeansOfTransportTypeEnumMapper.Map(from?.Type);
         to.Document = from?.Document;

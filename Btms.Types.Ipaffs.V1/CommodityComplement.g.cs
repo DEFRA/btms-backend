@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Holder for additional parameters of a commodity
 /// </summary>
@@ -98,7 +99,6 @@ public partial class CommodityComplement  //
     /// Species type name
     /// </summary>
     [JsonPropertyName("speciesTypeName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesTypeName { get; set; }
 
 
@@ -130,6 +130,7 @@ public partial class CommodityComplement  //
     /// Species family name of commodity
     /// </summary>
     [JsonPropertyName("speciesFamilyName")]
+    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesFamilyName { get; set; }
 
 
@@ -155,24 +156,12 @@ public partial class CommodityComplement  //
     [JsonPropertyName("isCdsMatched")]
     public bool? IsCdsMatched { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("additionalData")]
     public IDictionary<string, object>? AdditionalData { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("riskAssesment")]
     public CommodityRiskResult? RiskAssesment { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("checks")]
     public InspectionCheck[]? Checks { get; set; }
 

@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ComplementParameterSetMapper
 {
-    public static Btms.Model.Ipaffs.ComplementParameterSet Map(Btms.Types.Ipaffs.ComplementParameterSet from)
+    public static Btms.Model.Ipaffs.ComplementParameterSet Map(Btms.Types.Ipaffs.ComplementParameterSet? from)
     {
         if (from is null)
         {

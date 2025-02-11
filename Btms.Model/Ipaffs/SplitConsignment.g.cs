@@ -26,6 +26,7 @@ public partial class SplitConsignment  //
     /// Reference number of the valid split consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("validReferenceNumber")]
     [System.ComponentModel.Description("Reference number of the valid split consignment")]
     public string? ValidReferenceNumber { get; set; }
 
@@ -34,6 +35,7 @@ public partial class SplitConsignment  //
     /// Reference number of the rejected split consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("rejectedReferenceNumber")]
     [System.ComponentModel.Description("Reference number of the rejected split consignment")]
     public string? RejectedReferenceNumber { get; set; }
 

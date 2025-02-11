@@ -26,6 +26,7 @@ public partial class Party  //
     /// IPAFFS ID of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("id")]
     [System.ComponentModel.Description("IPAFFS ID of party")]
     public string? Id { get; set; }
 
@@ -34,6 +35,7 @@ public partial class Party  //
     /// Name of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("name")]
     [System.ComponentModel.Description("Name of party")]
     public string? Name { get; set; }
 
@@ -42,6 +44,7 @@ public partial class Party  //
     /// Company ID
     /// </summary>
     [Attr]
+    [JsonPropertyName("companyId")]
     [System.ComponentModel.Description("Company ID")]
     public string? CompanyId { get; set; }
 
@@ -50,6 +53,7 @@ public partial class Party  //
     /// Contact ID (B2C)
     /// </summary>
     [Attr]
+    [JsonPropertyName("contactId")]
     [System.ComponentModel.Description("Contact ID (B2C)")]
     public string? ContactId { get; set; }
 
@@ -58,6 +62,7 @@ public partial class Party  //
     /// Company name
     /// </summary>
     [Attr]
+    [JsonPropertyName("companyName")]
     [System.ComponentModel.Description("Company name")]
     public string? CompanyName { get; set; }
 
@@ -66,6 +71,7 @@ public partial class Party  //
     /// Addresses
     /// </summary>
     [Attr]
+    [JsonPropertyName("addresses")]
     [System.ComponentModel.Description("Addresses")]
     public string[]? Addresses { get; set; }
 
@@ -74,6 +80,7 @@ public partial class Party  //
     /// County
     /// </summary>
     [Attr]
+    [JsonPropertyName("county")]
     [System.ComponentModel.Description("County")]
     public string? County { get; set; }
 
@@ -82,6 +89,7 @@ public partial class Party  //
     /// Post code of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("postCode")]
     [System.ComponentModel.Description("Post code of party")]
     public string? PostCode { get; set; }
 
@@ -90,6 +98,7 @@ public partial class Party  //
     /// Country of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("country")]
     [System.ComponentModel.Description("Country of party")]
     public string? Country { get; set; }
 
@@ -98,6 +107,7 @@ public partial class Party  //
     /// City
     /// </summary>
     [Attr]
+    [JsonPropertyName("city")]
     [System.ComponentModel.Description("City")]
     public string? City { get; set; }
 
@@ -106,6 +116,7 @@ public partial class Party  //
     /// TRACES ID
     /// </summary>
     [Attr]
+    [JsonPropertyName("tracesId")]
     [System.ComponentModel.Description("TRACES ID")]
     public int? TracesId { get; set; }
 
@@ -114,6 +125,7 @@ public partial class Party  //
     /// Type of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("type")]
     [System.ComponentModel.Description("Type of party")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public PartyTypeEnum? Type { get; set; }
@@ -123,6 +135,7 @@ public partial class Party  //
     /// Approval number
     /// </summary>
     [Attr]
+    [JsonPropertyName("approvalNumber")]
     [System.ComponentModel.Description("Approval number")]
     public string? ApprovalNumber { get; set; }
 
@@ -131,6 +144,7 @@ public partial class Party  //
     /// Phone number of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("phone")]
     [System.ComponentModel.Description("Phone number of party")]
     public string? Phone { get; set; }
 
@@ -139,6 +153,7 @@ public partial class Party  //
     /// Fax number of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("fax")]
     [System.ComponentModel.Description("Fax number of party")]
     public string? Fax { get; set; }
 
@@ -147,6 +162,7 @@ public partial class Party  //
     /// Email number of party
     /// </summary>
     [Attr]
+    [JsonPropertyName("email")]
     [System.ComponentModel.Description("Email number of party")]
     public string? Email { get; set; }
 

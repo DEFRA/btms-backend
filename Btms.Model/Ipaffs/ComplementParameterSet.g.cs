@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class ComplementParameterSet  //
 {
 
@@ -26,31 +22,20 @@ public partial class ComplementParameterSet  //
     /// UUID used to match commodityComplement to its complementParameter set. CHEDPP only
     /// </summary>
     [Attr]
+    [JsonPropertyName("uniqueComplementId")]
     [System.ComponentModel.Description("UUID used to match commodityComplement to its complementParameter set. CHEDPP only")]
     public string? UniqueComplementId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("complementId")]
     public int? ComplementId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("speciesId")]
     public string? SpeciesId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("keyDataPairs")]
     public IDictionary<string, object>? KeyDataPairs { get; set; }
 
 
@@ -58,6 +43,7 @@ public partial class ComplementParameterSet  //
     /// Catch certificate details
     /// </summary>
     [Attr]
+    [JsonPropertyName("catchCertificates")]
     [System.ComponentModel.Description("Catch certificate details")]
     public CatchCertificates[]? CatchCertificates { get; set; }
 
@@ -66,6 +52,7 @@ public partial class ComplementParameterSet  //
     /// Data used to identify the complements inside an IMP consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("identifiers")]
     [System.ComponentModel.Description("Data used to identify the complements inside an IMP consignment")]
     public Identifiers[]? Identifiers { get; set; }
 

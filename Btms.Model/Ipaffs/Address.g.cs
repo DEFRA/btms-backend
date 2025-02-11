@@ -26,6 +26,7 @@ public partial class Address  //
     /// Street
     /// </summary>
     [Attr]
+    [JsonPropertyName("street")]
     [System.ComponentModel.Description("Street")]
     public string? Street { get; set; }
 
@@ -34,6 +35,7 @@ public partial class Address  //
     /// City
     /// </summary>
     [Attr]
+    [JsonPropertyName("city")]
     [System.ComponentModel.Description("City")]
     public string? City { get; set; }
 
@@ -42,6 +44,7 @@ public partial class Address  //
     /// Country
     /// </summary>
     [Attr]
+    [JsonPropertyName("country")]
     [System.ComponentModel.Description("Country")]
     public string? Country { get; set; }
 
@@ -50,6 +53,7 @@ public partial class Address  //
     /// Postal Code
     /// </summary>
     [Attr]
+    [JsonPropertyName("postalCode")]
     [System.ComponentModel.Description("Postal Code")]
     public string? PostalCode { get; set; }
 
@@ -58,6 +62,7 @@ public partial class Address  //
     /// 1st line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine1")]
     [System.ComponentModel.Description("1st line of address")]
     public string? AddressLine1 { get; set; }
 
@@ -66,6 +71,7 @@ public partial class Address  //
     /// 2nd line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine2")]
     [System.ComponentModel.Description("2nd line of address")]
     public string? AddressLine2 { get; set; }
 
@@ -74,6 +80,7 @@ public partial class Address  //
     /// 3rd line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine3")]
     [System.ComponentModel.Description("3rd line of address")]
     public string? AddressLine3 { get; set; }
 
@@ -82,6 +89,7 @@ public partial class Address  //
     /// Post / zip code
     /// </summary>
     [Attr]
+    [JsonPropertyName("postalZipCode")]
     [System.ComponentModel.Description("Post / zip code")]
     public string? PostalZipCode { get; set; }
 
@@ -90,6 +98,7 @@ public partial class Address  //
     /// country 2-digits ISO code
     /// </summary>
     [Attr]
+    [JsonPropertyName("countryIsoCode")]
     [System.ComponentModel.Description("country 2-digits ISO code")]
     public string? CountryIsoCode { get; set; }
 
@@ -98,6 +107,7 @@ public partial class Address  //
     /// Email address
     /// </summary>
     [Attr]
+    [JsonPropertyName("email")]
     [System.ComponentModel.Description("Email address")]
     public string? Email { get; set; }
 
@@ -106,6 +116,7 @@ public partial class Address  //
     /// UK phone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("ukTelephone")]
     [System.ComponentModel.Description("UK phone number")]
     public string? UkTelephone { get; set; }
 
@@ -114,6 +125,7 @@ public partial class Address  //
     /// Telephone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("telephone")]
     [System.ComponentModel.Description("Telephone number")]
     public string? Telephone { get; set; }
 
@@ -122,6 +134,7 @@ public partial class Address  //
     /// International phone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("internationalTelephone")]
     [System.ComponentModel.Description("International phone number")]
     public InternationalTelephone? InternationalTelephone { get; set; }
 

@@ -26,6 +26,7 @@ public partial class LaboratoryTestResult  //
     /// When sample was used
     /// </summary>
     [Attr]
+    [JsonPropertyName("sampleUseByDate")]
     [System.ComponentModel.Description("When sample was used")]
     public string? SampleUseByDate { get; set; }
 
@@ -34,6 +35,7 @@ public partial class LaboratoryTestResult  //
     /// When it was released
     /// </summary>
     [Attr]
+    [JsonPropertyName("releasedOn")]
     [System.ComponentModel.Description("When it was released")]
     public DateTime? ReleasedOn { get; set; }
 
@@ -42,6 +44,7 @@ public partial class LaboratoryTestResult  //
     /// Laboratory test method
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryTestMethod")]
     [System.ComponentModel.Description("Laboratory test method")]
     public string? LaboratoryTestMethod { get; set; }
 
@@ -50,6 +53,7 @@ public partial class LaboratoryTestResult  //
     /// Result of test
     /// </summary>
     [Attr]
+    [JsonPropertyName("results")]
     [System.ComponentModel.Description("Result of test")]
     public string? Results { get; set; }
 
@@ -58,6 +62,7 @@ public partial class LaboratoryTestResult  //
     /// Conclusion of laboratory test
     /// </summary>
     [Attr]
+    [JsonPropertyName("conclusion")]
     [System.ComponentModel.Description("Conclusion of laboratory test")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public LaboratoryTestResultConclusionEnum? Conclusion { get; set; }
@@ -67,6 +72,7 @@ public partial class LaboratoryTestResult  //
     /// Date of lab test created in IPAFFS
     /// </summary>
     [Attr]
+    [JsonPropertyName("labTestCreatedOn")]
     [System.ComponentModel.Description("Date of lab test created in IPAFFS")]
     public DateTime? LabTestCreatedOn { get; set; }
 

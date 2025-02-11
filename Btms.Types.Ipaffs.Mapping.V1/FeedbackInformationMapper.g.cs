@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class FeedbackInformationMapper
 {
-    public static Btms.Model.Ipaffs.FeedbackInformation Map(Btms.Types.Ipaffs.FeedbackInformation from)
+    public static Btms.Model.Ipaffs.FeedbackInformation Map(Btms.Types.Ipaffs.FeedbackInformation? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.FeedbackInformation();
         to.AuthorityType = FeedbackInformationAuthorityTypeEnumMapper.Map(from?.AuthorityType);
         to.ConsignmentArrival = from?.ConsignmentArrival;

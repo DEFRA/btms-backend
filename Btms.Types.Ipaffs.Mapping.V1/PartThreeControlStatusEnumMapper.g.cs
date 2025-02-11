@@ -17,13 +17,10 @@ public static class PartThreeControlStatusEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.PartThreeControlStatusEnum.Required => Btms.Model.Ipaffs.PartThreeControlStatusEnum
-                .Required,
-            Btms.Types.Ipaffs.PartThreeControlStatusEnum.Completed => Btms.Model.Ipaffs.PartThreeControlStatusEnum
-                .Completed,
+            Btms.Types.Ipaffs.PartThreeControlStatusEnum.Required => Btms.Model.Ipaffs.PartThreeControlStatusEnum.Required,
+            Btms.Types.Ipaffs.PartThreeControlStatusEnum.Completed => Btms.Model.Ipaffs.PartThreeControlStatusEnum.Completed,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };
