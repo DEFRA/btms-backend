@@ -18,7 +18,7 @@ var builder = Host.CreateDefaultBuilder(args)
         {
             o.SingleLine = true;
             o.ColorBehavior = LoggerColorBehavior.Enabled;
-            
+
         }).SetMinimumLevel(LogLevel.Information));
         services.AddTransient<App>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());

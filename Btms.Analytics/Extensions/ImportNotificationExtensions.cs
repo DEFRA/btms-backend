@@ -4,7 +4,7 @@ using Btms.Model.Ipaffs;
 namespace Btms.Analytics.Extensions;
 
 public static class ImportNotificationExtensions
-{   
+{
     public static IQueryable<ImportNotification> WhereFilteredByCreatedDateAndParams(this IQueryable<ImportNotification> source, DateTime from, DateTime to,
         bool finalisedOnly = true,
         ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)

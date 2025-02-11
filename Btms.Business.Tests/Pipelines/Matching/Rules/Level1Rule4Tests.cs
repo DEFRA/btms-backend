@@ -13,10 +13,10 @@ public class Level1Rule4Tests
         // Arrange
         var sut = new Level1Rule4();
         var context = new MatchContext();
-        
+
         // Act
         var result = await sut.ProcessFilter(context);
-        
+
         // Assert
         result.Should().NotBeNull();
         result.ExitPipeline.Should().BeFalse();

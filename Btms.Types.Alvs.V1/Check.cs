@@ -26,7 +26,7 @@ public partial class Check  //
     [JsonPropertyName("decisionCode")]
     public string? DecisionCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,5 +37,3 @@ public partial class Check  //
     public string[]? DecisionReasons { get; set; }
 
 }
-
-

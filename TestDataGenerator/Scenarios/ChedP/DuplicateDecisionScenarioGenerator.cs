@@ -18,10 +18,10 @@ public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenari
             .WithVersionNumber()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification.ReferenceNumber);
 
-        
+
         var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
@@ -39,7 +39,7 @@ public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenari
             .WithDecisionVersionNumber()
             .WithTunaChecks()
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
 
         return new GeneratorResult([clearanceRequest, notification, alvsDecision, alvsDecision]);

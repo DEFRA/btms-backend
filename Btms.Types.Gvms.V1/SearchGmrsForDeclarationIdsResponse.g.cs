@@ -21,19 +21,17 @@ public partial class SearchGmrsForDeclarationIdsResponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("gmrByDeclarationId")]
     public GmrByDeclarationId[]? GmrByDeclarationIds { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("gmrs")]
     public Gmr[]? Gmrs { get; set; }
 
-	}
-
-
+}

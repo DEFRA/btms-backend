@@ -40,37 +40,37 @@ public class MovementsExceptionsTests(ITestOutputHelper output) : MultipleScenar
     private async Task<SingleSeriesDataset> EnsureEnvironmentInitialisedAndGetExceptions(Type generatorType)
     {
         EnsureEnvironmentInitialised(generatorType);
-        
+
         var result = await Client
             .GetAnalyticsDashboard(["movementsExceptions"],
                 dateFrom: DateTime.MinValue, dateTo: DateTime.MaxValue);
-         
+
         var chart = await result
             .AnalyticsChartAs<SingleSeriesDataset>("movementsExceptions")!;
 
         return chart;
     }
-    
+
     [Theory]
     [MemberData(nameof(Scenarios))]
     public async Task ShouldHaveAnException(Type generatorType)
     {
         var chart = await EnsureEnvironmentInitialisedAndGetExceptions(generatorType);
-         
-         chart.Values.Count
-             .Should().BeGreaterThan(1);
+
+        chart.Values.Count
+            .Should().BeGreaterThan(1);
     }
-    
-    
+
+
     [Theory]
     [MemberData(nameof(ScenariosWithException))]
     public async Task ShouldHaveCorrectException(Type generatorType, string expectedException)
     {
         var chart = await EnsureEnvironmentInitialisedAndGetExceptions(generatorType);
 
-         chart.Values
-             .Single(v => v.Key == expectedException)
-             .Value
-             .Should().Be(1);
-         }
+        chart.Values
+            .Single(v => v.Key == expectedException)
+            .Value
+            .Should().Be(1);
+    }
 }

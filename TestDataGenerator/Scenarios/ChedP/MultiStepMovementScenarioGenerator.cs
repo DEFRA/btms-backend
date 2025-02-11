@@ -24,10 +24,10 @@ public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerat
 
         var notification1 = notification1Builder.Build();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification1.ReferenceNumber);
-        
-        logger.LogInformation("Created {NotificationReferenceNumber}", 
+
+        logger.LogInformation("Created {NotificationReferenceNumber}",
             notification2.ReferenceNumber);
 
         var clearanceRequestBuilder = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
@@ -36,7 +36,7 @@ public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerat
             .WithReferenceNumberOneToOne(notification1.ReferenceNumber!)
             .WithEntryVersionNumber(1)
             .WithTunaItem();
-            
+
         var clearanceRequest = clearanceRequestBuilder
             .ValidateAndBuild();
 

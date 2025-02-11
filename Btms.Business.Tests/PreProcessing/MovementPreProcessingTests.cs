@@ -19,7 +19,7 @@ public class MovementPreProcessingTests
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
         var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance));
-        
+
         // ACT
         var preProcessingResult = await preProcessor.Process(
             new PreProcessingContext<AlvsClearanceRequest>(clearanceRequest, "TestMessageId"));

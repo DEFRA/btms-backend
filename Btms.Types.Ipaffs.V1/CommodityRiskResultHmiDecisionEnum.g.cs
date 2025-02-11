@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum CommodityRiskResultHmiDecisionEnum
 {
 
-		[EnumMember(Value = "REQUIRED")]
-		Required,
-	
-		[EnumMember(Value = "NOTREQUIRED")]
-		Notrequired,
-	
+    [EnumMember(Value = "REQUIRED")]
+    Required,
+
+    [EnumMember(Value = "NOTREQUIRED")]
+    Notrequired,
+
 }
-
-

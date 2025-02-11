@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum ConsignmentCheckIdentityCheckTypeEnum
 {
 
-		SealCheck,
-	
-		FullIdentityCheck,
-	
-		NotDone,
-	
+    SealCheck,
+
+    FullIdentityCheck,
+
+    NotDone,
+
 }
-
-

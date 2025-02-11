@@ -83,7 +83,7 @@ public class SensitiveDataSerializerTests
             SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"]
         };
 
-        var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+        var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
         // ACT
         var result = serializer.RedactRawJson(json, typeof(SimpleClass));

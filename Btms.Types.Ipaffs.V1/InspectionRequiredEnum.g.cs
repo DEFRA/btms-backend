@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum InspectionRequiredEnum
 {
 
-		[EnumMember(Value = "Required")]
-		Required,
-	
-		[EnumMember(Value = "Inconclusive")]
-		Inconclusive,
-	
-		[EnumMember(Value = "Not required")]
-		NotRequired,
-	
+    [EnumMember(Value = "Required")]
+    Required,
+
+    [EnumMember(Value = "Inconclusive")]
+    Inconclusive,
+
+    [EnumMember(Value = "Not required")]
+    NotRequired,
+
 }
-
-

@@ -21,26 +21,24 @@ public partial class InspectionOverride  //
 {
 
 
-        /// <summary>
-        /// Original inspection decision
-        /// </summary>
+    /// <summary>
+    /// Original inspection decision
+    /// </summary>
     [JsonPropertyName("originalDecision")]
     public string? OriginalDecision { get; set; }
 
-	
-        /// <summary>
-        /// The time the risk decision is overridden
-        /// </summary>
+
+    /// <summary>
+    /// The time the risk decision is overridden
+    /// </summary>
     [JsonPropertyName("overriddenOn")]
     public DateTime? OverriddenOn { get; set; }
 
-	
-        /// <summary>
-        /// User entity who has manually overridden the inspection
-        /// </summary>
+
+    /// <summary>
+    /// User entity who has manually overridden the inspection
+    /// </summary>
     [JsonPropertyName("overriddenBy")]
     public UserInformation? OverriddenBy { get; set; }
 
-	}
-
-
+}

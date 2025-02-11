@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum ConsignmentCheckIdentityCheckTypeEnum
 {
 
-		[EnumMember(Value = "Seal Check")]
-		SealCheck,
-	
-		[EnumMember(Value = "Full Identity Check")]
-		FullIdentityCheck,
-	
-		[EnumMember(Value = "Not Done")]
-		NotDone,
-	
+    [EnumMember(Value = "Seal Check")]
+    SealCheck,
+
+    [EnumMember(Value = "Full Identity Check")]
+    FullIdentityCheck,
+
+    [EnumMember(Value = "Not Done")]
+    NotDone,
+
 }
-
-

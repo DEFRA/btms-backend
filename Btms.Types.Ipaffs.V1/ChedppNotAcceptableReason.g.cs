@@ -21,19 +21,17 @@ public partial class ChedppNotAcceptableReason  //
 {
 
 
-        /// <summary>
-        /// reason for refusal
-        /// </summary>
+    /// <summary>
+    /// reason for refusal
+    /// </summary>
     [JsonPropertyName("reason")]
     public ChedppNotAcceptableReasonReasonEnum? Reason { get; set; }
 
-	
-        /// <summary>
-        /// commodity or package
-        /// </summary>
+
+    /// <summary>
+    /// commodity or package
+    /// </summary>
     [JsonPropertyName("commodityOrPackage")]
     public ChedppNotAcceptableReasonCommodityOrPackageEnum? CommodityOrPackage { get; set; }
 
-	}
-
-
+}

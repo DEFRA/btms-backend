@@ -6,7 +6,7 @@ internal class GeneratorEnumMap
 {
     private static readonly Dictionary<string, GeneratorEnumMap> ClassMaps = new();
 
-   
+
     public GeneratorEnumMap(string className, Action<GeneratorEnumMap> classMapInitializer)
     {
         Name = className;
@@ -17,7 +17,7 @@ internal class GeneratorEnumMap
 
     public List<EnumDescriptor.EnumValueDescriptor> EnumValues = new();
     public List<string> EnumValuesToRemove = new();
-    public List<(string OldValue, string NewValue)> EnumValuesToRename = new ();
+    public List<(string OldValue, string NewValue)> EnumValuesToRename = new();
 
     public GeneratorEnumMap AddEnumValue(string value)
     {

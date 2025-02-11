@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum CommodityRiskResultExitRiskDecisionEnum
 {
 
-		Required,
-	
-		Notrequired,
-	
-		Inconclusive,
-	
+    Required,
+
+    Notrequired,
+
+    Inconclusive,
+
 }
-
-

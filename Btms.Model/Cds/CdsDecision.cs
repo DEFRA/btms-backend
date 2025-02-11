@@ -27,7 +27,7 @@ public partial class CdsDecision  //
     [System.ComponentModel.Description("")]
     public required ServiceHeader ServiceHeader { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -35,7 +35,7 @@ public partial class CdsDecision  //
     [System.ComponentModel.Description("")]
     public required DecisionHeader Header { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -43,5 +43,3 @@ public partial class CdsDecision  //
     [System.ComponentModel.Description("")]
     public required DecisionItems[] Items { get; set; }
 }
-
-

@@ -25,7 +25,7 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     {
         return new DecisionBuilder<T>(file);
     }
-    
+
     /// <summary>
     /// build, serialise and then deserialise the object to break any byref type relationships
     /// </summary>
@@ -34,18 +34,18 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
     {
 
         var json = JsonSerializer.Serialize(this.Build());
-        
-        var builder =  new DecisionBuilder<T>(itemJson: json);
-        
+
+        var builder = new DecisionBuilder<T>(itemJson: json);
+
         return builder;
     }
 
     public DecisionBuilder<T> WithReferenceNumber(string chedReference)
     {
         var id = MatchIdentifier.FromNotification(chedReference);
-        return WithReferenceNumber(id);   
+        return WithReferenceNumber(id);
     }
-    
+
     public DecisionBuilder<T> WithReferenceNumber(MatchIdentifier id)
     {
         return Do(x =>
@@ -53,9 +53,9 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
             x.Header!.EntryReference = id.AsCdsEntryReference();
             x.Header!.DeclarationUcr = id.AsCdsDeclarationUcr();
             x.Header!.MasterUcr = id.AsCdsMasterUcr();
-        });   
+        });
     }
-    
+
     public DecisionBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
         if (randomTime)
@@ -69,7 +69,7 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
         }
     }
 
-    
+
     public DecisionBuilder<T> WithEntryVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.EntryVersionNumber = version);
@@ -106,13 +106,13 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
             cr.ServiceHeader!.ServiceCallTimestamp.AssertHasValue("Decision ServiceCallTimestamp missing");
             cr.Header!.EntryReference.AssertHasValue("Decision EntryReference missing");
             cr.Header!.DecisionNumber.AssertHasValue("Decision DecisionNumber missing");
-            
+
             cr.Items.AssertHasValue("Decision Items missing");
 
             Array.ForEach(cr.Items!, i =>
             {
                 i.Checks.AssertHasValue("Decision Item Checks missing");
-                
+
                 Array.ForEach(i.Checks!, c =>
                 {
                     c.CheckCode.AssertHasValue("Decision Item Check CheckCode missing");

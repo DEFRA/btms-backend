@@ -22,21 +22,19 @@ public partial class IdentificationDetails  //
 {
 
 
-        /// <summary>
-        /// Identification detail
-        /// </summary>
+    /// <summary>
+    /// Identification detail
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Identification detail")]
     public string? IdentificationDetail { get; set; }
 
-	
-        /// <summary>
-        /// Identification description
-        /// </summary>
+
+    /// <summary>
+    /// Identification description
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Identification description")]
     public string? IdentificationDescription { get; set; }
 
-	}
-
-
+}

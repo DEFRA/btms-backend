@@ -7,9 +7,9 @@ public class NoAuditLogForMovementUpdate(IServiceProvider sp, ILogger<NoAuditLog
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
-        var builders =  GetBuilders("NoAuditLogForMovementUpdate").GetAwaiter().GetResult();
-        
-        logger.LogInformation("Created {builders} Builders", 
+        var builders = GetBuilders("NoAuditLogForMovementUpdate").GetAwaiter().GetResult();
+
+        logger.LogInformation("Created {builders} Builders",
             builders.Count);
 
         var updatedCr = ((ClearanceRequestBuilder)builders
@@ -20,14 +20,14 @@ public class NoAuditLogForMovementUpdate(IServiceProvider sp, ILogger<NoAuditLog
             .IncrementEntryVersionNumber()
             .WithItemDocumentRef("GBCHD2024.001239999999", 1, 0)
             .ValidateAndBuild();
-        
+
         var messages = builders
             .Select(b => b.builder)
             .ToArray()
             .BuildAll()
             .Concat([updatedCr])
             .ToArray();
-        
+
         return new GeneratorResult(messages);
     }
 }

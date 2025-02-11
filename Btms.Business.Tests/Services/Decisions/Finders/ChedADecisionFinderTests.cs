@@ -34,7 +34,7 @@ public class ChedADecisionFinderTests
 
         result.Should().Be(expectedResult);
     }
-    
+
     [Theory]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTranshipment, null, DecisionCode.E03)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, DecisionCode.E03)]
@@ -47,10 +47,10 @@ public class ChedADecisionFinderTests
     [InlineData(true, DecisionDecisionEnum.AcceptableForSpecificWarehouse, null, DecisionCode.E96)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForPrivateImport, null, DecisionCode.E96)]
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransfer, null, DecisionCode.E96)]
-    
+
     [InlineData(null, null, null, DecisionCode.E99)]
 
-    [InlineData(false,null, DecisionNotAcceptableActionEnum.Euthanasia, DecisionCode.N02)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Euthanasia, DecisionCode.N02)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Reexport, DecisionCode.N04)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Slaughter, DecisionCode.N02)]
 
@@ -81,7 +81,7 @@ public class ChedADecisionFinderTests
             }
         };
         var sut = new ChedADecisionFinder();
-        
+
         var result = sut.FindDecision(notification, null);
 
         result.DecisionCode.Should().Be(expectedCode);

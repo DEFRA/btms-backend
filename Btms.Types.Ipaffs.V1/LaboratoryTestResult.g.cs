@@ -21,49 +21,47 @@ public partial class LaboratoryTestResult  //
 {
 
 
-        /// <summary>
-        /// When sample was used
-        /// </summary>
+    /// <summary>
+    /// When sample was used
+    /// </summary>
     [JsonPropertyName("sampleUseByDate")]
     public string? SampleUseByDate { get; set; }
 
-	
-        /// <summary>
-        /// When it was released
-        /// </summary>
+
+    /// <summary>
+    /// When it was released
+    /// </summary>
     [JsonPropertyName("releasedDate")]
     public DateTime? ReleasedDate { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory test method
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory test method
+    /// </summary>
     [JsonPropertyName("laboratoryTestMethod")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryTestMethod { get; set; }
 
-	
-        /// <summary>
-        /// Result of test
-        /// </summary>
+
+    /// <summary>
+    /// Result of test
+    /// </summary>
     [JsonPropertyName("results")]
     [SensitiveData.SensitiveData]
     public string? Results { get; set; }
 
-	
-        /// <summary>
-        /// Conclusion of laboratory test
-        /// </summary>
+
+    /// <summary>
+    /// Conclusion of laboratory test
+    /// </summary>
     [JsonPropertyName("conclusion")]
     public LaboratoryTestResultConclusionEnum? Conclusion { get; set; }
 
-	
-        /// <summary>
-        /// Date of lab test created in IPAFFS
-        /// </summary>
+
+    /// <summary>
+    /// Date of lab test created in IPAFFS
+    /// </summary>
     [JsonPropertyName("labTestCreatedDate")]
     public DateTime? LabTestCreatedDate { get; set; }
 
-	}
-
-
+}

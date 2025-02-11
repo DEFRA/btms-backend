@@ -10,10 +10,10 @@ internal static class DecisionFinderExtensions
         var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
         decisionCode = null;
         acceptable = false;
-        
+
         if (consignmentAcceptable.HasValue)
         {
-            acceptable = consignmentAcceptable.Value; 
+            acceptable = consignmentAcceptable.Value;
             return true;
         }
         else if (notification.PartTwo != null && notification.PartTwo.AutoClearedOn.HasValue())
@@ -25,7 +25,7 @@ internal static class DecisionFinderExtensions
         decisionCode = DecisionCode.E99;
         return false;
     }
-    
+
     public static bool TryGetHoldDecision(this ImportNotification notification, out DecisionCode? decisionCode)
     {
         if (notification.Status is ImportNotificationStatusEnum.Submitted or ImportNotificationStatusEnum.InProgress)
@@ -36,7 +36,7 @@ internal static class DecisionFinderExtensions
                 decisionCode = DecisionCode.H01;
                 return true;
             }
-            
+
             if (notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.Required ||
                 notification.RiskAssessment?.CommodityResults?.Any(x => x.HmiDecision == CommodityRiskResultHmiDecisionEnum.Required) is true
                                                                        || notification.RiskAssessment?.CommodityResults?.Any(x => x.PhsiDecision == CommodityRiskResultPhsiDecisionEnum.Required) is true)

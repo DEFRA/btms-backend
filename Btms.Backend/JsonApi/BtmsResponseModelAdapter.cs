@@ -65,7 +65,9 @@ public class BtmsResponseModelAdapter(
             List<ResourceIdentifierObject> list = relationship.Item2.Data.Select(item =>
                     new ResourceIdentifierObject
                     {
-                        Type = item.Type, Id = item.Id, Meta = item.ToDictionary(),
+                        Type = item.Type,
+                        Id = item.Id,
+                        Meta = item.ToDictionary(),
                     })
                 .ToList();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.

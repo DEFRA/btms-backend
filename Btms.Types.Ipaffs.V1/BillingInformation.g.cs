@@ -21,43 +21,41 @@ public partial class BillingInformation  //
 {
 
 
-        /// <summary>
-        /// Indicates whether user has confirmed their billing information
-        /// </summary>
+    /// <summary>
+    /// Indicates whether user has confirmed their billing information
+    /// </summary>
     [JsonPropertyName("isConfirmed")]
     public bool? IsConfirmed { get; set; }
 
-	
-        /// <summary>
-        /// Billing email address
-        /// </summary>
+
+    /// <summary>
+    /// Billing email address
+    /// </summary>
     [JsonPropertyName("emailAddress")]
     [Btms.SensitiveData.SensitiveData]
     public string? EmailAddress { get; set; }
 
-	
-        /// <summary>
-        /// Billing phone number
-        /// </summary>
+
+    /// <summary>
+    /// Billing phone number
+    /// </summary>
     [JsonPropertyName("phoneNumber")]
     [Btms.SensitiveData.SensitiveData]
     public string? PhoneNumber { get; set; }
 
-	
-        /// <summary>
-        /// Billing Contact Name
-        /// </summary>
+
+    /// <summary>
+    /// Billing Contact Name
+    /// </summary>
     [JsonPropertyName("contactName")]
     [Btms.SensitiveData.SensitiveData]
     public string? ContactName { get; set; }
 
-	
-        /// <summary>
-        /// Billing postal address
-        /// </summary>
+
+    /// <summary>
+    /// Billing postal address
+    /// </summary>
     [JsonPropertyName("postalAddress")]
     public PostalAddress? PostalAddress { get; set; }
 
-	}
-
-
+}

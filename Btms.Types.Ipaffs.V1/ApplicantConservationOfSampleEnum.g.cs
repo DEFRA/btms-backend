@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum ApplicantConservationOfSampleEnum
 {
 
-		[EnumMember(Value = "Ambient")]
-		Ambient,
-	
-		[EnumMember(Value = "Chilled")]
-		Chilled,
-	
-		[EnumMember(Value = "Frozen")]
-		Frozen,
-	
+    [EnumMember(Value = "Ambient")]
+    Ambient,
+
+    [EnumMember(Value = "Chilled")]
+    Chilled,
+
+    [EnumMember(Value = "Frozen")]
+    Frozen,
+
 }
-
-

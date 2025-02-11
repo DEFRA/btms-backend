@@ -13,7 +13,7 @@ namespace Btms.Analytics.Tests;
 public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
     : ScenarioDatasetBaseTest(output, Datasets.FunctionalAnalyticsDatasetName)
 {
-    
+
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
@@ -22,10 +22,10 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
             .ByMaxVersion(DateTime.Today.MonthAgo(), DateTime.Today.Tomorrow(), false));
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
-        
+
         result.Values.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
@@ -34,10 +34,10 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
             .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), false);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-        
+
         result.Values.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
@@ -46,10 +46,10 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
             .ByMaxVersion(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue, false);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-        
+
         result.Values.Count.Should().Be(0);
     }
-    
+
     [Fact]
     public async Task WhenCalledWithChedType_ReturnsResults()
     {
@@ -58,10 +58,10 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
             .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), false, chedTypes: [ImportNotificationTypeEnum.Cveda]);
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-        
+
         result.Values.Count.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task WhenCalledWithCountry_ReturnsResults()
     {
@@ -70,7 +70,7 @@ public class ImportNotificationsByMaxVersionTests(ITestOutputHelper output)
             .ByMaxVersion(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), false, country: "ES");
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-        
+
         result.Values.Count.Should().Be(1);
     }
 }

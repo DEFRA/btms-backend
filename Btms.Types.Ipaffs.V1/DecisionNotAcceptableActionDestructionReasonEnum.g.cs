@@ -10,18 +10,16 @@ namespace Btms.Types.Ipaffs;
 public enum DecisionNotAcceptableActionDestructionReasonEnum
 {
 
-		[EnumMember(Value = "ContaminatedProducts")]
-		ContaminatedProducts,
-	
-		[EnumMember(Value = "InterceptedPart")]
-		InterceptedPart,
-	
-		[EnumMember(Value = "PackagingMaterial")]
-		PackagingMaterial,
-	
-		[EnumMember(Value = "Other")]
-		Other,
-	
+    [EnumMember(Value = "ContaminatedProducts")]
+    ContaminatedProducts,
+
+    [EnumMember(Value = "InterceptedPart")]
+    InterceptedPart,
+
+    [EnumMember(Value = "PackagingMaterial")]
+    PackagingMaterial,
+
+    [EnumMember(Value = "Other")]
+    Other,
+
 }
-
-

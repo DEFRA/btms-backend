@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum TemperatureEnum
 {
 
-		Ambient,
-	
-		Chilled,
-	
-		Frozen,
-	
+    Ambient,
+
+    Chilled,
+
+    Frozen,
+
 }
-
-

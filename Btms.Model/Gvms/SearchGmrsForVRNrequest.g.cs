@@ -22,13 +22,11 @@ public partial class SearchGmrsForVRNrequest  //
 {
 
 
-        /// <summary>
-        /// A list of VRN to search for GMRs.
-        /// </summary>
+    /// <summary>
+    /// A list of VRN to search for GMRs.
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("A list of VRN to search for GMRs.")]
     public string[]? Vrns { get; set; }
 
-	}
-
-
+}

@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum ExternalReferenceSystemEnum
 {
 
-		Ecert,
-	
-		Ephyto,
-	
-		Enotification,
-	
-		Ncts,
-	
+    Ecert,
+
+    Ephyto,
+
+    Enotification,
+
+    Ncts,
+
 }
-
-

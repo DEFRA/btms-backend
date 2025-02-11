@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum ConsignmentCheckIdentityCheckNotDoneReasonEnum
 {
 
-		[EnumMember(Value = "Reduced checks regime")]
-		ReducedChecksRegime,
-	
-		[EnumMember(Value = "Not required")]
-		NotRequired,
-	
+    [EnumMember(Value = "Reduced checks regime")]
+    ReducedChecksRegime,
+
+    [EnumMember(Value = "Not required")]
+    NotRequired,
+
 }
-
-

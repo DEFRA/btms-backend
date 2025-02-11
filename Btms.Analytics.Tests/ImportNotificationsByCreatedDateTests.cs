@@ -17,7 +17,7 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
         var result = (await GetImportNotificationsAggregationService()
-            .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(),AggregationPeriod.Hour))
+            .ByCreated(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour(), AggregationPeriod.Hour))
             .Series
             .ToList();
 
@@ -32,11 +32,11 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
         result[0].Name.Should().Be("CHEDA Linked");
         result[0].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today.Tomorrow());
         result[0].Periods.Count.Should().Be(48);
-        
+
         result.Sum(r => r.Periods.Sum(p => p.Value))
             .Should().BeGreaterThan(0);
     }
-    
+
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {
@@ -50,7 +50,7 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
         result.Count.Should().Be(8);
 
         result[0].Name.Should().Be("CHEDA Linked");
-        
+
         result.Should().AllSatisfy(r =>
         {
             r.Periods.Should().AllSatisfy(p =>
@@ -60,12 +60,12 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
             });
             r.Periods.Count.Should().Be(DateTime.Today.DaysSinceMonthAgo() + 1);
         });
-        
+
         // result.shoul
         result.Sum(r => r.Periods.Sum(p => p.Value))
             .Should().BeGreaterThan(0);
     }
-    
+
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
@@ -93,7 +93,7 @@ public class ImportNotificationsByCreatedDateTests(ITestOutputHelper output)
             });
             r.Periods.Count.Should().Be(24);
         });
-        
+
         result.Sum(r => r.Periods.Sum(p => p.Value))
             .Should().Be(0);
     }

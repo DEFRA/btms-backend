@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum ApplicantAnalysisTypeEnum
 {
 
-		InitialAnalysis,
-	
-		CounterAnalysis,
-	
-		SecondExpertAnalysis,
-	
+    InitialAnalysis,
+
+    CounterAnalysis,
+
+    SecondExpertAnalysis,
+
 }
-
-

@@ -27,34 +27,32 @@ public partial class Document  //
     [JsonPropertyName("documentCode")]
     public string? DocumentCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("documentReference")]
     public string? DocumentReference { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("documentStatus")]
     public string? DocumentStatus { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("documentControl")]
     public string? DocumentControl { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("documentQuantity")]
     public decimal? DocumentQuantity { get; set; }
 
-	}
-
-
+}

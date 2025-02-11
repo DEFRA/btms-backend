@@ -21,10 +21,10 @@ public class MovementsByStatusTests(ITestOutputHelper output)
             .ByStatus(DateTime.Today.WeekAgo(), DateTime.Today.Tomorrow()));
 
         TestOutputHelper.WriteLine("{0} aggregated items found", result.Values.Count);
-        
+
         result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
-    
+
     [Fact]
     public async Task WhenCalledLast48Hours_ReturnExpectedAggregation()
     {
@@ -33,10 +33,10 @@ public class MovementsByStatusTests(ITestOutputHelper output)
             .ByStatus(DateTime.Now.NextHour().AddDays(-2), DateTime.Now.NextHour()));
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-        
+
         result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
-    
+
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
@@ -45,7 +45,7 @@ public class MovementsByStatusTests(ITestOutputHelper output)
             .ByStatus(DateTime.MaxValue.AddDays(-1), DateTime.MaxValue));
 
         TestOutputHelper.WriteLine($"{result.Values.Count} aggregated items found");
-        
+
         result.ShouldBeCorrectBasedOnLinkStatusEnum();
     }
 }

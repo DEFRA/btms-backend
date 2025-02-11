@@ -22,37 +22,35 @@ public partial class ContactDetails  //
 {
 
 
-        /// <summary>
-        /// Name of designated contact
-        /// </summary>
+    /// <summary>
+    /// Name of designated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Name of designated contact")]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Telephone number of designated contact
-        /// </summary>
+
+    /// <summary>
+    /// Telephone number of designated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Telephone number of designated contact")]
     public string? Telephone { get; set; }
 
-	
-        /// <summary>
-        /// Email address of designated contact
-        /// </summary>
+
+    /// <summary>
+    /// Email address of designated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Email address of designated contact")]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Name of agent representing designated contact
-        /// </summary>
+
+    /// <summary>
+    /// Name of agent representing designated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Name of agent representing designated contact")]
     public string? Agent { get; set; }
 
-	}
-
-
+}

@@ -18,22 +18,26 @@ public class SpecificFilesScenarioGeneratorTests
     public void GeneratedMessagesShouldBeInCorrectOrder()
     {
         var (configuration, _) = BuilderExtensions.GetConfig("Scenarios/Samples");
-        
+
         var sp = new ServiceCollection()
             .AddBlobStorage(configuration)
             .AddSingleton<CachingBlobService>()
             .ConfigureTestGenerationServices()
             .BuildServiceProvider();
-        
+
         var scenario = new DuplicateMovementItemsCdms211(sp, NullLogger<DuplicateMovementItemsCdms211>.Instance);
 
         var config = new ScenarioConfig()
         {
-            Name = "Test", ArrivalDateRange = 1, Count = 1, Generator = scenario, CreationDateRange = 1
+            Name = "Test",
+            ArrivalDateRange = 1,
+            Count = 1,
+            Generator = scenario,
+            CreationDateRange = 1
         };
-        
-        var messages = scenario.Generate(1, 1, DateTime.Today,  config);
-        
+
+        var messages = scenario.Generate(1, 1, DateTime.Today, config);
+
         // TODO the scenario 
         messages.Count.Should().Be(5);
         messages.Select(m => m.CreatedDate())

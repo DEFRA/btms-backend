@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum FeedbackInformationAuthorityTypeEnum
 {
 
-		Exitbip,
-	
-		Finalbip,
-	
-		Localvetunit,
-	
-		Inspunit,
-	
+    Exitbip,
+
+    Finalbip,
+
+    Localvetunit,
+
+    Inspunit,
+
 }
-
-

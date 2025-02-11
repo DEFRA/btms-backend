@@ -12,19 +12,19 @@ public static class MessageExtensions
         {
             case AlvsClearanceRequest cr:
                 return cr.ServiceHeader!.ServiceCallTimestamp!.Value;
-                        
+
             case ImportNotification n:
                 return n.LastUpdated!.Value;
-                    
+
             case Decision d:
                 return d.ServiceHeader!.ServiceCallTimestamp!.Value;
-                    
+
             case Finalisation d:
                 return d.ServiceHeader!.ServiceCallTimestamp!.Value;
-            
+
             default:
                 throw new InvalidDataException($"Unexpected type {m.GetType().Name}");
         }
-        
+
     }
 }

@@ -16,26 +16,26 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 [Trait("Category", "Integration")]
 public class ChedPDuplicateDecisionTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
-{            
+{
     // [Fact(Skip = "We currently import the duplicate alvs decision & store it on the movement")]
     [Fact]
     public void SimpleChedPScenario_ShouldBeLinkedAndMatchDecision()
     {
         // Arrange
-        
+
         var chedPMovement = (AlvsClearanceRequest)LoadedData.Single(d =>
                 d is { Message: AlvsClearanceRequest })
             .Message;
-        
+
         var chedPNotification = (ImportNotification)LoadedData.Single(d =>
                 d is { Message: ImportNotification })
             .Message;
-        
+
         AddAdditionalContextToAssertFailures(() =>
         {
             var jsonClientResponse = Client.AsJsonApiClient()
                 .GetById(chedPMovement!.Header!.EntryReference!, "api/movements");
-            
+
             // Assert
             jsonClientResponse.Should().NotBeNull();
 

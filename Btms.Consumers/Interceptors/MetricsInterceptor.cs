@@ -24,7 +24,7 @@ public class MetricsInterceptor<TMessage>(InMemoryQueueMetrics queueMetrics, Con
             if (context.Properties.TryGetValue(MessageBusHeaders.RetryCount, out var value))
             {
                 consumerMetrics.Retry<TMessage>(context.Path, context.Consumer.GetType().Name, (int)value);
-                
+
             }
 
             var activityContext = context.GetActivityContext();

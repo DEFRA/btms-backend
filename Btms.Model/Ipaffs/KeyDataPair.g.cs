@@ -22,21 +22,19 @@ public partial class KeyDataPair  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? Key { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? Data { get; set; }
 
-	}
-
-
+}

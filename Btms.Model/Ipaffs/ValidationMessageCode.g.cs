@@ -22,21 +22,19 @@ public partial class ValidationMessageCode  //
 {
 
 
-        /// <summary>
-        /// Field
-        /// </summary>
+    /// <summary>
+    /// Field
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Field")]
     public string? Field { get; set; }
 
-	
-        /// <summary>
-        /// Code
-        /// </summary>
+
+    /// <summary>
+    /// Code
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Code")]
     public string? Code { get; set; }
 
-	}
-
-
+}

@@ -44,9 +44,9 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
             logger.LogError(e, "Failed to Deserialize Json");
             throw;
         }
-       
+
     }
-   
+
     public string RedactRawJson(string json, Type type)
     {
         if (options.Value.Include)
@@ -61,7 +61,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         }
 
         var rootNode = JsonNode.Parse(json);
-       
+
         foreach (var sensitiveField in sensitiveFields)
         {
             var jsonPath = JsonPath.Parse($"$.{sensitiveField}");
@@ -86,7 +86,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
                     patch = new JsonPatch(PatchOperation.Replace(JsonPointer.Parse(match.Location!.AsJsonPointer()), redactedValue));
                 }
 
-               
+
                 var patchResult = patch.Apply(rootNode);
                 if (patchResult.IsSuccess)
                 {
