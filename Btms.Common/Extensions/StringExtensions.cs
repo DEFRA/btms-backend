@@ -17,4 +17,9 @@ public static class StringExtensions
     {
         return JsonNode.Parse(value) as IDictionary<string, JsonNode>;
     }
+
+    public static bool StartsWithLowercase(this string? s)
+    {
+        return true;
+    }
 }

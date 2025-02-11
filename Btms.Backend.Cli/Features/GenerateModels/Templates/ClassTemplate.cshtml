@@ -17,9 +17,14 @@ using System.Dynamic;
 
 namespace @Model.SourceNamespace;
 
+@if (!String.IsNullOrEmpty(Model.Description))
+{
+<text>
 /// <summary>
 /// @Model.Description
 /// </summary>
+</text>
+}
 public partial class @Model.GetClassName()  //@if (Model.IsResource) { <text>: CustomStringMongoIdentifiable</text> }
 
 {
@@ -27,12 +32,16 @@ public partial class @Model.GetClassName()  //@if (Model.IsResource) { <text>: C
 @foreach (var property in Model.Properties.Where(x => !x.ExcludedFromSource))
 {
 	var t = new HtmlString(property.GetSourcePropertyType());
-    <text>
-/// <summary>
+    
+@if (!String.IsNullOrEmpty(property.Description))
+{
+<text>
+///<summary>
 /// @property.Description
 /// </summary>
-    </text>
-        @foreach (var attr in property.SourceAttributes)
+</text>
+}
+        @foreach (var attr in property.GetSourceAttributes())
         {
             var htmlString = new HtmlString(attr);
     <text>@htmlString
