@@ -20,17 +20,31 @@ internal static class Bootstrap
         {
             map.MapProperty("ArrivalDateTime")
                 .IsDateTime(DatetimeType.Epoch)
-                .SetInternalName("ArrivesAt");
-            
-            map.MapProperty("MasterUCR").SetName("MasterUcr");
-            map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
-            map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
+                .SetInternalName("arrivesAt");
+
+            map.MapProperty("MasterUCR")
+                .SetName("masterUcr")
+                .SetSourceJsonPropertyName("masterUCR");
+
+            map.MapProperty("SubmitterTURN")
+                .SetName("submitterTurn")
+                .SetSourceJsonPropertyName("submitterTURN");
+
+            map.MapProperty("DeclarationUCR")
+                .SetName("declarationUcr")
+                .SetSourceJsonPropertyName("declarationUCR");
+
         });
         
         GeneratorClassMap.RegisterClassMap("Items", map =>
         {
-            map.MapProperty("Documents");
-            map.MapProperty("Checks");
+            map.MapProperty("Document")
+                .SetSourceJsonPropertyName("documents")
+                .SetInternalJsonPropertyName("documents");
+
+            map.MapProperty("Check")
+                .SetSourceJsonPropertyName("checks")
+                .SetInternalJsonPropertyName("checks");
         });
 
         GeneratorClassMap.RegisterClassMap("Check", map =>
@@ -48,13 +62,21 @@ internal static class Bootstrap
                 IpaffsDescriptorBuilder.ClassNamePrefix));
 
 
-            map.MapProperty("MasterUCR").SetName("MasterUcr");
-            map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
-            map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
+            map.MapProperty("MasterUCR")
+                .SetName("masterUcr")
+                .SetSourceJsonPropertyName("masterUCR");
+
+            map.MapProperty("SubmitterTURN")
+                .SetName("submitterTurn")
+                .SetSourceJsonPropertyName("submitterTURN");
+
+            map.MapProperty("DeclarationUCR")
+                .SetName("declarationUcr")
+                .SetSourceJsonPropertyName("declarationUCR");
         });
 
         GeneratorClassMap.RegisterClassMap("ServiceHeader",
-            map => { map.MapProperty("ServiceCallTimestamp").IsDateTime(DatetimeType.Epoch).SetInternalName("ServiceCalled"); });
+            map => { map.MapProperty("ServiceCallTimestamp").IsDateTime(DatetimeType.Epoch).SetInternalName("serviceCalled"); });
 
         GeneratorClassMap.RegisterClassMap("AlvsClearanceRequest",
             map => { map.SetClassName("AlvsClearanceRequest", "CdsClearanceRequest"); });
@@ -63,14 +85,14 @@ internal static class Bootstrap
         {
             map.SetClassName("AlvsClearanceRequestPost", "CdsClearanceRequestPost");
             map.MapProperty("AlvsClearanceRequest").SetType("AlvsClearanceRequest", "CdsClearanceRequest");
-            map.MapProperty("sendingDate").SetInternalName("SentOn").IsDateTime();
+            map.MapProperty("sendingDate").SetInternalName("sentOn").IsDateTime();
         });
 
         GeneratorClassMap.RegisterClassMap("AlvsClearanceRequestPostResult", map =>
         {
             map.SetClassName("AlvsClearanceRequestPostResult", "CdsClearanceRequestPostResult")
                 .NoInternalClass();
-            map.MapProperty("sendingDate").SetInternalName("SentOn").IsDateTime();
+            map.MapProperty("sendingDate").SetInternalName("sentOn").IsDateTime();
         });
     }
 
@@ -187,16 +209,16 @@ internal static class Bootstrap
         GeneratorClassMap.RegisterClassMap("Decision",
             map =>
             {
-                map.MapProperty("decision").SetName("DecisionEnum");
+                map.MapProperty("decision").SetName("decisionEnum");
                 map.MapProperty("notAcceptableActionByDate").IsDate();
             });
 
         GeneratorClassMap.RegisterClassMap("ImportNotification", map =>
         {
-            map.MapProperty("Id").SetName("IpaffsId");
-            map.MapProperty("Type").SetName("ImportNotificationType");
-            map.MapProperty("LastUpdated").SetName("LastUpdated", "UpdatedSource").IsDateTime();
-            map.MapProperty("RiskDecisionLockingTime").SetName("RiskDecisionLockedOn").IsDateTime();
+            map.MapProperty("Id").SetName("ipaffsId");
+            map.MapProperty("Type").SetName("importNotificationType");
+            map.MapProperty("LastUpdated").SetName("lastUpdated", "UpdatedSource").IsDateTime();
+            map.MapProperty("RiskDecisionLockingTime").SetName("riskDecisionLockedOn").IsDateTime();
         });
 
         GeneratorClassMap.RegisterClassMap("Purpose", map =>
@@ -206,8 +228,8 @@ internal static class Bootstrap
 
 
             map.MapProperty("exitDate").IsDate();
-            map.MapProperty("FinalBIP").SetName("FinalBip");
-            map.MapProperty("ExitBIP").SetName("ExitBip");
+            map.MapProperty("FinalBIP").SetName("finalBip");
+            map.MapProperty("ExitBIP").SetName("exitBip");
         });
 
         GeneratorClassMap.RegisterClassMap("VeterinaryInformation",
@@ -243,7 +265,7 @@ internal static class Bootstrap
             map => { map.MapProperty("dateOfIssue").IsDateTime().SetInternalName("issuedOn"); });
 
         GeneratorClassMap.RegisterClassMap("JourneyRiskCategorisationResult",
-            map => { map.MapProperty("riskLevelDateTime").SetName("RiskLevelSetFor").IsDateTime(); });
+            map => { map.MapProperty("riskLevelDateTime").SetName("riskLevelSetFor").IsDateTime(); });
 
 
         GeneratorClassMap.RegisterClassMap("RiskAssessmentResult",
@@ -295,9 +317,9 @@ internal static class Bootstrap
             map.MapProperty("importerLocalReferenceNumber").IsSensitive();
             map.MapProperty("commodities").ExcludeFromInternal();
             map.MapProperty("originalEstimatedDateTime").SetName("originalEstimatedOn").IsDateTime();
-            map.MapProperty("submissionDate").SetName("SubmittedOn").IsDateTime();
+            map.MapProperty("submissionDate").SetName("submittedOn").IsDateTime();
             map.MapProperty("isGVMSRoute").SetName("isGvmsRoute");
-            map.MapProperty("portOfExitDate").IsDateTime().SetInternalName("ExitedPortOfOn");
+            map.MapProperty("portOfExitDate").IsDateTime().SetInternalName("exitedPortOfOn");
 
             map.MapDateOnlyAndTimeOnlyToDateTimeProperty("arrivalDate", "arrivalTime", "arrivesAt");
             map.MapDateOnlyAndTimeOnlyToDateTimeProperty("departureDate", "departureTime", "departedOn");

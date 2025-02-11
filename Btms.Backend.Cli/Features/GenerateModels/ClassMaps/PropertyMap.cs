@@ -20,6 +20,10 @@ internal class PropertyMap(string name)
 {
     public string Name { get; set; } = name;
 
+    public string? SourceJsonPropertyName { get; set; }
+
+    public string? InternalJsonPropertyName { get; set; }
+
     public string Type { get; set; } = null!;
 
     public string InternalType { get; set; } = null!;
@@ -28,9 +32,9 @@ internal class PropertyMap(string name)
 
     public bool TypeOverwritten { get; set; }
 
-    public List<string> SourceAttributes { get; set; } = new();
+    public List<string> SourceAttributes { get; set; } = [];
 
-    public List<string> InternalAttributes { get; set; } = new();
+    public List<string> InternalAttributes { get; set; } = [];
 
     public bool AttributesOverwritten { get; set; }
 
@@ -59,14 +63,14 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetInternalType(string type)
     {
-        InternalType = type ?? throw new ArgumentNullException("type");
+        InternalType = type ?? throw new ArgumentNullException(nameof(type));
         InternalTypeOverwritten = true;
         return this;
     }
 
     public PropertyMap SetType(string type, string? internalType = null)
     {
-        Type = type ?? throw new ArgumentNullException("type");
+        Type = type ?? throw new ArgumentNullException(nameof(type));
         InternalType = internalType ?? type;
         InternalTypeOverwritten = internalType.HasValue();
         TypeOverwritten = true;
@@ -97,6 +101,18 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetName(string name, string? internalName = null)
     {
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+
+        if (!internalName.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Internal name must start with lowercase letter");
+        }
+
         SetSourceName(name);
         SetInternalName(internalName ?? name);
         return this;
@@ -104,15 +120,50 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetSourceName(string name)
     {
-        OverriddenSourceName = name ?? throw new ArgumentNullException("name");
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+
+        OverriddenSourceName = name ?? throw new ArgumentNullException(nameof(name));
         SourceNameOverwritten = true;
         return this;
     }
 
     public PropertyMap SetInternalName(string name)
     {
-        OverriddenInternalName = name ?? throw new ArgumentNullException("name");
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+        OverriddenInternalName = name ?? throw new ArgumentNullException(nameof(name));
         InternalNameOverwritten = true;
+        return this;
+    }
+
+    public PropertyMap SetSourceJsonPropertyName(string name)
+    {
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+
+        SourceJsonPropertyName = name;
+        return this;
+    }
+
+    public PropertyMap SetInternalJsonPropertyName(string name)
+    {
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+
+        InternalJsonPropertyName = name;
         return this;
     }
 
@@ -150,7 +201,7 @@ internal class PropertyMap(string name)
     {
         if (string.IsNullOrEmpty(attribute))
         {
-            throw new ArgumentNullException("attribute");
+            throw new ArgumentNullException(nameof(attribute));
         }
 
         switch (model)

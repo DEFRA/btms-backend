@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Btms.Common.Extensions;
 using Humanizer;
 
 namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
@@ -34,8 +35,8 @@ public class PropertyDescriptor
         Description = description?.Replace("\n", " ");
         IsReferenceType = isReferenceType;
         IsArray = isArray;
-        SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
-        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]", $"[JsonPropertyName(\"{sourceName}\")]"];
+        // SourceAttributes = []; // [$"[JsonPropertyName(\"{sourceName}\")]"];
+        // InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]", $"[JsonPropertyName(\"{sourceName}\")]"];
 
         if (type.EndsWith("Enum"))
         {
@@ -43,7 +44,14 @@ public class PropertyDescriptor
                 "[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]");
         }
     }
+
+    public bool NoAttributes { get; set; } = default;
+
     public string SourceName { get; set; }
+
+    public string? SourceJsonPropertyName { get; set; }
+
+    public string? InternalJsonPropertyName { get; set; }
 
     public string InternalName { get; set; }
 
@@ -53,9 +61,9 @@ public class PropertyDescriptor
 
     public string? Description { get; set; }
 
-    public List<string> SourceAttributes { get; set; }
+    public List<string> SourceAttributes { get; set; } = [];
 
-    public List<string> InternalAttributes { get; set; }
+    public List<string> InternalAttributes { get; set; } = [];
 
     public bool IsReferenceType { get; set; }
 
@@ -130,6 +138,32 @@ public class PropertyDescriptor
         }
 
         return n;
+    }
+
+    public string[] GetSourceAttributes()
+    {
+        if (NoAttributes) return [];
+
+        var defaultParams = new List<string>() { $"[JsonPropertyName(\"{SourceJsonPropertyName ?? SourceName}\")]" };
+        defaultParams.AddRange(SourceAttributes);
+
+        return defaultParams.ToArray();
+    }
+
+    public string[] GetInternalAttributes()
+    {
+        if (NoAttributes) return [];
+
+        var defaultParams = new List<string>() { "[Attr]", $"[JsonPropertyName(\"{InternalJsonPropertyName ?? InternalName}\")]" };
+
+        if (!string.IsNullOrEmpty(Description))
+        {
+            defaultParams.Add($"[System.ComponentModel.Description(\"{Description}\")]");
+        }
+
+        defaultParams.AddRange(InternalAttributes);
+
+        return defaultParams.ToArray();
     }
 
     public string GetInternalPropertyType()

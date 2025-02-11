@@ -1,5 +1,6 @@
 using Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 using Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
+using Btms.Common.Extensions;
 using RazorLight;
 
 namespace Btms.Backend.Cli.Features.GenerateModels;
@@ -102,16 +103,18 @@ internal class CSharpFileBuilder
                     {
                         if (propertyMap.NoAttributes)
                         {
-                            propertyDescriptor.SourceAttributes.Clear();
+                            propertyDescriptor.NoAttributes = true;
                             propertyDescriptor.InternalAttributes.Clear();
                         }
                         else
                         {
-                            propertyDescriptor.SourceAttributes.AddRange(propertyMap.SourceAttributes);
+                            propertyDescriptor.SourceAttributes = propertyMap.SourceAttributes;
                             propertyDescriptor.InternalAttributes.AddRange(propertyMap.InternalAttributes);
                         }
                     }
 
+                    propertyDescriptor.SourceJsonPropertyName = propertyMap.SourceJsonPropertyName;
+                    propertyDescriptor.InternalJsonPropertyName = propertyMap.InternalJsonPropertyName;
                     propertyDescriptor.ExcludedFromSource = propertyMap.ExcludedFromSource;
                     propertyDescriptor.ExcludedFromInternal = propertyMap.ExcludedFromInternal;
 
