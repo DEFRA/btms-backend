@@ -53,6 +53,6 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         // Local it would serialize differently from the locale of this API.
         gmr.Should().NotBeNull();
         gmr?.PlannedCrossing.Should().NotBeNull();
-        gmr?.PlannedCrossing?.DepartsAt.GetValueOrDefault().DateTime.Kind.Should().Be(DateTimeKind.Unspecified);
+        gmr?.PlannedCrossing?.DepartsAt.GetValueOrDefault().Kind.Should().Be(DateTimeKind.Unspecified);
     }
 }

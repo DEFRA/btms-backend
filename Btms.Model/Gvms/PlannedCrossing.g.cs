@@ -35,7 +35,6 @@ public partial class PlannedCrossing  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker")]
-    [JsonConverter(typeof(LocalDateTimeNoSecondsJsonConverter))]
-    public DateTimeOffset? DepartsAt { get; set; }
+    public DateTime? DepartsAt { get; set; }
 
 }
