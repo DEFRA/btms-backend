@@ -21,52 +21,50 @@ public partial class OfficialVeterinarian  //
 {
 
 
-        /// <summary>
-        /// First name of official veterinarian
-        /// </summary>
+    /// <summary>
+    /// First name of official veterinarian
+    /// </summary>
     [JsonPropertyName("firstName")]
     [Btms.SensitiveData.SensitiveData]
     public string? FirstName { get; set; }
 
-	
-        /// <summary>
-        /// Last name of official veterinarian
-        /// </summary>
+
+    /// <summary>
+    /// Last name of official veterinarian
+    /// </summary>
     [JsonPropertyName("lastName")]
     [Btms.SensitiveData.SensitiveData]
     public string? LastName { get; set; }
 
-	
-        /// <summary>
-        /// Email address of official veterinarian
-        /// </summary>
+
+    /// <summary>
+    /// Email address of official veterinarian
+    /// </summary>
     [JsonPropertyName("email")]
     [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Phone number of official veterinarian
-        /// </summary>
+
+    /// <summary>
+    /// Phone number of official veterinarian
+    /// </summary>
     [JsonPropertyName("phone")]
     [Btms.SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
-	
-        /// <summary>
-        /// Fax number of official veterinarian
-        /// </summary>
+
+    /// <summary>
+    /// Fax number of official veterinarian
+    /// </summary>
     [JsonPropertyName("fax")]
     [Btms.SensitiveData.SensitiveData]
     public string? Fax { get; set; }
 
-	
-        /// <summary>
-        /// Date of sign
-        /// </summary>
+
+    /// <summary>
+    /// Date of sign
+    /// </summary>
     [JsonPropertyName("signed")]
     public string? Signed { get; set; }
 
-	}
-
-
+}

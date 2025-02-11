@@ -25,7 +25,7 @@ public class UnmatchedChedTests(ITestOutputHelper output)
             d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Cvedp }).Message;
         var chedPP = (ImportNotification)loadedData.Single(d =>
             d.Message is ImportNotification { ImportNotificationType: ImportNotificationTypeEnum.Chedpp }).Message;
-        
+
 
         // // Act
         var chedAImportNotification = Client.AsJsonApiClient().GetById(chedA.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
@@ -33,8 +33,8 @@ public class UnmatchedChedTests(ITestOutputHelper output)
         var chedPImportNotification = Client.AsJsonApiClient().GetById(chedP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
         var chedPPImportNotification = Client.AsJsonApiClient().GetById(chedPP.ReferenceNumber!, "api/import-notifications").GetResourceObject<Model.Ipaffs.ImportNotification>();
 
-        
-            
+
+
         // Assert
         chedAImportNotification.Relationships.Movements.Links.Should().BeNull();
         chedDImportNotification.Relationships.Movements.Links.Should().BeNull();

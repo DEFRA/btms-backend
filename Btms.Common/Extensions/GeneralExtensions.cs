@@ -11,8 +11,9 @@ public static class GeneralExtensions
     {
         return JsonSerializer.Serialize(obj);
     }
-    
-    [Pure] public static bool HasValue<T>([Pure, NotNullWhen(true)] this T? val)
+
+    [Pure]
+    public static bool HasValue<T>([Pure, NotNullWhen(true)] this T? val)
     {
         if (!Equals(val, default(T)))
         {
@@ -21,9 +22,9 @@ public static class GeneralExtensions
 
         return false;
     }
-    
+
     public static void AssertHasValue<T>(this T? val, string message = "Missing value")
     {
-        Debug.Assert(val.HasValue(),  message);
+        Debug.Assert(val.HasValue(), message);
     }
 }

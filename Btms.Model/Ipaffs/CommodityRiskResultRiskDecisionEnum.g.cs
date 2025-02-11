@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum CommodityRiskResultRiskDecisionEnum
 {
 
-		Required,
-	
-		Notrequired,
-	
-		Inconclusive,
-	
-		ReenforcedCheck,
-	
+    Required,
+
+    Notrequired,
+
+    Inconclusive,
+
+    ReenforcedCheck,
+
 }
-
-

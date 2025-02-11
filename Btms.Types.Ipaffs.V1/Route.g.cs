@@ -21,12 +21,10 @@ public partial class Route  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("transitingStates")]
     public string[]? TransitingStates { get; set; }
 
-	}
-
-
+}

@@ -50,7 +50,7 @@ public static class DecisionMessageBuilder
             DecisionNumber = messageNumber
         };
     }
-    
+
     private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
     {
         var decisionsByItem = movementDecisions.GroupBy(x => x.ItemNumber);
@@ -68,7 +68,7 @@ public static class DecisionMessageBuilder
     private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
     {
         if (item.Checks == null) yield break;
-        
+
         foreach (var checkCode in item.Checks.Select(x => x.CheckCode))
         {
             var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).FirstOrDefault();

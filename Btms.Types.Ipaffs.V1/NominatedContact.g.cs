@@ -21,29 +21,27 @@ public partial class NominatedContact  //
 {
 
 
-        /// <summary>
-        /// Name of nominated contact
-        /// </summary>
+    /// <summary>
+    /// Name of nominated contact
+    /// </summary>
     [JsonPropertyName("name")]
     [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Email address of nominated contact
-        /// </summary>
+
+    /// <summary>
+    /// Email address of nominated contact
+    /// </summary>
     [JsonPropertyName("email")]
     [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Telephone number of nominated contact
-        /// </summary>
+
+    /// <summary>
+    /// Telephone number of nominated contact
+    /// </summary>
     [JsonPropertyName("telephone")]
     [Btms.SensitiveData.SensitiveData]
     public string? Telephone { get; set; }
 
-	}
-
-
+}

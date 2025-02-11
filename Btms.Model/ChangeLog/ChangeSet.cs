@@ -25,13 +25,13 @@ public class ChangeSet(JsonPatch jsonPatch, JsonNode jsonNodePrevious)
         var previousNode = JsonNode.Parse(previous.ToJsonString(_jsonOptions));
         var currentNode = JsonNode.Parse(current.ToJsonString(_jsonOptions));
         var diff = previousNode.CreatePatch(currentNode);
-        
+
         //exclude fields from patch, like _ts, audit entries etc
         var operations = diff.Operations.Where(x => !x.Path.ToString().Contains("_ts"));
 
         return new ChangeSet(new JsonPatch(operations), previousNode!);
     }
-    
+
     public T? GetPreviousValue<T>(string path)
     {
         var jp = JsonPath.Parse($"$.{path}");

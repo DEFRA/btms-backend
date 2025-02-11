@@ -10,18 +10,16 @@ namespace Btms.Types.Ipaffs;
 public enum CommoditiesCommodityIntendedForEnum
 {
 
-		[EnumMember(Value = "human")]
-		Human,
-	
-		[EnumMember(Value = "feedingstuff")]
-		Feedingstuff,
-	
-		[EnumMember(Value = "further")]
-		Further,
-	
-		[EnumMember(Value = "other")]
-		Other,
-	
+    [EnumMember(Value = "human")]
+    Human,
+
+    [EnumMember(Value = "feedingstuff")]
+    Feedingstuff,
+
+    [EnumMember(Value = "further")]
+    Further,
+
+    [EnumMember(Value = "other")]
+    Other,
+
 }
-
-

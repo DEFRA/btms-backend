@@ -61,7 +61,7 @@ public class NoMatchDecisionsTest
         // Assert
         decisionResult.Should().NotBeNull();
         decisionResult.Decisions.Count.Should().Be(0);
-       
+
         await Task.CompletedTask;
     }
 
@@ -72,11 +72,11 @@ public class NoMatchDecisionsTest
         var movements = GenerateMovements(true);
         movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance,  Array.Empty<IDecisionFinder>());
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance, Array.Empty<IDecisionFinder>());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
-        
+
         // Act
         var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, true), CancellationToken.None);
 
@@ -84,7 +84,7 @@ public class NoMatchDecisionsTest
         decisionResult.Should().NotBeNull();
         decisionResult.Decisions.Count.Should().Be(1);
         decisionResult.Decisions[0].DecisionCode.Should().Be(DecisionCode.X00);
-        
+
         await Task.CompletedTask;
     }
 
@@ -95,9 +95,9 @@ public class NoMatchDecisionsTest
         ScenarioGenerator generator = hasChecks
             ? new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance)
             : new CrNoMatchNoChecksScenarioGenerator(NullLogger<CrNoMatchNoChecksScenarioGenerator>.Instance);
-            
+
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
-        
+
         var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var generatorResult = generator
             .Generate(1, 1, DateTime.UtcNow, config)

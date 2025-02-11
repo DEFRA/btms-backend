@@ -9,18 +9,16 @@ namespace Btms.Model.Gvms;
 public enum StateEnum
 {
 
-		NotFinalisable,
-	
-		Open,
-	
-		Finalised,
-	
-		CheckedIn,
-	
-		Embarked,
-	
-		Completed,
-	
+    NotFinalisable,
+
+    Open,
+
+    Finalised,
+
+    CheckedIn,
+
+    Embarked,
+
+    Completed,
+
 }
-
-

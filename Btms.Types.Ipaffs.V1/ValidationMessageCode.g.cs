@@ -21,19 +21,17 @@ public partial class ValidationMessageCode  //
 {
 
 
-        /// <summary>
-        /// Field
-        /// </summary>
+    /// <summary>
+    /// Field
+    /// </summary>
     [JsonPropertyName("field")]
     public string? Field { get; set; }
 
-	
-        /// <summary>
-        /// Code
-        /// </summary>
+
+    /// <summary>
+    /// Code
+    /// </summary>
     [JsonPropertyName("code")]
     public string? Code { get; set; }
 
-	}
-
-
+}

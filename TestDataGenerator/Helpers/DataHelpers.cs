@@ -11,7 +11,7 @@ namespace TestDataGenerator.Helpers;
 public static class DataHelpers
 {
     private const string PATH_DATE_FORMAT = "yyyy/MM/dd";
-    
+
     internal static string BlobPath(this object resource, string rootPath)
     {
         switch (resource)
@@ -42,7 +42,7 @@ public static class DataHelpers
     {
         var dateString = clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.ToString(PATH_DATE_FORMAT);
         var subPath = "ALVS";
-        
+
         return
             $"{rootPath}/{subPath}/{dateString}/{clearanceRequest.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
@@ -51,7 +51,7 @@ public static class DataHelpers
     {
         var dateString = decision.ServiceHeader!.ServiceCallTimestamp!.Value.ToString(PATH_DATE_FORMAT);
         var subPath = "DECISIONS";
-        
+
         return
             $"{rootPath}/{subPath}/{dateString}/{decision.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
@@ -60,7 +60,7 @@ public static class DataHelpers
     {
         var dateString = finalisation.ServiceHeader!.ServiceCallTimestamp!.Value.ToString(PATH_DATE_FORMAT);
         var subPath = "FINALISATION";
-        
+
         return
             $"{rootPath}/{subPath}/{dateString}/{finalisation.Header!.EntryReference!.Replace(".", "")}-{Guid.NewGuid()}.json";
     }
@@ -84,7 +84,7 @@ public static class DataHelpers
     {
         return $"MUB9999{identifier.Identifier}";
     }
-    
+
     internal static string GenerateReferenceNumber(ImportNotificationTypeEnum chedType, int scenario,
         DateTime created, int item)
     {

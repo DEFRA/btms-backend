@@ -27,7 +27,7 @@ public class SyncFinalisationsCommand : SyncCommand
                 ? Options.DmpBlobRootFolder
                 : request.RootFolder;
             await SyncBlobPaths<Finalisation>(request.SyncPeriod, "FINALISATIONS", request.JobId,
-                cancellationToken,$"{rootFolder}/FINALISATION");
+                cancellationToken, $"{rootFolder}/FINALISATION");
         }
     }
 

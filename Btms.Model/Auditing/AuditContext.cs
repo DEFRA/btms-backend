@@ -13,5 +13,5 @@ namespace Btms.Model.Auditing;
 [JsonDerivedType(typeof(CdsFinalisation), nameof(CdsFinalisation))]
 public abstract class AuditContext
 {
-    
+
 }

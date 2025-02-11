@@ -21,33 +21,31 @@ public partial class SealCheck  //
 {
 
 
-        /// <summary>
-        /// Is seal check satisfactory
-        /// </summary>
+    /// <summary>
+    /// Is seal check satisfactory
+    /// </summary>
     [JsonPropertyName("satisfactory")]
     public bool? Satisfactory { get; set; }
 
-	
-        /// <summary>
-        /// reason for not satisfactory
-        /// </summary>
+
+    /// <summary>
+    /// reason for not satisfactory
+    /// </summary>
     [JsonPropertyName("reason")]
     public string? Reason { get; set; }
 
-	
-        /// <summary>
-        /// Official inspector
-        /// </summary>
+
+    /// <summary>
+    /// Official inspector
+    /// </summary>
     [JsonPropertyName("officialInspector")]
     public OfficialInspector? OfficialInspector { get; set; }
 
-	
-        /// <summary>
-        /// date and time of seal check
-        /// </summary>
+
+    /// <summary>
+    /// date and time of seal check
+    /// </summary>
     [JsonPropertyName("dateTimeOfCheck")]
     public DateTime? DateTimeOfCheck { get; set; }
 
-	}
-
-
+}

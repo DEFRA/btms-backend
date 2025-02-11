@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum PurposeForImportOrAdmissionEnum
 {
 
-		DefinitiveImport,
-	
-		HorsesReEntry,
-	
-		TemporaryAdmissionHorses,
-	
+    DefinitiveImport,
+
+    HorsesReEntry,
+
+    TemporaryAdmissionHorses,
+
 }
-
-

@@ -22,103 +22,101 @@ public partial class Applicant  //
 {
 
 
-        /// <summary>
-        /// Name of laboratory
-        /// </summary>
+    /// <summary>
+    /// Name of laboratory
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Name of laboratory")]
     public string? Laboratory { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory address
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Laboratory address")]
     public string? LaboratoryAddress { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory identification
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory identification
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Laboratory identification")]
     public string? LaboratoryIdentification { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory phone number
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory phone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Laboratory phone number")]
     public string? LaboratoryPhoneNumber { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory email
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory email
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Laboratory email")]
     public string? LaboratoryEmail { get; set; }
 
-	
-        /// <summary>
-        /// Sample batch number
-        /// </summary>
+
+    /// <summary>
+    /// Sample batch number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Sample batch number")]
     public string? SampleBatchNumber { get; set; }
 
-	
-        /// <summary>
-        /// Type of analysis
-        /// </summary>
+
+    /// <summary>
+    /// Type of analysis
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Type of analysis")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ApplicantAnalysisTypeEnum? AnalysisType { get; set; }
 
-	
-        /// <summary>
-        /// Number of samples analysed
-        /// </summary>
+
+    /// <summary>
+    /// Number of samples analysed
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Number of samples analysed")]
     public int? NumberOfSamples { get; set; }
 
-	
-        /// <summary>
-        /// Type of sample
-        /// </summary>
+
+    /// <summary>
+    /// Type of sample
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Type of sample")]
     public string? SampleType { get; set; }
 
-	
-        /// <summary>
-        /// Conservation of sample
-        /// </summary>
+
+    /// <summary>
+    /// Conservation of sample
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Conservation of sample")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ApplicantConservationOfSampleEnum? ConservationOfSample { get; set; }
 
-	
-        /// <summary>
-        /// inspector
-        /// </summary>
+
+    /// <summary>
+    /// inspector
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("inspector")]
     public Inspector? Inspector { get; set; }
 
-	
-        /// <summary>
-        /// DateTime
-        /// </summary>
+
+    /// <summary>
+    /// DateTime
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("DateTime")]
     public DateTime? SampledOn { get; set; }
 
-	}
-
-
+}

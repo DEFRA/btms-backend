@@ -35,7 +35,7 @@ public static partial class LinkingServiceLogging
     [LoggerMessage(Level = LogLevel.Information, Message = "Link Found for {ContextType} - {MatchIdentifier} - {MovementsCount} Movements and {NotificationsCount} Notifications")]
     internal static partial void LinkFound(this ILogger logger, string contextType, string matchIdentifier, int movementsCount, int notificationsCount);
 
-     [LoggerMessage(Level = LogLevel.Information, Message = "Linking Not attempted for {ContextType} - {MatchIdentifier}")]
+    [LoggerMessage(Level = LogLevel.Information, Message = "Linking Not attempted for {ContextType} - {MatchIdentifier}")]
     internal static partial void LinkNotAttempted(this ILogger logger, string contextType, string matchIdentifier);
 }
 
@@ -58,21 +58,21 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                 {
                     case MovementLinkContext movementLinkContext:
                         result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
-                        
+
                         if (!ShouldLinkMovement(movementLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
                             result.Outcome = LinkOutcome.LinksExist;
                             return result;
                         }
-                        
+
                         await CheckMovementForRemovedLinks(movementLinkContext, cancellationToken);
 
                         break;
                     case ImportNotificationLinkContext notificationLinkContext:
                         result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
                             cancellationToken);
-                        
+
                         if (!ShouldLink(notificationLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
@@ -119,9 +119,9 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                             ]
                         });
 
-                        
+
                         await dbContext.Notifications.Update(notification, cancellationToken: cancellationToken);
-                        
+
                     }
 
                     await dbContext.Movements.Update(movement, cancellationToken: cancellationToken);
@@ -190,7 +190,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
         CancellationToken cancellationToken = default)
     {
         var chedRefs = linkContext.ChangeSet?.GetPreviousValue<List<string>>($"{nameof(Movement._MatchReferences)}");
-        
+
         if (chedRefs?.Count > 0)
         {
             var removedRefs = chedRefs.Except(linkContext.PersistedMovement._MatchReferences).ToList();
@@ -243,7 +243,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             }
         }
     }
-    
+
     private static bool ShouldLinkMovement(ChangeSet? changeSet)
     {
         return changeSet is null || changeSet.HasDocumentsChanged();

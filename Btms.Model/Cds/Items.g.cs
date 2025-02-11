@@ -29,7 +29,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public int? ItemNumber { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,7 +37,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public string? CustomsProcedureCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -45,7 +45,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public string? TaricCommodityCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -53,7 +53,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public string? GoodsDescription { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -61,7 +61,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public string? ConsigneeId { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -69,7 +69,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public string? ConsigneeName { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -77,7 +77,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public decimal? ItemNetMass { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -85,7 +85,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public decimal? ItemSupplementaryUnits { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -93,7 +93,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public decimal? ItemThirdQuantity { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -101,7 +101,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public string? ItemOriginCountryCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -109,7 +109,7 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public Document[]? Documents { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -117,6 +117,4 @@ public partial class Items  //
     [System.ComponentModel.Description("")]
     public Check[]? Checks { get; set; }
 
-	}
-
-
+}

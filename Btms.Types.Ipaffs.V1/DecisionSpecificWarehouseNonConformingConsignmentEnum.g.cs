@@ -10,18 +10,16 @@ namespace Btms.Types.Ipaffs;
 public enum DecisionSpecificWarehouseNonConformingConsignmentEnum
 {
 
-		[EnumMember(Value = "CustomWarehouse")]
-		CustomWarehouse,
-	
-		[EnumMember(Value = "FreeZoneOrFreeWarehouse")]
-		FreeZoneOrFreeWarehouse,
-	
-		[EnumMember(Value = "ShipSupplier")]
-		ShipSupplier,
-	
-		[EnumMember(Value = "Ship")]
-		Ship,
-	
+    [EnumMember(Value = "CustomWarehouse")]
+    CustomWarehouse,
+
+    [EnumMember(Value = "FreeZoneOrFreeWarehouse")]
+    FreeZoneOrFreeWarehouse,
+
+    [EnumMember(Value = "ShipSupplier")]
+    ShipSupplier,
+
+    [EnumMember(Value = "Ship")]
+    Ship,
+
 }
-
-

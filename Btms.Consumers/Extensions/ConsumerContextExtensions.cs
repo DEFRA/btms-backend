@@ -34,7 +34,7 @@ public static class ConsumerContextExtensions
             return value.ToString()!;
         }
 
-        if(consumerContext.Properties.TryGetValue(MessageBusHeaders.ServiceBusMessage, out var sbMessage))
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.ServiceBusMessage, out var sbMessage))
         {
             return ((ServiceBusReceivedMessage)sbMessage).MessageId;
         }

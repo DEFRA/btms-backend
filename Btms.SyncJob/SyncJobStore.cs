@@ -29,7 +29,7 @@ public class SyncJobStore(ILogger<SyncJobStore> logger) : ISyncJobStore
 
     public async Task WaitOnJobCompleting(Guid jobId)
     {
-        var runningStatues = new List<SyncJobStatus>() {SyncJobStatus.Pending, SyncJobStatus.Running};
+        var runningStatues = new List<SyncJobStatus>() { SyncJobStatus.Pending, SyncJobStatus.Running };
         var complete = false;
         while (!complete)
         {

@@ -10,18 +10,16 @@ namespace Btms.Types.Ipaffs;
 public enum CommodityRiskResultRiskDecisionEnum
 {
 
-		[EnumMember(Value = "REQUIRED")]
-		Required,
-	
-		[EnumMember(Value = "NOTREQUIRED")]
-		Notrequired,
-	
-		[EnumMember(Value = "INCONCLUSIVE")]
-		Inconclusive,
-	
-		[EnumMember(Value = "REENFORCED_CHECK")]
-		ReenforcedCheck,
-	
+    [EnumMember(Value = "REQUIRED")]
+    Required,
+
+    [EnumMember(Value = "NOTREQUIRED")]
+    Notrequired,
+
+    [EnumMember(Value = "INCONCLUSIVE")]
+    Inconclusive,
+
+    [EnumMember(Value = "REENFORCED_CHECK")]
+    ReenforcedCheck,
+
 }
-
-

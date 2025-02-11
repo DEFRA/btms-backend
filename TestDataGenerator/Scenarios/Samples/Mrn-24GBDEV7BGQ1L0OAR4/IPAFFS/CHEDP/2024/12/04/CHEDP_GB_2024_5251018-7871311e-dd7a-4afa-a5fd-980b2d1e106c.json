@@ -1,1 +1,313 @@
-{"id":4251018,"referenceNumber":"CHEDP.GB.2024.5251018","version":1,"lastUpdated":"2024-12-04T09:10:09.499995819Z","lastUpdatedBy":{"displayName":"002a29721514d6b9950a28f4d9096f57da042137f0b56c43e403aec9f6260e88","userId":"186e9de8-05f8-ee11-a1fd-002248822ba2"},"type":"CVEDP","status":"VALIDATED","riskAssessment":{"commodityResults":[{"riskDecision":"NOTREQUIRED","uniqueId":"36e9b204-6828-4324-bb5d-bc4317208570"}],"assessmentDateTime":"2024-12-03T19:32:12.286062551"},"journeyRiskCategorisation":{"riskLevel":"Medium","riskLevelMethod":"User","riskLevelDateTime":"2024-12-03T19:29:33.503"},"isHighRiskEuImport":true,"partOne":{"personResponsible":{"name":"2fcd55b29fed01694020e09619bc9a7ad3cf870d9352db1f780a8929154782e3","companyId":"46996350-f248-eb11-a812-000d3a267bf8","companyName":"90f077cfd62ca8eb76aa123b5f109510a865b18fe2a3bc1dc0e182bd2ef87625","address":["697b39093ecb147020a5e93ba33d4d050e2456291bf6b9d025b2aac032e9c5ba","ce06f5b700568f0c5c807825bc5559294a6d6272132a2b0ee07a3dd3e3eefc3a","fe9d9abafc8625f3830bd6ecb4389b4ff74073c4820e92cdd777ebc6309fb4e2"],"country":"GB-ENG","tracesID":1001,"phone":"77660b308ece4e2b7d20a8b6bea514af2977a5b834754971798256160c6316e0","email":"f03273b2937882bfa8eb5174aee8e3c54cc24d4a321a151265a2d3c4b1ecf31d","contactId":"07e66bf8-c3f8-ee11-a1fd-002248822ba2"},"consignor":{"id":"b7aac6b8-72c3-40d6-823d-62ca136f3184","type":"exporter","status":"nonapproved","companyName":"b1e1c77d1446e50ac4ad75a4a40dce64978a2161320306e7e3479897aaf211fa","address":{"addressLine1":"a8ffa26951f972810749a1f3e65ab9680881e18e0fd8405229221d62e3fe6775","addressLine2":"151bccb9ab8632dabf8284088cd91033426823fca14700d733521e2a98dc5f9c","city":"a8ffa26951f972810749a1f3e65ab9680881e18e0fd8405229221d62e3fe6775","postalZipCode":"65d60233cb32d3b3ce77e97851dcb8d9d4429bc92e3cf827a964890ff6c9e43a","countryISOCode":"23bc611bdcb6315aeb1905aa78d92c8bf45ff37500338874d628064f58cb2966","telephone":"77660b308ece4e2b7d20a8b6bea514af2977a5b834754971798256160c6316e0","email":"83d73a8060e60fa2b39de2f24e849e6c90168a5589c3a4e46299540d6d301b22"},"tracesId":10112447},"consignee":{"id":"2a0faa29-a638-460e-bbd7-45e208ec417a","type":"destination","status":"nonapproved","companyName":"90f077cfd62ca8eb76aa123b5f109510a865b18fe2a3bc1dc0e182bd2ef87625","address":{"addressLine1":"234457037ca1f46c1bbf3776c8a4ee49d61792694505ff3993b2b0f8d483c381","addressLine2":"8cdebad71872e51525b2dcff04e4fabb8e9bb782c9995dbb37b165c63b425f55","addressLine3":"cd1b70aef74a29ee734d3dc996b1d42cb85b17c4a1896d8d7ec28a78f87e2f55","city":"9463c9f7280ee7c2e9d555f68f3c907579f18d2c6690a4f5a8750df3dbbbea84","postalZipCode":"fe9d9abafc8625f3830bd6ecb4389b4ff74073c4820e92cdd777ebc6309fb4e2","countryISOCode":"3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795","telephone":"77660b308ece4e2b7d20a8b6bea514af2977a5b834754971798256160c6316e0","email":"387f418a395b88f8717583d4e6786169c32819ad16fcf5f9d36d920a24f23262"},"tracesId":10112446},"importer":{"id":"2a0faa29-a638-460e-bbd7-45e208ec417a","type":"destination","status":"nonapproved","companyName":"90f077cfd62ca8eb76aa123b5f109510a865b18fe2a3bc1dc0e182bd2ef87625","address":{"addressLine1":"234457037ca1f46c1bbf3776c8a4ee49d61792694505ff3993b2b0f8d483c381","addressLine2":"8cdebad71872e51525b2dcff04e4fabb8e9bb782c9995dbb37b165c63b425f55","addressLine3":"cd1b70aef74a29ee734d3dc996b1d42cb85b17c4a1896d8d7ec28a78f87e2f55","city":"9463c9f7280ee7c2e9d555f68f3c907579f18d2c6690a4f5a8750df3dbbbea84","postalZipCode":"fe9d9abafc8625f3830bd6ecb4389b4ff74073c4820e92cdd777ebc6309fb4e2","countryISOCode":"3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795","telephone":"77660b308ece4e2b7d20a8b6bea514af2977a5b834754971798256160c6316e0","email":"387f418a395b88f8717583d4e6786169c32819ad16fcf5f9d36d920a24f23262"},"tracesId":10112446},"placeOfDestination":{"id":"2a0faa29-a638-460e-bbd7-45e208ec417a","type":"destination","status":"nonapproved","companyName":"90f077cfd62ca8eb76aa123b5f109510a865b18fe2a3bc1dc0e182bd2ef87625","address":{"addressLine1":"234457037ca1f46c1bbf3776c8a4ee49d61792694505ff3993b2b0f8d483c381","addressLine2":"8cdebad71872e51525b2dcff04e4fabb8e9bb782c9995dbb37b165c63b425f55","addressLine3":"cd1b70aef74a29ee734d3dc996b1d42cb85b17c4a1896d8d7ec28a78f87e2f55","city":"9463c9f7280ee7c2e9d555f68f3c907579f18d2c6690a4f5a8750df3dbbbea84","postalZipCode":"fe9d9abafc8625f3830bd6ecb4389b4ff74073c4820e92cdd777ebc6309fb4e2","countryISOCode":"3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795","telephone":"77660b308ece4e2b7d20a8b6bea514af2977a5b834754971798256160c6316e0","email":"387f418a395b88f8717583d4e6786169c32819ad16fcf5f9d36d920a24f23262"},"tracesId":10112446},"commodities":{"totalGrossWeight":13.96,"totalNetWeight":13.7,"numberOfPackages":8,"temperature":"Chilled","commodityComplement":[{"commodityID":"020726","commodityDescription":"Cuts and offal, fresh or chilled","complementID":2,"complementName":"Meleagris gallopavo","speciesID":"489846","speciesName":"Meleagris gallopavo","speciesType":"2","speciesClass":"489846","speciesNomination":"Meleagris gallopavo","isCdsMatched":true}],"complementParameterSet":[{"uniqueComplementID":"36e9b204-6828-4324-bb5d-bc4317208570","complementID":2,"speciesID":"489846","keyDataPair":[{"key":"netweight","data":"13.7"},{"key":"number_package","data":"8"},{"key":"type_package","data":"Package"}]}],"includeNonAblactedAnimals":false,"countryOfOrigin":"PL","regionOfOrigin":"PL-1","consignedCountry":"PL"},"purpose":{"conformsToEU":true,"internalMarketPurpose":"Human Consumption","purposeGroup":"For Import"},"pointOfEntry":"GBHRW1P","arrivalDate":"2024-12-04","arrivalTime":"11:00:00","transporterDetailsRequired":false,"meansOfTransport":{},"meansOfTransportFromEntryPoint":{"id":"8a21c05ae6a6fa9f3b78b201cbfda79076d60fb4e1a17c52f04729ef118ba4c3","type":"Road Vehicle","document":"02678618175b2af819eed8f9adf26cecfedb45d0c5be52bc5b885c3d8c5effe9"},"veterinaryInformation":{"establishmentsOfOrigin":[{"id":"TDS~~353184~~Meat from poultry and lagomorphs","name":"ZAK\u0141AD DROBIARSKI W STASINIE SP. Z O.O.","country":"PL","types":["Slaughterhouse","Cutting Plant"],"approvalNumber":"14263902","section":"Meat from poultry and lagomorphs"}],"accompanyingDocuments":[{"documentType":"latestVeterinaryHealthCertificate","documentReference":"EXPORT.EU.PL.2024.0089220","documentIssueDate":"2024-12-02","attachmentId":"953776a6-02d1-4a22-9d2d-cdd52f5a3a68","attachmentFilename":"STASIN EXPORT.EU.PL.202.pdf","attachmentContentType":"application/pdf","uploadUserId":"186e9de8-05f8-ee11-a1fd-002248822ba2","uploadOrganisationId":"46996350-f248-eb11-a812-000d3a267bf8"},{"documentType":"other","documentReference":"CMR 0020/12/2024","documentIssueDate":"2024-12-03","attachmentId":"211c3bbd-29b7-461b-b88d-ed1549e74bac","attachmentFilename":"WGM 5708L-WZ 623AH (1).pdf","attachmentContentType":"application/pdf","uploadUserId":"186e9de8-05f8-ee11-a1fd-002248822ba2","uploadOrganisationId":"46996350-f248-eb11-a812-000d3a267bf8"},{"documentType":"other","documentReference":"TTURN0014WA","documentIssueDate":"2024-12-03","attachmentId":"51293df1-a97b-48ef-a635-6f9fae32b6c1","attachmentFilename":"TT_WGM5708L_WZ623AH (1).pdf","attachmentContentType":"application/pdf","uploadUserId":"186e9de8-05f8-ee11-a1fd-002248822ba2","uploadOrganisationId":"46996350-f248-eb11-a812-000d3a267bf8"},{"documentType":"commercialInvoice","documentReference":"FW/0020/12/2024","documentIssueDate":"2024-12-03","attachmentId":"57206bdb-027e-4625-bdbe-a98271000834","attachmentFilename":"Faktura walutowa nr FW_.pdf","attachmentContentType":"application/pdf","uploadUserId":"186e9de8-05f8-ee11-a1fd-002248822ba2","uploadOrganisationId":"46996350-f248-eb11-a812-000d3a267bf8"}]},"importerLocalReferenceNumber":"b7a60a3dfb78eb946d38254f29be23ec1640fc46a3809be60bcacd9ebf289537","sealsContainers":[{"containerNumber":"WZ623AH","officialSeal":false}],"submissionDate":"2024-12-03T19:32:10.596042368Z","submittedBy":{"displayName":"002a29721514d6b9950a28f4d9096f57da042137f0b56c43e403aec9f6260e88","userId":"186e9de8-05f8-ee11-a1fd-002248822ba2"},"complexCommoditySelected":true,"portOfEntry":"GBHRW","contactDetails":{"name":"a297d3bc9aae1f6ebdfdc4d560e3559e909f7edbd409437a3dcb7fdcad24443a","telephone":"8c397450ee6d8620c7fbd398be870051f272b5514a339f18d7a38b7278b38ef1","email":"0077b9091bd42a2d7143c2ba9da338a095acba9f72b10864df3177995cebf9cd"},"nominatedContacts":[{"name":"Wojciech Ogonowski","email":"wogonowski@wabar.pl"},{"name":"Philis Wabar","email":"philis@wabar.pl"}],"isGVMSRoute":true,"provideCtcMrn":"NO"},"decisionBy":{"displayName":"df4425d1eb12ddc5697124f83c55d4b7ddea1a3802d09a17c990bb0e5dfe8ded","userId":"3dd58971-2d3f-e911-a95d-000d3a454f67"},"decisionDate":"2024-12-04T09:10:09.448564704Z","partTwo":{"decision":{"decision":"Acceptable for Internal Market","freeCirculationPurpose":"Human Consumption"},"consignmentCheck":{"documentCheckResult":"Not Done","identityCheckType":"Not Done","identityCheckResult":"Not Done","identityCheckNotDoneReason":"Reduced checks regime","physicalCheckResult":"Not Done","physicalCheckNotDoneReason":"Reduced checks regime"},"laboratoryTestsRequired":false,"resealedContainersIncluded":false,"controlAuthority":{"officialVeterinarian":{"firstName":"b2f6f10ce3ba43a0571ff632f2580d34098b36ac390ec441ced1d9b2f5f7c2b6","lastName":"6a576df103237a4f5eb98e9dd27afc198fc3b0f2d0ef9bb5be9381b129a041ef","email":"7ad4955ec93b5cbb8badab400a069bf9b051c20ec452f10d01432a7b87d5d038","phone":"5589e05a0e3e920a66b864d57a5f25f2b896b068574331ad2b4731ce372d025b","signed":"2024-12-04T09:10:09.499951418"},"iuuCheckRequired":false},"consignmentValidation":[{"field":"uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable","message":"What is the decision for this consignment"}],"checkDate":"2024-12-04T09:10:09.398197497Z","inspectionRequired":"Not required","autoClearedDateTime":"2024-12-04T09:10:09.398225498Z"},"partThree":{"sealCheckRequired":false},"consignmentValidation":[{"field":"uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable","message":"What is the decision for this consignment"}],"etag":"00000000044FDE3D","riskDecisionLockingTime":"2024-12-04T09:00:00Z","isRiskDecisionLocked":true,"isCdsFullMatched":true,"chedTypeVersion":1}
+{
+  "id": 4251018,
+  "referenceNumber": "CHEDP.GB.2024.5251018",
+  "version": 1,
+  "lastUpdated": "2024-12-04T09:10:09.499995819Z",
+  "lastUpdatedBy": {
+    "displayName": "2004016d07b1bd8e8181da778e1170068b5c333e9030f3dfd108ff7a9c471237",
+    "userId": "186e9de8-05f8-ee11-a1fd-002248822ba2"
+  },
+  "type": "CVEDP",
+  "status": "VALIDATED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "36e9b204-6828-4324-bb5d-bc4317208570"
+      }
+    ],
+    "assessmentDateTime": "2024-12-03T19:32:12.286062551"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-12-03T19:29:33.503"
+  },
+  "isHighRiskEuImport": true,
+  "partOne": {
+    "personResponsible": {
+      "name": "a3bd20d123e9e27b85d9fa5a764e14657817bdfde7a3c85523d6aa3181416094",
+      "companyId": "46996350-f248-eb11-a812-000d3a267bf8",
+      "companyName": "2ff17cc45e62f23f37dc358c2bba8aca33900570f0c7649307fc221d9cfcd74d",
+      "address": [
+        "010beb40b8b6e1dd4732756f04521f8a5f81a29b22c6362da2e4379ad8cde5aa",
+        "29f88c21eb19ac0f1a074bc777233d4d46f1a8915f477d4e0a2be72e50b84477",
+        "a893966c4360c10691b2b32970c81b4f3c0a22508f2a48c5355c9ea19739bfbc"
+      ],
+      "country": "GB-ENG",
+      "tracesID": 1001,
+      "phone": "5faa4d99a40e40f088247b6f74a360ecb0a2131a7723a4ebe1d39c5bd82cd354",
+      "email": "72ac6a1236c4541d79df635ff4d3594305d25568d3f0affb7d8431403afadb3e",
+      "contactId": "07e66bf8-c3f8-ee11-a1fd-002248822ba2"
+    },
+    "consignor": {
+      "id": "b7aac6b8-72c3-40d6-823d-62ca136f3184",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "ce262de381c6bbd2085daaa3de9c1db959ffdbbd16a51ad7344cb541589b50f6",
+      "address": {
+        "addressLine1": "1515c7ba19206ba35043de637cd70967adf30b74277a18a9929daebbcaeea13a",
+        "addressLine2": "1990c129ec79b41d2cbeb31435f50580299ee7912d51cbf44756f04fbf4c65d6",
+        "city": "1515c7ba19206ba35043de637cd70967adf30b74277a18a9929daebbcaeea13a",
+        "postalZipCode": "d367ba2fa36cc0a48395ffd6d74d1a19399b966ef88f63da141550165a65cf33",
+        "countryISOCode": "7ef828de8022e6da3e88ad2b7d16cc5b5d70230cdbef4742316dbbe86e127bc5",
+        "telephone": "5faa4d99a40e40f088247b6f74a360ecb0a2131a7723a4ebe1d39c5bd82cd354",
+        "email": "00a39405419a9084df1620d35c01135271afffd2e72ee56a55c7f9ef208b58da"
+      },
+      "tracesId": 10112447
+    },
+    "consignee": {
+      "id": "2a0faa29-a638-460e-bbd7-45e208ec417a",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "2ff17cc45e62f23f37dc358c2bba8aca33900570f0c7649307fc221d9cfcd74d",
+      "address": {
+        "addressLine1": "5b92736a0fe5bbf406dfdb70764998d7252873d6ac99177bb30017395e57fe76",
+        "addressLine2": "117447d3ab3554191d94b00077d729f9a833df0aea9ad47bcade91023a70cfc0",
+        "addressLine3": "d06bb7003a039a5991a1bffd23ec07c96268c56b2b01d8e32c048646146e4df1",
+        "city": "e77f216e1c991fe882ec2f27632d8be8110fb635e2402553cc928484020a7082",
+        "postalZipCode": "a893966c4360c10691b2b32970c81b4f3c0a22508f2a48c5355c9ea19739bfbc",
+        "countryISOCode": "92ce04786a61e9b1ea9cb9b80c9f86637bf37c26838f5967e1d1eb5c4e3f7dc4",
+        "telephone": "5faa4d99a40e40f088247b6f74a360ecb0a2131a7723a4ebe1d39c5bd82cd354",
+        "email": "a7fbe9b1b869ca1c7ba1db3f7e618736e37468ed35a5f913f2ecf93c6cfb106f"
+      },
+      "tracesId": 10112446
+    },
+    "importer": {
+      "id": "2a0faa29-a638-460e-bbd7-45e208ec417a",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "2ff17cc45e62f23f37dc358c2bba8aca33900570f0c7649307fc221d9cfcd74d",
+      "address": {
+        "addressLine1": "5b92736a0fe5bbf406dfdb70764998d7252873d6ac99177bb30017395e57fe76",
+        "addressLine2": "117447d3ab3554191d94b00077d729f9a833df0aea9ad47bcade91023a70cfc0",
+        "addressLine3": "d06bb7003a039a5991a1bffd23ec07c96268c56b2b01d8e32c048646146e4df1",
+        "city": "e77f216e1c991fe882ec2f27632d8be8110fb635e2402553cc928484020a7082",
+        "postalZipCode": "a893966c4360c10691b2b32970c81b4f3c0a22508f2a48c5355c9ea19739bfbc",
+        "countryISOCode": "92ce04786a61e9b1ea9cb9b80c9f86637bf37c26838f5967e1d1eb5c4e3f7dc4",
+        "telephone": "5faa4d99a40e40f088247b6f74a360ecb0a2131a7723a4ebe1d39c5bd82cd354",
+        "email": "a7fbe9b1b869ca1c7ba1db3f7e618736e37468ed35a5f913f2ecf93c6cfb106f"
+      },
+      "tracesId": 10112446
+    },
+    "placeOfDestination": {
+      "id": "2a0faa29-a638-460e-bbd7-45e208ec417a",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "2ff17cc45e62f23f37dc358c2bba8aca33900570f0c7649307fc221d9cfcd74d",
+      "address": {
+        "addressLine1": "5b92736a0fe5bbf406dfdb70764998d7252873d6ac99177bb30017395e57fe76",
+        "addressLine2": "117447d3ab3554191d94b00077d729f9a833df0aea9ad47bcade91023a70cfc0",
+        "addressLine3": "d06bb7003a039a5991a1bffd23ec07c96268c56b2b01d8e32c048646146e4df1",
+        "city": "e77f216e1c991fe882ec2f27632d8be8110fb635e2402553cc928484020a7082",
+        "postalZipCode": "a893966c4360c10691b2b32970c81b4f3c0a22508f2a48c5355c9ea19739bfbc",
+        "countryISOCode": "92ce04786a61e9b1ea9cb9b80c9f86637bf37c26838f5967e1d1eb5c4e3f7dc4",
+        "telephone": "5faa4d99a40e40f088247b6f74a360ecb0a2131a7723a4ebe1d39c5bd82cd354",
+        "email": "a7fbe9b1b869ca1c7ba1db3f7e618736e37468ed35a5f913f2ecf93c6cfb106f"
+      },
+      "tracesId": 10112446
+    },
+    "commodities": {
+      "totalGrossWeight": 13.96,
+      "totalNetWeight": 13.7,
+      "numberOfPackages": 8,
+      "temperature": "Chilled",
+      "commodityComplement": [
+        {
+          "commodityID": "020726",
+          "commodityDescription": "Cuts and offal, fresh or chilled",
+          "complementID": 2,
+          "complementName": "Meleagris gallopavo",
+          "speciesID": "489846",
+          "speciesName": "Meleagris gallopavo",
+          "speciesType": "2",
+          "speciesClass": "489846",
+          "speciesNomination": "Meleagris gallopavo",
+          "isCdsMatched": true
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "36e9b204-6828-4324-bb5d-bc4317208570",
+          "complementID": 2,
+          "speciesID": "489846",
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "13.7"
+            },
+            {
+              "key": "number_package",
+              "data": "8"
+            },
+            {
+              "key": "type_package",
+              "data": "Package"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "PL",
+      "regionOfOrigin": "PL-1",
+      "consignedCountry": "PL"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBHRW1P",
+    "arrivalDate": "2024-12-04",
+    "arrivalTime": "11:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "59237b173c7199a8293d917fb0b9664a3a79c44d962144378ae0291f7590fd6b",
+      "type": "Road Vehicle",
+      "document": "cdd4eba890be46f3d7ab9277920c194fd4e2b6fe74de70dcc63a817f91ef3ac7"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "TDS~~353184~~Meat from poultry and lagomorphs",
+          "name": "ZAK\u0141AD DROBIARSKI W STASINIE SP. Z O.O.",
+          "country": "PL",
+          "types": [
+            "Slaughterhouse",
+            "Cutting Plant"
+          ],
+          "approvalNumber": "14263902",
+          "section": "Meat from poultry and lagomorphs"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "EXPORT.EU.PL.2024.0089220",
+          "documentIssueDate": "2024-12-02",
+          "attachmentId": "953776a6-02d1-4a22-9d2d-cdd52f5a3a68",
+          "attachmentFilename": "STASIN EXPORT.EU.PL.202.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "186e9de8-05f8-ee11-a1fd-002248822ba2",
+          "uploadOrganisationId": "46996350-f248-eb11-a812-000d3a267bf8"
+        },
+        {
+          "documentType": "other",
+          "documentReference": "CMR 0020/12/2024",
+          "documentIssueDate": "2024-12-03",
+          "attachmentId": "211c3bbd-29b7-461b-b88d-ed1549e74bac",
+          "attachmentFilename": "WGM 5708L-WZ 623AH (1).pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "186e9de8-05f8-ee11-a1fd-002248822ba2",
+          "uploadOrganisationId": "46996350-f248-eb11-a812-000d3a267bf8"
+        },
+        {
+          "documentType": "other",
+          "documentReference": "TTURN0014WA",
+          "documentIssueDate": "2024-12-03",
+          "attachmentId": "51293df1-a97b-48ef-a635-6f9fae32b6c1",
+          "attachmentFilename": "TT_WGM5708L_WZ623AH (1).pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "186e9de8-05f8-ee11-a1fd-002248822ba2",
+          "uploadOrganisationId": "46996350-f248-eb11-a812-000d3a267bf8"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "documentReference": "FW/0020/12/2024",
+          "documentIssueDate": "2024-12-03",
+          "attachmentId": "57206bdb-027e-4625-bdbe-a98271000834",
+          "attachmentFilename": "Faktura walutowa nr FW_.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "186e9de8-05f8-ee11-a1fd-002248822ba2",
+          "uploadOrganisationId": "46996350-f248-eb11-a812-000d3a267bf8"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "3e0bdff5206fe01645adbf7b45da54e66a1fbf5297a9d7bb84a307fa0ee8af7f",
+    "sealsContainers": [
+      {
+        "containerNumber": "WZ623AH",
+        "officialSeal": false
+      }
+    ],
+    "submissionDate": "2024-12-03T19:32:10.596042368Z",
+    "submittedBy": {
+      "displayName": "2004016d07b1bd8e8181da778e1170068b5c333e9030f3dfd108ff7a9c471237",
+      "userId": "186e9de8-05f8-ee11-a1fd-002248822ba2"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBHRW",
+    "contactDetails": {
+      "name": "4440b8da835cdd314845c982ac893adcfe72bee14b820691574db5cab7cc5ce4",
+      "telephone": "a5ba6397bfe520b80c7bf8741895c0fa17c52cf44b711517138a0250c66f8819",
+      "email": "4edf98d37b1da237dba1d035f918d7268aa38c4f834ea149aec853082ebe1ac2"
+    },
+    "nominatedContacts": [
+      {
+        "name": "Wojciech Ogonowski",
+        "email": "wogonowski@wabar.pl"
+      },
+      {
+        "name": "Philis Wabar",
+        "email": "philis@wabar.pl"
+      }
+    ],
+    "isGVMSRoute": true,
+    "provideCtcMrn": "NO"
+  },
+  "decisionBy": {
+    "displayName": "9002600582e607770d08d8e0089c8aeb77a22a3c9613cd0a668413edeceea0d7",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-04T09:10:09.448564704Z",
+  "partTwo": {
+    "decision": {
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Not Done",
+      "identityCheckType": "Not Done",
+      "identityCheckResult": "Not Done",
+      "identityCheckNotDoneReason": "Reduced checks regime",
+      "physicalCheckResult": "Not Done",
+      "physicalCheckNotDoneReason": "Reduced checks regime"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "70e08a2ccb8b1eeaf4d2123ede84c05dcfa76e57165a8bcb77ca0cabe9842c93",
+        "lastName": "0cca13c9d2b0f3105213f966fbf3f6e4753e05c1c91438dbe3ce548b08434cd7",
+        "email": "8b7bb7e049575ddad3df9de46f2a23ef8cf3a8a4f593aca1b156f8b4abd03a35",
+        "phone": "17ee56f24f512a6d82a00fa4a9ac1c0283a65260cdd8331b8e5ac40f3af0bb94",
+        "signed": "2024-12-04T09:10:09.499951418"
+      },
+      "iuuCheckRequired": false
+    },
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable",
+        "message": "What is the decision for this consignment"
+      }
+    ],
+    "checkDate": "2024-12-04T09:10:09.398197497Z",
+    "inspectionRequired": "Not required",
+    "autoClearedDateTime": "2024-12-04T09:10:09.398225498Z"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable",
+      "message": "What is the decision for this consignment"
+    }
+  ],
+  "etag": "00000000044FDE3D",
+  "riskDecisionLockingTime": "2024-12-04T09:00:00Z",
+  "isRiskDecisionLocked": true,
+  "isCdsFullMatched": true,
+  "chedTypeVersion": 1
+}

@@ -13,10 +13,10 @@ public class Level1RuleZTests
         // Arrange
         var sut = new Level1RuleZ();
         var context = new MatchContext();
-        
+
         // Act
         var result = await sut.ProcessFilter(context);
-        
+
         // Assert
         result.Should().NotBeNull();
         result.ExitPipeline.Should().BeFalse();

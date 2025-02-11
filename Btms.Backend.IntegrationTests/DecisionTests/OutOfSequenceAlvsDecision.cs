@@ -16,7 +16,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<OutOfSequenceAlvsDecisionScenarioGenerator>(output)
 {
-    
+
     [Fact]
     public void ShouldHave2AlvsDecisions()
     {
@@ -25,7 +25,7 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             .AlvsDecisionStatus.Decisions.Count
             .Should().Be(2);
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
@@ -36,7 +36,7 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             .Select(d => d.Context.AlvsDecisionNumber)
             .Should().Equal(2, 1);
     }
-    
+
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
@@ -45,7 +45,7 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
-    
+
     [Fact]
     public void ShouldHavePairedAlvsDecisions()
     {
@@ -56,8 +56,8 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             // .Count(d => d.Context.DecisionComparison!.Paired)
             .Should().Equal(true, null);
     }
-    
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHavePairedBtmsDecisions()
     {
         Client
@@ -66,7 +66,7 @@ public class OutOfSequenceAlvsDecision(ITestOutputHelper output)
             .Decisions
             .Select(d => (d.Context.AlvsDecisionNumber, d.Context.DecisionComparison?.BtmsDecisionNumber))
             .Should().Equal(
-                (2,2),
+                (2, 2),
                 (1, null));
     }
 }

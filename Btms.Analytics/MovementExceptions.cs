@@ -21,7 +21,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
 
         return matched.ToString();
     }
-    
+
     [SuppressMessage("SonarLint", "S3776",
         Justification =
             "Means we can share the same anonymous / query code without needing to create loads of classes for the intermediate state")]
@@ -29,7 +29,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
     {
         var exceptionsSummary = new SingleSeriesDataset();
         var exceptionsResult = new List<ExceptionResult>();
-        
+
         var simplifiedMovementView = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
@@ -51,7 +51,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.BtmsStatus.Segment,
                 m.AlvsDecisionStatus.Context.DecisionComparison,
                 HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
-                ContiguousAlvsClearanceRequestVersionsFrom1 = 
+                ContiguousAlvsClearanceRequestVersionsFrom1 =
                     m.ClearanceRequests.Select(c => c.Header!.EntryVersionNumber)
             })
             .Select(m => new
@@ -85,7 +85,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         {
             foreach (var g in unMatchedGroupedByMrnStatus)
             {
-                exceptionsSummary.Values.Add(FormatUnmatched(g.Key.DecisionStatus, g.Key.Status,g.Key.Segment), g.Count());
+                exceptionsSummary.Values.Add(FormatUnmatched(g.Key.DecisionStatus, g.Key.Status, g.Key.Segment), g.Count());
             }
         }
         else
@@ -148,7 +148,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
 
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
             .Where(r => r.LinkStatus != LinkStatusEnum.AllLinked);
-        
+
         if (summary)
         {
             exceptionsSummary.Values.Add("Alvs has match decisions but no Btms links", movementsWhereAlvsLinksButNotBtmsQuery.Count());
@@ -176,13 +176,13 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                     })
             );
         }
-        
+
         var movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery = simplifiedMovementView
             .Where(r =>
                 r.LinkStatus != LinkStatusEnum.AllLinked
                 && r.ContiguousAlvsClearanceRequestVersionsFrom1 && r.DecisionMatched
                 && r.HasNotificationRelationships);
-        
+
         if (summary)
         {
             exceptionsSummary.Values.Add("BTMS Links But Decision Wrong", movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery.Count());

@@ -9,14 +9,12 @@ namespace Btms.Model.Ipaffs;
 public enum LaboratoryTestResultConclusionEnum
 {
 
-		Satisfactory,
-	
-		NotSatisfactory,
-	
-		NotInterpretable,
-	
-		Pending,
-	
+    Satisfactory,
+
+    NotSatisfactory,
+
+    NotInterpretable,
+
+    Pending,
+
 }
-
-

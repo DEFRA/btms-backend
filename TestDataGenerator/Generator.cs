@@ -19,7 +19,7 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         var days = config.CreationDateRange;
         var count = config.Count;
         var generator = config.Generator;
-        
+
         logger.LogInformation("Generating {Count}x{Days} {@Generator}", count, days, generator);
         var output = new List<(ScenarioGenerator, int, int, int, ScenarioGenerator.GeneratorResult result)>();
         for (var d = -days + 1; d <= 0; d++)
@@ -34,7 +34,7 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
                 var generatorResult = generator.Generate(scenario, i, entryDate, config);
                 var uploadResult = await InsertToBlobStorage(generatorResult, rootPath);
                 if (!uploadResult) throw new AuthenticationException("Error uploading item. Probably auth.");
-                
+
                 output.Add((generator, scenario, d, i, generatorResult));
             }
         }
@@ -47,14 +47,15 @@ public class Generator(ILogger<Generator> logger, IBlobService blobService)
         logger.LogInformation(
             "Uploading {Count} messages to blob storage",
             result.Count);
-        
+
         var blobs = result.Select(r => new BtmsBlobItem
         {
-            Name = r.BlobPath(rootPath), Content = JsonSerializer.Serialize(r)
+            Name = r.BlobPath(rootPath),
+            Content = JsonSerializer.Serialize(r)
         });
 
         var success = await blobService.CreateBlobsAsync(blobs.ToArray<IBlobItem>());
-        
+
         // var success = await blobService.CreateBlobsAsync(importNotificationBlobItems
         //     .Concat(alvsClearanceRequestBlobItems).ToArray<IBlobItem>());
 

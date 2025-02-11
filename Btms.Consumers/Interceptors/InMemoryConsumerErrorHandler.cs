@@ -13,7 +13,7 @@ public class InMemoryConsumerErrorHandler<T>(ILogger<InMemoryConsumerErrorHandle
     {
         consumerContext.IncrementRetryAttempt();
         var retryCount = consumerContext.GetRetryAttempt();
-        
+
         if (retryCount > options.Value.ErrorRetries)
         {
             logger.LogError(exception, "Error Consuming Message Retry count {RetryCount}", retryCount);

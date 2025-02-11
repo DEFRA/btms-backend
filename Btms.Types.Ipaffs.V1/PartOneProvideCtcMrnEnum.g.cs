@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum PartOneProvideCtcMrnEnum
 {
 
-		[EnumMember(Value = "YES")]
-		Yes,
-	
-		[EnumMember(Value = "YES_ADD_LATER")]
-		YesAddLater,
-	
-		[EnumMember(Value = "NO")]
-		No,
-	
+    [EnumMember(Value = "YES")]
+    Yes,
+
+    [EnumMember(Value = "YES_ADD_LATER")]
+    YesAddLater,
+
+    [EnumMember(Value = "NO")]
+    No,
+
 }
-
-

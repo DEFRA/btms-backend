@@ -26,11 +26,11 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
         {
             var auditId = Context.GetMessageId();
             var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
-            
+
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeDecision(auditId!, internalDecision, notificationContext);
-            
+
             if (existingMovementBuilder.HasChanges)
             {
                 var movement = existingMovementBuilder.Build();

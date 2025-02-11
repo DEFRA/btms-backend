@@ -8,7 +8,7 @@ namespace TestDataGenerator;
 
 public class ClearanceRequestBuilder(string file) : ClearanceRequestBuilder<AlvsClearanceRequest>(file);
 
-public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>> 
+public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder<T>>
     where T : AlvsClearanceRequest, new()
 {
     protected ClearanceRequestBuilder(string? file = null, string? itemJson = null) : base(file, itemJson)
@@ -24,8 +24,8 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return new ClearanceRequestBuilder<T>(file);
     }
-    
-    
+
+
     /// <summary>
     /// build, serialise and then deserialise the object to break any byref type relationships
     /// </summary>
@@ -34,9 +34,9 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
 
         var json = JsonSerializer.Serialize(this.Build());
-        
-        var builder =  new ClearanceRequestBuilder<T>(itemJson: json);
-        
+
+        var builder = new ClearanceRequestBuilder<T>(itemJson: json);
+
         return builder;
     }
 
@@ -65,7 +65,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     {
         return Do(x => x.Header!.DispatchCountryCode = countryCode);
     }
-    
+
     public ClearanceRequestBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
     {
         var entry = randomTime ?
@@ -87,16 +87,16 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             }
         });
     }
-    
+
     public ClearanceRequestBuilder<T> IncrementEntryVersionNumber()
     {
         return Do(x =>
         {
-            x.Header!.PreviousVersionNumber =  x.Header!.EntryVersionNumber;
+            x.Header!.PreviousVersionNumber = x.Header!.EntryVersionNumber;
             x.Header!.EntryVersionNumber = x.Header!.EntryVersionNumber!.Value + 1;
         });
     }
-    public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time, 
+    public ClearanceRequestBuilder<T> WithArrivalDateTimeOffset(DateOnly? date, TimeOnly? time,
         int maxHoursOffset = 12, int maxMinsOffset = 30)
     {
         var d = date ?? DateTime.Today.ToDate();
@@ -107,7 +107,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         var dateTime = d.ToDateTime(t)
             .AddHours(hoursOffset)
             .AddMinutes(minsOffset);
-        
+
         return Do(x => x.Header!.ArrivalDateTime = dateTime);
     }
 
@@ -115,14 +115,14 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
         int netWeight, string[]? checks = null)
     {
         checks = checks ?? ["H2019"];
-        
+
         return Do(cr =>
         {
             cr.Items![0].TaricCommodityCode = commodityCode;
             cr.Items![0].GoodsDescription = description;
             cr.Items![0].ItemNetMass = netWeight;
             cr.Items![0].Documents![0].DocumentCode = documentCode;
-            
+
             cr.Items![0].Checks = checks
                 .Select(c => new Check() { CheckCode = c })
                 .ToArray();
@@ -151,7 +151,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
     //         
     //     });
     // }
-    
+
     public ClearanceRequestBuilder<T> WithItemNoChecks(string documentCode, string commodityCode, string description,
         int netWeight)
     {
@@ -164,7 +164,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Items![0].Checks = [];
         });
     }
-    
+
     public ClearanceRequestBuilder<T> WithRandomItems(int min, int max)
     {
         var commodityCount = CreateRandomInt(min, max);
@@ -189,7 +189,7 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
                 {
                     document.DocumentReference = "GBCHD2024.1001278";
                     document.DocumentCode = "C640";
-                }    
+                }
             }
         });
     }
@@ -201,10 +201,10 @@ public class ClearanceRequestBuilder<T> : BuilderBase<T, ClearanceRequestBuilder
             cr.Header!.EntryReference.AssertHasValue("Clearance Request EntryReference missing");
             cr.Header!.EntryVersionNumber.AssertHasValue("Clearance Request EntryVersionNumber missing");
             cr.Header!.DeclarationUcr.AssertHasValue("Clearance Request DeclarationUcr missing");
-            
+
             // masterUcr can be null
             // cr.Header!.MasterUcr.AssertHasValue("Clearance Request MasterUcr missing"); 
-            
+
             // cr.Header!.ArrivalDateTime.AssertHasValue("Clearance Request ArrivalDateTime missing");
 
             Array.ForEach(cr.Items!, i => Array.ForEach(i.Documents!, d => d.DocumentReference.AssertHasValue()));
