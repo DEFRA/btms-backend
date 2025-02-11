@@ -14,44 +14,25 @@ using System.Dynamic;
 
 namespace Btms.Types.Alvs;
 
+
 /// <summary>
 /// Message sent to the server to send an ALVSClearanceRequest.
 /// </summary>
 public partial class AlvsClearanceRequestPost  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("xmlSchemaVersion")]
     public string? XmlSchemaVersion { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("userIdentification")]
     public string? UserIdentification { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("userPassword")]
     public string? UserPassword { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("sendingDate")]
     public DateTime? SendingDate { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("alvsClearanceRequest")]
     public AlvsClearanceRequest? AlvsClearanceRequest { get; set; }
 

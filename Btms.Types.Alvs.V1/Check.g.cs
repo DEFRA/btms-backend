@@ -14,44 +14,21 @@ using System.Dynamic;
 
 namespace Btms.Types.Alvs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class Check  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("checkCode")]
     public string? CheckCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("departmentCode")]
     public string? DepartmentCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("decisionCode")]
     public string? DecisionCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("decisionsValidUntil")]
     public DateTime? DecisionsValidUntil { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("decisionReasons")]
     public string[]? DecisionReasons { get; set; }
 

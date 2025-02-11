@@ -14,37 +14,18 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Cds;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class CdsClearanceRequest  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
     [JsonPropertyName("serviceHeader")]
     public ServiceHeader? ServiceHeader { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
     [JsonPropertyName("header")]
     public Header? Header { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
     [JsonPropertyName("items")]
     public Items[]? Items { get; set; }
 
