@@ -71,14 +71,15 @@ internal class AlvsClearanceRequestConsumer(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
                 var decisionContext =
-                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true);
+                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, messageId, true);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
+                //Since we are doing this in the Decision Service at the moment, and there are no consumers of the BTMS message do we need this here
+                ////await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else
             {

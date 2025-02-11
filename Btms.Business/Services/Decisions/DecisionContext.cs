@@ -8,6 +8,7 @@ public class DecisionContext(
     List<ImportNotification> notifications,
     List<Movement> movements,
     MatchingResult matchingResult,
+    string messageId,
     bool generateNoMatch = false)
 {
     public List<ImportNotification> Notifications { get; } = notifications;
@@ -15,4 +16,6 @@ public class DecisionContext(
     public MatchingResult MatchingResult { get; } = matchingResult;
 
     public bool GenerateNoMatch { get; } = generateNoMatch;
+
+    public string MessageId { get; } = messageId;
 }

@@ -11,6 +11,8 @@ using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
 using Btms.Model.Cds;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
+using Btms.Business.Builders;
+using Btms.Types.Alvs.Mapping;
 
 namespace Btms.Consumers;
 
@@ -75,12 +77,18 @@ internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaf
                 var matchResult = await matchingService.Process(
                     new MatchingContext(notifications, linkResult.Movements), Context.CancellationToken);
 
-                var decisionContext = new DecisionContext(notifications, linkResult.Movements, matchResult);
+                var decisionContext = new DecisionContext(notifications, linkResult.Movements, matchResult, messageId);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
+               
+
+               
+
                 await dbContext.SaveChangesAsync(Context.CancellationToken);
+
+                
 
                 await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }

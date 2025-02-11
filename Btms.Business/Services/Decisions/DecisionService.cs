@@ -1,11 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
+using Btms.Backend.Data;
+using Btms.Business.Builders;
 using Btms.Business.Services.Decisions.Finders;
+using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
+using Btms.Types.Alvs.Mapping;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Services.Decisions;
 
-public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecisionFinder> decisionFinders) : IDecisionService
+public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecisionFinder> decisionFinders,
+    MovementBuilderFactory movementBuilderFactory, IMongoDbContext dbContext) : IDecisionService
 {
     public async Task<DecisionResult> Process(DecisionContext decisionContext, CancellationToken cancellationToken)
     {
@@ -16,6 +21,30 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         foreach (var message in messages)
         {
             decisionResult.AddDecisionMessage(message);
+        }
+
+        var notificationContext = decisionContext.Notifications
+            .Select(n => new DecisionImportNotifications
+            {
+                Id = n.Id!,
+                Version = n.Version,
+                Created = n.Created,
+                Updated = n.Updated,
+                UpdatedEntity = n.UpdatedEntity,
+                CreatedSource = n.CreatedSource!.Value,
+                UpdatedSource = n.UpdatedSource!.Value
+            })
+            .ToList();
+
+        foreach (var decisionResultDecisionsMessage in decisionResult.DecisionsMessages)
+        {
+            var internalDecision = DecisionMapper.Map(decisionResultDecisionsMessage);
+            var m = decisionContext.Movements.First(m => m.Id!.Equals(decisionResultDecisionsMessage.Header?.EntryReference));
+            var existingMovementBuilder = movementBuilderFactory
+                .From(m)
+                .MergeDecision(decisionContext.MessageId, internalDecision, notificationContext);
+            m = existingMovementBuilder.Build();
+            await dbContext.Movements.Update(m, cancellationToken);
         }
 
         return decisionResult;
