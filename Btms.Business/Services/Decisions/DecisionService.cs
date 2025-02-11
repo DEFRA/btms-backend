@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Btms.Business.Services.Decisions.Finders;
+using Btms.Business.Services.Matching;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 
@@ -31,7 +32,10 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
             {
                 if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
                 {
-                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, null, DecisionCode.X00);
+                    var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
+                    var checkCodes = movement.Items.First(x => x.ItemNumber == noMatch.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+
+                    HandleNoMatch(checkCodes, decisionsResult, noMatch);
                 }
             }
         }
@@ -49,6 +53,31 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         }
 
         return Task.FromResult(decisionsResult);
+    }
+
+    private static void HandleNoMatch(string[]? checkCodes, DecisionResult decisionsResult, DocumentNoMatch noMatch)
+    {
+        if (checkCodes != null)
+        {
+            foreach (var checkCode in checkCodes)
+            {
+                string? reason = null;
+
+                if (checkCode is "H220")
+                {
+                    reason =
+                        "A Customs Declaration with a GMS product has been selected for HMI inspection. In IPAFFS create a CHEDPP and amend your licence to reference it. If a CHEDPP exists, amend your licence to reference it. Failure to do so will delay your Customs release";
+                }
+
+                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber,
+                    noMatch.DocumentReference, checkCode, DecisionCode.X00, reason);
+            }
+        }
+        else
+        {
+            decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber,
+                noMatch.DocumentReference, null, DecisionCode.X00);
+        }
     }
 
     private DecisionFinderResult[] GetDecisions(ImportNotification notification, string[]? checkCodes)
