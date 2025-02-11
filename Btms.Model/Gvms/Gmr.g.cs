@@ -144,4 +144,12 @@ public partial class Gmr  //
     [System.ComponentModel.Description("")]
     public ActualCrossing? ActualCrossing { get; set; }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Attr]
+    [System.ComponentModel.Description("")]
+    public Declarations? Declarations { get; set; }
+
 }
