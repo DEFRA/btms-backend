@@ -41,7 +41,7 @@ public static class @Model.GetClassName()Mapper
 		}
 		else
         {
-            var line = $"to.{property.GetInternalPropertyName()} = {property.Mapper}.Map(from.{@property.GetSourcePropertyName()});";
+            var line = $"to.{property.GetInternalPropertyName()} = {property.Mapper}.Map(from.{@property.GetSourcePropertyName()}!);";
             <text>@line
             </text> 
         }
@@ -61,7 +61,7 @@ public static class @Model.GetClassName()Mapper
             }
             else 
             {
-                <text>to.@property.GetInternalPropertyName() = @property.GetSourcePropertyTypeName()Mapper.Map(from.@property.GetSourcePropertyName());
+                <text>to.@property.GetInternalPropertyName() = @property.GetSourcePropertyTypeName()Mapper.Map(from.@property.GetSourcePropertyName()!);
                 </text>
             }
 
