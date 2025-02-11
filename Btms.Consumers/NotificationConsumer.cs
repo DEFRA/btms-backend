@@ -90,7 +90,7 @@ internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaf
 
                 
 
-                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
+                ////await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else if (preProcessingResult.IsDeleted())
             {
