@@ -87,16 +87,23 @@ public static class DecisionMessageBuilder
     private static string[] BuildDecisionReasons(Model.Cds.Items item, DocumentDecisionResult maxDecisionResult)
     {
         var reasons = new List<string>();
-        if (maxDecisionResult.DecisionCode == DecisionCode.X00)
-        {
-            var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
-            var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
-            reasons.Add($"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration.");
-        }
 
         if (maxDecisionResult.DecisionReason != null)
         {
             reasons.Add(maxDecisionResult.DecisionReason);
+        }
+
+
+        if (maxDecisionResult.DecisionCode == DecisionCode.X00)
+        {
+            var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
+            var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
+
+            if (!reasons.Any())
+            {
+                reasons.Add(
+                    $"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration.");
+            }
         }
 
         return reasons.ToArray();
