@@ -14,24 +14,21 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class CheckedInCrossing  //
 {
 
 
-    /// <summary>
+    ///<summary>
     /// The ID of the crossing route, using a routeId from the GVMS reference data
     /// </summary>
     [JsonPropertyName("routeId")]
     public string? RouteId { get; set; }
 
 
-    /// <summary>
+    ///<summary>
     /// The planned date and time of arrival, in local time of the arrival port. Must not include seconds, time zone or UTC marker
     /// </summary>
-    [JsonPropertyName("localDateTimeOfArrival")]
+    [JsonPropertyName("arrivesAt")]
     public DateTime? ArrivesAt { get; set; }
 
 }

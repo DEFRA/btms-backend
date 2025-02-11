@@ -14,19 +14,11 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Transits  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("id")]
     public string? Id { get; set; }
 
 }

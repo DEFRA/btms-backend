@@ -14,14 +14,14 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class SearchGmrsResponseMapper
 {
-    public static Btms.Model.Gvms.SearchGmrsResponse Map(Btms.Types.Gvms.SearchGmrsResponse? from)
+    public static Btms.Model.Gvms.SearchGmrsResponse Map(Btms.Types.Gvms.SearchGmrsResponse from)
     {
         if (from is null)
         {
             return default!;
         }
         var to = new Btms.Model.Gvms.SearchGmrsResponse();
-        to.Gmrs = from?.Gmrs?.Select(x => GmrMapper.Map(x)).ToArray();
+        to.Gmrs = from.Gmrs?.Select(x => GmrMapper.Map(x)).ToArray();
         return to;
     }
 }

@@ -14,23 +14,12 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsForVRNsresponse  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [JsonPropertyName("gmrsByVRN")]
+    [JsonPropertyName("gmrsByVrns")]
     public GmrsByVrn[]? GmrsByVrns { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("gmrs")]
     public Gmr[]? Gmrs { get; set; }
 

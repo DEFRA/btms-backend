@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsRequest  //
 {
 
@@ -26,6 +22,7 @@ public partial class SearchGmrsRequest  //
     /// A list of TRNs to search for GMRs.
     /// </summary>
     [Attr]
+    [JsonPropertyName("trailerRegistrationNums")]
     [System.ComponentModel.Description("A list of TRNs to search for GMRs.")]
     public string[]? TrailerRegistrationNums { get; set; }
 

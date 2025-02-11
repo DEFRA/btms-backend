@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsForVRNrequest  //
 {
 
@@ -26,6 +22,7 @@ public partial class SearchGmrsForVRNrequest  //
     /// A list of VRN to search for GMRs.
     /// </summary>
     [Attr]
+    [JsonPropertyName("vrns")]
     [System.ComponentModel.Description("A list of VRN to search for GMRs.")]
     public string[]? Vrns { get; set; }
 

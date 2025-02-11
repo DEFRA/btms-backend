@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsForDeclarationIdsrequest  //
 {
 
@@ -26,6 +22,7 @@ public partial class SearchGmrsForDeclarationIdsrequest  //
     /// A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).
     /// </summary>
     [Attr]
+    [JsonPropertyName("declarationIds")]
     [System.ComponentModel.Description("A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).")]
     public string[]? DeclarationIds { get; set; }
 

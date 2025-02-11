@@ -14,23 +14,16 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class GmrsByVrn  //
 {
 
 
-    /// <summary>
+    ///<summary>
     /// This is the identifier for a Vehicle Registration Number
     /// </summary>
     [JsonPropertyName("vrn")]
     public string? Vrn { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("gmrs")]
     public string[]? Gmrs { get; set; }
 

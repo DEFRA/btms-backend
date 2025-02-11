@@ -14,14 +14,11 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsRequest  //
 {
 
 
-    /// <summary>
+    ///<summary>
     /// A list of TRNs to search for GMRs.
     /// </summary>
     [JsonPropertyName("trailerRegistrationNums")]

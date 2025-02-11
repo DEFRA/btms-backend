@@ -14,14 +14,11 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsForVRNrequest  //
 {
 
 
-    /// <summary>
+    ///<summary>
     /// A list of VRN to search for GMRs.
     /// </summary>
     [JsonPropertyName("vrns")]

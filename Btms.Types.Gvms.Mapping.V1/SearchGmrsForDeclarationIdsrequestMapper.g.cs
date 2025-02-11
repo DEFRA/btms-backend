@@ -14,14 +14,14 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class SearchGmrsForDeclarationIdsrequestMapper
 {
-    public static Btms.Model.Gvms.SearchGmrsForDeclarationIdsrequest Map(Btms.Types.Gvms.SearchGmrsForDeclarationIdsrequest? from)
+    public static Btms.Model.Gvms.SearchGmrsForDeclarationIdsrequest Map(Btms.Types.Gvms.SearchGmrsForDeclarationIdsrequest from)
     {
         if (from is null)
         {
             return default!;
         }
         var to = new Btms.Model.Gvms.SearchGmrsForDeclarationIdsrequest();
-        to.DeclarationIds = from?.DeclarationIds;
+        to.DeclarationIds = from.DeclarationIds;
         return to;
     }
 }

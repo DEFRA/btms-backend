@@ -14,27 +14,15 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class SearchGmrsForDeclarationIdsResponse  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("gmrByDeclarationIds")]
     public GmrByDeclarationId[]? GmrByDeclarationIds { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("gmrs")]
     public Gmr[]? Gmrs { get; set; }
 
 }
