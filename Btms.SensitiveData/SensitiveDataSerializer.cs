@@ -12,7 +12,7 @@ namespace Btms.SensitiveData;
 
 public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILogger<SensitiveDataSerializer> logger) : ISensitiveDataSerializer
 {
-    private readonly JsonSerializerOptions jsonOptions = new()
+    private readonly JsonSerializerOptions _jsonOptions = new()
     {
         TypeInfoResolver = new SensitiveDataTypeInfoResolver(options.Value),
         PropertyNameCaseInsensitive = true,
@@ -21,13 +21,13 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
 
     public T Deserialize<T>(string json, Action<JsonSerializerOptions>? optionsOverride = null)
     {
-        var newOptions = jsonOptions;
+        var newOptions = _jsonOptions;
         if (optionsOverride is not null)
         {
             newOptions = new JsonSerializerOptions
             {
                 TypeInfoResolver = new SensitiveDataTypeInfoResolver(options.Value),
-                PropertyNameCaseInsensitive = true,
+                PropertyNameCaseInsensitive = false,
                 NumberHandling = JsonNumberHandling.AllowReadingFromString
             };
             optionsOverride(newOptions);
