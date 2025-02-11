@@ -22,9 +22,9 @@ internal class GeneratorClassMap
 
     public bool IgnoreInternalClass { get; private set; }
 
-    public List<PropertyMap> Properties { get; private set; } = new();
+    public List<PropertyMap> Properties { get; private set; } = [];
 
-    public List<PropertyDescriptor> NewProperties { get; private set; } = new();
+    public List<PropertyDescriptor> NewProperties { get; private set; } = [];
 
     public GeneratorClassMap SetClassName(string className, string? internalClassName = null)
     {
@@ -43,7 +43,7 @@ internal class GeneratorClassMap
     {
         if (string.IsNullOrEmpty(className))
         {
-            throw new ArgumentNullException("className");
+            throw new ArgumentNullException(nameof(className));
         }
 
         SourceClassName = className;
@@ -54,7 +54,7 @@ internal class GeneratorClassMap
     {
         if (string.IsNullOrEmpty(className))
         {
-            throw new ArgumentNullException("className");
+            throw new ArgumentNullException(nameof(className));
         }
 
         InternalClassName = className;
@@ -65,7 +65,7 @@ internal class GeneratorClassMap
     {
         if (property == null)
         {
-            throw new ArgumentNullException("property");
+            throw new ArgumentNullException(nameof(property));
         }
 
         NewProperties.Add(property);
@@ -90,7 +90,7 @@ internal class GeneratorClassMap
     {
         if (propertyName == null)
         {
-            throw new ArgumentNullException("propertyName");
+            throw new ArgumentNullException(nameof(propertyName));
         }
 
         var propertyMap = new PropertyMap(propertyName);

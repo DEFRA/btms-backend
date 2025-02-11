@@ -140,6 +140,11 @@ public class PropertyDescriptor
         return n;
     }
 
+    private string GetInternalJsonPropertyName()
+    {
+        return GetInternalPropertyName().FirstCharToLower();
+    }
+
     public string[] GetSourceAttributes()
     {
         if (NoAttributes) return [];
@@ -154,7 +159,7 @@ public class PropertyDescriptor
     {
         if (NoAttributes) return [];
 
-        var defaultParams = new List<string>() { "[Attr]", $"[JsonPropertyName(\"{InternalJsonPropertyName ?? InternalName}\")]" };
+        var defaultParams = new List<string>() { "[Attr]", $"[JsonPropertyName(\"{InternalJsonPropertyName ?? GetInternalJsonPropertyName()}\")]" };
 
         if (!string.IsNullOrEmpty(Description))
         {

@@ -261,6 +261,14 @@ internal static class Bootstrap
             map.MapProperty("exitBIP").SetName("exitBip");
         });
 
+        GeneratorClassMap.RegisterClassMap("CatchCertificateAttachment",
+            map =>
+            {
+                map.MapProperty("CatchCertificateDetails")
+                    .SetName("catchCertificateDetails")
+                    .SetSourceJsonPropertyName("CatchCertificateDetails");
+            });
+
         GeneratorClassMap.RegisterClassMap("CatchCertificateDetails",
             map => { map.MapProperty("dateOfIssue").IsDateTime().SetInternalName("issuedOn"); });
 
