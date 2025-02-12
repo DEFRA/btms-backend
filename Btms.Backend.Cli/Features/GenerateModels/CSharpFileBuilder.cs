@@ -10,8 +10,23 @@ internal class CSharpFileBuilder
     public static async Task Build(CSharpDescriptor descriptor, string sourceOutputPath, string internalOutputPath,
         string mappingOutputPath, CancellationToken cancellationToken = default)
     {
+        await Generate(descriptor, sourceOutputPath, internalOutputPath, mappingOutputPath);
+        await Save(descriptor, cancellationToken);
+    }
+
+    private static async Task Save(CSharpDescriptor descriptor, CancellationToken cancellationToken = default)
+    {
+        await descriptor.OutputFiles.ForEachAsync(async f =>
+            await File.WriteAllTextAsync(f.Path, f.Content, cancellationToken));
+
+        descriptor.FilesToEnsureDontExist.ForEach(File.Delete);
+    }
+
+    internal static async Task Generate(CSharpDescriptor descriptor, string sourceOutputPath, string internalOutputPath,
+        string mappingOutputPath)
+    {
         var engine = new RazorLightEngineBuilder()
-            .UseEmbeddedResourcesProject(typeof(Program).Assembly,
+            .UseEmbeddedResourcesProject(System.Reflection.Assembly.GetExecutingAssembly(),
                 "Btms.Backend.Cli.Features.GenerateModels.Templates")
             .UseMemoryCachingProvider()
             .Build();
@@ -23,9 +38,13 @@ internal class CSharpFileBuilder
             //create source 
 
             var contents = await engine.CompileRenderAsync("ClassTemplate", @class);
-            await File.WriteAllTextAsync(Path.Combine(sourceOutputPath, $"{@class.GetClassName()}.g.cs"), contents,
-                cancellationToken);
-            Console.WriteLine($"Created file: {@class.GetClassName()}.cs");
+            descriptor.OutputFiles.Add(new OutputFile()
+            {
+                Path = Path.Combine(sourceOutputPath, $"{@class.GetClassName()}.g.cs"),
+                Content = contents
+            });
+
+            Console.WriteLine($"Generated file: {@class.GetClassName()}.cs");
 
             //create internal 
             var internalPath = Path.Combine(internalOutputPath, $"{@class.GetInternalClassName()}.g.cs");
@@ -34,20 +53,39 @@ internal class CSharpFileBuilder
             if (@class.IgnoreInternalClass)
             {
                 Console.WriteLine("{0} internal classes shouldn't be present. Deleting internal & mapper files if they exist.", @class.Name);
-                File.Delete(internalPath);
-                File.Delete(mapperPath);
+                descriptor.FilesToEnsureDontExist.Add(internalPath);
+                descriptor.FilesToEnsureDontExist.Add(mapperPath);
             }
             else
             {
                 contents = await engine.CompileRenderAsync("InternalClassTemplate", @class);
-                await File.WriteAllTextAsync(internalPath,
-                    contents, cancellationToken);
-                Console.WriteLine($"Created file: {@class.GetInternalClassName()}.cs");
+
+                descriptor.OutputFiles.Add(new OutputFile()
+                {
+                    Path = internalPath,
+                    Content = contents
+                });
+
+                Console.WriteLine($"Generated file: {@class.GetInternalClassName()}.cs");
+
+                // await File.WriteAllTextAsync(internalPath,
+                //     contents, cancellationToken);
+
+                // Console.WriteLine($"Created file: {@class.GetInternalClassName()}.cs");
 
                 contents = await engine.CompileRenderAsync("MapperTemplate", @class);
-                await File.WriteAllTextAsync(mapperPath,
-                    contents, cancellationToken);
-                Console.WriteLine($"Created file: {@class.GetClassName()}.cs");
+
+                descriptor.OutputFiles.Add(new OutputFile()
+                {
+                    Path = mapperPath,
+                    Content = contents
+                });
+
+                Console.WriteLine($"Generated file: {@class.GetClassName()}.cs");
+
+                // await File.WriteAllTextAsync(mapperPath,
+                //     contents, cancellationToken);
+                // Console.WriteLine($"Created file: {@class.GetClassName()}.cs");
             }
         }
 
@@ -56,22 +94,46 @@ internal class CSharpFileBuilder
             ApplyEnumMapOverrides(@enum);
 
             var contents = await engine.CompileRenderAsync("EnumTemplate", @enum);
-            await File.WriteAllTextAsync(Path.Combine(sourceOutputPath, $"{@enum.GetEnumName()}.g.cs"), contents,
-                cancellationToken);
-            // File.WriteAllText($"../../../Model/{@enum.GetEnumName()}.cs", contents);
-            Console.WriteLine($"Created file: {@enum.GetEnumName()}.cs");
+
+            descriptor.OutputFiles.Add(new OutputFile()
+            {
+                Path = Path.Combine(sourceOutputPath, $"{@enum.GetEnumName()}.g.cs"),
+                Content = contents
+            });
+
+            Console.WriteLine($"Generated file: {@enum.GetEnumName()}.cs");
+
+            // await File.WriteAllTextAsync(Path.Combine(sourceOutputPath, $"{@enum.GetEnumName()}.g.cs"), contents,
+            //     cancellationToken);
+            // Console.WriteLine($"Created file: {@enum.GetEnumName()}.cs");
 
             contents = await engine.CompileRenderAsync("InternalEnumTemplate", @enum);
-            await File.WriteAllTextAsync(Path.Combine(internalOutputPath, $"{@enum.GetEnumName()}.g.cs"), contents,
-                cancellationToken);
-            // File.WriteAllText($"../../../Model/{@enum.GetEnumName()}.cs", contents);
-            Console.WriteLine($"Created file: {@enum.GetEnumName()}.cs");
+
+            descriptor.OutputFiles.Add(new OutputFile()
+            {
+                Path = Path.Combine(internalOutputPath, $"{@enum.GetEnumName()}.g.cs"),
+                Content = contents
+            });
+
+            Console.WriteLine($"Generated file: {@enum.GetEnumName()}.cs");
+
+            // await File.WriteAllTextAsync(Path.Combine(internalOutputPath, $"{@enum.GetEnumName()}.g.cs"), contents,
+            //     cancellationToken);
+            // Console.WriteLine($"Created file: {@enum.GetEnumName()}.cs");
 
             contents = await engine.CompileRenderAsync("EnumMapperTemplate", @enum);
-            await File.WriteAllTextAsync(Path.Combine(mappingOutputPath, $"{@enum.GetEnumName()}Mapper.g.cs"),
-                contents, cancellationToken);
-            // File.WriteAllText($"../../../Model/{@enum.GetEnumName()}.cs", contents);
-            Console.WriteLine($"Created file: {@enum.GetEnumName()}.cs");
+
+            descriptor.OutputFiles.Add(new OutputFile()
+            {
+                Path = Path.Combine(mappingOutputPath, $"{@enum.GetEnumName()}Mapper.g.cs"),
+                Content = contents
+            });
+
+            Console.WriteLine($"Generated file: {@enum.GetEnumName()}.cs");
+
+            // await File.WriteAllTextAsync(Path.Combine(mappingOutputPath, $"{@enum.GetEnumName()}Mapper.g.cs"),
+            //     contents, cancellationToken);
+            // Console.WriteLine($"Created file: {@enum.GetEnumName()}.cs");
         }
     }
 

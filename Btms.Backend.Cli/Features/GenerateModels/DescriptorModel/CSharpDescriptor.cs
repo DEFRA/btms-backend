@@ -1,10 +1,20 @@
 namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 
+public class OutputFile
+{
+    public required string Path { get; set; }
+    public required string Content { get; set; }
+}
+
 public class CSharpDescriptor
 {
     public List<ClassDescriptor> Classes { get; set; } = [];
 
     public List<EnumDescriptor> Enums { get; set; } = [];
+
+    public List<OutputFile> OutputFiles { get; set; } = [];
+
+    public List<string> FilesToEnsureDontExist { get; set; } = [];
 
     public void AddEnumDescriptor(EnumDescriptor enumDescriptor)
     {
