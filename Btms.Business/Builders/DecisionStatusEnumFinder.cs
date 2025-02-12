@@ -13,6 +13,7 @@ public class DecisionStatusFinder
         _finders.Add(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs, BtmsMadeSameDecisionAsAlvs);
         _finders.Add(DecisionStatusEnum.BtmMadeSameDecisionTypeAsAlvs, BtmMadeSameDecisionTypeAsAlvs);
         _finders.Add(DecisionStatusEnum.NoImportNotificationsLinked, NoImportNotificationsLinked);
+        _finders.Add(DecisionStatusEnum.PartialImportNotificationsLinked, PartialImportNotificationsLinked);
         _finders.Add(DecisionStatusEnum.NoAlvsDecisions, NoAlvsDecisions);
         _finders.Add(DecisionStatusEnum.HasChedppChecks, HasChedppChecks);
 
@@ -65,6 +66,12 @@ public class DecisionStatusFinder
     private static bool NoImportNotificationsLinked(Movement movement, AlvsDecision decision)
     {
         return movement.Relationships.Notifications.Data.Count == 0;
+    }
+
+    private static bool PartialImportNotificationsLinked(Movement movement, AlvsDecision decision)
+    {
+        return movement.Relationships.Notifications.Data.Count > 0 &&
+               movement.Relationships.Notifications.Data.Count < movement._MatchReferences.Count;
     }
 
     private static bool NoAlvsDecisions(Movement movement, AlvsDecision decision)

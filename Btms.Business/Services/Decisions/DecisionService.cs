@@ -55,17 +55,14 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
     private Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
         var decisionsResult = new DecisionResult();
-        if (decisionContext.GenerateNoMatch)
+        foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
         {
-            foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
+            if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
             {
-                if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
-                {
-                    var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
-                    var checkCodes = movement.Items.First(x => x.ItemNumber == noMatch.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+                var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
+                var checkCodes = movement.Items.First(x => x.ItemNumber == noMatch.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
 
-                    HandleNoMatch(checkCodes, decisionsResult, noMatch);
-                }
+                HandleNoMatch(checkCodes, decisionsResult, noMatch);
             }
         }
 
