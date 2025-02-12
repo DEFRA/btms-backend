@@ -17,6 +17,10 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.Created), cancellationToken),
             CreateIndex("CreatedSource",
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken),
+            CreateIndex("ImportNotificationGmrLinker",
+                Builders<ImportNotification>.IndexKeys
+                    .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.system"))
+                    .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.reference")), cancellationToken),
 
             CreateIndex("MatchReferenceIdx",
                 Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken),
