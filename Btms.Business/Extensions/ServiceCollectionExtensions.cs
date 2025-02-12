@@ -67,6 +67,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ILinkingService, LinkingService>();
         services.AddScoped<ILinker<Model.Ipaffs.ImportNotification, Model.Gvms.Gmr>, ImportNotificationGmrLinker>();
+        services.Decorate(typeof(ILinker<,>), typeof(LoggingLinker<,>));
         
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<IDecisionService, DecisionService>();
