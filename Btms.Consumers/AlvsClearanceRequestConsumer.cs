@@ -84,12 +84,6 @@ internal class AlvsClearanceRequestConsumer(
                     "Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}",
                     message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(),
                     preProcessingResult.Record.GetLatestAuditEntry().Status);
-
-                if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped ||
-                    preProcessingResult.Outcome == PreProcessingOutcome.AlreadyProcessed)
-                {
-                    preProcessingResult.Record.Skipped(messageId, message.Version.GetValueOrDefault());
-                }
             }
 
             await dbContext.SaveChangesAsync(Context.CancellationToken);
