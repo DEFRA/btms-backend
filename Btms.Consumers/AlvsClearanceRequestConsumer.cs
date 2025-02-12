@@ -76,10 +76,7 @@ internal class AlvsClearanceRequestConsumer(
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
-                await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                //Since we are doing this in the Decision Service at the moment, and there are no consumers of the BTMS message do we need this here
-                ////await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else
             {
@@ -87,7 +84,15 @@ internal class AlvsClearanceRequestConsumer(
                     "Skipping Linking/Matching/Decisions for {Mrn} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}",
                     message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(),
                     preProcessingResult.Record.GetLatestAuditEntry().Status);
+
+                if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped ||
+                    preProcessingResult.Outcome == PreProcessingOutcome.AlreadyProcessed)
+                {
+                    preProcessingResult.Record.Skipped(messageId, message.Version.GetValueOrDefault());
+                }
             }
+
+            await dbContext.SaveChangesAsync(Context.CancellationToken);
         }
     }
 

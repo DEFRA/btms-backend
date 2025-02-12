@@ -81,36 +81,21 @@ internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaf
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
-
-
-
-
-
-                await dbContext.SaveChangesAsync(Context.CancellationToken);
-
-
-
-                ////await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else if (preProcessingResult.IsDeleted())
             {
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
                 await linkingService.UnLink(linkContext, Context.CancellationToken);
-                await dbContext.SaveChangesAsync(Context.CancellationToken);
 
             }
             else
             {
-                if (preProcessingResult.Outcome != PreProcessingOutcome.Skipped ||
-                    preProcessingResult.Outcome != PreProcessingOutcome.AlreadyProcessed)
-                {
-                    await dbContext.SaveChangesAsync(Context.CancellationToken);
-                }
-
                 logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
                 LogStatus("IsCreatedOrChanged=false", message);
             }
+
+            await dbContext.SaveChangesAsync(Context.CancellationToken);
 
         }
     }

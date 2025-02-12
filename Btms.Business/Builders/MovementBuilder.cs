@@ -1,12 +1,11 @@
-using System.Diagnostics.CodeAnalysis;
 using Btms.Business.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
-using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Btms.Business.Builders;
 
@@ -190,6 +189,19 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
         GuardNullMovement();
 
         var auditEntry = AuditEntry.CreateUpdated(changeSet,
+            messageId,
+            _movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
+            _movement.UpdatedSource,
+            source);
+
+        return auditEntry;
+    }
+
+    public AuditEntry SkippedAuditEntry(string messageId, CreatedBySystem source)
+    {
+        GuardNullMovement();
+
+        var auditEntry = AuditEntry.CreateSkippedVersion(
             messageId,
             _movement.ClearanceRequests[0].Header!.EntryVersionNumber.GetValueOrDefault(),
             _movement.UpdatedSource,

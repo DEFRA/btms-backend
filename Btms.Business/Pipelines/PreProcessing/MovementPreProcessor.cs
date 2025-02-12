@@ -2,7 +2,6 @@ using Btms.Backend.Data;
 using Btms.Business.Builders;
 using Btms.Model;
 using Btms.Model.Auditing;
-using Btms.Model.ChangeLog;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using Microsoft.Extensions.Logging;
@@ -13,15 +12,12 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 {
     public async Task<PreProcessingResult<Movement>> Process(PreProcessingContext<AlvsClearanceRequest> preProcessingContext)
     {
-
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
         var mb = movementBuilderFactory.From(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(mb.Id);
 
         if (existingMovement is null)
         {
-            // ArgumentNullException.ThrowIfNull(movement);
-
             var auditEntry = mb.CreateAuditEntry(
                 preProcessingContext.MessageId,
                 CreatedBySystem.Cds
@@ -33,11 +29,10 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
             return PreProcessResult.New(movement);
         }
 
-        // if (movement.ClearanceRequests[^1].Header?.EntryVersionNumber > existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber)
+        var existingBuilder = movementBuilderFactory.From(existingMovement);
+
         if (mb.IsEntryVersionNumberGreaterThan(existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber))
         {
-            var existingBuilder = movementBuilderFactory.From(existingMovement);
-            // var changeSet = movement.ClearanceRequests[^1].GenerateChangeSet(existingMovement.ClearanceRequests[0]);
             var changeSet = mb.GenerateChangeSet(existingBuilder);
 
             var auditEntry = mb.UpdateAuditEntry(
@@ -50,25 +45,30 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
             existingBuilder.ReplaceClearanceRequests(mb);
 
-            // existingMovement.ClearanceRequests.RemoveAll(x =>
-            //     x.Header?.EntryReference ==
-            //     movement.ClearanceRequests[0].Header?.EntryReference);
-            // existingMovement.ClearanceRequests.AddRange(movement.ClearanceRequests);
-            //
-            // existingMovement.Items.AddRange(movement.Items);
-
             await dbContext.Movements.Update(existingMovement);
 
             return PreProcessResult.Changed(existingMovement, changeSet);
         }
 
+        PreProcessingResult<Movement> result;
+
         if (mb.IsEntryVersionNumberEqualTo(existingMovement.ClearanceRequests[0].Header?.EntryVersionNumber))
         {
-            return PreProcessResult.AlreadyProcessed(existingMovement);
+            result = PreProcessResult.AlreadyProcessed(existingMovement);
+        }
+        else
+        {
+            logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.Header?.EntryReference!);
+            result = PreProcessResult.Skipped(existingMovement);
         }
 
-        logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.Header?.EntryReference!);
-        return PreProcessResult.Skipped(existingMovement);
+        var skippedAuditEntry = existingBuilder.SkippedAuditEntry(
+            preProcessingContext.MessageId,
+            CreatedBySystem.Cds);
+
+        existingBuilder.Update(skippedAuditEntry);
+
+        return result;
 
     }
 }
