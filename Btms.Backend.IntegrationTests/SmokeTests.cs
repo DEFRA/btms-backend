@@ -21,7 +21,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
     private readonly JsonSerializerOptions jsonOptions;
 
-    public SmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) :base(factory, testOutputHelper)
+    public SmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
     {
         jsonOptions = new JsonSerializerOptions();
         jsonOptions.Converters.Add(new JsonStringEnumConverter());
@@ -41,11 +41,11 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 
         //Act
         var cancelJobResponse = await Client.CancelJob(jobId);
-        
+
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         cancelJobResponse.IsSuccessStatusCode.Should().BeTrue(cancelJobResponse.StatusCode.ToString());
-           
+
 
         // Check Api
         var jobResponse = await Client.GetJob(jobId);
@@ -71,17 +71,17 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
         jsonClientResponse.Data.Count.Should().Be(5);
-        
+
         // Check Audit Entry
         Client.GetFirstImportNotification()
             .AuditEntries
-            .First(a => 
-                a.Status == "Created" )
+            .First(a =>
+                a.Status == "Created")
             .Id
             .Should().StartWith($"SmokeTest{Path.DirectorySeparatorChar}");
-            
+
     }
-    
+
     // [Fact]
     // public void AuditEntryIdsShouldBeCorrectFormat()
     // {

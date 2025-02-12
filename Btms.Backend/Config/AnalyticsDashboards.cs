@@ -10,10 +10,11 @@ using MongoDB.Driver.Linq;
 
 namespace Btms.Backend.Config;
 
-public class DateRange {
-    [FromQuery(Name = "dateFrom")] 
+public class DateRange
+{
+    [FromQuery(Name = "dateFrom")]
     public DateTime? From { get; set; }
-    [FromQuery(Name = "dateTo")] 
+    [FromQuery(Name = "dateTo")]
     public DateTime? To { get; set; }
 
     // public static DateRange Default()
@@ -26,7 +27,7 @@ public class DateRange {
     //     return true;
     // }
 }
-    
+
 public static class AnalyticsDashboards
 {
     public static async Task<IDictionary<string, IDataset>> GetCharts(
@@ -150,15 +151,15 @@ public static class AnalyticsDashboards
         var chartsToReturn = chartsToRender.Length == 0
             ? charts.ToList()
             : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key)).ToList();
-      
+
         var taskList = chartsToReturn.Select(r => r.Value()).ToList();
-        
+
         await Task.WhenAll(taskList);
 
         var output = chartsToReturn
             .Select((x, i) => new { Key = x.Key, Index = i })
             .ToDictionary(t => t.Key, t => taskList[t.Index].Result);
-  
+
         logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
 
         return output;

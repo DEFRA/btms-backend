@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum PartOneTypeOfImpEnum
 {
 
-		A,
-	
-		P,
-	
-		D,
-	
+    A,
+
+    P,
+
+    D,
+
 }
-
-

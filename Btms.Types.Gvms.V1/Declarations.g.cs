@@ -21,19 +21,17 @@ public partial class Declarations  //
 {
 
 
-        /// <summary>
-        /// A list of declaration ids.
-        /// </summary>
+    /// <summary>
+    /// A list of declaration ids.
+    /// </summary>
     [JsonPropertyName("transits")]
     public Transits[]? Transits { get; set; }
 
-	
-        /// <summary>
-        /// A list of declaration ids.
-        /// </summary>
+
+    /// <summary>
+    /// A list of declaration ids.
+    /// </summary>
     [JsonPropertyName("customs")]
     public Customs[]? Customs { get; set; }
 
-	}
-
-
+}

@@ -21,19 +21,17 @@ public partial class GmrsByVrn  //
 {
 
 
-        /// <summary>
-        /// This is the identifier for a Vehicle Registration Number
-        /// </summary>
+    /// <summary>
+    /// This is the identifier for a Vehicle Registration Number
+    /// </summary>
     [JsonPropertyName("vrn")]
     public string? Vrn { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("gmrs")]
     public string[]? Gmrs { get; set; }
 
-	}
-
-
+}

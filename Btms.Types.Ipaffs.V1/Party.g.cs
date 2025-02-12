@@ -21,125 +21,123 @@ public partial class Party  //
 {
 
 
-        /// <summary>
-        /// IPAFFS ID of party
-        /// </summary>
+    /// <summary>
+    /// IPAFFS ID of party
+    /// </summary>
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
-	
-        /// <summary>
-        /// Name of party
-        /// </summary>
+
+    /// <summary>
+    /// Name of party
+    /// </summary>
     [JsonPropertyName("name")]
     [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Company ID
-        /// </summary>
+
+    /// <summary>
+    /// Company ID
+    /// </summary>
     [JsonPropertyName("companyId")]
     public string? CompanyId { get; set; }
 
-	
-        /// <summary>
-        /// Contact ID (B2C)
-        /// </summary>
+
+    /// <summary>
+    /// Contact ID (B2C)
+    /// </summary>
     [JsonPropertyName("contactId")]
     public string? ContactId { get; set; }
 
-	
-        /// <summary>
-        /// Company name
-        /// </summary>
+
+    /// <summary>
+    /// Company name
+    /// </summary>
     [JsonPropertyName("companyName")]
     [Btms.SensitiveData.SensitiveData]
     public string? CompanyName { get; set; }
 
-	
-        /// <summary>
-        /// Addresses
-        /// </summary>
+
+    /// <summary>
+    /// Addresses
+    /// </summary>
     [JsonPropertyName("address")]
     [Btms.SensitiveData.SensitiveData]
     public string[]? Addresses { get; set; }
 
-	
-        /// <summary>
-        /// County
-        /// </summary>
+
+    /// <summary>
+    /// County
+    /// </summary>
     [JsonPropertyName("county")]
     public string? County { get; set; }
 
-	
-        /// <summary>
-        /// Post code of party
-        /// </summary>
+
+    /// <summary>
+    /// Post code of party
+    /// </summary>
     [JsonPropertyName("postCode")]
     [Btms.SensitiveData.SensitiveData]
     public string? PostCode { get; set; }
 
-	
-        /// <summary>
-        /// Country of party
-        /// </summary>
+
+    /// <summary>
+    /// Country of party
+    /// </summary>
     [JsonPropertyName("country")]
     public string? Country { get; set; }
 
-	
-        /// <summary>
-        /// City
-        /// </summary>
+
+    /// <summary>
+    /// City
+    /// </summary>
     [JsonPropertyName("city")]
     [Btms.SensitiveData.SensitiveData]
     public string? City { get; set; }
 
-	
-        /// <summary>
-        /// TRACES ID
-        /// </summary>
+
+    /// <summary>
+    /// TRACES ID
+    /// </summary>
     [JsonPropertyName("tracesID")]
     public int? TracesId { get; set; }
 
-	
-        /// <summary>
-        /// Type of party
-        /// </summary>
+
+    /// <summary>
+    /// Type of party
+    /// </summary>
     [JsonPropertyName("type")]
     public PartyTypeEnum? Type { get; set; }
 
-	
-        /// <summary>
-        /// Approval number
-        /// </summary>
+
+    /// <summary>
+    /// Approval number
+    /// </summary>
     [JsonPropertyName("approvalNumber")]
     public string? ApprovalNumber { get; set; }
 
-	
-        /// <summary>
-        /// Phone number of party
-        /// </summary>
+
+    /// <summary>
+    /// Phone number of party
+    /// </summary>
     [JsonPropertyName("phone")]
     [Btms.SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
-	
-        /// <summary>
-        /// Fax number of party
-        /// </summary>
+
+    /// <summary>
+    /// Fax number of party
+    /// </summary>
     [JsonPropertyName("fax")]
     [Btms.SensitiveData.SensitiveData]
     public string? Fax { get; set; }
 
-	
-        /// <summary>
-        /// Email number of party
-        /// </summary>
+
+    /// <summary>
+    /// Email number of party
+    /// </summary>
     [JsonPropertyName("email")]
     [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
-	}
-
-
+}

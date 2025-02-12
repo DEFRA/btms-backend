@@ -45,7 +45,7 @@ public static class BtmsApiExtensions
             while (status != SyncJobStatus.Completed)
             {
                 await Task.Delay(200);
-                var jobResponse = await client.GetJobStatus(jobId);status = jobResponse.Status;
+                var jobResponse = await client.GetJobStatus(jobId); status = jobResponse.Status;
             }
         });
 

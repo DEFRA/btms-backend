@@ -22,29 +22,27 @@ public partial class NominatedContact  //
 {
 
 
-        /// <summary>
-        /// Name of nominated contact
-        /// </summary>
+    /// <summary>
+    /// Name of nominated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Name of nominated contact")]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Email address of nominated contact
-        /// </summary>
+
+    /// <summary>
+    /// Email address of nominated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Email address of nominated contact")]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Telephone number of nominated contact
-        /// </summary>
+
+    /// <summary>
+    /// Telephone number of nominated contact
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Telephone number of nominated contact")]
     public string? Telephone { get; set; }
 
-	}
-
-
+}

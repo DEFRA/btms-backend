@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum DecisionDefinitiveImportPurposeEnum
 {
 
-		[EnumMember(Value = "slaughter")]
-		Slaughter,
-	
-		[EnumMember(Value = "approvedbodies")]
-		Approvedbodies,
-	
-		[EnumMember(Value = "quarantine")]
-		Quarantine,
-	
+    [EnumMember(Value = "slaughter")]
+    Slaughter,
+
+    [EnumMember(Value = "approvedbodies")]
+    Approvedbodies,
+
+    [EnumMember(Value = "quarantine")]
+    Quarantine,
+
 }
-
-

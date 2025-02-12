@@ -8,16 +8,16 @@ public class PipelineTestHelpers
     {
         PipelineResult ProcessFilter(MockContext context);
     }
-    
+
     public class MockPipeline : PipelineBase<MockContext, MockRequest>
     {
         private readonly IStubService _stubService;
-        
+
         public MockPipeline(IStubService stubService)
         {
             _stubService = stubService;
         }
-        
+
         public override async Task<PipelineResult> ProcessFilter(MockContext context)
         {
             return await Task.FromResult(_stubService.ProcessFilter(context));

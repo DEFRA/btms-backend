@@ -13,7 +13,7 @@ public class SummarisedDataset<TSummary, TResult> : IDataset
 {
     public required TSummary Summary { get; set; }
     public required List<TResult> Result { get; set; }
-    
+
 }
 
 public class MultiSeriesDataset<TDimensionResult> : IDataset
@@ -47,7 +47,7 @@ public class ScenarioItem : IDimensionResult
 {
     [JsonInclude]
     public required string Scenario;
-    
+
     [JsonInclude]
     public required string[] Keys;
 }
@@ -70,15 +70,15 @@ public class DatasetResultTypeMappingConverter<TType> : JsonConverter<TType> whe
         {
             PropertyNamingPolicy = options.PropertyNamingPolicy
         };
-        
+
         foreach (var jsonConverter in converters)
         {
             newOptions.Converters.Add(jsonConverter);
         }
-        
+
         TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
 
-        return result;   
+        return result;
     }
 
     public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)

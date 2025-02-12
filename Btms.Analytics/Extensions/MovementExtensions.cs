@@ -7,8 +7,8 @@ using Btms.Model.Ipaffs;
 namespace Btms.Analytics.Extensions;
 
 public static class MovementExtensions
-{   
-    public static IQueryable<Movement>  WhereFilteredByCreatedDateAndParams(this IQueryable<Movement> source, DateTime from, DateTime to,
+{
+    public static IQueryable<Movement> WhereFilteredByCreatedDateAndParams(this IQueryable<Movement> source, DateTime from, DateTime to,
         bool finalisedOnly,
         ImportNotificationTypeEnum[]? chedTypes = null, string? country = null)
     {
@@ -28,46 +28,49 @@ public static class MovementExtensions
         public required ItemCheck Check { get; init; }
         public required T DecisionStatus { get; init; }
     }
-    
+
     [SuppressMessage("SonarLint", "S3358",
         Justification =
             "This is a linq expression tree, unsure how to make it independent expressions"), SuppressMessage("SonarLint", "S3776",
          Justification =
              "Unsure how to make this less complex as its a linq expression")]
-    public static IQueryable<ReadTimeDecisionStatusState<DecisionStatusEnum>> WithReadTimeDecisionStatus(this IQueryable<ReadTimeDecisionStatusState<DecisionStatusEnum?>> source) {
-        
-        return source.Select(t => new ReadTimeDecisionStatusState<DecisionStatusEnum>() {
-             Check   = t.Check,
-             Movement = t.Movement,
-             
-             DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null ?
+    public static IQueryable<ReadTimeDecisionStatusState<DecisionStatusEnum>> WithReadTimeDecisionStatus(this IQueryable<ReadTimeDecisionStatusState<DecisionStatusEnum?>> source)
+    {
+
+        return source.Select(t => new ReadTimeDecisionStatusState<DecisionStatusEnum>()
+        {
+            Check = t.Check,
+            Movement = t.Movement,
+
+            DecisionStatus = t.Movement.AlvsDecisionStatus.Context.DecisionComparison == null ?
                  DecisionStatusEnum.InvestigationNeeded :
                  t.Movement.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus
         });
     }
-    
+
     [Pure]
     public static DecisionStatusEnum GetDecisionStatus([Pure] ItemCheck? c)
     {
         return DecisionStatusEnum.None;
     }
-    
+
     public class MovementWithLinkStatus
     {
         public required Movement Movement { get; set; }
         public required DateTime CreatedSource { get; set; }
         public required LinkStatusEnum Status { get; set; }
     }
-    
+
     public static IQueryable<MovementWithLinkStatus> SelectLinkStatus(this IQueryable<Movement> source)
     {
         var m = source
-            .Select(m => new MovementWithLinkStatus() {
+            .Select(m => new MovementWithLinkStatus()
+            {
                 Movement = m,
                 CreatedSource = m.CreatedSource!.Value,
                 Status = m.BtmsStatus.LinkStatus
             });
 
         return m;
-    } 
+    }
 }

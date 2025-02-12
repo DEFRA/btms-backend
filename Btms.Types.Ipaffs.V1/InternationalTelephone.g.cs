@@ -21,19 +21,17 @@ public partial class InternationalTelephone  //
 {
 
 
-        /// <summary>
-        /// Country code of phone number
-        /// </summary>
+    /// <summary>
+    /// Country code of phone number
+    /// </summary>
     [JsonPropertyName("countryCode")]
     public string? CountryCode { get; set; }
 
-	
-        /// <summary>
-        /// Phone number
-        /// </summary>
+
+    /// <summary>
+    /// Phone number
+    /// </summary>
     [JsonPropertyName("subscriberNumber")]
     public string? SubscriberNumber { get; set; }
 
-	}
-
-
+}

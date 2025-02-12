@@ -44,16 +44,16 @@ public class ImportNotificationBuilderTests
         var notification = builder.Build();
         notification.LastUpdated.ToDate().Should().Be(date.ToDate());
     }
-    
+
     [Fact]
     public void Creating_Multiple_Objects_ShouldNotUpdateSecond()
     {
         var date = DateTime.Today.AddDays(-5);
         var builder = ImportNotificationBuilder.Default();
         builder.WithCreationDate(date);
-        
+
         var before = builder.ValidateAndBuild();
-        
+
         var after = builder
             .Clone()
             .WithCreationDate(date.AddDays(1))

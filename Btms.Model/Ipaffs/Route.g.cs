@@ -22,13 +22,11 @@ public partial class Route  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string[]? TransitingStates { get; set; }
 
-	}
-
-
+}

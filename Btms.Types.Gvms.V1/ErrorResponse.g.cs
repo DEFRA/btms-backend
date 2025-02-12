@@ -21,12 +21,10 @@ public partial class ErrorResponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("code")]
     public string? Code { get; set; }
 
-	}
-
-
+}

@@ -16,7 +16,7 @@ namespace TestGenerator.IntegrationTesting.Backend;
 // https://youtrack.jetbrains.com/issue/RIDER-115680/xUnit-categories-making-use-of-ITraitAttribute-and-ITraitDiscoverer-doesnt-seem-to-be-discovered-by-Riders-category-function.
 
 [IgnoreXunitAnalyzersRule1013]
-public class FailingFactAttribute: FactAttribute
+public class FailingFactAttribute : FactAttribute
 {
     // private static readonly string[] IncompleteJiraTickets = ["CDMS-234", "CDMS-235", "CDMS-232", "CDMS-205", "CDMS-229"];
     private static readonly string[] IncompleteJiraTickets = ["CDMS-235", "CDMS-232", "CDMS-205", "CDMS-242"];

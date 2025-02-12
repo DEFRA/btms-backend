@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum DecisionDefinitiveImportPurposeEnum
 {
 
-		Slaughter,
-	
-		Approvedbodies,
-	
-		Quarantine,
-	
+    Slaughter,
+
+    Approvedbodies,
+
+    Quarantine,
+
 }
-
-

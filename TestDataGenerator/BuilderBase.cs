@@ -22,10 +22,10 @@ public abstract class BuilderBase<T, TBuilder> :
     private IPostprocessComposer<T> _composer = null!;
     protected Fixture Fixture { get; set; } = null!;
 
-    protected BuilderBase(string? filePath = null,string? itemJson = null, T? item = default(T)): base()
+    protected BuilderBase(string? filePath = null, string? itemJson = null, T? item = default(T)) : base()
     {
         Fixture = new Fixture();
-        
+
         if (filePath.HasValue())
         {
             var json = File.ReadAllText(filePath);
@@ -39,12 +39,12 @@ public abstract class BuilderBase<T, TBuilder> :
         {
             item = Fixture.Create<T>();
         }
-        
+
         _composer = Fixture.Build<T>()
             .FromFactory(() => item!)
             .OmitAutoProperties();
     }
-    
+
     public TBuilder With<TProperty>(Expression<Func<T, TProperty>> propertyPicker, TProperty value)
     {
         _composer = _composer.With(propertyPicker, value);
@@ -65,17 +65,17 @@ public abstract class BuilderBase<T, TBuilder> :
 
         return (TBuilder)this;
     }
-    
+
     public T Build()
     {
         return _composer.Create();
     }
-    
+
     public T ValidateAndBuild()
     {
         return Validate().Build();
     }
-    
+
     protected string CreateRandomString(int length)
     {
         return string.Join("", Fixture.CreateMany<char>(length));

@@ -21,26 +21,24 @@ public partial class LaboratoryTests  //
 {
 
 
-        /// <summary>
-        /// Date of tests
-        /// </summary>
+    /// <summary>
+    /// Date of tests
+    /// </summary>
     [JsonPropertyName("testDate")]
     public DateTime? TestDate { get; set; }
 
-	
-        /// <summary>
-        /// Reason for test
-        /// </summary>
+
+    /// <summary>
+    /// Reason for test
+    /// </summary>
     [JsonPropertyName("testReason")]
     public LaboratoryTestsTestReasonEnum? TestReason { get; set; }
 
-	
-        /// <summary>
-        /// List of details of individual tests performed or to be performed
-        /// </summary>
+
+    /// <summary>
+    /// List of details of individual tests performed or to be performed
+    /// </summary>
     [JsonPropertyName("singleLaboratoryTests")]
     public SingleLaboratoryTest[]? SingleLaboratoryTests { get; set; }
 
-	}
-
-
+}

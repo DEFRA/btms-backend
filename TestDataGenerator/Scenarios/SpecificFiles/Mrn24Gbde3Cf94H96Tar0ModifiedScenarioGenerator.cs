@@ -9,7 +9,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedScenarioGenerator(IServiceProvider sp,
     protected override List<(string filePath, IBaseBuilder builder)> ModifyBuilders(List<(string filePath, IBaseBuilder builder)> builders)
     {
         var decisionV1Builder =
-            (DecisionBuilder)builders.Single(b => b.filePath == 
+            (DecisionBuilder)builders.Single(b => b.filePath ==
                                                   Path.Combine("Mrn-24GBDE3CF94H96TAR0", "DECISIONS", "2024", "12", "03", "24GBDE3CF94H96TAR0-0deb3808-c55e-4196-9270-50ff1ee2ce49.json")).builder;
 
         decisionV1Builder.Do(d =>

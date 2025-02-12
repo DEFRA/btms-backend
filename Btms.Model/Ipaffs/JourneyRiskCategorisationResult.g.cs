@@ -22,31 +22,29 @@ public partial class JourneyRiskCategorisationResult  //
 {
 
 
-        /// <summary>
-        /// Risk Level is defined using enum values High,Medium,Low
-        /// </summary>
+    /// <summary>
+    /// Risk Level is defined using enum values High,Medium,Low
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Risk Level is defined using enum values High,Medium,Low")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public JourneyRiskCategorisationResultRiskLevelEnum? RiskLevel { get; set; }
 
-	
-        /// <summary>
-        /// Indicator of whether the risk level was determined by the system or by the user
-        /// </summary>
+
+    /// <summary>
+    /// Indicator of whether the risk level was determined by the system or by the user
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Indicator of whether the risk level was determined by the system or by the user")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public JourneyRiskCategorisationResultRiskLevelMethodEnum? RiskLevelMethod { get; set; }
 
-	
-        /// <summary>
-        /// The date and time the risk level has been set for a notification
-        /// </summary>
+
+    /// <summary>
+    /// The date and time the risk level has been set for a notification
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The date and time the risk level has been set for a notification")]
     public DateTime? RiskLevelSetFor { get; set; }
 
-	}
-
-
+}

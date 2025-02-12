@@ -1,1 +1,259 @@
-{"id":4229473,"referenceNumber":"CHEDPP.GB.2024.5229377","agencyOrganisationId":"4fad43cb-204b-e911-a957-000d3a454330","version":2,"lastUpdated":"2024-12-01T19:32:08.09939584Z","lastUpdatedBy":{"displayName":"298d5064ea0b93c618dca19e7e479528c48a66af08be6e1186740821e3aabbcd","userId":"3dd58971-2d3f-e911-a95d-000d3a454f67"},"type":"CHEDPP","status":"MODIFY","riskAssessment":{"commodityResults":[{"hmiDecision":"NOTREQUIRED","phsiDecision":"REQUIRED","phsiClassification":"Reduced","phsi":{"documentCheck":true,"identityCheck":true,"physicalCheck":true},"uniqueId":"74601d3c-cb6c-4e3d-b057-641a68204116","eppoCode":"OCIBA","indoorOutdoor":"None","propagation":"None","phsiRuleType":"Consignment"}],"assessmentDateTime":"2024-12-01T15:54:18.879500613"},"isHighRiskEuImport":false,"partOne":{"personResponsible":{"name":"a2af268b02abebc6684c438c476487a35b8c217fe67638bf3314d928e6ac839b","companyId":"66344f84-b9f8-ee11-a1fd-6045bdf29764","companyName":"31bc780c175b260dd32f51d1bfe89dacfdd1a9811349724fa75d1f97483f9713","address":["874277569edf625dd452f2a727e4d28c06a22cea52d3205efc89da96c0fae1d8","a3f475252c88b5ecdfed9ac5b36d4bc15a62931a3243e2fe8cc334274b8aa550","266d214560f096fa17878b3a50988f2dee283d63acf8b34fba7d3392a21bce43","16dabd22ee15406a281b170cd8e2387a52e0c25b1761e7ddf9a6b6a9a1577ea7","f01caaef22ecf4cb506f52f8d9d4b3e4eaa26bb3775dffb345775e4e4d9deda4","85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe"],"country":"GB","tracesID":1001,"phone":"4e842977650a8951eec5e9f2d16280442637c6be00189e62095ec2873a917be3","email":"430ea73448a5982b7646fd79aebfd8f6c428918674f2a347d8c677a641274478","contactId":"55344f84-b9f8-ee11-a1fd-6045bdf29764"},"consignor":{"id":"7f309fae-a16c-4961-a7d1-c4db692b800e","type":"exporter","status":"nonapproved","companyName":"d0391b55ad282adff79e7629a1266c81dd3a5486468e865335cca1f171d193d2","address":{"addressLine1":"90abd1996ea1528dc683ac340165c91b9b6b895719138c251346a73aeb5aaedb","addressLine2":"d25c864a8092307a2d9855a9e0c7d809e0c44a4da541c1cfb3ee63948ba1be49","city":"90abd1996ea1528dc683ac340165c91b9b6b895719138c251346a73aeb5aaedb","postalZipCode":"d25c864a8092307a2d9855a9e0c7d809e0c44a4da541c1cfb3ee63948ba1be49","countryISOCode":"9b90fa7f6a8a28309589fcc3dfa530a8dc6b8c2ca9e9cbea3df02f21cd1ca331","telephone":"a65422c2357fb9b416990b0a9f4ebd83ac4d9cd580c06803b4e1754a3a266343","email":"c6f8841db891bbf164fc8f62897649eeb87dc46284321aa18bd136fc56b763a7"},"tracesId":10327662},"consignee":{"id":"66344f84-b9f8-ee11-a1fd-6045bdf29764","type":"consignee","companyName":"31bc780c175b260dd32f51d1bfe89dacfdd1a9811349724fa75d1f97483f9713","address":{"addressLine1":"874277569edf625dd452f2a727e4d28c06a22cea52d3205efc89da96c0fae1d8","addressLine2":"a3f475252c88b5ecdfed9ac5b36d4bc15a62931a3243e2fe8cc334274b8aa550","city":"16dabd22ee15406a281b170cd8e2387a52e0c25b1761e7ddf9a6b6a9a1577ea7","postalZipCode":"f01caaef22ecf4cb506f52f8d9d4b3e4eaa26bb3775dffb345775e4e4d9deda4","countryISOCode":"b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960","telephone":"4e842977650a8951eec5e9f2d16280442637c6be00189e62095ec2873a917be3","email":"430ea73448a5982b7646fd79aebfd8f6c428918674f2a347d8c677a641274478"},"tracesId":10327657},"importer":{"id":"66344f84-b9f8-ee11-a1fd-6045bdf29764","type":"importer","companyName":"31bc780c175b260dd32f51d1bfe89dacfdd1a9811349724fa75d1f97483f9713","address":{"addressLine1":"874277569edf625dd452f2a727e4d28c06a22cea52d3205efc89da96c0fae1d8","addressLine2":"a3f475252c88b5ecdfed9ac5b36d4bc15a62931a3243e2fe8cc334274b8aa550","city":"16dabd22ee15406a281b170cd8e2387a52e0c25b1761e7ddf9a6b6a9a1577ea7","postalZipCode":"f01caaef22ecf4cb506f52f8d9d4b3e4eaa26bb3775dffb345775e4e4d9deda4","countryISOCode":"b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960","telephone":"4e842977650a8951eec5e9f2d16280442637c6be00189e62095ec2873a917be3","email":"430ea73448a5982b7646fd79aebfd8f6c428918674f2a347d8c677a641274478"},"tracesId":10327657},"placeOfDestination":{"id":"66344f84-b9f8-ee11-a1fd-6045bdf29764","type":"destination","companyName":"31bc780c175b260dd32f51d1bfe89dacfdd1a9811349724fa75d1f97483f9713","address":{"addressLine1":"874277569edf625dd452f2a727e4d28c06a22cea52d3205efc89da96c0fae1d8","addressLine2":"a3f475252c88b5ecdfed9ac5b36d4bc15a62931a3243e2fe8cc334274b8aa550","city":"16dabd22ee15406a281b170cd8e2387a52e0c25b1761e7ddf9a6b6a9a1577ea7","postalZipCode":"f01caaef22ecf4cb506f52f8d9d4b3e4eaa26bb3775dffb345775e4e4d9deda4","countryISOCode":"b4043b0b8297e379bc559ab33b6ae9c7a9b4ef6519d3baee53270f0c0dd3d960","telephone":"4e842977650a8951eec5e9f2d16280442637c6be00189e62095ec2873a917be3","email":"430ea73448a5982b7646fd79aebfd8f6c428918674f2a347d8c677a641274478"},"tracesId":10327657},"commodities":{"totalGrossWeight":1430,"totalNetWeight":640,"numberOfPackages":280,"commodityComplement":[{"commodityID":"1211908620","commodityDescription":"Basil (holy, sweet) (fresh or chilled)","complementID":3,"complementName":"Ocimum basilicum","eppoCode":"OCIBA","speciesID":"1362494","speciesName":"Ocimum basilicum","speciesNomination":"Ocimum basilicum"}],"complementParameterSet":[{"uniqueComplementID":"74601d3c-cb6c-4e3d-b057-641a68204116","complementID":3,"speciesID":"1362494","keyDataPair":[{"key":"regulatory_authority","data":"JOINT"},{"key":"marketing_standard","data":"GMS"},{"key":"validity_period","data":"2"},{"key":"type_package","data":"Carton"},{"key":"netweight","data":"640"},{"key":"number_package","data":"280"},{"key":"quantity","data":"280"},{"key":"type_quantity","data":"Pieces"},{"key":"commodity_group","data":"Other vegetable products"}]}],"includeNonAblactedAnimals":false,"countryOfOrigin":"IL","countryOfOriginIsPodCountry":false,"consignedCountry":"IL","consignedCountryInChargeGroup":false},"purpose":{"purposeGroup":"For Import"},"pointOfEntry":"CONPNT","pointOfEntryControlPoint":"IPGBNHR9","arrivalDate":"2024-12-01","arrivalTime":"23:59:00","meansOfTransport":{},"meansOfTransportFromEntryPoint":{"id":"626a41c08916bb65c8f475c6ed67c5badf02c3cbf95516f8a57951a87427a0de","type":"Aeroplane","document":"b747c700df5980d24e28acd1f028c77a5c3e64bf10ea7f2f3a64f5d034df7be7"},"veterinaryInformation":{"accompanyingDocuments":[{"documentType":"phytosanitaryCertificate","documentReference":"417726","documentIssueDate":"2024-12-01","attachmentId":"bb9e620e-4bae-4c20-b00f-9e98401bcb89","attachmentFilename":"20241201155057186.pdf","attachmentContentType":"application/pdf","uploadUserId":"dd063432-68d5-ed11-a7c7-000d3abd8f0e","uploadOrganisationId":"4fad43cb-204b-e911-a957-000d3a454330"}]},"submissionDate":"2024-12-01T15:54:17.209029587Z","submittedBy":{"displayName":"6003c93c9ba1dad76930337dd5bd9531b8b26608bd8e45cdc1538157693258db","userId":"dd063432-68d5-ed11-a7c7-000d3abd8f0e"},"complexCommoditySelected":true,"contactDetails":{"name":"5ba28b1638a61f574342cf206404701c3b49e902a0d2fdc247e319e49766462c","telephone":"1879672798d4d1ccadc263c52a3482f55352815bb45108abb4b3a5b80c186a90","email":"6d2b64c75bf3def5087023615bebd57270dcdeac0b777192f43c1ec7154bddd6","agent":"b80dd606ee5dc138b2d09a0bd8afbd0389edbe4a29e0f8603059532c1ff988d8"},"isGVMSRoute":false,"provideCtcMrn":"NO"},"partTwo":{"controlAuthority":{"officialVeterinarian":{"firstName":"b171fef1e71ade4646422c757491857f7e777fc2a23ec29c7e5426fc8262cc4e","lastName":"e1af65fcea54cb8e78ad35c4db59f2c7a2958fbb007fcff56437e049daca09f9","email":"bc0e201e913231cb7a40f6990329b6eac322565f47189f6dc9d894862d9dceb8","phone":"cb21249815755bd039ac9c888ca05aa45e78f944fe2df8671f3f0087cdf70530","signed":"2024-12-01T17:43:39.318150019"}},"commodityChecks":[{"uniqueComplementId":"74601d3c-cb6c-4e3d-b057-641a68204116","checks":[{"type":"PHSI_DOCUMENT","status":"Compliant"},{"type":"PHSI_IDENTITY","status":"To do"},{"type":"PHSI_PHYSICAL","status":"To do"}]}],"inspectionRequired":"Required"},"partThree":{},"etag":"00000000044AB04F","riskDecisionLockingTime":"2024-12-01T21:59:00Z","isRiskDecisionLocked":false,"chedTypeVersion":1}
+{
+  "id": 4229473,
+  "referenceNumber": "CHEDPP.GB.2024.5229377",
+  "agencyOrganisationId": "4fad43cb-204b-e911-a957-000d3a454330",
+  "version": 2,
+  "lastUpdated": "2024-12-01T19:32:08.09939584Z",
+  "lastUpdatedBy": {
+    "displayName": "e9500b5074859af0b2a8587ab6c4d7ab36352d1940d68292f83d720a2e456a65",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "type": "CHEDPP",
+  "status": "MODIFY",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "hmiDecision": "NOTREQUIRED",
+        "phsiDecision": "REQUIRED",
+        "phsiClassification": "Reduced",
+        "phsi": {
+          "documentCheck": true,
+          "identityCheck": true,
+          "physicalCheck": true
+        },
+        "uniqueId": "74601d3c-cb6c-4e3d-b057-641a68204116",
+        "eppoCode": "OCIBA",
+        "indoorOutdoor": "None",
+        "propagation": "None",
+        "phsiRuleType": "Consignment"
+      }
+    ],
+    "assessmentDateTime": "2024-12-01T15:54:18.879500613"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "230e8f922adf6604d2c0bf4d8b7f51b4b689958c3609e59ba58e293560ea7cfd",
+      "companyId": "66344f84-b9f8-ee11-a1fd-6045bdf29764",
+      "companyName": "8ebab4989b932907d18ec58b628cb85508922ba7454587fc1a269964a4246999",
+      "address": [
+        "9b5ce7629b9297df8d6e2addd50c8c8fc02d108f2d2675696bab24262e12eafb",
+        "d362298e7c8dd1fcb55aa685043ebae49006f810e568d861bfb6e0965e3f46f5",
+        "16490f887d44a90f6966bcddb16b60748cac58ea0f8ff1a6edf953248ea968e2",
+        "ad257ddf47a8777b5a6112f3fd35e95848af86f1d327756bb63772afb19be44e",
+        "ddd9bdff39022829b4ad8edf334650c66b9f7201d5df08f30f450ea554f9dfc5",
+        "4201fd485fee4ab1fd8d001c68d0aa0e6c5bb7fc81c5c4e088757c0060790b2e"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "57f8789804462c8f86ca9b2b068ef667f817998801f217fe7786823f2bf96687",
+      "email": "13786a8b6140b13f35f21908428b4afa711e5dcb4ab848b1829e458fce32522f",
+      "contactId": "55344f84-b9f8-ee11-a1fd-6045bdf29764"
+    },
+    "consignor": {
+      "id": "7f309fae-a16c-4961-a7d1-c4db692b800e",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "7192f2a39128ad06353e7c98d806acfb2faa8593cef7330e2d152e6d2ba1d379",
+      "address": {
+        "addressLine1": "a20ddf35739acada4577cc1f3d829f993500d26bf84a80aa967fe697f0616793",
+        "addressLine2": "7159ec8bc2714c2933bde1b8fbf8a3a3e8bd6aa90d4c73a8d7b786594720930e",
+        "city": "a20ddf35739acada4577cc1f3d829f993500d26bf84a80aa967fe697f0616793",
+        "postalZipCode": "7159ec8bc2714c2933bde1b8fbf8a3a3e8bd6aa90d4c73a8d7b786594720930e",
+        "countryISOCode": "ab62c5f50c8744bcfcb10ab18225d8310c5c1011c753cc2bca3e91b203438bd9",
+        "telephone": "cd607bf6209db9e55832c37c9e7242c77088889711384c833336417c2885e801",
+        "email": "45ec40fe2fe5b9b4886e1e53fafaef59fa372a68a11b5cc78d38c92be14095e9"
+      },
+      "tracesId": 10327662
+    },
+    "consignee": {
+      "id": "66344f84-b9f8-ee11-a1fd-6045bdf29764",
+      "type": "consignee",
+      "companyName": "8ebab4989b932907d18ec58b628cb85508922ba7454587fc1a269964a4246999",
+      "address": {
+        "addressLine1": "9b5ce7629b9297df8d6e2addd50c8c8fc02d108f2d2675696bab24262e12eafb",
+        "addressLine2": "d362298e7c8dd1fcb55aa685043ebae49006f810e568d861bfb6e0965e3f46f5",
+        "city": "ad257ddf47a8777b5a6112f3fd35e95848af86f1d327756bb63772afb19be44e",
+        "postalZipCode": "ddd9bdff39022829b4ad8edf334650c66b9f7201d5df08f30f450ea554f9dfc5",
+        "countryISOCode": "27e9b1d33d45324da5086191087d0a466e658c5357b68f0fea4678cb9cba0bee",
+        "telephone": "57f8789804462c8f86ca9b2b068ef667f817998801f217fe7786823f2bf96687",
+        "email": "13786a8b6140b13f35f21908428b4afa711e5dcb4ab848b1829e458fce32522f"
+      },
+      "tracesId": 10327657
+    },
+    "importer": {
+      "id": "66344f84-b9f8-ee11-a1fd-6045bdf29764",
+      "type": "importer",
+      "companyName": "8ebab4989b932907d18ec58b628cb85508922ba7454587fc1a269964a4246999",
+      "address": {
+        "addressLine1": "9b5ce7629b9297df8d6e2addd50c8c8fc02d108f2d2675696bab24262e12eafb",
+        "addressLine2": "d362298e7c8dd1fcb55aa685043ebae49006f810e568d861bfb6e0965e3f46f5",
+        "city": "ad257ddf47a8777b5a6112f3fd35e95848af86f1d327756bb63772afb19be44e",
+        "postalZipCode": "ddd9bdff39022829b4ad8edf334650c66b9f7201d5df08f30f450ea554f9dfc5",
+        "countryISOCode": "27e9b1d33d45324da5086191087d0a466e658c5357b68f0fea4678cb9cba0bee",
+        "telephone": "57f8789804462c8f86ca9b2b068ef667f817998801f217fe7786823f2bf96687",
+        "email": "13786a8b6140b13f35f21908428b4afa711e5dcb4ab848b1829e458fce32522f"
+      },
+      "tracesId": 10327657
+    },
+    "placeOfDestination": {
+      "id": "66344f84-b9f8-ee11-a1fd-6045bdf29764",
+      "type": "destination",
+      "companyName": "8ebab4989b932907d18ec58b628cb85508922ba7454587fc1a269964a4246999",
+      "address": {
+        "addressLine1": "9b5ce7629b9297df8d6e2addd50c8c8fc02d108f2d2675696bab24262e12eafb",
+        "addressLine2": "d362298e7c8dd1fcb55aa685043ebae49006f810e568d861bfb6e0965e3f46f5",
+        "city": "ad257ddf47a8777b5a6112f3fd35e95848af86f1d327756bb63772afb19be44e",
+        "postalZipCode": "ddd9bdff39022829b4ad8edf334650c66b9f7201d5df08f30f450ea554f9dfc5",
+        "countryISOCode": "27e9b1d33d45324da5086191087d0a466e658c5357b68f0fea4678cb9cba0bee",
+        "telephone": "57f8789804462c8f86ca9b2b068ef667f817998801f217fe7786823f2bf96687",
+        "email": "13786a8b6140b13f35f21908428b4afa711e5dcb4ab848b1829e458fce32522f"
+      },
+      "tracesId": 10327657
+    },
+    "commodities": {
+      "totalGrossWeight": 1430,
+      "totalNetWeight": 640,
+      "numberOfPackages": 280,
+      "commodityComplement": [
+        {
+          "commodityID": "1211908620",
+          "commodityDescription": "Basil (holy, sweet) (fresh or chilled)",
+          "complementID": 3,
+          "complementName": "Ocimum basilicum",
+          "eppoCode": "OCIBA",
+          "speciesID": "1362494",
+          "speciesName": "Ocimum basilicum",
+          "speciesNomination": "Ocimum basilicum"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "74601d3c-cb6c-4e3d-b057-641a68204116",
+          "complementID": 3,
+          "speciesID": "1362494",
+          "keyDataPair": [
+            {
+              "key": "regulatory_authority",
+              "data": "JOINT"
+            },
+            {
+              "key": "marketing_standard",
+              "data": "GMS"
+            },
+            {
+              "key": "validity_period",
+              "data": "2"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            },
+            {
+              "key": "netweight",
+              "data": "640"
+            },
+            {
+              "key": "number_package",
+              "data": "280"
+            },
+            {
+              "key": "quantity",
+              "data": "280"
+            },
+            {
+              "key": "type_quantity",
+              "data": "Pieces"
+            },
+            {
+              "key": "commodity_group",
+              "data": "Other vegetable products"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "IL",
+      "countryOfOriginIsPodCountry": false,
+      "consignedCountry": "IL",
+      "consignedCountryInChargeGroup": false
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "CONPNT",
+    "pointOfEntryControlPoint": "IPGBNHR9",
+    "arrivalDate": "2024-12-01",
+    "arrivalTime": "23:59:00",
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "276276b18445db83ac77c4e389057d4e686a45d60ae09e2fd23a10b764306fd1",
+      "type": "Aeroplane",
+      "document": "4ea9a3f41ef3baabc12b3d6fb2054c03c1960e19657ce791a981c38847ea6cc5"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "phytosanitaryCertificate",
+          "documentReference": "417726",
+          "documentIssueDate": "2024-12-01",
+          "attachmentId": "bb9e620e-4bae-4c20-b00f-9e98401bcb89",
+          "attachmentFilename": "20241201155057186.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "dd063432-68d5-ed11-a7c7-000d3abd8f0e",
+          "uploadOrganisationId": "4fad43cb-204b-e911-a957-000d3a454330"
+        }
+      ]
+    },
+    "submissionDate": "2024-12-01T15:54:17.209029587Z",
+    "submittedBy": {
+      "displayName": "5daf59503306ffd4fd14f0c34f841e160b7dedf9e61b2b3268032d9370f41095",
+      "userId": "dd063432-68d5-ed11-a7c7-000d3abd8f0e"
+    },
+    "complexCommoditySelected": true,
+    "contactDetails": {
+      "name": "0dd5383d50accc4b7927a7a1ca5175170c8f23cd1ba2bc033920334d1d2f6fa6",
+      "telephone": "c68831f9481227ed2d1d0512ca4448b0581e26eedde828dcd397d9509ff720ad",
+      "email": "d3e7d5a15a8eb9e7c769be4b39a7b69966e473a5c0d33552ccd532010d46feef",
+      "agent": "3b3d8a7be251a2695df9895fd53411cdbbebebc1d08e8943a3c8a328c8d4104d"
+    },
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "dabe21d2cbc2a0053e2899aac5fa0fad4422c68c5a71cc48b15456c662cd3537",
+        "lastName": "708f581145a32023e978c3dde8f7d4071312b1751342f7ed09a72d64d6b0e3b4",
+        "email": "2a9371481f7a8bd6e1d2f5c523207000b0063bea2c34c93d3e3c06fe6900edd0",
+        "phone": "37b5692927ff318c16ae17ba68666cdd848dbe299df82dd6a58b35b6e9d8756d",
+        "signed": "2024-12-01T17:43:39.318150019"
+      }
+    },
+    "commodityChecks": [
+      {
+        "uniqueComplementId": "74601d3c-cb6c-4e3d-b057-641a68204116",
+        "checks": [
+          {
+            "type": "PHSI_DOCUMENT",
+            "status": "Compliant"
+          },
+          {
+            "type": "PHSI_IDENTITY",
+            "status": "To do"
+          },
+          {
+            "type": "PHSI_PHYSICAL",
+            "status": "To do"
+          }
+        ]
+      }
+    ],
+    "inspectionRequired": "Required"
+  },
+  "partThree": {},
+  "etag": "00000000044AB04F",
+  "riskDecisionLockingTime": "2024-12-01T21:59:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 1
+}

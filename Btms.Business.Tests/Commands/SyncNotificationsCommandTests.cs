@@ -37,7 +37,7 @@ public class SyncNotificationsCommandTests(ITestOutputHelper outputHelper)
 
 
         var handler = new SyncNotificationsCommand.Handler(
-                
+
             new SyncMetrics(new DummyMeterFactory()),
             bus,
             TestLogger.Create<SyncNotificationsCommand>(outputHelper),

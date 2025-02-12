@@ -71,7 +71,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                             isReferenceType: true,
                             isArray: true,
                             classNamePrefix: ClassNamePrefix);
-                        
+
                         classDescriptor.Properties.Add(propertyDescriptor);
 
                         BuildClass(cSharpDescriptor, property.Key, property.Value.Items);
@@ -85,7 +85,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                             isReferenceType: false,
                             isArray: true,
                             classNamePrefix: ClassNamePrefix);
-                        
+
                         classDescriptor.Properties.Add(propertyDescriptor);
                     }
                     else
@@ -100,7 +100,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                         isReferenceType: true,
                         isArray: false,
                         classNamePrefix: ClassNamePrefix);
-                    
+
                     classDescriptor.Properties.Add(propertyDescriptor);
 
                     BuildClass(cSharpDescriptor, property.Key, property.Value);
@@ -109,9 +109,9 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                 {
                     var enumDescriptor = new EnumDescriptor(property.Key, null!, SourceNamespace, InternalNamespace,
                         ClassNamePrefix);
-                    
+
                     cSharpDescriptor.AddEnumDescriptor(enumDescriptor);
-                    
+
                     foreach (var oneOfSchema in property.Value.OneOf)
                     {
                         var values = oneOfSchema.Enum.Select(x => ((OpenApiString)x).Value).ToList();
@@ -126,7 +126,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                         isReferenceType: true,
                         isArray: false,
                         classNamePrefix: ClassNamePrefix);
-                    
+
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }
                 else

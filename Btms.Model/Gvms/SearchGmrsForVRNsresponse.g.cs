@@ -22,21 +22,19 @@ public partial class SearchGmrsForVRNsresponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public GmrsByVrn[]? GmrsByVrns { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Gmr[]? Gmrs { get; set; }
 
-	}
-
-
+}

@@ -19,7 +19,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
             SyncPeriod = SyncPeriod.All,
             RootFolder = "SmokeTest"
         });
-        
+
         //Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 

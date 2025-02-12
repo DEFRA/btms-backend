@@ -9,10 +9,8 @@ namespace Btms.Model.Ipaffs;
 public enum PartThreeControlStatusEnum
 {
 
-		Required,
-	
-		Completed,
-	
+    Required,
+
+    Completed,
+
 }
-
-

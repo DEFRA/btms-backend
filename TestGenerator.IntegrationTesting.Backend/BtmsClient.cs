@@ -22,7 +22,7 @@ public class BtmsClient
     public BtmsClient(HttpClient aclient)
     {
         client = aclient;
-        
+
         var credentials = "IntTest:Password";
         var credentialsAsBytes = Encoding.UTF8.GetBytes(credentials.ToCharArray());
         var encodedCredentials = Convert.ToBase64String(credentialsAsBytes);
@@ -79,7 +79,7 @@ public class BtmsClient
         return PostCommand(command, "/sync/gmrs");
 
     }
-    
+
     public async Task ClearDb()
     {
         await client.GetAsync("mgmt/collections/drop");
@@ -90,17 +90,17 @@ public class BtmsClient
         return client.GetAsync(
             $"/analytics/dashboard");
     }
-    
+
     public Task<HttpResponseMessage> CancelJob(string? jobId)
     {
         return client.GetAsync($"/sync/jobs/{jobId}/cancel");
     }
-      
+
     public Task<HttpResponseMessage> GetJob(string? jobId)
     {
         return client.GetAsync($"/sync/jobs/{jobId}");
-    } 
-    
+    }
+
     public async Task<(HttpResponseMessage, string?)> StartJob<T>(T command, string uri)
     {
         var jsonData = JsonSerializer.Serialize(command);
@@ -113,13 +113,13 @@ public class BtmsClient
 
         return (response, Path.GetFileName(response.Headers.Location?.ToString()));
     }
-    
+
     public Task<HttpResponseMessage> GetExceptions()
     {
         return client.GetAsync(
             $"/analytics/exceptions");
     }
-    
+
     public Task<HttpResponseMessage> GetAnalyticsDashboard(string[] charts,
         ImportNotificationTypeEnum[]? chedTypes = null,
         string? country = null,
@@ -137,7 +137,7 @@ public class BtmsClient
         return client.GetAsync(
             $"/analytics/dashboard?chartsToRender={chartsFilter}{dateFromFilter}{dateToFilter}{countryFilter}{chedTypeFilter}{finalisedOnlyFilter}");
     }
-    
+
     private async Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
     {
         var jsonData = JsonSerializer.Serialize(command);
@@ -155,7 +155,7 @@ public class BtmsClient
 
         return response;
     }
-    
+
     public JsonApiClient.JsonApiClient AsJsonApiClient()
     {
         return new JsonApiClient.JsonApiClient(client);

@@ -137,13 +137,13 @@ internal static class Bootstrap
                 map.MapProperty("laboratoryEmail").IsSensitive();
                 map.MapProperty("sampleBatchNumber").IsSensitive();
                 map.MapProperty("laboratory").IsSensitive();
-                map.MapProperty("sampleType").IsSensitive(); 
+                map.MapProperty("sampleType").IsSensitive();
                 map.MapProperty("sampleDate").IsDate();
                 map.MapProperty("sampleTime").IsTime();
                 map.MapDateOnlyAndTimeOnlyToDateTimeProperty("sampleDate", "sampleTime", "sampledOn");
             });
 
-        
+
         GeneratorClassMap.RegisterClassMap("BillingInformation",
             map =>
             {

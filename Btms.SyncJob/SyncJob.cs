@@ -4,7 +4,7 @@ namespace Btms.SyncJob;
 
 public class SyncJob(Guid id, string timespan, string resource) : ISyncJob, IDisposable
 {
-    private readonly CancellationTokenSource source = new ();
+    private readonly CancellationTokenSource source = new();
     private bool disposed;
     private int blobsRead;
     private int blobsPublished;

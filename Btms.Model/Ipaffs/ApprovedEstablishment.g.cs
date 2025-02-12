@@ -22,53 +22,51 @@ public partial class ApprovedEstablishment  //
 {
 
 
-        /// <summary>
-        /// ID
-        /// </summary>
+    /// <summary>
+    /// ID
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("ID")]
     public string? Id { get; set; }
 
-	
-        /// <summary>
-        /// Name of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Name of approved establishment
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Name of approved establishment")]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Country of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Country of approved establishment
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Country of approved establishment")]
     public string? Country { get; set; }
 
-	
-        /// <summary>
-        /// Types of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Types of approved establishment
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Types of approved establishment")]
     public string[]? Types { get; set; }
 
-	
-        /// <summary>
-        /// Approval number
-        /// </summary>
+
+    /// <summary>
+    /// Approval number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Approval number")]
     public string? ApprovalNumber { get; set; }
 
-	
-        /// <summary>
-        /// Section of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Section of approved establishment
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Section of approved establishment")]
     public string? Section { get; set; }
 
-	}
-
-
+}

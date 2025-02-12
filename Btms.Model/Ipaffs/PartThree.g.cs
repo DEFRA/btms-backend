@@ -22,54 +22,52 @@ public partial class PartThree  //
 {
 
 
-        /// <summary>
-        /// Control status enum
-        /// </summary>
+    /// <summary>
+    /// Control status enum
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Control status enum")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public PartThreeControlStatusEnum? ControlStatus { get; set; }
 
-	
-        /// <summary>
-        /// Control details
-        /// </summary>
+
+    /// <summary>
+    /// Control details
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Control details")]
     public Control? Control { get; set; }
 
-	
-        /// <summary>
-        /// Validation messages for Part 3 - Control
-        /// </summary>
+
+    /// <summary>
+    /// Validation messages for Part 3 - Control
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Validation messages for Part 3 - Control")]
     public ValidationMessageCode[]? ConsignmentValidations { get; set; }
 
-	
-        /// <summary>
-        /// Is the seal check required
-        /// </summary>
+
+    /// <summary>
+    /// Is the seal check required
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Is the seal check required")]
     public bool? SealCheckRequired { get; set; }
 
-	
-        /// <summary>
-        /// Seal check details
-        /// </summary>
+
+    /// <summary>
+    /// Seal check details
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Seal check details")]
     public SealCheck? SealCheck { get; set; }
 
-	
-        /// <summary>
-        /// Seal check override details
-        /// </summary>
+
+    /// <summary>
+    /// Seal check override details
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Seal check override details")]
     public InspectionOverride? SealCheckOverride { get; set; }
 
-	}
-
-
+}

@@ -22,17 +22,17 @@ public static class DateTimeExtensions
     {
         return dt.AddHours(-1).TrimMinutes();
     }
-    
+
     public static DateTime CurrentHour(this DateTime dt)
     {
         return dt.TrimMinutes();
     }
-    
+
     public static DateTime Yesterday(this DateTime dt)
     {
         return dt.AddDays(-1);
     }
-    
+
     public static DateTime Tomorrow(this DateTime dt)
     {
         return dt.AddDays(1);
@@ -45,53 +45,53 @@ public static class DateTimeExtensions
     {
         return dt.AddDays(7);
     }
-    
+
     public static DateTime MonthAgo(this DateTime dt)
     {
         return dt.AddMonths(-1);
     }
-    
+
     public static int DaysSinceMonthAgo(this DateTime dt)
     {
-        return Convert.ToInt32((dt - dt.AddMonths(-1)).TotalDays) ;
+        return Convert.ToInt32((dt - dt.AddMonths(-1)).TotalDays);
     }
-    
+
     public static int DaysUntilMonthLater(this DateTime dt)
     {
-        return Convert.ToInt32((dt.AddMonths(1) - dt).TotalDays) ;
+        return Convert.ToInt32((dt.AddMonths(1) - dt).TotalDays);
     }
-    
+
     public static DateTime MonthLater(this DateTime dt)
     {
         return dt.AddMonths(1);
     }
-    
+
     private static int CreateRandomInt(int min, int max)
     {
         return Random.Shared.Next(min, max);
     }
-    
+
     public static DateTime RandomTime(this DateTime dt, int maxHour = 23)
     {
-        return new DateTime(dt.Year, dt.Month, dt.Day, 
+        return new DateTime(dt.Year, dt.Month, dt.Day,
             CreateRandomInt(0, maxHour), CreateRandomInt(0, 60), CreateRandomInt(0, 60), dt.Kind);
     }
-    
+
     public static DateOnly ToDate(this DateTime val)
     {
         return DateOnly.FromDateTime(val);
     }
-    
+
     public static DateOnly ToDate(this DateTime? val)
     {
         return val?.ToDate() ?? DateOnly.MinValue;
     }
-    
+
     public static TimeOnly ToTime(this DateTime val)
     {
         return TimeOnly.FromDateTime(val);
     }
-    
+
     /// <summary>
     /// Borrowed from here https://stackoverflow.com/questions/11930565/list-the-months-between-two-dates
     /// </summary>
@@ -116,11 +116,11 @@ public static class DateTimeExtensions
             iterator = new DateTime(endDate.Year, endDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
             limit = startDate;
         }
-        
+
         while (iterator <= limit)
         {
             yield return (
-                iterator.Month, 
+                iterator.Month,
                 iterator.Year
             );
 

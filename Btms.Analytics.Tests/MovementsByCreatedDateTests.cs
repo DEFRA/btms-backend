@@ -24,13 +24,13 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
         TestOutputHelper.WriteLine(result.ToJsonString());
 
         result.ShouldBeCorrectBasedOnLinkStatusEnum();
-        
+
         // result.Count.Should().Be(4);
         // result.Select(r => r.Name).Should().BeEquivalentTo("Investigate", "Linked", "Not Linked", "Error");
         // result[1].Periods[0].Period.Should().BeOnOrBefore(DateTime.Today);
         // result[1].Periods.Count.Should().Be(48);
     }
-    
+
     [Fact]
     public async Task WhenCalledWithTimePeriodYieldingNoResults_ReturnEmptyAggregation()
     {
@@ -46,7 +46,7 @@ public class MovementsByCreatedDateTests(ITestOutputHelper output)
 
         result.ShouldBeCorrectBasedOnLinkStatusEnum(from, to, AggregationPeriod.Hour);
     }
-    
+
     [Fact]
     public async Task WhenCalledLastMonth_ReturnExpectedAggregation()
     {

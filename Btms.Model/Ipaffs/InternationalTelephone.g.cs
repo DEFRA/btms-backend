@@ -22,21 +22,19 @@ public partial class InternationalTelephone  //
 {
 
 
-        /// <summary>
-        /// Country code of phone number
-        /// </summary>
+    /// <summary>
+    /// Country code of phone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Country code of phone number")]
     public string? CountryCode { get; set; }
 
-	
-        /// <summary>
-        /// Phone number
-        /// </summary>
+
+    /// <summary>
+    /// Phone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Phone number")]
     public string? SubscriberNumber { get; set; }
 
-	}
-
-
+}

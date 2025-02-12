@@ -21,103 +21,101 @@ public partial class Applicant  //
 {
 
 
-        /// <summary>
-        /// Name of laboratory
-        /// </summary>
+    /// <summary>
+    /// Name of laboratory
+    /// </summary>
     [JsonPropertyName("laboratory")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Laboratory { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory address
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory address
+    /// </summary>
     [JsonPropertyName("laboratoryAddress")]
-        [SensitiveData.SensitiveData]
+    [SensitiveData.SensitiveData]
     public string? LaboratoryAddress { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory identification
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory identification
+    /// </summary>
     [JsonPropertyName("laboratoryIdentification")]
-        [SensitiveData.SensitiveData]
+    [SensitiveData.SensitiveData]
     public string? LaboratoryIdentification { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory phone number
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory phone number
+    /// </summary>
     [JsonPropertyName("laboratoryPhoneNumber")]
-        [SensitiveData.SensitiveData]
+    [SensitiveData.SensitiveData]
     public string? LaboratoryPhoneNumber { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory email
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory email
+    /// </summary>
     [JsonPropertyName("laboratoryEmail")]
-        [SensitiveData.SensitiveData]
+    [SensitiveData.SensitiveData]
     public string? LaboratoryEmail { get; set; }
 
-	
-        /// <summary>
-        /// Sample batch number
-        /// </summary>
+
+    /// <summary>
+    /// Sample batch number
+    /// </summary>
     [JsonPropertyName("sampleBatchNumber")]
-        [SensitiveData.SensitiveData]
+    [SensitiveData.SensitiveData]
     public string? SampleBatchNumber { get; set; }
 
-	
-        /// <summary>
-        /// Type of analysis
-        /// </summary>
+
+    /// <summary>
+    /// Type of analysis
+    /// </summary>
     [JsonPropertyName("analysisType")]
     public ApplicantAnalysisTypeEnum? AnalysisType { get; set; }
 
-	
-        /// <summary>
-        /// Number of samples analysed
-        /// </summary>
+
+    /// <summary>
+    /// Number of samples analysed
+    /// </summary>
     [JsonPropertyName("numberOfSamples")]
     public int? NumberOfSamples { get; set; }
 
-	
-        /// <summary>
-        /// Type of sample
-        /// </summary>
+
+    /// <summary>
+    /// Type of sample
+    /// </summary>
     [JsonPropertyName("sampleType")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? SampleType { get; set; }
 
-	
-        /// <summary>
-        /// Conservation of sample
-        /// </summary>
+
+    /// <summary>
+    /// Conservation of sample
+    /// </summary>
     [JsonPropertyName("conservationOfSample")]
     public ApplicantConservationOfSampleEnum? ConservationOfSample { get; set; }
 
-	
-        /// <summary>
-        /// inspector
-        /// </summary>
+
+    /// <summary>
+    /// inspector
+    /// </summary>
     [JsonPropertyName("inspector")]
     public Inspector? Inspector { get; set; }
 
-	
-        /// <summary>
-        /// Date the sample is taken
-        /// </summary>
+
+    /// <summary>
+    /// Date the sample is taken
+    /// </summary>
     [JsonPropertyName("sampleDate")]
     public DateOnly? SampleDate { get; set; }
 
-	
-        /// <summary>
-        /// Time the sample is taken
-        /// </summary>
+
+    /// <summary>
+    /// Time the sample is taken
+    /// </summary>
     [JsonPropertyName("sampleTime")]
     public TimeOnly? SampleTime { get; set; }
 
-	}
-
-
+}

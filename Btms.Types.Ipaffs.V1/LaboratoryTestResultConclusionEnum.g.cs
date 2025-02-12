@@ -10,18 +10,16 @@ namespace Btms.Types.Ipaffs;
 public enum LaboratoryTestResultConclusionEnum
 {
 
-		[EnumMember(Value = "Satisfactory")]
-		Satisfactory,
-	
-		[EnumMember(Value = "Not satisfactory")]
-		NotSatisfactory,
-	
-		[EnumMember(Value = "Not interpretable")]
-		NotInterpretable,
-	
-		[EnumMember(Value = "Pending")]
-		Pending,
-	
+    [EnumMember(Value = "Satisfactory")]
+    Satisfactory,
+
+    [EnumMember(Value = "Not satisfactory")]
+    NotSatisfactory,
+
+    [EnumMember(Value = "Not interpretable")]
+    NotInterpretable,
+
+    [EnumMember(Value = "Pending")]
+    Pending,
+
 }
-
-

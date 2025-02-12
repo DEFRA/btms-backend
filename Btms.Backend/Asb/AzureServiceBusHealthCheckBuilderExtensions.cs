@@ -25,7 +25,7 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
             null,
             null,
             timeout));
-        
+
         builder.Add(new HealthCheckRegistration(
             "azuresubscription_notification",
             sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.NotificationSubscription),
@@ -50,7 +50,8 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
         var options =
             new AzureServiceBusSubscriptionHealthCheckHealthCheckOptions(subscription.Topic, subscription.Subscription)
             {
-                ConnectionString = subscription.ConnectionString, UsePeekMode = true
+                ConnectionString = subscription.ConnectionString,
+                UsePeekMode = true
             };
 
         return new AzureServiceBusSubscriptionHealthCheck(options,

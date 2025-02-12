@@ -14,32 +14,32 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class NoMatchNoAlvsDecisionTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchNoDecisionScenarioGenerator>(output)
 {
-    
+
     [Fact]
     public void ShouldHaveLinkStatusNotLinked()
     {
-        
+
         // Assert
         var movement = Client
             .GetSingleMovement();
 
         movement.BtmsStatus.LinkStatus.Should().Be(LinkStatusEnum.MissingLinks);
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionStatus()
     {
-        
+
         // Assert
         Client
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.NoAlvsDecisions);
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionMatched()
-    {   
+    {
         // Assert
         var movement = Client
             .GetSingleMovement();

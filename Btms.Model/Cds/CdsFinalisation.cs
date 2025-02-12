@@ -20,14 +20,14 @@ namespace Btms.Model.Cds;
 
 public partial class CdsFinalisation : AuditContext
 {
-    
+
     /// <summary>
     /// 
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public ServiceHeader? ServiceHeader { get; set; }
-    
+
     [Attr]
     [System.ComponentModel.Description("")]
     public required FinalisationHeader Header { get; set; }
@@ -42,36 +42,36 @@ public enum FinalState
     Destroyed = 3,
     Seized = 4,
     ReleasedToKingsWarehouse = 5,
-    TransferredToMss  = 6
+    TransferredToMss = 6
 }
 
 public partial class FinalisationHeader  //
 {
-    
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("entryReference")]
     public required string EntryReference { get; set; }
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("entryVersionNumber")]
     public required int EntryVersionNumber { get; set; }
-    
+
     /// <summary>
     /// 
     /// </summary
     [JsonPropertyName("decisionNumber")]
     public int? DecisionNumber { get; set; }
-    
+
     /// <summary>
     /// 
     /// </summary
     [JsonPropertyName("finalState")]
     public required FinalState FinalState { get; set; }
-    
+
     /// <summary>
     /// 
     /// </summary
@@ -79,5 +79,3 @@ public partial class FinalisationHeader  //
     public required bool ManualAction { get; set; }
 
 }
-
-

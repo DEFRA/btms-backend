@@ -21,28 +21,26 @@ public partial class MeansOfTransport  //
 {
 
 
-        /// <summary>
-        /// Type of transport
-        /// </summary>
+    /// <summary>
+    /// Type of transport
+    /// </summary>
     [JsonPropertyName("type")]
     public MeansOfTransportTypeEnum? Type { get; set; }
 
-	
-        /// <summary>
-        /// Document for transport
-        /// </summary>
+
+    /// <summary>
+    /// Document for transport
+    /// </summary>
     [JsonPropertyName("document")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Document { get; set; }
 
-	
-        /// <summary>
-        /// ID of transport
-        /// </summary>
+
+    /// <summary>
+    /// ID of transport
+    /// </summary>
     [JsonPropertyName("id")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Id { get; set; }
 
-	}
-
-
+}

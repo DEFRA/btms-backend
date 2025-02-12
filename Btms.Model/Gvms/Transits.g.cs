@@ -22,13 +22,11 @@ public partial class Transits  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? Id { get; set; }
 
-	}
-
-
+}

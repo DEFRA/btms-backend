@@ -1,4 +1,4 @@
-﻿namespace Btms.Business.Tests.Commands;
+namespace Btms.Business.Tests.Commands;
 
 public static class AsyncEnumeratorExtensions
 {

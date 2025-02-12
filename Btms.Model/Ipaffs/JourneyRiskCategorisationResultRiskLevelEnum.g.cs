@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum JourneyRiskCategorisationResultRiskLevelEnum
 {
 
-		High,
-	
-		Medium,
-	
-		Low,
-	
+    High,
+
+    Medium,
+
+    Low,
+
 }
-
-

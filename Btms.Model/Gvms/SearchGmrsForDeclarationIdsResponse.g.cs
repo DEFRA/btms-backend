@@ -22,21 +22,19 @@ public partial class SearchGmrsForDeclarationIdsResponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public GmrByDeclarationId[]? GmrByDeclarationIds { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public Gmr[]? Gmrs { get; set; }
 
-	}
-
-
+}

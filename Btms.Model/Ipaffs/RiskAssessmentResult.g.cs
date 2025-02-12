@@ -22,21 +22,19 @@ public partial class RiskAssessmentResult  //
 {
 
 
-        /// <summary>
-        /// List of risk assessed commodities
-        /// </summary>
+    /// <summary>
+    /// List of risk assessed commodities
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("List of risk assessed commodities")]
     public CommodityRiskResult[]? CommodityResults { get; set; }
 
-	
-        /// <summary>
-        /// Date and time of assessment
-        /// </summary>
+
+    /// <summary>
+    /// Date and time of assessment
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date and time of assessment")]
     public DateTime? AssessedOn { get; set; }
 
-	}
-
-
+}

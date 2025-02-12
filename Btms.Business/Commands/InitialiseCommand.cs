@@ -25,19 +25,19 @@ public class InitialiseCommand : SyncCommand
         public override async Task Handle(InitialiseCommand request, CancellationToken cancellationToken)
         {
             var job = SyncJobStore.GetJob(request.JobId)!;
-            
+
             SyncClearanceRequestsCommand clearanceRequests = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(clearanceRequests, cancellationToken);
 
             SyncNotificationsCommand notifications = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(notifications, cancellationToken);
-            
+
             Logger.LogInformation("Started Notifications {0} and ClearanceRequests {1} sync jobs. Waiting on ClearanceRequests job to complete.", notifications.JobId, clearanceRequests.JobId);
 
             job.Start();
 
             await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
-            
+
             SyncDecisionsCommand decisions = new() { SyncPeriod = request.SyncPeriod };
             await mediator.SendSyncJob(decisions, cancellationToken);
 
@@ -50,10 +50,10 @@ public class InitialiseCommand : SyncCommand
                 SyncJobStore.WaitOnJobCompleting(decisions.JobId),
                 SyncJobStore.WaitOnJobCompleting(finalisations.JobId),
                 SyncJobStore.WaitOnJobCompleting(notifications.JobId));
-            
+
             job.Complete();
         }
     }
-    
+
     public override string Resource => "Initialise";
 }

@@ -22,30 +22,28 @@ public partial class MeansOfTransport  //
 {
 
 
-        /// <summary>
-        /// Type of transport
-        /// </summary>
+    /// <summary>
+    /// Type of transport
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Type of transport")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public MeansOfTransportTypeEnum? Type { get; set; }
 
-	
-        /// <summary>
-        /// Document for transport
-        /// </summary>
+
+    /// <summary>
+    /// Document for transport
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Document for transport")]
     public string? Document { get; set; }
 
-	
-        /// <summary>
-        /// ID of transport
-        /// </summary>
+
+    /// <summary>
+    /// ID of transport
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("ID of transport")]
     public string? Id { get; set; }
 
-	}
-
-
+}

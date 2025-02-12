@@ -27,27 +27,25 @@ public partial class AlvsClearanceRequestPostResult  //
     [JsonPropertyName("xmlSchemaVersion")]
     public string? XmlSchemaVersion { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("sendingDate")]
     public DateTime? SendingDate { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("operationCode")]
     public int? OperationCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("requestIdentifier")]
     public string? RequestIdentifier { get; set; }
 
-	}
-
-
+}
