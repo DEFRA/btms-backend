@@ -9,7 +9,7 @@ namespace Btms.Business.Pipelines.PreProcessing;
 public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr, Model.Gvms.Gmr>
 {
     public async Task<PreProcessingResult<Model.Gvms.Gmr>> Process(PreProcessingContext<Gmr> preProcessingContext,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var message = preProcessingContext.Message;
 
