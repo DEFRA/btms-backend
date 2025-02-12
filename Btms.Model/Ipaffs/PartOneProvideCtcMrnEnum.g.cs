@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum PartOneProvideCtcMrnEnum
 {
 
-		Yes,
-	
-		YesAddLater,
-	
-		No,
-	
+    Yes,
+
+    YesAddLater,
+
+    No,
+
 }
-
-

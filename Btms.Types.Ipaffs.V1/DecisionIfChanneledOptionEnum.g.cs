@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum DecisionIfChanneledOptionEnum
 {
 
-		[EnumMember(Value = "article8")]
-		Article8,
-	
-		[EnumMember(Value = "article15")]
-		Article15,
-	
+    [EnumMember(Value = "article8")]
+    Article8,
+
+    [EnumMember(Value = "article15")]
+    Article15,
+
 }
-
-

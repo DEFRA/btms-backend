@@ -22,13 +22,11 @@ public partial class SearchGmrsRequest  //
 {
 
 
-        /// <summary>
-        /// A list of TRNs to search for GMRs.
-        /// </summary>
+    /// <summary>
+    /// A list of TRNs to search for GMRs.
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("A list of TRNs to search for GMRs.")]
     public string[]? TrailerRegistrationNums { get; set; }
 
-	}
-
-
+}

@@ -22,54 +22,52 @@ public partial class LaboratoryTestResult  //
 {
 
 
-        /// <summary>
-        /// When sample was used
-        /// </summary>
+    /// <summary>
+    /// When sample was used
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("When sample was used")]
     public string? SampleUseByDate { get; set; }
 
-	
-        /// <summary>
-        /// When it was released
-        /// </summary>
+
+    /// <summary>
+    /// When it was released
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("When it was released")]
     public DateTime? ReleasedOn { get; set; }
 
-	
-        /// <summary>
-        /// Laboratory test method
-        /// </summary>
+
+    /// <summary>
+    /// Laboratory test method
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Laboratory test method")]
     public string? LaboratoryTestMethod { get; set; }
 
-	
-        /// <summary>
-        /// Result of test
-        /// </summary>
+
+    /// <summary>
+    /// Result of test
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Result of test")]
     public string? Results { get; set; }
 
-	
-        /// <summary>
-        /// Conclusion of laboratory test
-        /// </summary>
+
+    /// <summary>
+    /// Conclusion of laboratory test
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Conclusion of laboratory test")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public LaboratoryTestResultConclusionEnum? Conclusion { get; set; }
 
-	
-        /// <summary>
-        /// Date of lab test created in IPAFFS
-        /// </summary>
+
+    /// <summary>
+    /// Date of lab test created in IPAFFS
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date of lab test created in IPAFFS")]
     public DateTime? LabTestCreatedOn { get; set; }
 
-	}
-
-
+}

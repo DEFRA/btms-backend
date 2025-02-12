@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum JourneyRiskCategorisationResultRiskLevelMethodEnum
 {
 
-		[EnumMember(Value = "System")]
-		System,
-	
-		[EnumMember(Value = "User")]
-		User,
-	
+    [EnumMember(Value = "System")]
+    System,
+
+    [EnumMember(Value = "User")]
+    User,
+
 }
-
-

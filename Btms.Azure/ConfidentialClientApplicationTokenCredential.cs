@@ -17,15 +17,15 @@ namespace Btms.Azure;
 public class ConfidentialClientApplicationTokenCredential : TokenCredential
 {
     private readonly string[] _scopes = ["https://storage.azure.com/.default"];
-    
+
     private readonly IConfidentialClientApplication _app;
     public ConfidentialClientApplicationTokenCredential(IServiceProvider serviceProvider, IAzureConfig config)
     {
         var httpClientFactory = serviceProvider.GetRequiredService<MsalHttpClientFactoryAdapter>();
-            
+
         _app = ConfidentialClientApplicationBuilder.Create(config.AzureClientId)
             .WithHttpClientFactory(httpClientFactory)
-            .WithTenantId(config.AzureTenantId)  
+            .WithTenantId(config.AzureTenantId)
             .WithClientSecret(config.AzureClientSecret)
             .Build();
     }

@@ -14,7 +14,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class NonContiguous(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchNonContiguousDecisionsScenarioGenerator>(output)
 {
-    
+
     [Fact]
     public void ShouldHave2AlvsDecisions()
     {
@@ -31,7 +31,7 @@ public class NonContiguous(ITestOutputHelper output)
             .Should()
             .Be(2);
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectDecisionNumbers()
     {
@@ -48,11 +48,11 @@ public class NonContiguous(ITestOutputHelper output)
             .Should()
             .Equal(1, 3);
     }
-    
+
     [Fact]
     public void ShouldHaveVersionNotCompleteDecisionStatus()
     {
-        
+
         // Assert
         var movement = Client.AsJsonApiClient()
             .Get("api/movements")

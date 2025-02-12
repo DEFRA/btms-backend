@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum EconomicOperatorStatusEnum
 {
 
-		Approved,
-	
-		Nonapproved,
-	
-		Suspended,
-	
+    Approved,
+
+    Nonapproved,
+
+    Suspended,
+
 }
-
-

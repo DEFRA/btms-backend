@@ -21,48 +21,46 @@ public partial class ComplementParameterSet  //
 {
 
 
-        /// <summary>
-        /// UUID used to match commodityComplement to its complementParameter set. CHEDPP only
-        /// </summary>
+    /// <summary>
+    /// UUID used to match commodityComplement to its complementParameter set. CHEDPP only
+    /// </summary>
     [JsonPropertyName("uniqueComplementID")]
     public string? UniqueComplementId { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("complementID")]
     public int? ComplementId { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("speciesID")]
     public string? SpeciesId { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("keyDataPair")]
     [JsonConverter(typeof(KeyDataPairsToDictionaryStringObjectJsonConverter))]
     public IDictionary<string, object>? KeyDataPairs { get; set; }
 
-	
-        /// <summary>
-        /// Catch certificate details
-        /// </summary>
+
+    /// <summary>
+    /// Catch certificate details
+    /// </summary>
     [JsonPropertyName("catchCertificates")]
     public CatchCertificates[]? CatchCertificates { get; set; }
 
-	
-        /// <summary>
-        /// Data used to identify the complements inside an IMP consignment
-        /// </summary>
+
+    /// <summary>
+    /// Data used to identify the complements inside an IMP consignment
+    /// </summary>
     [JsonPropertyName("identifiers")]
     public Identifiers[]? Identifiers { get; set; }
 
-	}
-
-
+}

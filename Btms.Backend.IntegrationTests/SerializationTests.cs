@@ -18,11 +18,13 @@ public class SerializationTests(ApplicationFactory factory, ITestOutputHelper te
         await ClearDb();
         await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
 
         var document = Client.AsJsonApiClient().Get("api/import-notifications");
@@ -36,11 +38,13 @@ public class SerializationTests(ApplicationFactory factory, ITestOutputHelper te
         await ClearDb();
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
         await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
 
         var document = Client.AsJsonApiClient().Get("api/movements");
@@ -62,7 +66,7 @@ public class SerializationTests(ApplicationFactory factory, ITestOutputHelper te
 
     private static DateTime ParseDateTime(ManyItemsJsonApiDocument document, string field)
     {
-        return DateTime.Parse(((JsonElement) (document.Data.First().Attributes?[field] ??
+        return DateTime.Parse(((JsonElement)(document.Data.First().Attributes?[field] ??
                                               throw new InvalidOperationException("Cannot be null"))).ToString());
     }
 }

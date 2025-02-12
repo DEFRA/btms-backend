@@ -27,83 +27,81 @@ public partial class Items  //
     [JsonPropertyName("itemNumber")]
     public int? ItemNumber { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("customsProcedureCode")]
     public string? CustomsProcedureCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("taricCommodityCode")]
     public string? TaricCommodityCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("goodsDescription")]
     public string? GoodsDescription { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("consigneeId")]
     public string? ConsigneeId { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("consigneeName")]
     public string? ConsigneeName { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("itemNetMass")]
     public decimal? ItemNetMass { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("itemSupplementaryUnits")]
     public decimal? ItemSupplementaryUnits { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("itemThirdQuantity")]
     public decimal? ItemThirdQuantity { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("itemOriginCountryCode")]
     public string? ItemOriginCountryCode { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("documents")]
     public Document[]? Documents { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("checks")]
     public Check[]? Checks { get; set; }
 
-	}
-
-
+}

@@ -25,7 +25,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [ChangeSetIgnore] //TODO : should we ignore this or not?
     [Attr]
     public required MovementStatus BtmsStatus { get; set; } = MovementStatus.Default();
-        
+
     // This field is used by the jsonapi-consumer to control the correct casing in the type field
     [ChangeSetIgnore]
     public string Type { get; set; } = "movements";
@@ -35,15 +35,15 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [Attr] public List<CdsDecision> Decisions { get; set; } = new List<CdsDecision>();
 
     [Attr] public AlvsDecisionStatus AlvsDecisionStatus { get; set; } = new AlvsDecisionStatus();
-    
+
     [Attr] public List<Items> Items { get; set; } = [];
 
     [Attr]
     public DateTime? UpdatedSource { get; set; }
-    
+
     [Attr]
     public DateTime? CreatedSource { get; set; }
-    
+
     [Attr]
     [ChangeSetIgnore]
     public DateTime Updated { get; set; }
@@ -70,7 +70,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
 
     [Attr] public string GoodsLocationCode { get; set; } = default!;
 
-    [Attr] 
+    [Attr]
     [ChangeSetIgnore]
     public List<AuditEntry> AuditEntries { get; set; } = new List<AuditEntry>();
 
@@ -97,7 +97,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
             }
 
             return matchReferences;
-           
+
         }
         set => matchReferences = value;
     }
@@ -116,11 +116,11 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
             Relationships.Notifications.Data.AddRange(dataItems);
             linked = true;
         }
-        
+
         //TODO : This would be the right time to call AddLinkStatus I think
         // but relies on linking being moved into Business
         // this.AddLinkStatus();
-        
+
         if (linked)
         {
             AuditEntries.Add(AuditEntry.CreateLinked(String.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1));
@@ -147,7 +147,7 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
             AuditEntries.Add(AuditEntry.CreateUnlinked(string.Empty, this.AuditEntries.FirstOrDefault()?.Version ?? 1, UpdatedSource));
         }
     }
-    
+
     [BsonIgnore]
     [NotMapped]
     [ChangeSetIgnore]
@@ -176,29 +176,30 @@ public class Movement : IMongoIdentifiable, IDataEntity, IAuditable, IResource
     [Attr]
     [ChangeSetIgnore]
     public DateTime UpdatedEntity { get; set; }
-    
+
     [Attr]
-    [ChangeSetIgnore] 
+    [ChangeSetIgnore]
     public DateTime? Finalised { get; set; }
-    
+
     [Attr]
-    [ChangeSetIgnore] 
+    [ChangeSetIgnore]
     public DateTime? FinalisedSource { get; set; }
-    
+
     [Attr]
     public Finalisation? Finalisation { get; set; }
-    
+
     public AuditEntry GetLatestAuditEntry()
     {
         return this.AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
     }
 }
 
-public class Finalisation {
-    
+public class Finalisation
+{
+
     [Attr]
     public required FinalState FinalState { get; set; }
-    
+
     [Attr]
     public required bool ManualAction { get; set; }
 

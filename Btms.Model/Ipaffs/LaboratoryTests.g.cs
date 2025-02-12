@@ -22,30 +22,28 @@ public partial class LaboratoryTests  //
 {
 
 
-        /// <summary>
-        /// Date of tests
-        /// </summary>
+    /// <summary>
+    /// Date of tests
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date of tests")]
     public DateTime? TestedOn { get; set; }
 
-	
-        /// <summary>
-        /// Reason for test
-        /// </summary>
+
+    /// <summary>
+    /// Reason for test
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Reason for test")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public LaboratoryTestsTestReasonEnum? TestReason { get; set; }
 
-	
-        /// <summary>
-        /// List of details of individual tests performed or to be performed
-        /// </summary>
+
+    /// <summary>
+    /// List of details of individual tests performed or to be performed
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("List of details of individual tests performed or to be performed")]
     public SingleLaboratoryTest[]? SingleLaboratoryTests { get; set; }
 
-	}
-
-
+}

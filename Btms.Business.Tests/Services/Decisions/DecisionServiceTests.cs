@@ -69,7 +69,7 @@ public class DecisionServiceTests
     //     decisionResult.Decisions.Should().Contain(x => x.DecisionCode == expectedDecisionCode && x.DecisionType == DecisionType.Ched);
     //     decisionResult.Decisions.Should().Contain(x => x.DecisionCode == IuuDecisionCode && x.DecisionType == DecisionType.Iuu);
     // }
-    
+
     [Fact]
     public async Task When_processing_unknown_decisions_Then_should_not_throw()
     {
@@ -79,7 +79,7 @@ public class DecisionServiceTests
 
 
         var act = () => decisionService.Process(decisionContext, CancellationToken.None);
-        
+
         await act.Should().NotThrowAsync<Exception>();
     }
 
@@ -88,7 +88,7 @@ public class DecisionServiceTests
     private const DecisionCode ChedPDecisionCode = DecisionCode.C07;
     private const DecisionCode ChedPPDecisionCode = DecisionCode.C08;
     private const DecisionCode IuuDecisionCode = DecisionCode.E03;
-    
+
     private readonly ServiceCollection _serviceCollection = new();
 
     public DecisionServiceTests()
@@ -97,7 +97,7 @@ public class DecisionServiceTests
         _serviceCollection.AddSingleton(Substitute.For<ILogger<DecisionService>>());
         _serviceCollection.AddSingleton(Substitute.For<IPublishBus>());
     }
-    
+
     private ServiceProvider ConfigureDecisionFinders(ImportNotification notification, string[] checkCodes)
     {
         ConfigureDecisionFinders<ChedDDecisionFinder>(notification, ChedDDecisionCode, checkCodes);
@@ -111,7 +111,7 @@ public class DecisionServiceTests
     private void ConfigureDecisionFinders<T>(ImportNotification notification, DecisionCode expectedDecisionCode, string[] checkCodes) where T : class, IDecisionFinder
     {
         var decisionFinder = Substitute.ForTypeForwardingTo<IDecisionFinder, T>();
-        foreach (var checkCode in checkCodes) 
+        foreach (var checkCode in checkCodes)
             decisionFinder.FindDecision(notification, checkCode).Returns(new DecisionFinderResult(expectedDecisionCode, checkCode));
 
         _serviceCollection.AddSingleton(decisionFinder);

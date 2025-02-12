@@ -23,10 +23,10 @@ public abstract class AzureService
         {
             logger.LogDebug("Creating azure credentials based on config vars for {AzureClientId}",
                 config.AzureClientId);
-            
+
             Credentials =
                 new ConfidentialClientApplicationTokenCredential(serviceProvider, config);
-            
+
             logger.LogDebug("Created azure credentials");
         }
         else

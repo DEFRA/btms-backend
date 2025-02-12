@@ -18,18 +18,18 @@ public class EnsureDuplicateItemsAreNotCreatedTests(ITestOutputHelper output)
     {
         // Arrange
         var loadedData = LoadedData;
-        
+
         var movementMessage = (AlvsClearanceRequest)loadedData.First(d =>
                 d is { Message: AlvsClearanceRequest })
             .Message;
-        
+
         // Act
         var jsonClientResponse = Client.AsJsonApiClient().GetById(movementMessage!.Header!.EntryReference!, "api/movements");
-        
+
         // Assert
         jsonClientResponse.Should().NotBeNull();
         jsonClientResponse.Data.Relationships!.Count.Should().Be(1);
-        
+
         var movement = jsonClientResponse.GetResourceObject<Movement>();
 
         movement.Items.Count.Should().Be(1);

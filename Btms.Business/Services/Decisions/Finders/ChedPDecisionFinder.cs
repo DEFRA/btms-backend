@@ -18,7 +18,7 @@ public class ChedPDecisionFinder : IDecisionFinder
         {
             return new DecisionFinderResult(decisionCode!.Value, checkCode);
         }
-        
+
         return consignmentAcceptable switch
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch

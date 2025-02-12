@@ -21,49 +21,47 @@ public partial class ApprovedEstablishment  //
 {
 
 
-        /// <summary>
-        /// ID
-        /// </summary>
+    /// <summary>
+    /// ID
+    /// </summary>
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
-	
-        /// <summary>
-        /// Name of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Name of approved establishment
+    /// </summary>
     [JsonPropertyName("name")]
     [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Country of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Country of approved establishment
+    /// </summary>
     [JsonPropertyName("country")]
     public string? Country { get; set; }
 
-	
-        /// <summary>
-        /// Types of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Types of approved establishment
+    /// </summary>
     [JsonPropertyName("types")]
     public string[]? Types { get; set; }
 
-	
-        /// <summary>
-        /// Approval number
-        /// </summary>
+
+    /// <summary>
+    /// Approval number
+    /// </summary>
     [JsonPropertyName("approvalNumber")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? ApprovalNumber { get; set; }
 
-	
-        /// <summary>
-        /// Section of approved establishment
-        /// </summary>
+
+    /// <summary>
+    /// Section of approved establishment
+    /// </summary>
     [JsonPropertyName("section")]
     public string? Section { get; set; }
 
-	}
-
-
+}

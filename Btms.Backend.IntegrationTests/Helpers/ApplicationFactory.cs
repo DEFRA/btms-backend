@@ -25,7 +25,7 @@ public interface IIntegrationTestsApplicationFactory
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
     public Action<IConfigurationBuilder> ConfigureHostConfiguration { get; set; } = _ => { };
-    
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -40,7 +40,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
         var configurationBuilder = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues);
-        
+
         ConfigureHostConfiguration(configurationBuilder);
 
         builder
@@ -65,7 +65,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                     };
                     // convention must be registered before initialising collection
                     ConventionRegistry.Register("CamelCase", camelCaseConvention, _ => true);
-                    
+
                     var dbName = string.IsNullOrEmpty(DatabaseName) ? Random.Shared.Next().ToString() : DatabaseName;
                     return client.GetDatabase($"Btms_MongoDb_{dbName}_Test");
                 });

@@ -61,10 +61,10 @@ public class NotificationsConsumerTests : ConsumerTests
     {
         // ARRANGE
         var notification = CreateImportNotification();
-        
+
         var modelNotification = notification.MapWithTransform();
         modelNotification.Changed(AuditEntry.CreateCreatedEntry(modelNotification, "Test", 1, DateTime.Now, CreatedBySystem.Ipaffs));
-        
+
         var mockLinkingService = Substitute.For<ILinkingService>();
         var decisionService = Substitute.For<IDecisionService>();
         var matchingService = Substitute.For<IMatchingService>();

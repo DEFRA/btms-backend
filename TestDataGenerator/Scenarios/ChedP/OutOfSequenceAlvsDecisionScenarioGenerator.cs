@@ -12,9 +12,9 @@ public class OutOfSequenceAlvsDecisionScenarioGenerator(ILogger<OutOfSequenceAlv
             .GetSimpleNotification(scenario, item, entryDate, config)
             .ValidateAndBuild();
 
-        logger.LogInformation("Created Notification {NotificationReferenceNumber}", 
+        logger.LogInformation("Created Notification {NotificationReferenceNumber}",
             notification.ReferenceNumber);
-        
+
         var clearanceRequest = this
             .GetSimpleClearanceRequest(scenario, item, entryDate, config, notification)
             .ValidateAndBuild();
@@ -23,7 +23,7 @@ public class OutOfSequenceAlvsDecisionScenarioGenerator(ILogger<OutOfSequenceAlv
 
         var alvsDecisionBuilder = this
             .GetSimpleDecision(scenario, item, entryDate, config, notification, clearanceRequest);
-            
+
         var alvsDecisionV2 = alvsDecisionBuilder
             .Clone()
             .WithDecisionVersionNumber(2)
@@ -31,7 +31,7 @@ public class OutOfSequenceAlvsDecisionScenarioGenerator(ILogger<OutOfSequenceAlv
 
         var alvsDecision = alvsDecisionBuilder
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created Decision {EntryReference} {DecisionNumber}", alvsDecision.Header!.EntryReference, alvsDecision.Header!.DecisionNumber);
         logger.LogInformation("Created Decision {EntryReference} {DecisionNumber}", alvsDecisionV2.Header!.EntryReference, alvsDecision.Header!.DecisionNumber);
 

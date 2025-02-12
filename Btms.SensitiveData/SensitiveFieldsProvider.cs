@@ -7,7 +7,7 @@ namespace Btms.SensitiveData;
 public static class SensitiveFieldsProvider
 {
     private static Dictionary<Type, List<string>> _cache = new();
-    private static readonly object CacheLock = new ();
+    private static readonly object CacheLock = new();
     public static List<string> Get<T>()
     {
         lock (CacheLock)
@@ -24,7 +24,7 @@ public static class SensitiveFieldsProvider
             return list;
         }
 
-       
+
     }
 
     public static List<string> Get(Type type)

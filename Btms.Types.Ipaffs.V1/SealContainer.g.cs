@@ -21,36 +21,34 @@ public partial class SealContainer  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("sealNumber")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? SealNumber { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("containerNumber")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? ContainerNumber { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("officialSeal")]
     public bool? OfficialSeal { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("resealedSealNumber")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? ResealedSealNumber { get; set; }
 
-	}
-
-
+}

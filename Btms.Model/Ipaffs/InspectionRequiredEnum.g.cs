@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum InspectionRequiredEnum
 {
 
-		Required,
-	
-		Inconclusive,
-	
-		NotRequired,
-	
+    Required,
+
+    Inconclusive,
+
+    NotRequired,
+
 }
-
-

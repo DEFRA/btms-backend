@@ -68,7 +68,7 @@ public static class ImportNotificationWithTransformMapper
                 }
             }
 
-            
+
             if (from.RiskAssessment?.CommodityResults != null)
             {
                 foreach (var commoditiesRa in from.RiskAssessment.CommodityResults)

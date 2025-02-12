@@ -29,7 +29,7 @@ public partial class DecisionHeader  //
     [System.ComponentModel.Description("")]
     public string? EntryReference { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,7 +37,7 @@ public partial class DecisionHeader  //
     [System.ComponentModel.Description("")]
     public int? EntryVersionNumber { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -45,7 +45,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public int? PreviousVersionNumber { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -53,7 +53,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? DeclarationUcr { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -61,7 +61,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? DeclarationPartNumber { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -69,7 +69,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? DeclarationType { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -77,7 +77,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public DateTime? ArrivesAt { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -85,7 +85,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? SubmitterTurn { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -93,7 +93,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? DeclarantId { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -101,7 +101,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? DeclarantName { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -109,7 +109,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? DispatchCountryCode { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -117,7 +117,7 @@ public partial class DecisionHeader  //
     // [System.ComponentModel.Description("")]
     // public string? GoodsLocationCode { get; set; }
     //
-	   //
+    //
     // /// <summary>
     // /// 
     // /// </summary>
@@ -133,5 +133,3 @@ public partial class DecisionHeader  //
     public int? DecisionNumber { get; set; }
 
 }
-
-

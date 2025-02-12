@@ -33,7 +33,7 @@ public class AuditEntry
     public string Status { get; set; } = default!;
 
     public List<AuditDiffEntry> Diff { get; set; } = new();
-    
+
     // TODO - getting a serialisation error when using IAuditContext
     // But as we only do this for decisions ignoring! 
     // [JsonConverter(typeof(DecisionContextConverter<AuditContext>))]
@@ -147,7 +147,7 @@ public class AuditEntry
             Status = "Linked"
         };
     }
-    
+
     public static AuditEntry CreateUnlinked(string id, int version, DateTime? lastUpdated)
     {
         return new AuditEntry
@@ -188,7 +188,7 @@ public class AuditEntry
             Context = context
         };
     }
-    
+
     public static AuditEntry CreateFinalisation(string id, int version,
         DateTime? lastUpdated, CdsFinalisation context, bool discarded = false)
     {
@@ -272,7 +272,9 @@ public class AuditEntry
 
             return new AuditDiffEntry
             {
-                Path = operation.Path.ToString(), Op = operation.Op.ToString(), Value = value
+                Path = operation.Path.ToString(),
+                Op = operation.Op.ToString(),
+                Value = value
             };
         }
     }

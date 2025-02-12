@@ -4,7 +4,7 @@
   "version": 1,
   "lastUpdated": "2024-12-01T09:16:56.9447086Z",
   "lastUpdatedBy": {
-    "displayName": "5d3242c9c4107e09ed875c528dfe5ef245cbd7609901360dc4e6ee500d19fc57",
+    "displayName": "f71bb89981b55ba7089fa205c738427861c7686ce3ca30037a6b5a37fdb91981",
     "userId": "e10aa781-e1a1-eb11-b1ac-000d3a4cd807"
   },
   "type": "CVEDP",
@@ -26,35 +26,35 @@
   "isHighRiskEuImport": false,
   "partOne": {
     "personResponsible": {
-      "name": "83253944cedacaca739ea848fb4ca357000c5dab081f671bb66d45273dec22c6",
+      "name": "26215eaa0e1e6e16c149621452a3735c3e72496535e03df999f6ab8da82babbc",
       "companyId": "0377b5a5-9e49-e911-a959-000d3a454e11",
-      "companyName": "a6d794187ee333dbbc2146139331e43be86acb36d8fd9c2251c8e5a3c6291ae3",
+      "companyName": "469f640602187ed07f411a2928ca46414ee17a58fb39faf0a999b5682da6d4e0",
       "address": [
-        "f3d42c8a32f6a220bf1597ac511d65cee27d6abbdc5504a7fe5dd675762159bf",
-        "adf2d600d0943b17d9738f1fe3e9cadf385f674419e08d54b76bed6e42bd038a",
-        "ead4aecfedc0d0aa2a370e7a347b5427757afea9616f3b026653deb7ac77c6f0",
-        "7d484287155f3219d5a64bc45ac0e2bbaed3290b8dfea886816ac8e729e5f457",
-        "ead4aecfedc0d0aa2a370e7a347b5427757afea9616f3b026653deb7ac77c6f0",
-        "71eb9149a60e38bccadb58129283ed2b96c038b6ee9b11fc6a85625d1fe6e2d5"
+        "77e2566cbcc13a9499f2a2c1797c72827c6b1fc075557aa0e3fcba0e96dc6ae2",
+        "699de55adef6913505be9996aceff051552bd9d11b6283be5d11cf72931c67d8",
+        "486e0965585359ccd9563499afef8a0e786f716de7d0314e6c089f465f72a4b0",
+        "4d0ff22361cc8250a6d372ec191fa3ca95bf483905a729ad55443a09f723b6c6",
+        "486e0965585359ccd9563499afef8a0e786f716de7d0314e6c089f465f72a4b0",
+        "8764ed0ec083762ff2dd25f8aa7f8405e54c1c253da1803e7df6cf7fcbbe3d3e"
       ],
       "country": "GB",
       "tracesID": 1001,
-      "phone": "232061a4b19ef995e180d48256b61ae66c491b09f689dd63b5c57ec8d5895021",
-      "email": "891dfce54608625aba51bc097d0d940ae7835453a9b183145c798cc900786ea3",
+      "phone": "21f48fa1bec8ceeebc036ca86f44f23b8a1aac77e31e4ab9acae0d5bfab81a88",
+      "email": "77298e6b75d8c754230220f1a42e4d26ddc7ef7205457129721b798c4a4f6c28",
       "contactId": "55c0c252-fe53-ef11-bfe3-000d3a29d42a"
     },
     "consignor": {
       "id": "417913e5-2348-46cf-a62f-131c67492d01",
       "type": "exporter",
       "status": "nonapproved",
-      "companyName": "2a702dc73c0bd6595745f998d8f259aec6fcd4de470499d4847fc82e8c019334",
+      "companyName": "6d138a3d196149ec0c3c777567637d5d07e67fef8d1f7738ad2c3eaaf156d616",
       "address": {
-        "addressLine1": "b06624ddb3f9e1cf1dcf178690d89be5f0a4791c17b48d71d60dcf53c0acbbcd",
-        "city": "6d57d72c3619972fa1f73a760107d61dfd7625338b91ea94457e9d88e05895e3",
-        "postalZipCode": "2459241eb8d8d70f70e524ea790e755a5f3b24c087e0112ec2f39424466444b1",
-        "countryISOCode": "CA",
-        "telephone": "f78e120da8fe1e7e545fec60f310ca58124e2ced86246b529a634435ecb98b9d",
-        "email": "80a3ecd5b0074ff81f0503681a237672ed0263f41229c3cd1d30ca5e4db1c0a8"
+        "addressLine1": "45c76f79c3c44ff970248ec7e28a35b07f0b8445ed7d64f0e7fc3548a2a0aca1",
+        "city": "b529501530b321ee2fa7ad55e79f4188faec4e148d0129a6d3a893a3e98bc1ad",
+        "postalZipCode": "63a39ff12326d4a5819788fb9916a3564e0f38aa1f7a355af054f4d004c3807c",
+        "countryISOCode": "ca9542242980a7978f973fde71ad5414d1ad1c87378c065b9452adfda5f7c5ff",
+        "telephone": "7bc8194d600b0868d17edfbd9726558b673acc0750cb46e4d55ecf5612cf5534",
+        "email": "1f3cf4b713ac2e1e5a1ff45ff79898f381603316bd6416e97a04e47df1455283"
       },
       "tracesId": 10046913
     },
@@ -62,16 +62,16 @@
       "id": "510d3ac4-ffff-4742-a9be-6469a1160260",
       "type": "consignee",
       "status": "nonapproved",
-      "companyName": "f4fe81ce8e876c4c51f8278a55e8444acff638fd1e0338ce7da200772673872a",
+      "companyName": "a12a0e03920ddb8f81bfd1bb38efd1e79807a4ccd5f87f207c5865ac1ef00e10",
       "address": {
-        "addressLine1": "dbae802bfad41d398e6f2263a2f4c4ae4618126815a66d38f90d7a86ef4e8c57",
-        "addressLine2": "bdc4407ecd2d983d524e376b63339acdc49f00e679a3cceeea5fcf55a92474fd",
-        "addressLine3": "28a8a076ea258299d1c03c831b4ff4a2e26869f227f9265bde56d228a91c6158",
-        "city": "4c884d9c5ffb06dfa8e774d9e1c37493876be91cfa3f918c6541fcf5655e7e35",
-        "postalZipCode": "3952ed29ab6db9fef6c4924c70aeaac1630a8fd748b0c470bb187f5a80c0c281",
-        "countryISOCode": "GB-ENG",
-        "telephone": "0bcf36e33d4e845920cc13e6c83e23976bb6146c509e93b20c09345cf70c0988",
-        "email": "e826efdc13129ba4d7ccec775188267e2ad4a13fe0179528352999ec5ceff7ed"
+        "addressLine1": "14716fd1503f5f95c19dcb8152c5f458ed0504feb3670c089a24a335daa2c316",
+        "addressLine2": "60c54905b61dfc2bfcb281d6adfc452b7a26c427385678500d7460a51d47a88e",
+        "addressLine3": "cec41a79982a123ee7d5b79c2c991a6064ea48059162fcbdd831991c6e55f0cc",
+        "city": "c7c659abece83b71bb615f63d9f4c1f76fa82f92e7736d0cb8d42a89f7589748",
+        "postalZipCode": "9644ed51a0126619fd42f9c2127482495126046eb05a90081786129b16d98f0b",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "2e3c1fe10dc2ebbc4c6b9265352108b3fa6e29327e92c429d137f91c4069761b",
+        "email": "3f99b8d79d328bf6eed96ff5cadd75dd4e71b3195c6baed9dec2da1e4b48b07a"
       },
       "tracesId": 10309833
     },
@@ -79,16 +79,16 @@
       "id": "510d3ac4-ffff-4742-a9be-6469a1160260",
       "type": "consignee",
       "status": "nonapproved",
-      "companyName": "f4fe81ce8e876c4c51f8278a55e8444acff638fd1e0338ce7da200772673872a",
+      "companyName": "a12a0e03920ddb8f81bfd1bb38efd1e79807a4ccd5f87f207c5865ac1ef00e10",
       "address": {
-        "addressLine1": "dbae802bfad41d398e6f2263a2f4c4ae4618126815a66d38f90d7a86ef4e8c57",
-        "addressLine2": "bdc4407ecd2d983d524e376b63339acdc49f00e679a3cceeea5fcf55a92474fd",
-        "addressLine3": "28a8a076ea258299d1c03c831b4ff4a2e26869f227f9265bde56d228a91c6158",
-        "city": "4c884d9c5ffb06dfa8e774d9e1c37493876be91cfa3f918c6541fcf5655e7e35",
-        "postalZipCode": "3952ed29ab6db9fef6c4924c70aeaac1630a8fd748b0c470bb187f5a80c0c281",
-        "countryISOCode": "GB-ENG",
-        "telephone": "0bcf36e33d4e845920cc13e6c83e23976bb6146c509e93b20c09345cf70c0988",
-        "email": "e826efdc13129ba4d7ccec775188267e2ad4a13fe0179528352999ec5ceff7ed"
+        "addressLine1": "14716fd1503f5f95c19dcb8152c5f458ed0504feb3670c089a24a335daa2c316",
+        "addressLine2": "60c54905b61dfc2bfcb281d6adfc452b7a26c427385678500d7460a51d47a88e",
+        "addressLine3": "cec41a79982a123ee7d5b79c2c991a6064ea48059162fcbdd831991c6e55f0cc",
+        "city": "c7c659abece83b71bb615f63d9f4c1f76fa82f92e7736d0cb8d42a89f7589748",
+        "postalZipCode": "9644ed51a0126619fd42f9c2127482495126046eb05a90081786129b16d98f0b",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "2e3c1fe10dc2ebbc4c6b9265352108b3fa6e29327e92c429d137f91c4069761b",
+        "email": "3f99b8d79d328bf6eed96ff5cadd75dd4e71b3195c6baed9dec2da1e4b48b07a"
       },
       "tracesId": 10309833
     },
@@ -96,14 +96,14 @@
       "id": "be152a05-babd-4dab-981f-473359ca5bcc",
       "type": "destination",
       "status": "nonapproved",
-      "companyName": "bd3e28a02f6d1776cf94528d74c2c4c6f47f0d289be820192db83988210768a3",
+      "companyName": "88319f0964840a162eda4c22ec70ec46cce1d7cdd9191f6af9283df14759dc6a",
       "address": {
-        "addressLine1": "e8d099b256ac1e2085570703c9004cb4644affaac55dd0bb9ae2ba8576edf701",
-        "city": "c2210d86a894ecaaf52b50030e6afd72165e7281f08f24e212b76bd182e87c76",
-        "postalZipCode": "47a1fa21409860a0ebab338dd363f22c9953d383a5f933abdc552b8f57f52700",
-        "countryISOCode": "GB-ENG",
-        "telephone": "1f774cb65a9b928d0631fff3f1e2fbbd7b6b8ccbc40b3f9944dfa26b749b36c2",
-        "email": "ce8bfeb40cf57f1d4a7dcca8462bf1617df3891af67d34924988951417a2a52b"
+        "addressLine1": "fabb7e678d4101616b96ddf1e941f91bf3cef9cf4f2652a6c1a724782e0370a7",
+        "city": "2265f18411b5533bcce75c7e0619d53d8fa4ad76ece734305626c96ba06616b3",
+        "postalZipCode": "653b53f93320f64c069fc473663ea985e41c94e6809592a8907b7f8723c6f54d",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "627e0ac3c14bf057a344fd26f3926807268ae77125c33c2d8f822195b1330b7d",
+        "email": "3e20db3983719c80819458bbd0b75d614aa74279b579cae445b738214fdaf1c7"
       },
       "tracesId": 10000922
     },
@@ -131,10 +131,22 @@
           "complementID": 1,
           "speciesID": "490388",
           "keyDataPair": [
-            { "key": "netweight", "data": "21960" },
-            { "key": "number_package", "data": "40" },
-            { "key": "type_package", "data": "Carton" },
-            { "key": "is_catch_certificate_required", "data": "true" }
+            {
+              "key": "netweight",
+              "data": "21960"
+            },
+            {
+              "key": "number_package",
+              "data": "40"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            },
+            {
+              "key": "is_catch_certificate_required",
+              "data": "true"
+            }
           ]
         }
       ],
@@ -154,9 +166,9 @@
     "transporterDetailsRequired": false,
     "meansOfTransport": {},
     "meansOfTransportFromEntryPoint": {
-      "id": "LAGARFOSS",
+      "id": "20b81af70bcc3c6a3836b613b99dff33135209108dc42e6e03526c47ff1de164",
       "type": "Ship",
-      "document": "2841939"
+      "document": "80314eeba9ed6a54421ddca8f31d0fc7881b132cdcf1d650afcb892c1b05c029"
     },
     "veterinaryInformation": {
       "establishmentsOfOrigin": [
@@ -164,7 +176,9 @@
           "id": "428e25d3-bada-0d87-5add-4caaa3e90f17",
           "name": "St. Anthony Seafoods Limited",
           "country": "CA",
-          "types": ["Processing Plant"],
+          "types": [
+            "Processing Plant"
+          ],
           "approvalNumber": "1074",
           "section": "Fishery products"
         }
@@ -218,14 +232,16 @@
               "catchCertificateReference": "1957734535",
               "dateOfIssue": "2024-11-05",
               "flagState": "CA",
-              "species": ["490388"]
+              "species": [
+                "490388"
+              ]
             }
           ],
           "numberOfCatchCertificates": 1
         }
       ]
     },
-    "importerLocalReferenceNumber": "LAG448 / 2841939",
+    "importerLocalReferenceNumber": "a473bc99f362e5b4aa43b27d5ac0d743849e925e877fedb9f654413f913f9269",
     "sealsContainers": [
       {
         "sealNumber": "370002",
@@ -235,15 +251,15 @@
     ],
     "submissionDate": "2024-11-18T13:33:26.876573461Z",
     "submittedBy": {
-      "displayName": "83253944cedacaca739ea848fb4ca357000c5dab081f671bb66d45273dec22c6",
+      "displayName": "26215eaa0e1e6e16c149621452a3735c3e72496535e03df999f6ab8da82babbc",
       "userId": "55c0c252-fe53-ef11-bfe3-000d3a29d42a"
     },
     "complexCommoditySelected": true,
     "portOfEntry": "GBGSYA",
     "contactDetails": {
-      "name": "MEGAN ASHWELL",
-      "telephone": "\u002B441469550287",
-      "email": "meas@eimskip.com"
+      "name": "5ef092f15ceb949b3a2d8eae5496d086b0694f8032b69c5d2f732dea6ea52eaa",
+      "telephone": "63366ab12c1dcd63da8722db6cfb043edc69123fd7dc7e7fdca73ac13bb118f1",
+      "email": "18b563ec120b8d045cd0982906d9bf7b81a57e921b0a2023a4885e1c56afb29e"
     },
     "nominatedContacts": [
       {
@@ -257,7 +273,7 @@
     "provideCtcMrn": "NO"
   },
   "decisionBy": {
-    "displayName": "5d3242c9c4107e09ed875c528dfe5ef245cbd7609901360dc4e6ee500d19fc57",
+    "displayName": "f71bb89981b55ba7089fa205c738427861c7686ce3ca30037a6b5a37fdb91981",
     "userId": "e10aa781-e1a1-eb11-b1ac-000d3a4cd807"
   },
   "decisionDate": "2024-12-01T09:16:56.901948139Z",
@@ -287,20 +303,22 @@
     ],
     "controlAuthority": {
       "officialVeterinarian": {
-        "firstName": "5c607f66c4a21215bdddbedde8eb8e3f939f9dcfc6e210c6dda2514d52d36103",
-        "lastName": "868630d2e4d478b7a42cc4a4c183115dffb1dce40738eb2d7af819e5d465d731",
-        "email": "d736be7414b447f73be4ef6b44b30e3550efee372448bf51f6366063306eaf23",
-        "phone": "fbef2d7f2c2d7c57ce01e4b97c5407100465017da8fc4d45a5c13cc5922370d5",
+        "firstName": "216e9996efc9666a5b1e21326374e460191482f6a3b1d40f7c52859739ab21dd",
+        "lastName": "b6dfd197b0e555fd1debc4670e55cd9c9d08df9c99db80c6b2bd4059206e25d2",
+        "email": "26178a8b31bff04f83f0440f1d3d089a20099d001a20b40740bce328ba5f983f",
+        "phone": "cf3d846fba33a11957e90d9aad931ee07f8c22865a3a8a9980f9986fb0de0767",
         "signed": "2024-12-01T09:16:56.928792117"
       },
       "iuuCheckRequired": true,
       "iuuOption": "IUUNotCompliant"
     },
-    "bipLocalReferenceNumber": "66650",
+    "bipLocalReferenceNumber": "22fae088bef6ca081b827ec4f9c7bd056fc86cd6a7dfba2bebe7827f9975e30f",
     "checkDate": "2024-12-01T09:16:00Z",
     "inspectionRequired": "Not required"
   },
-  "partThree": { "sealCheckRequired": false },
+  "partThree": {
+    "sealCheckRequired": false
+  },
   "etag": "00000000044A719E",
   "riskDecisionLockingTime": "2024-12-01T16:00:00Z",
   "isRiskDecisionLocked": false,

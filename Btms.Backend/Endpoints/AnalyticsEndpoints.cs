@@ -69,11 +69,11 @@ public static class AnalyticsEndpoints
     {
         var result
             = await movementsService
-                .GetExceptions(dateRange.From ?? DateTime.MinValue, dateRange.To ?? DateTime.Today, 
+                .GetExceptions(dateRange.From ?? DateTime.MinValue, dateRange.To ?? DateTime.Today,
                     finalisedOnly, chedTypes, country);
 
-        return result.HasValue() ? 
-            TypedResults.Json(result) : 
+        return result.HasValue() ?
+            TypedResults.Json(result) :
             Results.NotFound();
     }
 
@@ -86,7 +86,7 @@ public static class AnalyticsEndpoints
             = importService.Scenarios(dateRange.From, dateRange.To);
 
         if (result.HasValue())
-        {   
+        {
             var options =
                 new JsonSerializerOptions
                 {
@@ -97,7 +97,7 @@ public static class AnalyticsEndpoints
                         new DimensionResultTypeMappingConverter<IDimensionResult>()
                     }
                 };
-            
+
             return TypedResults.Json(result, options);
         }
 
@@ -110,7 +110,7 @@ public static class AnalyticsEndpoints
         await importNotificationMetrics.RecordCurrentState();
         return Results.Ok();
     }
-    
+
     private static async Task<IResult> GetDashboard(
         [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
@@ -121,13 +121,13 @@ public static class AnalyticsEndpoints
         [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
     {
         var logger = ApplicationLogging.CreateLogger("AnalyticsEndpoints");
-        
-        
+
+
         var result =
             await AnalyticsDashboards
                 .GetCharts(logger, importService, movementsService, chartsToRender,
                     chedTypes, countryOfOrigin, dateRange, finalisedOnly);
-        
+
         var options =
             new JsonSerializerOptions
             {
@@ -138,7 +138,7 @@ public static class AnalyticsEndpoints
                     new DimensionResultTypeMappingConverter<IDimensionResult>()
                 }
             };
-        
+
         return TypedResults.Json(result, options);
     }
 }

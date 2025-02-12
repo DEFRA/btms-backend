@@ -22,54 +22,52 @@ public partial class DetailsOnReExport  //
 {
 
 
-        /// <summary>
-        /// Date of re-export
-        /// </summary>
+    /// <summary>
+    /// Date of re-export
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Date of re-export")]
     public DateTime? Date { get; set; }
 
-	
-        /// <summary>
-        /// Number of vehicle
-        /// </summary>
+
+    /// <summary>
+    /// Number of vehicle
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Number of vehicle")]
     public string? MeansOfTransportNo { get; set; }
 
-	
-        /// <summary>
-        /// Type of transport to be used
-        /// </summary>
+
+    /// <summary>
+    /// Type of transport to be used
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Type of transport to be used")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public DetailsOnReExportTransportTypeEnum? TransportType { get; set; }
 
-	
-        /// <summary>
-        /// Document issued for re-export
-        /// </summary>
+
+    /// <summary>
+    /// Document issued for re-export
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Document issued for re-export")]
     public string? Document { get; set; }
 
-	
-        /// <summary>
-        /// Two letter ISO code for country of re-dispatching
-        /// </summary>
+
+    /// <summary>
+    /// Two letter ISO code for country of re-dispatching
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Two letter ISO code for country of re-dispatching")]
     public string? CountryOfReDispatching { get; set; }
 
-	
-        /// <summary>
-        /// Exit BIP (where consignment will leave the country)
-        /// </summary>
+
+    /// <summary>
+    /// Exit BIP (where consignment will leave the country)
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Exit BIP (where consignment will leave the country)")]
     public string? ExitBip { get; set; }
 
-	}
-
-
+}

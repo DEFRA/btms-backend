@@ -27,16 +27,16 @@ public class BlobService(
     {
         return await CheckBlobAsync(options.Value.DmpBlobUri, timeout, retries);
     }
-    
+
     public async Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default)
     {
         Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}. timeout={Timeout}, retries={Retries}",
             uri, options.Value.DmpBlobContainer, timeout, retries);
-        
+
         try
         {
             var containerClient = CreateBlobClient(timeout, retries);
-            
+
             Logger.LogInformation("Getting blob folders...");
             var folders = containerClient.GetBlobsByHierarchyAsync(prefix: "RAW/", delimiter: "/");
 
@@ -49,7 +49,8 @@ public class BlobService(
 
             return new Status
             {
-                Success = true, Description = $"Connected. {itemCount} blob folders found in RAW"
+                Success = true,
+                Description = $"Connected. {itemCount} blob folders found in RAW"
             };
         }
         catch (Exception ex)
@@ -80,7 +81,7 @@ public class BlobService(
             if (item.Properties.ContentLength is not 0 && item.Name.EndsWith(".json"))
             {
                 yield return
-                    new BtmsBlobItem { Name = item.Name, CreatedOn = item.Properties.CreatedOn};
+                    new BtmsBlobItem { Name = item.Name, CreatedOn = item.Properties.CreatedOn };
                 itemCount++;
             }
         }
@@ -92,7 +93,7 @@ public class BlobService(
     {
         var client = CreateBlobClient(options.Value.Timeout, options.Value.Retries);
         var blobClient = client.GetBlobClient(item.Name);
-        
+
         var content = await blobClient.DownloadContentAsync(cancellationToken);
         return content.Value.Content.ToString();
     }

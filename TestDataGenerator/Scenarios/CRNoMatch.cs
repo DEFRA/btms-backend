@@ -17,7 +17,7 @@ public static class NoMatchExtensions
             .SimpleClearanceRequest(scenario, item, entryDate, config)
             .ValidateAndBuild();
     }
-    
+
     public static ClearanceRequestBuilder<AlvsClearanceRequest> SimpleClearanceRequest(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         return BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
@@ -28,7 +28,7 @@ public static class NoMatchExtensions
             .WithEntryVersionNumber()
             .WithTunaItem();
     }
-    
+
     public static MatchIdentifier DocumentReferenceFromFirstDoc(this AlvsClearanceRequest clearanceRequest)
     {
         return MatchIdentifier.FromCds(clearanceRequest
@@ -44,7 +44,7 @@ public static class NoMatchExtensions
     {
         var reference = clearanceRequest
             .DocumentReferenceFromFirstDoc();
-        
+
         return BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(reference)
@@ -69,9 +69,9 @@ public class CrNoMatchSingleItemWithDecisionScenarioGenerator(ILogger<CrNoMatchN
         var alvsDecision = clearanceRequest
             .GetDecisionBuilder()
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
-        
+
         return new GeneratorResult([clearanceRequest, alvsDecision]);
     }
 }
@@ -104,7 +104,7 @@ public class CrNoMatchNoDecisionScenarioGenerator(ILogger<CrNoMatchScenarioGener
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         var reference = DataHelpers.GenerateReferenceNumber(ImportNotificationTypeEnum.Cveda, scenario, entryDate, item);
-        
+
         var clearanceRequest = NoMatchExtensions
             .SimpleClearanceRequest(scenario, item, entryDate, config)
             .WithReferenceNumberOneToOne(reference)
@@ -131,9 +131,9 @@ public class CrNoMatchScenarioGenerator(ILogger<CrNoMatchScenarioGenerator> logg
         var alvsDecision = clearanceRequest
             .GetDecisionBuilder()
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
-        
+
         return new GeneratorResult([clearanceRequest, alvsDecision]);
     }
 }
@@ -153,14 +153,14 @@ public class CrNoMatchNonContiguousDecisionsScenarioGenerator(ILogger<CrNoMatchN
 
         var alvsDecision = alvsDecisionBuilder
             .ValidateAndBuild();
-        
+
         var alvsDecision2 = alvsDecisionBuilder
             .Clone()
             .WithDecisionVersionNumber(3)
             .ValidateAndBuild();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
-        
+
         return new GeneratorResult([clearanceRequest, alvsDecision, alvsDecision2]);
     }
 }
@@ -178,9 +178,9 @@ public class CrDecisionWithoutV1ScenarioGenerator(ILogger<CrDecisionWithoutV1Sce
             .GetDecisionBuilder()
             .WithDecisionVersionNumber(2)
             .Build();
-        
+
         logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
-        
+
         return new GeneratorResult([clearanceRequest, alvsDecision]);
     }
 }

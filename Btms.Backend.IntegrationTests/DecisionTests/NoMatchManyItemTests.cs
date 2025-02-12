@@ -13,7 +13,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class ManyItemTests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<CrNoMatchScenarioGenerator>(output)
 {
-    
+
     [Fact]
     public void ShouldHaveOneChedType()
     {

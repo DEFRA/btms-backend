@@ -17,7 +17,7 @@ public class SensitiveDataTests
         var filePath = "../../../Fixtures/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
         var json =
             File.ReadAllText(filePath);
-                
+
         var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = true };
         var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
 

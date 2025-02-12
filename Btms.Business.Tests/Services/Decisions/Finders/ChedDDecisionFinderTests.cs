@@ -34,7 +34,7 @@ public class ChedDDecisionFinderTests
 
         result.Should().Be(expectedResult);
     }
-    
+
     [Theory]
     [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, DecisionCode.C03)]
 

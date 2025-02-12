@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum ControlConsignmentLeaveEnum
 {
 
-		[EnumMember(Value = "YES")]
-		Yes,
-	
-		[EnumMember(Value = "NO")]
-		No,
-	
-		[EnumMember(Value = "It has been destroyed")]
-		ItHasBeenDestroyed,
-	
+    [EnumMember(Value = "YES")]
+    Yes,
+
+    [EnumMember(Value = "NO")]
+    No,
+
+    [EnumMember(Value = "It has been destroyed")]
+    ItHasBeenDestroyed,
+
 }
-
-

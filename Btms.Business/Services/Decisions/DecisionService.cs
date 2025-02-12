@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Btms.Business.Services.Decisions.Finders;
+using Btms.Business.Services.Matching;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 
@@ -29,23 +30,51 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         {
             if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
             {
-                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, null, DecisionCode.X00);
+                    var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
+                    var checkCodes = movement.Items.First(x => x.ItemNumber == noMatch.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+
+                    HandleNoMatch(checkCodes, decisionsResult, noMatch);
             }
         }
 
         foreach (var match in decisionContext.MatchingResult.Matches)
         {
             if (!decisionContext.HasChecks(match.MovementId, match.ItemNumber)) continue;
-            
+
             var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
             var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
             var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
             var decisionCodes = GetDecisions(notification, checkCodes);
-            foreach (var decisionCode in decisionCodes) 
+            foreach (var decisionCode in decisionCodes)
                 decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
         }
 
         return Task.FromResult(decisionsResult);
+    }
+
+    private static void HandleNoMatch(string[]? checkCodes, DecisionResult decisionsResult, DocumentNoMatch noMatch)
+    {
+        if (checkCodes != null)
+        {
+            foreach (var checkCode in checkCodes)
+            {
+                string? reason = null;
+
+                if (checkCode is "H220")
+                {
+                    reason =
+                        "A Customs Declaration with a GMS product has been selected for HMI inspection. In IPAFFS create a CHEDPP and amend your licence to reference it. If a CHEDPP exists, amend your licence to reference it. Failure to do so will delay your Customs release";
+                }
+
+                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber,
+                    noMatch.DocumentReference, checkCode, DecisionCode.X00, reason);
+            }
+        }
+        else
+        {
+            decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber,
+                noMatch.DocumentReference, null, DecisionCode.X00);
+        }
     }
 
     private DecisionFinderResult[] GetDecisions(ImportNotification notification, string[]? checkCodes)
@@ -67,7 +96,7 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         foreach (var result in results)
             logger.LogInformation("Decision finder result {ItemNum} of {NumItems} for Notification {Id} Decision {Decision} - ConsignmentAcceptable {ConsignmentAcceptable}: DecisionEnum {DecisionEnum}: NotAcceptableAction {NotAcceptableAction}",
                 item++, results.Count, notification.Id, result.DecisionCode.ToString(), notification.PartTwo?.Decision?.ConsignmentAcceptable, notification.PartTwo?.Decision?.DecisionEnum.ToString(), notification.PartTwo?.Decision?.NotAcceptableAction?.ToString());
-     
+
         return results.ToArray();
     }
 

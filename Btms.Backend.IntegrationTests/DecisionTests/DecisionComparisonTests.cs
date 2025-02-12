@@ -24,7 +24,7 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
     [InlineData(typeof(Mrn24Gbdshixsy6Rckar3ScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
     [InlineData(typeof(ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
     [InlineData(typeof(Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator), DecisionStatusEnum.PartialImportNotificationsLinked)]
-    
+
     public void ShouldHaveCorrectDecisionCode(Type generatorType, DecisionStatusEnum decisionStatus)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Status : {1}", generatorType!.FullName, decisionStatus);

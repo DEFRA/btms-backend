@@ -12,18 +12,18 @@ namespace TestGenerator.IntegrationTesting.Backend;
 public abstract class ScenarioDatasetBaseTest
 {
     private readonly string _datasetName;
-    private readonly bool _reloadData; 
+    private readonly bool _reloadData;
     protected readonly IMongoDbContext MongoDbContext;
     protected readonly BtmsClient Client;
     protected readonly BackendFixture BackendFixture;
     protected readonly ITestOutputHelper TestOutputHelper;
-    
+
     private static Dictionary<string, List<GeneratedResult>> AllDatasets
         = new Dictionary<string, List<GeneratedResult>>();
 
     protected readonly IImportNotificationsAggregationService ImportNotificationsAggregationService;
     protected readonly IMovementsAggregationService MovementsAggregationService;
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -39,20 +39,20 @@ public abstract class ScenarioDatasetBaseTest
         _datasetName = datasetName;
         _reloadData = reloadData;
         TestOutputHelper = testOutputHelper;
-        
+
         // At the moment the datasets don't care about alvs decisions,
         // So rather than slow down the load, we can just run it concurrently
         var backendConfigurationOverrides = new Dictionary<string, string>
         {
             { "ConsumerOptions:EnableBlockingPublish", "true" }
         };
-        
+
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
         BackendFixture = new BackendFixture(testOutputHelper, datasetName, 200, backendConfigurationOverrides);
-        
+
         Client = BackendFixture.BtmsClient;
         MongoDbContext = BackendFixture.MongoDbContext;
-        
+
         ImportNotificationsAggregationService = new ImportNotificationsAggregationService(MongoDbContext,
             TestOutputHelper.GetLogger<ImportNotificationsAggregationService>());
 
@@ -93,8 +93,8 @@ public abstract class ScenarioDatasetBaseTest
             throw new Exception("You can't set reloadData to false if you rely on the LoadedData field in a test.");
         }
         return AllDatasets.GetValueOrDefault(_datasetName)!;
-    } 
-    
+    }
+
     /// <summary>
     /// TODO : would this be better moved into an Analytics specific base class?
     /// </summary>
@@ -104,9 +104,9 @@ public abstract class ScenarioDatasetBaseTest
     protected IImportNotificationsAggregationService GetImportNotificationsAggregationService()
     {
         var logger = TestOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        return new ImportNotificationsAggregationService(MongoDbContext, logger);   
+        return new ImportNotificationsAggregationService(MongoDbContext, logger);
     }
-    
+
     /// <summary>
     /// TODO : would this be better moved into an Analytics specific base class?
     /// </summary>

@@ -10,12 +10,10 @@ namespace Btms.Types.Ipaffs;
 public enum PartyTypeEnum
 {
 
-		[EnumMember(Value = "Commercial transporter")]
-		CommercialTransporter,
-	
-		[EnumMember(Value = "Private transporter")]
-		PrivateTransporter,
-	
+    [EnumMember(Value = "Commercial transporter")]
+    CommercialTransporter,
+
+    [EnumMember(Value = "Private transporter")]
+    PrivateTransporter,
+
 }
-
-

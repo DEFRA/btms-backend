@@ -22,37 +22,35 @@ public partial class SealContainer  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? SealNumber { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? ContainerNumber { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public bool? OfficialSeal { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
     public string? ResealedSealNumber { get; set; }
 
-	}
-
-
+}

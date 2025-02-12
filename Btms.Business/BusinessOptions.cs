@@ -8,7 +8,7 @@ public class BusinessOptions
     public const string SectionName = nameof(BusinessOptions);
 
     private readonly int defaultDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
-    
+
     [Required] public string DmpBlobRootFolder { get; set; } = "RAW";
 
     public Dictionary<string, Dictionary<Feature, int>> ConcurrencyConfiguration { get; set; }

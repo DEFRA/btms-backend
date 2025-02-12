@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum ApplicantConservationOfSampleEnum
 {
 
-		Ambient,
-	
-		Chilled,
-	
-		Frozen,
-	
+    Ambient,
+
+    Chilled,
+
+    Frozen,
+
 }
-
-
