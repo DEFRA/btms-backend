@@ -18,7 +18,7 @@ public partial class GmrsByVrn  //
 {
 
 
-    ///<summary>
+    /// <summary>
     /// This is the identifier for a Vehicle Registration Number
     /// </summary>
     [JsonPropertyName("vrn")]

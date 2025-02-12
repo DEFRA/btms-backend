@@ -18,14 +18,14 @@ public partial class Declarations  //
 {
 
 
-    ///<summary>
+    /// <summary>
     /// A list of declaration ids.
     /// </summary>
     [JsonPropertyName("transits")]
     public Transits[]? Transits { get; set; }
 
 
-    ///<summary>
+    /// <summary>
     /// A list of declaration ids.
     /// </summary>
     [JsonPropertyName("customs")]
