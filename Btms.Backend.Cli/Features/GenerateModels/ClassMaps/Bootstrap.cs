@@ -101,7 +101,7 @@ internal static class Bootstrap
         GeneratorEnumMap.RegisterEnumMap("ImportNotificationStatusEnum",
             map => { map.RemoveEnumValue("SUBMITTED,IN_PROGRESS,MODIFY"); });
 
-        GeneratorEnumMap.RegisterEnumMap("purposeGroup",
+        GeneratorEnumMap.RegisterEnumMap("purposePurposeGroup",
             map => { map.AddEnumValue("For Import Non-Internal Market"); });
     }
 
@@ -424,7 +424,11 @@ internal static class Bootstrap
     public static void RegisterVehicleMovementsClassMaps()
     {
         GeneratorClassMap.RegisterClassMap("GmrsByVRN",
-            map => { map.SetClassName("GmrsByVrn"); });
+            map =>
+            {
+                map.SetClassName("GmrsByVrn");
+                map.NoInternalClass();
+            });
 
         GeneratorClassMap.RegisterClassMap("gmrs", map =>
         {
@@ -437,17 +441,31 @@ internal static class Bootstrap
             map.MapProperty("declarations").ExcludeFromInternal();
         });
 
+        GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsRequest",
+            map => { map.NoInternalClass(); });
+
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsResponse",
-            map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
+            map => { map.NoInternalClass(); map.MapProperty("Gmrs").SetType("Gmr[]"); });
+
+        GeneratorClassMap.RegisterClassMap("SearchGmrsForVRNrequest",
+            map => { map.NoInternalClass(); });
+
+        GeneratorClassMap.RegisterClassMap("SearchGmrsRequest",
+            map => { map.NoInternalClass(); });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForVRNsresponse",
             map =>
             {
+                map.NoInternalClass();
                 map.MapProperty("Gmrs").SetType("Gmr[]");
                 map.MapProperty("gmrsByVRN").SetName("gmrsByVrns").SetType("GmrsByVrn[]");
             });
 
-        GeneratorClassMap.RegisterClassMap("searchGmrsResponse", map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
+        GeneratorClassMap.RegisterClassMap("searchGmrsResponse", map =>
+        {
+            map.NoInternalClass();
+            map.MapProperty("Gmrs").SetType("Gmr[]");
+        });
 
 
         GeneratorClassMap.RegisterClassMap("plannedCrossing",
