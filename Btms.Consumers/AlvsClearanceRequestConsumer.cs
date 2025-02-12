@@ -71,7 +71,7 @@ internal class AlvsClearanceRequestConsumer(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
                 var decisionContext =
-                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, true);
+                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);

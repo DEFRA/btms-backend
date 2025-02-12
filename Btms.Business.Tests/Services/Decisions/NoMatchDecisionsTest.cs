@@ -32,7 +32,7 @@ public class NoMatchDecisionsTest
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
 
         // Act
-        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, true), CancellationToken.None);
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult), CancellationToken.None);
 
         // Assert
         decisionResult.Should().NotBeNull();
@@ -54,7 +54,7 @@ public class NoMatchDecisionsTest
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
         
         // Act
-        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, true), CancellationToken.None);
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult), CancellationToken.None);
 
         // Assert
         decisionResult.Should().NotBeNull();

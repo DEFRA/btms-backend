@@ -212,7 +212,10 @@ public enum DecisionStatusEnum
     
     [EnumMember(Value = "No Import Notifications Linked")]
     NoImportNotificationsLinked,
-    
+
+    [EnumMember(Value = "Partial Import Notifications Linked")]
+    PartialImportNotificationsLinked,
+
     [EnumMember(Value = "No Alvs Decisions")]
     NoAlvsDecisions,
     

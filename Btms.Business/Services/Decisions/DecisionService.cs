@@ -25,14 +25,11 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
     private Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
         var decisionsResult = new DecisionResult();
-        if (decisionContext.GenerateNoMatch)
+        foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
         {
-            foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
+            if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
             {
-                if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
-                {
-                    decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, null, DecisionCode.X00);
-                }
+                decisionsResult.AddDecision(noMatch.MovementId, noMatch.ItemNumber, noMatch.DocumentReference, null, DecisionCode.X00);
             }
         }
 

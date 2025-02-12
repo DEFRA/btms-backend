@@ -98,6 +98,11 @@ public class Mrn24Gbdshixsy6Rckar3ScenarioGenerator(
     ILogger<Mrn24Gbdshixsy6Rckar3ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDSHIXSY6RCKAR3");
 
+public class Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD2UOWTWYM5LAR8");
+
 public class Mrn24Gbei6Oisht38Mar9ScenarioGenerator(
     IServiceProvider sp,
     ILogger<Mrn24Gbei6Oisht38Mar9ScenarioGenerator> logger)
@@ -135,14 +140,9 @@ public class Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator(IServiceProvider sp, ILogger
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
 
-<<<<<<< Updated upstream
-public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
-=======
-public class Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
-    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD2UOWTWYM5LAR8");
 
-public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)
->>>>>>> Stashed changes
+public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
+
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
     
