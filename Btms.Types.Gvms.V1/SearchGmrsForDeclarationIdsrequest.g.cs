@@ -14,7 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-public partial class SearchGmrsForDeclarationIdsrequest  //
+public partial class SearchGmrsForDeclarationIdsRequest  //
 {
 
 
