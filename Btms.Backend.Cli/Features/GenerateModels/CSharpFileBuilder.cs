@@ -28,16 +28,24 @@ internal class CSharpFileBuilder
             Console.WriteLine($"Created file: {@class.GetClassName()}.cs");
 
             //create internal 
+            var internalPath = Path.Combine(internalOutputPath, $"{@class.GetInternalClassName()}.g.cs");
+            var mapperPath = Path.Combine(mappingOutputPath, $"{@class.GetClassName()}Mapper.g.cs");
 
-            if (!@class.IgnoreInternalClass)
+            if (@class.IgnoreInternalClass)
+            {
+                Console.WriteLine("{0} internal classes shouldn't be present. Deleting internal & mapper files if they exist.", @class.Name);
+                File.Delete(internalPath);
+                File.Delete(mapperPath);
+            }
+            else
             {
                 contents = await engine.CompileRenderAsync("InternalClassTemplate", @class);
-                await File.WriteAllTextAsync(Path.Combine(internalOutputPath, $"{@class.GetInternalClassName()}.g.cs"),
+                await File.WriteAllTextAsync(internalPath,
                     contents, cancellationToken);
                 Console.WriteLine($"Created file: {@class.GetInternalClassName()}.cs");
 
                 contents = await engine.CompileRenderAsync("MapperTemplate", @class);
-                await File.WriteAllTextAsync(Path.Combine(mappingOutputPath, $"{@class.GetClassName()}Mapper.g.cs"),
+                await File.WriteAllTextAsync(mapperPath,
                     contents, cancellationToken);
                 Console.WriteLine($"Created file: {@class.GetClassName()}.cs");
             }
