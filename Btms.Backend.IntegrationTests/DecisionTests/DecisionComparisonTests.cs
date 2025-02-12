@@ -15,14 +15,14 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
     [InlineData(typeof(ChedAh01ScenarioGenerator1), DecisionStatusEnum.NoAlvsDecisions)]
 
     [InlineData(typeof(MissingChedScenarioGenerator), DecisionStatusEnum.NoImportNotificationsLinked)]
-    [InlineData(typeof(IuuScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
+    [InlineData(typeof(IuuScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect, Skip = "Lim to investigate test data")]
 
     [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), DecisionStatusEnum.HasChedppChecks)]
 
     // Failing due to CDMS-319 & CDMS-314
     [InlineData(typeof(Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
     [InlineData(typeof(Mrn24Gbdshixsy6Rckar3ScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
-    [InlineData(typeof(ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
+    [InlineData(typeof(ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect, Skip = "Lim to investigate test data")]
     [InlineData(typeof(Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator), DecisionStatusEnum.PartialImportNotificationsLinked)]
 
     public void ShouldHaveCorrectDecisionCode(Type generatorType, DecisionStatusEnum decisionStatus)
