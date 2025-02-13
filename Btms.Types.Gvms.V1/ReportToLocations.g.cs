@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
+
 /// <summary>
 /// Information about an inspection that is required
 /// </summary>

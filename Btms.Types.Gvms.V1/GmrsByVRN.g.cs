@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class GmrsByVrn  //
 {
 
@@ -27,10 +24,6 @@ public partial class GmrsByVrn  //
     [JsonPropertyName("vrn")]
     public string? Vrn { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("gmrs")]
     public string[]? Gmrs { get; set; }
 

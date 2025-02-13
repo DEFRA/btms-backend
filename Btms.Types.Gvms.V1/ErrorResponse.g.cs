@@ -14,16 +14,9 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class ErrorResponse  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("code")]
     public string? Code { get; set; }
 
