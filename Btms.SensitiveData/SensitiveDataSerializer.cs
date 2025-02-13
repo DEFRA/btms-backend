@@ -92,7 +92,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         return rootNode!.ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
     }
 
-   private static IEnumerable<string> EnumeratePaths(string json)
+    private static IEnumerable<string> EnumeratePaths(string json)
     {
         var doc = JsonDocument.Parse(json).RootElement;
         var queue = new Queue<(string ParentPath, JsonElement element)>();
