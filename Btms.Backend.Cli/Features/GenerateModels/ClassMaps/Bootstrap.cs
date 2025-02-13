@@ -10,7 +10,6 @@ internal static class Bootstrap
         RegisterAlvsClassMaps();
         RegisterIpaffsClassMaps();
         RegisterIpaffsEnumMaps();
-
         RegisterVehicleMovementsClassMaps();
     }
 
@@ -23,8 +22,6 @@ internal static class Bootstrap
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
         });
-
-
 
         GeneratorClassMap.RegisterClassMap("Check", map =>
         {
@@ -40,12 +37,10 @@ internal static class Bootstrap
                 "", false, true,
                 IpaffsDescriptorBuilder.ClassNamePrefix));
 
-
             map.MapProperty("MasterUCR").SetName("MasterUcr");
             map.MapProperty("SubmitterTURN").SetName("SubmitterTurn");
             map.MapProperty("DeclarationUCR").SetName("DeclarationUcr");
         });
-
 
         GeneratorClassMap.RegisterClassMap("ServiceHeader",
             map => { map.MapProperty("ServiceCallTimestamp").IsDateTime().SetInternalName("ServiceCalled"); });
@@ -142,7 +137,6 @@ internal static class Bootstrap
                 map.MapProperty("sampleTime").IsTime();
                 map.MapDateOnlyAndTimeOnlyToDateTimeProperty("sampleDate", "sampleTime", "sampledOn");
             });
-
 
         GeneratorClassMap.RegisterClassMap("BillingInformation",
             map =>
@@ -359,7 +353,6 @@ internal static class Bootstrap
             map.MapProperty("telephone").IsSensitive();
         });
 
-
         GeneratorClassMap.RegisterClassMap("Party", map =>
         {
             map.MapProperty("email").IsSensitive();
@@ -384,7 +377,6 @@ internal static class Bootstrap
         });
     }
 
-
     public static void RegisterVehicleMovementsClassMaps()
     {
         GeneratorClassMap.RegisterClassMap("GmrsByVRN",
@@ -397,7 +389,6 @@ internal static class Bootstrap
             map.MapProperty("haulierEORI").SetName("haulierEori");
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
             map.MapProperty("updatedDateTime").SetName("updatedSource").IsDateTime();
-            map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
             map.MapProperty("declarations").ExcludeFromInternal();
         });
 
@@ -413,13 +404,8 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("searchGmrsResponse", map => { map.MapProperty("Gmrs").SetType("Gmr[]"); });
 
-
         GeneratorClassMap.RegisterClassMap("plannedCrossing",
-            map =>
-            {
-                map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt");
-                map.MapProperty("localDateTimeOfDeparture").IsDateTime().SetName("departsAt");
-            });
+            map => { map.MapProperty("localDateTimeOfDeparture").IsDateTime().SetName("departsAt"); });
 
         GeneratorClassMap.RegisterClassMap("actualCrossing",
             map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt"); });
