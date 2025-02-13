@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging.Console;
 
 namespace Btms.Backend.Cli;
 
-public class Setup
+public static class Setup
 {
     public static IServiceScope Initialise(string[]? args = null)
     {

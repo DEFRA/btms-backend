@@ -19,16 +19,6 @@ public class CSharpDescriptor
 
     public List<string> FilesToEnsureDontExist { get; set; } = [];
 
-    // There are static properties on ClassDescriptor & EnumDescriptor
-    // that need resetting if we want to use CSharpDescriptor
-    // multiple times (e.g in unit tests).
-    // We might want to move that state into CSharpDescriptor instead
-    public CSharpDescriptor()
-    {
-        // GeneratorClassMap.Reset();
-        // GeneratorEnumMap.Reset();
-    }
-
     public void AddEnumDescriptor(EnumDescriptor enumDescriptor)
     {
         if (Enums.All(x => x.GetEnumName() != enumDescriptor.GetEnumName()))

@@ -9,8 +9,6 @@ public class PropertyDescriptor
 {
     private readonly bool _isReferenceType;
     private readonly bool _isArray;
-
-    // private readonly string _classNamePrefix;
     private bool _typeOverridden;
 
     public PropertyDescriptor(string schemaName, string type,
@@ -115,11 +113,6 @@ public class PropertyDescriptor
         if (SourceName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
             SourceName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            // if (SourceName.StartsWith(_classNamePrefix))
-            // {
-            //     return $"{SourceName.Dehumanize()}";
-            // }
-
             return SourceName.Dehumanize();
         }
 
@@ -142,11 +135,6 @@ public class PropertyDescriptor
         if (InternalName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
             InternalName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            // if (InternalName.StartsWith(_classNamePrefix))
-            // {
-            //     return $"{InternalName.Dehumanize()}";
-            // }
-
             return InternalName.Dehumanize();
         }
 
