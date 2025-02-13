@@ -1,0 +1,462 @@
+{
+  "id": 4275216,
+  "referenceNumber": "CHEDP.GB.2024.5249145",
+  "version": 2,
+  "lastUpdated": "2024-12-18T13:35:06.527Z",
+  "lastUpdatedBy": {
+    "displayName": "249af5ea6dc3d14ada125cf4da88ab45312dfbdb48c1ba98a5c2e0daef41b9e2",
+    "userId": "f0fece49-8641-e911-a95d-000d3a454f67"
+  },
+  "type": "CVEDP",
+  "status": "VALIDATED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "REQUIRED",
+        "uniqueId": "605455ea-dc09-4023-8ba0-8702c0fc87f3"
+      }
+    ],
+    "assessmentDateTime": "2024-12-09T09:58:59.632141407"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-12-03T14:19:24.569"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "4550fbe889b6afdd24e1f572d14e4f1d1b7a3825213443aee9bc58a2152f3d9a",
+      "companyId": "2c365d56-0740-e911-a95a-000d3a454977",
+      "companyName": "2d6505cd0b00aa6777b99118fd8cba59afa6ae6fe42a5f1930b34488c467817d",
+      "address": [
+        "6693fbb71080454290f37b5cdd367c8cbcaee1153743537230bcbf4d0c6e2aec",
+        "418f5c6f45ab445ba1612a269f1b2de4934f7eb6820640ca3625a384a3c6f500",
+        "a5599e934ccfaafdc12c4842ee6120aa2e40244c29a852b1cf2119af5ec150af"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "6a234758f22b5acb2abf337a620d3fedfe55a09116490f0807e87f48e40920fb",
+      "email": "df82ffe1c4d53e0f409bd8ff9ca4214fef61d783c2ec63e24c7e42b8ce101ca8",
+      "contactId": "03313237-284b-e911-a959-000d3a454e11"
+    },
+    "consignor": {
+      "id": "9efc1bde-6772-4fc8-ada4-671365a3e3ca",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "8d58979c8751e1931fbe985fca1e1060c8f536e98282e9ab3a22d5474a6e52e9",
+      "address": {
+        "addressLine1": "47f2eb733114444b8afc3ab25754170a505597d3628bf55463e014bfc6f22648",
+        "addressLine2": "9c6020d4b2ca750f12b7bd5bb86ee04a37e8642297bef13835885ff65b8050c4",
+        "addressLine3": "da97975273075192eaa422a7929eab203b804d6b3899191c228ca53c4a5890d5",
+        "city": "128108c5f3275f70c141e1beb04313384fa6726ddf5ff3a506dbb86d8f776e30",
+        "countryISOCode": "4be7a0961679b6aadbc80fbf36c36b136cc1a784c829d5dc575d1812442edc9c",
+        "telephone": "5c4282a316c0b1f9e47c471ecf5436f646040d8366169236025901d0538f8cef",
+        "email": "349161f8b9c05f394c66514c33a0ed45c12b110a6abaed69cfa23ac3099977e2"
+      },
+      "tracesId": 10339188
+    },
+    "consignee": {
+      "id": "4a73704a-17f4-479e-812d-68b4542d6fd1",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "cb70752ce6daa0e703064b537cf12e4f79e96c7f4cf182361231a29f313d71fd",
+      "address": {
+        "addressLine1": "20c0dc67dba15da1fe7282887e0f8033adf7f687de7669b12ba3c25fc9355bac",
+        "addressLine2": "39db69ed54e02c142266feca2bed9075b2ba027ce2d73d7db297dfcb09682e52",
+        "addressLine3": "59709b305ddb433f000e5e43f6518caffc5c9ab3f7115579142bad46a91ca317",
+        "city": "1e4dd4b4afc6e0b9af961c15200f4451cde296efe677c8d32b2a65f1ab31d462",
+        "postalZipCode": "b0fe4e4850cc0c3c7a2c211ed20cf89271e3a70c603cb91eeced847085a3d512",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "769fe2ad7af0097bd7647c825121043b83d0bf2d270a31418a74f85ef56f5059",
+        "email": "771d9b431b871028aa8b27647cab5909c41b337498ddd19a1722ed4b7150f5b2"
+      },
+      "tracesId": 10002159
+    },
+    "importer": {
+      "id": "4a73704a-17f4-479e-812d-68b4542d6fd1",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "cb70752ce6daa0e703064b537cf12e4f79e96c7f4cf182361231a29f313d71fd",
+      "address": {
+        "addressLine1": "20c0dc67dba15da1fe7282887e0f8033adf7f687de7669b12ba3c25fc9355bac",
+        "addressLine2": "39db69ed54e02c142266feca2bed9075b2ba027ce2d73d7db297dfcb09682e52",
+        "addressLine3": "59709b305ddb433f000e5e43f6518caffc5c9ab3f7115579142bad46a91ca317",
+        "city": "1e4dd4b4afc6e0b9af961c15200f4451cde296efe677c8d32b2a65f1ab31d462",
+        "postalZipCode": "b0fe4e4850cc0c3c7a2c211ed20cf89271e3a70c603cb91eeced847085a3d512",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "769fe2ad7af0097bd7647c825121043b83d0bf2d270a31418a74f85ef56f5059",
+        "email": "771d9b431b871028aa8b27647cab5909c41b337498ddd19a1722ed4b7150f5b2"
+      },
+      "tracesId": 10002159
+    },
+    "placeOfDestination": {
+      "id": "21b074bc-c0d4-4fe8-90b3-91ed66a5bd35",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "dbce25f22008f6b784a5d105b616ebe7da36c15bbf5a7666e1ca279fd9dd9cc6",
+      "address": {
+        "addressLine1": "35d9d3f98272e020167efc12bb7ad2613f10f06b69ebcf87e441272d29f56321",
+        "addressLine2": "46654ad5701a722f0f1ed5af50abb25a70711067fec1eb0d0033b7c9652e93ca",
+        "city": "418f5c6f45ab445ba1612a269f1b2de4934f7eb6820640ca3625a384a3c6f500",
+        "postalZipCode": "c07d6948de556a42eedaaa25dc76f677a08e19f50fe48e2928d58cb72a1b03da",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "fd4a468f8868c519ba82b91e5cb080d70e9fc2526b2de459075f540ec4a36329",
+        "email": "371f0eca4a49d9beb58d7364317ed600f641dee509ee596c4949046969ddbf08"
+      },
+      "tracesId": 10339360
+    },
+    "commodities": {
+      "totalGrossWeight": 16682.4,
+      "totalNetWeight": 15624,
+      "numberOfPackages": 1260,
+      "temperature": "Ambient",
+      "commodityComplement": [
+        {
+          "commodityID": "16041428",
+          "commodityDescription": "other",
+          "complementID": 46000,
+          "complementName": "Katsuwonus (Euthynnus) pelamis",
+          "speciesID": "43e51b5d25c3260d08e526020af13c001904d0eb3c3543ac724bb1f24607d556",
+          "speciesName": "7b30a61884c60e618d08348bf7aa2248c56de0f694947927dc654af56199cfe9",
+          "speciesType": "d8bdf9a0cb27a193a1127de2924b6e5a9e4c2d3b3fe42e935e160c011f3df1fc",
+          "speciesClass": "43e51b5d25c3260d08e526020af13c001904d0eb3c3543ac724bb1f24607d556",
+          "speciesNomination": "7b30a61884c60e618d08348bf7aa2248c56de0f694947927dc654af56199cfe9",
+          "isCdsMatched": false
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "605455ea-dc09-4023-8ba0-8702c0fc87f3",
+          "complementID": 46000,
+          "speciesID": "121119",
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "15624"
+            },
+            {
+              "key": "number_package",
+              "data": "1260"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            },
+            {
+              "key": "is_catch_certificate_required",
+              "data": "true"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "ID",
+      "isLowRiskArticle72Country": false,
+      "consignedCountry": "ID"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBFXT1",
+    "arrivalDate": "2024-12-11",
+    "arrivalTime": "21:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "e14fed69f85cbe0053f3cdabdb61b6efdeaeaeaaae509f08c2bd3cfb212748fc",
+      "type": "Ship",
+      "document": "ddad401a7bf7ef78907b70a83aa535554ddfe351411cfbf3afb36cfa101873a2"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "1c051806-d8c1-ccbf-b0d2-155feae93060",
+          "name": "1df6089e46ebff5af132e6be520b3a9e2637c04aa3ce91072e165dd3a1655c01",
+          "country": "ID",
+          "types": [
+            "Processing Plant"
+          ],
+          "approvalNumber": "c436bacbfd10656660b53641bb2c5157e7855899e9714bdd9eac2ec66b371044",
+          "section": "Fishery products"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "df72b561af41c2dfa8b102df4bf4e54d9cd6b885f24975f449703150639aed16",
+          "attachmentFilename": "89a955c6be60aafcd726a3befe590852c59efc5f91ed1fc0114cb30988082f72",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "17692e2c7b7674a8e8bef600c8547dcf5b7c6e40559429e452ad2455d0b43fc9",
+          "attachmentFilename": "eda10ca1c690d8e72f7cb79f7f0f4de499d7be60e7a76a4c4f28cd819c477ea9",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "7129a4ee420fac81ba41b40bbfcbbcdd4f16d69828e4a885dba9b31b8eeb5a13",
+          "attachmentFilename": "354ec445e1d428fda5c12a032a5ce79490f72638b8dc6dc0dd8f27fbc34673d0",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "5e30752d10f646f90e1c5af8adb861d6024a60e24d6e832a1cf3cdeb450ee4ea",
+          "attachmentFilename": "988428332cb69244ecdc9c2f95b78ee3112155bee872154e0cb1e720693fc4a6",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "598f5ec25ea69d04fe9c789c214cb2ffd855ab4db1d72862947e70f723f32f84",
+          "attachmentFilename": "10d6e2341e3632332460f52dade9c2a6325e7a5a97dad250f91af30ec8cc7cbd",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "209165878f6ac93d744ee52caffd74bee05194bc691ffe5da12c438ffb32511b",
+          "attachmentFilename": "98628f1182cabe55610be85e96725ed4f3b4457a716c696e880c024000f77517",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "63219fb3b22ab7c0174163bc0a54e048ae14821b2f9dd87acbd97d700d110d4f",
+          "attachmentFilename": "339f9a8afa3c5ad5f44e9bdf3cade8af5516ee0149a3006c2deacc9f00fd5df2",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "9f48e3f107544867d7aecaddf005e6b1e0a44730832d798a532730f6e27bc784",
+          "attachmentFilename": "7323189eb362ff2330465b2b94dd6b9f0eb1da1928eccd5d02a0541f791f415b",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "fa1a0b249bd3d22ee4c56b209f4d6f4e8cd8e983d30ef17f460845c642b65ec0",
+          "uploadOrganisationId": "09f9e5ab680a9b6ee162dcd4a9e71b8058523f71c487b15d8ade69e33a818d53"
+        },
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "3d4d3e9f37b1d361482023d229ee1f626b591e28adcbbd7e32241380a6ece390",
+          "documentIssueDate": "2024-10-12"
+        }
+      ],
+      "catchCertificateAttachments": [
+        {
+          "attachmentId": "8882d25b-18af-4b0f-9787-150377332201",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "b1934353-7e1b-4984-aa2e-4c9b87b25b57",
+              "catchCertificateReference": "ID-A051-LA-09240919-A006-SUB01-01-LT08-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "dee57293-a3a7-478e-a52c-b1913d641b9a",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "c6a32855-1d81-4e3d-a5e7-86e54d211f3b",
+              "catchCertificateReference": "ID-A051-LA-18-240919-A006-SUB01-01-LT07-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "1b749d13-22d2-47a1-a6f5-b2c56560ea69",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "98cf7780-71c2-4938-b21f-e468f206c9b1",
+              "catchCertificateReference": "ID-A051-LA-16-240919-A006-SUB01-01-LT06-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "c450c7ff-88df-4778-942d-5507b043ea62",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "51e43ca6-a9eb-4cac-b541-5d7f2ec9f628",
+              "catchCertificateReference": "ID-A051-LA-15-240919-A006-SUB01-01-LT05-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "164e83f8-754c-41a8-a6ca-75efd577a5c3",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "7a8ba2be-032b-4eb6-b894-7170bf768139",
+              "catchCertificateReference": "ID-A051-LA-21-240919-A006-SUB01-01-LT04-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "f399b42d-9e09-4ecc-8e0b-61d651c9e93e",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "9f0ee02b-09cd-4345-8b9a-9c04fe4a3ad5",
+              "catchCertificateReference": "ID-A051-LA-14-240919-A006-SUB01-01-LT03-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "c8793806-bf0f-40c8-a72f-0a192b756f33",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "f368a3cf-e754-40e6-ab05-5008b3b35630",
+              "catchCertificateReference": "ID-A051-LA-20-240919-A006-SUB01-01-LT02-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "6b03dd44-cb14-4f14-948f-d06cf061ef96",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "0d18fe0f-5ec2-4520-9415-2fe5e876c0a9",
+              "catchCertificateReference": "ID-A051-LA-16-240919-A006-SUB01-01-LT01-241106",
+              "dateOfIssue": "2024-11-06",
+              "flagState": "ID",
+              "species": [
+                "121119"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "fa527583d18b47abce39e286380df91811de6ba027068e3549bed648791d126a",
+    "sealsContainers": [
+      {
+        "sealNumber": "6e7f23450440b7f3770ceaf83e94afe7092c6e4ca8e41092830ff10ce37009c8",
+        "containerNumber": "3732f040c434e9fd7ab94a55e0ec3eca53256da7d7f5bbaae14742774e78d18b",
+        "officialSeal": true
+      }
+    ],
+    "submissionDate": "2024-12-09T09:58:58.080093631Z",
+    "submittedBy": {
+      "displayName": "4550fbe889b6afdd24e1f572d14e4f1d1b7a3825213443aee9bc58a2152f3d9a",
+      "userId": "03313237-284b-e911-a959-000d3a454e11"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBFXT",
+    "contactDetails": {
+      "name": "7b26db88b0ac34770439fb2ac45e621de4c6350bf80aad117384d4237899b214",
+      "telephone": "147c88e58be9b8347a5c74582c8f92b734be0b4c4445954c458f225598932c8a",
+      "email": "082b80aef113a8ddb5f23a701e52d55f27d1b2949ad7bc7e80240b349f217c7d"
+    },
+    "nominatedContacts": [
+      {
+        "name": "ed004b91964e5d6f83f6485bfca7b6b04a046b7b56bdccab165148db79ed4e89",
+        "telephone": "147c88e58be9b8347a5c74582c8f92b734be0b4c4445954c458f225598932c8a",
+        "email": "db595ee5b127d78bc38a97f044e85468ef244a771ddcfdff55ac4e08f7ccafd1"
+      }
+    ],
+    "isCatchCertificateRequired": true,
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "decisionBy": {
+    "displayName": "249af5ea6dc3d14ada125cf4da88ab45312dfbdb48c1ba98a5c2e0daef41b9e2",
+    "userId": "f0fece49-8641-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-18T13:35:14.075812087Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Satisfactory",
+      "identityCheckType": "Full Identity Check",
+      "identityCheckResult": "Satisfactory",
+      "physicalCheckResult": "Not Done",
+      "physicalCheckNotDoneReason": "Reduced checks regime"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": true,
+    "resealedContainersMapping": [
+      {
+        "sealNumber": "6e7f23450440b7f3770ceaf83e94afe7092c6e4ca8e41092830ff10ce37009c8",
+        "containerNumber": "3732f040c434e9fd7ab94a55e0ec3eca53256da7d7f5bbaae14742774e78d18b",
+        "officialSeal": true,
+        "resealedSealNumber": "b9dd819b2024e48aa97f9ad803d5f597c4133d6e1403287d6dc2a47f68fd03ba"
+      }
+    ],
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "3cd82ab1e5dfc25c6f799ea4f6614747954d2ee06f410c0ef03dda3c7d871559",
+        "lastName": "4e852f1b0d2daf908f20e14f7d0889e7c48850598d18e5662f90ec4b57425e76",
+        "email": "0035cde9e2f19de022c480d9a54aa4cfb1f464180e14ea240255f5b4e72be05e",
+        "phone": "a903b360440e85de95fa5b39a3181c0613f43296e77a68c347cd370491cdb14c",
+        "signed": "2024-12-18T13:35:14.111545541"
+      },
+      "iuuCheckRequired": true,
+      "iuuOption": "IUUOK"
+    },
+    "bipLocalReferenceNumber": "42666870d478e2745b70b9d2fd1f226d3e3ecd6db0e741a7d740f9eb867ed0f4",
+    "checkDate": "2024-12-18T13:35:00Z",
+    "inspectionRequired": "Required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "etag": "00000000046D8D37",
+  "riskDecisionLockingTime": "2024-12-11T19:00:00Z",
+  "isRiskDecisionLocked": true,
+  "chedTypeVersion": 1,
+  "isAutoClearanceExempted": true
+}

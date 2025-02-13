@@ -1,0 +1,280 @@
+{
+  "id": 4253441,
+  "referenceNumber": "CHEDP.GB.2024.4144842",
+  "version": 5,
+  "lastUpdated": "2024-12-04T10:34:32.203795935Z",
+  "lastUpdatedBy": {
+    "displayName": "b771b018b3ad00e5f4a0107a98c057ba573d5551f2b1a13737db9d7f844fb599",
+    "userId": "db092b42-1f3c-e911-a95d-000d3a454f67"
+  },
+  "type": "CVEDP",
+  "status": "CANCELLED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "99166589-2098-43d4-9b3a-df296587fcc2"
+      }
+    ],
+    "assessmentDateTime": "2024-04-30T15:51:49.097746715"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-04-30T14:50:17.29"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "9f5a799e8fa5dcc5422206a08ded4c064596fb893fc4d33a4ff1bdda022a295e",
+      "companyId": "4bdf3ae4-f338-e911-a958-000d3a454e11",
+      "companyName": "67eb671ac7904ce039b17e3c2e79f44a974d926aa37801733a7b6f8fa4b1f2dd",
+      "address": [
+        "1fd6d36bac18aeecf65542f826f8bd88c36de60bc4da3306f1c39d9d273cb564",
+        "188f48827512cefb322fda4e0b39c077595e9adfbe52c645c4fc1e77fcb821be",
+        "a92f87f0c19934b56038f630c57be7579a4d874d329b07d7ce4e1d69c082eedb",
+        "c8f654290fbc1a862c4bfea0dc57437de9ae9b673cd241d72d0a46e159fb3bdd"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "2b614908032147bc02654e191e88ffa8bf10f6105df6e170ecd35beded0a4bcf",
+      "email": "039ec1e9dd70cc8cca77a8150029e4efc2137986f478c5943d83ed8501eb21bf",
+      "contactId": "7168f31f-b3f1-ee11-904b-000d3aad43e7"
+    },
+    "consignor": {
+      "id": "53d2180e-61de-4edd-b9a6-366919f9d3dd",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "6dfed94a18ec75c3a75be70196b62cc77c8771de1fd5d09395b7ddebe9a04df0",
+      "address": {
+        "addressLine1": "a29e60401b183a52389b6a3d36ceb4f5435d551fc07eb07d30bc5cea17ae1d61",
+        "addressLine2": "d5cc29045cacec6e04c6bfa2060b396044befebaedba2dd9db193201f7a4e47c",
+        "city": "95cef17686cfc46575dc29eff328b7feeca96c8be5ec3099518a4312193dd51b",
+        "countryISOCode": "a2e72c247710db80464145aa78474cefbc8b82227d3a6e3e17b829980d617b46",
+        "telephone": "21fbb9ee3424535464956aed4f9ab73076390021c00a4de55e86fccf8a83f444",
+        "email": "f457ef4ea7bb8355ea1aa4730a94f8a2e1a4d4875a00b8e8005fd7204b5b5b4f"
+      },
+      "tracesId": 10097566
+    },
+    "consignee": {
+      "id": "68127f62-62df-4d82-8af3-883b4b561ace",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "ad7e55894b84f1e0e0791e8b954b2cd648e481b9778824e1c97ec5f501bafa00",
+      "address": {
+        "addressLine1": "8b78e0839774e2c8a659beaf7bf0682871aa989af34bd437fa4eff5711b8f8f5",
+        "addressLine2": "abe1806783f9797d33ffc0ad75255e3d32dbb1cba76213274be4fc1d555cd941",
+        "addressLine3": "5e09b4fa09aad41bc3106a028134c2ebd66846bce4d4fec64992a823c77dcc59",
+        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
+        "postalZipCode": "1eb1ea9075d75584c3d5ad216f05589740da646715ea3675ccb4fb8df92aca6c",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "e0747645e675a2b4a9e0d740e5fd85fd17e85c863bbf5a420f60fb1a1e44ebba",
+        "email": "fee80726348ddac52657ca6b3486e2933c31c580d1b67436cf2b3e1ea1590701"
+      },
+      "tracesId": 10069004
+    },
+    "importer": {
+      "id": "68127f62-62df-4d82-8af3-883b4b561ace",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "ad7e55894b84f1e0e0791e8b954b2cd648e481b9778824e1c97ec5f501bafa00",
+      "address": {
+        "addressLine1": "8b78e0839774e2c8a659beaf7bf0682871aa989af34bd437fa4eff5711b8f8f5",
+        "addressLine2": "abe1806783f9797d33ffc0ad75255e3d32dbb1cba76213274be4fc1d555cd941",
+        "addressLine3": "5e09b4fa09aad41bc3106a028134c2ebd66846bce4d4fec64992a823c77dcc59",
+        "city": "f39bd9913cd67f902fad1ab390f6dbf6f5ff1ab734194d4da12e1b2c423a0e6f",
+        "postalZipCode": "1eb1ea9075d75584c3d5ad216f05589740da646715ea3675ccb4fb8df92aca6c",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "e0747645e675a2b4a9e0d740e5fd85fd17e85c863bbf5a420f60fb1a1e44ebba",
+        "email": "fee80726348ddac52657ca6b3486e2933c31c580d1b67436cf2b3e1ea1590701"
+      },
+      "tracesId": 10069004
+    },
+    "placeOfDestination": {
+      "id": "9259b176-3807-4818-ad44-ae46bbfc99da",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "43c668a0cc563bb5d9e6cc06622659e2c7dc3b0b7aaead306d4e3962f0f9545e",
+      "address": {
+        "addressLine1": "8d4a2330642eaa48ab4da5fa325d7a0430f02c95eeb0e7e752a9255821ec79fc",
+        "addressLine2": "dfe84791ef9d0cda891580efd6167fa3fbae6d1f56af31f376f75fbed0b36ecc",
+        "addressLine3": "230a42eda43f2d73c90d71c9b385457d896a9a4eaa2e300ec7db6e3e4e4f6556",
+        "city": "24c7e451d89bde100558af9c42d8beb8f48a58c90f8d6fe6dff03d78b24cc027",
+        "postalZipCode": "3f5a26fc1b9829ec686e97a3ab3e56c1c3f6cbcf856c132c347a8ddd89c472e7",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "2cdc08df8e00bcfe05fb47eb28771e7ed72a309c2dae16267a314f1d827f41b2",
+        "email": "35d682fedfe2a3495a55b27be3bba4f7e3ee3efeaae816b25d8f72745ea794ea"
+      },
+      "tracesId": 10198894
+    },
+    "commodities": {
+      "totalGrossWeight": 10805.46,
+      "totalNetWeight": 10225.34,
+      "numberOfPackages": 518,
+      "temperature": "Chilled",
+      "commodityComplement": [
+        {
+          "commodityID": "02042300",
+          "commodityDescription": "Boneless",
+          "complementID": 1,
+          "complementName": "Ovis aries",
+          "speciesID": "f1a63aa6fdbb2517dc88f11f744c3706a163079c01c1392e607fa178349ca0d7",
+          "speciesName": "7a98b9255dd905138638301aa554450485365f45f119f5b95483fd56949b437c",
+          "speciesTypeName": "d9f2f4c3dfb3f8dcc5554e635a5e44050e8575933fe8ccb4b671d910917f8ae5",
+          "speciesType": "178ef9f3ee51e55be7b02236cb4fba1d0709899de8f1b17fab7c356f96f46077",
+          "speciesClass": "8571eeddbd4865d73e2959af2c23224ac0a620a3f05d4ee1cc6631eb7d82c3f8",
+          "speciesNomination": "7a98b9255dd905138638301aa554450485365f45f119f5b95483fd56949b437c"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "99166589-2098-43d4-9b3a-df296587fcc2",
+          "complementID": 1,
+          "speciesID": "167291",
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "10225.34"
+            },
+            {
+              "key": "number_package",
+              "data": "518"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "NZ",
+      "consignedCountry": "NZ"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBLGP1",
+    "arrivalDate": "2024-05-03",
+    "arrivalTime": "12:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "9aaffb4bff6e0713926c393c31290819066384b57002a64c06e5a9ce244cb642",
+      "type": "Ship",
+      "document": "d3c776ec4649e41a2d9c256c5aa43c5a098e800fdc53b72e5a6924a05a3d38aa"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "cacf081e-e67f-aeb7-6577-b777ca3751bd",
+          "name": "bddc0c38bcbdd0ddb61b1eb8d594b61f00c063a3fdf41d8b21260ec694ea886b",
+          "country": "NZ",
+          "types": [
+            "Category 3"
+          ],
+          "approvalNumber": "7e280d161dc2d07dc5b316d8260a495eb1f64cba5b3cc5b4fd23d1bfad128c62",
+          "section": "Plants or establishments manufacturing intermediate products"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "38f4ffe4a2e70c273ece0d1e217b26eb7d8a5763e0709e66a64f348bfcafd88a",
+          "documentIssueDate": "2024-03-21"
+        }
+      ]
+    },
+    "sealsContainers": [
+      {
+        "sealNumber": "16f9664c30be858e60e370bd796a08620ecdf141e80cf1b6161865837cdbd4e2",
+        "containerNumber": "bd469ead6e4d0a887f7c0fe35c219c6eafcc19e645e5562f6daa425630dc8c8b",
+        "officialSeal": true
+      }
+    ],
+    "submissionDate": "2024-05-02T12:02:29.255425529Z",
+    "submittedBy": {
+      "displayName": "9f5a799e8fa5dcc5422206a08ded4c064596fb893fc4d33a4ff1bdda022a295e",
+      "userId": "7168f31f-b3f1-ee11-904b-000d3aad43e7"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBLGP",
+    "contactDetails": {
+      "name": "b170d7d9cc910b694e7ef5358c1610c27eb79e079454fa489edd3b1113ba935b",
+      "telephone": "2c98db849d37ba2f25d61ee6973a29c884971b59c81eadb0e6052f1188a6042a",
+      "email": "58b53fe2bbe31cdc7b19db1faa4a8ed39fbdd2ec903f0a8632808084dc1f1706"
+    },
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "decision": {
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {},
+    "laboratoryTests": {},
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "8825713ba07f330da505f58c3ed5d3efe110c0bc63f9a0c0b81f02436d881133",
+        "lastName": "c47586a8f5afcc4100934522a520c2cecdce83cb7b7051b5ea522bd3aa6faa1a",
+        "email": "24089d21945122dd345b4ac027d0afa3bb0e81846d2160e0b45e3f7efd2c2eb2",
+        "phone": "ac30dfcab45d83b593bbbbc366aacc1080b8a7fa4bcce372c27951fd08c3c84f"
+      }
+    },
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/decision/consignmentacceptable",
+        "message": "What is the decision for this consignment"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/physicalcheckdone",
+        "message": "Physical check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/documentcheckresult",
+        "message": "Documentary check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/identitycheckdone",
+        "message": "Identity check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/laboratorytestsrequired",
+        "message": "Are laboratory tests required"
+      }
+    ],
+    "inspectionRequired": "Not required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/documentcheckresult",
+      "message": "Documentary check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/identitycheckdone",
+      "message": "Identity check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/physicalcheckdone",
+      "message": "Physical check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/laboratorytestsrequired",
+      "message": "Are laboratory tests required"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/decision/consignmentacceptable",
+      "message": "What is the decision for this consignment"
+    }
+  ],
+  "etag": "0000000004502D5A",
+  "riskDecisionLockingTime": "2024-05-03T09:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 1
+}

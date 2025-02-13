@@ -1,0 +1,309 @@
+{
+  "id": 4118377,
+  "referenceNumber": "CHEDD.GB.2024.5118377",
+  "version": 1,
+  "lastUpdated": "2024-12-16T20:08:21.082027952Z",
+  "lastUpdatedBy": {
+    "displayName": "816eb2ea7b7ae758325080da95670bfbba5f63578d473fdcf761ca5f468a0cfb",
+    "userId": "7bb2f8d6-fd3f-e911-a955-000d3a454330"
+  },
+  "type": "CED",
+  "status": "VALIDATED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "ca75c85c-b375-4c8b-8b2c-8afcb79f0704"
+      }
+    ],
+    "assessmentDateTime": "2024-11-08T16:14:08.830101467"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "aa5bfed5be1b3a8e28990d79a9f2f4b9ccf9fa0b42151a5c8d60ae8afa47fe61",
+      "companyId": "3cd6c351-7a56-eb11-a812-000d3a447c3d",
+      "companyName": "005c371ad89e5f3d0c16b27adaa46d3124387c5a61c7e3137fbbca3f63a6a216",
+      "address": [
+        "430c71ed59d3d7c8dbbb5e05e4731d6fe0830f81caf3bd21f6de4c8f3371d9bd",
+        "98e7c9a89a6578774b154142d879935b6fd56add3d139cb0808191675fd057b9",
+        "9c5410108c43bc301b056ceb9cf8f68252615bbd1a0ef8b203634a8ebf441211",
+        "174cd9ed626ae5b57d96c83d2db6046f3bb714ced67f8ae822253ed079afb48a",
+        "47b1b5b40c8a0deb21db57891e196bfc0b3811143210a9dcd841421e364e50de"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "b5c22a1d138205207132276aafa21aa67754766a6e80e6579678b49c29466905",
+      "email": "db090c7f1db0f5f74a67572fd13b6f14648aa21bdca994095c444ec1f539196c",
+      "contactId": "30d6c351-7a56-eb11-a812-000d3a447c3d"
+    },
+    "consignor": {
+      "id": "97f471c2-0d8b-4a1e-9fa0-d87e0a35ca9d",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "f8a05ed62df62516a74f873b51c970dc175886d5826d36b0127b7d0df841412e",
+      "address": {
+        "addressLine1": "b9a5bd7829c4f5732ab6da6da3dd33bd33ea83fdd59a92c1a27637408004a8e6",
+        "addressLine2": "95332b57267e059937bacc862054a81191ee3a6a8aa6e6bdf969c19e756b4380",
+        "city": "1842db212d9fced3744f3557b6f4f0a62bb3b1e071d4e532e6ff186cb26b7337",
+        "postalZipCode": "e398ca27fb893bb13436d590ac56d0330ba87a2b1fc0acd23e0693da1e954365",
+        "countryISOCode": "d5ab07c7aa427652be026949d5db9223599bd2563c048b3ef7509b50cd1e72ba",
+        "telephone": "12af6ccadfba6140829a9fcba60f9c2b6058688cce77d014ffe4d0cd074b0784",
+        "email": "32ba7d70612e567587bb7758932b6c3f25bb32e9bca932c3eb77f1bfd63c41a5"
+      },
+      "tracesId": 10010836
+    },
+    "consignee": {
+      "id": "bef7e3e4-35ba-4d7f-8c3a-d30e3b9f73bb",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "f757ff07b000827d1fdb317994702665095bb09fd600bd64b54e69f0792298ba",
+      "address": {
+        "addressLine1": "3e986235a1c5c1a10973b564f809fd029a4c4df8156d5f9d9d60cc1407f085d9",
+        "addressLine2": "f9cfa0f15ede3d83e67a30f2d7280c9935978ce27643fe31fbd59d1cdd16e109",
+        "city": "9f80e71a4f257f31f46d724911990ea5785fec44addfc6db48e9233b03c9827d",
+        "postalZipCode": "e19ed0031f6cdbec35f14f558db4256ec1bd297ca22f2313031a375989a79d35",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "55a5421ec8b41ced26594c8e4920e6413155056f63533f43504c7912b6e4c5fb",
+        "email": "9afe13e3cdf0ce80917f6fb5683ce8c3d820aacc854e4269e17bae200085377d"
+      },
+      "tracesId": 10063032
+    },
+    "importer": {
+      "id": "bef7e3e4-35ba-4d7f-8c3a-d30e3b9f73bb",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "f757ff07b000827d1fdb317994702665095bb09fd600bd64b54e69f0792298ba",
+      "address": {
+        "addressLine1": "3e986235a1c5c1a10973b564f809fd029a4c4df8156d5f9d9d60cc1407f085d9",
+        "addressLine2": "f9cfa0f15ede3d83e67a30f2d7280c9935978ce27643fe31fbd59d1cdd16e109",
+        "city": "9f80e71a4f257f31f46d724911990ea5785fec44addfc6db48e9233b03c9827d",
+        "postalZipCode": "e19ed0031f6cdbec35f14f558db4256ec1bd297ca22f2313031a375989a79d35",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "55a5421ec8b41ced26594c8e4920e6413155056f63533f43504c7912b6e4c5fb",
+        "email": "9afe13e3cdf0ce80917f6fb5683ce8c3d820aacc854e4269e17bae200085377d"
+      },
+      "tracesId": 10063032
+    },
+    "placeOfDestination": {
+      "id": "bef7e3e4-35ba-4d7f-8c3a-d30e3b9f73bb",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "f757ff07b000827d1fdb317994702665095bb09fd600bd64b54e69f0792298ba",
+      "address": {
+        "addressLine1": "3e986235a1c5c1a10973b564f809fd029a4c4df8156d5f9d9d60cc1407f085d9",
+        "addressLine2": "f9cfa0f15ede3d83e67a30f2d7280c9935978ce27643fe31fbd59d1cdd16e109",
+        "city": "9f80e71a4f257f31f46d724911990ea5785fec44addfc6db48e9233b03c9827d",
+        "postalZipCode": "e19ed0031f6cdbec35f14f558db4256ec1bd297ca22f2313031a375989a79d35",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "55a5421ec8b41ced26594c8e4920e6413155056f63533f43504c7912b6e4c5fb",
+        "email": "9afe13e3cdf0ce80917f6fb5683ce8c3d820aacc854e4269e17bae200085377d"
+      },
+      "tracesId": 10063032
+    },
+    "commodities": {
+      "totalGrossWeight": 2676.5,
+      "totalNetWeight": 2650,
+      "numberOfPackages": 106,
+      "temperature": "Ambient",
+      "commodityComplement": [
+        {
+          "commodityID": "0904220019",
+          "commodityDescription": "Other",
+          "complementID": 32822,
+          "speciesType": "d8bdf9a0cb27a193a1127de2924b6e5a9e4c2d3b3fe42e935e160c011f3df1fc",
+          "speciesClass": "646a2d4f51d048c7e564167338414ef8f73719753c348f0d2f1fcba288f3e532"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "ca75c85c-b375-4c8b-8b2c-8afcb79f0704",
+          "complementID": 32822,
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "2650"
+            },
+            {
+              "key": "number_package",
+              "data": "106"
+            },
+            {
+              "key": "type_package",
+              "data": "Bag"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "IN",
+      "isLowRiskArticle72Country": false,
+      "consignedCountry": "IN",
+      "commodityIntendedFor": "human"
+    },
+    "purpose": {
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBFXT1",
+    "arrivalDate": "2024-11-15",
+    "arrivalTime": "12:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "b70a55b822a2c266e4ea480d0dd240189693418605c451bb7db66b0209e1a21e",
+      "type": "Ship",
+      "document": "9f62449cb0a79e5534f33e08d8d242e3d83fbff5128c31869f36eef802c4c97b"
+    },
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "healthCertificate",
+          "documentReference": "19fd7959b4d65b5279fc5c2e4a0a48c0f659898592f7f950ee4c2ca2a9f15e27",
+          "documentIssueDate": "2024-09-09",
+          "attachmentId": "b0eb9cdf9fe87a3a7ea1f4f4f6637f9d946e45d57349120dbef1d2afec2da8a2",
+          "attachmentFilename": "ad6c1bfcd26df7ce2f7db8c9fc309aa67d48ff589af62bb5799baebfa355fdeb",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "20f031977812f7b096d9d0397e12307ba87405cb65c0076e9c764c1969265ba0",
+          "uploadOrganisationId": "2c2cebf839277871a8637ef57a5fe6c2074cc944bca913f632cbafddcf9a8434"
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "a6b3c61590acc91acb29fbe657374b5a1cba252d86627af2aa2c564c74f8d4d6",
+    "sealsContainers": [
+      {
+        "sealNumber": "00c8bb05e5664c817be35eedec1e4b63cd8e84a9c1cefe99932fe5170554bf8b",
+        "containerNumber": "a4302dcfa42c62cf091702f5c1654ce6dcb25707cc366b63b9fc714e70e35939",
+        "officialSeal": true
+      }
+    ],
+    "submissionDate": "2024-11-08T16:14:04.911197186Z",
+    "submittedBy": {
+      "displayName": "aa5bfed5be1b3a8e28990d79a9f2f4b9ccf9fa0b42151a5c8d60ae8afa47fe61",
+      "userId": "30d6c351-7a56-eb11-a812-000d3a447c3d"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBFXT",
+    "contactDetails": {
+      "name": "ec8cda04e746003d3b52b81a94f0b7918eeab05d384ef498139622067915b204",
+      "telephone": "52df2bd30df9f5828c03db1b7073b321ec63df6e1e34c91025afbfc2e840604b",
+      "email": "f3b89c71697e62f982a33f82b7c62921755527394c410f6587df44b0fb2eefdd"
+    },
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "decisionBy": {
+    "displayName": "816eb2ea7b7ae758325080da95670bfbba5f63578d473fdcf761ca5f468a0cfb",
+    "userId": "7bb2f8d6-fd3f-e911-a955-000d3a454330"
+  },
+  "decisionDate": "2024-12-16T20:08:21.050076445Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Satisfactory",
+      "identityCheckDone": true,
+      "identityCheckResult": "Satisfactory",
+      "physicalCheckDone": true,
+      "physicalCheckResult": "Satisfactory"
+    },
+    "laboratoryTestsRequired": true,
+    "laboratoryTests": {
+      "testDate": "2024-12-16T20:03:06.961",
+      "singleLaboratoryTests": [
+        {
+          "commodityCode": "0904220019",
+          "tracesID": 1,
+          "testName": ".RESIDUES OF PESTICIDES",
+          "applicant": {
+            "analysisType": "Initial analysis",
+            "laboratory": "ea0f1c129ce3194d4b714dc4735c23af5c68c89a0586e13b65e01c77866b2d74",
+            "laboratoryAddress": "10d40bfca5cf462797c4e6db6f78f5ce98d8abab15aaf5cf68ae0689de5ebcab",
+            "laboratoryIdentification": "c275b200888e60eb037b815362428e127064be9796dc2345cccce2fe7efde174",
+            "laboratoryEmail": "cc549cde51728297915528e59b306f4c4cb2c0048a63452d2e9752f262ae9f52",
+            "laboratoryPhoneNumber": "c4cd04fc76f6ee01141facd4970df4676bccc2095ed6cdb5e6d8a6d3fc7e2ff0",
+            "sampleBatchNumber": "9d501c1c565c23b33ee48d0079bab6f9b7e4edce6c9722a5a66f2fc87cccc502",
+            "numberOfSamples": 1,
+            "sampleType": "d23b154ceff448020a56818d93256bf5c9c9a9fd772b33951da0302a4ddc49cb",
+            "conservationOfSample": "Ambient",
+            "inspector": {
+              "name": "b871c08deb4566719aa71fd18957f17929ff5599e35eeabe4bab7dfcf6630a26",
+              "phone": "8c800be4bf4858d293a683b0860f6a0a78d1fe656428f61aceb2043772b9486e",
+              "email": "d223fa5ea05b6886a7044d90efad88d86b6eeb15688b7ea5ea1c2857cd91743a"
+            },
+            "sampleDate": "2024-11-28",
+            "sampleTime": "11:51:00"
+          },
+          "laboratoryTestResult": {
+            "sampleUseByDate": "2024-11-29",
+            "releasedDate": "2024-12-16",
+            "laboratoryTestMethod": "b6216e78413cb0a969a59a5fc6f03bee1fc0ff1251c317893dedab887cecb0f0",
+            "results": "1553076c4a10ac5775da9e0bfc2ed646b4361a685c09f77636cf250b5b9a57be",
+            "conclusion": "Satisfactory",
+            "labTestCreatedDate": "2024-11-28"
+          }
+        },
+        {
+          "commodityCode": "0904220019",
+          "tracesID": 1,
+          "testName": "Aflatoxins",
+          "applicant": {
+            "analysisType": "Initial analysis",
+            "laboratory": "ea0f1c129ce3194d4b714dc4735c23af5c68c89a0586e13b65e01c77866b2d74",
+            "laboratoryAddress": "10d40bfca5cf462797c4e6db6f78f5ce98d8abab15aaf5cf68ae0689de5ebcab",
+            "laboratoryIdentification": "c275b200888e60eb037b815362428e127064be9796dc2345cccce2fe7efde174",
+            "laboratoryEmail": "cc549cde51728297915528e59b306f4c4cb2c0048a63452d2e9752f262ae9f52",
+            "laboratoryPhoneNumber": "c4cd04fc76f6ee01141facd4970df4676bccc2095ed6cdb5e6d8a6d3fc7e2ff0",
+            "sampleBatchNumber": "3a82d7d69bd3f02849c5ed8cb968f5c87e943ef03ceed12c14c4416ee97cb647",
+            "numberOfSamples": 1,
+            "sampleType": "d23b154ceff448020a56818d93256bf5c9c9a9fd772b33951da0302a4ddc49cb",
+            "conservationOfSample": "Ambient",
+            "inspector": {
+              "name": "b871c08deb4566719aa71fd18957f17929ff5599e35eeabe4bab7dfcf6630a26",
+              "phone": "8c800be4bf4858d293a683b0860f6a0a78d1fe656428f61aceb2043772b9486e",
+              "email": "d223fa5ea05b6886a7044d90efad88d86b6eeb15688b7ea5ea1c2857cd91743a"
+            },
+            "sampleDate": "2024-11-28",
+            "sampleTime": "11:51:00"
+          },
+          "laboratoryTestResult": {
+            "sampleUseByDate": "2024-11-29",
+            "releasedDate": "2024-12-16",
+            "laboratoryTestMethod": "17da7f751a317302790c018281e0e196db3e36659d78adad13e3b30a334b5af6",
+            "results": "534b4a77f1a0b9573941e1287a77d3af2034b95b23daaaac7d9557d12f2753fc",
+            "conclusion": "Satisfactory",
+            "labTestCreatedDate": "2024-11-28"
+          }
+        }
+      ]
+    },
+    "resealedContainersIncluded": true,
+    "resealedContainersMapping": [
+      {
+        "sealNumber": "00c8bb05e5664c817be35eedec1e4b63cd8e84a9c1cefe99932fe5170554bf8b",
+        "containerNumber": "a4302dcfa42c62cf091702f5c1654ce6dcb25707cc366b63b9fc714e70e35939",
+        "officialSeal": true,
+        "resealedSealNumber": "5ecb9415c569cb18e20964d827817ec1c383aeb7eccb79c9b82d47b6105c28b0"
+      }
+    ],
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "f30fb0a7c8b5952f3f9f7b44a50a0a8216ce5fb31e68c0872f16e420051217bb",
+        "lastName": "2eece9ae1648865a99c20ccd00a60bf59f35c2d1b877caf5042c1d37dd5dc4e9",
+        "email": "90e8f3e58b058e040c1d3c070a5fb8f5a0aa9f4b736919aef6082d17ae604ef5",
+        "phone": "00913b7d40da009a578aa1d1a193038c228abe799e22a545d9b04357a768ade6",
+        "signed": "2024-12-16T20:08:21.081986752"
+      }
+    },
+    "bipLocalReferenceNumber": "7285f3ee4e37a7ed204b131814f9b45050f072f435769fdd32e058a5e085e496",
+    "checkDate": "2024-12-16T20:08:00Z",
+    "inspectionRequired": "Not required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "etag": "000000000469D3B6",
+  "chedTypeVersion": 2
+}

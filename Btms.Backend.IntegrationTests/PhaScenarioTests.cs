@@ -17,9 +17,8 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
     : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
     private bool _saveData = true;
-    
-    [Fact]
-    public async Task RedactFiles()
+   
+    private async Task RedactIPAFFSFiles()
     {
         var di = new DirectoryInfo("../../../Fixtures/PhaScenarios/IPAFFS");
 
@@ -41,6 +40,7 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
     [Fact]
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
+        await RedactIPAFFSFiles();
         await ClearDb();
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
@@ -60,7 +60,7 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
             SyncPeriod = SyncPeriod.All, RootFolder = "PhaScenarios"
         });
 
-        var cheds = new string[] 
+        var expectedCheds = new List<string>
         {
             "CHEDA.GB.2024.4792831",
             "CHEDD.GB.2024.5019877",
@@ -80,16 +80,20 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
         };
 
         var document = Client.AsJsonApiClient().Get("api/import-notifications?page[size]=20");
-        document.Data.Count.Should().Be(cheds.Length);
+        var importedNotifications = document.Data.Select(d => d.Id).ToArray();
+
+        foreach (var expectedChed in expectedCheds)
+        {
+            importedNotifications.Should().Contain(expectedChed);
+        }
         
+        //succeeds
         if (_saveData)
         {
             const string outputDirectory = "../../../PhaScenarioTestsOutput";
-            var dirInfo = Directory.CreateDirectory(outputDirectory);
+            Directory.CreateDirectory(outputDirectory);
             
-            System.Console.WriteLine(dirInfo.FullName);
-            
-            foreach (var ched in cheds)
+            foreach (var ched in expectedCheds)
             {
                 var json = await GetDocument($"api/import-notifications/{ched}", Client.AsHttpClient());
                 await File.WriteAllTextAsync($"{outputDirectory}/btms-import-notification-single-{ched}.json", json);
@@ -114,7 +118,6 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
                 var json = await GetDocument($"api/movements/{mrn}", Client.AsHttpClient());
                 await File.WriteAllTextAsync($"{outputDirectory}/btms-movement-single-{mrn}.json", json);
             }
-            
             
             var grmIds = new[]
             {

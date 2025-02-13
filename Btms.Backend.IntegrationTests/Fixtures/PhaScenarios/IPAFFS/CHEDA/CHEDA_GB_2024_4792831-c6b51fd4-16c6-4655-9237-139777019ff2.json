@@ -1,0 +1,270 @@
+{
+  "id": 4255132,
+  "referenceNumber": "CHEDA.GB.2024.4792831",
+  "version": 6,
+  "lastUpdated": "2024-12-04T13:25:01.362829997Z",
+  "lastUpdatedBy": {
+    "displayName": "75d7defc31ecec06f0b5807fb4e9233d4ab43043a2f16bce4881b7d7928f0614",
+    "userId": "20e42cdb-0a50-eb11-a812-000d3aab241b"
+  },
+  "type": "CVEDA",
+  "status": "SUBMITTED",
+  "isHighRiskEuImport": true,
+  "partOne": {
+    "personResponsible": {
+      "name": "75d7defc31ecec06f0b5807fb4e9233d4ab43043a2f16bce4881b7d7928f0614",
+      "companyId": "2ce42cdb-0a50-eb11-a812-000d3aab241b",
+      "companyName": "b92eeb390f21578998972af7acc20f1b00e86755e300a922a4a0974cf0069951",
+      "address": [
+        "abd4b8315a1a97fb10339871bdc36a87a4253eead43ea19f9b0df9d44296b3b1",
+        "0accdd529ab062ed077a3e51765030ae993d3cd8de71ef67a5569de06111b435",
+        "85fdc05dd19c328f91d733e52bdfa6727a464e941fa5a7d29ab76db4f5c0baf4",
+        "10e3a1686e281c57f853bd89731f35d131e5363678f0566592b20dc00101aa5f",
+        "8a908e210731ed9eb694d522ab747c89f3130aa234dca36fcd938f9d873666b5"
+      ],
+      "country": "GB-ENG",
+      "tracesID": 1001,
+      "phone": "4d707adf16cdc7a8fb68532a5ca2589e7a2485fde9066c2054b51292e45cc784",
+      "email": "c7b303d676acc00df841ddf714080508eca2b31ac4c5d228fa9a5e4885620f81",
+      "contactId": "20e42cdb-0a50-eb11-a812-000d3aab241b"
+    },
+    "consignor": {
+      "id": "d13d87e1-6618-4d7e-9282-a826fd5223fe",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "7156258229b03b33591729840709188d361a423350ab165cd435ed9f588789d7",
+      "address": {
+        "addressLine1": "5805c41abe539c98ebfd686401afa3b6fce8dfe104506d512533b3856698cfe1",
+        "city": "795993fe1563b674d7a23440255510394ea7c31dcc42516d4142afd69696256e",
+        "postalZipCode": "4eb88c3cf1662ee9772905f80a7965ab54796e181cd97ee77433173f86a422a0",
+        "countryISOCode": "87dac318f1efbb7a818af014ff8faef927129e20ccd18cf34e38ce8531b4360b",
+        "telephone": "8e2efd4902d361cb4df64ed1cf77c809f1d06c733dd2853770c0e8c0206bcdce",
+        "email": "bd5486705a10a38ed4ea848c7fe057b867ff5eed5f265e1fa215445f8b440fd2"
+      },
+      "tracesId": 10098304
+    },
+    "consignee": {
+      "id": "ca3b7b64-1742-444c-93a6-e64a63bb039b",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "eaabf5e2d1c5f29283b619e24a017c19897257ef9f9020325db836306e690c44",
+      "address": {
+        "addressLine1": "745499bd39704315fbd759ba8c597bae4a08da2289b621eadb0b04328db0cb2d",
+        "addressLine2": "164442b7c92919146cc7441f054dccb0de0c20423160f93f238dcd5d9b228e74",
+        "addressLine3": "d3f98e8bd35d223c752473921e2cce86c993bfc420128dfba55c005414a34a1f",
+        "city": "65a8640d2a1dee36308c6f6fd8d40dcd80bd0fd94024add1171abfe99b64128c",
+        "postalZipCode": "0a5ebd956e85596d451c861c2c550a1f5f6a0d9a746646f320775d5d65a28865",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "aed82767ad8412b56196aaa77af430f700e3583f80118865572a3f563e212433",
+        "email": "c61a4d3269a3db1473f79c3ba0bff47e77faa9d7cb772a82bb06a979210f4b69"
+      },
+      "tracesId": 10299008
+    },
+    "importer": {
+      "id": "7a48027d-85be-4b35-ab51-93ca1566ad1a",
+      "type": "importer",
+      "status": "nonapproved",
+      "companyName": "b92eeb390f21578998972af7acc20f1b00e86755e300a922a4a0974cf0069951",
+      "address": {
+        "addressLine1": "4ed985a6ef92804c87cfb02b6c2e47448ebe34a4a7039742c8ca47554f569ed1",
+        "addressLine2": "26345e4aab434e7240e01814a13d329106976084a916efebd5548f047ae2c44a",
+        "addressLine3": "85fdc05dd19c328f91d733e52bdfa6727a464e941fa5a7d29ab76db4f5c0baf4",
+        "city": "ed808a3d03fb053bbd576a80bbdc5e9a8a20d5d4efbdf8c0d33103743a4270b3",
+        "postalZipCode": "8a908e210731ed9eb694d522ab747c89f3130aa234dca36fcd938f9d873666b5",
+        "countryISOCode": "85bee5313027e26874b0a80974c64b6c46438d6ba8ca93684e2a6d09a3379efe",
+        "telephone": "4d707adf16cdc7a8fb68532a5ca2589e7a2485fde9066c2054b51292e45cc784",
+        "email": "dfecf6a70bd53fb3004448116d628532235b611dbd0a9b37551bdca33043caa1"
+      },
+      "tracesId": 10012907
+    },
+    "placeOfDestination": {
+      "id": "ca3b7b64-1742-444c-93a6-e64a63bb039b",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "eaabf5e2d1c5f29283b619e24a017c19897257ef9f9020325db836306e690c44",
+      "address": {
+        "addressLine1": "745499bd39704315fbd759ba8c597bae4a08da2289b621eadb0b04328db0cb2d",
+        "addressLine2": "164442b7c92919146cc7441f054dccb0de0c20423160f93f238dcd5d9b228e74",
+        "addressLine3": "d3f98e8bd35d223c752473921e2cce86c993bfc420128dfba55c005414a34a1f",
+        "city": "65a8640d2a1dee36308c6f6fd8d40dcd80bd0fd94024add1171abfe99b64128c",
+        "postalZipCode": "0a5ebd956e85596d451c861c2c550a1f5f6a0d9a746646f320775d5d65a28865",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "aed82767ad8412b56196aaa77af430f700e3583f80118865572a3f563e212433",
+        "email": "c61a4d3269a3db1473f79c3ba0bff47e77faa9d7cb772a82bb06a979210f4b69"
+      },
+      "tracesId": 10299008
+    },
+    "commodities": {
+      "numberOfPackages": 0,
+      "numberOfAnimals": 1,
+      "commodityComplement": [
+        {
+          "commodityID": "0101",
+          "commodityDescription": "Live horses, asses, mules and hinnies",
+          "complementID": 1,
+          "complementName": "Equus caballus",
+          "speciesID": "0146fc5ebc63304801a9e6f8d7745ac0c98b5199d075391467e6f3f5c01e8f31",
+          "speciesName": "c2e70bb3fd5a0f913bb50be6f150a4ee3bbc3843869d8d1be615c4bb490454db",
+          "speciesType": "d8bdf9a0cb27a193a1127de2924b6e5a9e4c2d3b3fe42e935e160c011f3df1fc",
+          "speciesClass": "0146fc5ebc63304801a9e6f8d7745ac0c98b5199d075391467e6f3f5c01e8f31",
+          "speciesNomination": "c2e70bb3fd5a0f913bb50be6f150a4ee3bbc3843869d8d1be615c4bb490454db"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "0725b2d1-40f9-40b2-8b52-fd313aabfeb1",
+          "complementID": 1,
+          "speciesID": "147603",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "0"
+            },
+            {
+              "key": "number_animal",
+              "data": "1"
+            }
+          ],
+          "identifiers": [
+            {
+              "speciesNumber": 1,
+              "data": {
+                "horse_name": "SHEERAN WL",
+                "microchip": "958000010356220",
+                "passport": "826002160878795"
+              }
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "BE",
+      "animalsCertifiedAs": "Registered"
+    },
+    "purpose": {
+      "internalMarketPurpose": "Registered Horses",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBAPHA1A",
+    "arrivalDate": "2025-01-30",
+    "arrivalTime": "22:00:00",
+    "transporter": {
+      "id": "3e6cdd71-9dd6-4cf6-8b37-fc42047c0826",
+      "type": "commercial transporter - user added",
+      "status": "nonapproved",
+      "companyName": "eaabf5e2d1c5f29283b619e24a017c19897257ef9f9020325db836306e690c44",
+      "approvalNumber": "e9a3a7cb8b80dcc6d828b7f66c6c6af3cee94d361ea4139cc843a991cca21692",
+      "address": {
+        "addressLine1": "745499bd39704315fbd759ba8c597bae4a08da2289b621eadb0b04328db0cb2d",
+        "addressLine2": "164442b7c92919146cc7441f054dccb0de0c20423160f93f238dcd5d9b228e74",
+        "addressLine3": "d3f98e8bd35d223c752473921e2cce86c993bfc420128dfba55c005414a34a1f",
+        "city": "65a8640d2a1dee36308c6f6fd8d40dcd80bd0fd94024add1171abfe99b64128c",
+        "postalZipCode": "0a5ebd956e85596d451c861c2c550a1f5f6a0d9a746646f320775d5d65a28865",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "aed82767ad8412b56196aaa77af430f700e3583f80118865572a3f563e212433",
+        "email": "c61a4d3269a3db1473f79c3ba0bff47e77faa9d7cb772a82bb06a979210f4b69"
+      },
+      "tracesId": 10309544
+    },
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "bbfd66fc8107b9aaab230a1e848d6699c8be3cb892082527ae979d09583769f4",
+      "type": "Road Vehicle",
+      "document": "bbfd66fc8107b9aaab230a1e848d6699c8be3cb892082527ae979d09583769f4"
+    },
+    "veterinaryInformation": {},
+    "importerLocalReferenceNumber": "3771b4cb83fcf9c0217c3b1020c26e7b8b8527f1652f669e1afd83daf2d740f7",
+    "route": {
+      "transitingStates": [
+        "BE",
+        "FR"
+      ]
+    },
+    "submissionDate": "2024-12-04T13:25:01.332767012Z",
+    "submittedBy": {
+      "displayName": "75d7defc31ecec06f0b5807fb4e9233d4ab43043a2f16bce4881b7d7928f0614",
+      "userId": "20e42cdb-0a50-eb11-a812-000d3aab241b"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBDVR",
+    "provideCtcMrn": "NO"
+  },
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market"
+    },
+    "consignmentCheck": {
+      "euStandard": "Not Set",
+      "nationalRequirements": "Not Set",
+      "additionalGuarantees": "Not Set"
+    },
+    "impactOfTransportOnAnimals": {
+      "numberOfDeadAnimalsUnit": "number",
+      "numberOfUnfitAnimalsUnit": "number"
+    },
+    "consignmentValidation": [
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/",
+        "message": "A document type must be entered"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/documentcheckresult",
+        "message": "Documentary check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/physicalcheckresult",
+        "message": "Physical check result"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/welfarecheck",
+        "message": "Welfare check"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/identitycheckresult",
+        "message": "Complete identity check details"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/laboratorytestsrequired",
+        "message": "Are laboratory tests required"
+      },
+      {
+        "field": "uk/gov/defra/tracesx/notificationschema/representation/parttwo/consignmentcheck/numberofanimalschecked",
+        "message": "Animal number checked"
+      }
+    ]
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "consignmentValidation": [
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/documentcheckresult",
+      "message": "Documentary check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/laboratorytestsrequired",
+      "message": "Are laboratory tests required"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/welfarecheck",
+      "message": "Welfare check"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/identitycheckresult",
+      "message": "Complete identity check details"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/physicalcheckresult",
+      "message": "Physical check result"
+    },
+    {
+      "field": "uk/gov/defra/tracesx/notificationschema/representation/notification/parttwo/consignmentcheck/numberofanimalschecked",
+      "message": "Animal number checked"
+    }
+  ],
+  "etag": "000000000450D15D",
+  "riskDecisionLockingTime": "2025-01-30T20:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 1
+}

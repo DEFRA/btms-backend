@@ -1,0 +1,244 @@
+{
+  "id": 4252422,
+  "referenceNumber": "CHEDA.GB.2024.5129502",
+  "version": 2,
+  "lastUpdated": "2024-12-04T09:01:21.089498301Z",
+  "lastUpdatedBy": {
+    "displayName": "840d44f22455f6d122aa24ba73be92eaed8a08e86329fc2a45e007c1af18d03b",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "type": "CVEDA",
+  "status": "VALIDATED",
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "5423033d437e37ca255d933b4c1e261b266c1db20bdce71883d2daebb7fa33b5",
+      "companyId": "c9b402be-1944-e911-a95a-000d3a454977",
+      "companyName": "37e9e1e83602d6de70fb750aac5a691e2e50694f13c94bf2cdd29db446f31285",
+      "address": [
+        "fe5a59105ecc3cb03ce6e3d343e00e4bf69fa9abc83cdbdf9c765f43b9fe289b",
+        "5902006606ae6f6464c3fc987fec1fb55f7c845b53594a6f5da3beac24bb3708",
+        "588ebb5e37a934f6a2a807ff6a1e52c7883b21d60d1ad81441200176dd003db3",
+        "db29e01cbc9a2cb7bfddddbe37ba0bb39fb402f6aa258cf47fc3e7945ade0876"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "50e47af430ae8d5afd15fe2d99e6629040e1825c1ee633df940599e56fcd1872",
+      "email": "c5155aef5c3c1ec2957d977cb7679a34720df3f623a1c15a9b9dfa61ffe167e5",
+      "contactId": "3b973d26-6523-eb11-a813-000d3abb516e"
+    },
+    "consignor": {
+      "id": "aaf985bc-c384-40b2-9d2d-6ea05be2d201",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "adf4859920a332a87951c5b2276929c8164e6bef7fe9f4777d8c7b4ddc96350b",
+      "address": {
+        "addressLine1": "d26c17dd4f0a18bee0ecae4f46ea0c01a5c3b87309db592b55938e2b3e74340b",
+        "addressLine2": "1dc50dff4888da395fa8467699c3615fc9030f33cb1e7a96d4af042c605140fc",
+        "city": "0f4c79eb19cc3411243dc959bbfec0729ae21756e17e910da29f020f98b61b74",
+        "postalZipCode": "525481c8557aa8b5102e5a83b2ed161bb6a5713967631a26342c82d6016c12fc",
+        "countryISOCode": "050c3089433cc65356b196ac1184bff63e1d990043cc62df9e6f35666d577c11",
+        "telephone": "6b22eccfbd0bedeb1d7deec3978146c8264ea61a012f7a8bf8b8e7a2a81cf703",
+        "email": "f38b137df9e3e590ec9eba1f36ead22b333aac3cdc935673b73e03ba1a0676f3"
+      },
+      "tracesId": 10387777
+    },
+    "consignee": {
+      "id": "771b90dc-7a6a-4e69-a67e-a601f0e32e4b",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "adf4859920a332a87951c5b2276929c8164e6bef7fe9f4777d8c7b4ddc96350b",
+      "address": {
+        "addressLine1": "8db834b656cb5f3e2bf9762abaafa0c09f6884a6c442dc35cecf650fd95d3932",
+        "addressLine2": "93d0d5d6146ca11d65551e86626e738240b531698a6a8c3b920d840f07f3b0ad",
+        "addressLine3": "afdb03ed9be7811cb3d9fab902d3f80563dfd54d01b6a62b823e0b3a57307c34",
+        "city": "68a94df9652add9668f889fb1380fca8fa30dd3db9276bed26e364339ef8f5d2",
+        "postalZipCode": "2dcb013eb2d1ca3ce3b036cdd79d8011d614eec9754266546347c59fedae3b3c",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "63dfd6a6324897e855745cae08896dda7b99cc35493e9a102f5daac9c8a1dbc2",
+        "email": "f38b137df9e3e590ec9eba1f36ead22b333aac3cdc935673b73e03ba1a0676f3"
+      },
+      "tracesId": 10387778
+    },
+    "importer": {
+      "id": "771b90dc-7a6a-4e69-a67e-a601f0e32e4b",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "adf4859920a332a87951c5b2276929c8164e6bef7fe9f4777d8c7b4ddc96350b",
+      "address": {
+        "addressLine1": "8db834b656cb5f3e2bf9762abaafa0c09f6884a6c442dc35cecf650fd95d3932",
+        "addressLine2": "93d0d5d6146ca11d65551e86626e738240b531698a6a8c3b920d840f07f3b0ad",
+        "addressLine3": "afdb03ed9be7811cb3d9fab902d3f80563dfd54d01b6a62b823e0b3a57307c34",
+        "city": "68a94df9652add9668f889fb1380fca8fa30dd3db9276bed26e364339ef8f5d2",
+        "postalZipCode": "2dcb013eb2d1ca3ce3b036cdd79d8011d614eec9754266546347c59fedae3b3c",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "63dfd6a6324897e855745cae08896dda7b99cc35493e9a102f5daac9c8a1dbc2",
+        "email": "f38b137df9e3e590ec9eba1f36ead22b333aac3cdc935673b73e03ba1a0676f3"
+      },
+      "tracesId": 10387778
+    },
+    "placeOfDestination": {
+      "id": "771b90dc-7a6a-4e69-a67e-a601f0e32e4b",
+      "type": "consignee",
+      "status": "nonapproved",
+      "companyName": "adf4859920a332a87951c5b2276929c8164e6bef7fe9f4777d8c7b4ddc96350b",
+      "address": {
+        "addressLine1": "8db834b656cb5f3e2bf9762abaafa0c09f6884a6c442dc35cecf650fd95d3932",
+        "addressLine2": "93d0d5d6146ca11d65551e86626e738240b531698a6a8c3b920d840f07f3b0ad",
+        "addressLine3": "afdb03ed9be7811cb3d9fab902d3f80563dfd54d01b6a62b823e0b3a57307c34",
+        "city": "68a94df9652add9668f889fb1380fca8fa30dd3db9276bed26e364339ef8f5d2",
+        "postalZipCode": "2dcb013eb2d1ca3ce3b036cdd79d8011d614eec9754266546347c59fedae3b3c",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "63dfd6a6324897e855745cae08896dda7b99cc35493e9a102f5daac9c8a1dbc2",
+        "email": "f38b137df9e3e590ec9eba1f36ead22b333aac3cdc935673b73e03ba1a0676f3"
+      },
+      "tracesId": 10387778
+    },
+    "commodities": {
+      "numberOfPackages": 2,
+      "numberOfAnimals": 2,
+      "commodityComplement": [
+        {
+          "commodityID": "01061900",
+          "commodityDescription": "Other",
+          "complementID": 1,
+          "complementName": "Canis familiaris",
+          "speciesID": "eee226fe736f98edda708eaad3a51066d12282695d418dad2f60ce78515d0f49",
+          "speciesName": "87685ba1ebb655fa52219cbfbb02dcc97c226bc50bead67d322818f3c4c01881",
+          "speciesType": "d8bdf9a0cb27a193a1127de2924b6e5a9e4c2d3b3fe42e935e160c011f3df1fc",
+          "speciesClass": "6e367f90ca69bc8c2cf19f7d6ac998910d9704f8372d3825f7efc77361a76e57",
+          "speciesNomination": "87685ba1ebb655fa52219cbfbb02dcc97c226bc50bead67d322818f3c4c01881"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "a161bb2b-096c-4500-bda5-d471ee47fae3",
+          "complementID": 1,
+          "speciesID": "129518",
+          "keyDataPair": [
+            {
+              "key": "number_package",
+              "data": "2"
+            },
+            {
+              "key": "number_animal",
+              "data": "2"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "ZA",
+      "animalsCertifiedAs": "Other"
+    },
+    "purpose": {
+      "forImportOrAdmission": "Definitive import",
+      "purposeGroup": "For Re-Import"
+    },
+    "pointOfEntry": "GBLGW4",
+    "arrivalDate": "2024-12-04",
+    "arrivalTime": "06:55:00",
+    "transporter": {
+      "id": "90d14843-e6b2-4513-a21f-714b6624df29",
+      "type": "private transporter",
+      "status": "nonapproved",
+      "companyName": "adf4859920a332a87951c5b2276929c8164e6bef7fe9f4777d8c7b4ddc96350b",
+      "address": {
+        "addressLine1": "8db834b656cb5f3e2bf9762abaafa0c09f6884a6c442dc35cecf650fd95d3932",
+        "addressLine2": "93d0d5d6146ca11d65551e86626e738240b531698a6a8c3b920d840f07f3b0ad",
+        "addressLine3": "afdb03ed9be7811cb3d9fab902d3f80563dfd54d01b6a62b823e0b3a57307c34",
+        "city": "68a94df9652add9668f889fb1380fca8fa30dd3db9276bed26e364339ef8f5d2",
+        "postalZipCode": "2dcb013eb2d1ca3ce3b036cdd79d8011d614eec9754266546347c59fedae3b3c",
+        "countryISOCode": "3d48496a4567888e5dae3b1187065cf19955d0c252c83821e2339d3bd51e4795",
+        "telephone": "3f94e4406a5d4800ad95cf6644d2fa82fbc57a18b22a88f61af651ef47002bd3",
+        "email": "f38b137df9e3e590ec9eba1f36ead22b333aac3cdc935673b73e03ba1a0676f3"
+      },
+      "tracesId": 10387779
+    },
+    "meansOfTransport": {
+      "id": "ecb654af863c46406b5e600e3a2451a9f76cd4573552a2cc63c5e9b01b1dc3d2",
+      "type": "Road Vehicle",
+      "document": "8380cd18fc1ba9799884918e2a6162de373a3930ce6f21e9707012e09d5baf91"
+    },
+    "meansOfTransportFromEntryPoint": {
+      "id": "4fec852f60bd4b13122bcd3dfab340ebacd896a8b8ae92324ef48d2805aba6ac",
+      "type": "Aeroplane",
+      "document": "8380cd18fc1ba9799884918e2a6162de373a3930ce6f21e9707012e09d5baf91"
+    },
+    "departureDate": "2024-12-04",
+    "departureTime": "11:00:00",
+    "estimatedJourneyTimeInMinutes": 90,
+    "veterinaryInformation": {
+      "accompanyingDocuments": [
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "0518608b9c3fcefdcf4d23ba7e38b943c736ea4c9bc370e09b9b8ad5b738097a",
+          "documentIssueDate": "2024-12-02"
+        }
+      ],
+      "identificationDetails": [
+        {
+          "identificationDetail": "81f8b743e897fafc3fcef63a4559085e426f0c199652705e6f3513b1cb535c46",
+          "identificationDescription": "53d631cb52bb7d72b6167632f0bec7d7b7d095387f7c15ffd2bee5fa959565ed"
+        },
+        {
+          "identificationDetail": "37621a5bd47f6da4493974ae54c0a056368d577400488a8fe5b9947b2efa2a19",
+          "identificationDescription": "2d52bbfc2555d01524c4dcb0210fd443b170f60047ac1de49b3e3057a53e5c46"
+        }
+      ]
+    },
+    "route": {
+      "transitingStates": [
+        "MU"
+      ]
+    },
+    "submissionDate": "2024-11-12T09:14:23.997115528Z",
+    "submittedBy": {
+      "displayName": "5423033d437e37ca255d933b4c1e261b266c1db20bdce71883d2daebb7fa33b5",
+      "userId": "3b973d26-6523-eb11-a813-000d3abb516e"
+    },
+    "complexCommoditySelected": true
+  },
+  "decisionBy": {
+    "displayName": "840d44f22455f6d122aa24ba73be92eaed8a08e86329fc2a45e007c1af18d03b",
+    "userId": "3dd58971-2d3f-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-04T09:01:21.062747048Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market"
+    },
+    "consignmentCheck": {
+      "euStandard": "Not Set",
+      "documentCheckResult": "Satisfactory",
+      "nationalRequirements": "Not Set",
+      "additionalGuarantees": "Not Set",
+      "identityCheckResult": "Satisfactory",
+      "physicalCheckResult": "Satisfactory",
+      "welfareCheck": "Satisfactory",
+      "numberOfAnimalsChecked": 2
+    },
+    "impactOfTransportOnAnimals": {
+      "numberOfDeadAnimals": 0,
+      "numberOfDeadAnimalsUnit": "number",
+      "numberOfUnfitAnimals": 0,
+      "numberOfUnfitAnimalsUnit": "number",
+      "numberOfBirthOrAbortion": 0
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "8f3c630df4ea49c4805f8713a3de5b806fbb5890d132fd73f3f8c90b7febdbfc",
+        "lastName": "7a2eb480d1c3fc7c477333469f1370aebeb0750a821883814d16e5ee9298e383",
+        "email": "1cb4763847e01dffdf16df4a2536c5e243124ee35ec310c46ca249a3765f5e61",
+        "phone": "4302b5032003831d95374de1bdf81eb25f86ea18fdf1a6221013bfc9976ac8f0",
+        "signed": "2024-12-04T09:01:21.089465601"
+      }
+    },
+    "bipLocalReferenceNumber": "6669eefb8f2db342a9a06408f9c9560ae9221ccdb282faad8d92909f6199fe4b"
+  },
+  "etag": "00000000044FD874",
+  "chedTypeVersion": 1
+}
