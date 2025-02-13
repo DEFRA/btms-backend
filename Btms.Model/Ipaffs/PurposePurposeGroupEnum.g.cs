@@ -26,4 +26,6 @@ public enum PurposePurposeGroupEnum
 
     ForImportReConformityCheck,
 
+    ForImportNonInternalMarket,
+
 }

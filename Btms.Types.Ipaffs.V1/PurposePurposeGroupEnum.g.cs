@@ -34,4 +34,7 @@ public enum PurposePurposeGroupEnum
     [EnumMember(Value = "For Import Re-Conformity Check")]
     ForImportReConformityCheck,
 
+    [EnumMember(Value = "For Import Non-Internal Market")]
+    ForImportNonInternalMarket,
+
 }

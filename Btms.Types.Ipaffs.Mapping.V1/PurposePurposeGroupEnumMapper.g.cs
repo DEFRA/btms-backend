@@ -27,6 +27,7 @@ public static class PurposePurposeGroupEnumMapper
             Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport,
             Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTransferTo => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForTransferTo,
             Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };
