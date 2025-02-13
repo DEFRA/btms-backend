@@ -14,7 +14,7 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class DeclarationsResponseMapper
 {
-    public static Btms.Model.Gvms.DeclarationsResponse Map(Btms.Types.Gvms.DeclarationsResponse from)
+    public static Btms.Model.Gvms.DeclarationsResponse Map(Btms.Types.Gvms.DeclarationsResponse? from)
     {
         if (from is null)
         {

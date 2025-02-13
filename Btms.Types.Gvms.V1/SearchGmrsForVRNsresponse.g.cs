@@ -17,7 +17,7 @@ namespace Btms.Types.Gvms;
 public partial class SearchGmrsForVRNsresponse  //
 {
 
-    [JsonPropertyName("gmrsByVrns")]
+    [JsonPropertyName("gmrsByVRN")]
     public GmrsByVrn[]? GmrsByVrns { get; set; }
 
     [JsonPropertyName("gmrs")]

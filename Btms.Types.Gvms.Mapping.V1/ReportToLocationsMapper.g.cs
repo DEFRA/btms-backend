@@ -14,15 +14,15 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class ReportToLocationsMapper
 {
-    public static Btms.Model.Gvms.ReportToLocations Map(Btms.Types.Gvms.ReportToLocations from)
+    public static Btms.Model.Gvms.ReportToLocations Map(Btms.Types.Gvms.ReportToLocations? from)
     {
         if (from is null)
         {
             return default!;
         }
         var to = new Btms.Model.Gvms.ReportToLocations();
-        to.InspectionTypeId = from.InspectionTypeId;
-        to.LocationIds = from.LocationIds;
+        to.InspectionTypeId = from?.InspectionTypeId;
+        to.LocationIds = from?.LocationIds;
         return to;
     }
 }

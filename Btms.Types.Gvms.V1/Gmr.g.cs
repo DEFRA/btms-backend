@@ -56,7 +56,7 @@ public partial class Gmr  //
     /// <summary>
     /// The date and time that this GMR was last updated.
     /// </summary>
-    [JsonPropertyName("updatedSource")]
+    [JsonPropertyName("updatedDateTime")]
     public DateTime? UpdatedSource { get; set; }
 
 
@@ -84,7 +84,7 @@ public partial class Gmr  //
     /// <summary>
     /// Vehicle registration number of the vehicle that will arrive at port.  If isUnaccompanied is set to false then vehicleRegNum must be provided to check-in.
     /// </summary>
-    [JsonPropertyName("vehicleRegistrationNumber")]
+    [JsonPropertyName("vehicleRegNum")]
     public string? VehicleRegistrationNumber { get; set; }
 
 

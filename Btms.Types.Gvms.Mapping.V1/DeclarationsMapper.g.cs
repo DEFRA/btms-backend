@@ -14,15 +14,15 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class DeclarationsMapper
 {
-    public static Btms.Model.Gvms.Declarations Map(Btms.Types.Gvms.Declarations from)
+    public static Btms.Model.Gvms.Declarations Map(Btms.Types.Gvms.Declarations? from)
     {
         if (from is null)
         {
             return default!;
         }
         var to = new Btms.Model.Gvms.Declarations();
-        to.Transits = from.Transits?.Select(x => TransitsMapper.Map(x)).ToArray();
-        to.Customs = from.Customs?.Select(x => CustomsMapper.Map(x)).ToArray();
+        to.Transits = from?.Transits?.Select(x => TransitsMapper.Map(x)).ToArray();
+        to.Customs = from?.Customs?.Select(x => CustomsMapper.Map(x)).ToArray();
         return to;
     }
 }
