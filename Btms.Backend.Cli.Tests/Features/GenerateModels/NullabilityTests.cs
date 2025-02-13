@@ -26,6 +26,6 @@ public class NullabilityTests(CodeBuilderFixture fixture) : IClassFixture<CodeBu
                 f.Name == "PlannedCrossingMapper");
         
         sourceFile.Content.Should().Contain("public static Test.Model.PlannedCrossing Map(Test.Source.PlannedCrossing? from)");
-        sourceFile.Content.Should().Contain("public static Test.Model.PlannedCrossing Map(Test.Source.PlannedCrossing? from)");
+        sourceFile.Content.Should().Contain("to.RouteId = from?.RouteId");
     }
 }

@@ -35,7 +35,7 @@ internal static class Bootstrap
                 .SetSourceJsonPropertyName("declarationUCR");
 
         });
-        
+
         GeneratorClassMap.RegisterClassMap("Items", map =>
         {
             map.MapProperty("Document")
@@ -423,6 +423,7 @@ internal static class Bootstrap
             map.SetClassName("Gmr");
             map.MapProperty("gmrId").SetInternalName("id");
             map.MapProperty("haulierEORI").SetName("haulierEori");
+
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
             map.MapProperty("updatedDateTime").SetName("updatedSource").IsDateTime();
             map.MapProperty("localDateTimeOfDeparture").SetName("departsAt").IsDateTime();
