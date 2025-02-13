@@ -64,7 +64,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         var rootNode = JsonNode.Parse(json);
 
         var jsonPaths = EnumeratePaths(json).ToList();
-        var regex = new Regex("\\[\\d\\]");
+        var regex = new Regex("\\[\\d\\]", RegexOptions.Compiled, TimeSpan.FromSeconds(2));
         foreach (var path in jsonPaths)
         {
             var pathStripped = regex.Replace(path, "");
@@ -92,7 +92,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         return rootNode!.ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
     }
 
-    IEnumerable<string> EnumeratePaths(string json)
+   private static IEnumerable<string> EnumeratePaths(string json)
     {
         var doc = JsonDocument.Parse(json).RootElement;
         var queue = new Queue<(string ParentPath, JsonElement element)>();
@@ -100,34 +100,36 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         while (queue.Any())
         {
             var (parentPath, element) = queue.Dequeue();
-            switch (element.ValueKind)
-            {
-                case JsonValueKind.Object:
-                    parentPath = parentPath == ""
-                        ? parentPath
-                        : parentPath + ".";
-                    foreach (var nextEl in element.EnumerateObject())
-                    {
-                        queue.Enqueue(($"{parentPath}{nextEl.Name}", nextEl.Value));
-                    }
-                    break;
-                case JsonValueKind.Array:
-                    foreach (var (nextEl, i) in element.EnumerateArray().Select((jsonElement, i) => (jsonElement, i)))
-                    {
-                        queue.Enqueue(($"{parentPath}[{i}]", nextEl));
-                    }
-                    break;
-                case JsonValueKind.Undefined:
-                case JsonValueKind.String:
-                case JsonValueKind.Number:
-                case JsonValueKind.True:
-                case JsonValueKind.False:
-                case JsonValueKind.Null:
-                    yield return parentPath;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            yield return QueueIterator(element, parentPath, queue);
+        }
+    }
+
+    private static string QueueIterator(JsonElement element, string parentPath, Queue<(string ParentPath, JsonElement element)> queue)
+    {
+        switch (element.ValueKind)
+        {
+            case JsonValueKind.Object:
+                parentPath = parentPath == ""
+                    ? parentPath
+                    : parentPath + ".";
+                foreach (var nextEl in element.EnumerateObject())
+                {
+                    queue.Enqueue(($"{parentPath}{nextEl.Name}", nextEl.Value));
+                }
+                break;
+            case JsonValueKind.Array:
+                foreach (var (nextEl, i) in element.EnumerateArray().Select((jsonElement, i) => (jsonElement, i)))
+                {
+                    queue.Enqueue(($"{parentPath}[{i}]", nextEl));
+                }
+                break;
+            case JsonValueKind.Undefined:
+            case JsonValueKind.String:
+            case JsonValueKind.Number:
+            case JsonValueKind.True:
+            case JsonValueKind.False:
+            case JsonValueKind.Null:
+                return parentPath;
         }
     }
 }
