@@ -20,7 +20,8 @@ public class SensitiveDataSerializerTests
             SimpleStringOne = "Test String One",
             SimpleStringTwo = "Test String Two",
             SimpleStringArrayOne = ["Test String Array One Item One", "Test String Array One Item Two"],
-            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"]
+            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"],
+            SimpleObjectArray = [new SimpleInnerClass() { SimpleStringOne = "Test Inner String" }]
         };
 
         var json = JsonSerializer.Serialize(simpleClass);
@@ -35,6 +36,7 @@ public class SensitiveDataSerializerTests
         result.SimpleStringArrayOne[1].Should().Be("TestRedacted");
         result.SimpleStringArrayTwo[0].Should().Be("Test String Array Two Item One");
         result.SimpleStringArrayTwo[1].Should().Be("Test String Array Two Item Two");
+        result.SimpleObjectArray[0].SimpleStringOne.Should().Be("TestRedacted");
     }
 
     [Fact]
@@ -80,7 +82,8 @@ public class SensitiveDataSerializerTests
             SimpleStringTwo = "Test String Two",
             SimpleStringArrayOne =
                 ["Test String Array One Item One", "Test String Array One Item Two"],
-            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"]
+            SimpleStringArrayTwo = ["Test String Array Two Item One", "Test String Array Two Item Two"],
+            SimpleObjectArray = [new SimpleInnerClass() { SimpleStringOne = "Test Inner String" }]
         };
 
         var json = JsonSerializer.Serialize(simpleClass, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
@@ -96,5 +99,6 @@ public class SensitiveDataSerializerTests
         resultClass?.SimpleStringArrayOne[1].Should().Be("TestRedacted");
         resultClass?.SimpleStringArrayTwo[0].Should().Be("Test String Array Two Item One");
         resultClass?.SimpleStringArrayTwo[1].Should().Be("Test String Array Two Item Two");
+        resultClass?.SimpleObjectArray[0].SimpleStringOne.Should().Be("TestRedacted");
     }
 }
