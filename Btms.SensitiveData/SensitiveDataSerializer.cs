@@ -89,7 +89,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
             }
         }
 
-        return rootNode!.ToJsonString(new JsonSerializerOptions() { WriteIndented = true});
+        return rootNode!.ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
     }
 
     IEnumerable<string> EnumeratePaths(string json)
