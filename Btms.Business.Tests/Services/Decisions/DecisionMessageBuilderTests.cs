@@ -100,7 +100,8 @@ public class DecisionMessageBuilderTests
                     ]
                 }
             ],
-            new MatchingResult()
+            new MatchingResult(),
+            "TestMessageId"
         );
     }
 
