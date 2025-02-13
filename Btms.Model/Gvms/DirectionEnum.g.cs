@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Btms.Model.Gvms;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum DirectionEnum
 {
 

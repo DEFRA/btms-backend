@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class PlannedCrossing  //
 {
 

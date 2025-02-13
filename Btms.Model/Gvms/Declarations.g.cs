@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Declarations  //
 {
 
@@ -26,6 +22,7 @@ public partial class Declarations  //
     /// A list of declaration ids.
     /// </summary>
     [Attr]
+    [JsonPropertyName("transits")]
     [System.ComponentModel.Description("A list of declaration ids.")]
     public Transits[]? Transits { get; set; }
 
@@ -34,6 +31,7 @@ public partial class Declarations  //
     /// A list of declaration ids.
     /// </summary>
     [Attr]
+    [JsonPropertyName("customs")]
     [System.ComponentModel.Description("A list of declaration ids.")]
     public Customs[]? Customs { get; set; }
 
