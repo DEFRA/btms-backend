@@ -1,3 +1,4 @@
+using Btms.Backend.Data.InMemory;
 using Btms.Business.Builders;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Decisions.Finders;
@@ -26,13 +27,16 @@ public class NoMatchDecisionsTest
         // Arrange
         var movement = GenerateMovementWithH220Checks();
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, Array.Empty<IDecisionFinder>());
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance,
+            Array.Empty<IDecisionFinder>(),
+            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movement.Id!, movement.Items[0].ItemNumber!.Value, movement.Items[0].Documents?[0].DocumentReference!);
 
         // Act
-        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), [movement], matchingResult), CancellationToken.None);
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), [movement], matchingResult, "TestMessageId"), CancellationToken.None);
 
         // Assert
         decisionResult.Should().NotBeNull();
@@ -50,13 +54,16 @@ public class NoMatchDecisionsTest
         // Arrange
         var movements = GenerateMovements(false);
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, Array.Empty<IDecisionFinder>());
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance,
+            Array.Empty<IDecisionFinder>(),
+            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
 
         // Act
-        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult), CancellationToken.None);
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, "TestMessageId"), CancellationToken.None);
 
         // Assert
         decisionResult.Should().NotBeNull();
@@ -72,13 +79,16 @@ public class NoMatchDecisionsTest
         var movements = GenerateMovements(true);
         movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
 
-        var sut = new DecisionService(NullLogger<DecisionService>.Instance, Array.Empty<IDecisionFinder>());
+        var sut = new DecisionService(NullLogger<DecisionService>.Instance,
+            Array.Empty<IDecisionFinder>(),
+            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
         matchingResult.AddDocumentNoMatch(movements[0].Id!, movements[0].Items[0].ItemNumber!.Value, movements[0].Items[0].Documents?[0].DocumentReference!);
 
         // Act
-        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult), CancellationToken.None);
+        var decisionResult = await sut.Process(new DecisionContext(new List<ImportNotification>(), movements, matchingResult, "TestMessageId"), CancellationToken.None);
 
         // Assert
         decisionResult.Should().NotBeNull();

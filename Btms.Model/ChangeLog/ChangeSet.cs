@@ -13,7 +13,8 @@ public class ChangeSet(JsonPatch jsonPatch, JsonNode jsonNodePrevious)
     {
         TypeInfoResolver = new ChangeSetTypeInfoResolver(),
         PropertyNameCaseInsensitive = true,
-        NumberHandling = JsonNumberHandling.AllowReadingFromString
+        NumberHandling = JsonNumberHandling.AllowReadingFromString,
+        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
     };
 
     public JsonPatch JsonPatch { get; } = jsonPatch;

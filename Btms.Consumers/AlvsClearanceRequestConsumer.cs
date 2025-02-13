@@ -71,14 +71,12 @@ internal class AlvsClearanceRequestConsumer(
                     new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
                 var decisionContext =
-                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult);
+                    new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, messageId);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
-                await dbContext.SaveChangesAsync(Context.CancellationToken);
 
-                await Context.Bus.PublishDecisions(messageId, decisionResult, decisionContext, cancellationToken: cancellationToken);
             }
             else
             {
@@ -87,6 +85,8 @@ internal class AlvsClearanceRequestConsumer(
                     message.Header?.EntryReference, messageId, preProcessingResult.Outcome.ToString(),
                     preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
+
+            await dbContext.SaveChangesAsync(Context.CancellationToken);
         }
     }
 
