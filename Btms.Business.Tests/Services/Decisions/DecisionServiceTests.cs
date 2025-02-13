@@ -1,3 +1,6 @@
+using Btms.Backend.Data;
+using Btms.Backend.Data.InMemory;
+using Btms.Business.Builders;
 using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Matching;
@@ -96,6 +99,10 @@ public class DecisionServiceTests
         _serviceCollection.AddSingleton<IDecisionService, DecisionService>();
         _serviceCollection.AddSingleton(Substitute.For<ILogger<DecisionService>>());
         _serviceCollection.AddSingleton(Substitute.For<IPublishBus>());
+        _serviceCollection.AddSingleton<MovementBuilderFactory>();
+        _serviceCollection.AddSingleton<DecisionStatusFinder>();
+        _serviceCollection.AddLogging();
+        _serviceCollection.AddSingleton<IMongoDbContext, MemoryMongoDbContext>();
     }
 
     private ServiceProvider ConfigureDecisionFinders(ImportNotification notification, string[] checkCodes)
@@ -146,6 +153,7 @@ public class DecisionServiceTests
             [
                 new Movement
                 {
+                    EntryReference = "movement-1",
                     Id = "movement-1",
                     BtmsStatus = MovementStatus.Default(),
                     Items =
@@ -158,7 +166,8 @@ public class DecisionServiceTests
                     ]
                 }
             ],
-            matchingResult
+            matchingResult,
+            "TestMessageId"
         );
     }
 }

@@ -59,14 +59,20 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             return PreProcessResult.Changed(internalNotification, changeSet);
         }
 
+        PreProcessingResult<Model.Ipaffs.ImportNotification> result;
         if (internalNotification.UpdatedSource.TrimMicroseconds() ==
                  existingNotification.UpdatedSource.TrimMicroseconds())
         {
-            return PreProcessResult.AlreadyProcessed(existingNotification);
+            result = PreProcessResult.AlreadyProcessed(existingNotification);
+        }
+        else
+        {
+            logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.ReferenceNumber!);
+            result = PreProcessResult.Skipped(existingNotification);
         }
 
-        logger.MessageSkipped(preProcessingContext.MessageId, preProcessingContext.Message.ReferenceNumber!);
-        return PreProcessResult.Skipped(existingNotification);
+        internalNotification.Skipped(preProcessingContext.MessageId, internalNotification.Version.GetValueOrDefault());
+        return result;
 
     }
 }
