@@ -26,6 +26,7 @@ public partial class ReportToLocations  //
     /// An inspectionTypeId from GVMS Reference Data denoting the type of inspection that needs to be performed on the vehicle.
     /// </summary>
     [Attr]
+    [JsonPropertyName("inspectionTypeId")]
     [System.ComponentModel.Description("An inspectionTypeId from GVMS Reference Data denoting the type of inspection that needs to be performed on the vehicle.")]
     public string? InspectionTypeId { get; set; }
 
@@ -34,6 +35,7 @@ public partial class ReportToLocations  //
     /// A list of locationIds from GVMS Reference Data that are available to perform this type of inspection.
     /// </summary>
     [Attr]
+    [JsonPropertyName("locationIds")]
     [System.ComponentModel.Description("A list of locationIds from GVMS Reference Data that are available to perform this type of inspection.")]
     public string[]? LocationIds { get; set; }
 

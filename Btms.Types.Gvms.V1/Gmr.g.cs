@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class Gmr  //
 {
 
@@ -104,31 +101,15 @@ public partial class Gmr  //
     [JsonPropertyName("containerReferenceNums")]
     public string[]? ContainerReferenceNums { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("plannedCrossing")]
     public PlannedCrossing? PlannedCrossing { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("checkedInCrossing")]
     public CheckedInCrossing? CheckedInCrossing { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("actualCrossing")]
     public ActualCrossing? ActualCrossing { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("declarations")]
     public Declarations? Declarations { get; set; }
 

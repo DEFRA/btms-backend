@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class GmrByDeclarationId  //
 {
 
@@ -26,15 +22,12 @@ public partial class GmrByDeclarationId  //
     /// This is the identifier for a customs declaration from Customs Declaration Service (CDS) or CHIEF. For inbound movements declared in CDS it is a MRN, for example 19GB4S24GC3PPFGVR7. For inbound movements declared in CHIEF it is an ERN, for example 999123456C20210615. For outbound movements declared in either CDS or CHIEF it is a DUCR, for example 0GB689223596000-SE119404.
     /// </summary>
     [Attr]
+    [JsonPropertyName("dec")]
     [System.ComponentModel.Description("This is the identifier for a customs declaration from Customs Declaration Service (CDS) or CHIEF. For inbound movements declared in CDS it is a MRN, for example 19GB4S24GC3PPFGVR7. For inbound movements declared in CHIEF it is an ERN, for example 999123456C20210615. For outbound movements declared in either CDS or CHIEF it is a DUCR, for example 0GB689223596000-SE119404.")]
     public string? Dec { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("gmrs")]
     public string[]? Gmrs { get; set; }
 
 }
