@@ -47,18 +47,6 @@ internal class RedactImportNotificationsCommand : IRequest
             });
 
         }
-
-
-        private static IBtmsApi GetApi(string environment)
-        {
-            return environment switch
-            {
-                "Local" => RestService.For<IBtmsApi>("http://localhost:5002"),
-                "Dev" => RestService.For<IBtmsApi>("https://btms-backend.dev.cdp-int.defra.cloud"),
-                "Test" => RestService.For<IBtmsApi>("https://btms-backend.test.cdp-int.defra.cloud"),
-                _ => throw new ArgumentException("Invalid Environment", nameof(environment))
-            };
-        }
     }
 
 
