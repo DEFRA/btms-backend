@@ -22,13 +22,11 @@ public partial class SearchGmrsForDeclarationIdsrequest  //
 {
 
 
-        /// <summary>
-        /// A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).
-        /// </summary>
+    /// <summary>
+    /// A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("A list of declaration IDs to search for.  Currently, only customs and transit declaration IDs are accepted (DUCR, ERN or customs/transit MRN, depending on source system and crossing direction).")]
     public string[]? DeclarationIds { get; set; }
 
-	}
-
-
+}

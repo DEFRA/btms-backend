@@ -17,12 +17,12 @@ public class ChedPUpdatedNotificationTests
     // public required AlvsClearanceRequest ChedPMovement;
     public required ImportNotification ChedPNotification;
 
-    public ChedPUpdatedNotificationTests(ITestOutputHelper output): base(output)
+    public ChedPUpdatedNotificationTests(ITestOutputHelper output) : base(output)
     {
         // ChedPMovement = (AlvsClearanceRequest)LoadedData.Single(d =>
         //         d is { Message: AlvsClearanceRequest })
         //     .Message;
-        
+
         // The scenario has multiple versions of the same notification so we just want one of them.
         ChedPNotification = (ImportNotification)LoadedData.First(d =>
                 d is { Message: ImportNotification })
@@ -37,7 +37,7 @@ public class ChedPUpdatedNotificationTests
     {
         var movement = Client
             .GetSingleMovement();
-            
+
         movement.AuditEntries
             .Select(a => (a.CreatedBy, a.Status, a.Version, (a.Context as DecisionContext)?.ImportNotifications?.FirstOrDefault()?.Version))
             .Should()
@@ -51,13 +51,13 @@ public class ChedPUpdatedNotificationTests
             ]);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     // [Fact]
     public void ShouldHave3BtmsDecisions()
     {
         var movement = Client
             .GetSingleMovement();
-        
+
         // TODO : We should make 3 decisions:
         // The initial movement creation
         // v1 of the notification
@@ -65,7 +65,7 @@ public class ChedPUpdatedNotificationTests
 
         movement.Decisions.Count.Should().Be(3);
     }
-    
+
 
     [Fact]
     public void ShouldHave1AlvsDecision()

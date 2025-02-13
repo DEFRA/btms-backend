@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum ControlAuthorityIuuOptionEnum
 {
 
-		Iuuok,
-	
-		Iuuna,
-	
-		IUUNotCompliant,
-	
+    Iuuok,
+
+    Iuuna,
+
+    IUUNotCompliant,
+
 }
-
-

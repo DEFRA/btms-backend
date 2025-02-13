@@ -19,7 +19,7 @@ public class ExceptionResult : IDimensionResult
     public required DateTime UpdatedSource { get; set; }
     public required DateTime UpdatedEntity { get; set; }
     public required DateTime Updated { get; set; }
-    
+
     public required int ItemCount { get; set; }
     public required ImportNotificationTypeEnum[] ChedTypes { get; set; }
     public required int MaxEntryVersion { get; set; }
@@ -50,12 +50,12 @@ public class ByNameDimensionResult : IDimensionResult
 
 public class StringBucketDimensionResult : IDimensionResult
 {
-    public required Dictionary<string,string> Fields { get; set; }
+    public required Dictionary<string, string> Fields { get; set; }
     public int Value { get; set; }
 }
 
 public class AuditHistory(AuditEntry auditEntry, string resourceType, string resourceApiPrefix, string resourceId)
-    : IDimensionResult 
+    : IDimensionResult
 {
     public AuditEntry AuditEntry { get; set; } = auditEntry;
     public string ResourceType { get; set; } = resourceType;
@@ -90,9 +90,9 @@ public class DimensionResultTypeMappingConverter<TType> : JsonConverter<TType> w
         {
             PropertyNamingPolicy = options.PropertyNamingPolicy
         };
-        
+
         TType result = JsonSerializer.Deserialize<TType>(ref reader, newOptions)!;
-        
+
         return result;
     }
 

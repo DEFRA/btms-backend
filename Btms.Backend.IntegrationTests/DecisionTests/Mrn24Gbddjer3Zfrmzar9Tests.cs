@@ -16,7 +16,7 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
     : ScenarioGeneratorBaseTest<Mrn24Gbddjer3Zfrmzar9ScenarioGenerator>(output)
 {
 
-    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+    [FailingFact(jiraTicket: "CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
     {
         Client
@@ -26,8 +26,8 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
-    
-    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+
+    [FailingFact(jiraTicket: "CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveCorrectAlvsDecisionStatusAtGlobalLevel()
     {
         Client
@@ -36,8 +36,8 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
-    
-    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+
+    [FailingFact(jiraTicket: "CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
         Client
@@ -68,18 +68,18 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
                 d is { Message: ImportNotification }
             )
             .Message;
-        
+
         // Assert
         var movement = Client
             .GetSingleMovement();
-        
+
         var decisionWithLinkAndContext = movement.AuditEntries
             .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!;
-        
+
         decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications
             .Should().NotBeNull();
-        
+
         decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Distinct()
@@ -87,7 +87,7 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .Should()
             .Be(9);
     }
-    
+
     [Fact]
     public void ShouldHave1AlvsDecisions()
     {
@@ -97,7 +97,7 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .Should()
             .Be(1);
     }
-    
+
     [Fact]
     public void ShouldHave3AlvsDecisionChecks()
     {
@@ -136,7 +136,7 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             ]);
     }
 
-    [FailingFact(jiraTicket:"CDMS-235"), Trait("JiraTicket", "CDMS-235")]
+    [FailingFact(jiraTicket: "CDMS-235"), Trait("JiraTicket", "CDMS-235")]
     public void ShouldHaveDecisionMatched()
     {
         var movement = Client
@@ -144,7 +144,7 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
-    
+
     [Fact]
     public void ShouldHaveChedPpDecisionStatus()
     {
@@ -153,25 +153,26 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
-    
+
     [Fact]
     public void ShoulHaveCorrectBtmsStatus()
     {
-        var movement = 
+        var movement =
             Client
                 .GetSingleMovement();
-            
+
         movement
             .BtmsStatus
             .Should().BeEquivalentTo(
-                new { 
+                new
+                {
                     LinkStatus = LinkStatusEnum.AllLinked,
                     Segment = MovementSegmentEnum.Cdms205Ac5,
                     ChedTypes = (ImportNotificationTypeEnum[])[ImportNotificationTypeEnum.Chedpp]
                 }
             );
     }
-    
+
     // [Fact]
     // public void ShouldBeLinked()
     // {
@@ -180,7 +181,7 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
     //         .BtmsStatus.LinkStatus
     //         .Should().Be(LinkStatusEnum.Linked);
     // }
-    
+
     [Fact]
     public async Task ShouldNotHaveExceptions()
     {
@@ -188,16 +189,16 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
 
         var result = await Client
             .GetExceptions();
-        
+
         TestOutputHelper.WriteLine($"{result.StatusCode} status");
         result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
-        
+
         (await result.GetString())
             .Should()
             .Be("[]");
     }
-    
-    [FailingFact(jiraTicket:"CDMS-205")]
+
+    [FailingFact(jiraTicket: "CDMS-205")]
     // [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -205,27 +206,30 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.Checks
             .Should().BeEquivalentTo([
-                new { 
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H219",
-                    AlvsDecisionCode = "C03", 
+                    AlvsDecisionCode = "C03",
                     BtmsDecisionCode = "C03"
                 },
-                new { 
+                new
+                {
                     ItemNumber = 2,
                     CheckCode = "H219",
-                    AlvsDecisionCode = "C03", 
+                    AlvsDecisionCode = "C03",
                     BtmsDecisionCode = "C03"
                 },
-                new { 
+                new
+                {
                     ItemNumber = 3,
                     CheckCode = "H219",
-                    AlvsDecisionCode = "C03", 
+                    AlvsDecisionCode = "C03",
                     BtmsDecisionCode = "C03"
                 }
             ]);
     }
-    
+
     [Fact]
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {

@@ -26,7 +26,7 @@ public static class AnalyticsHelpers
     {
         return $"{type} {linked}";
     }
-    
+
     internal static string GetLinkedName(bool linked, string type)
     {
         return $"{type} {GetLinkedName(linked)}";
@@ -35,16 +35,16 @@ public static class AnalyticsHelpers
     {
         return linked ? "Linked" : "Not Linked";
     }
-    
+
     // By creating the dates we care about, we can ensure the arrays have all the dates, 
     // including any series that don't have data on a given day. We need these to be zero for the chart to render
     // correctly
     internal static DateTime[] CreateDateRange(DateTime from, DateTime to, AggregationPeriod aggregateBy) => Enumerable.Range(0, (to - from).Periods(aggregateBy)).Reverse()
         .Select(offset => from.Increment(offset, aggregateBy)) // from.AddDays(offset))
-        .ToArray(); 
+        .ToArray();
 
     internal static readonly Comparer<ByDateTimeResult>? ByDateTimeResultComparer = Comparer<ByDateTimeResult>.Create((d1, d2) => d1.Period.CompareTo(d2.Period));
-    
+
     public static string[] GetImportNotificationSegments()
     {
         return ModelHelpers.GetChedTypes()

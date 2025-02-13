@@ -50,7 +50,7 @@ public static class DecisionMessageBuilder
             DecisionNumber = messageNumber
         };
     }
-    
+
     private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
     {
         var decisionsByItem = movementDecisions.GroupBy(x => x.ItemNumber);
@@ -68,7 +68,7 @@ public static class DecisionMessageBuilder
     private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
     {
         if (item.Checks == null) yield break;
-        
+
         foreach (var checkCode in item.Checks.Select(x => x.CheckCode))
         {
             var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).FirstOrDefault();
@@ -87,16 +87,23 @@ public static class DecisionMessageBuilder
     private static string[] BuildDecisionReasons(Model.Cds.Items item, DocumentDecisionResult maxDecisionResult)
     {
         var reasons = new List<string>();
-        if (maxDecisionResult.DecisionCode == DecisionCode.X00)
-        {
-            var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
-            var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
-            reasons.Add($"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration.");
-        }
 
         if (maxDecisionResult.DecisionReason != null)
         {
             reasons.Add(maxDecisionResult.DecisionReason);
+        }
+
+
+        if (maxDecisionResult.DecisionCode == DecisionCode.X00)
+        {
+            var chedType = MapToChedType(item.Documents?[0].DocumentCode!);
+            var chedNumbers = string.Join(',', item.Documents!.Select(x => x.DocumentReference));
+
+            if (!reasons.Any())
+            {
+                reasons.Add(
+                    $"A Customs Declaration has been submitted however no matching {chedType}(s) have been submitted to Port Health (for {chedType} number(s) {chedNumbers}). Please correct the {chedType} number(s) entered on your customs declaration.");
+            }
         }
 
         return reasons.ToArray();

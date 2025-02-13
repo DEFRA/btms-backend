@@ -26,7 +26,7 @@ public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
     {
         return new FinalisationBuilder<T>(file);
     }
-    
+
     /// <summary>
     /// build, serialise and then deserialise the object to break any byref type relationships
     /// </summary>
@@ -35,24 +35,24 @@ public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
     {
 
         var json = JsonSerializer.Serialize(this.Build());
-        
-        var builder =  new FinalisationBuilder<T>(itemJson: json);
-        
+
+        var builder = new FinalisationBuilder<T>(itemJson: json);
+
         return builder;
     }
 
     public FinalisationBuilder<T> WithReferenceNumber(string chedReference)
     {
         var id = MatchIdentifier.FromNotification(chedReference);
-        return WithReferenceNumber(id);   
+        return WithReferenceNumber(id);
     }
-    
+
     public FinalisationBuilder<T> WithReferenceNumber(MatchIdentifier id)
     {
         return Do(x =>
         {
             x.Header!.EntryReference = id.AsCdsEntryReference();
-        });   
+        });
     }
 
     public FinalisationBuilder<T> WithCreationDate(DateTime entryDate, bool randomTime = true)
@@ -67,22 +67,22 @@ public class FinalisationBuilder<T> : BuilderBase<T, FinalisationBuilder<T>>
             return Do(x => x.ServiceHeader!.ServiceCallTimestamp = entryDate);
         }
     }
-    
+
     public FinalisationBuilder<T> WithEntryVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.EntryVersionNumber = version);
     }
-    
+
     public FinalisationBuilder<T> WithFinalState(int finalState = 0)
     {
         return Do(x => x.Header!.FinalState = finalState.ToString());
     }
-    
+
     public FinalisationBuilder<T> WithManualAction(bool manualAction = false)
     {
         return Do(x => x.Header!.ManualAction = manualAction ? "Y" : "N");
     }
-    
+
     public FinalisationBuilder<T> WithDecisionVersionNumber(int version = 1)
     {
         return Do(x => x.Header!.DecisionNumber = version);

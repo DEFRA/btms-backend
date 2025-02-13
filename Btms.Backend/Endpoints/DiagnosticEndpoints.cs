@@ -41,7 +41,7 @@ public static class DiagnosticEndpoints
         {
             return Results.Ok(new { healthReport.Status });
         }
-        return Results.Conflict(new { Status = healthReport.Status, Description = healthReport.Entries.FirstOrDefault().Value.Exception?.Message});
+        return Results.Conflict(new { Status = healthReport.Status, Description = healthReport.Entries.FirstOrDefault().Value.Exception?.Message });
 
     }
 }

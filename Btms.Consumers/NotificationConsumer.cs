@@ -14,13 +14,13 @@ using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
-    internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService,
-        IMatchingService matchingService,
-        IDecisionService decisionService,
-        IValidationService validationService,
-        ILogger<NotificationConsumer> logger,
-        IMongoDbContext dbContext)
-    : IConsumer<ImportNotification>, IConsumerWithContext
+internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService,
+    IMatchingService matchingService,
+    IDecisionService decisionService,
+    IValidationService validationService,
+    ILogger<NotificationConsumer> logger,
+    IMongoDbContext dbContext)
+: IConsumer<ImportNotification>, IConsumerWithContext
 {
     public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
     {
@@ -29,6 +29,12 @@ namespace Btms.Consumers;
         {
             var preProcessingResult = await preProcessor
                 .Process(new PreProcessingContext<ImportNotification>(message, messageId));
+
+            if (preProcessingResult.Outcome == PreProcessingOutcome.NotProcessed)
+            {
+                LogStatus("Not Processed due to being in DRAFT or AMEND state", message);
+                return;
+            }
 
             if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
             {
@@ -44,7 +50,7 @@ namespace Btms.Consumers;
             if (preProcessingResult.IsCreatedOrChanged())
             {
                 LogStatus("IsCreatedOrChanged=true", message);
-                
+
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
                 var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
@@ -55,7 +61,7 @@ namespace Btms.Consumers;
                     Context.Linked();
                 }
                 // 
-                if (!await validationService.PostLinking(linkContext, linkResult, 
+                if (!await validationService.PostLinking(linkContext, linkResult,
                         triggeringNotification: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
                 {
@@ -68,10 +74,10 @@ namespace Btms.Consumers;
 
                 var matchResult = await matchingService.Process(
                     new MatchingContext(notifications, linkResult.Movements), Context.CancellationToken);
-               
+
                 var decisionContext = new DecisionContext(notifications, linkResult.Movements, matchResult);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
-                
+
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
                 await dbContext.SaveChangesAsync(Context.CancellationToken);

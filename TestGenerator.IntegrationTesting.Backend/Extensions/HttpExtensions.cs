@@ -12,7 +12,7 @@ public static class HttpExtensions
         var s = await response!.Content.ReadAsStringAsync();
         return s;
     }
-    
+
     public static async Task<T> As<T>(this HttpResponseMessage? response)
     {
         var s = await response!.Content.ReadAsStringAsync();
@@ -24,7 +24,7 @@ public static class HttpExtensions
             }
         )!;
     }
-    
+
     public static async Task<IDictionary<string, JsonNode>> ToJsonDictionary(this HttpResponseMessage? response)
     {
         var s = await response!.GetString();
@@ -32,7 +32,7 @@ public static class HttpExtensions
         ArgumentNullException.ThrowIfNull(responseDictionary);
         return responseDictionary;
     }
-    
+
     public static async Task<TDataset> AnalyticsChartAs<TDataset>(this HttpResponseMessage? response, string chart)
         // where TChart : IDimensionResult
         where TDataset : IDataset
@@ -44,7 +44,7 @@ public static class HttpExtensions
             {
                 // TODO : Refactor the JsonSerializerOptions used by the web project & re-use
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = 
+                Converters =
                 {
                     new DatasetResultTypeMappingConverter<TDataset>(),
                     // new DimensionResultTypeMappingConverter<TChart>() 
@@ -52,7 +52,7 @@ public static class HttpExtensions
             }
         )!;
     }
-    public static async Task<TDataset> AnalyticsMultiSeriesChartAs<TDataset,TChart>(this HttpResponseMessage? response, string chart)
+    public static async Task<TDataset> AnalyticsMultiSeriesChartAs<TDataset, TChart>(this HttpResponseMessage? response, string chart)
         where TChart : IDimensionResult
         where TDataset : IDataset
     {
@@ -63,10 +63,10 @@ public static class HttpExtensions
             {
                 // TODO : Refactor the JsonSerializerOptions used by the web project & re-use
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = 
+                Converters =
                 {
                     new DatasetResultTypeMappingConverter<TDataset>(),
-                    new DimensionResultTypeMappingConverter<TChart>() 
+                    new DimensionResultTypeMappingConverter<TChart>()
                 }
             }
         )!;

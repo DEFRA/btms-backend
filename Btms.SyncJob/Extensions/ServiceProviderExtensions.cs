@@ -8,7 +8,7 @@ public static class ServiceProviderExtensions
     public static async Task<bool> WaitOnAllJobs(this IServiceProvider provider, ILogger logger)
     {
         var store = provider.GetService<ISyncJobStore>()!;
-        
+
         var complete = false;
         while (!complete)
         {

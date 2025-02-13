@@ -20,41 +20,41 @@ public static class SyncEndpoints
         {
             app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
             app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
-            
+
             app.MapGet(BaseRoute + "/clearance-requests/", GetSyncClearanceRequests).AllowAnonymous();
             app.MapPost(BaseRoute + "/clearance-requests/", SyncClearanceRequests).AllowAnonymous();
 
             app.MapGet(BaseRoute + "/gmrs/", GetSyncGmrs).AllowAnonymous();
             app.MapPost(BaseRoute + "/gmrs/", SyncGmrs).AllowAnonymous();
-            
+
             app.MapGet(BaseRoute + "/decisions/", GetSyncDecisions).AllowAnonymous();
             app.MapPost(BaseRoute + "/decisions/", SyncDecisions).AllowAnonymous();
-            
+
             app.MapGet(BaseRoute + "/finalisations/", GetSyncFinalisations).AllowAnonymous();
             app.MapPost(BaseRoute + "/finalisations/", SyncFinalisations).AllowAnonymous();
-            
+
         }
 
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
         app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
-        
-        
+
+
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/clear", ClearSyncJobs).AllowAnonymous();
-		app.MapGet(BaseRoute + "/jobs/{jobId}", GetSyncJob).AllowAnonymous();
-		app.MapGet(BaseRoute + "/jobs/{jobId}/cancel", CancelSyncJob).AllowAnonymous();
-	}
+        app.MapGet(BaseRoute + "/jobs/{jobId}", GetSyncJob).AllowAnonymous();
+        app.MapGet(BaseRoute + "/jobs/{jobId}/cancel", CancelSyncJob).AllowAnonymous();
+    }
 
     internal static async Task<IResult> InitialiseEnvironment(IHost app, SyncPeriod period)
     {
         var store = app.Services.GetRequiredService<ISyncJobStore>();
         var mediator = app.Services.GetRequiredService<IBtmsMediator>();
-        
+
         await ClearSyncJobs(store);
-        
+
         InitialiseCommand command = new() { SyncPeriod = period };
-        
+
         await mediator.SendSyncJob(command);
 
         return Results.Ok();
@@ -79,32 +79,32 @@ public static class SyncEndpoints
 
     private static Task<IResult> ClearSyncJobs([FromServices] ISyncJobStore store)
     {
-		store.ClearSyncJobs();
-	    return Task.FromResult(Results.Ok());
+        store.ClearSyncJobs();
+        return Task.FromResult(Results.Ok());
     }
 
-	private static Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
+    private static Task<IResult> GetSyncJob([FromServices] ISyncJobStore store, string jobId)
     {
         return Task.FromResult(Results.Ok(store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId))));
     }
 
-	private static Task<IResult> CancelSyncJob([FromServices] ISyncJobStore store, string jobId)
-	{
-		var job = store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId));
-
-		if (job is null)
-		{
-			return Task.FromResult(Results.NoContent());
-		}
-		job.Cancel();
-		return Task.FromResult(Results.Ok());
-	}
-
-	private static Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
+    private static Task<IResult> CancelSyncJob([FromServices] ISyncJobStore store, string jobId)
     {
-       return Task.FromResult(queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
-            ? Results.Ok(queueStatsMonitor.GetAll())
-            : Results.NoContent());
+        var job = store.GetJobs().Find(x => x.JobId == Guid.Parse(jobId));
+
+        if (job is null)
+        {
+            return Task.FromResult(Results.NoContent());
+        }
+        job.Cancel();
+        return Task.FromResult(Results.Ok());
+    }
+
+    private static Task<IResult> GetQueueCounts([FromServices] IMemoryQueueStatsMonitor queueStatsMonitor)
+    {
+        return Task.FromResult(queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
+             ? Results.Ok(queueStatsMonitor.GetAll())
+             : Results.NoContent());
     }
 
     private static async Task<IResult> GetSyncNotifications(
@@ -120,7 +120,7 @@ public static class SyncEndpoints
     {
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
-       
+
     }
 
     private static async Task<IResult> GetSyncClearanceRequests(
@@ -168,7 +168,7 @@ public static class SyncEndpoints
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
-    
+
     private static async Task<IResult> GetSyncFinalisations(
         [FromServices] IBtmsMediator mediator,
         SyncPeriod syncPeriod)

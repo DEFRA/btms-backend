@@ -22,37 +22,35 @@ public partial class ContactDetails  //
 {
 
 
-        /// <summary>
-        /// Name of designated contact
-        /// </summary>
+    /// <summary>
+    /// Name of designated contact
+    /// </summary>
     [JsonPropertyName("name")]
     [SensitiveData]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Telephone number of designated contact
-        /// </summary>
+
+    /// <summary>
+    /// Telephone number of designated contact
+    /// </summary>
     [JsonPropertyName("telephone")]
     [SensitiveData]
     public string? Telephone { get; set; }
 
-	
-        /// <summary>
-        /// Email address of designated contact
-        /// </summary>
+
+    /// <summary>
+    /// Email address of designated contact
+    /// </summary>
     [JsonPropertyName("email")]
     [SensitiveData]
     public string? Email { get; set; }
 
-	
-        /// <summary>
-        /// Name of agent representing designated contact
-        /// </summary>
+
+    /// <summary>
+    /// Name of agent representing designated contact
+    /// </summary>
     [JsonPropertyName("agent")]
     [SensitiveData]
     public string? Agent { get; set; }
 
-	}
-
-
+}

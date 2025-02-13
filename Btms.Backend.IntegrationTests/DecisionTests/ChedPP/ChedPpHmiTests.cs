@@ -1,3 +1,4 @@
+using Btms.Model;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
@@ -20,13 +21,15 @@ public class ChedPpHmiTests(ITestOutputHelper output) : MultipleScenarioGenerato
 
     //Movement With Different Ched Types, that caused a finder exceptions
     [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator), "24GBDY6XFF66H0XAR1", "C03")]
-public void DecisionShouldHaveCorrectDecisionCodeForSingleNotification(Type generatorType, string mrn, string decisionCode)
+    public void DecisionShouldHaveCorrectDecisionCodeForSingleNotification(Type generatorType, string mrn, string decisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
         EnsureEnvironmentInitialised(generatorType);
 
-        var movement = Client
+        var apiResponse = Client
             .GetMovementByMrn(mrn);
+
+        var movement = apiResponse.GetResourceObject<Movement>();
 
         var lastDecision = movement.Decisions.OrderByDescending(x => x.ServiceHeader?.ServiceCalled).First();
 

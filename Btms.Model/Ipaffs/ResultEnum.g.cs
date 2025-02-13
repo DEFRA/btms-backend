@@ -9,18 +9,16 @@ namespace Btms.Model.Ipaffs;
 public enum ResultEnum
 {
 
-		Satisfactory,
-	
-		SatisfactoryFollowingOfficialIntervention,
-	
-		NotSatisfactory,
-	
-		NotDone,
-	
-		Derogation,
-	
-		NotSet,
-	
+    Satisfactory,
+
+    SatisfactoryFollowingOfficialIntervention,
+
+    NotSatisfactory,
+
+    NotDone,
+
+    Derogation,
+
+    NotSet,
+
 }
-
-

@@ -21,40 +21,38 @@ public partial class ImpactOfTransportOnAnimals  //
 {
 
 
-        /// <summary>
-        /// Number of dead animals specified by units
-        /// </summary>
+    /// <summary>
+    /// Number of dead animals specified by units
+    /// </summary>
     [JsonPropertyName("numberOfDeadAnimals")]
     public int? NumberOfDeadAnimals { get; set; }
 
-	
-        /// <summary>
-        /// Unit used for specifying number of dead animals (percent or units)
-        /// </summary>
+
+    /// <summary>
+    /// Unit used for specifying number of dead animals (percent or units)
+    /// </summary>
     [JsonPropertyName("numberOfDeadAnimalsUnit")]
     public string? NumberOfDeadAnimalsUnit { get; set; }
 
-	
-        /// <summary>
-        /// Number of unfit animals
-        /// </summary>
+
+    /// <summary>
+    /// Number of unfit animals
+    /// </summary>
     [JsonPropertyName("numberOfUnfitAnimals")]
     public int? NumberOfUnfitAnimals { get; set; }
 
-	
-        /// <summary>
-        /// Unit used for specifying number of unfit animals (percent or units)
-        /// </summary>
+
+    /// <summary>
+    /// Unit used for specifying number of unfit animals (percent or units)
+    /// </summary>
     [JsonPropertyName("numberOfUnfitAnimalsUnit")]
     public string? NumberOfUnfitAnimalsUnit { get; set; }
 
-	
-        /// <summary>
-        /// Number of births or abortions (unit)
-        /// </summary>
+
+    /// <summary>
+    /// Number of births or abortions (unit)
+    /// </summary>
     [JsonPropertyName("numberOfBirthOrAbortion")]
     public int? NumberOfBirthOrAbortion { get; set; }
 
-	}
-
-
+}

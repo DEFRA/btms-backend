@@ -25,7 +25,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Context.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
-    
+
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusAtGlobalLevel()
     {
@@ -36,7 +36,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHave2BtmsDecisions()
     {
         Client
@@ -45,7 +45,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().Be(2);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var chedPNotification = (ImportNotification)LoadedData
@@ -53,28 +53,28 @@ public class ChedPSimpleTests(ITestOutputHelper output)
                 d is { Message: ImportNotification }
             )
             .Message;
-        
+
         // Assert
         var movement = Client
             .GetSingleMovement();
-        
+
         var decisionWithLinkAndContext = movement.AuditEntries
             .Where(a => a is { CreatedBy: CreatedBySystem.Btms, Status: "Decision" })
             .MaxBy(a => a.Version)!
             .Context
             .As<DecisionContext>();
-        
+
         decisionWithLinkAndContext.ImportNotifications
             .Should().NotBeNull();
-        
+
         decisionWithLinkAndContext.ImportNotifications!
             .Select(n => (n.Id, n.Version))
             .Should()
             .Equal([
-                ( chedPNotification.ReferenceNumber!, 1 )
+                (chedPNotification.ReferenceNumber!, 1)
             ]);
     }
-    
+
     [Fact]
     public void ShouldHave1AlvsDecision()
     {
@@ -87,7 +87,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be(1);
     }
 
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -112,7 +112,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .AlvsDecisionStatus.Context!.DecisionComparison!.DecisionMatched
             .Should().BeTrue();
     }
-    
+
     [Fact]
     public void ShouldHaveDecisionStatus()
     {
@@ -121,7 +121,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .AlvsDecisionStatus.Context.DecisionComparison!.DecisionStatus
             .Should().Be(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs);
     }
-    
+
     [Fact]
     public void ShouldHaveChedType()
     {
@@ -130,7 +130,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .BtmsStatus.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Cvedp);
     }
-    
+
     [Fact]
     public void ShouldBeLinked()
     {
@@ -139,7 +139,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .BtmsStatus.LinkStatus
             .Should().Be(LinkStatusEnum.AllLinked);
     }
-    
+
     // [Fact]
     [Fact(Skip = "Relationships aren't being deserialised correctly")]
     // TODO : for some reason whilst jsonClientResponse contains the notification relationship,
@@ -151,7 +151,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Relationships.Notifications.Data
             .Should().NotBeEmpty();
     }
-    
+
     [Fact]
     public async Task ShouldNotHaveExceptions()
     {
@@ -159,16 +159,16 @@ public class ChedPSimpleTests(ITestOutputHelper output)
 
         var result = await Client
             .GetExceptions();
-        
+
         TestOutputHelper.WriteLine($"{result.StatusCode} status");
         result.IsSuccessStatusCode.Should().BeTrue(result.StatusCode.ToString());
-        
+
         (await result.GetString())
             .Should()
             .Be("[]");
     }
-    
-    [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+
+    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     public void AlvsDecisionShouldBePaired()
     {
         Client
@@ -184,7 +184,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
                     Paired = true
                 });
     }
-    
+
     [Fact]
     public void AlvsDecisionShouldHaveCorrectChecks()
     {
@@ -192,21 +192,23 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .GetSingleMovement()
             .AlvsDecisionStatus.Context.DecisionComparison!.Checks
             .Should().BeEquivalentTo([
-                new { 
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H222",
-                    AlvsDecisionCode = "H01", 
+                    AlvsDecisionCode = "H01",
                     BtmsDecisionCode = "H01"
                 },
-                new {
+                new
+                {
                     ItemNumber = 1,
                     CheckCode = "H224",
-                    AlvsDecisionCode = "C07", 
+                    AlvsDecisionCode = "C07",
                     BtmsDecisionCode = "C07"
                 }
             ]);
     }
-    
+
     [Fact]
     public async Task AlvsDecisionShouldReturnCorrectlyFromAnalytics()
     {

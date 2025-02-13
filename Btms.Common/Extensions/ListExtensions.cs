@@ -9,7 +9,7 @@ public static class ListExtensions
             list.Add(item);
         }
     }
-    
+
     public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> func)
     {
         foreach (var value in list)
@@ -17,7 +17,7 @@ public static class ListExtensions
             await func(value);
         }
     }
-    
+
     public static async IAsyncEnumerable<T> FlattenAsyncEnumerable<T>(this IEnumerable<IAsyncEnumerable<T>> list)
     {
         foreach (var asyncEnumerable in list)

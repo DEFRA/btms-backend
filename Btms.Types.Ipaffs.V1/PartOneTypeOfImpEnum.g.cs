@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum PartOneTypeOfImpEnum
 {
 
-		[EnumMember(Value = "A")]
-		A,
-	
-		[EnumMember(Value = "P")]
-		P,
-	
-		[EnumMember(Value = "D")]
-		D,
-	
+    [EnumMember(Value = "A")]
+    A,
+
+    [EnumMember(Value = "P")]
+    P,
+
+    [EnumMember(Value = "D")]
+    D,
+
 }
-
-

@@ -10,7 +10,7 @@ public static class ImportNotificationTypeEnumExtensions
         // "C085" isn't on the wiki page, but after a discussion with Matt, it appears it maps to ChedPP
         return documentCode switch
         {
-            "9115"or "C633"  or "N002" or "N851" or "C085" => ImportNotificationTypeEnum.Chedpp,
+            "9115" or "C633" or "N002" or "N851" or "C085" => ImportNotificationTypeEnum.Chedpp,
             "N852" or "C678" => ImportNotificationTypeEnum.Ced,
             "C640" => ImportNotificationTypeEnum.Cveda,
             "C641" or "C673" or "N853" => ImportNotificationTypeEnum.Cvedp,
@@ -18,7 +18,7 @@ public static class ImportNotificationTypeEnumExtensions
             _ => null
         };
     }
-    
+
     public static ImportNotificationTypeEnum? GetChedTypeFromCheckCode(this string checkCode)
     {
         //This is the mapping from https://eaflood.atlassian.net/wiki/spaces/ALVS/pages/5400920093/DocumentCode+CheckCode+Mapping

@@ -14,20 +14,20 @@ public class BasicSampleDataTestFixture : IDisposable
 #pragma warning restore S3881
 {
     public IHost App;
-    
+
     private readonly IMongoDbContext _mongoDbContext;
     private readonly ILogger<MultiItemDataTestFixture> _logger;
     public BasicSampleDataTestFixture(IMessageSink messageSink)
     {
         _logger = messageSink.ToLogger<MultiItemDataTestFixture>();
-        
+
         var builder = TestContextHelper.CreateBuilder<BasicSampleDataTestFixture>();
 
         App = builder.Build();
         var rootScope = App.Services.CreateScope();
 
         _mongoDbContext = rootScope.ServiceProvider.GetRequiredService<IMongoDbContext>();
-        
+
         // Would like to pick this up from env/config/DB state
         var insertToMongo = true;
 
@@ -46,7 +46,7 @@ public class BasicSampleDataTestFixture : IDisposable
                 .GetAwaiter().GetResult();
 
             // Create some more variable data over the rest of time
-            App.Services.GeneratorPushToConsumers(_logger, 
+            App.Services.GeneratorPushToConsumers(_logger,
                     App.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 7, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
@@ -60,14 +60,14 @@ public class BasicSampleDataTestFixture : IDisposable
                 .GetAwaiter().GetResult();
         }
     }
-    
-    
+
+
     public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        return new ImportNotificationsAggregationService(_mongoDbContext, logger);   
+        return new ImportNotificationsAggregationService(_mongoDbContext, logger);
     }
-    
+
     public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<MovementsAggregationService>();

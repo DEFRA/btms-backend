@@ -10,24 +10,22 @@ namespace Btms.Types.Ipaffs;
 public enum DecisionFreeCirculationPurposeEnum
 {
 
-		[EnumMember(Value = "Animal Feeding Stuff")]
-		AnimalFeedingStuff,
-	
-		[EnumMember(Value = "Human Consumption")]
-		HumanConsumption,
-	
-		[EnumMember(Value = "Pharmaceutical Use")]
-		PharmaceuticalUse,
-	
-		[EnumMember(Value = "Technical Use")]
-		TechnicalUse,
-	
-		[EnumMember(Value = "Further Process")]
-		FurtherProcess,
-	
-		[EnumMember(Value = "Other")]
-		Other,
-	
+    [EnumMember(Value = "Animal Feeding Stuff")]
+    AnimalFeedingStuff,
+
+    [EnumMember(Value = "Human Consumption")]
+    HumanConsumption,
+
+    [EnumMember(Value = "Pharmaceutical Use")]
+    PharmaceuticalUse,
+
+    [EnumMember(Value = "Technical Use")]
+    TechnicalUse,
+
+    [EnumMember(Value = "Further Process")]
+    FurtherProcess,
+
+    [EnumMember(Value = "Other")]
+    Other,
+
 }
-
-

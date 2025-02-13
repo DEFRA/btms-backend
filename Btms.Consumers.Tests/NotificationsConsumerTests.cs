@@ -61,10 +61,10 @@ public class NotificationsConsumerTests : ConsumerTests
     {
         // ARRANGE
         var notification = CreateImportNotification();
-        
+
         var modelNotification = notification.MapWithTransform();
         modelNotification.Changed(AuditEntry.CreateCreatedEntry(modelNotification, "Test", 1, DateTime.Now, CreatedBySystem.Ipaffs));
-        
+
         var mockLinkingService = Substitute.For<ILinkingService>();
         var decisionService = Substitute.For<IDecisionService>();
         var matchingService = Substitute.For<IMatchingService>();
@@ -97,6 +97,40 @@ public class NotificationsConsumerTests : ConsumerTests
 
         await mockLinkingService.Received().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
     }
+
+    [Theory]
+    [InlineData(PreProcessingOutcome.NotProcessed)]
+    public async Task WhenPreProcessingNotProcessed_ThenLinkShouldNotBeRun(PreProcessingOutcome outcome)
+    {
+        // ARRANGE
+        var notification = CreateImportNotification();
+        var modelNotification = notification.MapWithTransform();
+
+        modelNotification.Changed(AuditEntry.CreateLinked("Test", 1));
+        var mockLinkingService = Substitute.For<ILinkingService>();
+        var decisionService = Substitute.For<IDecisionService>();
+        var matchingService = Substitute.For<IMatchingService>();
+        var validationService = Substitute.For<IValidationService>();
+        var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
+
+        preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
+            .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
+
+        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext());
+        consumer.Context = new ConsumerContext
+        {
+            Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
+        };
+
+        // ACT
+        await consumer.OnHandle(notification, CancellationToken.None);
+
+        // ASSERT
+        consumer.Context.IsLinked().Should().BeFalse();
+
+        await mockLinkingService.DidNotReceive().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
+    }
+
 
     private static ImportNotification CreateImportNotification()
     {

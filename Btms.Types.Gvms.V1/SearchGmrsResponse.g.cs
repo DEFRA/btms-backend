@@ -21,12 +21,10 @@ public partial class SearchGmrsResponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("gmrs")]
     public Gmr[]? Gmrs { get; set; }
 
-	}
-
-
+}

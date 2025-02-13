@@ -18,7 +18,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     private readonly List<(T Item, string Etag)> _entitiesToUpdate = [];
 
     private IMongoQueryable<T> EntityQueryable => _collection.AsQueryable();
-        
+
     public IEnumerator<T> GetEnumerator()
     {
         return EntityQueryable.GetEnumerator();
@@ -51,7 +51,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
             {
                 item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
                 item.Created = item.UpdatedEntity = DateTime.UtcNow;
-                
+
                 await _collection.InsertOneAsync(dbContext.ActiveTransaction?.Session, item, cancellationToken: cancellationToken);
             }
 
@@ -68,7 +68,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
 
                 item.Item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
                 item.Item.UpdatedEntity = DateTime.UtcNow;
-                
+
                 var session = dbContext.ActiveTransaction?.Session;
                 var updateResult = session is not null
                     ? await _collection.ReplaceOneAsync(session, filter, item.Item,
@@ -105,7 +105,7 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         }
     }
 
-    public Task Update(T item, string etag,  CancellationToken cancellationToken = default)
+    public Task Update(T item, string etag, CancellationToken cancellationToken = default)
     {
         if (_entitiesToInsert.Exists(x => x.Id == item.Id))
         {

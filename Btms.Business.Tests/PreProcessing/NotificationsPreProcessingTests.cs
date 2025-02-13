@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Btms.Business.Tests.PreProcessing;
 
-public class NotificationsPreProcessingTests 
+public class NotificationsPreProcessingTests
 {
     [Fact]
     public async Task WhenNotificationNotExists_ThenShouldBeCreated()
@@ -41,7 +41,7 @@ public class NotificationsPreProcessingTests
         await dbContext.Notifications.Insert(notification.MapWithTransform());
         notification.LastUpdated = notification.LastUpdated?.AddHours(1);
         var preProcessor = new ImportNotificationPreProcessor(dbContext, NullLogger<ImportNotificationPreProcessor>.Instance);
-        
+
         // ACT
         var preProcessingResult = await preProcessor.Process(
             new PreProcessingContext<ImportNotification>(notification, "TestMessageId"));
@@ -62,6 +62,7 @@ public class NotificationsPreProcessingTests
             .WithRandomCommodities(1, 2)
             .Do(x =>
             {
+                x.Status = ImportNotificationStatusEnum.Submitted;
                 foreach (var parameterSet in x.PartOne?.Commodities?.ComplementParameterSets!)
                 {
                     parameterSet.KeyDataPairs = null;

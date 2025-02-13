@@ -21,19 +21,17 @@ public partial class SearchGmrsForVRNsresponse  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("gmrsByVRN")]
     public GmrsByVrn[]? GmrsByVrns { get; set; }
 
-	
-        /// <summary>
-        /// 
-        /// </summary>
+
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("gmrs")]
     public Gmr[]? Gmrs { get; set; }
 
-	}
-
-
+}

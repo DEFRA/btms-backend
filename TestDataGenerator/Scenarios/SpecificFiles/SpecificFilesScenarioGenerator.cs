@@ -93,6 +93,26 @@ public class Mrn24Gbd46Kpsvz3Dfar2ScenarioGenerator(
     ILogger<Mrn24Gbd46Kpsvz3Dfar2ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD46KPSVZ3DFAR2");
 
+public class Mrn24Gbdshixsy6Rckar3ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbdshixsy6Rckar3ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDSHIXSY6RCKAR3");
+
+public class Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD2UOWTWYM5LAR8");
+
+public class Mrn24Gbei6Oisht38Mar9ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbei6Oisht38Mar9ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBEI6OISHT38MAR9");
+
+public class Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDC4TW6DUQYIAR5");
+
 public class DuplicateMovementItemsCdms211(IServiceProvider sp, ILogger<DuplicateMovementItemsCdms211> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "DuplicateMovementItems-CDMS-211");
 
@@ -117,10 +137,15 @@ public class Mrn24Gbeds4W7Dfrlmar0ScenarioGenerator(IServiceProvider sp, ILogger
 public class Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDZSRXDXTBVKAR6");
 
+public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
+
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
+
 {
     private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
-    
+
     internal async Task<List<(string filePath, IBaseBuilder builder)>> GetBuilders(string scenarioPath)
     {
         var tokenSource = new CancellationTokenSource();
@@ -155,9 +180,9 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var blobs = blobService.GetResourcesAsync(scenarioFolder, token);
 
         var list = new List<(string, IBaseBuilder)>();
-        
+
         await foreach (var blobItem in blobs)
-        {   
+        {
             logger.LogInformation("Found blob item {name}", blobItem.Name);
             var builder = createBuilder(blobItem.Name, "");
             list.Add((blobItem.Name, builder!));
@@ -165,18 +190,18 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
 
         return list;
     }
-    
+
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
         if (!sampleFolder.HasValue())
         {
             throw new InvalidOperationException(
-                "Either need to specify the scenarioPath in the constructor, or ovrride the generate function.");
+                "Either need to specify the scenarioPath in the constructor, or override the generate function.");
         }
-        var builders =  GetBuilders(sampleFolder)
+        var builders = GetBuilders(sampleFolder)
             .GetAwaiter().GetResult();
-        
-        logger.LogInformation("Created {builders} Builders", 
+
+        logger.LogInformation("Created {builders} Builders",
             builders.Count);
 
         var messages = ModifyMessages(builders
@@ -184,8 +209,8 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
             .ToArray()
             .BuildAll())
             .ToArray();
-        
+
         return new GeneratorResult(messages);
     }
-    
+
 }

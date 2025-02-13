@@ -27,7 +27,7 @@ public class SyncMetrics
     {
         var tagList = BuildTags<T>(path, destination);
         tagList.Add(MetricNames.CommonTags.ExceptionType, exception.GetType().Name);
-       
+
         syncFaultTotal.Add(1, tagList);
     }
 

@@ -52,7 +52,7 @@ public class MatchingServiceTests
     {
         CrNoMatchScenarioGenerator generator =
             new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
-        var movementBuilderFactory = new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator
@@ -60,7 +60,7 @@ public class MatchingServiceTests
             .First(x => x is AlvsClearanceRequest);
 
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map((AlvsClearanceRequest)generatorResult);
-        
+
         var movement = movementBuilderFactory
             .From(internalClearanceRequest)
             .Build();
@@ -73,7 +73,7 @@ public class MatchingServiceTests
         ChedASimpleMatchScenarioGenerator generator =
             new ChedASimpleMatchScenarioGenerator(NullLogger<ChedASimpleMatchScenarioGenerator>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
-        var movementBuilderFactory = new MovementBuilderFactory(NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 
@@ -94,7 +94,7 @@ public class MatchingServiceTests
                         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(cr);
                         memo.Movements.Add(movementBuilderFactory.From(internalClearanceRequest).Build());
                         break;
-                    case Finalisation or Decision :
+                    case Finalisation or Decision:
                         Console.WriteLine("Ignoring decisions & finalisations");
                         break;
                     default:
@@ -107,6 +107,6 @@ public class MatchingServiceTests
         return new ValueTuple<List<ImportNotification>, List<Movement>>(messages.Notifications, messages.Movements);
     }
 
-    
+
 
 }

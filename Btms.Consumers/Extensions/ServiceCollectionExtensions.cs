@@ -27,7 +27,7 @@ namespace Btms.Consumers.Extensions
         {
             services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
             services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName);
-            
+
             var consumerOpts = configuration
                 .GetSection(ConsumerOptions.SectionName)
                 .Get<ConsumerOptions>() ?? new ConsumerOptions();
@@ -44,7 +44,7 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
-            
+
             services.AddSlimMessageBus(mbb =>
             {
                 if (consumerOpts.EnableAsbConsumers)
@@ -78,7 +78,7 @@ namespace Btms.Consumers.Extensions
                         cbb.Consume<Gmr>(x => x
                             .Topic(serviceBusOptions.GmrSubscription.Topic)
                             .SubscriptionName(serviceBusOptions.GmrSubscription.Subscription)
-                            .WithConsumer<GmrAsbConsumer>()
+                            .WithConsumer<GmrConsumer>()
                             .Instances(consumerOpts.AsbGmrs));
                     });
                 }

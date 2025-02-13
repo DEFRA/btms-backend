@@ -25,14 +25,14 @@ public class EnsureAuditEntryIsAddedForMovementUpdatesTests(ITestOutputHelper ou
             .Count(x => x.DocumentReference == "GBCHD2024.001239999999")
             .Should().Be(1);
     }
-    
+
     [Fact]
     public void ShouldHaveUpdatedAuditEntry()
     {
         // Assert
         var movement = Client
             .GetSingleMovement();
-        
+
         movement.AuditEntries
             .Count(a => a is { CreatedBy: CreatedBySystem.Cds, Status: "Updated" })
             .Should().Be(1);

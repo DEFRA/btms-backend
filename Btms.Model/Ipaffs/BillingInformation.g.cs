@@ -22,45 +22,43 @@ public partial class BillingInformation  //
 {
 
 
-        /// <summary>
-        /// Indicates whether user has confirmed their billing information
-        /// </summary>
+    /// <summary>
+    /// Indicates whether user has confirmed their billing information
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Indicates whether user has confirmed their billing information")]
     public bool? IsConfirmed { get; set; }
 
-	
-        /// <summary>
-        /// Billing email address
-        /// </summary>
+
+    /// <summary>
+    /// Billing email address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Billing email address")]
     public string? EmailAddress { get; set; }
 
-	
-        /// <summary>
-        /// Billing phone number
-        /// </summary>
+
+    /// <summary>
+    /// Billing phone number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Billing phone number")]
     public string? PhoneNumber { get; set; }
 
-	
-        /// <summary>
-        /// Billing Contact Name
-        /// </summary>
+
+    /// <summary>
+    /// Billing Contact Name
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Billing Contact Name")]
     public string? ContactName { get; set; }
 
-	
-        /// <summary>
-        /// Billing postal address
-        /// </summary>
+
+    /// <summary>
+    /// Billing postal address
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("Billing postal address")]
     public PostalAddress? PostalAddress { get; set; }
 
-	}
-
-
+}

@@ -69,7 +69,7 @@ public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum
     {
         writer.WriteStringValue(_enumToString[value]);
     }
-    
+
     public string[] GetValues()
     {
         return _enumToString.Values.ToArray();

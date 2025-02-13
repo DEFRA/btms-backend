@@ -9,12 +9,10 @@ namespace Btms.Model.Ipaffs;
 public enum ChedppNotAcceptableReasonCommodityOrPackageEnum
 {
 
-		C,
-	
-		P,
-	
-		Cp,
-	
+    C,
+
+    P,
+
+    Cp,
+
 }
-
-

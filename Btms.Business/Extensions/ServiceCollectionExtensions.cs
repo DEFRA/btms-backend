@@ -30,7 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
         services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);
-            
+
         services.AddMongoDbContext(configuration);
         services.AddBlobStorage(configuration);
         services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
@@ -54,10 +54,10 @@ public static class ServiceCollectionExtensions
             cfg.RegisterServicesFromAssembly(typeof(PipelineResult).Assembly);
             cfg.AddRequestPreProcessor<MatchPreProcess>();
             cfg.AddRequestPostProcessor<MatchPostProcess>();
-                
+
             foreach (var rule in rules)
             {
-                    
+
                 cfg.AddBehavior(typeof(IPipelineBehavior<MatchRequest, PipelineResult>), rule);
             }
 
@@ -75,6 +75,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDecisionFinder, ChedPPDecisionFinder>();
         services.AddScoped<IDecisionFinder, IuuDecisionFinder>();
 
+        services.AddTransient<DecisionStatusFinder>();
         services.AddTransient<MovementBuilderFactory>();
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
         services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();

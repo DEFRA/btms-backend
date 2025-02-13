@@ -15,7 +15,7 @@ public class Finalisation
     [JsonPropertyName("serviceHeader")]
     public required ServiceHeader ServiceHeader { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -30,25 +30,25 @@ public partial class FinalisationHeader
     /// </summary>
     [JsonPropertyName("entryReference")]
     public required string EntryReference { get; set; }
-	
+
     /// <summary>
     /// 
     /// </summary>
     [JsonPropertyName("entryVersionNumber")]
     public required int EntryVersionNumber { get; set; }
-    
+
     /// <summary>
     /// 
     /// </summary
     [JsonPropertyName("decisionNumber")]
     public int? DecisionNumber { get; set; }
-    
+
     /// <summary>
     /// 
     /// </summary
     [JsonPropertyName("finalState")]
     public required string FinalState { get; set; }
-    
+
     /// <summary>
     /// 
     /// </summary

@@ -27,7 +27,7 @@ public partial class CdsClearanceRequest  //
     [System.ComponentModel.Description("")]
     public ServiceHeader? ServiceHeader { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -35,7 +35,7 @@ public partial class CdsClearanceRequest  //
     [System.ComponentModel.Description("")]
     public Header? Header { get; set; }
 
-	
+
     /// <summary>
     /// 
     /// </summary>
@@ -43,5 +43,3 @@ public partial class CdsClearanceRequest  //
     [System.ComponentModel.Description("")]
     public Items[]? Items { get; set; }
 }
-
-

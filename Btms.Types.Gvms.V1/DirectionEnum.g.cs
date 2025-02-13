@@ -10,18 +10,16 @@ namespace Btms.Types.Gvms;
 public enum DirectionEnum
 {
 
-		[EnumMember(Value = "UK_INBOUND")]
-		UkInbound,
-	
-		[EnumMember(Value = "UK_OUTBOUND")]
-		UkOutbound,
-	
-		[EnumMember(Value = "GB_TO_NI")]
-		GbToNi,
-	
-		[EnumMember(Value = "NI_TO_GB")]
-		NiToGb,
-	
+    [EnumMember(Value = "UK_INBOUND")]
+    UkInbound,
+
+    [EnumMember(Value = "UK_OUTBOUND")]
+    UkOutbound,
+
+    [EnumMember(Value = "GB_TO_NI")]
+    GbToNi,
+
+    [EnumMember(Value = "NI_TO_GB")]
+    NiToGb,
+
 }
-
-

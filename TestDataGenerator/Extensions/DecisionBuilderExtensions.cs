@@ -10,7 +10,7 @@ public static class DecisionBuilderExtensions
             .WithItemAndCheck(1, "H222", "H01")
             .WithItemAndCheck(1, "H224", "C07");
     }
-    
+
     public static DecisionBuilder<Decision> WithClearanceRequestDecisions(this DecisionBuilder<Decision> builder, AlvsClearanceRequest clearanceRequest, string decisionCode = "H01")
     {
         return builder

@@ -1,4 +1,4 @@
-﻿namespace Btms.BlobService;
+namespace Btms.BlobService;
 
 public interface IBlobService
 {

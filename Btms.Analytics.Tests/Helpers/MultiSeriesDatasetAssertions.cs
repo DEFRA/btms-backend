@@ -15,7 +15,7 @@ public class MultiSeriesDatasetAssertions(List<Series<ByNumericDimensionResult>>
             .Should()
             .Be(1);
     }
-    
+
     [CustomAssertion]
     public void HaveResults(string because = "", params object[] becauseArgs)
     {

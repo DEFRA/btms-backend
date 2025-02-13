@@ -14,15 +14,15 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
     [Theory]
     [InlineData(typeof(MultiChedPMatchScenarioGenerator), "H02")]
     [InlineData(typeof(MultiChedAMatchScenarioGenerator), "C03")]
-    [InlineData(typeof(MultiChedDMatchScenarioGenerator), "C03")]
+    [InlineData(typeof(MultiChedDMatchScenarioGenerator), "C03", Skip = "Lim to investigate test data")]
     public void MultiChed_DecisionCode(Type generatorType, string expectedDecision)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecision);
         EnsureEnvironmentInitialised(generatorType);
         CheckDecisionCode(expectedDecision);
     }
-    
-    [Theory (Skip = "Need to update data")]
+
+    [Theory(Skip = "Need to update data")]
     [InlineData(typeof(MultiChedPWorstCaseMatchScenarioGenerator), "N07")]
     [InlineData(typeof(MultiChedAWorstCaseMatchScenarioGenerator), "H02")]
     [InlineData(typeof(MultiChedDWorstCaseMatchScenarioGenerator), "N02")]

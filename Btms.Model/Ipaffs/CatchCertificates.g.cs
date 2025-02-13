@@ -22,21 +22,19 @@ public partial class CatchCertificates  //
 {
 
 
-        /// <summary>
-        /// The catch certificate number
-        /// </summary>
+    /// <summary>
+    /// The catch certificate number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The catch certificate number")]
     public string? CertificateNumber { get; set; }
 
-	
-        /// <summary>
-        /// The catch certificate weight number
-        /// </summary>
+
+    /// <summary>
+    /// The catch certificate weight number
+    /// </summary>
     [Attr]
     [System.ComponentModel.Description("The catch certificate weight number")]
     public double? Weight { get; set; }
 
-	}
-
-
+}

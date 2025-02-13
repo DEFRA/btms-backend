@@ -21,12 +21,10 @@ public partial class Customs  //
 {
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
-	}
-
-
+}

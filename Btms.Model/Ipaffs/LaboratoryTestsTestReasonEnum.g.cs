@@ -9,18 +9,16 @@ namespace Btms.Model.Ipaffs;
 public enum LaboratoryTestsTestReasonEnum
 {
 
-		Random,
-	
-		Suspicious,
-	
-		ReEnforced,
-	
-		IntensifiedControls,
-	
-		Required,
-	
-		LatentInfectionSampling,
-	
+    Random,
+
+    Suspicious,
+
+    ReEnforced,
+
+    IntensifiedControls,
+
+    Required,
+
+    LatentInfectionSampling,
+
 }
-
-

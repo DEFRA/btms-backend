@@ -21,29 +21,27 @@ public partial class Inspector  //
 {
 
 
-        /// <summary>
-        /// Name of inspector
-        /// </summary>
+    /// <summary>
+    /// Name of inspector
+    /// </summary>
     [JsonPropertyName("name")]
     [SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
-	
-        /// <summary>
-        /// Phone number of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Phone number of inspector
+    /// </summary>
     [JsonPropertyName("phone")]
     [SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
-	
-        /// <summary>
-        /// Email address of inspector
-        /// </summary>
+
+    /// <summary>
+    /// Email address of inspector
+    /// </summary>
     [JsonPropertyName("email")]
     [SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
-	}
-
-
+}

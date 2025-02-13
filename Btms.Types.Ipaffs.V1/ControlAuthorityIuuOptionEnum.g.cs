@@ -10,15 +10,13 @@ namespace Btms.Types.Ipaffs;
 public enum ControlAuthorityIuuOptionEnum
 {
 
-		[EnumMember(Value = "IUUOK")]
-		Iuuok,
-	
-		[EnumMember(Value = "IUUNA")]
-		Iuuna,
-	
-		[EnumMember(Value = "IUUNotCompliant")]
-		IUUNotCompliant,
-	
+    [EnumMember(Value = "IUUOK")]
+    Iuuok,
+
+    [EnumMember(Value = "IUUNA")]
+    Iuuna,
+
+    [EnumMember(Value = "IUUNotCompliant")]
+    IUUNotCompliant,
+
 }
-
-

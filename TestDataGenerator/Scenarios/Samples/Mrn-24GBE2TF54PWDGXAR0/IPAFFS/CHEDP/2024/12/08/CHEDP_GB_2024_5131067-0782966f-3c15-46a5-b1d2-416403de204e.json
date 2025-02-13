@@ -1,1 +1,392 @@
-{"id":4131250,"referenceNumber":"CHEDP.GB.2024.5131067","version":2,"lastUpdated":"2024-12-08T14:37:36.200258395Z","lastUpdatedBy":{"displayName":"aa9105883425782721a89770b8bfb359af19b73a4d2d257751676bc5e329cdad","userId":"f8c909af-1440-e911-a95d-000d3a454f67"},"type":"CVEDP","status":"VALIDATED","riskAssessment":{"commodityResults":[{"riskDecision":"NOTREQUIRED","uniqueId":"c914c24c-0a46-4db5-9983-9df1d63a9ce8"}],"assessmentDateTime":"2024-11-12T12:02:32.220189711"},"journeyRiskCategorisation":{"riskLevel":"Medium","riskLevelMethod":"User","riskLevelDateTime":"2024-11-12T11:44:47.047"},"isHighRiskEuImport":false,"partOne":{"personResponsible":{"name":"c482b18ac2a9093d467db915bd007def7debbf817cae3f58a61285ce099b33fd","companyId":"0377b5a5-9e49-e911-a959-000d3a454e11","companyName":"a6d794187ee333dbbc2146139331e43be86acb36d8fd9c2251c8e5a3c6291ae3","address":["f3d42c8a32f6a220bf1597ac511d65cee27d6abbdc5504a7fe5dd675762159bf","adf2d600d0943b17d9738f1fe3e9cadf385f674419e08d54b76bed6e42bd038a","ead4aecfedc0d0aa2a370e7a347b5427757afea9616f3b026653deb7ac77c6f0","7d484287155f3219d5a64bc45ac0e2bbaed3290b8dfea886816ac8e729e5f457","ead4aecfedc0d0aa2a370e7a347b5427757afea9616f3b026653deb7ac77c6f0","71eb9149a60e38bccadb58129283ed2b96c038b6ee9b11fc6a85625d1fe6e2d5"],"country":"GB","tracesID":1001,"phone":"e7366c4e2451b2c352545bdbc2f3aca94479f93a30b985eb511837716c2b9b6f","email":"590d52015bb56597ecb94b8e2d009e697ce5982325e1a4b02eafacb6ddab2b4f","contactId":"65631641-2733-eb11-a813-000d3a4aa284"},"consignor":{"id":"afac8124-7698-4281-892f-75ef2117829d","type":"exporter","status":"nonapproved","companyName":"ffc1e33c49f2495a8caf56372580a3c448a78353ef4652ff9911e41aad8d4b12","address":{"addressLine1":"72058ded0517213d12ec28fa6db36a0d3daea1259057287e6bc5b1f366324e16","addressLine2":"91dee9bf36740c9840ffa36edd532478114b913599d223a71b88d1d3fd307bba","addressLine3":"9ff8e863ff3c843f37de7c9c485050b9c2e02bf25aa931f62b7be4a3ad146b7f","city":"c04353bea388b72a3ac8a34511c937c1b0309d9f29837f621b839b9141305507","postalZipCode":"a49e5ae168cfd1afcd15d36b3382e1cf6b7ee19a4f8a65977453b980830d7799","countryISOCode":"VN","telephone":"54b9baf906fdf7102f274d5794d474b992e80ca92ae5c641fdab1ae4c6e632fa","email":"b0894c742026cdb0dcf86fe2cfc2108833ed1642127114e85782a0ee80312651"},"tracesId":10001342},"consignee":{"id":"3dbb6bed-e0d0-4ffd-bc65-553c1fe19859","type":"destination","status":"nonapproved","companyName":"b5b0779fc3cbd576894a7c38221a8a0f18bc743145477102fddc6929e3477035","address":{"addressLine1":"4278008b851190c4be275f1189413d9394132373a52f90b4f307263e849e5dd0","addressLine2":"7efb37f14430197b9eb4eee4e5bbe63ad7a2f13df2bdfd5bb05b6b02154c3a34","city":"23106cd6010605a86aab02546e5de81fbe2f098f48185bdcf2a80d0ffc9ec6b4","postalZipCode":"980913ed4c89a7156c49e46b99a69feeb65ab6b6cba40620fa7dd877b05ba113","countryISOCode":"GB","telephone":"7aaf05dffe82a34028d7ae00fa6ae66b738a5b3b8206f3029eb3c1ebb75ed4d3","email":"d5d37b31696d4db2d8bff75916e856bd9e97f331477dc0976c68585f739a272d"},"tracesId":10000960},"importer":{"id":"3dbb6bed-e0d0-4ffd-bc65-553c1fe19859","type":"destination","status":"nonapproved","companyName":"b5b0779fc3cbd576894a7c38221a8a0f18bc743145477102fddc6929e3477035","address":{"addressLine1":"4278008b851190c4be275f1189413d9394132373a52f90b4f307263e849e5dd0","addressLine2":"7efb37f14430197b9eb4eee4e5bbe63ad7a2f13df2bdfd5bb05b6b02154c3a34","city":"23106cd6010605a86aab02546e5de81fbe2f098f48185bdcf2a80d0ffc9ec6b4","postalZipCode":"980913ed4c89a7156c49e46b99a69feeb65ab6b6cba40620fa7dd877b05ba113","countryISOCode":"GB","telephone":"7aaf05dffe82a34028d7ae00fa6ae66b738a5b3b8206f3029eb3c1ebb75ed4d3","email":"d5d37b31696d4db2d8bff75916e856bd9e97f331477dc0976c68585f739a272d"},"tracesId":10000960},"placeOfDestination":{"id":"3dbb6bed-e0d0-4ffd-bc65-553c1fe19859","type":"destination","status":"nonapproved","companyName":"b5b0779fc3cbd576894a7c38221a8a0f18bc743145477102fddc6929e3477035","address":{"addressLine1":"4278008b851190c4be275f1189413d9394132373a52f90b4f307263e849e5dd0","addressLine2":"7efb37f14430197b9eb4eee4e5bbe63ad7a2f13df2bdfd5bb05b6b02154c3a34","city":"23106cd6010605a86aab02546e5de81fbe2f098f48185bdcf2a80d0ffc9ec6b4","postalZipCode":"980913ed4c89a7156c49e46b99a69feeb65ab6b6cba40620fa7dd877b05ba113","countryISOCode":"GB","telephone":"7aaf05dffe82a34028d7ae00fa6ae66b738a5b3b8206f3029eb3c1ebb75ed4d3","email":"d5d37b31696d4db2d8bff75916e856bd9e97f331477dc0976c68585f739a272d"},"tracesId":10000960},"commodities":{"totalGrossWeight":17560.2,"totalNetWeight":15540,"numberOfPackages":1554,"temperature":"Frozen","commodityComplement":[{"commodityID":"03061500","commodityDescription":"Norway lobsters (Nephrops norvegicus)","complementID":1,"complementName":"Nephrops norvegicus","speciesID":"321802","speciesName":"Nephrops norvegicus","speciesTypeName":"Wild stock","speciesType":"61","speciesClass":"321802","speciesNomination":"Nephrops norvegicus"}],"complementParameterSet":[{"uniqueComplementID":"c914c24c-0a46-4db5-9983-9df1d63a9ce8","complementID":1,"speciesID":"321802","keyDataPair":[{"key":"netweight","data":"15540"},{"key":"number_package","data":"1554"},{"key":"type_package","data":"Carton"},{"key":"is_catch_certificate_required","data":"true"}]}],"includeNonAblactedAnimals":false,"countryOfOrigin":"VN","consignedCountry":"VN"},"purpose":{"conformsToEU":true,"internalMarketPurpose":"Human Consumption","purposeGroup":"For Import"},"pointOfEntry":"GBIMM20","arrivalDate":"2024-12-09","arrivalTime":"09:00:00","transporterDetailsRequired":false,"meansOfTransport":{},"meansOfTransportFromEntryPoint":{"id":"ROTTERDAM FEEDER","type":"Ship","document":"EKSGS2410011"},"veterinaryInformation":{"establishmentsOfOrigin":[{"id":"5b27bdc2-f5bb-2ca8-80d3-1794899360ec","name":"Hai Thuan export seaproduct processing Co., Ltd (Hai Thuan Co., LTD)","country":"VN","types":["Processing Plant"],"approvalNumber":"DL 192","section":"Fishery products"}],"accompanyingDocuments":[{"documentType":"catchCertificate","attachmentId":"867edb1d-f526-4f80-8ab1-0f0fa90662bf","attachmentFilename":"doc22697420241112114821.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"catchCertificate","attachmentId":"9ba613cc-fa94-4799-9fc5-d99908c869d0","attachmentFilename":"doc22697520241112114851.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"catchCertificate","attachmentId":"e4dbbfd5-1947-4870-9cad-6f2c9555e7ce","attachmentFilename":"doc22697620241112114915.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"catchCertificate","attachmentId":"4f2e95d6-5b38-47e5-9bec-22629f424f99","attachmentFilename":"doc22697720241112114941.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"latestVeterinaryHealthCertificate","documentReference":"YD19469/24/CH","documentIssueDate":"2024-10-11","attachmentId":"c15ff33c-61b5-4145-a199-a9758c662966","attachmentFilename":"doc22697820241112115009.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"processingStatement","attachmentId":"cd1c39b0-8c03-471a-90a0-4e18336c18a0","attachmentFilename":"doc22698020241112115033.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"commercialInvoice","attachmentId":"7adfc2c6-ff12-4cef-8e1e-d67ec1cc56d5","attachmentFilename":"doc22698120241112115040.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"},{"documentType":"billOfLading","attachmentId":"d00952b7-c47b-4fb9-92f4-9f9301ba9e10","attachmentFilename":"doc22698220241112115046.pdf","attachmentContentType":"application/pdf","uploadUserId":"65631641-2733-eb11-a813-000d3a4aa284","uploadOrganisationId":"0377b5a5-9e49-e911-a959-000d3a454e11"}],"catchCertificateAttachments":[{"attachmentId":"867edb1d-f526-4f80-8ab1-0f0fa90662bf","catchCertificateDetails":[{"catchCertificateId":"9ea1f76e-35a1-4b04-a5ec-ab43eedbe758","catchCertificateReference":"GBR-2024-CC-46765825B","dateOfIssue":"2024-10-11","flagState":"GB","species":["321802"]}],"numberOfCatchCertificates":1},{"attachmentId":"9ba613cc-fa94-4799-9fc5-d99908c869d0","catchCertificateDetails":[{"catchCertificateId":"0d0c99e3-9c08-4815-aa7d-64b977a3d4ae","catchCertificateReference":"GBR-2024-CC-B428EF588","dateOfIssue":"2024-10-11","flagState":"GB","species":["321802"]}],"numberOfCatchCertificates":1},{"attachmentId":"e4dbbfd5-1947-4870-9cad-6f2c9555e7ce","catchCertificateDetails":[{"catchCertificateId":"f7afbfcc-94b0-405c-8082-45389fc432cb","catchCertificateReference":"GBR-2024-CC-EB7C8E1D1","dateOfIssue":"2024-10-11","flagState":"GB","species":["321802"]}],"numberOfCatchCertificates":1},{"attachmentId":"4f2e95d6-5b38-47e5-9bec-22629f424f99","catchCertificateDetails":[{"catchCertificateId":"7fbdc5f6-0229-420a-9a09-c12d065d495f","catchCertificateReference":"GBR-2024-CC-AFCA780C6","dateOfIssue":"2024-10-11","flagState":"GB","species":["321802"]}],"numberOfCatchCertificates":1}]},"importerLocalReferenceNumber":"TRIU8091015","sealsContainers":[{"sealNumber":"VN88005AH","containerNumber":"TRIU8091015","officialSeal":true}],"submissionDate":"2024-11-12T12:02:15.124512195Z","submittedBy":{"displayName":"c482b18ac2a9093d467db915bd007def7debbf817cae3f58a61285ce099b33fd","userId":"65631641-2733-eb11-a813-000d3a4aa284"},"complexCommoditySelected":true,"portOfEntry":"GBGSYA","contactDetails":{"name":"CARL CASS","telephone":"01469550272","email":"css@eimskip.com"},"isCatchCertificateRequired":true,"isGVMSRoute":false,"provideCtcMrn":"NO"},"decisionBy":{"displayName":"aa9105883425782721a89770b8bfb359af19b73a4d2d257751676bc5e329cdad","userId":"f8c909af-1440-e911-a95d-000d3a454f67"},"decisionDate":"2024-12-08T14:37:36.160872336Z","partTwo":{"decision":{"consignmentAcceptable":true,"decision":"Acceptable for Internal Market","freeCirculationPurpose":"Human Consumption"},"consignmentCheck":{"documentCheckResult":"Satisfactory","identityCheckType":"Not Done","identityCheckResult":"Not Done","identityCheckNotDoneReason":"Reduced checks regime","physicalCheckResult":"Not Done","physicalCheckNotDoneReason":"Reduced checks regime"},"laboratoryTestsRequired":false,"resealedContainersIncluded":false,"resealedContainersMapping":[{"sealNumber":"VN88005AH","containerNumber":"TRIU8091015","officialSeal":true}],"controlAuthority":{"officialVeterinarian":{"firstName":"1deb0a3b86750d0e4a4c21dc9601736954ae5ccac654c57f3d45563a1f595998","lastName":"c9ee3ec3e003320530db43d6155f8c394aa0068e77c8225e0fad0923b41af955","email":"25a3fda9665373aeb07b0630c685224db38e35d7524472c819f6b753de2906e2","phone":"2b5044e044805b10c7b284809f93cb221ce5eab231010e03bb1484971ff16f73","signed":"2024-12-08T14:37:36.188792574"},"iuuCheckRequired":true,"iuuOption":"IUUOK"},"bipLocalReferenceNumber":"68120","checkDate":"2024-12-08T14:37:00Z","inspectionRequired":"Not required"},"partThree":{"sealCheckRequired":false},"etag":"00000000045976CA","riskDecisionLockingTime":"2024-12-09T07:00:00Z","isRiskDecisionLocked":false,"chedTypeVersion":1}
+{
+  "id": 4131250,
+  "referenceNumber": "CHEDP.GB.2024.5131067",
+  "version": 2,
+  "lastUpdated": "2024-12-08T14:37:36.200258395Z",
+  "lastUpdatedBy": {
+    "displayName": "291c5d4c94880405645e583e02e54f057c793d8fc27bbfb590361fc14dfc13ac",
+    "userId": "f8c909af-1440-e911-a95d-000d3a454f67"
+  },
+  "type": "CVEDP",
+  "status": "VALIDATED",
+  "riskAssessment": {
+    "commodityResults": [
+      {
+        "riskDecision": "NOTREQUIRED",
+        "uniqueId": "c914c24c-0a46-4db5-9983-9df1d63a9ce8"
+      }
+    ],
+    "assessmentDateTime": "2024-11-12T12:02:32.220189711"
+  },
+  "journeyRiskCategorisation": {
+    "riskLevel": "Medium",
+    "riskLevelMethod": "User",
+    "riskLevelDateTime": "2024-11-12T11:44:47.047"
+  },
+  "isHighRiskEuImport": false,
+  "partOne": {
+    "personResponsible": {
+      "name": "19813f3b9984b39d0412ce1d0c6cce9b3cd3282e2e4d0922e1726cd76e938826",
+      "companyId": "0377b5a5-9e49-e911-a959-000d3a454e11",
+      "companyName": "e6ba494bfbe831ae17568240c54f09e19a55b961e6fa8335f10aa5459684c30a",
+      "address": [
+        "fde04d9613f9228249ec26983711bde709585bad0a6d0d0db90f027541d3d192",
+        "df82009b2354c3911109548dc5daed12ae8a6fd06dfce7e3a18668d8c97a2233",
+        "0fb1c51c8e0dc54115c8f870ba85e27792553f960e5617a9cf1c08868e93e866",
+        "942ea99c4d6048811f499a12c4b4bb9067ec083ce81774b5bbc9805db97a4217",
+        "0fb1c51c8e0dc54115c8f870ba85e27792553f960e5617a9cf1c08868e93e866",
+        "f42262b65a30e60a6d28fe61a539b384cfcf777ed8e4fd83c0028e10cd254ad9"
+      ],
+      "country": "GB",
+      "tracesID": 1001,
+      "phone": "14398592c2d5b80d147f7eee1e12d23fcc814a8fbfaa386f92174768176af1f2",
+      "email": "02404db11683a38ef6338430b8a200d823044230cf10e30ded1249155a635843",
+      "contactId": "65631641-2733-eb11-a813-000d3a4aa284"
+    },
+    "consignor": {
+      "id": "afac8124-7698-4281-892f-75ef2117829d",
+      "type": "exporter",
+      "status": "nonapproved",
+      "companyName": "a9739e9ae11f5a1914a8c3c253e7c275c42283a1d989239088207df45a253370",
+      "address": {
+        "addressLine1": "d76d999900a4825131e72408992469e3fca9d8ebc33e555c5f98843bcb80fbe9",
+        "addressLine2": "4eebcac14d1f47d6e8d337b21ca4d1ac6a197685a3f9ad8dfaad4bf0ba01e97a",
+        "addressLine3": "ad943cb8ecb6be99feec96003af1cd87520452bfe2e4b47f0db1dacca9c57ea2",
+        "city": "be08674aaee96936fee6031db17505fdff800cb8863b94b66fbb7f2ccb581c3a",
+        "postalZipCode": "7c0e1c70ab53b264780f43b203c6a89f7b688cc4a05d3e5e642db22a07a15a7f",
+        "countryISOCode": "3b4461f60d0e8fddf2a3f5fd4454a740ff1ec5475b1b0e5dd4b97316176908d3",
+        "telephone": "91c2c5c855404b7afe85ea772c9e555aace74f935bb72fd2e12ab141cb8e6a8b",
+        "email": "e8a71341669af8d84ed18abc2cdbf5846e1c41df0fd57d8cbdf86afdb35e2b61"
+      },
+      "tracesId": 10001342
+    },
+    "consignee": {
+      "id": "3dbb6bed-e0d0-4ffd-bc65-553c1fe19859",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "808f58193a88214ca0f9207b912a2fd92ce7c38998eb5b33695ec30501b22627",
+      "address": {
+        "addressLine1": "a6a51c37e867230a26a43453c50b960eea4cacf2fdea8e36ad760f2b83dac650",
+        "addressLine2": "bd78d16e5a9fd1e455979cc37ea85b26f97b4a679e70da9cdc333f2c8c02b335",
+        "city": "e942c7f11ebfd5a7a8881ac63d32ce915cd6329728598ed3c94971597083d292",
+        "postalZipCode": "c0f7399b1044e1c765ef769bcf74dde0256188a7e6134f447a991728f4cd3604",
+        "countryISOCode": "22004e7b51845da7c49c3527be39dbb2b527154ecf7ce2b12b4a5c3403fc1db3",
+        "telephone": "8bd8ed3bd7aa48ad2fed17e34f063d6f47d58583fa2f2b5b17124fa2a14092b4",
+        "email": "6e8e2f818f5e1691972d2d3cd430d42e9c1a67e7c7f42b23f798746379c26519"
+      },
+      "tracesId": 10000960
+    },
+    "importer": {
+      "id": "3dbb6bed-e0d0-4ffd-bc65-553c1fe19859",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "808f58193a88214ca0f9207b912a2fd92ce7c38998eb5b33695ec30501b22627",
+      "address": {
+        "addressLine1": "a6a51c37e867230a26a43453c50b960eea4cacf2fdea8e36ad760f2b83dac650",
+        "addressLine2": "bd78d16e5a9fd1e455979cc37ea85b26f97b4a679e70da9cdc333f2c8c02b335",
+        "city": "e942c7f11ebfd5a7a8881ac63d32ce915cd6329728598ed3c94971597083d292",
+        "postalZipCode": "c0f7399b1044e1c765ef769bcf74dde0256188a7e6134f447a991728f4cd3604",
+        "countryISOCode": "22004e7b51845da7c49c3527be39dbb2b527154ecf7ce2b12b4a5c3403fc1db3",
+        "telephone": "8bd8ed3bd7aa48ad2fed17e34f063d6f47d58583fa2f2b5b17124fa2a14092b4",
+        "email": "6e8e2f818f5e1691972d2d3cd430d42e9c1a67e7c7f42b23f798746379c26519"
+      },
+      "tracesId": 10000960
+    },
+    "placeOfDestination": {
+      "id": "3dbb6bed-e0d0-4ffd-bc65-553c1fe19859",
+      "type": "destination",
+      "status": "nonapproved",
+      "companyName": "808f58193a88214ca0f9207b912a2fd92ce7c38998eb5b33695ec30501b22627",
+      "address": {
+        "addressLine1": "a6a51c37e867230a26a43453c50b960eea4cacf2fdea8e36ad760f2b83dac650",
+        "addressLine2": "bd78d16e5a9fd1e455979cc37ea85b26f97b4a679e70da9cdc333f2c8c02b335",
+        "city": "e942c7f11ebfd5a7a8881ac63d32ce915cd6329728598ed3c94971597083d292",
+        "postalZipCode": "c0f7399b1044e1c765ef769bcf74dde0256188a7e6134f447a991728f4cd3604",
+        "countryISOCode": "22004e7b51845da7c49c3527be39dbb2b527154ecf7ce2b12b4a5c3403fc1db3",
+        "telephone": "8bd8ed3bd7aa48ad2fed17e34f063d6f47d58583fa2f2b5b17124fa2a14092b4",
+        "email": "6e8e2f818f5e1691972d2d3cd430d42e9c1a67e7c7f42b23f798746379c26519"
+      },
+      "tracesId": 10000960
+    },
+    "commodities": {
+      "totalGrossWeight": 17560.2,
+      "totalNetWeight": 15540,
+      "numberOfPackages": 1554,
+      "temperature": "Frozen",
+      "commodityComplement": [
+        {
+          "commodityID": "03061500",
+          "commodityDescription": "Norway lobsters (Nephrops norvegicus)",
+          "complementID": 1,
+          "complementName": "Nephrops norvegicus",
+          "speciesID": "321802",
+          "speciesName": "Nephrops norvegicus",
+          "speciesTypeName": "Wild stock",
+          "speciesType": "61",
+          "speciesClass": "321802",
+          "speciesNomination": "Nephrops norvegicus"
+        }
+      ],
+      "complementParameterSet": [
+        {
+          "uniqueComplementID": "c914c24c-0a46-4db5-9983-9df1d63a9ce8",
+          "complementID": 1,
+          "speciesID": "321802",
+          "keyDataPair": [
+            {
+              "key": "netweight",
+              "data": "15540"
+            },
+            {
+              "key": "number_package",
+              "data": "1554"
+            },
+            {
+              "key": "type_package",
+              "data": "Carton"
+            },
+            {
+              "key": "is_catch_certificate_required",
+              "data": "true"
+            }
+          ]
+        }
+      ],
+      "includeNonAblactedAnimals": false,
+      "countryOfOrigin": "VN",
+      "consignedCountry": "VN"
+    },
+    "purpose": {
+      "conformsToEU": true,
+      "internalMarketPurpose": "Human Consumption",
+      "purposeGroup": "For Import"
+    },
+    "pointOfEntry": "GBIMM20",
+    "arrivalDate": "2024-12-09",
+    "arrivalTime": "09:00:00",
+    "transporterDetailsRequired": false,
+    "meansOfTransport": {},
+    "meansOfTransportFromEntryPoint": {
+      "id": "126a74c2f30caca69af48c8ce380bc9359d24e1ba5410dae485784691b49921e",
+      "type": "Ship",
+      "document": "b19c2328c79acf99e01aa5e8b4fb5697f051c5338683f1aa2a57ff4579e76e16"
+    },
+    "veterinaryInformation": {
+      "establishmentsOfOrigin": [
+        {
+          "id": "5b27bdc2-f5bb-2ca8-80d3-1794899360ec",
+          "name": "Hai Thuan export seaproduct processing Co., Ltd (Hai Thuan Co., LTD)",
+          "country": "VN",
+          "types": [
+            "Processing Plant"
+          ],
+          "approvalNumber": "DL 192",
+          "section": "Fishery products"
+        }
+      ],
+      "accompanyingDocuments": [
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "867edb1d-f526-4f80-8ab1-0f0fa90662bf",
+          "attachmentFilename": "doc22697420241112114821.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "9ba613cc-fa94-4799-9fc5-d99908c869d0",
+          "attachmentFilename": "doc22697520241112114851.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "e4dbbfd5-1947-4870-9cad-6f2c9555e7ce",
+          "attachmentFilename": "doc22697620241112114915.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "catchCertificate",
+          "attachmentId": "4f2e95d6-5b38-47e5-9bec-22629f424f99",
+          "attachmentFilename": "doc22697720241112114941.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "latestVeterinaryHealthCertificate",
+          "documentReference": "YD19469/24/CH",
+          "documentIssueDate": "2024-10-11",
+          "attachmentId": "c15ff33c-61b5-4145-a199-a9758c662966",
+          "attachmentFilename": "doc22697820241112115009.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "processingStatement",
+          "attachmentId": "cd1c39b0-8c03-471a-90a0-4e18336c18a0",
+          "attachmentFilename": "doc22698020241112115033.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "commercialInvoice",
+          "attachmentId": "7adfc2c6-ff12-4cef-8e1e-d67ec1cc56d5",
+          "attachmentFilename": "doc22698120241112115040.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        },
+        {
+          "documentType": "billOfLading",
+          "attachmentId": "d00952b7-c47b-4fb9-92f4-9f9301ba9e10",
+          "attachmentFilename": "doc22698220241112115046.pdf",
+          "attachmentContentType": "application/pdf",
+          "uploadUserId": "65631641-2733-eb11-a813-000d3a4aa284",
+          "uploadOrganisationId": "0377b5a5-9e49-e911-a959-000d3a454e11"
+        }
+      ],
+      "catchCertificateAttachments": [
+        {
+          "attachmentId": "867edb1d-f526-4f80-8ab1-0f0fa90662bf",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "9ea1f76e-35a1-4b04-a5ec-ab43eedbe758",
+              "catchCertificateReference": "GBR-2024-CC-46765825B",
+              "dateOfIssue": "2024-10-11",
+              "flagState": "GB",
+              "species": [
+                "321802"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "9ba613cc-fa94-4799-9fc5-d99908c869d0",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "0d0c99e3-9c08-4815-aa7d-64b977a3d4ae",
+              "catchCertificateReference": "GBR-2024-CC-B428EF588",
+              "dateOfIssue": "2024-10-11",
+              "flagState": "GB",
+              "species": [
+                "321802"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "e4dbbfd5-1947-4870-9cad-6f2c9555e7ce",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "f7afbfcc-94b0-405c-8082-45389fc432cb",
+              "catchCertificateReference": "GBR-2024-CC-EB7C8E1D1",
+              "dateOfIssue": "2024-10-11",
+              "flagState": "GB",
+              "species": [
+                "321802"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        },
+        {
+          "attachmentId": "4f2e95d6-5b38-47e5-9bec-22629f424f99",
+          "catchCertificateDetails": [
+            {
+              "catchCertificateId": "7fbdc5f6-0229-420a-9a09-c12d065d495f",
+              "catchCertificateReference": "GBR-2024-CC-AFCA780C6",
+              "dateOfIssue": "2024-10-11",
+              "flagState": "GB",
+              "species": [
+                "321802"
+              ]
+            }
+          ],
+          "numberOfCatchCertificates": 1
+        }
+      ]
+    },
+    "importerLocalReferenceNumber": "fa18e073781eb2d0e592fdc8ab7e0878780cc892f542edef5cc5e421da382a30",
+    "sealsContainers": [
+      {
+        "sealNumber": "VN88005AH",
+        "containerNumber": "TRIU8091015",
+        "officialSeal": true
+      }
+    ],
+    "submissionDate": "2024-11-12T12:02:15.124512195Z",
+    "submittedBy": {
+      "displayName": "19813f3b9984b39d0412ce1d0c6cce9b3cd3282e2e4d0922e1726cd76e938826",
+      "userId": "65631641-2733-eb11-a813-000d3a4aa284"
+    },
+    "complexCommoditySelected": true,
+    "portOfEntry": "GBGSYA",
+    "contactDetails": {
+      "name": "c45b22504ea773f50b75eea374421d31aa02a5756e30b9d3f9f91d81e5bd22fc",
+      "telephone": "deaf1e71001e5ec2cde4f4a276a76ba9299a45eb194c1904b4dd56cbfc76e392",
+      "email": "c516be2fd502f37e0a21356cde2631d1a16a4adad0de966b4fffbff7043d1987"
+    },
+    "isCatchCertificateRequired": true,
+    "isGVMSRoute": false,
+    "provideCtcMrn": "NO"
+  },
+  "decisionBy": {
+    "displayName": "291c5d4c94880405645e583e02e54f057c793d8fc27bbfb590361fc14dfc13ac",
+    "userId": "f8c909af-1440-e911-a95d-000d3a454f67"
+  },
+  "decisionDate": "2024-12-08T14:37:36.160872336Z",
+  "partTwo": {
+    "decision": {
+      "consignmentAcceptable": true,
+      "decision": "Acceptable for Internal Market",
+      "freeCirculationPurpose": "Human Consumption"
+    },
+    "consignmentCheck": {
+      "documentCheckResult": "Satisfactory",
+      "identityCheckType": "Not Done",
+      "identityCheckResult": "Not Done",
+      "identityCheckNotDoneReason": "Reduced checks regime",
+      "physicalCheckResult": "Not Done",
+      "physicalCheckNotDoneReason": "Reduced checks regime"
+    },
+    "laboratoryTestsRequired": false,
+    "resealedContainersIncluded": false,
+    "resealedContainersMapping": [
+      {
+        "sealNumber": "VN88005AH",
+        "containerNumber": "TRIU8091015",
+        "officialSeal": true
+      }
+    ],
+    "controlAuthority": {
+      "officialVeterinarian": {
+        "firstName": "5d4e50011306e2ff4e93724e340ba45a3ddffc51cce87a6447d4d1122e523097",
+        "lastName": "16c4238c31f0d1f5b46d9d9b7fcf26c330a2f50e51e722f6bfe556b5c99c18f0",
+        "email": "6e641cea1b60ffea25b30c33b65e42bca694e6207062e2df2d9bf487acf9c531",
+        "phone": "1a0a87f93d6e51178911e40b5786792e1153e9790a6937f859b8d5903c8b82e1",
+        "signed": "2024-12-08T14:37:36.188792574"
+      },
+      "iuuCheckRequired": true,
+      "iuuOption": "IUUOK"
+    },
+    "bipLocalReferenceNumber": "8d8785b12406b9354fd3d5bf0ed63dd7fd69617a2213e59d1d39e1ca05a45aa6",
+    "checkDate": "2024-12-08T14:37:00Z",
+    "inspectionRequired": "Not required"
+  },
+  "partThree": {
+    "sealCheckRequired": false
+  },
+  "etag": "00000000045976CA",
+  "riskDecisionLockingTime": "2024-12-09T07:00:00Z",
+  "isRiskDecisionLocked": false,
+  "chedTypeVersion": 1
+}

@@ -1,3 +1,4 @@
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
@@ -20,14 +21,16 @@ public class ChedPpPhsiTests(ITestOutputHelper output) : MultipleScenarioGenerat
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDC4TW6DUQYIAR5", "N02")]
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDN3EZ714MBIAR9", "H01")]
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDCVPBWY0GE9AR8", "H02")]
-    [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDB6P6GWPVLKAR7", "C03")] 
+    [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDB6P6GWPVLKAR7", "C03")]
     public void DecisionShouldHaveCorrectDecisionCodeForSingleNotification(Type generatorType, string mrn, string decisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
         EnsureEnvironmentInitialised(generatorType);
 
-        var movement = Client
+        var apiResponse = Client
             .GetMovementByMrn(mrn);
+
+        var movement = apiResponse.GetResourceObject<Movement>();
 
         var lastDecision = movement.Decisions.OrderByDescending(x => x.ServiceHeader?.ServiceCalled).First();
 
@@ -40,6 +43,6 @@ public class ChedPpPhsiTests(ITestOutputHelper output) : MultipleScenarioGenerat
             }
         }
     }
-    
-  
+
+
 }

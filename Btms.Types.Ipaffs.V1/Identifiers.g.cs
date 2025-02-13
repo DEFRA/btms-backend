@@ -21,34 +21,32 @@ public partial class Identifiers  //
 {
 
 
-        /// <summary>
-        /// Number used to identify which item the identifiers are related to
-        /// </summary>
+    /// <summary>
+    /// Number used to identify which item the identifiers are related to
+    /// </summary>
     [JsonPropertyName("speciesNumber")]
     public int? SpeciesNumber { get; set; }
 
-	
-        /// <summary>
-        /// List of identifiers and their keys
-        /// </summary>
+
+    /// <summary>
+    /// List of identifiers and their keys
+    /// </summary>
     [JsonPropertyName("data")]
-        [Btms.SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public IDictionary<string, string>? Data { get; set; }
 
-	
-        /// <summary>
-        /// Is the place of destination the permanent address?
-        /// </summary>
+
+    /// <summary>
+    /// Is the place of destination the permanent address?
+    /// </summary>
     [JsonPropertyName("isPlaceOfDestinationThePermanentAddress")]
     public bool? IsPlaceOfDestinationThePermanentAddress { get; set; }
 
-	
-        /// <summary>
-        /// Permanent address of the species
-        /// </summary>
+
+    /// <summary>
+    /// Permanent address of the species
+    /// </summary>
     [JsonPropertyName("permanentAddress")]
     public EconomicOperator? PermanentAddress { get; set; }
 
-	}
-
-
+}

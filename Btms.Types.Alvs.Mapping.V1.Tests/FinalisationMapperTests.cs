@@ -17,17 +17,17 @@ public class FinalisationMapperTests
 
         return sourceValue;
     }
-    
+
     [Fact]
     public void FinalState_ShouldBeCancelled()
     {
         var sourceValue = GetFake();
-        
+
         var mappedValue = FinalisationMapper.Map(sourceValue);
 
         mappedValue.Header.FinalState.Should().Be(FinalState.CancelledAfterArrival);
     }
-    
+
     [Fact]
     public void FinalState_ShouldBeCleared()
     {
@@ -37,7 +37,7 @@ public class FinalisationMapperTests
 
         mappedValue.Header.FinalState.Should().Be(FinalState.Cleared);
     }
-    
+
     [Fact]
     public void FinalState_ShouldBeDestroyed()
     {
@@ -47,8 +47,8 @@ public class FinalisationMapperTests
 
         mappedValue.Header.FinalState.Should().Be(FinalState.Destroyed);
     }
-    
-    
+
+
     [Fact]
     public void ManualAction_ShouldBeTrue()
     {
@@ -58,7 +58,7 @@ public class FinalisationMapperTests
 
         mappedValue.Header.ManualAction.Should().BeTrue();
     }
-    
+
     [Fact]
     public void ManualAction_ShouldBeFalse()
     {

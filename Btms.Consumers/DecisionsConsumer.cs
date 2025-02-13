@@ -17,15 +17,20 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
         var internalDecision = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
 
+        logger.LogInformation("OnHandle Decision SourceSystem {SourceSystem}, EntryReference {EntryReference} DecisionNumber {DecisionNumber}",
+            message.ServiceHeader?.SourceSystem,
+            message.Header.EntryReference,
+            message.Header.DecisionNumber);
+
         if (existingMovement != null)
         {
             var auditId = Context.GetMessageId();
             var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
-            
+
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeDecision(auditId!, internalDecision, notificationContext);
-            
+
             if (existingMovementBuilder.HasChanges)
             {
                 var movement = existingMovementBuilder.Build();
