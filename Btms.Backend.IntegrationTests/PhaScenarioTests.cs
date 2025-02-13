@@ -2,7 +2,11 @@ using System.Diagnostics;
 using System.Text.Json;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
+using Btms.SensitiveData;
+using Btms.Types.Ipaffs;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -12,7 +16,27 @@ namespace Btms.Backend.IntegrationTests;
 public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
     : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
-    private bool _saveData = false;
+    private bool _saveData = true;
+    
+    [Fact]
+    public async Task RedactFiles()
+    {
+        var di = new DirectoryInfo("../../../Fixtures/PhaScenarios/IPAFFS");
+
+        var files = di.GetFiles("*.json", SearchOption.AllDirectories);
+
+        await Parallel.ForEachAsync(files, async (fileInfo, ct) =>
+        {
+            var json = await File.ReadAllTextAsync(fileInfo.FullName, ct);
+        
+            var options = new SensitiveDataOptions { Include = false };
+            var serializer =
+                new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
+        
+            var result = serializer.RedactRawJson(json, typeof(ImportNotification));
+            await File.WriteAllTextAsync(fileInfo.FullName, result, ct);
+        });
+    }
     
     [Fact]
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
@@ -30,8 +54,13 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
         {
             SyncPeriod = SyncPeriod.All, RootFolder = "PhaScenarios"
         });
+        
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All, RootFolder = "PhaScenarios"
+        });
 
-        var cheds = new[] 
+        var cheds = new string[] 
         {
             "CHEDA.GB.2024.4792831",
             "CHEDD.GB.2024.5019877",
@@ -56,7 +85,9 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
         if (_saveData)
         {
             const string outputDirectory = "../../../PhaScenarioTestsOutput";
-            Directory.CreateDirectory(outputDirectory);
+            var dirInfo = Directory.CreateDirectory(outputDirectory);
+            
+            System.Console.WriteLine(dirInfo.FullName);
             
             foreach (var ched in cheds)
             {
@@ -82,6 +113,18 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
             {
                 var json = await GetDocument($"api/movements/{mrn}", Client.AsHttpClient());
                 await File.WriteAllTextAsync($"{outputDirectory}/btms-movement-single-{mrn}.json", json);
+            }
+            
+            
+            var grmIds = new[]
+            {
+                "GMRA00KBHFE0"
+            };
+            
+            foreach (var grmId in grmIds)
+            {
+                var json = await GetDocument($"api/gmrs/{grmId}", Client.AsHttpClient());
+                await File.WriteAllTextAsync($"{outputDirectory}/btms-goods-movement-single-{grmId}.json", json);
             }
         }
     }

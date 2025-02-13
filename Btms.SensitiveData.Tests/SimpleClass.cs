@@ -9,4 +9,8 @@ public class SimpleClass
     [SensitiveData] public string[] SimpleStringArrayOne { get; set; } = null!;
 
     public string[] SimpleStringArrayTwo { get; set; } = null!;
+    
+    
+    public SimpleClass[] SimpleObjectArray { get; set; } = null!;
+    
 }

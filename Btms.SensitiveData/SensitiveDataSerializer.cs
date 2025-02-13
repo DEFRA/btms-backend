@@ -47,6 +47,57 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
 
     }
 
+    public string RedactRawJson1(string json, Type type)
+    {
+        if (options.Value.Include)
+        {
+            return json;
+        }
+        var sensitiveFields = SensitiveFieldsProvider.Get(type);
+
+        if (!sensitiveFields.Any())
+        {
+            return json;
+        }
+
+        var rootNode = JsonNode.Parse(json);
+
+        foreach (var sensitiveField in sensitiveFields)
+        {
+            var jsonPath = JsonPath.Parse($"$.{sensitiveField}");
+            var result = jsonPath.Evaluate(rootNode);
+    
+            foreach (var match in result.Matches)
+            {
+                JsonPatch patch;
+                if (match.Value is JsonArray jsonArray)
+                {
+                    var redactedList = jsonArray.Select(x =>
+                    {
+                        var redactedValue = options.Value.Getter(x?.GetValue<string>()!);
+                        return redactedValue;
+                    }).ToJson();
+
+                    patch = new JsonPatch(PatchOperation.Replace(JsonPointer.Parse($"{match.Location!.AsJsonPointer()}"), JsonNode.Parse(redactedList)));
+                }
+                else
+                {
+                    var redactedValue = options.Value.Getter(match.Value?.GetValue<string>()!);
+                    patch = new JsonPatch(PatchOperation.Replace(JsonPointer.Parse(match.Location!.AsJsonPointer()), redactedValue));
+                }
+
+
+                var patchResult = patch.Apply(rootNode);
+                if (patchResult.IsSuccess)
+                {
+                    rootNode = patchResult.Result;
+                }
+            }
+        }
+
+        return rootNode!.ToJsonString();
+    }
+    
     public string RedactRawJson(string json, Type type)
     {
         if (options.Value.Include)
@@ -66,7 +117,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         {
             var jsonPath = JsonPath.Parse($"$.{sensitiveField}");
             var result = jsonPath.Evaluate(rootNode);
-
+    
             foreach (var match in result.Matches)
             {
                 JsonPatch patch;
