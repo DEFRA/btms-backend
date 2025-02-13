@@ -130,7 +130,7 @@ internal class CSharpFileBuilder
         {
             @class.Name = classMap.SourceClassName;
             @class.InternalName = classMap.InternalClassName;
-            @class.IgnoreInternalClass = classMap.IgnoreInternalClass;
+            @class.IgnoreInternalClass = classMap.ExcludedFromInternal;
 
             foreach (var propertyMap in classMap.Properties)
             {

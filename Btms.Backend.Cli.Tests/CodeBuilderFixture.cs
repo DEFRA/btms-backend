@@ -32,4 +32,15 @@ public class CodeBuilderFixture
 
         return csharpDescriptor;
     }
+    
+    public async Task<CSharpDescriptor> BuildEnum(EnumDescriptor enumDescriptor)
+    {
+        var cSharpDescriptor = new CSharpDescriptor();
+        
+        cSharpDescriptor.AddEnumDescriptor(enumDescriptor);
+        
+        await CSharpFileBuilder.Generate(cSharpDescriptor, "/tmp/btms-cli-tests/source", "/tmp/btms-cli-tests/internal","/tmp/mapping/");
+
+        return cSharpDescriptor;
+    }
 }

@@ -5,6 +5,12 @@ namespace Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 
 internal static class Bootstrap
 {
+    //Not ideal that the casing doesn't match, but the coding styles mandate:
+    private const string ArrivesAt = "arrivesAt";
+    private const string AlvsClearanceRequest = "AlvsClearanceRequest";
+    private const string CdsClearanceRequest = "CdsClearanceRequest";
+
+
     public static void GeneratorClassMaps()
     {
         RegisterAlvsClassMaps();
@@ -20,7 +26,7 @@ internal static class Bootstrap
         {
             map.MapProperty("ArrivalDateTime")
                 .IsDateTime(DatetimeType.Epoch)
-                .SetInternalName("arrivesAt");
+                .SetInternalName(ArrivesAt);
 
             map.MapProperty("MasterUCR")
                 .SetName("masterUcr")
@@ -69,22 +75,26 @@ internal static class Bootstrap
         });
 
         GeneratorClassMap.RegisterClassMap("ServiceHeader",
-            map => { map.MapProperty("ServiceCallTimestamp").IsDateTime(DatetimeType.Epoch).SetInternalName("serviceCalled"); });
+            map =>
+            {
+                map.MapProperty("ServiceCallTimestamp").IsDateTime(DatetimeType.Epoch)
+                .SetInternalName("serviceCalled");
+            });
 
-        GeneratorClassMap.RegisterClassMap("AlvsClearanceRequest",
-            map => { map.SetClassName("AlvsClearanceRequest", "CdsClearanceRequest"); });
+        GeneratorClassMap.RegisterClassMap(AlvsClearanceRequest,
+            map => { map.SetClassName(AlvsClearanceRequest, CdsClearanceRequest); });
 
-        GeneratorClassMap.RegisterClassMap("AlvsClearanceRequestPost", map =>
+        GeneratorClassMap.RegisterClassMap($"{AlvsClearanceRequest}Post", map =>
         {
-            map.SetClassName("AlvsClearanceRequestPost", "CdsClearanceRequestPost");
-            map.MapProperty("AlvsClearanceRequest").SetType("AlvsClearanceRequest", "CdsClearanceRequest");
+            map.SetClassName($"{AlvsClearanceRequest}Post", $"{CdsClearanceRequest}Post");
+            map.MapProperty(AlvsClearanceRequest).SetType(AlvsClearanceRequest, CdsClearanceRequest);
             map.MapProperty("sendingDate").SetInternalName("sentOn").IsDateTime();
         });
 
-        GeneratorClassMap.RegisterClassMap("AlvsClearanceRequestPostResult", map =>
+        GeneratorClassMap.RegisterClassMap($"{AlvsClearanceRequest}PostResult", map =>
         {
-            map.SetClassName("AlvsClearanceRequestPostResult", "CdsClearanceRequestPostResult")
-                .NoInternalClass();
+            map.SetClassName($"{AlvsClearanceRequest}PostResult", $"{CdsClearanceRequest}PostResult")
+                .ExcludeFromInternal();
             map.MapProperty("sendingDate").SetInternalName("sentOn").IsDateTime();
         });
     }
@@ -94,7 +104,7 @@ internal static class Bootstrap
         GeneratorEnumMap.RegisterEnumMap("ImportNotificationStatusEnum",
             map => { map.RemoveEnumValue("SUBMITTED,IN_PROGRESS,MODIFY"); });
 
-        GeneratorEnumMap.RegisterEnumMap("purposePurposeGroup",
+        GeneratorEnumMap.RegisterEnumMap("PurposePurposeGroupEnum",
             map => { map.AddEnumValue("For Import Non-Internal Market"); });
     }
 
@@ -212,6 +222,7 @@ internal static class Bootstrap
             map.MapProperty("Type").SetName("importNotificationType");
             map.MapProperty("LastUpdated").SetName("lastUpdated", "UpdatedSource").IsDateTime();
             map.MapProperty("RiskDecisionLockingTime").SetName("riskDecisionLockedOn").IsDateTime();
+            map.MapProperty("RiskAssessment").ExcludeFromInternal();
         });
 
         GeneratorClassMap.RegisterClassMap("Purpose", map =>
@@ -293,7 +304,6 @@ internal static class Bootstrap
             map.MapProperty("speciesFamily").IsSensitive();
             map.MapProperty("speciesCommonName").IsSensitive();
 
-
             map.AddProperty(new PropertyDescriptor("additionalData", "IDictionary<string, object>", false, false));
 
             map.AddProperty(new PropertyDescriptor("riskAssesment", "CommodityRiskResult", true, false));
@@ -303,8 +313,8 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("Commodities", map =>
         {
-            map.MapProperty("complementParameterSet").SetBsonIgnore();
-            map.MapProperty("commodityComplement").SetBsonIgnore();
+            map.MapProperty("complementParameterSet").ExcludeFromInternal();
+            map.MapProperty("commodityComplement").ExcludeFromInternal();
         });
 
 
@@ -317,7 +327,7 @@ internal static class Bootstrap
             map.MapProperty("isGVMSRoute").SetName("isGvmsRoute");
             map.MapProperty("portOfExitDate").IsDateTime().SetInternalName("exitedPortOfOn");
 
-            map.MapDateOnlyAndTimeOnlyToDateTimeProperty("arrivalDate", "arrivalTime", "arrivesAt");
+            map.MapDateOnlyAndTimeOnlyToDateTimeProperty("arrivalDate", "arrivalTime", ArrivesAt);
             map.MapDateOnlyAndTimeOnlyToDateTimeProperty("departureDate", "departureTime", "departedOn");
         });
 
@@ -336,6 +346,8 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("ComplementParameterSet", map =>
         {
+            map.ExcludeFromInternal();
+
             map.MapProperty("KeyDataPair")
                 .SetType("IDictionary<string, object>")
                 .AddAttribute("[JsonConverter(typeof(KeyDataPairsToDictionaryStringObjectJsonConverter))]",
@@ -415,7 +427,7 @@ internal static class Bootstrap
             map =>
             {
                 map.SetClassName("GmrsByVrn");
-                map.NoInternalClass();
+                map.ExcludeFromInternal();
             });
 
         GeneratorClassMap.RegisterClassMap("gmrs", map =>
@@ -431,28 +443,28 @@ internal static class Bootstrap
         });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsRequest",
-            map => { map.NoInternalClass(); });
+            map => { map.ExcludeFromInternal(); });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsResponse",
-            map => { map.NoInternalClass(); map.MapProperty("Gmrs").SetType("Gmr[]"); });
+            map => { map.ExcludeFromInternal(); map.MapProperty("Gmrs").SetType("Gmr[]"); });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForVRNrequest",
-            map => { map.NoInternalClass(); });
+            map => { map.ExcludeFromInternal(); });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsRequest",
-            map => { map.NoInternalClass(); });
+            map => { map.ExcludeFromInternal(); });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForVRNsresponse",
             map =>
             {
-                map.NoInternalClass();
+                map.ExcludeFromInternal();
                 map.MapProperty("Gmrs").SetType("Gmr[]");
                 map.MapProperty("gmrsByVRN").SetName("gmrsByVrns").SetType("GmrsByVrn[]");
             });
 
         GeneratorClassMap.RegisterClassMap("searchGmrsResponse", map =>
         {
-            map.NoInternalClass();
+            map.ExcludeFromInternal();
             map.MapProperty("Gmrs").SetType("Gmr[]");
         });
 
@@ -460,14 +472,14 @@ internal static class Bootstrap
         GeneratorClassMap.RegisterClassMap("plannedCrossing",
             map =>
             {
-                map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt");
+                map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName(ArrivesAt);
                 map.MapProperty("localDateTimeOfDeparture").IsDateTime().SetName("departsAt");
             });
 
         GeneratorClassMap.RegisterClassMap("actualCrossing",
-            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt"); });
+            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName(ArrivesAt); });
 
         GeneratorClassMap.RegisterClassMap("checkedInCrossing",
-            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName("arrivesAt"); });
+            map => { map.MapProperty("localDateTimeOfArrival").IsDateTime().SetName(ArrivesAt); });
     }
 }

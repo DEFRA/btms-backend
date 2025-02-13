@@ -20,7 +20,7 @@ internal class GeneratorClassMap
 
     public string InternalClassName { get; private set; }
 
-    public bool IgnoreInternalClass { get; private set; }
+    public bool ExcludedFromInternal { get; private set; }
 
     public List<PropertyMap> Properties { get; private set; } = [];
 
@@ -33,9 +33,9 @@ internal class GeneratorClassMap
         return this;
     }
 
-    public GeneratorClassMap NoInternalClass()
+    public GeneratorClassMap ExcludeFromInternal()
     {
-        IgnoreInternalClass = true;
+        ExcludedFromInternal = true;
         return this;
     }
 

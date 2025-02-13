@@ -99,19 +99,19 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap SetName(string name, string? internalName = null)
+    public void GuardNameFormat(string? name)
     {
         if (!name.StartsWithLowercase())
         {
             throw new InvalidOperationException(
                 "Name must start with lowercase letter");
         }
+    }
 
-        if (!internalName.StartsWithLowercase())
-        {
-            throw new InvalidOperationException(
-                "Internal name must start with lowercase letter");
-        }
+    public PropertyMap SetName(string name, string? internalName = null)
+    {
+        GuardNameFormat(name);
+        GuardNameFormat(internalName);
 
         SetSourceName(name);
         SetInternalName(internalName ?? name);
@@ -120,11 +120,7 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetSourceName(string name)
     {
-        if (!name.StartsWithLowercase())
-        {
-            throw new InvalidOperationException(
-                "Name must start with lowercase letter");
-        }
+        GuardNameFormat(name);
 
         OverriddenSourceName = name ?? throw new ArgumentNullException(nameof(name));
         SourceNameOverwritten = true;
@@ -133,11 +129,8 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetInternalName(string name)
     {
-        if (!name.StartsWithLowercase())
-        {
-            throw new InvalidOperationException(
-                "Name must start with lowercase letter");
-        }
+        GuardNameFormat(name);
+
         OverriddenInternalName = name ?? throw new ArgumentNullException(nameof(name));
         InternalNameOverwritten = true;
         return this;
@@ -145,11 +138,7 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetSourceJsonPropertyName(string name)
     {
-        if (!name.StartsWithLowercase())
-        {
-            throw new InvalidOperationException(
-                "Name must start with lowercase letter");
-        }
+        GuardNameFormat(name);
 
         SourceJsonPropertyName = name;
         return this;
@@ -157,11 +146,7 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetInternalJsonPropertyName(string name)
     {
-        if (!name.StartsWithLowercase())
-        {
-            throw new InvalidOperationException(
-                "Name must start with lowercase letter");
-        }
+        GuardNameFormat(name);
 
         InternalJsonPropertyName = name;
         return this;

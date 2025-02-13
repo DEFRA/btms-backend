@@ -18,22 +18,6 @@ public class JsonPropertyAttributeTests(CodeBuilderFixture fixture) : IClassFixt
                 isReferenceType: false,
                 isArray: false)
         );
-        //
-        //
-        // var csharpDescriptor = new CSharpDescriptor();
-        // var classDescriptor = new ClassDescriptor("PlannedCrossing", "Test.Source", "Test.Model", "");
-        // var propertyDescriptor = new PropertyDescriptor(
-        //     "localDateTimeOfDeparture",
-        //     type: "string",
-        //     isReferenceType: false,
-        //     isArray: false);
-
-        // classDescriptor.Properties.Add(propertyDescriptor);
-        //
-        // csharpDescriptor.AddClassDescriptor(classDescriptor);
-        //
-        // await CSharpFileBuilder.Generate(csharpDescriptor, "/tmp/btms-cli-tests/source", "/tmp/btms-cli-tests/internal","/tmp/btms-cli-tests-mapping/");
-
         csharpDescriptor.OutputFiles.Count.Should().Be(3);
 
         var sourceFile =
