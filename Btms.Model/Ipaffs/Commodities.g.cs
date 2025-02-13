@@ -98,21 +98,6 @@ public partial class Commodities  //
     [System.ComponentModel.Description("The total number of animals within this consignment")]
     public int? NumberOfAnimals { get; set; }
 
-    [Attr]
-    [JsonPropertyName("commodityComplements")]
-    [MongoDB.Bson.Serialization.Attributes.BsonIgnore]
-    public CommodityComplement[]? CommodityComplements { get; set; }
-
-
-    /// <summary>
-    /// Additional data for commodityComplement part containing such data as net weight
-    /// </summary>
-    [Attr]
-    [JsonPropertyName("complementParameterSets")]
-    [System.ComponentModel.Description("Additional data for commodityComplement part containing such data as net weight")]
-    [MongoDB.Bson.Serialization.Attributes.BsonIgnore]
-    public ComplementParameterSet[]? ComplementParameterSets { get; set; }
-
 
     /// <summary>
     /// Does consignment contain ablacted animals

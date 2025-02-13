@@ -138,15 +138,6 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
 
 
     /// <summary>
-    /// Result of risk assessment by the risk scorer
-    /// </summary>
-    [Attr]
-    [JsonPropertyName("riskAssessment")]
-    [System.ComponentModel.Description("Result of risk assessment by the risk scorer")]
-    public RiskAssessmentResult? RiskAssessment { get; set; }
-
-
-    /// <summary>
     /// Details of the risk categorisation level for a notification
     /// </summary>
     [Attr]

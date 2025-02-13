@@ -34,7 +34,6 @@ public static class ImportNotificationMapper
         to.Status = ImportNotificationStatusEnumMapper.Map(from?.Status);
         to.SplitConsignment = SplitConsignmentMapper.Map(from?.SplitConsignment);
         to.ChildNotification = from?.ChildNotification;
-        to.RiskAssessment = RiskAssessmentResultMapper.Map(from?.RiskAssessment);
         to.JourneyRiskCategorisation = JourneyRiskCategorisationResultMapper.Map(from?.JourneyRiskCategorisation);
         to.IsHighRiskEuImport = from?.IsHighRiskEuImport;
         to.PartOne = PartOneMapper.Map(from?.PartOne);
