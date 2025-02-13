@@ -7,12 +7,9 @@ namespace Btms.Business.Services.Decisions;
 public class DecisionContext(
     List<ImportNotification> notifications,
     List<Movement> movements,
-    MatchingResult matchingResult,
-    bool generateNoMatch = false)
+    MatchingResult matchingResult)
 {
     public List<ImportNotification> Notifications { get; } = notifications;
     public List<Movement> Movements { get; } = movements;
     public MatchingResult MatchingResult { get; } = matchingResult;
-
-    public bool GenerateNoMatch { get; } = generateNoMatch;
 }
