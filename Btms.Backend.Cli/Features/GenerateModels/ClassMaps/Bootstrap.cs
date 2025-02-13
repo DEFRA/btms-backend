@@ -51,7 +51,7 @@ internal static class Bootstrap
         {
             map.AddProperty(new PropertyDescriptor("decisionCode", "string", false, false));
 
-            map.AddProperty(new PropertyDescriptor("decisionsValidUntil", "DateTime",false, false));
+            map.AddProperty(new PropertyDescriptor("decisionsValidUntil", "DateTime", false, false));
 
             map.AddProperty(new PropertyDescriptor("decisionReasons", "string", false, true));
 

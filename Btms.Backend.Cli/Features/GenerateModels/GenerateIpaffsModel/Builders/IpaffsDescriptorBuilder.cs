@@ -7,7 +7,7 @@ public class IpaffsDescriptorBuilder(List<ISchemaVisitor> visitors)
 {
     public const string SourceNamespace = "Btms.Types.Ipaffs";
     public const string InternalNamespace = "Btms.Model.Ipaffs";
-    
+
     public CSharpDescriptor Build(string jsonSchema)
     {
         var mySchema = JsonSchema.FromText(jsonSchema);
@@ -16,7 +16,7 @@ public class IpaffsDescriptorBuilder(List<ISchemaVisitor> visitors)
 
         var mainClassDescriptor =
             new ClassDescriptor("ImportNotification", SourceNamespace, InternalNamespace) { IsResource = true };
-        
+
         csharpDescriptor.AddClassDescriptor(mainClassDescriptor);
         foreach (var property in mySchema.GetProperties()!)
         {
