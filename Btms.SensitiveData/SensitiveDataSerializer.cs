@@ -100,11 +100,14 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         while (queue.Any())
         {
             var (parentPath, element) = queue.Dequeue();
-            yield return QueueIterator(element, parentPath, queue);
+            foreach (var v in QueueIterator(element, parentPath, queue))
+            {
+                yield return v;
+            }
         }
     }
 
-    private static string QueueIterator(JsonElement element, string parentPath, Queue<(string ParentPath, JsonElement element)> queue)
+    private static IEnumerable<string> QueueIterator(JsonElement element, string parentPath, Queue<(string ParentPath, JsonElement element)> queue)
     {
         switch (element.ValueKind)
         {
@@ -129,7 +132,8 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
             case JsonValueKind.True:
             case JsonValueKind.False:
             case JsonValueKind.Null:
-                return parentPath;
+                yield return parentPath;
+                break;
         }
     }
 }
