@@ -76,9 +76,9 @@ internal class GeneratorClassMap
     {
         MapProperty(timeOnlyProperty).IsTime().ExcludeFromInternal();
         MapProperty(dateOnlyProperty).IsDate().ExcludeFromInternal();
-        AddProperty(new PropertyDescriptor(dateTimeProperty, dateTimeProperty,
-            "DateTime", "DateTime", false, false, "")
+        AddProperty(new PropertyDescriptor(dateTimeProperty, "DateTime", false, false)
         {
+            Description = "DateTime",
             ExcludedFromSource = true,
             Mapper =
                 $"DateTimeMapper.Map(from?.{PascalCaseNamingPolicy.ConvertName(dateOnlyProperty)}, from?.{PascalCaseNamingPolicy.ConvertName(timeOnlyProperty)});",
@@ -96,6 +96,11 @@ internal class GeneratorClassMap
         var propertyMap = new PropertyMap(propertyName);
         Properties.Add(propertyMap);
         return propertyMap;
+    }
+
+    public static void Reset()
+    {
+        ClassMaps.Clear();
     }
 
     public static GeneratorClassMap RegisterClassMap(string name, Action<GeneratorClassMap> classMapInitializer)

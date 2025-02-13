@@ -49,18 +49,11 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("Check", map =>
         {
-            map.AddProperty(new PropertyDescriptor("decisionCode", "decisionCode", "string",
-                "", false, false,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
+            map.AddProperty(new PropertyDescriptor("decisionCode", "string", false, false));
 
-            map.AddProperty(new PropertyDescriptor("decisionsValidUntil", "decisionsValidUntil", "DateTime",
-                "", false, false,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
+            map.AddProperty(new PropertyDescriptor("decisionsValidUntil", "DateTime",false, false));
 
-            map.AddProperty(new PropertyDescriptor("decisionReasons", "decisionReasons", "string",
-                "", false, true,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
-
+            map.AddProperty(new PropertyDescriptor("decisionReasons", "string", false, true));
 
             map.MapProperty("MasterUCR")
                 .SetName("masterUcr")
@@ -301,16 +294,11 @@ internal static class Bootstrap
             map.MapProperty("speciesCommonName").IsSensitive();
 
 
-            map.AddProperty(new PropertyDescriptor("additionalData", "additionalData", "IDictionary<string, object>",
-                "", false, false,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
+            map.AddProperty(new PropertyDescriptor("additionalData", "IDictionary<string, object>", false, false));
 
-            map.AddProperty(new PropertyDescriptor("riskAssesment", "riskAssesment", "CommodityRiskResult", "",
-                true, false,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
+            map.AddProperty(new PropertyDescriptor("riskAssesment", "CommodityRiskResult", true, false));
 
-            map.AddProperty(new PropertyDescriptor("checks", "checks", "InspectionCheck", "", true, true,
-                IpaffsDescriptorBuilder.ClassNamePrefix));
+            map.AddProperty(new PropertyDescriptor("checks", "InspectionCheck", true, true));
         });
 
         GeneratorClassMap.RegisterClassMap("Commodities", map =>

@@ -22,7 +22,7 @@ namespace @ns
 
 public static class @Model.GetClassName()Mapper
 {
-	public static @Model.GetInternalFullClassName() Map(@Model.GetSourceFullClassName() from)
+	public static @Model.GetInternalFullClassName() Map(@Model.GetSourceFullClassName()? from)
 	{
 	if(from is null)
 	{
@@ -41,7 +41,7 @@ public static class @Model.GetClassName()Mapper
 		}
 		else
         {
-            var line = $"to.{property.GetInternalPropertyName()} = {property.Mapper}.Map(from.{@property.GetSourcePropertyName()}!);";
+            var line = $"to.{property.GetInternalPropertyName()} = {property.Mapper}.Map(from?.{@property.GetSourcePropertyName()});";
             <text>@line
             </text> 
         }
@@ -54,14 +54,14 @@ public static class @Model.GetClassName()Mapper
         {
             if (property.IsArray)
             {
-                var line = $"to.{property.GetInternalPropertyName()} = from.{property.GetSourcePropertyName()}?.Select(x => {property.GetSourcePropertyTypeName()}Mapper.Map(x)).ToArray();";
+                var line = $"to.{property.GetInternalPropertyName()} = from?.{property.GetSourcePropertyName()}?.Select(x => {property.GetSourcePropertyTypeName()}Mapper.Map(x)).ToArray();";
                 <text>@line
                 </text>
 
             }
             else 
             {
-                <text>to.@property.GetInternalPropertyName() = @property.GetSourcePropertyTypeName()Mapper.Map(from.@property.GetSourcePropertyName()!);
+                <text>to.@property.GetInternalPropertyName() = @property.GetSourcePropertyTypeName()Mapper.Map(from?.@property.GetSourcePropertyName()!);
                 </text>
             }
 
@@ -69,7 +69,7 @@ public static class @Model.GetClassName()Mapper
         }
         else
         {
-            <text>to.@property.GetInternalPropertyName() = from.@property.GetSourcePropertyName();
+            <text>to.@property.GetInternalPropertyName() = from?.@property.GetSourcePropertyName();
             </text>
         }
     }

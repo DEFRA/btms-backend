@@ -4,13 +4,13 @@ using Humanizer;
 namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 
 [DebuggerDisplay("{Name}")]
-public class EnumDescriptor(string name, string? parentName, string sourceNamespace, string internalNamespace, string classNamePrefix)
+public class EnumDescriptor(string name, string? parentName, string sourceNamespace, string internalNamespace)
 {
     private const string Suffix = "Enum";
 
     public string Name { get; set; } = name;
 
-    public string FullName { get; set; } = BuildEnumName(name, parentName, classNamePrefix);
+    public string FullName { get; set; } = BuildEnumName(name, parentName);
 
     public string SourceNamespace { get; } = sourceNamespace;
 
@@ -25,17 +25,17 @@ public class EnumDescriptor(string name, string? parentName, string sourceNamesp
 
     public string GetEnumName()
     {
-        return BuildEnumName(Name, parentName, classNamePrefix);
+        return BuildEnumName(Name, parentName);
     }
 
     public string GetSourceFullEnumName()
     {
-        return $"{SourceNamespace}.{BuildEnumName(Name, parentName, classNamePrefix)}";
+        return $"{SourceNamespace}.{BuildEnumName(Name, parentName)}";
     }
 
     public string GetInternalFullEnumName()
     {
-        return $"{InternalNamespace}.{BuildEnumName(Name, parentName, classNamePrefix)}";
+        return $"{InternalNamespace}.{BuildEnumName(Name, parentName)}";
     }
 
     public class EnumValueDescriptor(string value)
@@ -82,13 +82,13 @@ public class EnumDescriptor(string name, string? parentName, string sourceNamesp
         }
     }
 
-    public static string BuildEnumName(string name, string? parentName, string classNamePrefix)
+    public static string BuildEnumName(string name, string? parentName)
     {
         if (string.IsNullOrEmpty(parentName))
         {
-            return $"{classNamePrefix}{name.Dehumanize()}{Suffix}";
+            return $"{name.Dehumanize()}{Suffix}";
         }
 
-        return $"{classNamePrefix}{parentName}{name.Dehumanize()}{Suffix}";
+        return $"{parentName}{name.Dehumanize()}{Suffix}";
     }
 }

@@ -8,36 +8,24 @@ namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 public class PropertyDescriptor
 {
     private readonly bool _isReferenceType;
-
     private readonly bool _isArray;
 
-    private readonly string _classNamePrefix;
+    // private readonly string _classNamePrefix;
     private bool _typeOverridden;
-
-    public PropertyDescriptor(string sourceName, string type, string description, bool isReferenceType,
-        bool isArray, string classNamePrefix)
-        : this(sourceName, sourceName, type, description, isReferenceType, isArray, classNamePrefix)
+    
+    public PropertyDescriptor(string schemaName, string type,
+        bool isReferenceType, bool isArray)
     {
-    }
-
-    public PropertyDescriptor(string sourceName, string internalName, string type, string? description,
-        bool isReferenceType, bool isArray, string classNamePrefix)
-    {
-        SourceName = sourceName;
-        InternalName = internalName;
+        SchemaName = schemaName;
+        SourceName = schemaName;
+        InternalName = schemaName;
 
         _isReferenceType = isReferenceType;
         _isArray = isArray;
-        _classNamePrefix = classNamePrefix;
-
         Type = type;
-
-        Description = description?.Replace("\n", " ");
         IsReferenceType = isReferenceType;
         IsArray = isArray;
-        // SourceAttributes = []; // [$"[JsonPropertyName(\"{sourceName}\")]"];
-        // InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]", $"[JsonPropertyName(\"{sourceName}\")]"];
-
+        
         if (type.EndsWith("Enum"))
         {
             InternalAttributes.Add(
@@ -47,22 +35,51 @@ public class PropertyDescriptor
 
     public bool NoAttributes { get; set; } = default;
 
+    /// <summary>
+    /// The name in the schema the code is being generated from
+    /// </summary>
+    public string SchemaName { get; set; }
+    
+    /// <summary>
+    /// The name we want in the Source Type Library
+    /// </summary>
     public string SourceName { get; set; }
 
+    /// <summary>
+    /// The value we want for the JsonProperty attribute in the Source Type Library
+    /// </summary>
     public string? SourceJsonPropertyName { get; set; }
 
-    public string? InternalJsonPropertyName { get; set; }
-
+    /// <summary>
+    /// The name we want in the Internal Data Model
+    /// </summary>
     public string InternalName { get; set; }
 
+    /// <summary>
+    /// The value we want for the JsonProperty attribute in the Internal data model
+    /// </summary>
+    public string? InternalJsonPropertyName { get; set; }
+
+    /// <summary>
+    /// The Type to use (in the Source Type Library??)
+    /// </summary>
     public string Type { get; set; }
 
+    /// <summary>
+    /// The Type to use in the Internal Data Model
+    /// </summary>
     public string? InternalType { get; set; }
 
     public string? Description { get; set; }
 
+    /// <summary>
+    /// Allows attributes to be added to the property in the Source Type Library
+    /// </summary>
     public List<string> SourceAttributes { get; set; } = [];
 
+    /// <summary>
+    /// Allows attributes to be added to the property in the Internal data model
+    /// </summary>
     public List<string> InternalAttributes { get; set; } = [];
 
     public bool IsReferenceType { get; set; }
@@ -92,12 +109,12 @@ public class PropertyDescriptor
         if (SourceName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
             SourceName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (SourceName.StartsWith(_classNamePrefix))
-            {
-                return $"{SourceName.Dehumanize()}";
-            }
+            // if (SourceName.StartsWith(_classNamePrefix))
+            // {
+            //     return $"{SourceName.Dehumanize()}";
+            // }
 
-            return $"{_classNamePrefix}{SourceName.Dehumanize()}";
+            return SourceName.Dehumanize();
         }
 
         if (_isArray)
@@ -119,12 +136,12 @@ public class PropertyDescriptor
         if (InternalName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
             InternalName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (InternalName.StartsWith(_classNamePrefix))
-            {
-                return $"{InternalName.Dehumanize()}";
-            }
+            // if (InternalName.StartsWith(_classNamePrefix))
+            // {
+            //     return $"{InternalName.Dehumanize()}";
+            // }
 
-            return $"{_classNamePrefix}{InternalName.Dehumanize()}";
+            return InternalName.Dehumanize();
         }
 
         if (_isArray)
@@ -149,7 +166,7 @@ public class PropertyDescriptor
     {
         if (NoAttributes) return [];
 
-        var defaultParams = new List<string>() { $"[JsonPropertyName(\"{SourceJsonPropertyName ?? SourceName}\")]" };
+        var defaultParams = new List<string>() { $"[JsonPropertyName(\"{SourceJsonPropertyName ?? SchemaName}\")]" };
         defaultParams.AddRange(SourceAttributes);
 
         return defaultParams.ToArray();
@@ -191,7 +208,7 @@ public class PropertyDescriptor
         if (_isReferenceType && !Type.Equals("Result") && !Type.Equals("Unit") && !Type.Equals("string") &&
             !Type.Equals("InspectionRequired"))
         {
-            t = ClassDescriptor.BuildClassName(Type, _classNamePrefix);
+            t = ClassDescriptor.BuildClassName(Type);
         }
 
         if (IsArray && !t.Contains("[]"))

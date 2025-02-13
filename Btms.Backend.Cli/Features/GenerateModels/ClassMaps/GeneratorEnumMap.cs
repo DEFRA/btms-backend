@@ -49,4 +49,9 @@ internal class GeneratorEnumMap
         ClassMaps.TryGetValue(name, out var classMap);
         return classMap;
     }
+
+    public static void Reset()
+    {
+        ClassMaps.Clear();
+    }
 }
