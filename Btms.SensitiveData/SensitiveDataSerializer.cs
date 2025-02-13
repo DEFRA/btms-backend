@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Btms.Common.Extensions;
 using Json.Patch;
 using Json.Path;
@@ -62,39 +63,71 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
 
         var rootNode = JsonNode.Parse(json);
 
-        foreach (var sensitiveField in sensitiveFields)
+        var jsonPaths = EnumeratePaths(json).ToList();
+        var regex = new Regex("\\[\\d\\]");
+        foreach (var path in jsonPaths)
         {
-            var jsonPath = JsonPath.Parse($"$.{sensitiveField}");
-            var result = jsonPath.Evaluate(rootNode);
+            var pathStripped = regex.Replace(path, "");
 
-            foreach (var match in result.Matches)
+            if (sensitiveFields.Contains(pathStripped))
             {
-                JsonPatch patch;
-                if (match.Value is JsonArray jsonArray)
-                {
-                    var redactedList = jsonArray.Select(x =>
-                    {
-                        var redactedValue = options.Value.Getter(x?.GetValue<string>()!);
-                        return redactedValue;
-                    }).ToJson();
+                var jsonPath = JsonPath.Parse($"$.{path}");
+                var result = jsonPath.Evaluate(rootNode);
 
-                    patch = new JsonPatch(PatchOperation.Replace(JsonPointer.Parse($"{match.Location!.AsJsonPointer()}"), JsonNode.Parse(redactedList)));
-                }
-                else
+                foreach (var match in result.Matches)
                 {
                     var redactedValue = options.Value.Getter(match.Value?.GetValue<string>()!);
-                    patch = new JsonPatch(PatchOperation.Replace(JsonPointer.Parse(match.Location!.AsJsonPointer()), redactedValue));
-                }
+                    var patch = new JsonPatch(PatchOperation.Replace(JsonPointer.Parse(match.Location!.AsJsonPointer()),
+                        redactedValue));
 
-
-                var patchResult = patch.Apply(rootNode);
-                if (patchResult.IsSuccess)
-                {
-                    rootNode = patchResult.Result;
+                    var patchResult = patch.Apply(rootNode);
+                    if (patchResult.IsSuccess)
+                    {
+                        rootNode = patchResult.Result;
+                    }
                 }
             }
         }
 
         return rootNode!.ToJsonString();
+    }
+
+    IEnumerable<string> EnumeratePaths(string json)
+    {
+        var doc = JsonDocument.Parse(json).RootElement;
+        var queue = new Queue<(string ParentPath, JsonElement element)>();
+        queue.Enqueue(("", doc));
+        while (queue.Any())
+        {
+            var (parentPath, element) = queue.Dequeue();
+            switch (element.ValueKind)
+            {
+                case JsonValueKind.Object:
+                    parentPath = parentPath == ""
+                        ? parentPath
+                        : parentPath + ".";
+                    foreach (var nextEl in element.EnumerateObject())
+                    {
+                        queue.Enqueue(($"{parentPath}{nextEl.Name}", nextEl.Value));
+                    }
+                    break;
+                case JsonValueKind.Array:
+                    foreach (var (nextEl, i) in element.EnumerateArray().Select((jsonElement, i) => (jsonElement, i)))
+                    {
+                        queue.Enqueue(($"{parentPath}[{i}]", nextEl));
+                    }
+                    break;
+                case JsonValueKind.Undefined:
+                case JsonValueKind.String:
+                case JsonValueKind.Number:
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                case JsonValueKind.Null:
+                    yield return parentPath;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }
