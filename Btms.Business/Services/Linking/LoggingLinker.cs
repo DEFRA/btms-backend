@@ -15,13 +15,13 @@ public class LoggingLinker<TModel, TKModel>(
     where TModel : class
     where TKModel : class
 {
-    public async Task Link(TKModel model, CancellationToken cancellationToken)
+    public async Task<LinkerResult<TModel, TKModel>> Link(TKModel model, CancellationToken cancellationToken)
     {
         var timestamp = TimeProvider.System.GetTimestamp();
 
         try
         {
-            await inner.Link(model, cancellationToken);
+            return await inner.Link(model, cancellationToken);
         }
         finally
         {

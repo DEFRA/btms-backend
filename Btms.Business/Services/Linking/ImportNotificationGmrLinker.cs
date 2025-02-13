@@ -9,12 +9,14 @@ namespace Btms.Business.Services.Linking;
 
 public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILinker<ImportNotification, Gmr>
 {
-    public async Task Link(Gmr model, CancellationToken cancellationToken)
+    public async Task<LinkerResult<ImportNotification, Gmr>> Link(Gmr model, CancellationToken cancellationToken)
     {
         var mrns = model.Declarations?.Customs?
             .Select(x => x.Id)
             .NotNull()
             .Distinct(StringComparer.OrdinalIgnoreCase) ?? [];
+        
+        var notifications = new List<ImportNotification>();
         
         foreach (var mrn in mrns)
         {
@@ -24,7 +26,11 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILink
 
             await AddGmrRelationshipIfNotPresentAndUpdate(model, notification, cancellationToken);
             await AddNotificationRelationshipIfNotPresentAndUpdate(model, notification, cancellationToken);
+            
+            notifications.Add(notification);
         }
+
+        return new LinkerResult<ImportNotification, Gmr>(notifications, model);
     }
 
     private async Task<ImportNotification?> FindNotification(string mrn, CancellationToken cancellationToken)

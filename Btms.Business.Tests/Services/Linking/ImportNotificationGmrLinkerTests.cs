@@ -12,6 +12,7 @@ using TestDataGenerator;
 using Xunit;
 using ExternalReference = Btms.Types.Ipaffs.ExternalReference;
 using ExternalReferenceSystemEnum = Btms.Types.Ipaffs.ExternalReferenceSystemEnum;
+using ImportNotificationTypeEnum = Btms.Types.Ipaffs.ImportNotificationTypeEnum;
 
 namespace Btms.Business.Tests.Services.Linking;
 
@@ -51,14 +52,14 @@ public class ImportNotificationGmrLinkerTests
     public async Task Link_WhenNotificationFound_ThenRelationshipsAreAdded(bool relationshipsAlreadyExist)
     {
         const string mrn = nameof(mrn);
-        const string referenceNumber = nameof(ImportNotification.ReferenceNumber);
         var notification = ImportNotificationBuilder.Default()
-            .With(x => x.ReferenceNumber, referenceNumber)
+            .WithReferenceNumber(ImportNotificationTypeEnum.Cveda, 1, DateTime.UtcNow, 1)
             .With(x => x.ExternalReferences,
                 [new ExternalReference { System = ExternalReferenceSystemEnum.Ncts, Reference = mrn }])
             .WithNoCommodities()
             .ValidateAndBuild()
             .MapWithTransform();
+        var referenceNumber = notification.ReferenceNumber!;
         const string gmrId = nameof(gmrId);
         var gmr = new Gmr
         {
@@ -89,17 +90,22 @@ public class ImportNotificationGmrLinkerTests
         await MongoDbContext.Notifications.Insert(notification);
         await MongoDbContext.Gmrs.Insert(gmr);
 
-        await Subject.Link(gmr, CancellationToken.None);
-
-        (await MongoDbContext.Notifications.Find(x => x.ReferenceNumber == referenceNumber))!.Relationships.Gmrs.Data
-            .Should().ContainEquivalentOf(
-                new { Type = "gmrs", Id = gmrId, Links = new { Self = $"/api/gmrs/{gmrId}" } });
-        (await MongoDbContext.Gmrs.Find(x => x.Id == gmrId))!.Relationships.ImportNotifications.Data.Should()
-            .ContainEquivalentOf(new
-            {
-                Type = "import-notifications",
-                Id = referenceNumber,
-                Links = new { Self = $"/api/import-notifications/{referenceNumber}" }
-            });
+        var result = await Subject.Link(gmr, CancellationToken.None);
+        
+        var notificationFromDb = await MongoDbContext.Notifications.Find(x => x.ReferenceNumber == referenceNumber);
+        var gmrFromDb = await MongoDbContext.Gmrs.Find(x => x.Id == gmrId);
+        notificationFromDb!.Relationships.Gmrs.Data.Should().ContainEquivalentOf(new
+        {
+            Type = "gmrs", Id = gmrId, Links = new { Self = $"/api/gmrs/{gmrId}" }
+        });
+        gmrFromDb!.Relationships.ImportNotifications.Data.Should().ContainEquivalentOf(new
+        {
+            Type = "import-notifications",
+            Id = referenceNumber,
+            Links = new { Self = $"/api/import-notifications/{referenceNumber}" }
+        });
+        result.From.Should().ContainSingle();
+        result.From[0].Should().BeSameAs(notificationFromDb);
+        result.To.Should().BeSameAs(gmrFromDb);
     }
 }
