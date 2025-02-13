@@ -183,7 +183,7 @@ public class DescriptorBuilderSchemaVisitor : ISchemaVisitor
             {
                 Description = context.JsonSchema.GetDescription()
             };
-            
+
             context.CSharpDescriptor.AddClassDescriptor(classDescriptor);
 
             var propertiesKeyword = context.JsonSchema.GetKeyword<PropertiesKeyword>();

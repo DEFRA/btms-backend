@@ -12,7 +12,7 @@ public class PropertyDescriptor
 
     // private readonly string _classNamePrefix;
     private bool _typeOverridden;
-    
+
     public PropertyDescriptor(string schemaName, string type,
         bool isReferenceType, bool isArray)
     {
@@ -25,7 +25,7 @@ public class PropertyDescriptor
         Type = type;
         IsReferenceType = isReferenceType;
         IsArray = isArray;
-        
+
         if (type.EndsWith("Enum"))
         {
             InternalAttributes.Add(
@@ -39,7 +39,7 @@ public class PropertyDescriptor
     /// The name in the schema the code is being generated from
     /// </summary>
     public string SchemaName { get; set; }
-    
+
     /// <summary>
     /// The name we want in the Source Type Library
     /// </summary>
@@ -70,7 +70,13 @@ public class PropertyDescriptor
     /// </summary>
     public string? InternalType { get; set; }
 
-    public string? Description { get; set; }
+    private readonly string? _description;
+
+    public string? Description
+    {
+        get => _description;
+        init => _description = value?.Replace("\n", " ");
+    }
 
     /// <summary>
     /// Allows attributes to be added to the property in the Source Type Library

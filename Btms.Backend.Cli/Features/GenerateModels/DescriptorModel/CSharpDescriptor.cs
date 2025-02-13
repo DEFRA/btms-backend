@@ -28,7 +28,7 @@ public class CSharpDescriptor
         // GeneratorClassMap.Reset();
         // GeneratorEnumMap.Reset();
     }
-    
+
     public void AddEnumDescriptor(EnumDescriptor enumDescriptor)
     {
         if (Enums.All(x => x.GetEnumName() != enumDescriptor.GetEnumName()))

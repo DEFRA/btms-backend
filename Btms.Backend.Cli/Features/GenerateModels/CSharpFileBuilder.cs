@@ -63,7 +63,7 @@ internal class CSharpFileBuilder
 
                 descriptor.OutputFiles.Add(new OutputFile()
                 {
-                    Name =  @class.GetInternalClassName(),
+                    Name = @class.GetInternalClassName(),
                     Path = internalPath,
                     Content = contents
                 });
