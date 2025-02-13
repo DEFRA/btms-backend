@@ -11,7 +11,6 @@ internal class GenerateAlvsModelCommand : IRequest
 {
     public const string SourceNamespace = "Btms.Types.Alvs";
     public const string InternalNamespace = "Btms.Model.Cds";
-    public const string ClassNamePrefix = "";
     public const string SolutionPath = "../../../../";
 
     [Option('s', "schema",
@@ -55,9 +54,8 @@ internal class GenerateAlvsModelCommand : IRequest
             }
 
             Console.WriteLine($"Class Name: {name}");
-            var classDescriptor = new ClassDescriptor(name!, SourceNamespace, InternalNamespace, ClassNamePrefix);
+            var classDescriptor = new ClassDescriptor(name!, SourceNamespace, InternalNamespace) { Description = complexType.GetDescription() };
 
-            classDescriptor.Description = complexType.GetDescription();
             cSharpDescriptor.AddClassDescriptor(classDescriptor);
 
             if (complexType.Particle is XmlSchemaSequence sequence)
@@ -73,12 +71,10 @@ internal class GenerateAlvsModelCommand : IRequest
                     Console.WriteLine($"Property Name: {schemaElement?.Name} - Type: {schemaElement?.GetSchemaType()}");
                     var propertyName = System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(schemaElement?.Name!);
                     var propertyDescriptor = new PropertyDescriptor(
-                        sourceName: propertyName,
+                        propertyName,
                         type: schemaElement?.GetSchemaType()!,
-                        description: "",
                         isReferenceType: IsReferenceType(schemaElement!.GetSchemaType()),
-                        isArray: schemaElement?.MaxOccursString == "unbounded",
-                        classNamePrefix: ClassNamePrefix);
+                        isArray: schemaElement?.MaxOccursString == "unbounded");
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }
             }
