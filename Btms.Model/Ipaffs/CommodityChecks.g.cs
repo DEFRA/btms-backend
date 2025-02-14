@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class CommodityChecks  //
 {
 
@@ -26,15 +22,12 @@ public partial class CommodityChecks  //
     /// UUID used to match the commodityChecks to the commodityComplement
     /// </summary>
     [Attr]
+    [JsonPropertyName("uniqueComplementId")]
     [System.ComponentModel.Description("UUID used to match the commodityChecks to the commodityComplement")]
     public string? UniqueComplementId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("checks")]
     public InspectionCheck[]? Checks { get; set; }
 
 
@@ -42,6 +35,7 @@ public partial class CommodityChecks  //
     /// Manually entered validity period, allowed if risk decision is INSPECTION_REQUIRED and HMI check status &#x27;Compliant&#x27; or &#x27;Not inspected&#x27;
     /// </summary>
     [Attr]
+    [JsonPropertyName("validityPeriod")]
     [System.ComponentModel.Description("Manually entered validity period, allowed if risk decision is INSPECTION_REQUIRED and HMI check status 'Compliant' or 'Not inspected'")]
     public int? ValidityPeriod { get; set; }
 

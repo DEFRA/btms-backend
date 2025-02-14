@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Approved Establishment details
 /// </summary>

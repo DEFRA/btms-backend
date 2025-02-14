@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Feedback information from control
 /// </summary>

@@ -17,14 +17,11 @@ public static class InspectionRequiredEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.InspectionRequiredEnum.Required => Btms.Model.Ipaffs.InspectionRequiredEnum.Required,
-            Btms.Types.Ipaffs.InspectionRequiredEnum.Inconclusive => Btms.Model.Ipaffs.InspectionRequiredEnum
-                .Inconclusive,
-            Btms.Types.Ipaffs.InspectionRequiredEnum.NotRequired =>
-                Btms.Model.Ipaffs.InspectionRequiredEnum.NotRequired,
+            Btms.Types.Ipaffs.InspectionRequiredEnum.Inconclusive => Btms.Model.Ipaffs.InspectionRequiredEnum.Inconclusive,
+            Btms.Types.Ipaffs.InspectionRequiredEnum.NotRequired => Btms.Model.Ipaffs.InspectionRequiredEnum.NotRequired,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

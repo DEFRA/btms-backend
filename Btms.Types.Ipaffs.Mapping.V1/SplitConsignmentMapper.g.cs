@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class SplitConsignmentMapper
 {
-    public static Btms.Model.Ipaffs.SplitConsignment Map(Btms.Types.Ipaffs.SplitConsignment from)
+    public static Btms.Model.Ipaffs.SplitConsignment Map(Btms.Types.Ipaffs.SplitConsignment? from)
     {
         if (from is null)
         {

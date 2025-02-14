@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class ImportNotification  //: CustomStringMongoIdentifiable
 {
 
@@ -132,10 +129,6 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
     [JsonPropertyName("isHighRiskEuImport")]
     public bool? IsHighRiskEuImport { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("partOne")]
     public PartOne? PartOne { get; set; }
 

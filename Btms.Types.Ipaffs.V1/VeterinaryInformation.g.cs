@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Part 1 - Holds the information related to veterinary checks and details
 /// </summary>

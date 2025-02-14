@@ -17,7 +17,6 @@ public static class ImportNotificationTypeEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.ImportNotificationTypeEnum.Cveda => Btms.Model.Ipaffs.ImportNotificationTypeEnum.Cveda,

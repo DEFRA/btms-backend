@@ -10,10 +10,10 @@
 
 using System.Text.Json.Serialization;
 using System.Dynamic;
-using Btms.SensitiveData;
 
 
 namespace Btms.Types.Ipaffs;
+
 
 /// <summary>
 /// Person to be contacted if there is an issue with the consignment
@@ -26,7 +26,7 @@ public partial class ContactDetails  //
     /// Name of designated contact
     /// </summary>
     [JsonPropertyName("name")]
-    [SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 
@@ -34,7 +34,7 @@ public partial class ContactDetails  //
     /// Telephone number of designated contact
     /// </summary>
     [JsonPropertyName("telephone")]
-    [SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Telephone { get; set; }
 
 
@@ -42,7 +42,7 @@ public partial class ContactDetails  //
     /// Email address of designated contact
     /// </summary>
     [JsonPropertyName("email")]
-    [SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 
@@ -50,7 +50,7 @@ public partial class ContactDetails  //
     /// Name of agent representing designated contact
     /// </summary>
     [JsonPropertyName("agent")]
-    [SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Agent { get; set; }
 
 }

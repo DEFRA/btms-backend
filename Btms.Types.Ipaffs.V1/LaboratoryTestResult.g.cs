@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Tests results corresponding to LaboratoryTests
 /// </summary>
@@ -47,7 +48,7 @@ public partial class LaboratoryTestResult  //
     /// Result of test
     /// </summary>
     [JsonPropertyName("results")]
-    [SensitiveData.SensitiveData]
+    [Btms.SensitiveData.SensitiveData]
     public string? Results { get; set; }
 
 

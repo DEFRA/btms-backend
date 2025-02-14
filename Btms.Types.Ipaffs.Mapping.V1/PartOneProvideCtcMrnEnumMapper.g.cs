@@ -17,12 +17,10 @@ public static class PartOneProvideCtcMrnEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.PartOneProvideCtcMrnEnum.Yes => Btms.Model.Ipaffs.PartOneProvideCtcMrnEnum.Yes,
-            Btms.Types.Ipaffs.PartOneProvideCtcMrnEnum.YesAddLater => Btms.Model.Ipaffs.PartOneProvideCtcMrnEnum
-                .YesAddLater,
+            Btms.Types.Ipaffs.PartOneProvideCtcMrnEnum.YesAddLater => Btms.Model.Ipaffs.PartOneProvideCtcMrnEnum.YesAddLater,
             Btms.Types.Ipaffs.PartOneProvideCtcMrnEnum.No => Btms.Model.Ipaffs.PartOneProvideCtcMrnEnum.No,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)

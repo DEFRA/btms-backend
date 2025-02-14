@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CommoditiesMapper
 {
-    public static Btms.Model.Ipaffs.Commodities Map(Btms.Types.Ipaffs.Commodities from)
+    public static Btms.Model.Ipaffs.Commodities Map(Btms.Types.Ipaffs.Commodities? from)
     {
         if (from is null)
         {
@@ -30,8 +30,6 @@ public static class CommoditiesMapper
         to.NumberOfPackages = from?.NumberOfPackages;
         to.Temperature = from?.Temperature;
         to.NumberOfAnimals = from?.NumberOfAnimals;
-        to.CommodityComplements = from?.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray();
-        to.ComplementParameterSets = from?.ComplementParameterSets?.Select(x => ComplementParameterSetMapper.Map(x)).ToArray();
         to.IncludeNonAblactedAnimals = from?.IncludeNonAblactedAnimals;
         to.CountryOfOrigin = from?.CountryOfOrigin;
         to.CountryOfOriginIsPodCountry = from?.CountryOfOriginIsPodCountry;

@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class RouteMapper
 {
-    public static Btms.Model.Ipaffs.Route Map(Btms.Types.Ipaffs.Route from)
+    public static Btms.Model.Ipaffs.Route Map(Btms.Types.Ipaffs.Route? from)
     {
         if (from is null)
         {

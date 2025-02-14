@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class SealContainerMapper
 {
-    public static Btms.Model.Ipaffs.SealContainer Map(Btms.Types.Ipaffs.SealContainer from)
+    public static Btms.Model.Ipaffs.SealContainer Map(Btms.Types.Ipaffs.SealContainer? from)
     {
         if (from is null)
         {

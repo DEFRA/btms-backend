@@ -17,15 +17,11 @@ public static class EconomicOperatorStatusEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.EconomicOperatorStatusEnum.Approved => Btms.Model.Ipaffs.EconomicOperatorStatusEnum
-                .Approved,
-            Btms.Types.Ipaffs.EconomicOperatorStatusEnum.Nonapproved => Btms.Model.Ipaffs.EconomicOperatorStatusEnum
-                .Nonapproved,
-            Btms.Types.Ipaffs.EconomicOperatorStatusEnum.Suspended => Btms.Model.Ipaffs.EconomicOperatorStatusEnum
-                .Suspended,
+            Btms.Types.Ipaffs.EconomicOperatorStatusEnum.Approved => Btms.Model.Ipaffs.EconomicOperatorStatusEnum.Approved,
+            Btms.Types.Ipaffs.EconomicOperatorStatusEnum.Nonapproved => Btms.Model.Ipaffs.EconomicOperatorStatusEnum.Nonapproved,
+            Btms.Types.Ipaffs.EconomicOperatorStatusEnum.Suspended => Btms.Model.Ipaffs.EconomicOperatorStatusEnum.Suspended,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

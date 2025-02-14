@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class InternationalTelephoneMapper
 {
-    public static Btms.Model.Ipaffs.InternationalTelephone Map(Btms.Types.Ipaffs.InternationalTelephone from)
+    public static Btms.Model.Ipaffs.InternationalTelephone Map(Btms.Types.Ipaffs.InternationalTelephone? from)
     {
         if (from is null)
         {

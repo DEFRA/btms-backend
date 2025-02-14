@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Result of risk assessment by the risk scorer
 /// </summary>

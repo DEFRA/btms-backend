@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ApplicantMapper
 {
-    public static Btms.Model.Ipaffs.Applicant Map(Btms.Types.Ipaffs.Applicant from)
+    public static Btms.Model.Ipaffs.Applicant Map(Btms.Types.Ipaffs.Applicant? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.Applicant();
         to.Laboratory = from?.Laboratory;
         to.LaboratoryAddress = from?.LaboratoryAddress;
@@ -32,7 +31,7 @@ public static class ApplicantMapper
         to.NumberOfSamples = from?.NumberOfSamples;
         to.SampleType = from?.SampleType;
         to.ConservationOfSample = ApplicantConservationOfSampleEnumMapper.Map(from?.ConservationOfSample);
-        to.Inspector = InspectorMapper.Map(from?.Inspector!);
+        to.Inspector = InspectorMapper.Map(from?.Inspector);
         to.SampledOn = DateTimeMapper.Map(from?.SampleDate, from?.SampleTime);
         return to;
     }

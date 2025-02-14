@@ -26,6 +26,7 @@ public partial class Control  //
     /// Feedback information of Control
     /// </summary>
     [Attr]
+    [JsonPropertyName("feedbackInformation")]
     [System.ComponentModel.Description("Feedback information of Control")]
     public FeedbackInformation? FeedbackInformation { get; set; }
 
@@ -34,6 +35,7 @@ public partial class Control  //
     /// Details on re-export
     /// </summary>
     [Attr]
+    [JsonPropertyName("detailsOnReExport")]
     [System.ComponentModel.Description("Details on re-export")]
     public DetailsOnReExport? DetailsOnReExport { get; set; }
 
@@ -42,6 +44,7 @@ public partial class Control  //
     /// Official inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("officialInspector")]
     [System.ComponentModel.Description("Official inspector")]
     public OfficialInspector? OfficialInspector { get; set; }
 
@@ -50,6 +53,7 @@ public partial class Control  //
     /// Is the consignment leaving UK borders?
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignmentLeave")]
     [System.ComponentModel.Description("Is the consignment leaving UK borders?")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ControlConsignmentLeaveEnum? ConsignmentLeave { get; set; }

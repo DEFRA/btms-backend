@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class LaboratoryTestsMapper
 {
-    public static Btms.Model.Ipaffs.LaboratoryTests Map(Btms.Types.Ipaffs.LaboratoryTests from)
+    public static Btms.Model.Ipaffs.LaboratoryTests Map(Btms.Types.Ipaffs.LaboratoryTests? from)
     {
         if (from is null)
         {

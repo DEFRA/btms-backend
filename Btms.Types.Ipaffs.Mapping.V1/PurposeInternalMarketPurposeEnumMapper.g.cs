@@ -11,52 +11,32 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PurposeInternalMarketPurposeEnumMapper
 {
-    public static Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum? Map(
-        Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum? from)
+    public static Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum? Map(Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.AnimalFeedingStuff => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.AnimalFeedingStuff,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.HumanConsumption => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.HumanConsumption,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.PharmaceuticalUse => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.PharmaceuticalUse,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.TechnicalUse => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.TechnicalUse,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Other => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Other,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSale => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.CommercialSale,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Rescue => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Rescue,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Breeding => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Breeding,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Research => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Research,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RacingOrCompetition => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.RacingOrCompetition,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming => Btms.Model
-                .Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Production => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Production,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Slaughter => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Slaughter,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Fattening => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.Fattening,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.GameRestocking => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.GameRestocking,
-            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RegisteredHorses => Btms.Model.Ipaffs
-                .PurposeInternalMarketPurposeEnum.RegisteredHorses,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.AnimalFeedingStuff => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.AnimalFeedingStuff,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.HumanConsumption => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.HumanConsumption,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.PharmaceuticalUse => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.PharmaceuticalUse,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.TechnicalUse => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.TechnicalUse,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Other => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Other,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSale => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSale,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.CommercialSaleOrChangeOfOwnership,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Rescue => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Rescue,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Breeding => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Breeding,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Research => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Research,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RacingOrCompetition => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.RacingOrCompetition,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.ApprovedPremisesOrBody,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.CompanionAnimalNotForResaleOrRehoming,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Production => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Production,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Slaughter => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Slaughter,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.Fattening => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.Fattening,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.GameRestocking => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.GameRestocking,
+            Btms.Types.Ipaffs.PurposeInternalMarketPurposeEnum.RegisteredHorses => Btms.Model.Ipaffs.PurposeInternalMarketPurposeEnum.RegisteredHorses,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

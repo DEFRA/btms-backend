@@ -26,6 +26,7 @@ public partial class FeedbackInformation  //
     /// Type of authority
     /// </summary>
     [Attr]
+    [JsonPropertyName("authorityType")]
     [System.ComponentModel.Description("Type of authority")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public FeedbackInformationAuthorityTypeEnum? AuthorityType { get; set; }
@@ -35,6 +36,7 @@ public partial class FeedbackInformation  //
     /// Did the consignment arrive
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignmentArrival")]
     [System.ComponentModel.Description("Did the consignment arrive")]
     public bool? ConsignmentArrival { get; set; }
 
@@ -43,6 +45,7 @@ public partial class FeedbackInformation  //
     /// Does the consignment conform
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignmentConformity")]
     [System.ComponentModel.Description("Does the consignment conform")]
     public bool? ConsignmentConformity { get; set; }
 
@@ -51,6 +54,7 @@ public partial class FeedbackInformation  //
     /// Reason for consignment not arriving at the entry point
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignmentNoArrivalReason")]
     [System.ComponentModel.Description("Reason for consignment not arriving at the entry point")]
     public string? ConsignmentNoArrivalReason { get; set; }
 
@@ -59,6 +63,7 @@ public partial class FeedbackInformation  //
     /// Date of consignment destruction
     /// </summary>
     [Attr]
+    [JsonPropertyName("destructionDate")]
     [System.ComponentModel.Description("Date of consignment destruction")]
     public string? DestructionDate { get; set; }
 

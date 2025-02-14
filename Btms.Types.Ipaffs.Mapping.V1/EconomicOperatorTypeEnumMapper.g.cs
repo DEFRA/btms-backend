@@ -17,28 +17,19 @@ public static class EconomicOperatorTypeEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Consignee =>
-                Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Consignee,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Destination => Btms.Model.Ipaffs.EconomicOperatorTypeEnum
-                .Destination,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Consignee => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Consignee,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Destination => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Destination,
             Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Exporter => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Exporter,
             Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Importer => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Importer,
             Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Charity => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Charity,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.CommercialTransporter => Btms.Model.Ipaffs
-                .EconomicOperatorTypeEnum.CommercialTransporter,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.CommercialTransporterUserAdded => Btms.Model.Ipaffs
-                .EconomicOperatorTypeEnum.CommercialTransporterUserAdded,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.PrivateTransporter => Btms.Model.Ipaffs.EconomicOperatorTypeEnum
-                .PrivateTransporter,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.TemporaryAddress => Btms.Model.Ipaffs.EconomicOperatorTypeEnum
-                .TemporaryAddress,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.PremisesOfOrigin => Btms.Model.Ipaffs.EconomicOperatorTypeEnum
-                .PremisesOfOrigin,
-            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.OrganisationBranchAddress => Btms.Model.Ipaffs
-                .EconomicOperatorTypeEnum.OrganisationBranchAddress,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.CommercialTransporter => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.CommercialTransporter,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.CommercialTransporterUserAdded => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.CommercialTransporterUserAdded,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.PrivateTransporter => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.PrivateTransporter,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.TemporaryAddress => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.TemporaryAddress,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.PremisesOfOrigin => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.PremisesOfOrigin,
+            Btms.Types.Ipaffs.EconomicOperatorTypeEnum.OrganisationBranchAddress => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.OrganisationBranchAddress,
             Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Packer => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Packer,
             Btms.Types.Ipaffs.EconomicOperatorTypeEnum.Pod => Btms.Model.Ipaffs.EconomicOperatorTypeEnum.Pod,
 

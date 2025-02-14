@@ -11,20 +11,16 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class JourneyRiskCategorisationResultRiskLevelMethodEnumMapper
 {
-    public static Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? Map(
-        Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? from)
+    public static Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? Map(Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.System => Btms.Model.Ipaffs
-                .JourneyRiskCategorisationResultRiskLevelMethodEnum.System,
-            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.User => Btms.Model.Ipaffs
-                .JourneyRiskCategorisationResultRiskLevelMethodEnum.User,
+            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.System => Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.System,
+            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.User => Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelMethodEnum.User,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

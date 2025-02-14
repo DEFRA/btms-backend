@@ -26,6 +26,7 @@ public partial class Purpose  //
     /// Does consignment conforms to UK laws
     /// </summary>
     [Attr]
+    [JsonPropertyName("conformsToEU")]
     [System.ComponentModel.Description("Does consignment conforms to UK laws")]
     public bool? ConformsToEU { get; set; }
 
@@ -34,6 +35,7 @@ public partial class Purpose  //
     /// Detailed purpose of internal market purpose group
     /// </summary>
     [Attr]
+    [JsonPropertyName("internalMarketPurpose")]
     [System.ComponentModel.Description("Detailed purpose of internal market purpose group")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public PurposeInternalMarketPurposeEnum? InternalMarketPurpose { get; set; }
@@ -43,6 +45,7 @@ public partial class Purpose  //
     /// Country that consignment is transshipped through
     /// </summary>
     [Attr]
+    [JsonPropertyName("thirdCountryTranshipment")]
     [System.ComponentModel.Description("Country that consignment is transshipped through")]
     public string? ThirdCountryTranshipment { get; set; }
 
@@ -51,16 +54,18 @@ public partial class Purpose  //
     /// Detailed purpose for non conforming purpose group
     /// </summary>
     [Attr]
+    [JsonPropertyName("forNonConforming")]
     [System.ComponentModel.Description("Detailed purpose for non conforming purpose group")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public PurposeForNonConformingEnum? ForNonConforming { get; set; }
 
 
     /// <summary>
-    /// There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number.&#xA;
+    /// There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number. 
     /// </summary>
     [Attr]
-    [System.ComponentModel.Description("There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number.")]
+    [JsonPropertyName("regNumber")]
+    [System.ComponentModel.Description("There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number. ")]
     public string? RegNumber { get; set; }
 
 
@@ -68,6 +73,7 @@ public partial class Purpose  //
     /// Ship name
     /// </summary>
     [Attr]
+    [JsonPropertyName("shipName")]
     [System.ComponentModel.Description("Ship name")]
     public string? ShipName { get; set; }
 
@@ -76,6 +82,7 @@ public partial class Purpose  //
     /// Destination Ship port
     /// </summary>
     [Attr]
+    [JsonPropertyName("shipPort")]
     [System.ComponentModel.Description("Destination Ship port")]
     public string? ShipPort { get; set; }
 
@@ -84,6 +91,7 @@ public partial class Purpose  //
     /// Exit Border Inspection Post
     /// </summary>
     [Attr]
+    [JsonPropertyName("exitBip")]
     [System.ComponentModel.Description("Exit Border Inspection Post")]
     public string? ExitBip { get; set; }
 
@@ -92,6 +100,7 @@ public partial class Purpose  //
     /// Country to which consignment is transited
     /// </summary>
     [Attr]
+    [JsonPropertyName("thirdCountry")]
     [System.ComponentModel.Description("Country to which consignment is transited")]
     public string? ThirdCountry { get; set; }
 
@@ -100,6 +109,7 @@ public partial class Purpose  //
     /// Countries that consignment is transited through
     /// </summary>
     [Attr]
+    [JsonPropertyName("transitThirdCountries")]
     [System.ComponentModel.Description("Countries that consignment is transited through")]
     public string[]? TransitThirdCountries { get; set; }
 
@@ -108,6 +118,7 @@ public partial class Purpose  //
     /// Specification of Import or admission purpose
     /// </summary>
     [Attr]
+    [JsonPropertyName("forImportOrAdmission")]
     [System.ComponentModel.Description("Specification of Import or admission purpose")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public PurposeForImportOrAdmissionEnum? ForImportOrAdmission { get; set; }
@@ -117,6 +128,7 @@ public partial class Purpose  //
     /// Exit date when import or admission
     /// </summary>
     [Attr]
+    [JsonPropertyName("exitDate")]
     [System.ComponentModel.Description("Exit date when import or admission")]
     public DateOnly? ExitDate { get; set; }
 
@@ -125,6 +137,7 @@ public partial class Purpose  //
     /// Final Border Inspection Post
     /// </summary>
     [Attr]
+    [JsonPropertyName("finalBip")]
     [System.ComponentModel.Description("Final Border Inspection Post")]
     public string? FinalBip { get; set; }
 
@@ -133,6 +146,7 @@ public partial class Purpose  //
     /// Purpose group of consignment (general purpose)
     /// </summary>
     [Attr]
+    [JsonPropertyName("purposeGroup")]
     [System.ComponentModel.Description("Purpose group of consignment (general purpose)")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public PurposePurposeGroupEnum? PurposeGroup { get; set; }
@@ -142,6 +156,7 @@ public partial class Purpose  //
     /// DateTime
     /// </summary>
     [Attr]
+    [JsonPropertyName("estimatedArrivesAtPortOfExit")]
     [System.ComponentModel.Description("DateTime")]
     public DateTime? EstimatedArrivesAtPortOfExit { get; set; }
 

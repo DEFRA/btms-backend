@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class UserInformationMapper
 {
-    public static Btms.Model.Ipaffs.UserInformation Map(Btms.Types.Ipaffs.UserInformation from)
+    public static Btms.Model.Ipaffs.UserInformation Map(Btms.Types.Ipaffs.UserInformation? from)
     {
         if (from is null)
         {

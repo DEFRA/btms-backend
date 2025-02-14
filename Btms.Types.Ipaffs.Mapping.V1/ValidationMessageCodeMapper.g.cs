@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ValidationMessageCodeMapper
 {
-    public static Btms.Model.Ipaffs.ValidationMessageCode Map(Btms.Types.Ipaffs.ValidationMessageCode from)
+    public static Btms.Model.Ipaffs.ValidationMessageCode Map(Btms.Types.Ipaffs.ValidationMessageCode? from)
     {
         if (from is null)
         {

@@ -26,6 +26,7 @@ public partial class PostalAddress  //
     /// 1st line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine1")]
     [System.ComponentModel.Description("1st line of address")]
     public string? AddressLine1 { get; set; }
 
@@ -34,6 +35,7 @@ public partial class PostalAddress  //
     /// 2nd line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine2")]
     [System.ComponentModel.Description("2nd line of address")]
     public string? AddressLine2 { get; set; }
 
@@ -42,6 +44,7 @@ public partial class PostalAddress  //
     /// 3rd line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine3")]
     [System.ComponentModel.Description("3rd line of address")]
     public string? AddressLine3 { get; set; }
 
@@ -50,6 +53,7 @@ public partial class PostalAddress  //
     /// 4th line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("addressLine4")]
     [System.ComponentModel.Description("4th line of address")]
     public string? AddressLine4 { get; set; }
 
@@ -58,6 +62,7 @@ public partial class PostalAddress  //
     /// 3rd line of address
     /// </summary>
     [Attr]
+    [JsonPropertyName("county")]
     [System.ComponentModel.Description("3rd line of address")]
     public string? County { get; set; }
 
@@ -66,6 +71,7 @@ public partial class PostalAddress  //
     /// City or town name
     /// </summary>
     [Attr]
+    [JsonPropertyName("cityOrTown")]
     [System.ComponentModel.Description("City or town name")]
     public string? CityOrTown { get; set; }
 
@@ -74,6 +80,7 @@ public partial class PostalAddress  //
     /// Post code
     /// </summary>
     [Attr]
+    [JsonPropertyName("postalCode")]
     [System.ComponentModel.Description("Post code")]
     public string? PostalCode { get; set; }
 

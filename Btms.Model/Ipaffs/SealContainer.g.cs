@@ -21,36 +21,20 @@ namespace Btms.Model.Ipaffs;
 public partial class SealContainer  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("sealNumber")]
     public string? SealNumber { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("containerNumber")]
     public string? ContainerNumber { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("officialSeal")]
     public bool? OfficialSeal { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("resealedSealNumber")]
     public string? ResealedSealNumber { get; set; }
 
 }

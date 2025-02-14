@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class DetailsOnReExportMapper
 {
-    public static Btms.Model.Ipaffs.DetailsOnReExport Map(Btms.Types.Ipaffs.DetailsOnReExport from)
+    public static Btms.Model.Ipaffs.DetailsOnReExport Map(Btms.Types.Ipaffs.DetailsOnReExport? from)
     {
         if (from is null)
         {

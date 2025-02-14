@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class IdentificationDetailsMapper
 {
-    public static Btms.Model.Ipaffs.IdentificationDetails Map(Btms.Types.Ipaffs.IdentificationDetails from)
+    public static Btms.Model.Ipaffs.IdentificationDetails Map(Btms.Types.Ipaffs.IdentificationDetails? from)
     {
         if (from is null)
         {
