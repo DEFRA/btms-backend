@@ -99,7 +99,7 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public void GuardNameFormat(string? name)
+    private static void GuardNameFormat(string? name)
     {
         if (!name.StartsWithLowercase())
         {
