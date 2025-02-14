@@ -14,21 +14,19 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PartThreeMapper
 {
-    public static Btms.Model.Ipaffs.PartThree Map(Btms.Types.Ipaffs.PartThree from)
+    public static Btms.Model.Ipaffs.PartThree Map(Btms.Types.Ipaffs.PartThree? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.PartThree();
         to.ControlStatus = PartThreeControlStatusEnumMapper.Map(from?.ControlStatus);
-        to.Control = ControlMapper.Map(from?.Control!);
-        to.ConsignmentValidations =
-            from?.ConsignmentValidations?.Select(x => ValidationMessageCodeMapper.Map(x)).ToArray();
+        to.Control = ControlMapper.Map(from?.Control);
+        to.ConsignmentValidations = from?.ConsignmentValidations?.Select(x => ValidationMessageCodeMapper.Map(x)).ToArray();
         to.SealCheckRequired = from?.SealCheckRequired;
-        to.SealCheck = SealCheckMapper.Map(from?.SealCheck!);
-        to.SealCheckOverride = InspectionOverrideMapper.Map(from?.SealCheckOverride!);
+        to.SealCheck = SealCheckMapper.Map(from?.SealCheck);
+        to.SealCheckOverride = InspectionOverrideMapper.Map(from?.SealCheckOverride);
         return to;
     }
 }

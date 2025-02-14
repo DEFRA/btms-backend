@@ -26,6 +26,7 @@ public partial class InternationalTelephone  //
     /// Country code of phone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("countryCode")]
     [System.ComponentModel.Description("Country code of phone number")]
     public string? CountryCode { get; set; }
 
@@ -34,6 +35,7 @@ public partial class InternationalTelephone  //
     /// Phone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("subscriberNumber")]
     [System.ComponentModel.Description("Phone number")]
     public string? SubscriberNumber { get; set; }
 

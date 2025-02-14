@@ -21,12 +21,8 @@ namespace Btms.Model.Ipaffs;
 public partial class Route  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("transitingStates")]
     public string[]? TransitingStates { get; set; }
 
 }

@@ -11,22 +11,17 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class JourneyRiskCategorisationResultRiskLevelEnumMapper
 {
-    public static Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? Map(
-        Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? from)
+    public static Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? Map(Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.High => Btms.Model.Ipaffs
-                .JourneyRiskCategorisationResultRiskLevelEnum.High,
-            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Medium => Btms.Model.Ipaffs
-                .JourneyRiskCategorisationResultRiskLevelEnum.Medium,
-            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Low => Btms.Model.Ipaffs
-                .JourneyRiskCategorisationResultRiskLevelEnum.Low,
+            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.High => Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.High,
+            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Medium => Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Medium,
+            Btms.Types.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Low => Btms.Model.Ipaffs.JourneyRiskCategorisationResultRiskLevelEnum.Low,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

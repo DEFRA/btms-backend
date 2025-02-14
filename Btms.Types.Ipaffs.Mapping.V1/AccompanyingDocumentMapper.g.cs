@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class AccompanyingDocumentMapper
 {
-    public static Btms.Model.Ipaffs.AccompanyingDocument Map(Btms.Types.Ipaffs.AccompanyingDocument from)
+    public static Btms.Model.Ipaffs.AccompanyingDocument Map(Btms.Types.Ipaffs.AccompanyingDocument? from)
     {
         if (from is null)
         {
@@ -29,7 +29,7 @@ public static class AccompanyingDocumentMapper
         to.AttachmentContentType = from?.AttachmentContentType;
         to.UploadUserId = from?.UploadUserId;
         to.UploadOrganisationId = from?.UploadOrganisationId;
-        to.ExternalReference = ExternalReferenceMapper.Map(from?.ExternalReference!);
+        to.ExternalReference = ExternalReferenceMapper.Map(from?.ExternalReference);
         return to;
     }
 }

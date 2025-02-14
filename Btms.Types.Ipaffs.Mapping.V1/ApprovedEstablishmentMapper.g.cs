@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ApprovedEstablishmentMapper
 {
-    public static Btms.Model.Ipaffs.ApprovedEstablishment Map(Btms.Types.Ipaffs.ApprovedEstablishment from)
+    public static Btms.Model.Ipaffs.ApprovedEstablishment Map(Btms.Types.Ipaffs.ApprovedEstablishment? from)
     {
         if (from is null)
         {

@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class ComplementParameterSet  //
 {
 
@@ -27,24 +24,12 @@ public partial class ComplementParameterSet  //
     [JsonPropertyName("uniqueComplementID")]
     public string? UniqueComplementId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("complementID")]
     public int? ComplementId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("speciesID")]
     public string? SpeciesId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("keyDataPair")]
     [JsonConverter(typeof(KeyDataPairsToDictionaryStringObjectJsonConverter))]
     public IDictionary<string, object>? KeyDataPairs { get; set; }

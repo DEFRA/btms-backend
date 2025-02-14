@@ -26,6 +26,7 @@ public partial class InspectionOverride  //
     /// Original inspection decision
     /// </summary>
     [Attr]
+    [JsonPropertyName("originalDecision")]
     [System.ComponentModel.Description("Original inspection decision")]
     public string? OriginalDecision { get; set; }
 
@@ -34,6 +35,7 @@ public partial class InspectionOverride  //
     /// The time the risk decision is overridden
     /// </summary>
     [Attr]
+    [JsonPropertyName("overriddenOn")]
     [System.ComponentModel.Description("The time the risk decision is overridden")]
     public DateTime? OverriddenOn { get; set; }
 
@@ -42,6 +44,7 @@ public partial class InspectionOverride  //
     /// User entity who has manually overridden the inspection
     /// </summary>
     [Attr]
+    [JsonPropertyName("overriddenBy")]
     [System.ComponentModel.Description("User entity who has manually overridden the inspection")]
     public UserInformation? OverriddenBy { get; set; }
 

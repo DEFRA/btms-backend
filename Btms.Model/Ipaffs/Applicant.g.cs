@@ -26,6 +26,7 @@ public partial class Applicant  //
     /// Name of laboratory
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratory")]
     [System.ComponentModel.Description("Name of laboratory")]
     public string? Laboratory { get; set; }
 
@@ -34,6 +35,7 @@ public partial class Applicant  //
     /// Laboratory address
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryAddress")]
     [System.ComponentModel.Description("Laboratory address")]
     public string? LaboratoryAddress { get; set; }
 
@@ -42,6 +44,7 @@ public partial class Applicant  //
     /// Laboratory identification
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryIdentification")]
     [System.ComponentModel.Description("Laboratory identification")]
     public string? LaboratoryIdentification { get; set; }
 
@@ -50,6 +53,7 @@ public partial class Applicant  //
     /// Laboratory phone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryPhoneNumber")]
     [System.ComponentModel.Description("Laboratory phone number")]
     public string? LaboratoryPhoneNumber { get; set; }
 
@@ -58,6 +62,7 @@ public partial class Applicant  //
     /// Laboratory email
     /// </summary>
     [Attr]
+    [JsonPropertyName("laboratoryEmail")]
     [System.ComponentModel.Description("Laboratory email")]
     public string? LaboratoryEmail { get; set; }
 
@@ -66,6 +71,7 @@ public partial class Applicant  //
     /// Sample batch number
     /// </summary>
     [Attr]
+    [JsonPropertyName("sampleBatchNumber")]
     [System.ComponentModel.Description("Sample batch number")]
     public string? SampleBatchNumber { get; set; }
 
@@ -74,6 +80,7 @@ public partial class Applicant  //
     /// Type of analysis
     /// </summary>
     [Attr]
+    [JsonPropertyName("analysisType")]
     [System.ComponentModel.Description("Type of analysis")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ApplicantAnalysisTypeEnum? AnalysisType { get; set; }
@@ -83,6 +90,7 @@ public partial class Applicant  //
     /// Number of samples analysed
     /// </summary>
     [Attr]
+    [JsonPropertyName("numberOfSamples")]
     [System.ComponentModel.Description("Number of samples analysed")]
     public int? NumberOfSamples { get; set; }
 
@@ -91,6 +99,7 @@ public partial class Applicant  //
     /// Type of sample
     /// </summary>
     [Attr]
+    [JsonPropertyName("sampleType")]
     [System.ComponentModel.Description("Type of sample")]
     public string? SampleType { get; set; }
 
@@ -99,6 +108,7 @@ public partial class Applicant  //
     /// Conservation of sample
     /// </summary>
     [Attr]
+    [JsonPropertyName("conservationOfSample")]
     [System.ComponentModel.Description("Conservation of sample")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ApplicantConservationOfSampleEnum? ConservationOfSample { get; set; }
@@ -108,6 +118,7 @@ public partial class Applicant  //
     /// inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("inspector")]
     [System.ComponentModel.Description("inspector")]
     public Inspector? Inspector { get; set; }
 
@@ -116,6 +127,7 @@ public partial class Applicant  //
     /// DateTime
     /// </summary>
     [Attr]
+    [JsonPropertyName("sampledOn")]
     [System.ComponentModel.Description("DateTime")]
     public DateTime? SampledOn { get; set; }
 

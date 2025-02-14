@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class Commodities  //
 {
 
@@ -83,10 +80,6 @@ public partial class Commodities  //
     [JsonPropertyName("numberOfAnimals")]
     public int? NumberOfAnimals { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("commodityComplement")]
     public CommodityComplement[]? CommodityComplements { get; set; }
 

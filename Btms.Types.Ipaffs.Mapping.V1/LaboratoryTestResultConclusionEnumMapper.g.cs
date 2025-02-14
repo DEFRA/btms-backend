@@ -11,24 +11,18 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class LaboratoryTestResultConclusionEnumMapper
 {
-    public static Btms.Model.Ipaffs.LaboratoryTestResultConclusionEnum? Map(
-        Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum? from)
+    public static Btms.Model.Ipaffs.LaboratoryTestResultConclusionEnum? Map(Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Satisfactory => Btms.Model.Ipaffs
-                .LaboratoryTestResultConclusionEnum.Satisfactory,
-            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotSatisfactory => Btms.Model.Ipaffs
-                .LaboratoryTestResultConclusionEnum.NotSatisfactory,
-            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotInterpretable => Btms.Model.Ipaffs
-                .LaboratoryTestResultConclusionEnum.NotInterpretable,
-            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Pending => Btms.Model.Ipaffs
-                .LaboratoryTestResultConclusionEnum.Pending,
+            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Satisfactory => Btms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.Satisfactory,
+            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotSatisfactory => Btms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.NotSatisfactory,
+            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.NotInterpretable => Btms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.NotInterpretable,
+            Btms.Types.Ipaffs.LaboratoryTestResultConclusionEnum.Pending => Btms.Model.Ipaffs.LaboratoryTestResultConclusionEnum.Pending,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

@@ -11,23 +11,18 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class DecisionSpecificWarehouseNonConformingConsignmentEnumMapper
 {
-    public static Btms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? Map(
-        Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? from)
+    public static Btms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? Map(Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse => Btms.Model.Ipaffs
-                .DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse,
+            Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse => Btms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.CustomWarehouse,
             Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.FreeZoneOrFreeWarehouse => Btms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.FreeZoneOrFreeWarehouse,
-            Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier => Btms.Model.Ipaffs
-                .DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier,
-            Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship => Btms.Model.Ipaffs
-                .DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship,
+            Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier => Btms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.ShipSupplier,
+            Btms.Types.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship => Btms.Model.Ipaffs.DecisionSpecificWarehouseNonConformingConsignmentEnum.Ship,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

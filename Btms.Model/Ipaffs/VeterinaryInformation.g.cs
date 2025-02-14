@@ -26,6 +26,7 @@ public partial class VeterinaryInformation  //
     /// External reference of approved establishments, which relates to a downstream service
     /// </summary>
     [Attr]
+    [JsonPropertyName("establishmentsOfOriginExternalReference")]
     [System.ComponentModel.Description("External reference of approved establishments, which relates to a downstream service")]
     public ExternalReference? EstablishmentsOfOriginExternalReference { get; set; }
 
@@ -34,6 +35,7 @@ public partial class VeterinaryInformation  //
     /// List of establishments which were approved by UK to issue veterinary documents
     /// </summary>
     [Attr]
+    [JsonPropertyName("establishmentsOfOrigins")]
     [System.ComponentModel.Description("List of establishments which were approved by UK to issue veterinary documents")]
     public ApprovedEstablishment[]? EstablishmentsOfOrigins { get; set; }
 
@@ -42,6 +44,7 @@ public partial class VeterinaryInformation  //
     /// Veterinary document identification
     /// </summary>
     [Attr]
+    [JsonPropertyName("veterinaryDocument")]
     [System.ComponentModel.Description("Veterinary document identification")]
     public string? VeterinaryDocument { get; set; }
 
@@ -50,6 +53,7 @@ public partial class VeterinaryInformation  //
     /// Veterinary document issue date
     /// </summary>
     [Attr]
+    [JsonPropertyName("veterinaryDocumentIssuedOn")]
     [System.ComponentModel.Description("Veterinary document issue date")]
     public DateOnly? VeterinaryDocumentIssuedOn { get; set; }
 
@@ -58,6 +62,7 @@ public partial class VeterinaryInformation  //
     /// Additional documents
     /// </summary>
     [Attr]
+    [JsonPropertyName("accompanyingDocumentNumbers")]
     [System.ComponentModel.Description("Additional documents")]
     public string[]? AccompanyingDocumentNumbers { get; set; }
 
@@ -66,6 +71,7 @@ public partial class VeterinaryInformation  //
     /// Accompanying documents
     /// </summary>
     [Attr]
+    [JsonPropertyName("accompanyingDocuments")]
     [System.ComponentModel.Description("Accompanying documents")]
     public AccompanyingDocument[]? AccompanyingDocuments { get; set; }
 
@@ -74,6 +80,7 @@ public partial class VeterinaryInformation  //
     /// Catch certificate attachments
     /// </summary>
     [Attr]
+    [JsonPropertyName("catchCertificateAttachments")]
     [System.ComponentModel.Description("Catch certificate attachments")]
     public CatchCertificateAttachment[]? CatchCertificateAttachments { get; set; }
 
@@ -82,6 +89,7 @@ public partial class VeterinaryInformation  //
     /// Details helpful for identification
     /// </summary>
     [Attr]
+    [JsonPropertyName("identificationDetails")]
     [System.ComponentModel.Description("Details helpful for identification")]
     public IdentificationDetails[]? IdentificationDetails { get; set; }
 

@@ -26,6 +26,7 @@ public partial class OfficialInspector  //
     /// First name of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("firstName")]
     [System.ComponentModel.Description("First name of inspector")]
     public string? FirstName { get; set; }
 
@@ -34,6 +35,7 @@ public partial class OfficialInspector  //
     /// Last name of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("lastName")]
     [System.ComponentModel.Description("Last name of inspector")]
     public string? LastName { get; set; }
 
@@ -42,6 +44,7 @@ public partial class OfficialInspector  //
     /// Email of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("email")]
     [System.ComponentModel.Description("Email of inspector")]
     public string? Email { get; set; }
 
@@ -50,6 +53,7 @@ public partial class OfficialInspector  //
     /// Phone number of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("phone")]
     [System.ComponentModel.Description("Phone number of inspector")]
     public string? Phone { get; set; }
 
@@ -58,6 +62,7 @@ public partial class OfficialInspector  //
     /// Fax number of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("fax")]
     [System.ComponentModel.Description("Fax number of inspector")]
     public string? Fax { get; set; }
 
@@ -66,6 +71,7 @@ public partial class OfficialInspector  //
     /// Address of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("address")]
     [System.ComponentModel.Description("Address of inspector")]
     public Address? Address { get; set; }
 
@@ -74,6 +80,7 @@ public partial class OfficialInspector  //
     /// Date of sign
     /// </summary>
     [Attr]
+    [JsonPropertyName("signed")]
     [System.ComponentModel.Description("Date of sign")]
     public string? Signed { get; set; }
 

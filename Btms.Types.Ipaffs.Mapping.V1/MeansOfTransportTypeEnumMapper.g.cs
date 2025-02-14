@@ -17,23 +17,16 @@ public static class MeansOfTransportTypeEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.Aeroplane =>
-                Btms.Model.Ipaffs.MeansOfTransportTypeEnum.Aeroplane,
-            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicle => Btms.Model.Ipaffs.MeansOfTransportTypeEnum
-                .RoadVehicle,
-            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.RailwayWagon => Btms.Model.Ipaffs.MeansOfTransportTypeEnum
-                .RailwayWagon,
+            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.Aeroplane => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.Aeroplane,
+            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicle => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.RoadVehicle,
+            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.RailwayWagon => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.RailwayWagon,
             Btms.Types.Ipaffs.MeansOfTransportTypeEnum.Ship => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.Ship,
             Btms.Types.Ipaffs.MeansOfTransportTypeEnum.Other => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.Other,
-            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicleAeroplane => Btms.Model.Ipaffs
-                .MeansOfTransportTypeEnum.RoadVehicleAeroplane,
-            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRailwayWagon => Btms.Model.Ipaffs.MeansOfTransportTypeEnum
-                .ShipRailwayWagon,
-            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRoadVehicle => Btms.Model.Ipaffs.MeansOfTransportTypeEnum
-                .ShipRoadVehicle,
+            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.RoadVehicleAeroplane => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.RoadVehicleAeroplane,
+            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRailwayWagon => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.ShipRailwayWagon,
+            Btms.Types.Ipaffs.MeansOfTransportTypeEnum.ShipRoadVehicle => Btms.Model.Ipaffs.MeansOfTransportTypeEnum.ShipRoadVehicle,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

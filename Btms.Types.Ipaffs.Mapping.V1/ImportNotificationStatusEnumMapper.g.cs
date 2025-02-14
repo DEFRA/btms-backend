@@ -11,40 +11,26 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ImportNotificationStatusEnumMapper
 {
-    public static Btms.Model.Ipaffs.ImportNotificationStatusEnum? Map(
-        Btms.Types.Ipaffs.ImportNotificationStatusEnum? from)
+    public static Btms.Model.Ipaffs.ImportNotificationStatusEnum? Map(Btms.Types.Ipaffs.ImportNotificationStatusEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Draft =>
-                Btms.Model.Ipaffs.ImportNotificationStatusEnum.Draft,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Submitted => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Submitted,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Validated => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Validated,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Rejected => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Rejected,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.InProgress => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .InProgress,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Amend =>
-                Btms.Model.Ipaffs.ImportNotificationStatusEnum.Amend,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Modify => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Modify,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Replaced => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Replaced,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Cancelled => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Cancelled,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Deleted => Btms.Model.Ipaffs.ImportNotificationStatusEnum
-                .Deleted,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected => Btms.Model.Ipaffs
-                .ImportNotificationStatusEnum.PartiallyRejected,
-            Btms.Types.Ipaffs.ImportNotificationStatusEnum.SplitConsignment => Btms.Model.Ipaffs
-                .ImportNotificationStatusEnum.SplitConsignment,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Draft => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Draft,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Submitted => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Submitted,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Validated => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Validated,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Rejected => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Rejected,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.InProgress => Btms.Model.Ipaffs.ImportNotificationStatusEnum.InProgress,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Amend => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Amend,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Modify => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Modify,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Replaced => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Replaced,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Cancelled => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Cancelled,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.Deleted => Btms.Model.Ipaffs.ImportNotificationStatusEnum.Deleted,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected => Btms.Model.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected,
+            Btms.Types.Ipaffs.ImportNotificationStatusEnum.SplitConsignment => Btms.Model.Ipaffs.ImportNotificationStatusEnum.SplitConsignment,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class KeyDataPairMapper
 {
-    public static Btms.Model.Ipaffs.KeyDataPair Map(Btms.Types.Ipaffs.KeyDataPair from)
+    public static Btms.Model.Ipaffs.KeyDataPair Map(Btms.Types.Ipaffs.KeyDataPair? from)
     {
         if (from is null)
         {

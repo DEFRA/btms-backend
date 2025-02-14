@@ -17,11 +17,9 @@ public static class PartyTypeEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.PartyTypeEnum.CommercialTransporter => Btms.Model.Ipaffs.PartyTypeEnum
-                .CommercialTransporter,
+            Btms.Types.Ipaffs.PartyTypeEnum.CommercialTransporter => Btms.Model.Ipaffs.PartyTypeEnum.CommercialTransporter,
             Btms.Types.Ipaffs.PartyTypeEnum.PrivateTransporter => Btms.Model.Ipaffs.PartyTypeEnum.PrivateTransporter,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)

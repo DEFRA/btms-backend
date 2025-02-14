@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CommodityChecksMapper
 {
-    public static Btms.Model.Ipaffs.CommodityChecks Map(Btms.Types.Ipaffs.CommodityChecks from)
+    public static Btms.Model.Ipaffs.CommodityChecks Map(Btms.Types.Ipaffs.CommodityChecks? from)
     {
         if (from is null)
         {

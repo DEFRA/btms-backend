@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Purpose of consignment details
 /// </summary>
@@ -50,7 +51,7 @@ public partial class Purpose  //
 
 
     /// <summary>
-    /// There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number.&#xA;
+    /// There are 3 types of registration number based on the purpose of consignment. Customs registration number, Free zone registration number and Shipping supplier registration number. 
     /// </summary>
     [JsonPropertyName("regNumber")]
     public string? RegNumber { get; set; }

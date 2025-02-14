@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class InspectionCheckMapper
 {
-    public static Btms.Model.Ipaffs.InspectionCheck Map(Btms.Types.Ipaffs.InspectionCheck from)
+    public static Btms.Model.Ipaffs.InspectionCheck Map(Btms.Types.Ipaffs.InspectionCheck? from)
     {
         if (from is null)
         {
