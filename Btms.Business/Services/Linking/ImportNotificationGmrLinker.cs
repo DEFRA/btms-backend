@@ -21,7 +21,7 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILink
 
         foreach (var notification in notifications)
         {
-            await AddGmrRelationshipIfNotPresentAndUpdate(model, notification, cancellationToken);
+            await AddGmrRelationshipIfNotPresentAndUpdate(notification, model, cancellationToken);
             await AddNotificationRelationshipIfNotPresentAndUpdate(model, notification, cancellationToken);
         }
 
@@ -43,30 +43,36 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILink
 #pragma warning restore CA1862
     }
 
-    private async Task AddGmrRelationshipIfNotPresentAndUpdate(Gmr model, ImportNotification notification, CancellationToken cancellationToken)
+    private async Task AddGmrRelationshipIfNotPresentAndUpdate(
+        ImportNotification notification, 
+        Gmr gmr,
+        CancellationToken cancellationToken)
     {
-        if (notification.Relationships.Gmrs.Data.Any(x => Match(x.Id, model.Id)))
+        if (notification.Relationships.Gmrs.Data.Any(x => Match(x.Id, gmr.Id)))
             return;
             
         notification.Relationships.Gmrs.Data.Add(new RelationshipDataItem
         {
             Type = LinksBuilder.Gmr.ResourceName,
-            Id = model.Id,
+            Id = gmr.Id,
             Links = new ResourceLink
             {
-                Self = LinksBuilder.BuildSelfLink(LinksBuilder.Gmr.ResourceName, model.Id!)
+                Self = LinksBuilder.BuildSelfLink(LinksBuilder.Gmr.ResourceName, gmr.Id!)
             }
         });
         
         await mongoDbContext.Notifications.Update(notification, cancellationToken);
     }
 
-    private async Task AddNotificationRelationshipIfNotPresentAndUpdate(Gmr model, ImportNotification notification, CancellationToken cancellationToken)
+    private async Task AddNotificationRelationshipIfNotPresentAndUpdate(
+        Gmr gmr, 
+        ImportNotification notification,
+        CancellationToken cancellationToken)
     {
-        if (model.Relationships.ImportNotifications.Data.Any(x => Match(x.Id, notification.Id)))
+        if (gmr.Relationships.ImportNotifications.Data.Any(x => Match(x.Id, notification.Id)))
             return;
             
-        model.Relationships.ImportNotifications.Data.Add(new RelationshipDataItem
+        gmr.Relationships.ImportNotifications.Data.Add(new RelationshipDataItem
         {
             Type = LinksBuilder.Notification.ResourceName,
             Id = notification.Id,
@@ -76,7 +82,7 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILink
             }
         });
         
-        await mongoDbContext.Gmrs.Update(model, cancellationToken);
+        await mongoDbContext.Gmrs.Update(gmr, cancellationToken);
     }
 
     private static bool Match(string? a, string? b) => string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
