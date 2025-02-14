@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Btms.Backend.Cli.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Features\GenerateModels\Templates\ClassTemplate.cshtml" />
     <None Remove="Features\GenerateModels\Templates\EnumMapperTemplate.cshtml" />
     <None Remove="Features\GenerateModels\Templates\EnumTemplate.cshtml" />

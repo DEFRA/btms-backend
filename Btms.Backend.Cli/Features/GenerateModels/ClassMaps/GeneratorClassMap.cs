@@ -20,22 +20,22 @@ internal class GeneratorClassMap
 
     public string InternalClassName { get; private set; }
 
-    public bool IgnoreInternalClass { get; private set; }
+    public bool ExcludedFromInternal { get; private set; }
 
-    public List<PropertyMap> Properties { get; private set; } = new();
+    public List<PropertyMap> Properties { get; private set; } = [];
 
-    public List<PropertyDescriptor> NewProperties { get; private set; } = new();
+    public List<PropertyDescriptor> NewProperties { get; private set; } = [];
 
-    public GeneratorClassMap SetClassName(string className)
+    public GeneratorClassMap SetClassName(string className, string? internalClassName = null)
     {
         SetSourceClassName(className);
-        SetInternalClassName(className);
+        SetInternalClassName(internalClassName ?? className);
         return this;
     }
 
-    public GeneratorClassMap NoInternalClass()
+    public GeneratorClassMap ExcludeFromInternal()
     {
-        IgnoreInternalClass = true;
+        ExcludedFromInternal = true;
         return this;
     }
 
@@ -43,7 +43,7 @@ internal class GeneratorClassMap
     {
         if (string.IsNullOrEmpty(className))
         {
-            throw new ArgumentNullException("className");
+            throw new ArgumentNullException(nameof(className));
         }
 
         SourceClassName = className;
@@ -54,7 +54,7 @@ internal class GeneratorClassMap
     {
         if (string.IsNullOrEmpty(className))
         {
-            throw new ArgumentNullException("className");
+            throw new ArgumentNullException(nameof(className));
         }
 
         InternalClassName = className;
@@ -65,7 +65,7 @@ internal class GeneratorClassMap
     {
         if (property == null)
         {
-            throw new ArgumentNullException("property");
+            throw new ArgumentNullException(nameof(property));
         }
 
         NewProperties.Add(property);
@@ -76,9 +76,9 @@ internal class GeneratorClassMap
     {
         MapProperty(timeOnlyProperty).IsTime().ExcludeFromInternal();
         MapProperty(dateOnlyProperty).IsDate().ExcludeFromInternal();
-        AddProperty(new PropertyDescriptor(dateTimeProperty, "DateTime",
-            "DateTime", false, false, "")
+        AddProperty(new PropertyDescriptor(dateTimeProperty, "DateTime", false, false)
         {
+            Description = "DateTime",
             ExcludedFromSource = true,
             Mapper =
                 $"DateTimeMapper.Map(from?.{PascalCaseNamingPolicy.ConvertName(dateOnlyProperty)}, from?.{PascalCaseNamingPolicy.ConvertName(timeOnlyProperty)});",
@@ -90,12 +90,17 @@ internal class GeneratorClassMap
     {
         if (propertyName == null)
         {
-            throw new ArgumentNullException("propertyName");
+            throw new ArgumentNullException(nameof(propertyName));
         }
 
         var propertyMap = new PropertyMap(propertyName);
         Properties.Add(propertyMap);
         return propertyMap;
+    }
+
+    public static void Reset()
+    {
+        ClassMaps.Clear();
     }
 
     public static GeneratorClassMap RegisterClassMap(string name, Action<GeneratorClassMap> classMapInitializer)

@@ -1,3 +1,5 @@
+using Btms.Common.Extensions;
+
 namespace Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 
 public enum Model
@@ -7,9 +9,20 @@ public enum Model
     Both
 }
 
+public enum DatetimeType
+{
+    Epoch,
+    Local,
+    Utc
+}
+
 internal class PropertyMap(string name)
 {
     public string Name { get; set; } = name;
+
+    public string? SourceJsonPropertyName { get; set; }
+
+    public string? InternalJsonPropertyName { get; set; }
 
     public string Type { get; set; } = null!;
 
@@ -19,9 +32,9 @@ internal class PropertyMap(string name)
 
     public bool TypeOverwritten { get; set; }
 
-    public List<string> SourceAttributes { get; set; } = new();
+    public List<string> SourceAttributes { get; set; } = [];
 
-    public List<string> InternalAttributes { get; set; } = new();
+    public List<string> InternalAttributes { get; set; } = [];
 
     public bool AttributesOverwritten { get; set; }
 
@@ -50,23 +63,27 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetInternalType(string type)
     {
-        InternalType = type ?? throw new ArgumentNullException("type");
+        InternalType = type ?? throw new ArgumentNullException(nameof(type));
         InternalTypeOverwritten = true;
         return this;
     }
 
-    public PropertyMap SetType(string type)
+    public PropertyMap SetType(string type, string? internalType = null)
     {
-        Type = type ?? throw new ArgumentNullException("type");
-        InternalType = Type;
-        InternalTypeOverwritten = true;
+        Type = type ?? throw new ArgumentNullException(nameof(type));
+        InternalType = internalType ?? type;
+        InternalTypeOverwritten = internalType.HasValue();
         TypeOverwritten = true;
         return this;
     }
 
-    public PropertyMap IsDateTime()
+    public PropertyMap IsDateTime(DatetimeType? type = null)
     {
         SetType("DateTime");
+        if (type == DatetimeType.Epoch)
+        {
+            AddAttribute("[JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]", Model.Source);
+        }
         return this;
     }
 
@@ -82,24 +99,56 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap SetName(string name)
+    private static void GuardNameFormat(string? name)
     {
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+    }
+
+    public PropertyMap SetName(string name, string? internalName = null)
+    {
+        GuardNameFormat(name);
+        GuardNameFormat(internalName);
+
         SetSourceName(name);
-        SetInternalName(name);
+        SetInternalName(internalName ?? name);
         return this;
     }
 
     public PropertyMap SetSourceName(string name)
     {
-        OverriddenSourceName = name ?? throw new ArgumentNullException("name");
+        GuardNameFormat(name);
+
+        OverriddenSourceName = name ?? throw new ArgumentNullException(nameof(name));
         SourceNameOverwritten = true;
         return this;
     }
 
     public PropertyMap SetInternalName(string name)
     {
-        OverriddenInternalName = name ?? throw new ArgumentNullException("name");
+        GuardNameFormat(name);
+
+        OverriddenInternalName = name ?? throw new ArgumentNullException(nameof(name));
         InternalNameOverwritten = true;
+        return this;
+    }
+
+    public PropertyMap SetSourceJsonPropertyName(string name)
+    {
+        GuardNameFormat(name);
+
+        SourceJsonPropertyName = name;
+        return this;
+    }
+
+    public PropertyMap SetInternalJsonPropertyName(string name)
+    {
+        GuardNameFormat(name);
+
+        InternalJsonPropertyName = name;
         return this;
     }
 
@@ -137,7 +186,7 @@ internal class PropertyMap(string name)
     {
         if (string.IsNullOrEmpty(attribute))
         {
-            throw new ArgumentNullException("attribute");
+            throw new ArgumentNullException(nameof(attribute));
         }
 
         switch (model)
