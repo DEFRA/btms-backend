@@ -13,7 +13,6 @@ internal class GenerateVehicleMovementModelCommand : IRequest
 {
     public const string SourceNamespace = "Btms.Types.Gvms";
     public const string InternalNamespace = "Btms.Model.Gvms";
-    public const string ClassNamePrefix = "";
     public const string SolutionPath = "../../../../";
 
     public string SchemaFile { get; set; } =
@@ -51,9 +50,8 @@ internal class GenerateVehicleMovementModelCommand : IRequest
 
         private void BuildClass(CSharpDescriptor cSharpDescriptor, string name, OpenApiSchema schema)
         {
-            var classDescriptor = new ClassDescriptor(name, SourceNamespace, InternalNamespace, ClassNamePrefix);
+            var classDescriptor = new ClassDescriptor(name, SourceNamespace, InternalNamespace) { Description = schema.Description };
 
-            classDescriptor.Description = schema.Description;
             cSharpDescriptor.AddClassDescriptor(classDescriptor);
 
             foreach (var property in schema.Properties)
@@ -65,12 +63,13 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                     if (arrayType == "object")
                     {
                         var propertyDescriptor = new PropertyDescriptor(
-                            sourceName: property.Key,
-                            type: ClassDescriptor.BuildClassName(property.Key, null!),
-                            description: property.Value.Description,
+                            property.Key,
+                            type: ClassDescriptor.BuildClassName(property.Key),
                             isReferenceType: true,
-                            isArray: true,
-                            classNamePrefix: ClassNamePrefix);
+                            isArray: true)
+                        {
+                            Description = property.Value.Description
+                        };
 
                         classDescriptor.Properties.Add(propertyDescriptor);
 
@@ -79,12 +78,13 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                     else if (arrayType == "string")
                     {
                         var propertyDescriptor = new PropertyDescriptor(
-                            sourceName: property.Key,
+                            property.Key,
                             type: "string",
-                            description: property.Value.Description,
                             isReferenceType: false,
-                            isArray: true,
-                            classNamePrefix: ClassNamePrefix);
+                            isArray: true)
+                        {
+                            Description = property.Value.Description
+                        };
 
                         classDescriptor.Properties.Add(propertyDescriptor);
                     }
@@ -94,12 +94,13 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                 else if (property.Value.IsObject())
                 {
                     var propertyDescriptor = new PropertyDescriptor(
-                        sourceName: property.Key,
-                        type: ClassDescriptor.BuildClassName(property.Key, null!),
-                        description: property.Value.Description,
+                        property.Key,
+                        type: ClassDescriptor.BuildClassName(property.Key),
                         isReferenceType: true,
-                        isArray: false,
-                        classNamePrefix: ClassNamePrefix);
+                        isArray: false)
+                    {
+                        Description = property.Value.Description
+                    };
 
                     classDescriptor.Properties.Add(propertyDescriptor);
 
@@ -107,8 +108,7 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                 }
                 else if (property.Value.OneOf.Any())
                 {
-                    var enumDescriptor = new EnumDescriptor(property.Key, null!, SourceNamespace, InternalNamespace,
-                        ClassNamePrefix);
+                    var enumDescriptor = new EnumDescriptor(property.Key, null!, SourceNamespace, InternalNamespace);
 
                     cSharpDescriptor.AddEnumDescriptor(enumDescriptor);
 
@@ -120,24 +120,26 @@ internal class GenerateVehicleMovementModelCommand : IRequest
                     }
 
                     var propertyDescriptor = new PropertyDescriptor(
-                        sourceName: property.Key,
-                        type: EnumDescriptor.BuildEnumName(property.Key, null!, null!),
-                        description: property.Value.Description,
+                        property.Key,
+                        type: EnumDescriptor.BuildEnumName(property.Key, null!),
                         isReferenceType: true,
-                        isArray: false,
-                        classNamePrefix: ClassNamePrefix);
+                        isArray: false)
+                    {
+                        Description = property.Value.Description
+                    };
 
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }
                 else
                 {
                     var propertyDescriptor = new PropertyDescriptor(
-                        sourceName: property.Key,
+                        property.Key,
                         type: property.ToCSharpType(),
-                        description: property.Value.Description,
                         isReferenceType: false,
-                        isArray: property.Value.IsArray(),
-                        classNamePrefix: ClassNamePrefix);
+                        isArray: property.Value.IsArray())
+                    {
+                        Description = property.Value.Description
+                    };
 
                     classDescriptor.Properties.Add(propertyDescriptor);
                 }

@@ -14,7 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Gvms;
 
-public partial class SearchGmrsForVRNsresponse  //
+public partial class SearchGmrsForVrnsResponse  //
 {
 
     [JsonPropertyName("gmrsByVRN")]
