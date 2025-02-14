@@ -180,6 +180,8 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
             SyncPeriod = SyncPeriod.All, RootFolder = "Linking"
         });
         
+        // We need to link a GMR to two CHEDs and inspect the DB behaviour
+        
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         
         document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");

@@ -1,4 +1,5 @@
 using Btms.Backend.Data;
+using Btms.Backend.Data.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model.Extensions;
 using Btms.Model.Gvms;
@@ -13,36 +14,29 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILink
     {
         var transits = model.Declarations?.Transits?.Select(x => x.Id).NotNull() ?? [];
         var customs = model.Declarations?.Customs?.Select(x => x.Id).NotNull() ?? [];
-        var mrns  = transits.Concat(customs).Distinct(StringComparer.OrdinalIgnoreCase);
-        var notifications = new List<ImportNotification>();
-        
-        foreach (var mrn in mrns)
-        {
-            var notification = await FindNotification(mrn, cancellationToken);
-            if (notification is null)
-                continue;
+        var mrns  = transits.Concat(customs).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+        var notifications = await FindNotifications(mrns, cancellationToken);
 
+        foreach (var notification in notifications)
+        {
             await AddGmrRelationshipIfNotPresentAndUpdate(model, notification, cancellationToken);
             await AddNotificationRelationshipIfNotPresentAndUpdate(model, notification, cancellationToken);
-            
-            notifications.Add(notification);
         }
 
         return new LinkerResult<ImportNotification, Gmr>(notifications, model);
     }
-
-    private async Task<ImportNotification?> FindNotification(string mrn, CancellationToken cancellationToken)
+    
+    private async Task<List<ImportNotification>> FindNotifications(string[] mrns, CancellationToken cancellationToken)
     {
-        var notification = await mongoDbContext.Notifications.Find(x =>
+        return await mongoDbContext.Notifications.Where(x =>
             x.ExternalReferences != null &&
-            x.ExternalReferences.Any(y =>
+            x.ExternalReferences.Any(y => mrns.Any(mrn =>
                 y.System == ExternalReferenceSystemEnum.Ncts &&
-#pragma warning disable CA1862 
+                y.Reference != null &&
+#pragma warning disable CA1862
                 // MongoDB driver does not support string.Equals()
-                y.Reference != null && y.Reference.ToLowerInvariant() == mrn.ToLowerInvariant()), cancellationToken);
+                y.Reference.ToLowerInvariant() == mrn.ToLowerInvariant()))).ToListAsync(cancellationToken);
 #pragma warning restore CA1862
-        
-        return notification;
     }
 
     private async Task AddGmrRelationshipIfNotPresentAndUpdate(Gmr model, ImportNotification notification, CancellationToken cancellationToken)
