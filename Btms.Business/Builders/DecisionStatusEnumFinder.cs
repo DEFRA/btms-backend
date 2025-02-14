@@ -26,6 +26,8 @@ public class DecisionStatusFinder
         _finders.Add(DecisionStatusEnum.HasOtherDataErrors, HasOtherDataErrors);
         _finders.Add(DecisionStatusEnum.HasGenericDataErrors, HasGenericDataErrors);
         _finders.Add(DecisionStatusEnum.HasMultipleChedTypes, HasMultipleChedTypes);
+        _finders.Add(DecisionStatusEnum.BtmsClearAlvsHold, BtmsClearAlvsHold);
+        _finders.Add(DecisionStatusEnum.AlvsClearBtmsHold, AlvsClearBtmsHold);
         _finders.Add(DecisionStatusEnum.HasMultipleCheds, HasMultipleCheds);
 
         _finders.Add(DecisionStatusEnum.InvestigationNeeded, InvestigationNeeded);
@@ -131,6 +133,22 @@ public class DecisionStatusFinder
     private static bool HasMultipleCheds(Movement movement, AlvsDecision decision)
     {
         return movement.Relationships.Notifications.Data.Count > 1;
+    }
+
+    private static bool BtmsClearAlvsHold(Movement movement, AlvsDecision decision)
+    {
+        return movement.AlvsDecisionStatus?.Context.DecisionComparison?.Checks.Any(c =>
+            (c.BtmsDecisionCode?.StartsWith('C') ?? false) &&
+            (c.AlvsDecisionCode?.StartsWith('H') ?? false)
+        ) ?? false;
+    }
+
+    private static bool AlvsClearBtmsHold(Movement movement, AlvsDecision decision)
+    {
+        return movement.AlvsDecisionStatus?.Context.DecisionComparison?.Checks.Any(c =>
+            (c.BtmsDecisionCode?.StartsWith('H') ?? false) &&
+            (c.AlvsDecisionCode?.StartsWith('C') ?? false)
+        ) ?? false;
     }
 
     private static bool InvestigationNeeded(Movement movement, AlvsDecision decision)
