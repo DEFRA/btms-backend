@@ -457,6 +457,7 @@ internal static class Bootstrap
         GeneratorClassMap.RegisterClassMap("SearchGmrsForVRNsresponse",
             map =>
             {
+                map.SetClassName("SearchGmrsForVrnsResponse");
                 map.ExcludeFromInternal();
                 map.MapProperty("Gmrs").SetType("Gmr[]");
                 map.MapProperty("gmrsByVRN").SetName("gmrsByVrns").SetType("GmrsByVrn[]");
