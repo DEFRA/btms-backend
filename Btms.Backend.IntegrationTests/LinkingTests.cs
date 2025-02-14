@@ -183,12 +183,14 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
             RootFolder = "Linking"
         });
 
+        // We need to link a GMR to two CHEDs and inspect the DB behaviour
+
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
 
         document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainSingle().And
             .ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
-        
+
         document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
         document.Data.Relationships?["import-notifications"]!.Data.ManyValue.Should().ContainSingle().And
             .ContainEquivalentOf(new { Id = "CHEDA.GB.2024.1041389" });
