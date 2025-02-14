@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ChedppNotAcceptableReasonMapper
 {
-    public static Btms.Model.Ipaffs.ChedppNotAcceptableReason Map(Btms.Types.Ipaffs.ChedppNotAcceptableReason from)
+    public static Btms.Model.Ipaffs.ChedppNotAcceptableReason Map(Btms.Types.Ipaffs.ChedppNotAcceptableReason? from)
     {
         if (from is null)
         {

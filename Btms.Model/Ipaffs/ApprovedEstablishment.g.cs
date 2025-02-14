@@ -26,6 +26,7 @@ public partial class ApprovedEstablishment  //
     /// ID
     /// </summary>
     [Attr]
+    [JsonPropertyName("id")]
     [System.ComponentModel.Description("ID")]
     public string? Id { get; set; }
 
@@ -34,6 +35,7 @@ public partial class ApprovedEstablishment  //
     /// Name of approved establishment
     /// </summary>
     [Attr]
+    [JsonPropertyName("name")]
     [System.ComponentModel.Description("Name of approved establishment")]
     public string? Name { get; set; }
 
@@ -42,6 +44,7 @@ public partial class ApprovedEstablishment  //
     /// Country of approved establishment
     /// </summary>
     [Attr]
+    [JsonPropertyName("country")]
     [System.ComponentModel.Description("Country of approved establishment")]
     public string? Country { get; set; }
 
@@ -50,6 +53,7 @@ public partial class ApprovedEstablishment  //
     /// Types of approved establishment
     /// </summary>
     [Attr]
+    [JsonPropertyName("types")]
     [System.ComponentModel.Description("Types of approved establishment")]
     public string[]? Types { get; set; }
 
@@ -58,6 +62,7 @@ public partial class ApprovedEstablishment  //
     /// Approval number
     /// </summary>
     [Attr]
+    [JsonPropertyName("approvalNumber")]
     [System.ComponentModel.Description("Approval number")]
     public string? ApprovalNumber { get; set; }
 
@@ -66,6 +71,7 @@ public partial class ApprovedEstablishment  //
     /// Section of approved establishment
     /// </summary>
     [Attr]
+    [JsonPropertyName("section")]
     [System.ComponentModel.Description("Section of approved establishment")]
     public string? Section { get; set; }
 

@@ -14,17 +14,16 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class InspectionOverrideMapper
 {
-    public static Btms.Model.Ipaffs.InspectionOverride Map(Btms.Types.Ipaffs.InspectionOverride from)
+    public static Btms.Model.Ipaffs.InspectionOverride Map(Btms.Types.Ipaffs.InspectionOverride? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.InspectionOverride();
         to.OriginalDecision = from?.OriginalDecision;
         to.OverriddenOn = from?.OverriddenOn;
-        to.OverriddenBy = UserInformationMapper.Map(from?.OverriddenBy!);
+        to.OverriddenBy = UserInformationMapper.Map(from?.OverriddenBy);
         return to;
     }
 }

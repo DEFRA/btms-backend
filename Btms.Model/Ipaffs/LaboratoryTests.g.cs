@@ -26,6 +26,7 @@ public partial class LaboratoryTests  //
     /// Date of tests
     /// </summary>
     [Attr]
+    [JsonPropertyName("testedOn")]
     [System.ComponentModel.Description("Date of tests")]
     public DateTime? TestedOn { get; set; }
 
@@ -34,6 +35,7 @@ public partial class LaboratoryTests  //
     /// Reason for test
     /// </summary>
     [Attr]
+    [JsonPropertyName("testReason")]
     [System.ComponentModel.Description("Reason for test")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public LaboratoryTestsTestReasonEnum? TestReason { get; set; }
@@ -43,6 +45,7 @@ public partial class LaboratoryTests  //
     /// List of details of individual tests performed or to be performed
     /// </summary>
     [Attr]
+    [JsonPropertyName("singleLaboratoryTests")]
     [System.ComponentModel.Description("List of details of individual tests performed or to be performed")]
     public SingleLaboratoryTest[]? SingleLaboratoryTests { get; set; }
 

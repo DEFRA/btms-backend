@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Part 2 of notification - Decision at inspection
 /// </summary>
@@ -133,10 +134,6 @@ public partial class PartTwo  //
     [JsonPropertyName("accompanyingDocuments")]
     public AccompanyingDocument[]? AccompanyingDocuments { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("commodityChecks")]
     public CommodityChecks[]? CommodityChecks { get; set; }
 

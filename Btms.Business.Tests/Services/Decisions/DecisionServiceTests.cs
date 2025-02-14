@@ -161,6 +161,13 @@ public class DecisionServiceTests
                         new Items
                         {
                             ItemNumber = 1,
+                            Documents =
+                            [
+                                new Document()
+                                {
+                                    DocumentCode = "9115"
+                                }
+                            ],
                             Checks = checkCodes?.Select(checkCode => new Check { CheckCode = checkCode }).ToArray()
                         }
                     ]

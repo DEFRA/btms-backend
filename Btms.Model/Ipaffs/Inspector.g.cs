@@ -26,6 +26,7 @@ public partial class Inspector  //
     /// Name of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("name")]
     [System.ComponentModel.Description("Name of inspector")]
     public string? Name { get; set; }
 
@@ -34,6 +35,7 @@ public partial class Inspector  //
     /// Phone number of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("phone")]
     [System.ComponentModel.Description("Phone number of inspector")]
     public string? Phone { get; set; }
 
@@ -42,6 +44,7 @@ public partial class Inspector  //
     /// Email address of inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("email")]
     [System.ComponentModel.Description("Email address of inspector")]
     public string? Email { get; set; }
 

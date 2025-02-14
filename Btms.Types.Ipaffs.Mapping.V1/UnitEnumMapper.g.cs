@@ -17,7 +17,6 @@ public static class UnitEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.UnitEnum.Percent => Btms.Model.Ipaffs.UnitEnum.Percent,

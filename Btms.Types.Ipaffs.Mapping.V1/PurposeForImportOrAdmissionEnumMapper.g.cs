@@ -11,22 +11,17 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PurposeForImportOrAdmissionEnumMapper
 {
-    public static Btms.Model.Ipaffs.PurposeForImportOrAdmissionEnum? Map(
-        Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum? from)
+    public static Btms.Model.Ipaffs.PurposeForImportOrAdmissionEnum? Map(Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.DefinitiveImport => Btms.Model.Ipaffs
-                .PurposeForImportOrAdmissionEnum.DefinitiveImport,
-            Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.HorsesReEntry => Btms.Model.Ipaffs
-                .PurposeForImportOrAdmissionEnum.HorsesReEntry,
-            Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses => Btms.Model.Ipaffs
-                .PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses,
+            Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.DefinitiveImport => Btms.Model.Ipaffs.PurposeForImportOrAdmissionEnum.DefinitiveImport,
+            Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.HorsesReEntry => Btms.Model.Ipaffs.PurposeForImportOrAdmissionEnum.HorsesReEntry,
+            Btms.Types.Ipaffs.PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses => Btms.Model.Ipaffs.PurposeForImportOrAdmissionEnum.TemporaryAdmissionHorses,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

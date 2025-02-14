@@ -17,12 +17,10 @@ public static class ResultEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.ResultEnum.Satisfactory => Btms.Model.Ipaffs.ResultEnum.Satisfactory,
-            Btms.Types.Ipaffs.ResultEnum.SatisfactoryFollowingOfficialIntervention => Btms.Model.Ipaffs.ResultEnum
-                .SatisfactoryFollowingOfficialIntervention,
+            Btms.Types.Ipaffs.ResultEnum.SatisfactoryFollowingOfficialIntervention => Btms.Model.Ipaffs.ResultEnum.SatisfactoryFollowingOfficialIntervention,
             Btms.Types.Ipaffs.ResultEnum.NotSatisfactory => Btms.Model.Ipaffs.ResultEnum.NotSatisfactory,
             Btms.Types.Ipaffs.ResultEnum.NotDone => Btms.Model.Ipaffs.ResultEnum.NotDone,
             Btms.Types.Ipaffs.ResultEnum.Derogation => Btms.Model.Ipaffs.ResultEnum.Derogation,

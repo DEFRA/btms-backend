@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class BillingInformation  //
 {
 
@@ -26,6 +22,7 @@ public partial class BillingInformation  //
     /// Indicates whether user has confirmed their billing information
     /// </summary>
     [Attr]
+    [JsonPropertyName("isConfirmed")]
     [System.ComponentModel.Description("Indicates whether user has confirmed their billing information")]
     public bool? IsConfirmed { get; set; }
 
@@ -34,6 +31,7 @@ public partial class BillingInformation  //
     /// Billing email address
     /// </summary>
     [Attr]
+    [JsonPropertyName("emailAddress")]
     [System.ComponentModel.Description("Billing email address")]
     public string? EmailAddress { get; set; }
 
@@ -42,6 +40,7 @@ public partial class BillingInformation  //
     /// Billing phone number
     /// </summary>
     [Attr]
+    [JsonPropertyName("phoneNumber")]
     [System.ComponentModel.Description("Billing phone number")]
     public string? PhoneNumber { get; set; }
 
@@ -50,6 +49,7 @@ public partial class BillingInformation  //
     /// Billing Contact Name
     /// </summary>
     [Attr]
+    [JsonPropertyName("contactName")]
     [System.ComponentModel.Description("Billing Contact Name")]
     public string? ContactName { get; set; }
 
@@ -58,6 +58,7 @@ public partial class BillingInformation  //
     /// Billing postal address
     /// </summary>
     [Attr]
+    [JsonPropertyName("postalAddress")]
     [System.ComponentModel.Description("Billing postal address")]
     public PostalAddress? PostalAddress { get; set; }
 

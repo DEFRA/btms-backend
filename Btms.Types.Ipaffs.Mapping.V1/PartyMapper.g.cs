@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PartyMapper
 {
-    public static Btms.Model.Ipaffs.Party Map(Btms.Types.Ipaffs.Party from)
+    public static Btms.Model.Ipaffs.Party Map(Btms.Types.Ipaffs.Party? from)
     {
         if (from is null)
         {

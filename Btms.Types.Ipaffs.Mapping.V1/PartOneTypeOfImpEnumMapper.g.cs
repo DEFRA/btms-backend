@@ -17,7 +17,6 @@ public static class PartOneTypeOfImpEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.PartOneTypeOfImpEnum.A => Btms.Model.Ipaffs.PartOneTypeOfImpEnum.A,

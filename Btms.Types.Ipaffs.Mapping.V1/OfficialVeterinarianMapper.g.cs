@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class OfficialVeterinarianMapper
 {
-    public static Btms.Model.Ipaffs.OfficialVeterinarian Map(Btms.Types.Ipaffs.OfficialVeterinarian from)
+    public static Btms.Model.Ipaffs.OfficialVeterinarian Map(Btms.Types.Ipaffs.OfficialVeterinarian? from)
     {
         if (from is null)
         {

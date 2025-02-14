@@ -26,6 +26,7 @@ public partial class ExternalReference  //
     /// Identifier of the external system to which the reference relates
     /// </summary>
     [Attr]
+    [JsonPropertyName("system")]
     [System.ComponentModel.Description("Identifier of the external system to which the reference relates")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ExternalReferenceSystemEnum? System { get; set; }
@@ -35,6 +36,7 @@ public partial class ExternalReference  //
     /// Reference which is added to the notification when either sent to the downstream system or received from it
     /// </summary>
     [Attr]
+    [JsonPropertyName("reference")]
     [System.ComponentModel.Description("Reference which is added to the notification when either sent to the downstream system or received from it")]
     public string? Reference { get; set; }
 
@@ -43,6 +45,7 @@ public partial class ExternalReference  //
     /// Details whether there&#x27;s an exact match between the external source and IPAFFS data
     /// </summary>
     [Attr]
+    [JsonPropertyName("exactMatch")]
     [System.ComponentModel.Description("Details whether there's an exact match between the external source and IPAFFS data")]
     public bool? ExactMatch { get; set; }
 
@@ -51,6 +54,7 @@ public partial class ExternalReference  //
     /// Details whether an importer has verified the data from an external source
     /// </summary>
     [Attr]
+    [JsonPropertyName("verifiedByImporter")]
     [System.ComponentModel.Description("Details whether an importer has verified the data from an external source")]
     public bool? VerifiedByImporter { get; set; }
 
@@ -59,6 +63,7 @@ public partial class ExternalReference  //
     /// Details whether an inspector has verified the data from an external source
     /// </summary>
     [Attr]
+    [JsonPropertyName("verifiedByInspector")]
     [System.ComponentModel.Description("Details whether an inspector has verified the data from an external source")]
     public bool? VerifiedByInspector { get; set; }
 

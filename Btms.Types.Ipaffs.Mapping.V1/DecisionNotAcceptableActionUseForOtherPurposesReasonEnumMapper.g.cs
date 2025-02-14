@@ -11,25 +11,19 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class DecisionNotAcceptableActionUseForOtherPurposesReasonEnumMapper
 {
-    public static Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? Map(
-        Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? from)
+    public static Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? Map(Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.ContaminatedProducts => Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.ContaminatedProducts,
-            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart => Btms.Model
-                .Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart,
-            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial => Btms.Model
-                .Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial,
-            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport => Btms.Model
-                .Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport,
-            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other => Btms.Model.Ipaffs
-                .DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other,
+            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart => Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.InterceptedPart,
+            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial => Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.PackagingMaterial,
+            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport => Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.MeansOfTransport,
+            Btms.Types.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other => Btms.Model.Ipaffs.DecisionNotAcceptableActionUseForOtherPurposesReasonEnum.Other,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

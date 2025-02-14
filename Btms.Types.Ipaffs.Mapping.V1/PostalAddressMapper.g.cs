@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class PostalAddressMapper
 {
-    public static Btms.Model.Ipaffs.PostalAddress Map(Btms.Types.Ipaffs.PostalAddress from)
+    public static Btms.Model.Ipaffs.PostalAddress Map(Btms.Types.Ipaffs.PostalAddress? from)
     {
         if (from is null)
         {

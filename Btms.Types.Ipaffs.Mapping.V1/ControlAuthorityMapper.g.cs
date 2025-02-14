@@ -14,15 +14,14 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ControlAuthorityMapper
 {
-    public static Btms.Model.Ipaffs.ControlAuthority Map(Btms.Types.Ipaffs.ControlAuthority from)
+    public static Btms.Model.Ipaffs.ControlAuthority Map(Btms.Types.Ipaffs.ControlAuthority? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.ControlAuthority();
-        to.OfficialVeterinarian = OfficialVeterinarianMapper.Map(from?.OfficialVeterinarian!);
+        to.OfficialVeterinarian = OfficialVeterinarianMapper.Map(from?.OfficialVeterinarian);
         to.CustomsReferenceNo = from?.CustomsReferenceNo;
         to.ContainerResealed = from?.ContainerResealed;
         to.NewSealNumber = from?.NewSealNumber;

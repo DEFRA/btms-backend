@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class CommodityChecks  //
 {
 
@@ -27,10 +24,6 @@ public partial class CommodityChecks  //
     [JsonPropertyName("uniqueComplementId")]
     public string? UniqueComplementId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("checks")]
     public InspectionCheck[]? Checks { get; set; }
 

@@ -26,6 +26,7 @@ public partial class NominatedContact  //
     /// Name of nominated contact
     /// </summary>
     [Attr]
+    [JsonPropertyName("name")]
     [System.ComponentModel.Description("Name of nominated contact")]
     public string? Name { get; set; }
 
@@ -34,6 +35,7 @@ public partial class NominatedContact  //
     /// Email address of nominated contact
     /// </summary>
     [Attr]
+    [JsonPropertyName("email")]
     [System.ComponentModel.Description("Email address of nominated contact")]
     public string? Email { get; set; }
 
@@ -42,6 +44,7 @@ public partial class NominatedContact  //
     /// Telephone number of nominated contact
     /// </summary>
     [Attr]
+    [JsonPropertyName("telephone")]
     [System.ComponentModel.Description("Telephone number of nominated contact")]
     public string? Telephone { get; set; }
 

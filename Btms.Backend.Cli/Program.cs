@@ -2,31 +2,11 @@
 
 using System.Reflection;
 using Btms.Backend.Cli;
-using Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 using CommandLine;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 
-Bootstrap.GeneratorClassMaps();
-var builder = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((_, services) =>
-    {
-        services.AddLogging(configure => configure.AddSimpleConsole(o =>
-        {
-            o.SingleLine = true;
-            o.ColorBehavior = LoggerColorBehavior.Enabled;
-
-        }).SetMinimumLevel(LogLevel.Information));
-        services.AddTransient<App>();
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
-    });
-
-var host = builder.Build();
-
-using var serviceScope = host.Services.CreateScope();
+using var serviceScope = Setup.Initialise(args);
 {
     var services = serviceScope.ServiceProvider;
 

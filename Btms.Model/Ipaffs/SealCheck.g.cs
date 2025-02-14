@@ -26,6 +26,7 @@ public partial class SealCheck  //
     /// Is seal check satisfactory
     /// </summary>
     [Attr]
+    [JsonPropertyName("satisfactory")]
     [System.ComponentModel.Description("Is seal check satisfactory")]
     public bool? Satisfactory { get; set; }
 
@@ -34,6 +35,7 @@ public partial class SealCheck  //
     /// reason for not satisfactory
     /// </summary>
     [Attr]
+    [JsonPropertyName("reason")]
     [System.ComponentModel.Description("reason for not satisfactory")]
     public string? Reason { get; set; }
 
@@ -42,6 +44,7 @@ public partial class SealCheck  //
     /// Official inspector
     /// </summary>
     [Attr]
+    [JsonPropertyName("officialInspector")]
     [System.ComponentModel.Description("Official inspector")]
     public OfficialInspector? OfficialInspector { get; set; }
 
@@ -50,6 +53,7 @@ public partial class SealCheck  //
     /// date and time of seal check
     /// </summary>
     [Attr]
+    [JsonPropertyName("checkedOn")]
     [System.ComponentModel.Description("date and time of seal check")]
     public DateTime? CheckedOn { get; set; }
 

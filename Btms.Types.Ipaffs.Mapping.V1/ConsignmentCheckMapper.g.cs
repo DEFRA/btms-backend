@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ConsignmentCheckMapper
 {
-    public static Btms.Model.Ipaffs.ConsignmentCheck Map(Btms.Types.Ipaffs.ConsignmentCheck from)
+    public static Btms.Model.Ipaffs.ConsignmentCheck Map(Btms.Types.Ipaffs.ConsignmentCheck? from)
     {
         if (from is null)
         {

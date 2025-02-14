@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Commodities  //
 {
 
@@ -26,6 +22,7 @@ public partial class Commodities  //
     /// Flag to record when the GMS declaration has been accepted
     /// </summary>
     [Attr]
+    [JsonPropertyName("gmsDeclarationAccepted")]
     [System.ComponentModel.Description("Flag to record when the GMS declaration has been accepted")]
     public bool? GmsDeclarationAccepted { get; set; }
 
@@ -34,6 +31,7 @@ public partial class Commodities  //
     /// Flag to record whether the consigned country is in an ipaffs charge group
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignedCountryInChargeGroup")]
     [System.ComponentModel.Description("Flag to record whether the consigned country is in an ipaffs charge group")]
     public bool? ConsignedCountryInChargeGroup { get; set; }
 
@@ -42,6 +40,7 @@ public partial class Commodities  //
     /// The total gross weight of the consignment.  It must be bigger than the total net weight of the commodities
     /// </summary>
     [Attr]
+    [JsonPropertyName("totalGrossWeight")]
     [System.ComponentModel.Description("The total gross weight of the consignment.  It must be bigger than the total net weight of the commodities")]
     public double? TotalGrossWeight { get; set; }
 
@@ -50,6 +49,7 @@ public partial class Commodities  //
     /// The total net weight of the commodities within this consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("totalNetWeight")]
     [System.ComponentModel.Description("The total net weight of the commodities within this consignment")]
     public double? TotalNetWeight { get; set; }
 
@@ -58,6 +58,7 @@ public partial class Commodities  //
     /// The total gross volume of the commodities within this consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("totalGrossVolume")]
     [System.ComponentModel.Description("The total gross volume of the commodities within this consignment")]
     public double? TotalGrossVolume { get; set; }
 
@@ -66,6 +67,7 @@ public partial class Commodities  //
     /// Unit used for specifying total gross volume of this consignment (litres or metres cubed)
     /// </summary>
     [Attr]
+    [JsonPropertyName("totalGrossVolumeUnit")]
     [System.ComponentModel.Description("Unit used for specifying total gross volume of this consignment (litres or metres cubed)")]
     public string? TotalGrossVolumeUnit { get; set; }
 
@@ -74,6 +76,7 @@ public partial class Commodities  //
     /// The total number of packages within this consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("numberOfPackages")]
     [System.ComponentModel.Description("The total number of packages within this consignment")]
     public int? NumberOfPackages { get; set; }
 
@@ -82,6 +85,7 @@ public partial class Commodities  //
     /// Temperature (type) of commodity
     /// </summary>
     [Attr]
+    [JsonPropertyName("temperature")]
     [System.ComponentModel.Description("Temperature (type) of commodity")]
     public string? Temperature { get; set; }
 
@@ -90,32 +94,16 @@ public partial class Commodities  //
     /// The total number of animals within this consignment
     /// </summary>
     [Attr]
+    [JsonPropertyName("numberOfAnimals")]
     [System.ComponentModel.Description("The total number of animals within this consignment")]
     public int? NumberOfAnimals { get; set; }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("")]
-    [MongoDB.Bson.Serialization.Attributes.BsonIgnore]
-    public CommodityComplement[]? CommodityComplements { get; set; }
-
-
-    /// <summary>
-    /// Additional data for commodityComplement part containing such data as net weight
-    /// </summary>
-    [Attr]
-    [System.ComponentModel.Description("Additional data for commodityComplement part containing such data as net weight")]
-    [MongoDB.Bson.Serialization.Attributes.BsonIgnore]
-    public ComplementParameterSet[]? ComplementParameterSets { get; set; }
 
 
     /// <summary>
     /// Does consignment contain ablacted animals
     /// </summary>
     [Attr]
+    [JsonPropertyName("includeNonAblactedAnimals")]
     [System.ComponentModel.Description("Does consignment contain ablacted animals")]
     public bool? IncludeNonAblactedAnimals { get; set; }
 
@@ -124,6 +112,7 @@ public partial class Commodities  //
     /// Consignments country of origin
     /// </summary>
     [Attr]
+    [JsonPropertyName("countryOfOrigin")]
     [System.ComponentModel.Description("Consignments country of origin")]
     public string? CountryOfOrigin { get; set; }
 
@@ -132,6 +121,7 @@ public partial class Commodities  //
     /// Flag to record whether country of origin is a temporary PoD country
     /// </summary>
     [Attr]
+    [JsonPropertyName("countryOfOriginIsPodCountry")]
     [System.ComponentModel.Description("Flag to record whether country of origin is a temporary PoD country")]
     public bool? CountryOfOriginIsPodCountry { get; set; }
 
@@ -140,6 +130,7 @@ public partial class Commodities  //
     /// Flag to record whether country of origin is a low risk article 72 country
     /// </summary>
     [Attr]
+    [JsonPropertyName("isLowRiskArticle72Country")]
     [System.ComponentModel.Description("Flag to record whether country of origin is a low risk article 72 country")]
     public bool? IsLowRiskArticle72Country { get; set; }
 
@@ -148,6 +139,7 @@ public partial class Commodities  //
     /// Region of country
     /// </summary>
     [Attr]
+    [JsonPropertyName("regionOfOrigin")]
     [System.ComponentModel.Description("Region of country")]
     public string? RegionOfOrigin { get; set; }
 
@@ -156,6 +148,7 @@ public partial class Commodities  //
     /// Country from where commodity was sent
     /// </summary>
     [Attr]
+    [JsonPropertyName("consignedCountry")]
     [System.ComponentModel.Description("Country from where commodity was sent")]
     public string? ConsignedCountry { get; set; }
 
@@ -164,6 +157,7 @@ public partial class Commodities  //
     /// Certification of animals (Breeding, slaughter etc.)
     /// </summary>
     [Attr]
+    [JsonPropertyName("animalsCertifiedAs")]
     [System.ComponentModel.Description("Certification of animals (Breeding, slaughter etc.)")]
     public string? AnimalsCertifiedAs { get; set; }
 
@@ -172,6 +166,7 @@ public partial class Commodities  //
     /// What the commodity is intended for
     /// </summary>
     [Attr]
+    [JsonPropertyName("commodityIntendedFor")]
     [System.ComponentModel.Description("What the commodity is intended for")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CommoditiesCommodityIntendedForEnum? CommodityIntendedFor { get; set; }

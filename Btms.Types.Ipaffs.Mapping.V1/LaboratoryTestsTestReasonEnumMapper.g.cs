@@ -11,28 +11,20 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class LaboratoryTestsTestReasonEnumMapper
 {
-    public static Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum? Map(
-        Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum? from)
+    public static Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum? Map(Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum? from)
     {
         if (from == null)
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.Random => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum
-                .Random,
-            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.Suspicious => Btms.Model.Ipaffs
-                .LaboratoryTestsTestReasonEnum.Suspicious,
-            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.ReEnforced => Btms.Model.Ipaffs
-                .LaboratoryTestsTestReasonEnum.ReEnforced,
-            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.IntensifiedControls => Btms.Model.Ipaffs
-                .LaboratoryTestsTestReasonEnum.IntensifiedControls,
-            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.Required => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum
-                .Required,
-            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.LatentInfectionSampling => Btms.Model.Ipaffs
-                .LaboratoryTestsTestReasonEnum.LatentInfectionSampling,
+            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.Random => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum.Random,
+            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.Suspicious => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum.Suspicious,
+            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.ReEnforced => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum.ReEnforced,
+            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.IntensifiedControls => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum.IntensifiedControls,
+            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.Required => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum.Required,
+            Btms.Types.Ipaffs.LaboratoryTestsTestReasonEnum.LatentInfectionSampling => Btms.Model.Ipaffs.LaboratoryTestsTestReasonEnum.LatentInfectionSampling,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

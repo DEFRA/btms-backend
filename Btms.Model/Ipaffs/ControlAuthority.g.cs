@@ -26,6 +26,7 @@ public partial class ControlAuthority  //
     /// Official veterinarian
     /// </summary>
     [Attr]
+    [JsonPropertyName("officialVeterinarian")]
     [System.ComponentModel.Description("Official veterinarian")]
     public OfficialVeterinarian? OfficialVeterinarian { get; set; }
 
@@ -34,6 +35,7 @@ public partial class ControlAuthority  //
     /// Customs reference number
     /// </summary>
     [Attr]
+    [JsonPropertyName("customsReferenceNo")]
     [System.ComponentModel.Description("Customs reference number")]
     public string? CustomsReferenceNo { get; set; }
 
@@ -42,6 +44,7 @@ public partial class ControlAuthority  //
     /// Were containers resealed?
     /// </summary>
     [Attr]
+    [JsonPropertyName("containerResealed")]
     [System.ComponentModel.Description("Were containers resealed?")]
     public bool? ContainerResealed { get; set; }
 
@@ -50,6 +53,7 @@ public partial class ControlAuthority  //
     /// When the containers are resealed they need new seal numbers
     /// </summary>
     [Attr]
+    [JsonPropertyName("newSealNumber")]
     [System.ComponentModel.Description("When the containers are resealed they need new seal numbers")]
     public string? NewSealNumber { get; set; }
 
@@ -58,6 +62,7 @@ public partial class ControlAuthority  //
     /// Illegal, Unreported and Unregulated (IUU) fishing reference number
     /// </summary>
     [Attr]
+    [JsonPropertyName("iuuFishingReference")]
     [System.ComponentModel.Description("Illegal, Unreported and Unregulated (IUU) fishing reference number")]
     public string? IuuFishingReference { get; set; }
 
@@ -66,6 +71,7 @@ public partial class ControlAuthority  //
     /// Was Illegal, Unreported and Unregulated (IUU) check required
     /// </summary>
     [Attr]
+    [JsonPropertyName("iuuCheckRequired")]
     [System.ComponentModel.Description("Was Illegal, Unreported and Unregulated (IUU) check required")]
     public bool? IuuCheckRequired { get; set; }
 
@@ -74,6 +80,7 @@ public partial class ControlAuthority  //
     /// Result of Illegal, Unreported and Unregulated (IUU) check
     /// </summary>
     [Attr]
+    [JsonPropertyName("iuuOption")]
     [System.ComponentModel.Description("Result of Illegal, Unreported and Unregulated (IUU) check")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public ControlAuthorityIuuOptionEnum? IuuOption { get; set; }
