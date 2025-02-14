@@ -136,7 +136,7 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         if (!finders.Any())
         {
             logger.LogWarning("No Decision Finder count for ImportNotification {Id} and Check code {CheckCode}", notification.Id, checkCode);
-            yield return new DecisionFinderResult(DecisionCode.X00, checkCode);
+            yield return new DecisionFinderResult(DecisionCode.E90, checkCode);
         }
 
         foreach (var finder in finders)
