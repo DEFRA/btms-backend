@@ -76,7 +76,11 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
             "CHEDP.GB.2024.5249145",
             "CHEDP.GB.2024.5140733",
             "CHEDP.GB.2024.5192091",
-            "CHEDP.GB.2024.5270338"
+            "CHEDP.GB.2024.5270338",
+            
+            "CHEDP.GB.2024.5125476",
+            "CHEDP.GB.2024.5101765",
+            "CHEDP.GB.2024.5132323"
         };
 
         var document = Client.AsJsonApiClient().Get("api/import-notifications?page[size]=20");
@@ -121,7 +125,11 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
             
             var grmIds = new[]
             {
-                "GMRA00KBHFE0"
+                "GMRA00KBHFE0",
+                    //24IEDUB10010972672 <> CHEDP.GB.2024.5125476
+                "GMRA00KCNF8D" 
+                    //24GBCKA5ATE1O2FAR4 <> CHEDP.GB.2024.5101765
+                    //24GBCKDFNY5GC1QAR0 <> CHEDP.GB.2024.5132323
             };
             
             foreach (var grmId in grmIds)
