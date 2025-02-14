@@ -29,7 +29,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
 
         logger.LogInformation("Created Notification {NotificationReference}, Clearance Request {ClearanceRequest}",
             notification.ReferenceNumber, clearanceRequest.Header!.EntryReference);
-        
+
         var alvsDecision = BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
             .WithReferenceNumber(notification.ReferenceNumber!)

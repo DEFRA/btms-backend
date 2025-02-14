@@ -77,19 +77,30 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap IsDateTime(DatetimeType? type = null)
+    public PropertyMap IsDateTime(DatetimeType type)
     {
         SetType("DateTime");
         if (type == DatetimeType.Epoch)
         {
             AddAttribute("[JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]", Model.Source);
         }
+
         return this;
     }
 
-    public PropertyMap IsDate()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="truncate">Adds an attribute to trim the text to 10 characters</param>
+    /// <returns></returns>
+    public PropertyMap IsDate(bool? truncate = false)
     {
         SetType("DateOnly");
+
+        if (truncate ?? false)
+        {
+            AddAttribute("[JsonConverter(typeof(TruncatedDateParse))]", Model.Source);
+        }
         return this;
     }
 

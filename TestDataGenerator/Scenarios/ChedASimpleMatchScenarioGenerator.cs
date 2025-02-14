@@ -47,11 +47,9 @@ public class ChedASimpleMatchFixedDatesScenarioGenerator(ILogger<ChedASimpleMatc
     {
         messages.ForEach(m =>
         {
-            if (m is ImportNotification)
-            {
-                ((ImportNotification)m).PartOne!.DepartureDate = new DateOnly(2024, 12, 1);
-                ((ImportNotification)m).PartOne!.DepartureTime = new TimeOnly(10, 10, 0);
-            }
+            if (m is not ImportNotification notification) return;
+            notification.PartOne!.DepartureDate = new DateOnly(2024, 12, 1);
+            notification.PartOne!.DepartureTime = new TimeOnly(10, 10, 0);
         });
 
         return messages;

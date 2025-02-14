@@ -11,7 +11,7 @@ public class OutOfSequenceAlvsDecisionScenarioGenerator(ILogger<OutOfSequenceAlv
         var notification = this
             .GetSimpleNotification(scenario, item, entryDate, config)
             .ValidateAndBuild();
-        
+
         var clearanceRequest = this
             .GetSimpleClearanceRequest(scenario, item, entryDate, config, notification)
             .ValidateAndBuild();
