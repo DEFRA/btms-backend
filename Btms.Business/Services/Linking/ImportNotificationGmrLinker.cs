@@ -10,11 +10,9 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext) : ILink
 {
     public async Task<LinkerResult<ImportNotification, Gmr>> Link(Gmr model, CancellationToken cancellationToken)
     {
-        var mrns = model.Declarations?.Customs?
-            .Select(x => x.Id)
-            .NotNull()
-            .Distinct(StringComparer.OrdinalIgnoreCase) ?? [];
-        
+        var transits = model.Declarations?.Transits?.Select(x => x.Id).NotNull() ?? [];
+        var customs = model.Declarations?.Customs?.Select(x => x.Id).NotNull() ?? [];
+        var mrns  = transits.Concat(customs).Distinct(StringComparer.OrdinalIgnoreCase);
         var notifications = new List<ImportNotification>();
         
         foreach (var mrn in mrns)

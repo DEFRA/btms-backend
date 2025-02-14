@@ -27,7 +27,7 @@ public class ImportNotificationGmrLinkerTests
     }
     
     [Fact]
-    public async Task Link_WhenNoMrns_ThenSkipped()
+    public async Task Link_WhenNoMrnsFromCustoms_ThenSkipped()
     {
         var mongoDbContext = Substitute.For<IMongoDbContext>();
         Subject = new ImportNotificationGmrLinker(mongoDbContext);
@@ -37,6 +37,26 @@ public class ImportNotificationGmrLinkerTests
             Declarations = new Declarations
             {
                 Customs =
+                [
+                ]
+            }
+        }, CancellationToken.None);
+
+        await mongoDbContext.Notifications.DidNotReceive().Find(Arg.Any<Expression<Func<ImportNotification, bool>>>(),
+            Arg.Any<CancellationToken>());
+    }
+    
+    [Fact]
+    public async Task Link_WhenNoMrnsFromTransits_ThenSkipped()
+    {
+        var mongoDbContext = Substitute.For<IMongoDbContext>();
+        Subject = new ImportNotificationGmrLinker(mongoDbContext);
+
+        await Subject.Link(new Gmr
+        {
+            Declarations = new Declarations
+            {
+                Transits = 
                 [
                 ]
             }
@@ -69,6 +89,10 @@ public class ImportNotificationGmrLinkerTests
                 Customs =
                 [
                     new Customs { Id = mrn }
+                ],
+                Transits = 
+                [
+                    new Transits { Id = mrn }
                 ]
             }
         };
