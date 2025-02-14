@@ -133,6 +133,11 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
     {
         var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCode)).ToArray();
 
+        if (!finders.Any())
+        {
+            yield return new DecisionFinderResult(DecisionCode.X00, checkCode);
+        }
+
         foreach (var finder in finders)
         {
             yield return finder.FindDecision(notification, checkCode);
