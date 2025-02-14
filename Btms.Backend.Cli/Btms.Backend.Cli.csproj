@@ -10,9 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Btms.Backend.Cli.Tests</_Parameter1>
-    </AssemblyAttribute>
+    <InternalsVisibleTo Include="Btms.Backend.Cli.Tests" />
   </ItemGroup>
 
   <ItemGroup>
