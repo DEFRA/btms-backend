@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
-public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logger) : ScenarioGenerator
+public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logger) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -21,9 +21,6 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
         var notification = notificationBuilder
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}",
-            notification.ReferenceNumber);
-
         var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
@@ -31,8 +28,6 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithEntryVersionNumber(1)
             .WithTunaItem()
             .ValidateAndBuild();
-
-        logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
         var alvsDecision = BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
@@ -42,7 +37,8 @@ public class MultiStepScenarioGenerator(ILogger<MultiStepScenarioGenerator> logg
             .WithTunaChecks()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
+        logger.LogInformation("Created Notification {NotificationReference}, Clearance Request {ClearanceRequest}, Decision {EntryReference}",
+            notification.ReferenceNumber, clearanceRequest.Header!.EntryReference, alvsDecision.Header!.EntryReference);
 
         var uniqueCommodityId = Guid.NewGuid();
 
