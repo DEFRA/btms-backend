@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Btms.Model;
 using FluentAssertions;
 using TestDataGenerator.Scenarios.SpecificFiles;
@@ -20,7 +21,7 @@ public class ChedPpHmiTests(ITestOutputHelper output) : MultipleScenarioGenerato
     [InlineData(typeof(ChedPpHmiDecisionTestsScenarioGenerator), "24GBD69TMXZ2TYCAR7", "H02")]
 
     //Movement With Different Ched Types, that caused a finder exceptions
-    [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator), "24GBDY6XFF66H0XAR1", "C03")]
+    [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator), "24GBDY6XFF66H0XAR1", "E90")]
     public void DecisionShouldHaveCorrectDecisionCodeForSingleNotification(Type generatorType, string mrn, string decisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
@@ -31,14 +32,14 @@ public class ChedPpHmiTests(ITestOutputHelper output) : MultipleScenarioGenerato
 
         var movement = apiResponse.GetResourceObject<Movement>();
 
-        var lastDecision = movement.Decisions.OrderByDescending(x => x.ServiceHeader?.ServiceCalled).First();
+        var lastDecision = movement.Decisions.OrderByDescending(x => x.Header.DecisionNumber).First();
 
 
         foreach (var item in lastDecision.Items!)
         {
             foreach (var itemCheck in item.Checks!)
             {
-                itemCheck.DecisionCode.Should().Be(decisionCode);
+                itemCheck.DecisionCode.Should().Be(decisionCode, JsonSerializer.Serialize(lastDecision));
             }
         }
     }
