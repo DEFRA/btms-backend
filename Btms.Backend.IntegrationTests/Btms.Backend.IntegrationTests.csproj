@@ -46,4 +46,8 @@
     <ProjectReference Include="..\TestGenerator.IntegrationTesting.Backend\TestGenerator.IntegrationTesting.Backend.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Fixtures\Pha\" />
+  </ItemGroup>
+
 </Project>
