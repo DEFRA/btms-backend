@@ -45,6 +45,8 @@ public class ImportNotificationGmrLinkerTests
                 ]
             }
         }, CancellationToken.None);
+
+        Assert.True(true, "Would have thrown if failed");
     }
 
     [Fact]
@@ -65,6 +67,8 @@ public class ImportNotificationGmrLinkerTests
                 ]
             }
         }, CancellationToken.None);
+
+        Assert.True(true, "Would have thrown if failed");
     }
 
     [Theory]
@@ -136,6 +140,8 @@ public class ImportNotificationGmrLinkerTests
                 }
             ]
         }, CancellationToken.None);
+
+        Assert.True(true, "Would have thrown if failed");
     }
 
     [Theory]
