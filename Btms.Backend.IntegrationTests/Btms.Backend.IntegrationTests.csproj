@@ -46,9 +46,4 @@
     <ProjectReference Include="..\TestGenerator.IntegrationTesting.Backend\TestGenerator.IntegrationTesting.Backend.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Fixtures\PhaScenarios\IPAFFS\" />
-    <Folder Include="Fixtures\PhaScenarios\IPAFFS\CHEDD\" />
-  </ItemGroup>
-
 </Project>

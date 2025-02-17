@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text.Json;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
@@ -16,7 +15,8 @@ namespace Btms.Backend.IntegrationTests;
 public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
     : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
-    private bool _saveData = true;
+    private bool _saveData = false;
+    private bool _redactData = false;
    
     private async Task RedactIPAFFSFiles()
     {
@@ -40,7 +40,9 @@ public class PhaScenarioTests(ApplicationFactory factory, ITestOutputHelper test
     [Fact]
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
-        await RedactIPAFFSFiles();
+        if (_redactData)
+            await RedactIPAFFSFiles();
+        
         await ClearDb();
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
