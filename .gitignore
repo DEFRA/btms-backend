@@ -353,3 +353,4 @@ fabric.properties
 report.csv
 Btms.Backend/*.zip
 PhaScenarioTestsOutput
+openapi.json
