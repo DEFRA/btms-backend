@@ -5,7 +5,7 @@ public static class LinksBuilder
     public static class Notification
     {
         public const string ResourceName = "import-notifications";
-        
+
         public static string BuildSelfNotificationLink(string id)
         {
             return BuildSelfLink(ResourceName, id);
@@ -20,7 +20,7 @@ public static class LinksBuilder
     public static class Movement
     {
         public const string ResourceName = "movements";
-        
+
         public static string BuildSelfMovementLink(string id)
         {
             return BuildSelfLink(ResourceName, id);

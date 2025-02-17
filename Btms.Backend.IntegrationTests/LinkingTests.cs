@@ -152,81 +152,87 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         updatedPostLink.Should().Be(updatedPostMovementUpdate);
         updatedEntityPostLink.Should().BeBefore(updatedEntityPostMovementUpdate);
     }
-    
+
     [Fact]
     public async Task SyncGmrs_WithReferenceNotifications_ShouldLink()
     {
         await Client.ClearDb();
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
-        
+
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
-        
+
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
-        
+
         document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
-        
+
         // Import new version, link remains and no additional relationships should be added
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "Linking"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
         });
-        
+
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
-        
+
         document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainSingle().And
             .ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
-        
+
         document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
         document.Data.Relationships?["import-notifications"]!.Data.ManyValue.Should().HaveCount(2).And
             .ContainEquivalentOf(new { Id = "CHEDA.GB.2024.1041389" }).And
             .ContainEquivalentOf(new { Id = "CHEDD.GB.2024.1004768" });
     }
-    
+
     [Fact]
     public async Task SyncNotifications_WithReferenceGmrs_ShouldLink()
     {
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
-        
+
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
-        
+
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
-        
+
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
-        
+
         document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
-        
+
         // Import new version, link remains and no additional relationships should be added
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "Linking"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
         });
-        
+
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
-        
+
         document.Data.Id.Should().Be("CHEDA.GB.2024.1041389");
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainSingle().And
             .ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
-        
+
         document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
         document.Data.Relationships?["import-notifications"]!.Data.ManyValue.Should().HaveCount(2).And
             .ContainEquivalentOf(new { Id = "CHEDA.GB.2024.1041389" }).And

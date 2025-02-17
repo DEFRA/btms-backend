@@ -24,7 +24,7 @@ public class GmrPreProcessingTests
         var message = BuilderHelpers.GetGmrBuilder("asb-gmr")
             .With(x => x.GmrId, (string?)null)
             .ValidateAndBuild();
-        
+
         var result = await Subject.Process(new PreProcessingContext<Gmr>(message, "messageId"), CancellationToken.None);
 
         result.Outcome.Should().Be(PreProcessingOutcome.Skipped);
@@ -35,7 +35,7 @@ public class GmrPreProcessingTests
     public async Task Process_WhenGmrDoesNotExist_ThenInserted()
     {
         var message = BuilderHelpers.GetGmrBuilder("asb-gmr").ValidateAndBuild();
-        
+
         var result = await Subject.Process(new PreProcessingContext<Gmr>(message, "messageId"), CancellationToken.None);
 
         result.Outcome.Should().Be(PreProcessingOutcome.New);
@@ -50,16 +50,16 @@ public class GmrPreProcessingTests
             .With(x => x.UpdatedSource, updated.AddSeconds(1))
             .ValidateAndBuild();
         await MongoDbContext.Gmrs.Insert(new Model.Gvms.Gmr
-            {
-                Id = message.GmrId, 
-                UpdatedSource = updated,
-                AuditEntries = [
+        {
+            Id = message.GmrId,
+            UpdatedSource = updated,
+            AuditEntries = [
                     new AuditEntry
                     {
                         Status = "Existing",
                     }
                 ]
-            },
+        },
             CancellationToken.None);
 
         var result = await Subject.Process(new PreProcessingContext<Gmr>(message, "messageId"), CancellationToken.None);

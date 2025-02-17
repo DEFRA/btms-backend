@@ -8,7 +8,7 @@ public static class ShouldEventually
         await Policy.Handle<Exception>()
             .WaitAndRetryAsync(retries, _ => wait == TimeSpan.Zero ? TimeSpan.FromMilliseconds(100) : wait)
             .ExecuteAsync(action);
-    
+
     public static void Be(Action action, int retries = 5, TimeSpan wait = default) =>
         Policy.Handle<Exception>()
             .WaitAndRetry(retries, _ => wait == TimeSpan.Zero ? TimeSpan.FromMilliseconds(100) : wait)

@@ -29,7 +29,7 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<Movement>.IndexKeys.Ascending(m => m.Created), cancellationToken),
             CreateIndex("CreatedSource",
                 Builders<Movement>.IndexKeys.Ascending(m => m.CreatedSource), cancellationToken),
-            
+
             CreateIndex("Created",
                 Builders<Gmr>.IndexKeys.Ascending(n => n.Created), cancellationToken),
             CreateIndex("CreatedSource",

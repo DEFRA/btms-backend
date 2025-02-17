@@ -17,7 +17,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         // pattern mandates a record, which in turn mandates an audit entry
         if (message.GmrId is null)
             return PreProcessResult.Skipped(new Model.Gvms.Gmr { AuditEntries = [new AuditEntry()] });
-        
+
         var existingGmr = await mongoDbContext.Gmrs.Find(message.GmrId, cancellationToken);
 
         if (existingGmr is null)
@@ -35,7 +35,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
     {
         var mappedGmr = preProcessingContext.Message.MapWithTransform();
         var auditId = preProcessingContext.MessageId;
-        
+
         var auditEntry = AuditEntry.CreateCreatedEntry(
             mappedGmr,
             auditId,
@@ -46,7 +46,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         mappedGmr.AuditEntries.Add(auditEntry);
 
         await mongoDbContext.Gmrs.Insert(mappedGmr, cancellationToken);
-            
+
         return PreProcessResult.New(mappedGmr);
     }
 
@@ -57,7 +57,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
     {
         var mappedGmr = preProcessingContext.Message.MapWithTransform();
         var auditId = preProcessingContext.MessageId;
-        
+
         mappedGmr.AuditEntries = existingGmr.AuditEntries;
         mappedGmr.Relationships = existingGmr.Relationships;
         mappedGmr._Etag = existingGmr._Etag;
@@ -73,7 +73,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         mappedGmr.AuditEntries.Add(auditEntry);
 
         await mongoDbContext.Gmrs.Update(mappedGmr, cancellationToken);
-            
+
         return PreProcessResult.Changed(mappedGmr, mappedGmr.GenerateChangeSet(existingGmr));
     }
 }

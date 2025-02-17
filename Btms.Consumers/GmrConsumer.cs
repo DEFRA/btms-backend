@@ -10,7 +10,7 @@ using SearchGmrsForDeclarationIdsResponse = Btms.Types.Gvms.SearchGmrsForDeclara
 namespace Btms.Consumers;
 
 internal class GmrConsumer(
-    IMongoDbContext mongoDbContext, 
+    IMongoDbContext mongoDbContext,
     IPreProcessor<Gmr, Model.Gvms.Gmr> preProcessor,
     ILinker<ImportNotification, Model.Gvms.Gmr> linker)
     : IConsumer<SearchGmrsForDeclarationIdsResponse>, IConsumer<Gmr>, IConsumerWithContext

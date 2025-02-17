@@ -26,7 +26,7 @@ public class ImportNotificationGmrLinkerTests
     {
         Subject = new ImportNotificationGmrLinker(MongoDbContext);
     }
-    
+
     [Fact]
     public async Task Link_Gmr_WhenNoMrnsFromCustoms_ThenSkipped()
     {
@@ -46,7 +46,7 @@ public class ImportNotificationGmrLinkerTests
             }
         }, CancellationToken.None);
     }
-    
+
     [Fact]
     public async Task Link_Gmr_WhenNoMrnsFromTransits_ThenSkipped()
     {
@@ -58,7 +58,7 @@ public class ImportNotificationGmrLinkerTests
         {
             Declarations = new Declarations
             {
-                Transits = 
+                Transits =
                 [
                     new Transits { Id = "" },
                     new Transits { Id = " " }
@@ -94,7 +94,7 @@ public class ImportNotificationGmrLinkerTests
         await MongoDbContext.Gmrs.Insert(gmr);
 
         var result = await Subject.Link(gmr, CancellationToken.None);
-        
+
         var notification1FromDb = await MongoDbContext.Notifications.Find(x => x.ReferenceNumber == referenceNumber1);
         var notification2FromDb = await MongoDbContext.Notifications.Find(x => x.ReferenceNumber == referenceNumber2);
         var gmrFromDb = await MongoDbContext.Gmrs.Find(x => x.Id == gmrId);
@@ -107,7 +107,7 @@ public class ImportNotificationGmrLinkerTests
         result.From[1].Should().BeSameAs(notification2FromDb);
         result.To.Should().BeSameAs(gmrFromDb);
     }
-    
+
     [Fact]
     public async Task Link_ImportNotification_WhenNoMrns_ThenSkipped()
     {
@@ -156,9 +156,9 @@ public class ImportNotificationGmrLinkerTests
         await MongoDbContext.Gmrs.Insert(gmr1);
         await MongoDbContext.Gmrs.Insert(gmr2);
         await MongoDbContext.Notifications.Insert(notification);
-        
+
         var result = await Subject.Link(notification, CancellationToken.None);
-        
+
         var notificationFromDb = await MongoDbContext.Notifications.Find(x => x.ReferenceNumber == referenceNumber);
         var gmr1FromDb = await MongoDbContext.Gmrs.Find(x => x.Id == gmrId1);
         var gmr2FromDb = await MongoDbContext.Gmrs.Find(x => x.Id == gmrId2);
@@ -196,7 +196,9 @@ public class ImportNotificationGmrLinkerTests
     {
         notification!.Relationships.Gmrs.Data.Should().ContainEquivalentOf(new
         {
-            Type = "gmrs", Id = gmrId, Links = new { Self = $"/api/gmrs/{gmrId}" }
+            Type = "gmrs",
+            Id = gmrId,
+            Links = new { Self = $"/api/gmrs/{gmrId}" }
         });
     }
 

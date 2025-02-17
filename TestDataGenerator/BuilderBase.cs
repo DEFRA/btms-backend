@@ -22,7 +22,7 @@ public abstract class BuilderBase<T, TBuilder> :
     private IPostprocessComposer<T> _composer = null!;
     protected Fixture Fixture { get; set; } = null!;
 
-    protected BuilderBase(string? filePath = null,  string? itemJson = null, JsonSerializerOptions? options = null, T? item = default(T)) : base()
+    protected BuilderBase(string? filePath = null, string? itemJson = null, JsonSerializerOptions? options = null, T? item = default(T)) : base()
     {
         Fixture = new Fixture();
 

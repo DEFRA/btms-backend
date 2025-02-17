@@ -16,19 +16,21 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
         document.Data.Attributes?["state"]?.ToString().Should().Be("Finalised");
-        
+
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "Linking"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
         });
-        
+
         document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
@@ -41,7 +43,8 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");

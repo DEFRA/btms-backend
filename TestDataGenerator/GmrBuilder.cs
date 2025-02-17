@@ -8,11 +8,11 @@ public class GmrBuilder : GmrBuilder<Gmr>
     private GmrBuilder()
     {
     }
-    
+
     public GmrBuilder(string file) : base(file)
     {
     }
-    
+
     public static GmrBuilder Default()
     {
         return new GmrBuilder();

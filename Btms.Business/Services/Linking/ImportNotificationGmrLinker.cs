@@ -40,20 +40,20 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext)
             .NotNull()
             .Distinct() ?? [];
         var gmrs = await FindGmrs(mrns.ToArray(), cancellationToken);
-        
+
         foreach (var gmr in gmrs)
         {
             await AddGmrRelationshipIfNotPresentAndUpdate(model, gmr, cancellationToken);
             await AddNotificationRelationshipIfNotPresentAndUpdate(gmr, model, cancellationToken);
         }
-        
+
         return new LinkerResult<Gmr, ImportNotification>(gmrs, model);
     }
 
     private async Task<List<ImportNotification>> FindNotifications(string[] mrns, CancellationToken cancellationToken)
     {
         if (mrns.Length == 0) return [];
-        
+
         return await mongoDbContext.Notifications.Where(x =>
                 x.ExternalReferences != null &&
                 x.ExternalReferences.Any(y => mrns.Any(mrn =>
@@ -69,7 +69,7 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext)
     private async Task<List<Gmr>> FindGmrs(string[] mrns, CancellationToken cancellationToken)
     {
         if (mrns.Length == 0) return [];
-        
+
         return await mongoDbContext.Gmrs.Where(x =>
                 x.Declarations != null &&
                 ((

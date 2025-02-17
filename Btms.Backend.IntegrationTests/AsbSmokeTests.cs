@@ -74,9 +74,9 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
             .With(x => x.State, StateEnum.Finalised)
             .With(x => x.UpdatedSource, DateTime.Now)
             .ValidateAndBuild();
-        
+
         await ServiceBusHelper.PublishGmr(gmr);
-        
+
         ManyItemsJsonApiDocument document;
 
         ShouldEventually.Be(() =>
@@ -86,14 +86,14 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
             },
             retries: 30,
             wait: TimeSpan.FromSeconds(1));
-        
+
         gmr = BuilderHelpers.GetGmrBuilder("asb-gmr")
             .With(x => x.State, StateEnum.Embarked)
             .With(x => x.UpdatedSource, DateTime.Now)
             .ValidateAndBuild();
-        
+
         await ServiceBusHelper.PublishGmr(gmr);
-        
+
         ShouldEventually.Be(() =>
             {
                 document = Client.AsJsonApiClient().Get("api/gmrs");

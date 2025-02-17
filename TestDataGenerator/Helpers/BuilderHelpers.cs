@@ -41,7 +41,7 @@ public static class BuilderHelpers
 
         return builder;
     }
-    
+
     internal static GmrBuilder<Gmr> GetGmrBuilder(string file, string fileExtension = JSON_FILE_EXTENSION)
     {
         var fullPath = $"{fullFolder}/{file}{fileExtension}";
