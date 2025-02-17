@@ -31,6 +31,10 @@ jobs:
         with:
           compose-file: "compose.yml"
 
+      - name: Wait for Azure SQL Edge
+        run: |
+          ./wait-for-docker-logs.sh sqledge "Will not be found" 300
+
       - name: Wait for ASB Emulator
         run: |
           ./wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 300
