@@ -15,6 +15,10 @@ public class LocalDateTimeJsonConverter : JsonConverter<DateTime>
 
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
     {
+        if (value.Kind != DateTimeKind.Unspecified)
+        {
+            throw new FormatException($"Local dates must be DateTimeKind.Unspecified, not {value.Kind}");
+        }
         writer.WriteStringValue(value.ToString(JsonFormat, CultureInfo.InvariantCulture));
     }
 }
