@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
-public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenarioGenerator> logger) : ScenarioGenerator
+public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenarioGenerator> logger) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -30,7 +30,7 @@ public class DuplicateDecisionScenarioGenerator(ILogger<DuplicateDecisionScenari
             .WithTunaItem()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
+        Logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
         var alvsDecision = BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)

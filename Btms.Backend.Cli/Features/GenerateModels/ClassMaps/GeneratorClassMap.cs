@@ -72,18 +72,27 @@ internal class GeneratorClassMap
     }
 
     public void MapDateOnlyAndTimeOnlyToDateTimeProperty(string dateOnlyProperty, string timeOnlyProperty,
-        string dateTimeProperty)
+        string dateTimeProperty, DatetimeType? type = null)
     {
         MapProperty(timeOnlyProperty).IsTime().ExcludeFromInternal();
         MapProperty(dateOnlyProperty).IsDate().ExcludeFromInternal();
-        AddProperty(new PropertyDescriptor(dateTimeProperty, "DateTime", false, false)
+
+        var property = new PropertyDescriptor(dateTimeProperty, "DateTime",
+            false, false)
         {
             Description = "DateTime",
             ExcludedFromSource = true,
             Mapper =
                 $"DateTimeMapper.Map(from?.{PascalCaseNamingPolicy.ConvertName(dateOnlyProperty)}, from?.{PascalCaseNamingPolicy.ConvertName(timeOnlyProperty)});",
             MappingInline = true,
-        });
+        };
+
+        if (type == DatetimeType.Local)
+        {
+            property.InternalAttributes.Add("[JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]");
+        }
+
+        AddProperty(property);
     }
 
     public PropertyMap MapProperty(string propertyName)

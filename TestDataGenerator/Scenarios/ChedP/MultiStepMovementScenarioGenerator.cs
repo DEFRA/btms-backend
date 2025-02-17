@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
-public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerator> logger) : ScenarioGenerator
+public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerator> logger) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -24,11 +24,8 @@ public class MultiStepMovementScenarioGenerator(ILogger<MultiStepScenarioGenerat
 
         var notification1 = notification1Builder.Build();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}",
-            notification1.ReferenceNumber);
-
-        logger.LogInformation("Created {NotificationReferenceNumber}",
-            notification2.ReferenceNumber);
+        logger.LogInformation("Created Notifications {Notification1ReferenceNumber}, {Notification2ReferenceNumber}",
+            notification1.ReferenceNumber, notification2.ReferenceNumber);
 
         var clearanceRequestBuilder = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)

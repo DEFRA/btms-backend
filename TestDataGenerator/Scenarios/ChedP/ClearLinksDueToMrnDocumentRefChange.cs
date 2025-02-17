@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
-public class ClearLinksDueToMrnDocumentRefChange(ILogger<ClearLinksDueToMrnDocumentRefChange> logger) : ScenarioGenerator
+public class ClearLinksDueToMrnDocumentRefChange(ILogger<ClearLinksDueToMrnDocumentRefChange> logger) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

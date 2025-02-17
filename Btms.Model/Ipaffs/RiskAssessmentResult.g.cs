@@ -37,6 +37,7 @@ public partial class RiskAssessmentResult  //
     [Attr]
     [JsonPropertyName("assessedOn")]
     [System.ComponentModel.Description("Date and time of assessment")]
+    [JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? AssessedOn { get; set; }
 
 }

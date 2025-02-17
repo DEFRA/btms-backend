@@ -77,19 +77,34 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap IsDateTime(DatetimeType? type = null)
+    public PropertyMap IsDateTime(DatetimeType type)
     {
         SetType("DateTime");
         if (type == DatetimeType.Epoch)
         {
             AddAttribute("[JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]", Model.Source);
         }
+        else if (type == DatetimeType.Local)
+        {
+            AddAttribute("[JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]", Model.Internal);
+        }
+
         return this;
     }
 
-    public PropertyMap IsDate()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="allowFlexibility">Adds an attribute that allows any valid datetime string to be present in the field</param>
+    /// <returns></returns>
+    public PropertyMap IsDate(bool? allowFlexibility = false)
     {
         SetType("DateOnly");
+
+        if (allowFlexibility ?? false)
+        {
+            AddAttribute($"[JsonConverter(typeof(FlexibleDateOnlyConverter))]", Model.Source);
+        }
         return this;
     }
 

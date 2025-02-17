@@ -47,7 +47,7 @@ public partial class AccompanyingDocument  //
     [Attr]
     [JsonPropertyName("documentIssuedOn")]
     [System.ComponentModel.Description("Additional document issue date")]
-    public DateTime? DocumentIssuedOn { get; set; }
+    public DateOnly? DocumentIssuedOn { get; set; }
 
 
     /// <summary>

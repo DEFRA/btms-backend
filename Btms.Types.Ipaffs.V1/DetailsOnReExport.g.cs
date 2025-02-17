@@ -26,7 +26,7 @@ public partial class DetailsOnReExport  //
     /// Date of re-export
     /// </summary>
     [JsonPropertyName("date")]
-    public DateTime? Date { get; set; }
+    public DateOnly? Date { get; set; }
 
 
     /// <summary>

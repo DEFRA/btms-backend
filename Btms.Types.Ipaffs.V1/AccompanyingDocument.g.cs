@@ -41,7 +41,8 @@ public partial class AccompanyingDocument  //
     /// Additional document issue date
     /// </summary>
     [JsonPropertyName("documentIssueDate")]
-    public DateTime? DocumentIssueDate { get; set; }
+    [JsonConverter(typeof(FlexibleDateOnlyConverter))]
+    public DateOnly? DocumentIssueDate { get; set; }
 
 
     /// <summary>
