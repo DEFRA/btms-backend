@@ -36,6 +36,7 @@ public static class GmrMapper
         to.PlannedCrossing = PlannedCrossingMapper.Map(from?.PlannedCrossing);
         to.CheckedInCrossing = CheckedInCrossingMapper.Map(from?.CheckedInCrossing);
         to.ActualCrossing = ActualCrossingMapper.Map(from?.ActualCrossing);
+        to.Declarations = DeclarationsMapper.Map(from?.Declarations);
         return to;
     }
 }

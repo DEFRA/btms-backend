@@ -10,6 +10,12 @@
   "type": "CVEDA",
   "status": "SUBMITTED",
   "isHighRiskEuImport": false,
+  "externalReferences": [
+    {
+      "System": "Ncts",
+      "Reference": "24GB836502789AB255"
+    }
+  ],
   "partOne": {
     "personResponsible": {
       "name": "Andrew Inspector-Tester",

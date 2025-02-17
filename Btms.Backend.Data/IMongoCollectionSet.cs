@@ -6,8 +6,8 @@ namespace Btms.Backend.Data;
 
 public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
 {
-    Task<T?> Find(string id);
-    Task<T?> Find(Expression<Func<T, bool>> query);
+    Task<T?> Find(string id, CancellationToken cancellationToken = default);
+    Task<T?> Find(Expression<Func<T, bool>> query, CancellationToken cancellationToken = default);
 
     Task Insert(T item, CancellationToken cancellationToken = default);
 

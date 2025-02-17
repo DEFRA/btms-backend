@@ -33,14 +33,14 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;
 
-    public async Task<T?> Find(string id)
+    public async Task<T?> Find(string id, CancellationToken cancellationToken = default)
     {
-        return await EntityQueryable.SingleOrDefaultAsync(x => x.Id == id);
+        return await EntityQueryable.SingleOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
     }
 
-    public async Task<T?> Find(Expression<Func<T, bool>> query)
+    public async Task<T?> Find(Expression<Func<T, bool>> query, CancellationToken cancellationToken = default)
     {
-        return await EntityQueryable.FirstOrDefaultAsync(query);
+        return await EntityQueryable.FirstOrDefaultAsync(query, cancellationToken: cancellationToken);
     }
 
     public async Task PersistAsync(CancellationToken cancellationToken)

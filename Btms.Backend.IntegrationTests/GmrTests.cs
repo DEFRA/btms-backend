@@ -11,7 +11,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
     : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
 {
     [Fact]
-    public async Task FetchSingleGmrTest()
+    public async Task GmrImport_ShouldCreateAndThenUpdate()
     {
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
@@ -20,15 +20,21 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
             RootFolder = "SmokeTest"
         });
 
-        //Act
-        var jsonClientResponse = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+        var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
-        // Assert
-        jsonClientResponse.Data.Relationships?["customs"]?.Links?.Self.Should().Be("/api/gmr/:id/relationships/import-notifications");
-        jsonClientResponse.Data.Relationships?["customs"]?.Links?.Related.Should().Be("/api/import-notifications/:id");
+        document.Data.Id.Should().Be("GMRAPOQSPDUG");
+        document.Data.Attributes?["state"]?.ToString().Should().Be("Finalised");
 
-        jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Id.Should().Be("56GB123456789AB043");
-        jsonClientResponse.Data.Relationships?["customs"]?.Data.ManyValue?[0].Type.Should().Be("import-notifications");
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
+        });
+
+        document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
+
+        document.Data.Id.Should().Be("GMRAPOQSPDUG");
+        document.Data.Attributes?["state"]?.ToString().Should().Be("Embarked");
     }
 
     [Fact]

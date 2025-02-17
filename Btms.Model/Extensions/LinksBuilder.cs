@@ -5,6 +5,7 @@ public static class LinksBuilder
     public static class Notification
     {
         public const string ResourceName = "import-notifications";
+
         public static string BuildSelfNotificationLink(string id)
         {
             return BuildSelfLink(ResourceName, id);
@@ -12,13 +13,14 @@ public static class LinksBuilder
 
         public static string BuildRelatedMovementLink(string id)
         {
-            return BuildRelatedLink(ResourceName, id, "movements");
+            return BuildRelatedLink(ResourceName, id, Movement.ResourceName);
         }
     }
 
     public static class Movement
     {
         public const string ResourceName = "movements";
+
         public static string BuildSelfMovementLink(string id)
         {
             return BuildSelfLink(ResourceName, id);
@@ -32,26 +34,7 @@ public static class LinksBuilder
 
     public static class Gmr
     {
-        public const string ResourceName = "gmr";
-        public static string BuildSelfRelationshipCustomsLink(string id)
-        {
-            return BuildSelfRelationshipLink(ResourceName, id, Notification.ResourceName);
-        }
-
-        public static string BuildSelfRelationshipTransitsLink(string id)
-        {
-            return BuildSelfRelationshipLink(ResourceName, id, Movement.ResourceName);
-        }
-
-        public static string BuildRelatedTransitLink(string id)
-        {
-            return BuildSelfLink(Movement.ResourceName, id);
-        }
-
-        public static string BuildRelatedCustomsLink(string id)
-        {
-            return BuildSelfLink(Notification.ResourceName, id);
-        }
+        public const string ResourceName = "gmrs";
     }
 
     public static string BuildSelfLink(string type, string id)

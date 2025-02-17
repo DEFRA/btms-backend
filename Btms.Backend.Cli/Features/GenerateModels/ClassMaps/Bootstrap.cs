@@ -389,7 +389,6 @@ internal static class Bootstrap
             map.MapProperty("haulierEORI").SetName("haulierEori");
             map.MapProperty("vehicleRegNum").SetName("vehicleRegistrationNumber");
             map.MapProperty("updatedDateTime").SetName("updatedSource").IsDateTime();
-            map.MapProperty("declarations").ExcludeFromInternal();
         });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsResponse",
