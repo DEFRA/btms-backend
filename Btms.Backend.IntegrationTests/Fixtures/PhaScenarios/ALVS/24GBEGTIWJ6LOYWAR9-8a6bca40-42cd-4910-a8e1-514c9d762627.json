@@ -1,0 +1,47 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDS",
+    "destinationSystem": "ALVS",
+    "correlationId": "1381549",
+    "serviceCallTimestamp": 1735559260000
+  },
+  "header": {
+    "entryReference": "24GBEGTIWJ6LOYWAR9",
+    "entryVersionNumber": 2,
+    "previousVersionNumber": 1,
+    "declarationUCR": "4GB333557108000-OGL6001342879",
+    "declarationPartNumber": null,
+    "declarationType": "S",
+    "arrivalDateTime": null,
+    "submitterTURN": "GB333557108000",
+    "declarantId": "GB333557108000",
+    "declarantName": "GB333557108000",
+    "dispatchCountryCode": "TR",
+    "goodsLocationCode": "HRHHRHHRHGVM",
+    "masterUCR": null
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "customsProcedureCode": "4000000",
+      "taricCommodityCode": "0805400019",
+      "goodsDescription": "GRAPEFRUIT",
+      "consigneeId": "GB306253334000",
+      "consigneeName": "GB306253334000",
+      "itemNetMass": 20000,
+      "itemSupplementaryUnits": 0,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": "TR",
+      "documents": [
+        {
+          "documentCode": "C678",
+          "documentReference": "GBCHD2024.5351769",
+          "documentStatus": "JE",
+          "documentControl": "P",
+          "documentQuantity": null
+        }
+      ],
+      "checks": [{ "checkCode": "H223", "departmentCode": "PHA" }]
+    }
+  ]
+}
