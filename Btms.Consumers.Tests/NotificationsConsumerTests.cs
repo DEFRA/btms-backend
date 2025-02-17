@@ -4,9 +4,9 @@ using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
-using Btms.Common.Extensions;
 using Btms.Consumers.Extensions;
 using Btms.Model.Auditing;
+using Btms.Model.Gvms;
 using Btms.Types.Ipaffs;
 using Btms.Types.Ipaffs.Mapping;
 using FluentAssertions;
@@ -37,15 +37,20 @@ public class NotificationsConsumerTests : ConsumerTests
         var matchingService = Substitute.For<IMatchingService>();
         var validationService = Substitute.For<IValidationService>();
         var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
+        var gmrLinker = Substitute.For<ILinker<Gmr, Model.Ipaffs.ImportNotification>>();
 
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
-        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext());
-        consumer.Context = new ConsumerContext
-        {
-            Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
-        };
+        var consumer =
+            new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker)
+            {
+                Context = new ConsumerContext
+                {
+                    Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
+                }
+            };
 
         // ACT
         await consumer.OnHandle(notification, CancellationToken.None);
@@ -70,6 +75,7 @@ public class NotificationsConsumerTests : ConsumerTests
         var matchingService = Substitute.For<IMatchingService>();
         var validationService = Substitute.For<IValidationService>();
         var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
+        var gmrLinker = Substitute.For<ILinker<Gmr, Model.Ipaffs.ImportNotification>>();
 
         mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)));
@@ -80,7 +86,7 @@ public class NotificationsConsumerTests : ConsumerTests
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext())
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker)
             {
                 Context = new ConsumerContext
                 {
@@ -112,15 +118,20 @@ public class NotificationsConsumerTests : ConsumerTests
         var matchingService = Substitute.For<IMatchingService>();
         var validationService = Substitute.For<IValidationService>();
         var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
+        var gmrLinker = Substitute.For<ILinker<Gmr, Model.Ipaffs.ImportNotification>>();
 
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
-        var consumer = new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService, validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext());
-        consumer.Context = new ConsumerContext
-        {
-            Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
-        };
+        var consumer =
+            new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker)
+            {
+                Context = new ConsumerContext
+                {
+                    Headers = new Dictionary<string, object> { { "messageId", notification.ReferenceNumber! } }
+                }
+            };
 
         // ACT
         await consumer.OnHandle(notification, CancellationToken.None);

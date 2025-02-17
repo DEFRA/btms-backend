@@ -33,7 +33,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         PreProcessingContext<Gmr> preProcessingContext,
         CancellationToken cancellationToken)
     {
-        var mappedGmr = GrmWithTransformMapper.MapWithTransform(preProcessingContext.Message);
+        var mappedGmr = preProcessingContext.Message.MapWithTransform();
         var auditId = preProcessingContext.MessageId;
         
         var auditEntry = AuditEntry.CreateCreatedEntry(
@@ -55,7 +55,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         Model.Gvms.Gmr existingGmr,
         CancellationToken cancellationToken)
     {
-        var mappedGmr = GrmWithTransformMapper.MapWithTransform(preProcessingContext.Message);
+        var mappedGmr = preProcessingContext.Message.MapWithTransform();
         var auditId = preProcessingContext.MessageId;
         
         mappedGmr.AuditEntries = existingGmr.AuditEntries;
