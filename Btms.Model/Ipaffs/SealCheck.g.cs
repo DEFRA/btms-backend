@@ -55,6 +55,7 @@ public partial class SealCheck  //
     [Attr]
     [JsonPropertyName("checkedOn")]
     [System.ComponentModel.Description("date and time of seal check")]
+    [JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? CheckedOn { get; set; }
 
 }

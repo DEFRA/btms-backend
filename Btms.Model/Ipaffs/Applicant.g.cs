@@ -129,6 +129,7 @@ public partial class Applicant  //
     [Attr]
     [JsonPropertyName("sampledOn")]
     [System.ComponentModel.Description("DateTime")]
+    [JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? SampledOn { get; set; }
 
 }

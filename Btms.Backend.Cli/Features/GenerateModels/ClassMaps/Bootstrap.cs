@@ -9,7 +9,24 @@ internal static class Bootstrap
     private const string ArrivesAt = "arrivesAt";
     private const string AlvsClearanceRequest = "AlvsClearanceRequest";
     private const string CdsClearanceRequest = "CdsClearanceRequest";
+    
+    // We know these fields are going to be in GB so we should know the timezone, based on BST/DST
+    // but its not certain IPAFFS behaves reliably on this, so for now we're assuming unknown timezone
+    private const DatetimeType IpaffsKnownGb = DatetimeType.Local;
 
+    // These fields are Z in the timestamp 
+    // but its not certain IPAFFS behaves reliably on this, so for now we're assuming unknown timezone
+    private const DatetimeType IpaffsUtc = DatetimeType.Utc;
+
+    // These fields have no TZ indication in the timestamp so we don't know which timezone it is.
+    // We could in future use location info to determine it.
+    private const DatetimeType IpaffsNoTzInfo = DatetimeType.Local;
+
+    // We don't have any examples of these fields
+    private const DatetimeType IpaffsNoExamples = DatetimeType.Local;
+
+    // We don't have any examples of these fields, but the dates we've seen in ALVS have all been Epoch
+    private const DatetimeType AlvsNoExamples = DatetimeType.Epoch;
 
     public static void GeneratorClassMaps()
     {
