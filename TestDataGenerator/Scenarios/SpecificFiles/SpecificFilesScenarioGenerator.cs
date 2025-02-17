@@ -152,7 +152,7 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
     internal async Task<List<(string filePath, IBaseBuilder builder)>> GetBuilders(string scenarioPath)
     {
         using var tokenSource = new CancellationTokenSource();
-        
+
         var clearanceRequestList = await GetBuildersForFolder($"{scenarioPath}/ALVS", BuilderHelpers.GetClearanceRequestBuilder, tokenSource.Token);
         var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", BuilderHelpers.GetNotificationBuilder, tokenSource.Token);
         var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", BuilderHelpers.GetDecisionBuilder, tokenSource.Token);

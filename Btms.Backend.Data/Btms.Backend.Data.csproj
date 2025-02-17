@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Btms.Backend.IntegrationTests</_Parameter1>
-    </AssemblyAttribute>
+    <InternalsVisibleTo Include="Btms.Backend.IntegrationTests" />
     
     <PackageReference Include="MongoDB.Driver" Version="2.30.0" />
     <PackageReference Include="MongoDB.Driver.Core.Extensions.DiagnosticSources" Version="1.5.0" />

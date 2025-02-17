@@ -152,11 +152,9 @@ internal static class Bootstrap
                 map.MapProperty("uploadUserId").IsSensitive();
                 map.MapProperty("uploadOrganisationId").IsSensitive();
 
-                //Strangely this field occasionally includes time info, including in one of our examples
-                //Samples/NoAuditLogForMovementUpdate/IPAFFS/CHEDP/2024/12/26/CHEDP_GB_2024_031218000001-81b1a60c-5800-41eb-84fc-f73cb99585ef.json
                 map.MapProperty("documentIssueDate")
                     .SetInternalName("documentIssuedOn")
-                    .IsDate(true);
+                    .IsDate(allowFlexibility: true);
             });
 
         GeneratorClassMap.RegisterClassMap("MeansOfTransport",
@@ -523,26 +521,22 @@ internal static class Bootstrap
         GeneratorClassMap.RegisterClassMap("plannedCrossing",
             map =>
             {
-                map.MapProperty("localDateTimeOfArrival")
-                    .IsDateTime(IpaffsKnownGb).SetName(ArrivesAt);
-
-                // We don't know what timezone this is in...
                 map.MapProperty("localDateTimeOfDeparture")
-                    .IsDateTime(IpaffsNoTzInfo).SetName("departsAt");
+                    .SetName("departsAt").IsDateTime(DatetimeType.Local);
             });
 
         GeneratorClassMap.RegisterClassMap("actualCrossing",
             map =>
             {
                 map.MapProperty("localDateTimeOfArrival")
-                    .IsDateTime(IpaffsKnownGb).SetName(ArrivesAt);
+                    .SetName(ArrivesAt).IsDateTime(DatetimeType.Local);
             });
 
         GeneratorClassMap.RegisterClassMap("checkedInCrossing",
             map =>
             {
                 map.MapProperty("localDateTimeOfArrival")
-                    .IsDateTime(IpaffsNoTzInfo).SetName(ArrivesAt);
+                    .SetName(ArrivesAt).IsDateTime(DatetimeType.Local);
             });
     }
 }

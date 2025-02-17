@@ -84,6 +84,10 @@ internal class PropertyMap(string name)
         {
             AddAttribute("[JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]", Model.Source);
         }
+        else if (type == DatetimeType.Local)
+        {
+            AddAttribute("[JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]", Model.Source);
+        }
 
         return this;
     }
@@ -91,15 +95,15 @@ internal class PropertyMap(string name)
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="truncate">Adds an attribute to trim the text to 10 characters</param>
+    /// <param name="allowFlexibility">Adds an attribute that allows any valid datetime string to be present in the field</param>
     /// <returns></returns>
-    public PropertyMap IsDate(bool? truncate = false)
+    public PropertyMap IsDate(bool? allowFlexibility = false)
     {
         SetType("DateOnly");
 
-        if (truncate ?? false)
+        if (allowFlexibility ?? false)
         {
-            AddAttribute("[JsonConverter(typeof(TruncatedDateParse))]", Model.Source);
+            AddAttribute($"[JsonConverter(typeof(FlexibleDateOnlyConverter))]", Model.Source);
         }
         return this;
     }
