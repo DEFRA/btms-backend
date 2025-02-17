@@ -5,7 +5,7 @@ namespace Btms.Types.Gvms.Mapping;
 
 public static class GrmWithTransformMapper
 {
-    public static Btms.Model.Gvms.Gmr MapWithTransform(Gmr? from)
+    public static Btms.Model.Gvms.Gmr MapWithTransform(this Gmr? from)
     {
         if (from is null)
         {

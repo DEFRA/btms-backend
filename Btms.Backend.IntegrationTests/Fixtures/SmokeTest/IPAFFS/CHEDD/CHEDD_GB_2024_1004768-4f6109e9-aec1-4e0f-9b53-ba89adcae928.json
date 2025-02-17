@@ -19,6 +19,12 @@
     "assessmentDateTime": "2024-10-02T13:13:10.245443076"
   },
   "isHighRiskEuImport": true,
+  "externalReferences": [
+    {
+      "System": "Ncts",
+      "Reference": "24GB836502789AB255"
+    }
+  ],
   "partOne": {
     "personResponsible": {
       "name": "Andrew Inspector-Tester",
