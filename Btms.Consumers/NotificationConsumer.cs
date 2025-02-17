@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Data;
 using Btms.Backend.Data.Extensions;
 using Btms.Types.Ipaffs;
@@ -14,6 +15,9 @@ using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Consumers;
 
+[SuppressMessage("SonarLint", "S107",
+    Justification =
+        "The consumer is orchestrating different service calls therefore inherently has too many responsibilities")]
 internal class NotificationConsumer(
     IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor,
     ILinkingService linkingService,
