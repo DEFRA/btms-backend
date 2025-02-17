@@ -1,7 +1,7 @@
-using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bogus.DataSets;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization.Attributes;
@@ -20,8 +20,10 @@ public class SchemaFilter : ISchemaFilter
 
         foreach (var propertyInfo in context.Type.GetProperties())
         {
-            if (HasBsonIgnoreAttribute(propertyInfo))
-                schema.Properties.Remove(GetPropertyName(propertyInfo));
+            var name = GetPropertyName(propertyInfo);
+
+            if (HasBsonIgnoreAttribute(propertyInfo) || IsPrivateField(name))
+                schema.Properties.Remove(name);
         }
 
         schema.Enum = GetEnums(context);
@@ -32,7 +34,7 @@ public class SchemaFilter : ISchemaFilter
         var enumOpenApiStrings = new List<IOpenApiAny>();
         if (!context.Type.IsEnum) return enumOpenApiStrings;
 
-        enumOpenApiStrings.AddRange((from object? enumValue in Enum.GetValues(context.Type) select new OpenApiString(enumValue.ToString())).Cast<IOpenApiAny>());
+        enumOpenApiStrings.AddRange(from object? enumValue in Enum.GetValues(context.Type) select new OpenApiString(enumValue.ToString()));
 
         return enumOpenApiStrings;
     }
@@ -50,6 +52,11 @@ public class SchemaFilter : ISchemaFilter
     private static bool IsBsonIgnoreField(OpenApiSchema schema, SchemaFilterContext context)
     {
         return schema.Properties == null || context.Type == null;
+    }
+
+    private static bool IsPrivateField(string name)
+    {
+        return name.StartsWith('_');
     }
 
 
