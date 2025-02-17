@@ -86,7 +86,7 @@ internal class PropertyMap(string name)
         }
         else if (type == DatetimeType.Local)
         {
-            AddAttribute("[JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]", Model.Source);
+            AddAttribute("[JsonConverter(typeof(LocalDateTimeJsonConverter)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]", Model.Internal);
         }
 
         return this;
