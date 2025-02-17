@@ -94,7 +94,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
             {
                 exceptionsResult.AddRange(g
                     .OrderBy(a => -a.Total)
-                    .Take(3)
+                    .Take(10)
                     .Select(r =>
                         new ExceptionResult()
                         {

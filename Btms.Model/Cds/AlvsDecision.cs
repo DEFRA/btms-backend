@@ -253,6 +253,14 @@ public enum DecisionStatusEnum
     [EnumMember(Value = "Has Multiple Cheds")]
     HasMultipleCheds,
 
+
+    [EnumMember(Value = "Btms Clear Alvs Hold")]
+    BtmsClearAlvsHold,
+
+    [EnumMember(Value = "ALvs Clear Btms Hold")]
+    AlvsClearBtmsHold,
+
+
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded,
 
