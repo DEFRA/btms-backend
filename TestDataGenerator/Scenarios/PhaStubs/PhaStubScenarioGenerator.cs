@@ -7,5 +7,5 @@ namespace TestDataGenerator.Scenarios.PhaStubs;
 public class PhaStubScenarioGenerator(IServiceProvider sp, ILogger<PhaStubScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "PhaStub")
 {
-    
+
 }
