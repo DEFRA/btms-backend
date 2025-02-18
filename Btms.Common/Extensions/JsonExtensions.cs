@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Btms.Model.Extensions;
+namespace Btms.Common.Extensions;
 
 public static class JsonExtensions
 {

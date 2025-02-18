@@ -29,6 +29,7 @@ public partial class PlannedCrossing  //
     /// The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker
     /// </summary>
     [JsonPropertyName("localDateTimeOfDeparture")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(DepartsAt))]
     public DateTime? DepartsAt { get; set; }
 
 }

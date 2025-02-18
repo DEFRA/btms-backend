@@ -14,107 +14,55 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Cds;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Items  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemNumber")]
     public int? ItemNumber { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("customsProcedureCode")]
     public string? CustomsProcedureCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("taricCommodityCode")]
     public string? TaricCommodityCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("goodsDescription")]
     public string? GoodsDescription { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("consigneeId")]
     public string? ConsigneeId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("consigneeName")]
     public string? ConsigneeName { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemNetMass")]
     public decimal? ItemNetMass { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemSupplementaryUnits")]
     public decimal? ItemSupplementaryUnits { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemThirdQuantity")]
     public decimal? ItemThirdQuantity { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("itemOriginCountryCode")]
     public string? ItemOriginCountryCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("documents")]
     public Document[]? Documents { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("checks")]
     public Check[]? Checks { get; set; }
 
 }

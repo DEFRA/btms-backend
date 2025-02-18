@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
-public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> logger) : ScenarioGenerator
+public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> logger) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -19,9 +19,6 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithVersionNumber()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {NotificationReferenceNumber}",
-            notification.ReferenceNumber);
-
         var clearanceRequest = BuilderHelpers.GetClearanceRequestBuilder("cr-one-item")
             .WithCreationDate(entryDate.AddHours(2), false)
             .WithArrivalDateTimeOffset(notification.PartOne!.ArrivalDate, notification.PartOne!.ArrivalTime)
@@ -30,7 +27,8 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithTunaItem()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
+        logger.LogInformation("Created Notification {NotificationReference}, Clearance Request {ClearanceRequest}",
+            notification.ReferenceNumber, clearanceRequest.Header!.EntryReference);
 
         var alvsDecision = BuilderHelpers.GetDecisionBuilder("decision-one-item")
             .WithCreationDate(clearanceRequest.ServiceHeader!.ServiceCallTimestamp!.Value.AddHours(1), false)
@@ -41,7 +39,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithItemAndCheck(1, "H224", "C07")
             .ValidateAndBuild();
 
-        logger.LogInformation("Created {EntryReference}", alvsDecision.Header!.EntryReference);
+        logger.LogInformation("Created Decision {EntryReference}", alvsDecision.Header!.EntryReference);
 
         return new GeneratorResult([clearanceRequest, notification, alvsDecision]);
     }

@@ -33,6 +33,7 @@ public partial class PlannedCrossing  //
     [Attr]
     [JsonPropertyName("departsAt")]
     [System.ComponentModel.Description("The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(DepartsAt)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? DepartsAt { get; set; }
 
 }

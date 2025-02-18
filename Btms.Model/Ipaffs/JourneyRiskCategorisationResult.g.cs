@@ -48,6 +48,7 @@ public partial class JourneyRiskCategorisationResult  //
     [Attr]
     [JsonPropertyName("riskLevelSetFor")]
     [System.ComponentModel.Description("The date and time the risk level has been set for a notification")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(RiskLevelSetFor)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? RiskLevelSetFor { get; set; }
 
 }

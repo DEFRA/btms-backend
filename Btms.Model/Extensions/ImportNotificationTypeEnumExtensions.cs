@@ -1,6 +1,6 @@
 using Btms.Model.Ipaffs;
 
-namespace Btms.Model.Extensions;
+namespace Btms.Common.Extensions;
 
 public static class ImportNotificationTypeEnumExtensions
 {

@@ -5,7 +5,6 @@ using Xunit;
 using Xunit.Abstractions;
 using Btms.Analytics.Tests.Helpers;
 using Btms.Analytics.Tests.Fixtures;
-using Btms.Model.Extensions;
 using TestDataGenerator.Config;
 using TestGenerator.IntegrationTesting.Backend;
 

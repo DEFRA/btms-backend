@@ -14,122 +14,59 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Cds;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Header  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("entryReference")]
     public string? EntryReference { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("entryVersionNumber")]
     public int? EntryVersionNumber { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("previousVersionNumber")]
     public int? PreviousVersionNumber { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarationUcr")]
     public string? DeclarationUcr { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarationPartNumber")]
     public string? DeclarationPartNumber { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarationType")]
     public string? DeclarationType { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("arrivesAt")]
     public DateTime? ArrivesAt { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("submitterTurn")]
     public string? SubmitterTurn { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarantId")]
     public string? DeclarantId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("declarantName")]
     public string? DeclarantName { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("dispatchCountryCode")]
     public string? DispatchCountryCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("goodsLocationCode")]
     public string? GoodsLocationCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("masterUcr")]
     public string? MasterUcr { get; set; }
-
-    // /// <summary>
-    // /// 
-    // /// </summary
-    // [Attr]
-    // [System.ComponentModel.Description("")]
-    // public int? DecisionNumber { get; set; }
 
 }

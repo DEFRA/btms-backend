@@ -14,51 +14,27 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Cds;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Document  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentCode")]
     public string? DocumentCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentReference")]
     public string? DocumentReference { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentStatus")]
     public string? DocumentStatus { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentControl")]
     public string? DocumentControl { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("documentQuantity")]
     public decimal? DocumentQuantity { get; set; }
 
 }

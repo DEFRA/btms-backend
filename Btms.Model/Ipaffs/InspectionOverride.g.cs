@@ -37,6 +37,7 @@ public partial class InspectionOverride  //
     [Attr]
     [JsonPropertyName("overriddenOn")]
     [System.ComponentModel.Description("The time the risk decision is overridden")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(OverriddenOn)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? OverriddenOn { get; set; }
 
 
