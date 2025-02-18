@@ -1,0 +1,3 @@
+[submodule "Btms.Test.Data"]
+	path = Btms.Test.Data
+	url = git@github.com:DEFRA/btms-test-data.git
