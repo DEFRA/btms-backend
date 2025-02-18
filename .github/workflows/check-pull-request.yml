@@ -73,7 +73,16 @@ jobs:
         with:
           recreate: true
           path: code-coverage-results.md
-    
+
+      - name: Generate OpenAPI specification
+        run: make generate-openapi-spec
+
+      - name: Save OpenApi specification
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi.json
+          path: openapi.json
+
     ## SonarCloud
     ## Uncomment to unable SonarCloud scan
     ## Requires project to be set up in SonarCloud
