@@ -3,9 +3,19 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Btms.Types.Alvs.V1;
+namespace Btms.Common.Json;
 
-public class DateTimeConverterUsingDateTimeParse : JsonConverter<DateTime>
+
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+public class EpochDateTimeJsonConverterAttribute : JsonConverterAttribute
+{
+    public override JsonConverter? CreateConverter(Type typeToConvert)
+    {
+        return new EpochDateTimeJsonConverter();
+    }
+}
+
+public class EpochDateTimeJsonConverter : JsonConverter<DateTime>
 {
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

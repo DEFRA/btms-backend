@@ -38,7 +38,7 @@ internal class RedactImportNotificationsCommand : IRequest
 
                 var options = new SensitiveDataOptions { Include = false };
                 var serializer =
-                    new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
+                    new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance, new SensitiveFieldsProvider());
 
                 var result = serializer.RedactRawJson(json, typeof(ImportNotification));
                 await File.WriteAllTextAsync(fileInfo.FullName, result, ct);

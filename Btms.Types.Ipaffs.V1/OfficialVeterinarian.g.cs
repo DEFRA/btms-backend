@@ -26,7 +26,6 @@ public partial class OfficialVeterinarian  //
     /// First name of official veterinarian
     /// </summary>
     [JsonPropertyName("firstName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? FirstName { get; set; }
 
 
@@ -34,7 +33,6 @@ public partial class OfficialVeterinarian  //
     /// Last name of official veterinarian
     /// </summary>
     [JsonPropertyName("lastName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? LastName { get; set; }
 
 
@@ -42,7 +40,6 @@ public partial class OfficialVeterinarian  //
     /// Email address of official veterinarian
     /// </summary>
     [JsonPropertyName("email")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 
@@ -50,7 +47,6 @@ public partial class OfficialVeterinarian  //
     /// Phone number of official veterinarian
     /// </summary>
     [JsonPropertyName("phone")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
 
@@ -58,7 +54,6 @@ public partial class OfficialVeterinarian  //
     /// Fax number of official veterinarian
     /// </summary>
     [JsonPropertyName("fax")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Fax { get; set; }
 
 

@@ -145,17 +145,13 @@ public class Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator(IServiceProvider sp, ILogger
 
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
-
-
-public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator
-
+public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)
 {
-    private readonly IBlobService blobService = sp.GetRequiredService<CachingBlobService>();
+    private readonly IBlobService _blobService = sp.GetRequiredService<CachingBlobService>();
 
     internal async Task<List<(string filePath, IBaseBuilder builder)>> GetBuilders(string scenarioPath)
     {
-        var tokenSource = new CancellationTokenSource();
-        var clearanceRequestBlobs = blobService.GetResourcesAsync($"{scenarioPath}/ALVS", tokenSource.Token);
+        using var tokenSource = new CancellationTokenSource();
 
         var clearanceRequestList = await GetBuildersForFolder($"{scenarioPath}/ALVS", BuilderHelpers.GetClearanceRequestBuilder, tokenSource.Token);
         var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", BuilderHelpers.GetNotificationBuilder, tokenSource.Token);
@@ -175,21 +171,15 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         return builders;
     }
 
-    protected virtual List<object> ModifyMessages(
-        List<object> messages)
-    {
-        return messages;
-    }
-
     private async Task<List<(string file, IBaseBuilder builder)>> GetBuildersForFolder(string scenarioFolder, Func<string, string, IBaseBuilder> createBuilder, CancellationToken token)
     {
-        var blobs = blobService.GetResourcesAsync(scenarioFolder, token);
+        var blobs = _blobService.GetResourcesAsync(scenarioFolder, token);
 
         var list = new List<(string, IBaseBuilder)>();
 
         await foreach (var blobItem in blobs)
         {
-            logger.LogInformation("Found blob item {name}", blobItem.Name);
+            Logger.LogInformation("Found blob item {name}", blobItem.Name);
             var builder = createBuilder(blobItem.Name, "");
             list.Add((blobItem.Name, builder!));
         }
@@ -207,7 +197,7 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var builders = GetBuilders(sampleFolder)
             .GetAwaiter().GetResult();
 
-        logger.LogInformation("Created {builders} Builders",
+        Logger.LogInformation("Created {builders} Builders",
             builders.Count);
 
         var messages = ModifyMessages(builders

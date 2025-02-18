@@ -29,6 +29,7 @@ public partial class CheckedInCrossing  //
     /// The planned date and time of arrival, in local time of the arrival port. Must not include seconds, time zone or UTC marker
     /// </summary>
     [JsonPropertyName("localDateTimeOfArrival")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(ArrivesAt))]
     public DateTime? ArrivesAt { get; set; }
 
 }

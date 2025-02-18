@@ -40,6 +40,7 @@ public partial class JourneyRiskCategorisationResult  //
     /// The date and time the risk level has been set for a notification
     /// </summary>
     [JsonPropertyName("riskLevelDateTime")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(RiskLevelSetFor))]
     public DateTime? RiskLevelSetFor { get; set; }
 
 }
