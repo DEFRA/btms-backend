@@ -35,6 +35,7 @@ public static class ServiceCollectionExtensions
         services.AddBlobStorage(configuration);
         services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
         services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
+        services.AddSingleton<ISensitiveFieldsProvider, SensitiveFieldsProvider>();
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SyncNotificationsCommand>());
 
