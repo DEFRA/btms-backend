@@ -16,9 +16,6 @@ public abstract class ScenarioGenerator(ILogger logger)
 {
     protected readonly ILogger Logger = logger;
 
-    private readonly string _fullFolder =
-        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Samples";
-
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
     protected virtual List<object> ModifyMessages(
@@ -43,7 +40,7 @@ public abstract class ScenarioGenerator(ILogger logger)
                 }
                 else
                 {
-                    throw new Exception($"Unexpected GeneratorResult type {o.GetType().Name}");
+                    throw new FormatException($"Unexpected GeneratorResult type {o.GetType().Name}");
                 }
 
             }
@@ -61,7 +58,7 @@ public abstract class ScenarioGenerator(ILogger logger)
             Messages.AddRange(clearanceRequests);
         }
 
-        public void Add(Btms.Types.Alvs.Decision[] decisions)
+        public void Add(Decision[] decisions)
         {
             Messages.AddRange(decisions);
         }

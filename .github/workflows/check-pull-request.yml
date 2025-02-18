@@ -20,9 +20,20 @@ jobs:
         with:
           dotnet-version: |
            8.0
+
       - name: Check out code
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
         
+      - name: Debug
+        run: |
+          pwd
+          ls -la
+
+      - name: Check out test data
+        uses: actions/checkout@v3
+        with:
+          repository: 'DEFRA/btms-test-data'
+
       - name: Verify Format
         run: dotnet format --verify-no-changes --verbosity diagnostic
 
