@@ -39,9 +39,13 @@ using Btms.Azure.Extensions;
 using Environment = System.Environment;
 using Btms.Backend.Asb;
 using Btms.Business.Mediatr;
+using Btms.Backend.Swagger;
 using Btms.Common;
 
 //-------- Configure the WebApplication builder------------------//
+
+if (SwaggerGen.SwaggerGenEntrypoint(args))
+    return;
 
 var app = CreateWebApplication(args);
 await app.RunAsync();
