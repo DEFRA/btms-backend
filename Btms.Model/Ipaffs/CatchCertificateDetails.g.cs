@@ -46,7 +46,7 @@ public partial class CatchCertificateDetails  //
     [Attr]
     [JsonPropertyName("issuedOn")]
     [System.ComponentModel.Description("Catch certificate date of issue")]
-    public DateTime? IssuedOn { get; set; }
+    public DateOnly? IssuedOn { get; set; }
 
 
     /// <summary>

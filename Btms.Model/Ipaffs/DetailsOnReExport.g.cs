@@ -28,7 +28,7 @@ public partial class DetailsOnReExport  //
     [Attr]
     [JsonPropertyName("date")]
     [System.ComponentModel.Description("Date of re-export")]
-    public DateTime? Date { get; set; }
+    public DateOnly? Date { get; set; }
 
 
     /// <summary>

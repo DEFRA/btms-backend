@@ -1,7 +1,7 @@
 using Btms.BlobService;
 using Btms.Business.Commands;
 using Btms.Metrics;
-using Btms.Model.Extensions;
+using Btms.Common.Extensions;
 using Btms.SensitiveData;
 using Btms.SyncJob;
 using Btms.Types.Ipaffs;

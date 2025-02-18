@@ -319,6 +319,7 @@ public partial class PartOne  //
     /// Date of Port Exit for EU Import Notification.
     /// </summary>
     [JsonPropertyName("portOfExitDate")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(PortOfExitDate))]
     public DateTime? PortOfExitDate { get; set; }
 
 

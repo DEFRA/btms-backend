@@ -40,7 +40,7 @@ public partial class CatchCertificateDetails  //
     /// Catch certificate date of issue
     /// </summary>
     [JsonPropertyName("dateOfIssue")]
-    public DateTime? DateOfIssue { get; set; }
+    public DateOnly? DateOfIssue { get; set; }
 
 
     /// <summary>
