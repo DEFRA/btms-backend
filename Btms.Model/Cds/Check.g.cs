@@ -14,54 +14,27 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Cds;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class Check  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("checkCode")]
     public string? CheckCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
-    [System.ComponentModel.Description("")]
+    [JsonPropertyName("departmentCode")]
     public string? DepartmentCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
     [JsonPropertyName("decisionCode")]
-    [System.ComponentModel.Description("")]
     public string? DecisionCode { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
     [JsonPropertyName("decisionsValidUntil")]
-    [System.ComponentModel.Description("")]
     public DateTime? DecisionsValidUntil { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [Attr]
     [JsonPropertyName("decisionReasons")]
-    [System.ComponentModel.Description("")]
     public string[]? DecisionReasons { get; set; }
 
 }

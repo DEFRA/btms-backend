@@ -14,30 +14,15 @@ using System.Dynamic;
 
 namespace Btms.Types.Alvs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class AlvsClearanceRequest  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("serviceHeader")]
     public ServiceHeader? ServiceHeader { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("header")]
     public Header? Header { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("items")]
     public Items[]? Items { get; set; }
 

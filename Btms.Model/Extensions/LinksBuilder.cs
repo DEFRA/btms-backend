@@ -1,4 +1,4 @@
-namespace Btms.Model.Extensions;
+namespace Btms.Common.Extensions;
 
 public static class LinksBuilder
 {

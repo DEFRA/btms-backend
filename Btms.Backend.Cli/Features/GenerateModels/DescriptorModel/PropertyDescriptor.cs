@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 using Btms.Common.Extensions;
 using Humanizer;
 
@@ -10,6 +11,12 @@ public class PropertyDescriptor
     private readonly bool _isReferenceType;
     private readonly bool _isArray;
     private bool _typeOverridden;
+
+    private readonly string _attributeUnknownTimeZone = typeof(Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter).FullName!;
+    private readonly string _attributeEpoch = typeof(Btms.Common.Json.EpochDateTimeJsonConverter).FullName!;
+    private readonly string _attributeFlexibleDate = typeof(Btms.Common.Json.FlexibleDateOnlyJsonConverter).FullName!;
+    private readonly string _attributeBsonRepresentation = "MongoDB.Bson.Serialization.Attributes.BsonRepresentation";
+    private readonly string _attributeBsonDateTimeOptions = "MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions";
 
     public PropertyDescriptor(string schemaName, string type,
         bool isReferenceType, bool isArray)
@@ -27,7 +34,7 @@ public class PropertyDescriptor
         if (type.EndsWith("Enum"))
         {
             InternalAttributes.Add(
-                "[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]");
+                $"[{_attributeBsonRepresentation}(MongoDB.Bson.BsonType.String)]");
         }
     }
 
@@ -62,6 +69,16 @@ public class PropertyDescriptor
     /// The Type to use (in the Source Type Library??)
     /// </summary>
     public string Type { get; set; }
+
+    /// <summary>
+    /// The kind of datetime
+    /// </summary>
+    public DateTimeType? DateTimeType { get; set; } = null!;
+
+    /// <summary>
+    /// The kind of dateonly
+    /// </summary>
+    public DateOnlyType? DateOnlyType { get; set; } = null!;
 
     /// <summary>
     /// The Type to use in the Internal Data Model
@@ -163,6 +180,19 @@ public class PropertyDescriptor
         var defaultParams = new List<string>() { $"[JsonPropertyName(\"{SourceJsonPropertyName ?? SchemaName}\")]" };
         defaultParams.AddRange(SourceAttributes);
 
+        if (DateTimeType == ClassMaps.DateTimeType.Local)
+        {
+            defaultParams.Add($"[{_attributeUnknownTimeZone}(nameof({GetSourcePropertyName()}))]");
+        }
+        else if (DateTimeType == ClassMaps.DateTimeType.Epoch)
+        {
+            defaultParams.Add($"[{_attributeEpoch}]");
+        }
+        else if (DateOnlyType == ClassMaps.DateOnlyType.Flexible)
+        {
+            defaultParams.Add($"[{_attributeFlexibleDate}]");
+        }
+
         return defaultParams.ToArray();
     }
 
@@ -175,6 +205,11 @@ public class PropertyDescriptor
         if (!string.IsNullOrEmpty(Description))
         {
             defaultParams.Add($"[System.ComponentModel.Description(\"{Description}\")]");
+        }
+
+        if (DateTimeType == ClassMaps.DateTimeType.Local)
+        {
+            defaultParams.Add($"[{_attributeUnknownTimeZone}(nameof({GetInternalPropertyName()})), {_attributeBsonDateTimeOptions}(Kind = DateTimeKind.Unspecified)]");
         }
 
         defaultParams.AddRange(InternalAttributes);

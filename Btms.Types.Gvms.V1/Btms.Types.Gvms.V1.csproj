@@ -12,4 +12,8 @@
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
+  </ItemGroup>
+
 </Project>

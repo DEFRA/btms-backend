@@ -26,6 +26,7 @@ public partial class LaboratoryTests  //
     /// Date of tests
     /// </summary>
     [JsonPropertyName("testDate")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(TestDate))]
     public DateTime? TestDate { get; set; }
 
 

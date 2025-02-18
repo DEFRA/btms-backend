@@ -26,7 +26,6 @@ public partial class PostalAddress  //
     /// 1st line of address
     /// </summary>
     [JsonPropertyName("addressLine1")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine1 { get; set; }
 
 
@@ -34,7 +33,6 @@ public partial class PostalAddress  //
     /// 2nd line of address
     /// </summary>
     [JsonPropertyName("addressLine2")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine2 { get; set; }
 
 
@@ -42,7 +40,6 @@ public partial class PostalAddress  //
     /// 3rd line of address
     /// </summary>
     [JsonPropertyName("addressLine3")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine3 { get; set; }
 
 
@@ -50,7 +47,6 @@ public partial class PostalAddress  //
     /// 4th line of address
     /// </summary>
     [JsonPropertyName("addressLine4")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine4 { get; set; }
 
 
@@ -58,7 +54,6 @@ public partial class PostalAddress  //
     /// 3rd line of address
     /// </summary>
     [JsonPropertyName("county")]
-    [Btms.SensitiveData.SensitiveData]
     public string? County { get; set; }
 
 
@@ -66,7 +61,6 @@ public partial class PostalAddress  //
     /// City or town name
     /// </summary>
     [JsonPropertyName("cityOrTown")]
-    [Btms.SensitiveData.SensitiveData]
     public string? CityOrTown { get; set; }
 
 
@@ -74,7 +68,6 @@ public partial class PostalAddress  //
     /// Post code
     /// </summary>
     [JsonPropertyName("postalCode")]
-    [Btms.SensitiveData.SensitiveData]
     public string? PostalCode { get; set; }
 
 }
