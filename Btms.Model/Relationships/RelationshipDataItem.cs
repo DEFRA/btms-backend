@@ -1,4 +1,4 @@
-using Btms.Model.Extensions;
+using Btms.Common.Extensions;
 using Btms.Model.Ipaffs;
 using JsonApiDotNetCore.Resources.Annotations;
 

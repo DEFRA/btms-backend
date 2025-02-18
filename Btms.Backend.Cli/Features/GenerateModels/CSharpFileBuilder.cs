@@ -172,6 +172,8 @@ internal class CSharpFileBuilder
                     propertyDescriptor.InternalJsonPropertyName = propertyMap.InternalJsonPropertyName;
                     propertyDescriptor.ExcludedFromSource = propertyMap.ExcludedFromSource;
                     propertyDescriptor.ExcludedFromInternal = propertyMap.ExcludedFromInternal;
+                    propertyDescriptor.DateTimeType = propertyMap.DateTimeType;
+                    propertyDescriptor.DateOnlyType = propertyMap.DateOnlyType;
 
                     if (propertyMap.Mapper is not null)
                     {

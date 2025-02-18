@@ -10,7 +10,6 @@
 
 using System.Text.Json.Serialization;
 using System.Dynamic;
-using Btms.Types.Alvs.V1;
 
 
 namespace Btms.Types.Alvs;
@@ -47,7 +46,7 @@ public partial class ServiceHeader  //
     /// 
     /// </summary>
     [JsonPropertyName("serviceCallTimestamp")]
-    [JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]
+    [Btms.Common.Json.EpochDateTimeJsonConverter]
     public DateTime? ServiceCallTimestamp { get; set; }
 
 }
