@@ -54,12 +54,6 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
             return json;
         }
         var sensitiveFields = sensitiveFieldsProvider.Get(type);
-        sensitiveFields.Sort();
-        var sb = new StringBuilder();
-        foreach (var field in sensitiveFields)
-        {
-            sb.AppendLine(field);
-        }
 
         if (!sensitiveFields.Any())
         {
