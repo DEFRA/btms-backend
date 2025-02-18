@@ -15,7 +15,7 @@
   ],
   "ContainerReferenceNums": null,
   "PlannedCrossing": {
-    "LocalDateTimeOfArrival": "",
+    "LocalDateTimeOfDeparture": "2025-02-13T14:25",
     "RouteId": "19"
   },
   "CheckedInCrossing": {
