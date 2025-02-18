@@ -38,7 +38,7 @@ public class TestGeneratorFixture
 
         var generatorBuilder = new HostBuilder();
         generatorBuilder
-            .ConfigureTestDataGenerator("Scenarios/Samples");
+            .ConfigureTestDataGenerator("Samples");
 
         _testGeneratorApp = generatorBuilder.Build();
     }

@@ -5,7 +5,7 @@ namespace TestDataGenerator.Helpers;
 public static class BuilderHelpers
 {
     private static readonly string fullFolder =
-        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
+        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Samples";
     private const string JSON_FILE_EXTENSION = ".json";
 
     internal static ClearanceRequestBuilder GetClearanceRequestBuilder(string file, string fileExtension = JSON_FILE_EXTENSION)

@@ -23,7 +23,7 @@
 
     "download-scenario-data-24GBD2UOWTWYM5LAR8": {
       "commandName": "Project",
-      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBD2UOWTWYM5LAR8 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-backend/TestDataGenerator/Scenarios/Samples/Mrn-24GBD2UOWTWYM5LAR8"
+      "commandLineArgs": "download-scenario-data --environment Local --clearance-request 24GBD2UOWTWYM5LAR8 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-test-data/Samples/Mrn-24GBD2UOWTWYM5LAR8"
     }
   }
 }

@@ -59,7 +59,7 @@ var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
     .ValidateAndBuild();
 ```
 Note: 
-* Both the Notification Builder and Clearance Request Builder both take a sample file which it uses as a basis to create the test data. The sample file is located in [`Scenarios/Samples`](TestDataGenerator/Scenarios/Samples). 
+* Both the Notification Builder and Clearance Request Builder both take a sample file which it uses as a basis to create the test data. The sample file is located in the btms-test-date repository in the [`Samples` folder](https://github.com/DEFRA/btms-test-data). 
 
 After creating your scenario your will need to add it to `ConfigureTestGenerationServices` in [`BuilderExtensions.cs`](TestDataGenerator/Helpers/BuilderExtensions.cs). 
 

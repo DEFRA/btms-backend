@@ -61,7 +61,7 @@ public static class BuilderExtensions
 
     public static ServiceProvider GetDefaultServiceProvider()
     {
-        var (configuration, _) = BuilderExtensions.GetConfig("Scenarios/Samples");
+        var (configuration, _) = BuilderExtensions.GetConfig("Samples");
 
         return new ServiceCollection()
             .AddBlobStorage(configuration)

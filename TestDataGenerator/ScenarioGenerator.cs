@@ -17,7 +17,7 @@ public abstract class ScenarioGenerator(ILogger logger)
     protected readonly ILogger Logger = logger;
 
     private readonly string _fullFolder =
-        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
+        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Samples";
 
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
