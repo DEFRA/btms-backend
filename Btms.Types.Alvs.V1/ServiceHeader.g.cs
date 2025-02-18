@@ -14,37 +14,18 @@ using System.Dynamic;
 
 namespace Btms.Types.Alvs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class ServiceHeader  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("sourceSystem")]
     public string? SourceSystem { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("destinationSystem")]
     public string? DestinationSystem { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("correlationId")]
     public string? CorrelationId { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("serviceCallTimestamp")]
     [Btms.Common.Json.EpochDateTimeJsonConverter]
     public DateTime? ServiceCallTimestamp { get; set; }
