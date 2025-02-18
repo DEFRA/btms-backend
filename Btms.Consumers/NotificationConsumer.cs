@@ -17,7 +17,7 @@ using Btms.Types.Alvs.Mapping;
 namespace Btms.Consumers;
 
 internal class NotificationConsumer(
-    IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, 
+    IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor,
     ILinkingService linkingService,
     IMatchingService matchingService,
     IDecisionService decisionService,
@@ -67,7 +67,7 @@ internal class NotificationConsumer(
                 }
 
                 await gmrLinker.Link(preProcessingResult.Record, cancellationToken);
-                
+
                 if (!await validationService.PostLinking(linkContext, linkResult,
                         triggeringNotification: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))

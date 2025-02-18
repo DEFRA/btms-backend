@@ -202,11 +202,13 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         await Client.ClearDb();
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
         await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "SmokeTest"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
         });
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
@@ -221,7 +223,8 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         // Import new version, link remains and no additional relationships should be added
         await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
         {
-            SyncPeriod = SyncPeriod.All, RootFolder = "Linking"
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
         });
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
