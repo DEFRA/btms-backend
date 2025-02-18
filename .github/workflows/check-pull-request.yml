@@ -23,8 +23,8 @@ jobs:
 
       - name: Fix up git URLs
         run: |
-          git config --global --add url."https://${{ secrets.GITHUB_SECRET }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-          git config --global --add url."https://${{ secrets.GITHUB_SECRET }}:x-oauth-basic@github.com/".insteadOf "git@github.com:"
+          git config --global --add url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+          git config --global --add url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "git@github.com:"
 
       - name: Check out code
         uses: actions/checkout@v3
