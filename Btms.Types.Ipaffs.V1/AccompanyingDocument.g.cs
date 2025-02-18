@@ -41,7 +41,8 @@ public partial class AccompanyingDocument  //
     /// Additional document issue date
     /// </summary>
     [JsonPropertyName("documentIssueDate")]
-    public DateTime? DocumentIssueDate { get; set; }
+    [Btms.Common.Json.FlexibleDateOnlyJsonConverter]
+    public DateOnly? DocumentIssueDate { get; set; }
 
 
     /// <summary>

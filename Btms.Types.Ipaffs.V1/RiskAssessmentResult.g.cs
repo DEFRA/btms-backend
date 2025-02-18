@@ -33,6 +33,7 @@ public partial class RiskAssessmentResult  //
     /// Date and time of assessment
     /// </summary>
     [JsonPropertyName("assessmentDateTime")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(AssessmentDateTime))]
     public DateTime? AssessmentDateTime { get; set; }
 
 }
