@@ -76,7 +76,7 @@ public class PropertyDescriptor
     public DateTimeType? DateTimeType { get; set; } = null!;
 
     /// <summary>
-    /// The kind of datetime
+    /// The kind of dateonly
     /// </summary>
     public DateOnlyType? DateOnlyType { get; set; } = null!;
 

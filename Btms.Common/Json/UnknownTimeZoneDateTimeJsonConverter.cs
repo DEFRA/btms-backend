@@ -19,7 +19,8 @@ public class UnknownTimeZoneDateTimeJsonConverter(string propertyName) : JsonCon
 
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (typeToConvert != typeof(DateTime)) return DateTime.MinValue;
+        if (typeToConvert != typeof(DateTime))
+            throw new FormatException($"Invalid typeToConvert {typeToConvert.FullName} in {propertyName}");
 
         var dateTimeFromJson = reader.GetDateTime()!;
 

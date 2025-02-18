@@ -98,7 +98,7 @@ internal class PropertyMap(string name)
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="allowFlexibility">Adds an attribute that allows any valid datetime string to be present in the field</param>
+    /// <param name="dateOnlyOnlyType">Adds an attribute that allows the date only property to be controlled</param>
     /// <returns></returns>
     public PropertyMap IsDate(DateOnlyType dateOnlyOnlyType = ClassMaps.DateOnlyType.Standard)
     {
