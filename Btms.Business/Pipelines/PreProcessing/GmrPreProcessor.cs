@@ -43,7 +43,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
             preProcessingContext.Message.UpdatedSource,
             CreatedBySystem.Gvms);
 
-        mappedGmr.AuditEntries.Add(auditEntry);
+        mappedGmr.Changed(auditEntry);
 
         await mongoDbContext.Gmrs.Insert(mappedGmr, cancellationToken);
 
@@ -58,6 +58,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
         var mappedGmr = preProcessingContext.Message.MapWithTransform();
         var auditId = preProcessingContext.MessageId;
 
+        mappedGmr.Created = existingGmr.Created;
         mappedGmr.AuditEntries = existingGmr.AuditEntries;
         mappedGmr.Relationships = existingGmr.Relationships;
         mappedGmr._Etag = existingGmr._Etag;
@@ -70,7 +71,7 @@ public class GmrPreProcessor(IMongoDbContext mongoDbContext) : IPreProcessor<Gmr
             preProcessingContext.Message.UpdatedSource,
             CreatedBySystem.Gvms);
 
-        mappedGmr.AuditEntries.Add(auditEntry);
+        mappedGmr.Changed(auditEntry);
 
         await mongoDbContext.Gmrs.Update(mappedGmr, cancellationToken);
 

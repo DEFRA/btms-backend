@@ -1,6 +1,7 @@
 using Btms.Backend.Data.InMemory;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Model.Auditing;
+using Btms.Model.Relationships;
 using Btms.Types.Gvms;
 using FluentAssertions;
 using TestDataGenerator.Helpers;
@@ -45,31 +46,37 @@ public class GmrPreProcessingTests
     [Fact]
     public async Task Process_WhenGmrExists_ThenUpdated()
     {
+        var created = new DateTime(2025, 2, 10, 12, 54, 0);
         var updated = new DateTime(2025, 2, 10, 12, 55, 0);
         var message = BuilderHelpers.GetGmrBuilder("asb-gmr")
             .With(x => x.UpdatedSource, updated.AddSeconds(1))
             .ValidateAndBuild();
-        await MongoDbContext.Gmrs.Insert(new Model.Gvms.Gmr
+        var gmr = new Model.Gvms.Gmr
         {
             Id = message.GmrId,
             UpdatedSource = updated,
-            AuditEntries = [
-                    new AuditEntry
-                    {
-                        Status = "Existing",
-                    }
-                ]
-        },
-            CancellationToken.None);
+            Created = created,
+            AuditEntries =
+            [
+                new AuditEntry { Status = "Existing" }
+            ],
+            Relationships = new GmrRelationships
+            {
+                ImportNotifications = new TdmRelationshipObject { Data = [new RelationshipDataItem { Id = "123" }] }
+            }
+        };
+        await MongoDbContext.Gmrs.Insert(gmr, CancellationToken.None);
 
         var result = await Subject.Process(new PreProcessingContext<Gmr>(message, "messageId"), CancellationToken.None);
 
         result.Outcome.Should().Be(PreProcessingOutcome.Changed);
         MongoDbContext.Gmrs.Count().Should().Be(1);
+        MongoDbContext.Gmrs.First().Created.Should().Be(created);
         MongoDbContext.Gmrs.First().AuditEntries.Should().BeEquivalentTo([
             new { Status = "Existing" },
             new { Status = "Updated" },
         ]);
+        MongoDbContext.Gmrs.First().Relationships.Should().BeEquivalentTo(gmr.Relationships);
     }
 
     [Fact]

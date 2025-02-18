@@ -109,7 +109,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     }
 
     [Fact]
-    public async Task ImportNotification_ResourceUpdated_UpdatedFieldOnResource_ShouldNotChange()
+    public async Task ImportNotification_WhenClearanceRequest_ResourceUpdated_UpdatedFieldOnResource_ShouldNotChange()
     {
         await ClearDb();
 
@@ -151,6 +151,51 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
 
         updatedPostLink.Should().Be(updatedPostMovementUpdate);
         updatedEntityPostLink.Should().BeBefore(updatedEntityPostMovementUpdate);
+    }
+
+    [Fact]
+    public async Task ImportNotification_WhenGmr_ResourceUpdated_UpdatedFieldOnResource_ShouldNotChange()
+    {
+        await ClearDb();
+
+        // Import notifications
+        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
+        });
+
+        var document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
+        var updated = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
+        var updatedEntity = DateTime.Parse((document.Data.Attributes?["updatedEntity"]!).ToString()!);
+
+        // Import GMRs and initial linking will take place
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "SmokeTest"
+        });
+
+        document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
+        var updatedPostLink = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
+        var updatedEntityPostLink = DateTime.Parse((document.Data.Attributes?["updatedEntity"]!).ToString()!);
+
+        updated.Should().Be(updatedPostLink);
+        updatedEntity.Should().BeBefore(updatedEntityPostLink);
+
+        // Import new GMR, link will already exist, but UpdateEntity will still change
+        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
+        {
+            SyncPeriod = SyncPeriod.All,
+            RootFolder = "Linking"
+        });
+
+        document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
+        var updatedPostGmrUpdate = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
+        var updatedEntityPostGmrUpdate = DateTime.Parse((document.Data.Attributes?["updatedEntity"]!).ToString()!);
+
+        updatedPostLink.Should().Be(updatedPostGmrUpdate);
+        updatedEntityPostLink.Should().BeBefore(updatedEntityPostGmrUpdate);
     }
 
     [Fact]

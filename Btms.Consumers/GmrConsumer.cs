@@ -36,7 +36,14 @@ internal class GmrConsumer(
             cancellationToken);
 
         if (result.IsCreatedOrChanged())
-            await linker.Link(result.Record, cancellationToken);
+        {
+            var linkResult = await linker.Link(result.Record, cancellationToken);
+
+            // We need to mark the entity as updated even if the conceptual resource has not changed
+            // so that consumers of BTMS can query notifications where related data has changed but
+            // the resource itself hasn't
+            await mongoDbContext.Notifications.Update(linkResult.From.ToList(), cancellationToken);
+        }
     }
 
     public IConsumerContext Context { get; set; } = null!;
