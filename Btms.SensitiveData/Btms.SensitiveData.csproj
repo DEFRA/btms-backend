@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="FieldsList\ImportNotification.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="FieldsList\ImportNotification.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JsonPatch.Net" Version="3.2.2" />
     <PackageReference Include="JsonPath.Net" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />

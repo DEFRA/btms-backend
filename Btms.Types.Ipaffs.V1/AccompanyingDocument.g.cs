@@ -33,7 +33,6 @@ public partial class AccompanyingDocument  //
     /// Additional document reference
     /// </summary>
     [JsonPropertyName("documentReference")]
-    [Btms.SensitiveData.SensitiveData]
     public string? DocumentReference { get; set; }
 
 
@@ -48,7 +47,6 @@ public partial class AccompanyingDocument  //
     /// The UUID used for the uploaded file in blob storage
     /// </summary>
     [JsonPropertyName("attachmentId")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AttachmentId { get; set; }
 
 
@@ -56,7 +54,6 @@ public partial class AccompanyingDocument  //
     /// The original filename of the uploaded file
     /// </summary>
     [JsonPropertyName("attachmentFilename")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AttachmentFilename { get; set; }
 
 
@@ -71,7 +68,6 @@ public partial class AccompanyingDocument  //
     /// The UUID for the user that uploaded the file
     /// </summary>
     [JsonPropertyName("uploadUserId")]
-    [Btms.SensitiveData.SensitiveData]
     public string? UploadUserId { get; set; }
 
 
@@ -79,7 +75,6 @@ public partial class AccompanyingDocument  //
     /// The UUID for the organisation that the upload user is associated with
     /// </summary>
     [JsonPropertyName("uploadOrganisationId")]
-    [Btms.SensitiveData.SensitiveData]
     public string? UploadOrganisationId { get; set; }
 
 

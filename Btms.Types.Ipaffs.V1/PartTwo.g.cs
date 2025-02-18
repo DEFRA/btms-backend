@@ -96,7 +96,6 @@ public partial class PartTwo  //
     /// Local reference number at BIP
     /// </summary>
     [JsonPropertyName("bipLocalReferenceNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? BipLocalReferenceNumber { get; set; }
 
 
