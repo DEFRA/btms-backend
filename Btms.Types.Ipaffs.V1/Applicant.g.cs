@@ -26,7 +26,6 @@ public partial class Applicant  //
     /// Name of laboratory
     /// </summary>
     [JsonPropertyName("laboratory")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Laboratory { get; set; }
 
 
@@ -34,7 +33,6 @@ public partial class Applicant  //
     /// Laboratory address
     /// </summary>
     [JsonPropertyName("laboratoryAddress")]
-    [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryAddress { get; set; }
 
 
@@ -42,7 +40,6 @@ public partial class Applicant  //
     /// Laboratory identification
     /// </summary>
     [JsonPropertyName("laboratoryIdentification")]
-    [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryIdentification { get; set; }
 
 
@@ -50,7 +47,6 @@ public partial class Applicant  //
     /// Laboratory phone number
     /// </summary>
     [JsonPropertyName("laboratoryPhoneNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryPhoneNumber { get; set; }
 
 
@@ -58,7 +54,6 @@ public partial class Applicant  //
     /// Laboratory email
     /// </summary>
     [JsonPropertyName("laboratoryEmail")]
-    [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryEmail { get; set; }
 
 
@@ -66,7 +61,6 @@ public partial class Applicant  //
     /// Sample batch number
     /// </summary>
     [JsonPropertyName("sampleBatchNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SampleBatchNumber { get; set; }
 
 
@@ -88,7 +82,6 @@ public partial class Applicant  //
     /// Type of sample
     /// </summary>
     [JsonPropertyName("sampleType")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SampleType { get; set; }
 
 

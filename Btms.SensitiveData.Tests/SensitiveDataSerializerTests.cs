@@ -13,7 +13,7 @@ public class SensitiveDataSerializerTests
     {
         // ARRANGE
         var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = false };
-        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
+        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance, new SimpleClassSensitiveFieldsProvider());
 
         var simpleClass = new SimpleClass
         {
@@ -44,7 +44,7 @@ public class SensitiveDataSerializerTests
     {
         // ARRANGE
         var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = true };
-        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
+        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance, new SimpleClassSensitiveFieldsProvider());
 
         var simpleClass = new SimpleClass
         {
@@ -74,7 +74,7 @@ public class SensitiveDataSerializerTests
     {
         // ARRANGE
         var options = new SensitiveDataOptions { Getter = _ => "TestRedacted", Include = false };
-        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
+        var serializer = new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance, new SimpleClassSensitiveFieldsProvider());
 
         var simpleClass = new SimpleClass
         {

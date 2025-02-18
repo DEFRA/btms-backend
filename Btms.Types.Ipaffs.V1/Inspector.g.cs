@@ -26,7 +26,6 @@ public partial class Inspector  //
     /// Name of inspector
     /// </summary>
     [JsonPropertyName("name")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 
@@ -34,7 +33,6 @@ public partial class Inspector  //
     /// Phone number of inspector
     /// </summary>
     [JsonPropertyName("phone")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
 
@@ -42,7 +40,6 @@ public partial class Inspector  //
     /// Email address of inspector
     /// </summary>
     [JsonPropertyName("email")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 }
