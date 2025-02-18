@@ -33,7 +33,6 @@ public partial class Party  //
     /// Name of party
     /// </summary>
     [JsonPropertyName("name")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 
@@ -55,7 +54,6 @@ public partial class Party  //
     /// Company name
     /// </summary>
     [JsonPropertyName("companyName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? CompanyName { get; set; }
 
 
@@ -63,7 +61,6 @@ public partial class Party  //
     /// Addresses
     /// </summary>
     [JsonPropertyName("address")]
-    [Btms.SensitiveData.SensitiveData]
     public string[]? Addresses { get; set; }
 
 
@@ -78,7 +75,6 @@ public partial class Party  //
     /// Post code of party
     /// </summary>
     [JsonPropertyName("postCode")]
-    [Btms.SensitiveData.SensitiveData]
     public string? PostCode { get; set; }
 
 
@@ -93,7 +89,6 @@ public partial class Party  //
     /// City
     /// </summary>
     [JsonPropertyName("city")]
-    [Btms.SensitiveData.SensitiveData]
     public string? City { get; set; }
 
 
@@ -122,7 +117,6 @@ public partial class Party  //
     /// Phone number of party
     /// </summary>
     [JsonPropertyName("phone")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
 
@@ -130,7 +124,6 @@ public partial class Party  //
     /// Fax number of party
     /// </summary>
     [JsonPropertyName("fax")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Fax { get; set; }
 
 
@@ -138,7 +131,6 @@ public partial class Party  //
     /// Email number of party
     /// </summary>
     [JsonPropertyName("email")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 }

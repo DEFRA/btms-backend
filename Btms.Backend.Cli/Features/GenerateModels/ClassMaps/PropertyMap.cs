@@ -152,12 +152,6 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap IsSensitive()
-    {
-        AddAttribute("[Btms.SensitiveData.SensitiveData]", Model.Source);
-        return this;
-    }
-
     public PropertyMap SetBsonIgnore()
     {
         AddAttribute("[MongoDB.Bson.Serialization.Attributes.BsonIgnore]", Model.Internal);

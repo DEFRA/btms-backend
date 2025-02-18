@@ -41,7 +41,7 @@ public class SyncNotificationsCommandTests(ITestOutputHelper outputHelper)
             new SyncMetrics(new DummyMeterFactory()),
             bus,
             TestLogger.Create<SyncNotificationsCommand>(outputHelper),
-            new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance),
+            new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance, new SensitiveFieldsProvider()),
             blob,
             Options.Create(new BusinessOptions()),
             jobStore);

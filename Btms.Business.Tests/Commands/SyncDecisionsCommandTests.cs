@@ -37,7 +37,7 @@ namespace Btms.Business.Tests.Commands
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 TestLogger.Create<SyncDecisionsCommand>(outputHelper),
-                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance),
+                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance, new SensitiveFieldsProvider()),
                 blob,
                 Options.Create(new BusinessOptions()),
                 jobStore);
