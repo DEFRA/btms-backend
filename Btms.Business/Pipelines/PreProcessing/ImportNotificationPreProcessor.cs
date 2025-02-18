@@ -18,7 +18,6 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             return PreProcessResult.NotProcessed<Model.Ipaffs.ImportNotification>();
         }
 
-
         var internalNotification = preProcessingContext.Message.MapWithTransform();
         var existingNotification = await dbContext.Notifications.Find(preProcessingContext.Message.ReferenceNumber!);
 
@@ -31,7 +30,8 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
 
 
         if (internalNotification.UpdatedSource.TrimMicroseconds() >
-            existingNotification.UpdatedSource.TrimMicroseconds())
+            existingNotification.UpdatedSource.TrimMicroseconds() &&
+            !GoingBackIntoInProgress(internalNotification, existingNotification))
         {
             internalNotification.AuditEntries = existingNotification.AuditEntries;
             internalNotification.CreatedSource = existingNotification.CreatedSource;
@@ -74,5 +74,13 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
         internalNotification.Skipped(preProcessingContext.MessageId, internalNotification.Version.GetValueOrDefault());
         return result;
 
+    }
+
+    private static bool GoingBackIntoInProgress(Model.Ipaffs.ImportNotification internalNotification, Model.Ipaffs.ImportNotification existingNotification)
+    {
+        return internalNotification.Status == ImportNotificationStatusEnum.InProgress &&
+               (existingNotification.Status == ImportNotificationStatusEnum.Validated ||
+                existingNotification.Status == ImportNotificationStatusEnum.Rejected ||
+                existingNotification.Status == ImportNotificationStatusEnum.PartiallyRejected);
     }
 }

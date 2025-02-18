@@ -55,14 +55,41 @@ public class NotificationsPreProcessingTests
         savedNotification?.Updated.Should().BeAfter(default);
     }
 
-    private static ImportNotification CreateImportNotification()
+    [Theory]
+    [InlineData(ImportNotificationStatusEnum.Validated)]
+    [InlineData(ImportNotificationStatusEnum.Rejected)]
+    [InlineData(ImportNotificationStatusEnum.PartiallyRejected)]
+    public async Task WhenNotificationExists_AndLastUpdatedIsNewer_AndStatusInGoingBackToInProgress_ThenShouldNotBeUpdated(ImportNotificationStatusEnum status)
+    {
+        // ARRANGE
+        var notification = CreateImportNotification(status);
+        var dbContext = new MemoryMongoDbContext();
+        await dbContext.Notifications.Insert(notification.MapWithTransform());
+        notification.LastUpdated = notification.LastUpdated?.AddHours(1);
+        notification.Status = ImportNotificationStatusEnum.InProgress;
+        var preProcessor = new ImportNotificationPreProcessor(dbContext, NullLogger<ImportNotificationPreProcessor>.Instance);
+
+        // ACT
+        var preProcessingResult = await preProcessor.Process(
+            new PreProcessingContext<ImportNotification>(notification, "TestMessageId"));
+
+        // ASSERT
+        preProcessingResult.Outcome.Should().Be(PreProcessingOutcome.Skipped);
+        var savedNotification = await dbContext.Notifications.Find(notification.ReferenceNumber!);
+        savedNotification?.Status.Should().Be(status);
+        savedNotification.Should().NotBeNull();
+        savedNotification?.AuditEntries.Count.Should().Be(0);
+        savedNotification?.Updated.Should().Be(default);
+    }
+
+    private static ImportNotification CreateImportNotification(ImportNotificationStatusEnum status = ImportNotificationStatusEnum.Submitted)
     {
         return ImportNotificationBuilder.Default()
             .WithReferenceNumber(ImportNotificationTypeEnum.Chedpp, 1, DateTime.UtcNow, 1)
             .WithRandomCommodities(1, 2)
             .Do(x =>
             {
-                x.Status = ImportNotificationStatusEnum.Submitted;
+                x.Status = status;
                 foreach (var parameterSet in x.PartOne?.Commodities?.ComplementParameterSets!)
                 {
                     parameterSet.KeyDataPairs = null;
