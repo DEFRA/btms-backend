@@ -22,6 +22,7 @@
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.4" />
     <PackageReference Include="SlimMessageBus" Version="3.0.0" />
+    <PackageReference Include="SlimMessageBus.Host.AmazonSQS" Version="3.0.2" />
     <PackageReference Include="SlimMessageBus.Host.AzureServiceBus" Version="3.0.0" />
     <PackageReference Include="SlimMessageBus.Host.Memory" Version="3.0.0" />
     <PackageReference Include="SlimMessageBus.Host.Serialization.SystemTextJson" Version="3.0.0" />
@@ -42,6 +43,19 @@
     <ProjectReference Include="..\Btms.Types.Gvms.V1\Btms.Types.Gvms.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.Mapping.V1\Btms.Types.Ipaffs.Mapping.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\compose\docker-compose.yml">
+      <Link>Properties\compose\docker-compose.yml</Link>
+    </Content>
+    <Content Include="..\compose\start-localstack.sh">
+      <Link>Properties\compose\start-localstack.sh</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

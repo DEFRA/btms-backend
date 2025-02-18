@@ -1,6 +1,7 @@
 using System.Net;
 using Azure.Messaging.ServiceBus;
 using Btms.Common.Extensions;
+using Btms.Consumers.AmazonQueues;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
@@ -44,6 +45,7 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
+            services.AddScoped<ClearanceRequestConsumer>();
 
             services.AddSlimMessageBus(mbb =>
             {
@@ -83,47 +85,48 @@ namespace Btms.Consumers.Extensions
                     });
                 }
 
-                mbb
-                    .AddChildBus("InMemory", cbb =>
-                    {
-                        cbb.WithProviderMemory(cfg =>
-                            {
-                                cfg.EnableBlockingPublish = consumerOpts.EnableBlockingPublish;
-                                cfg.EnableMessageHeaders = true;
-                            })
-                            .AddServicesFromAssemblyContaining<NotificationConsumer>(
-                                consumerLifetime: ServiceLifetime.Scoped).PerMessageScopeEnabled()
-                            .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
-                            .Consume<ImportNotification>(x =>
-                            {
-                                x.Instances(consumerOpts.InMemoryNotifications);
-                                x.Topic("NOTIFICATIONS").WithConsumer<NotificationConsumer>();
-                            })
-                            .Produce<SearchGmrsForDeclarationIdsResponse>(x => x.DefaultTopic("GMR"))
-                            .Consume<SearchGmrsForDeclarationIdsResponse>(x =>
-                            {
-                                x.Instances(consumerOpts.InMemoryGmrs);
-                                x.Topic("GMR").WithConsumer<GmrConsumer>();
-                            })
-                            .Produce<AlvsClearanceRequest>(x => x.DefaultTopic(nameof(AlvsClearanceRequest)))
-                            .Consume<AlvsClearanceRequest>(x =>
-                            {
-                                x.Instances(consumerOpts.InMemoryClearanceRequests);
-                                x.Topic("CLEARANCEREQUESTS").WithConsumer<AlvsClearanceRequestConsumer>();
-                            })
-                            .Produce<Decision>(x => x.DefaultTopic(nameof(Decision)))
-                            .Consume<Decision>(x =>
-                            {
-                                x.Instances(consumerOpts.InMemoryDecisions);
-                                x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
-                            })
-                            .Produce<Finalisation>(x => x.DefaultTopic(nameof(Finalisation)))
-                            .Consume<Finalisation>(x =>
-                            {
-                                x.Instances(consumerOpts.InMemoryFinalisations);
-                                x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
-                            });
-                    });
+                mbb.AddChildBus("InMemory", cbb =>
+                {
+                    cbb.WithProviderMemory(cfg =>
+                        {
+                            cfg.EnableBlockingPublish = consumerOpts.EnableBlockingPublish;
+                            cfg.EnableMessageHeaders = true;
+                        })
+                        .AddServicesFromAssemblyContaining<NotificationConsumer>(
+                            consumerLifetime: ServiceLifetime.Scoped).PerMessageScopeEnabled()
+                        .Produce<ImportNotification>(x => x.DefaultTopic("NOTIFICATIONS"))
+                        .Consume<ImportNotification>(x =>
+                        {
+                            x.Instances(consumerOpts.InMemoryNotifications);
+                            x.Topic("NOTIFICATIONS").WithConsumer<NotificationConsumer>();
+                        })
+                        .Produce<SearchGmrsForDeclarationIdsResponse>(x => x.DefaultTopic("GMR"))
+                        .Consume<SearchGmrsForDeclarationIdsResponse>(x =>
+                        {
+                            x.Instances(consumerOpts.InMemoryGmrs);
+                            x.Topic("GMR").WithConsumer<GmrConsumer>();
+                        })
+                        .Produce<AlvsClearanceRequest>(x => x.DefaultTopic(nameof(AlvsClearanceRequest)))
+                        .Consume<AlvsClearanceRequest>(x =>
+                        {
+                            x.Instances(consumerOpts.InMemoryClearanceRequests);
+                            x.Topic("CLEARANCEREQUESTS").WithConsumer<AlvsClearanceRequestConsumer>();
+                        })
+                        .Produce<Decision>(x => x.DefaultTopic(nameof(Decision)))
+                        .Consume<Decision>(x =>
+                        {
+                            x.Instances(consumerOpts.InMemoryDecisions);
+                            x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
+                        })
+                        .Produce<Finalisation>(x => x.DefaultTopic(nameof(Finalisation)))
+                        .Consume<Finalisation>(x =>
+                        {
+                            x.Instances(consumerOpts.InMemoryFinalisations);
+                            x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
+                        });
+                });
+
+                mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, configuration));
             });
 
             return services;
