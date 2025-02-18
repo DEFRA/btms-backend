@@ -56,10 +56,15 @@ public class NotificationsPreProcessingTests
     }
 
     [Theory]
-    [InlineData(ImportNotificationStatusEnum.Validated)]
-    [InlineData(ImportNotificationStatusEnum.Rejected)]
-    [InlineData(ImportNotificationStatusEnum.PartiallyRejected)]
-    public async Task WhenNotificationExists_AndLastUpdatedIsNewer_AndStatusInGoingBackToInProgress_ThenShouldNotBeUpdated(ImportNotificationStatusEnum status)
+    [InlineData(ImportNotificationStatusEnum.Validated, Model.Ipaffs.ImportNotificationStatusEnum.Validated)]
+    [InlineData(ImportNotificationStatusEnum.Rejected, Model.Ipaffs.ImportNotificationStatusEnum.Rejected)]
+    [InlineData(ImportNotificationStatusEnum.PartiallyRejected, Model.Ipaffs.ImportNotificationStatusEnum.PartiallyRejected)]
+
+    [InlineData(ImportNotificationStatusEnum.Submitted, Model.Ipaffs.ImportNotificationStatusEnum.InProgress)]
+    [InlineData(ImportNotificationStatusEnum.Amend, Model.Ipaffs.ImportNotificationStatusEnum.InProgress)]
+    [InlineData(ImportNotificationStatusEnum.Modify, Model.Ipaffs.ImportNotificationStatusEnum.InProgress)]
+    [InlineData(ImportNotificationStatusEnum.Replaced, Model.Ipaffs.ImportNotificationStatusEnum.InProgress)]
+    public async Task WhenNotificationExists_AndLastUpdatedIsNewer_AndStatusInGoingBackToInProgress_ThenShouldNotBeUpdated(ImportNotificationStatusEnum status, Model.Ipaffs.ImportNotificationStatusEnum expectedStatus)
     {
         // ARRANGE
         var notification = CreateImportNotification(status);
@@ -74,12 +79,11 @@ public class NotificationsPreProcessingTests
             new PreProcessingContext<ImportNotification>(notification, "TestMessageId"));
 
         // ASSERT
-        preProcessingResult.Outcome.Should().Be(PreProcessingOutcome.Skipped);
+        preProcessingResult.Outcome.Should().Be((int)status == (int)expectedStatus ? PreProcessingOutcome.Skipped : PreProcessingOutcome.Changed);
         var savedNotification = await dbContext.Notifications.Find(notification.ReferenceNumber!);
-        savedNotification?.Status.Should().Be(status);
+        savedNotification?.Status.Should().Be(expectedStatus);
         savedNotification.Should().NotBeNull();
-        savedNotification?.AuditEntries.Count.Should().Be(0);
-        savedNotification?.Updated.Should().Be(default);
+        savedNotification?.AuditEntries.Count.Should().Be(preProcessingResult.Outcome == PreProcessingOutcome.Skipped ? 0 : 1);
     }
 
     private static ImportNotification CreateImportNotification(ImportNotificationStatusEnum status = ImportNotificationStatusEnum.Submitted)
