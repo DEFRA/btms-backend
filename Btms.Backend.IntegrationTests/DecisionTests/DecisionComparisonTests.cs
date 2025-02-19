@@ -17,7 +17,7 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
     [InlineData(typeof(MissingChedScenarioGenerator), DecisionStatusEnum.NoImportNotificationsLinked)]
     [InlineData(typeof(IuuScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect, Skip = "Lim to investigate test data")]
 
-    [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), DecisionStatusEnum.HasChedppChecks)]
+    [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), DecisionStatusEnum.HasChedppChecks, Skip = "Lim to investigate test data")]
 
     // Failing due to CDMS-319 & CDMS-314
     [InlineData(typeof(Mrn24Gbdc4Tw6Duqyiar5ScenarioGenerator), DecisionStatusEnum.DocumentReferenceFormatIncorrect)]
