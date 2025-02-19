@@ -325,8 +325,6 @@ internal static class Bootstrap
 
             map.MapProperty("localDateTimeOfDeparture").SetName("departsAt")
                 .IsDateTime(DateTimeType.Local);
-
-            map.MapProperty("declarations").ExcludeFromInternal();
         });
 
         GeneratorClassMap.RegisterClassMap("SearchGmrsForDeclarationIdsRequest",
