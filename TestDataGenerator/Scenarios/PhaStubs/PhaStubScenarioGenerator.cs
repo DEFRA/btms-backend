@@ -9,3 +9,10 @@ public class PhaStubScenarioGenerator(IServiceProvider sp, ILogger<PhaStubScenar
 {
 
 }
+
+public class PhaFinalisationStubScenarioGenerator(IServiceProvider sp, ILogger<PhaStubScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "PhaFinalisationStub")
+{
+
+}
+

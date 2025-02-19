@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Btms.Business.Commands;
+using System.Text.Json.Nodes;
 using Btms.SensitiveData;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using TestDataGenerator.Scenarios.PhaStubs;
 using TestGenerator.IntegrationTesting.Backend;
-using TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -16,17 +15,16 @@ namespace Btms.Backend.IntegrationTests;
 
 public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScenarioGeneratorBaseTest(testOutputHelper)
 {
-
-
     [Theory]
-    [InlineData(typeof(PhaStubScenarioGenerator))]
-    public async Task ShouldImportPhaStubScenario(Type generatorType)
+    [InlineData(typeof(PhaStubScenarioGenerator), "PhaStub")]
+    [InlineData(typeof(PhaFinalisationStubScenarioGenerator), "PhaFinalisationStub")]
+    public async Task ShouldImportPhaStubScenario(Type generatorType, string folder)
     {
         var exportData = true;
-        var redactData = false;
+        var redactData = true;
 
         if (redactData)
-            await RedactIPAFFSFiles();
+            await RedactIPAFFSFiles(folder);
 
         EnsureEnvironmentInitialised(generatorType);
 
@@ -58,7 +56,12 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
         foreach (var importNotification in importedNotifications)
         {
             var json = await GetDocument($"api/import-notifications/{importNotification.Id}", Client.AsHttpClient());
-            await File.WriteAllTextAsync($"{outputDirectory}/btms-import-notification-single-{importNotification.Id}.json", json);
+        
+            var jsonNode = JsonNode.Parse(json);
+            jsonNode!["data"]!["attributes"]!["partOne"]!["pointOfEntry"] = "GBTEEP1";
+            var jsonString = jsonNode.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+            
+            await File.WriteAllTextAsync($"{outputDirectory}/btms-import-notification-single-{importNotification.Id}.json", jsonString);
 
             if (importNotification.Relationships!.TryGetValue("movements", out var movements))
                 relatedMovements.AddRange(movements!.Data.ManyValue!);
@@ -92,20 +95,19 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
 #pragma warning restore CA1869
     }
 
-    private async Task RedactIPAFFSFiles()
+    private async Task RedactIPAFFSFiles(string scenarioFolder)
     {
-        var di = new DirectoryInfo("../../../Fixtures/PhaScenarios/IPAFFS");
+        var di = new DirectoryInfo($"../../../../TestDataGenerator/Scenarios/Samples/{scenarioFolder}/IPAFFS");
 
         var files = di.GetFiles("*.json", SearchOption.AllDirectories);
 
         await Parallel.ForEachAsync(files, async (fileInfo, ct) =>
         {
+            
             var json = await File.ReadAllTextAsync(fileInfo.FullName, ct);
-
             var options = new SensitiveDataOptions { Include = false };
             var serializer =
-                new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance);
-
+                new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance, new SensitiveFieldsProvider());
             var result = serializer.RedactRawJson(json, typeof(ImportNotification));
             await File.WriteAllTextAsync(fileInfo.FullName, result, ct);
         });
