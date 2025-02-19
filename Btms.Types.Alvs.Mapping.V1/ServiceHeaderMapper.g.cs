@@ -14,17 +14,17 @@ namespace Btms.Types.Alvs.Mapping;
 
 public static class ServiceHeaderMapper
 {
-    public static Btms.Model.Cds.ServiceHeader Map(Btms.Types.Alvs.ServiceHeader from)
+    public static Btms.Model.Cds.ServiceHeader Map(Btms.Types.Alvs.ServiceHeader? from)
     {
         if (from is null)
         {
             return default!;
         }
         var to = new Btms.Model.Cds.ServiceHeader();
-        to.SourceSystem = from.SourceSystem;
-        to.DestinationSystem = from.DestinationSystem;
-        to.CorrelationId = from.CorrelationId;
-        to.ServiceCalled = from.ServiceCallTimestamp;
+        to.SourceSystem = from?.SourceSystem;
+        to.DestinationSystem = from?.DestinationSystem;
+        to.CorrelationId = from?.CorrelationId;
+        to.ServiceCalled = from?.ServiceCallTimestamp;
         return to;
     }
 }

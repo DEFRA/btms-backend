@@ -1,7 +1,7 @@
 using Btms.BlobService;
 using Btms.Business.Commands;
 using Btms.Metrics;
-using Btms.Model.Extensions;
+using Btms.Common.Extensions;
 using Btms.SensitiveData;
 using Btms.SyncJob;
 using Btms.Types.Alvs;
@@ -37,7 +37,7 @@ namespace Btms.Business.Tests.Commands
                 new SyncMetrics(new DummyMeterFactory()),
                 bus,
                 TestLogger.Create<SyncDecisionsCommand>(outputHelper),
-                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance),
+                new SensitiveDataSerializer(Options.Create(SensitiveDataOptions.WithSensitiveData), NullLogger<SensitiveDataSerializer>.Instance, new SensitiveFieldsProvider()),
                 blob,
                 Options.Create(new BusinessOptions()),
                 jobStore);

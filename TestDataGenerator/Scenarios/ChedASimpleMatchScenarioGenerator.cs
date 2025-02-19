@@ -4,7 +4,7 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios;
 
-public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger) : ScenarioGenerator
+public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -34,6 +34,24 @@ public class ChedASimpleMatchScenarioGenerator(ILogger<ChedASimpleMatchScenarioG
 
         logger.LogInformation("Created {EntryReference}", clearanceRequest.Header!.EntryReference);
 
-        return new GeneratorResult([clearanceRequest, notification, finalisation]);
+        var messages = new List<object>() { clearanceRequest, notification, finalisation };
+
+        return new GeneratorResult(ModifyMessages(messages).ToArray());
+    }
+}
+
+public class ChedASimpleMatchFixedDatesScenarioGenerator(ILogger<ChedASimpleMatchScenarioGenerator> logger)
+    : ChedASimpleMatchScenarioGenerator(logger)
+{
+    protected override List<object> ModifyMessages(List<object> messages)
+    {
+        messages.ForEach(m =>
+        {
+            if (m is not ImportNotification notification) return;
+            notification.PartOne!.DepartureDate = new DateOnly(2024, 12, 1);
+            notification.PartOne!.DepartureTime = new TimeOnly(10, 10, 0);
+        });
+
+        return messages;
     }
 }

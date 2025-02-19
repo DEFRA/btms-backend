@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
-using Btms.Model.Extensions;
+using Btms.Common.Extensions;
 using Json.Patch;
 using MongoDB.Bson.Serialization.Attributes;
 

@@ -5,7 +5,7 @@ using TestDataGenerator.Helpers;
 namespace TestDataGenerator.Scenarios;
 
 public class ChedAManyCommoditiesScenarioGenerator(ILogger<ChedAManyCommoditiesScenarioGenerator> logger)
-    : ScenarioGenerator
+    : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {

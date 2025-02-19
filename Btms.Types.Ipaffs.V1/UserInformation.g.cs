@@ -26,7 +26,6 @@ public partial class UserInformation  //
     /// Display name
     /// </summary>
     [JsonPropertyName("displayName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? DisplayName { get; set; }
 
 

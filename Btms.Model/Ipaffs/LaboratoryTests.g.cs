@@ -28,6 +28,7 @@ public partial class LaboratoryTests  //
     [Attr]
     [JsonPropertyName("testedOn")]
     [System.ComponentModel.Description("Date of tests")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(TestedOn)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? TestedOn { get; set; }
 
 

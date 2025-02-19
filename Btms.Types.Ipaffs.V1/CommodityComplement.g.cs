@@ -75,7 +75,6 @@ public partial class CommodityComplement  //
     /// The species ID of the commodity that is imported. Not every commodity has a species ID. This is also used to link to the complementParameterSet. The species ID can change over time
     /// </summary>
     [JsonPropertyName("speciesID")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesId { get; set; }
 
 
@@ -83,7 +82,6 @@ public partial class CommodityComplement  //
     /// Species name
     /// </summary>
     [JsonPropertyName("speciesName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesName { get; set; }
 
 
@@ -91,7 +89,6 @@ public partial class CommodityComplement  //
     /// Species nomination
     /// </summary>
     [JsonPropertyName("speciesNomination")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesNomination { get; set; }
 
 
@@ -106,7 +103,6 @@ public partial class CommodityComplement  //
     /// Species type identifier of commodity
     /// </summary>
     [JsonPropertyName("speciesType")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesType { get; set; }
 
 
@@ -114,7 +110,6 @@ public partial class CommodityComplement  //
     /// Species class name
     /// </summary>
     [JsonPropertyName("speciesClassName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesClassName { get; set; }
 
 
@@ -122,7 +117,6 @@ public partial class CommodityComplement  //
     /// Species class identifier of commodity
     /// </summary>
     [JsonPropertyName("speciesClass")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesClass { get; set; }
 
 
@@ -130,7 +124,6 @@ public partial class CommodityComplement  //
     /// Species family name of commodity
     /// </summary>
     [JsonPropertyName("speciesFamilyName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesFamilyName { get; set; }
 
 
@@ -138,7 +131,6 @@ public partial class CommodityComplement  //
     /// Species family identifier of commodity
     /// </summary>
     [JsonPropertyName("speciesFamily")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesFamily { get; set; }
 
 
@@ -146,7 +138,6 @@ public partial class CommodityComplement  //
     /// Species common name of commodity for IMP notification simple commodity selection
     /// </summary>
     [JsonPropertyName("speciesCommonName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? SpeciesCommonName { get; set; }
 
 

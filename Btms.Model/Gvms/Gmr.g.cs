@@ -140,4 +140,8 @@ public partial class Gmr  //
     [JsonPropertyName("actualCrossing")]
     public ActualCrossing? ActualCrossing { get; set; }
 
+    [Attr]
+    [JsonPropertyName("declarations")]
+    public Declarations? Declarations { get; set; }
+
 }

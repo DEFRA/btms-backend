@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Data;
 using Btms.Backend.Data.Extensions;
 using Btms.Types.Ipaffs;
@@ -9,19 +10,25 @@ using Btms.Business.Services.Decisions;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
-using Btms.Model.Cds;
+using Btms.Model.Gvms;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 using Btms.Business.Builders;
 using Btms.Types.Alvs.Mapping;
 
 namespace Btms.Consumers;
 
-internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor, ILinkingService linkingService,
+[SuppressMessage("SonarLint", "S107",
+    Justification =
+        "The consumer is orchestrating different service calls therefore inherently has too many responsibilities")]
+internal class NotificationConsumer(
+    IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification> preProcessor,
+    ILinkingService linkingService,
     IMatchingService matchingService,
     IDecisionService decisionService,
     IValidationService validationService,
     ILogger<NotificationConsumer> logger,
-    IMongoDbContext dbContext)
+    IMongoDbContext dbContext,
+    ILinker<Gmr, Model.Ipaffs.ImportNotification> gmrLinker)
 : IConsumer<ImportNotification>, IConsumerWithContext
 {
     public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
@@ -62,7 +69,9 @@ internal class NotificationConsumer(IPreProcessor<ImportNotification, Model.Ipaf
                     LogStatus("Linked", message);
                     Context.Linked();
                 }
-                // 
+
+                await gmrLinker.Link(preProcessingResult.Record, cancellationToken);
+
                 if (!await validationService.PostLinking(linkContext, linkResult,
                         triggeringNotification: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))

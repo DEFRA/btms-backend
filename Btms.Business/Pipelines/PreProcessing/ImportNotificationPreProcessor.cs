@@ -10,14 +10,14 @@ namespace Btms.Business.Pipelines.PreProcessing;
 
 public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<ImportNotificationPreProcessor> logger) : IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>
 {
-    public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(PreProcessingContext<ImportNotification> preProcessingContext)
+    public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(
+        PreProcessingContext<ImportNotification> preProcessingContext, CancellationToken cancellationToken = default)
     {
         if (preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Amend
             || preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Draft)
         {
             return PreProcessResult.NotProcessed<Model.Ipaffs.ImportNotification>();
         }
-
 
         var internalNotification = preProcessingContext.Message.MapWithTransform();
         var existingNotification = await dbContext.Notifications.Find(preProcessingContext.Message.ReferenceNumber!);
@@ -31,7 +31,8 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
 
 
         if (internalNotification.UpdatedSource.TrimMicroseconds() >
-            existingNotification.UpdatedSource.TrimMicroseconds())
+            existingNotification.UpdatedSource.TrimMicroseconds() &&
+            !GoingBackIntoInProgress(internalNotification, existingNotification))
         {
             internalNotification.AuditEntries = existingNotification.AuditEntries;
             internalNotification.CreatedSource = existingNotification.CreatedSource;
@@ -74,5 +75,13 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
         internalNotification.Skipped(preProcessingContext.MessageId, internalNotification.Version.GetValueOrDefault());
         return result;
 
+    }
+
+    private static bool GoingBackIntoInProgress(Model.Ipaffs.ImportNotification internalNotification, Model.Ipaffs.ImportNotification existingNotification)
+    {
+        return internalNotification.Status == ImportNotificationStatusEnum.InProgress &&
+               (existingNotification.Status == ImportNotificationStatusEnum.Validated ||
+                existingNotification.Status == ImportNotificationStatusEnum.Rejected ||
+                existingNotification.Status == ImportNotificationStatusEnum.PartiallyRejected);
     }
 }

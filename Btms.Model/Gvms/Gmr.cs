@@ -13,7 +13,7 @@ namespace Btms.Model.Gvms;
 /// 
 /// </summary>
 [Resource]
-public partial class Gmr : IMongoIdentifiable, IDataEntity
+public partial class Gmr : IMongoIdentifiable, IDataEntity, IAuditable, IResource
 {
     [JsonIgnore] public string Type { get; set; } = "gmrs";
 
@@ -22,6 +22,7 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
     [Attr] public DateTime? CreatedSource { get; set; }
     [Attr] public DateTime Created { get; set; }
     [Attr] public DateTime UpdatedEntity { get; set; }
+    [Attr] public DateTime Updated { get; set; }
 
     /// <inheritdoc />
     [BsonIgnore]
@@ -46,4 +47,12 @@ public partial class Gmr : IMongoIdentifiable, IDataEntity
     [Attr]
     [JsonPropertyName("relationships")]
     public GmrRelationships Relationships { get; set; } = new();
+
+    public AuditEntry GetLatestAuditEntry() => AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
+
+    public void Changed(AuditEntry auditEntry)
+    {
+        AuditEntries.Add(auditEntry);
+        Updated = DateTime.UtcNow;
+    }
 }

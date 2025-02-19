@@ -9,11 +9,17 @@ public enum Model
     Both
 }
 
-public enum DatetimeType
+public enum DateTimeType
 {
     Epoch,
     Local,
     Utc
+}
+
+public enum DateOnlyType
+{
+    Standard,
+    Flexible
 }
 
 internal class PropertyMap(string name)
@@ -25,6 +31,10 @@ internal class PropertyMap(string name)
     public string? InternalJsonPropertyName { get; set; }
 
     public string Type { get; set; } = null!;
+
+    public DateTimeType? DateTimeType { get; set; } = null!;
+
+    public DateOnlyType? DateOnlyType { get; set; } = null!;
 
     public string InternalType { get; set; } = null!;
 
@@ -77,19 +87,23 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap IsDateTime(DatetimeType? type = null)
+    public PropertyMap IsDateTime(DateTimeType type)
     {
         SetType("DateTime");
-        if (type == DatetimeType.Epoch)
-        {
-            AddAttribute("[JsonConverter(typeof(DateTimeConverterUsingDateTimeParse))]", Model.Source);
-        }
+        DateTimeType = type;
+
         return this;
     }
 
-    public PropertyMap IsDate()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dateOnlyOnlyType">Adds an attribute that allows the date only property to be controlled</param>
+    /// <returns></returns>
+    public PropertyMap IsDate(DateOnlyType dateOnlyOnlyType = ClassMaps.DateOnlyType.Standard)
     {
         SetType("DateOnly");
+        DateOnlyType = dateOnlyOnlyType;
         return this;
     }
 
@@ -149,12 +163,6 @@ internal class PropertyMap(string name)
         GuardNameFormat(name);
 
         InternalJsonPropertyName = name;
-        return this;
-    }
-
-    public PropertyMap IsSensitive()
-    {
-        AddAttribute("[Btms.SensitiveData.SensitiveData]", Model.Source);
         return this;
     }
 

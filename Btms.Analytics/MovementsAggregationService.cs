@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
 using Btms.Common.Extensions;
-using Btms.Model.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Auditing;
