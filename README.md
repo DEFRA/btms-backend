@@ -41,6 +41,21 @@ This is data that we created by hand based on examples of messages that we had o
 ## Test Data Generator Scenarios
 The Test Data Generator can be found in the `tools` project ([`tools/TestDataGenerator`](TestDataGenerator/TestDataGenerator.csproj)). The test data is generated based on specifications provided in a scenario e.g. [`ChedASimpleMatchScenarioGenerator.cs`](TestDataGenerator/Scenarios/ChedASimpleMatchScenarioGenerator.cs). A scenario should container at least a `GetNotificationBuilder` or `GetClearanceRequestBuilder`.
 
+There are a few different patterns for creating scenarios:
+
+Get a set of files related to an individual import, store them in a folder, and replay them, e.g.
+
+```csharp
+public class MissingChedScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<MissingChedScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD48YGL8RMD6AR6");
+```
+
+Others use a folder as above but use the builder pattern to manipulate them, e.g [Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator](https://github.com/DEFRA/btms-backend/blob/main/TestDataGenerator/Scenarios/ChedAManyCommoditiesScenarioGenerator.cs)
+
+And others that work with individual files (more like templates), create builders from them and manipulate them, e.g. [ChedAManyCommoditiesScenarioGenerator](https://github.com/DEFRA/btms-backend/blob/main/TestDataGenerator/Scenarios/ChedAManyCommoditiesScenarioGenerator.cs)
+
 Example usage of `GetNotificationBuilder`
 ```csharp
 var notification = GetNotificationBuilder("cheda-one-commodity")
@@ -63,7 +78,7 @@ Note:
 
 After creating your scenario your will need to add it to `ConfigureTestGenerationServices` in [`BuilderExtensions.cs`](TestDataGenerator/Helpers/BuilderExtensions.cs). 
 
-## Using scen
+## Using scenarios
 
 ## Generating datasets from scenarios
 
