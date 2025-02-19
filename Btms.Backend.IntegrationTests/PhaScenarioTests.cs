@@ -20,8 +20,8 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
     [InlineData(typeof(PhaFinalisationStubScenarioGenerator), "PhaFinalisationStub")]
     public async Task ShouldImportPhaStubScenario(Type generatorType, string folder)
     {
-        var exportData = true;
-        var redactData = true;
+        var exportData = false;
+        var redactData = false;
 
         if (redactData)
             await RedactIPAFFSFiles(folder);
