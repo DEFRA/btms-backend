@@ -56,11 +56,11 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
         foreach (var importNotification in importedNotifications)
         {
             var json = await GetDocument($"api/import-notifications/{importNotification.Id}", Client.AsHttpClient());
-        
+
             var jsonNode = JsonNode.Parse(json);
             jsonNode!["data"]!["attributes"]!["partOne"]!["pointOfEntry"] = "GBTEEP1";
             var jsonString = jsonNode.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
-            
+
             await File.WriteAllTextAsync($"{outputDirectory}/btms-import-notification-single-{importNotification.Id}.json", jsonString);
 
             if (importNotification.Relationships!.TryGetValue("movements", out var movements))
@@ -103,7 +103,7 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
 
         await Parallel.ForEachAsync(files, async (fileInfo, ct) =>
         {
-            
+
             var json = await File.ReadAllTextAsync(fileInfo.FullName, ct);
             var options = new SensitiveDataOptions { Include = false };
             var serializer =
