@@ -20,11 +20,13 @@ public interface IIntegrationTestsApplicationFactory
     string DatabaseName { get; set; }
     BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null);
     IMongoDbContext GetDbContext();
+    IServiceProvider Services { get; }
 }
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
     public Action<IConfigurationBuilder> ConfigureHostConfiguration { get; set; } = _ => { };
+    public bool InternalQueuePublishWillBlock { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -40,6 +42,12 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
         var configurationBuilder = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues);
+
+        if (InternalQueuePublishWillBlock)
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "ConsumerOptions:EnableBlockingPublish", "true" }
+            });
 
         ConfigureHostConfiguration(configurationBuilder);
 

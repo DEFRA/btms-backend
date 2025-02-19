@@ -3,6 +3,7 @@ using AutoFixture;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
 using TestDataGenerator.Helpers;
@@ -37,7 +38,7 @@ public abstract class ScenarioGenerator(ILogger logger)
         {
             foreach (var o in initial)
             {
-                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation)
+                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation or SearchGmrsForDeclarationIdsResponse)
                 {
                     Messages.Add(o);
                 }

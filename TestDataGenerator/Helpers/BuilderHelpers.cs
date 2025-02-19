@@ -49,4 +49,12 @@ public static class BuilderHelpers
 
         return builder;
     }
+
+    internal static SearchGmrsBuilder<SearchGmrsForDeclarationIdsResponse> GetSearchGmrsBuilder(string file, string fileExtension = JSON_FILE_EXTENSION)
+    {
+        var fullPath = $"{fullFolder}/{file}{fileExtension}";
+        var builder = new SearchGmrsBuilder(fullPath);
+
+        return builder;
+    }
 }

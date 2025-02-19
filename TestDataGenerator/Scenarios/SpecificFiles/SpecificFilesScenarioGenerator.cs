@@ -157,11 +157,13 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var notificationList = await GetBuildersForFolder($"{scenarioPath}/IPAFFS", BuilderHelpers.GetNotificationBuilder, tokenSource.Token);
         var decisionList = await GetBuildersForFolder($"{scenarioPath}/DECISIONS", BuilderHelpers.GetDecisionBuilder, tokenSource.Token);
         var finalisationList = await GetBuildersForFolder($"{scenarioPath}/FINALISATION", BuilderHelpers.GetFinalisationBuilder, tokenSource.Token);
+        var searchGmrsList = await GetBuildersForFolder($"{scenarioPath}/GVMSAPIRESPONSE", BuilderHelpers.GetSearchGmrsBuilder, tokenSource.Token);
 
         return ModifyBuilders(clearanceRequestList
             .Concat(notificationList)
             .Concat(decisionList)
             .Concat(finalisationList)
+            .Concat(searchGmrsList)
             .ToList());
     }
 
