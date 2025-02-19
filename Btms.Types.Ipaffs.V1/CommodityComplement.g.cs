@@ -81,7 +81,7 @@ public partial class CommodityComplement  //
     /// <summary>
     /// Species name
     /// </summary>
-    [JsonPropertyName("speciesName")] 
+    [JsonPropertyName("speciesName")]
     public string? SpeciesName { get; set; }
 
 
