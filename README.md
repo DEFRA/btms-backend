@@ -38,8 +38,23 @@ This is data that we created by hand based on examples of messages that we had o
   * CHEDP
   * CHEDPP
 
-## Using the Test Data Generator
+## Test Data Generator Scenarios
 The Test Data Generator can be found in the `tools` project ([`tools/TestDataGenerator`](TestDataGenerator/TestDataGenerator.csproj)). The test data is generated based on specifications provided in a scenario e.g. [`ChedASimpleMatchScenarioGenerator.cs`](TestDataGenerator/Scenarios/ChedASimpleMatchScenarioGenerator.cs). A scenario should container at least a `GetNotificationBuilder` or `GetClearanceRequestBuilder`.
+
+There are a few different patterns for creating scenarios:
+
+Get a set of files related to an individual import, store them in a folder, and replay them, e.g.
+
+```csharp
+public class MissingChedScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<MissingChedScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBD48YGL8RMD6AR6");
+```
+
+Others use a folder as above but use the builder pattern to manipulate them, e.g [Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator](https://github.com/DEFRA/btms-backend/blob/main/TestDataGenerator/Scenarios/ChedAManyCommoditiesScenarioGenerator.cs)
+
+And others that work with individual files (more like templates), create builders from them and manipulate them, e.g. [ChedAManyCommoditiesScenarioGenerator](https://github.com/DEFRA/btms-backend/blob/main/TestDataGenerator/Scenarios/ChedAManyCommoditiesScenarioGenerator.cs)
 
 Example usage of `GetNotificationBuilder`
 ```csharp
@@ -59,12 +74,20 @@ var clearanceRequest = GetClearanceRequestBuilder("cr-one-item")
     .ValidateAndBuild();
 ```
 Note: 
-* Both the Notification Builder and Clearance Request Builder both take a sample file which it uses as a basis to create the test data. The sample file is located in [`Scenarios/Samples`](TestDataGenerator/Scenarios/Samples). 
+* Both the Notification Builder and Clearance Request Builder both take a sample file which it uses as a basis to create the test data. The sample file is located in the btms-test-date repository in the [`Samples` folder](https://github.com/DEFRA/btms-test-data). 
 
 After creating your scenario your will need to add it to `ConfigureTestGenerationServices` in [`BuilderExtensions.cs`](TestDataGenerator/Helpers/BuilderExtensions.cs). 
 
-Next, you will need to create a dataset that's specified in [`Program.cs`](TestDataGenerator/Program.cs).
+## Using scenarios
+
+## Generating datasets from scenarios
+
+A data set is a folder of files that simulates the data lake as a source of larger volumes of scenarios. Note, the dataset mechanism invokes each ScenarioGenerator multiple times, as specified in the configuration. Some scenarios use a single session of redacted data unmodified and this would just result in lots of messages for the same resource. To perform correctly in a dataset a scenario must be coded to generate unique IDs for each invocation of the ScenarioGenerator.Generate abstract method.
+
+You can create a dataset in [`Datasets.cs`](TestDataGenerator/Config/Datasets.cs).
+
 Example dataset:
+
 ```csharp
  var datasets = new[]
     {
@@ -82,7 +105,7 @@ Example dataset:
 * RootPath - Folder where the data will be created in. The folder will be in [`TestDataGenerator/.test-data-generator`](TestDataGenerator/.test-data-generator). 
 * Scenarios - List of scenarios to create test data for. The CreateScenarioConfig generates scenarios based on the Scenario types from the [`Scenarios`](TestDataGenerator/Scenarios) folder.
 
-And finally, in order to trigger the data creation you will need to add some configuration to [`Properties/launchSettings.json`](TestDataGenerator/Properties/launchSettings.json):
+And finally, in order to regenerate a dataset, can add configuration to [`Properties/launchSettings.json`](TestDataGenerator/Properties/launchSettings.json):
 ```json
 {
     "profiles": {

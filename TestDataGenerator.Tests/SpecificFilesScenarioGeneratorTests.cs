@@ -17,7 +17,7 @@ public class SpecificFilesScenarioGeneratorTests
     [Fact]
     public void GeneratedMessagesShouldBeInCorrectOrder()
     {
-        var (configuration, _) = BuilderExtensions.GetConfig("Scenarios/Samples");
+        var (configuration, _) = BuilderExtensions.GetConfig("Samples");
 
         var sp = new ServiceCollection()
             .AddBlobStorage(configuration)

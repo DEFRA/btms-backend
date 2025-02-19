@@ -17,13 +17,9 @@ We can use files from the datalake datasets to generate scenario folders that ha
 
 See the implementations of SpecificFilesScenarioGenerator for examples. The files can be used as-is, in a single unit test, or can be modified using the same builder pattern we use for other scenarios before being built. It's even possible to use them in load tests, by customising them to ensure they're unique using the builders (by changing CHED numbers, MRNs etc).
 
-Copy all Movement files matching the ID into a Samples folder
+The CLI has a method that will do this for us:
 
-find .test-data-generator/PRODREDACTED-202412/ALVS .test-data-generator/PRODREDACTED-202412/DECISIONS -type f -print0 | xargs -0 -P 4 -n 40 grep -l 24GBDYHI8LMFLDQAR6 | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDYHI8LMFLDQAR6/
-
-Copy all Import Notification files matching the ID into a Samples folder
-
-find .test-data-generator/PRODREDACTED-202412/IPAFFS -type f -print0 | xargs -0 -P 4 -n 40 grep -l '.5229357\"' | xargs -I '{}' rsync -R '{}' ./Scenarios/Samples/Mrn-24GBDDJER3ZFRMZAR9/
+`download-scenario-data --environment Local --clearance-request 24GBD2UOWTWYM5LAR8 --rootFolder PRODREDACTED-202412 --outputFolder ~/src/defra/cdms/btms-test-data/Samples/Mrn-24GBD2UOWTWYM5LAR8`
 
 ## Merging datasets
 
