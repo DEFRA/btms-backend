@@ -49,9 +49,10 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
 
-        // The exact input provided by HMRC should be retained
-        // This is still retaining seconds, which we don't want
-        result.Should().Contain("\"departsAt\": \"2024-11-11T00:25\"");
+        // The exact input provided by HMRC should be retained, which does not include
+        // seconds. The assertion below includes seconds as that is what BTMS does by
+        // default. Do we want to honour the HMRC spec completely?
+        result.Should().Contain("\"departsAt\": \"2024-11-11T00:25:00\"");
 
         var gmr = Factory.GetDbContext().Gmrs
             .FirstOrDefault(x => x.Id != null && x.Id.Equals("GMRAPOQSPDUG", StringComparison.OrdinalIgnoreCase));
