@@ -1,0 +1,40 @@
+{
+  "gmrByDeclarationId": [
+    {
+      "dec": "56GB123456789AB043",
+      "gmrs": [
+        "GMRAPOQSPDUG"
+      ]
+    }
+  ],
+  "gmrs": [
+    {
+      "plannedCrossing": {
+        "routeId": "19",
+        "localDateTimeOfDeparture": "2024-11-11T00:25"
+      },
+      "haulierEORI": "GB0495996265494",
+      "state": "EMBARKED",
+      "gmrId": "GMRAPOQSPDUG",
+      "vehicleRegNum": "SUQBVH",
+      "trailerRegistrationNums": [
+        "Y3E78S",
+        "SPH4Q9"
+      ],
+      "updatedDateTime": "2024-11-02T00:25:00.522Z",
+      "declarations": {
+        "customs": [
+          {
+            "id": "56GB123456789AB043"
+          },
+          {
+            "id": "24GB836502789AB255"
+          }
+        ]
+      },
+      "haulierType": "FPO_ASN",
+      "direction": "UK_INBOUND",
+      "isUnaccompanied": true
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "GmrId": "GMRAJQLVBMXR",
+  "HaulierEori": "GB7318852305149",
+  "State": "EMBARKED",
+  "InspectionRequired": null,
+  "ReportToLocations": null,
+  "UpdatedDateTime": "2025-02-03T14:25:00.519Z",
+  "Direction": "UK_INBOUND",
+  "HaulierType": "NATO_MOD",
+  "IsUnaccompanied": true,
+  "VehicleRegNum": "ZKIRQC",
+  "TrailerRegistrationNums": [
+    "KM5VLV",
+    "UEZ8WL"
+  ],
+  "ContainerReferenceNums": null,
+  "PlannedCrossing": {
+    "LocalDateTimeOfDeparture": "2025-02-13T14:25",
+    "RouteId": "19"
+  },
+  "CheckedInCrossing": {
+    "LocalDateTimeOfArrival": "2025-02-14T14:25",
+    "RouteId": "19"
+  },
+  "ActualCrossing": {
+    "LocalDateTimeOfArrival": "2025-02-15T14:25",
+    "RouteId": "19"
+  },
+  "Declarations": {
+    "Transits": null,
+    "Customs": [
+      {
+        "Id": "24GB836502789AB255"
+      }
+    ]
+  }
+}

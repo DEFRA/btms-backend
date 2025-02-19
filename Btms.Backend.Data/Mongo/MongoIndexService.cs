@@ -1,4 +1,5 @@
 using Btms.Model;
+using Btms.Model.Gvms;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,10 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken: cancellationToken),
             CreateIndex("UpdatedEntity",
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.UpdatedEntity), cancellationToken: cancellationToken),
+            CreateIndex("ImportNotificationGmrLinker",
+                Builders<ImportNotification>.IndexKeys
+                    .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.system"))
+                    .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.reference")), cancellationToken: cancellationToken),
 
             CreateIndex("MatchReferenceIdx",
                 Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken: cancellationToken),
@@ -28,10 +33,17 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<Movement>.IndexKeys.Ascending(m => m.CreatedSource), cancellationToken: cancellationToken),
             CreateIndex("UniqueDecisionNumber",
                 Builders<Movement>.IndexKeys.Ascending(m => m.EntryReference)
-                    .Ascending(new StringFieldDefinition<Movement>("decisions.header.decisionNumber")), true, cancellationToken: cancellationToken)
+                    .Ascending(new StringFieldDefinition<Movement>("decisions.header.decisionNumber")), true, cancellationToken: cancellationToken),
 
+            CreateIndex("Created",
+                Builders<Gmr>.IndexKeys.Ascending(n => n.Created), cancellationToken: cancellationToken),
+            CreateIndex("CreatedSource",
+                Builders<Gmr>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken: cancellationToken),
+            CreateIndex("ImportNotificationGmrLinker",
+                Builders<Gmr>.IndexKeys
+                    .Ascending(new StringFieldDefinition<Gmr>("declarations.transits.id"))
+                    .Ascending(new StringFieldDefinition<Gmr>("declarations.customs.id")), cancellationToken: cancellationToken)
         );
-
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
