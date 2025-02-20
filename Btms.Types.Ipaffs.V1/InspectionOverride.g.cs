@@ -33,7 +33,6 @@ public partial class InspectionOverride  //
     /// The time the risk decision is overridden
     /// </summary>
     [JsonPropertyName("overriddenOn")]
-    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(OverriddenOn))]
     public DateTime? OverriddenOn { get; set; }
 
 

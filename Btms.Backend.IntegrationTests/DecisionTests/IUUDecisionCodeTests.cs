@@ -12,9 +12,9 @@ public class IUUDecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGe
 {
     [Theory]
     [InlineData(typeof(IuuNotCompletedScenarioGenerator), "X00")]
-    [InlineData(typeof(IuuOkScenarioGenerator), "X00")] //"C07")]
+    [InlineData(typeof(IuuOkScenarioGenerator), "E89")] //"C07")]
     [InlineData(typeof(IuuNotCompliantScenarioGenerator), "X00")]
-    [InlineData(typeof(IuunaScenarioGenerator), "X00")] //"C08")]
+    [InlineData(typeof(IuunaScenarioGenerator), "E89")] //"C08")]
     [InlineData(typeof(NoIuuInfoScenarioGenerator), "X00")]
     public void ShouldHaveCorrectIuuDecisionCode(Type generatorType, string decisionCode)
     {

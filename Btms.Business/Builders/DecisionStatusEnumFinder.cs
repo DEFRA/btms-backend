@@ -8,6 +8,7 @@ public class DecisionStatusFinder
 {
     private readonly Dictionary<DecisionStatusEnum, Func<Movement, AlvsDecision, bool>> _finders = [];
     private readonly List<DecisionStatusEnum> _orderedDecisions = Enum.GetValues<DecisionStatusEnum>().ToList();
+
     public DecisionStatusFinder()
     {
         _finders.Add(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs, BtmsMadeSameDecisionAsAlvs);
@@ -90,13 +91,13 @@ public class DecisionStatusFinder
     {
         return movement.Items.Any(i =>
             i.Documents?
-                .Any(d => !d.DocumentReference?.StartsWith("GBCHD") ?? false) ?? false);
+                .Any(d => !MatchIdentifier.TryFromCds(d.DocumentReference!, out _)) ?? false);
     }
 
     private static bool DocumentReferenceCaseIncorrect(Movement movement, AlvsDecision decision)
     {
         return movement.Items.Any(i =>
-           i.Documents?.Any(d => d.DocumentReference != d.DocumentReference?.ToUpper()) ?? false);
+            i.Documents?.Any(d => d.DocumentReference != d.DocumentReference?.ToUpper()) ?? false);
     }
 
     private static bool AlvsX00NotBtms(Movement movement, AlvsDecision decision)

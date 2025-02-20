@@ -1,4 +1,24 @@
+using System.Text.RegularExpressions;
+
 namespace Btms.Model;
+
+public static partial class RegularExpressions
+{
+    [GeneratedRegex("(CHEDD|CHEDA|CHEDP|CHEDPP)\\.?GB\\.?(20|21)\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    internal static partial Regex IPaffsIdentifier();
+
+    [GeneratedRegex("(GBCVD|GBCHD|GBCVD|GBCHD)\\.?(20|21)\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    internal static partial Regex DocumentReferenceWithoutCountry();
+
+    [GeneratedRegex("\\d{4}\\.?\\d{7}", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    internal static partial Regex DocumentReferenceIdentifier();
+
+    public static bool IsExactMatch(this Regex regex, string input)
+    {
+        return regex.Match(input).Value == input;
+    }
+}
+
 
 public struct MatchIdentifier(string identifier)
 {
@@ -7,7 +27,7 @@ public struct MatchIdentifier(string identifier)
     public string AsCdsDocumentReference()
     {
         // TODO - transfer over from TDM POC
-        return $"GBCHD2024.{Identifier}";
+        return $"GBCHD{Identifier.Substring(0, 4)}.{Identifier.Substring(4)}";
     }
 
     public static MatchIdentifier FromNotification(string reference)
@@ -17,36 +37,25 @@ public struct MatchIdentifier(string identifier)
             throw new ArgumentNullException(nameof(reference));
         }
 
-        var parts = reference.Split(".");
-        string identifier;
-        if (char.IsDigit(parts[3].Last()))
+        if (RegularExpressions.IPaffsIdentifier().IsExactMatch(reference))
         {
-            identifier = parts[3];
-        }
-        else
-        {
-            identifier = parts[3].Remove(parts[3].Length - 1);
+            var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
+            return new MatchIdentifier(identifier);
         }
 
-        return new MatchIdentifier(identifier);
+        throw new FormatException($"Ipaffs Reference invalid format {reference}");
     }
 
     public static MatchIdentifier FromCds(string reference)
     {
-        string identifier;
-        var parts = reference.Split(".");
-
-        var identifierString = parts[^1];
-        if (char.IsDigit(identifierString.Last()))
+        if (RegularExpressions.IPaffsIdentifier().IsExactMatch(reference) ||
+            RegularExpressions.DocumentReferenceWithoutCountry().IsExactMatch(reference))
         {
-            identifier = identifierString;
-        }
-        else
-        {
-            identifier = identifierString.Remove(identifierString.Length - 1);
+            var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
+            return new MatchIdentifier(identifier);
         }
 
-        return new MatchIdentifier(identifier);
+        throw new FormatException($"Document Reference invalid format {reference}");
     }
 
     public static bool TryFromCds(string reference, out MatchIdentifier matchIdentifier)
