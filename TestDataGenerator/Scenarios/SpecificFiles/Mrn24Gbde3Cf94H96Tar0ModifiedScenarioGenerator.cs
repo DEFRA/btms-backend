@@ -6,7 +6,7 @@ namespace TestDataGenerator.Scenarios.SpecificFiles;
 
 public class Mrn24Gbde3Cf94H96Tar0ModifiedScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbde3Cf94H96Tar0ScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDE3CF94H96TAR0")
 {
-    protected override List<(string filePath, IBaseBuilder builder)> ModifyBuilders(List<(string filePath, IBaseBuilder builder)> builders)
+    protected override List<(string filePath, IBaseBuilder builder)> ModifyBuilders(List<(string filePath, IBaseBuilder builder)> builders, int? scenario = null, int? item = null, DateTime? entryDate = null)
     {
         var decisionV1Builder =
             (DecisionBuilder)builders.Single(b => b.filePath ==

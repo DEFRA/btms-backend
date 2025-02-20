@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
+using Microsoft.Extensions.Logging;
 
 namespace Btms.Analytics.Extensions;
 

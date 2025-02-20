@@ -145,11 +145,12 @@ public class Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator(IServiceProvider sp, ILogger
 
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)
 {
     private readonly IBlobService _blobService = sp.GetRequiredService<CachingBlobService>();
 
-    internal async Task<List<(string filePath, IBaseBuilder builder)>> GetBuilders(string scenarioPath)
+    internal async Task<List<(string filePath, IBaseBuilder builder)>> GetBuilders(string scenarioPath, int? scenario = null, int? item = null, DateTime? entryDate = null)
     {
         using var tokenSource = new CancellationTokenSource();
 
@@ -164,11 +165,11 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
             .Concat(decisionList)
             .Concat(finalisationList)
             .Concat(searchGmrsList)
-            .ToList());
+            .ToList(), scenario, item, entryDate);
     }
 
     protected virtual List<(string filePath, IBaseBuilder builder)> ModifyBuilders(
-        List<(string filePath, IBaseBuilder builder)> builders)
+        List<(string filePath, IBaseBuilder builder)> builders, int? scenario = null, int? item = null, DateTime? entryDate = null)
     {
         return builders;
     }
@@ -196,7 +197,8 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
             throw new InvalidOperationException(
                 "Either need to specify the scenarioPath in the constructor, or override the generate function.");
         }
-        var builders = GetBuilders(sampleFolder)
+
+        var builders = GetBuilders(sampleFolder, scenario, item, entryDate)
             .GetAwaiter().GetResult();
 
         Logger.LogInformation("Created {builders} Builders",

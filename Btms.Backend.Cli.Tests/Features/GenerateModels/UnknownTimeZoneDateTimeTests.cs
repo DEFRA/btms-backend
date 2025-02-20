@@ -10,9 +10,9 @@ public class UnknownTimeZoneDateTimeTests(CodeBuilderFixture fixture) : IClassFi
     private async Task<CSharpDescriptor> BuildLocalDateProperty()
     {
         var csharpDescriptor = await fixture.BuildSingleProperty(
-            "InspectionOverride",
+            "ActualCrossing",
             new PropertyDescriptor(
-                "overriddenOn",
+                "arrivesAt",
                 type: "DateTime",
                 isReferenceType: false,
                 isArray: false)
@@ -38,9 +38,9 @@ public class UnknownTimeZoneDateTimeTests(CodeBuilderFixture fixture) : IClassFi
         
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
-                f.Path == "/tmp/btms-cli-tests/source/InspectionOverride.g.cs");
+                f.Path == "/tmp/btms-cli-tests/source/ActualCrossing.g.cs");
         
-        sourceFile.Content.Should().Contain("[Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(OverriddenOn))");
+        sourceFile.Content.Should().Contain("[Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(ArrivesAt))");
     }
 
     [Fact]
@@ -50,8 +50,8 @@ public class UnknownTimeZoneDateTimeTests(CodeBuilderFixture fixture) : IClassFi
         
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
-                f.Path == "/tmp/btms-cli-tests/internal/InspectionOverride.g.cs");
+                f.Path == "/tmp/btms-cli-tests/internal/ActualCrossing.g.cs");
         
-        sourceFile.Content.Should().Contain("[Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(OverriddenOn)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]");
+        sourceFile.Content.Should().Contain("[Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(ArrivesAt)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]");
     }
 }

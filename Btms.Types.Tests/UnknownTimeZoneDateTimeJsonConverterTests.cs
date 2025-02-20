@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Btms.Common.Extensions;
-using Btms.Model.Ipaffs;
+using Btms.Model.Gvms;
 using FluentAssertions;
 
 namespace Btms.Types.Tests;
@@ -13,36 +13,36 @@ public class UnknownTimeZoneDateTimeJsonConverterTests
     public void CorrectlySerialises()
     {
         var d = DateTime.SpecifyKind(dt, DateTimeKind.Unspecified);
-        var applicant = new Applicant() { SampledOn = d };
+        var applicant = new ActualCrossing() { ArrivesAt = d };
         var s = applicant.ToJsonString();
-        s.Should().Be("{\"sampledOn\":\"2024-01-01T12:00:00\"}");
+        s.Should().Be("{\"arrivesAt\":\"2024-01-01T12:00:00\"}");
     }
     
     [Fact]
     public void CorrectlyDeserialisesTimeWithMilliseconds()
     {
-        var s = "{ \"overriddenOn\":\"2024-01-01T12:00:00.00\"}";
-        var inspectionOverride = JsonSerializer.Deserialize<Btms.Types.Ipaffs.InspectionOverride>(s)!;
-        inspectionOverride.OverriddenOn.Should().Be(dt);
-        inspectionOverride.OverriddenOn!.Value.Kind.Should().Be(DateTimeKind.Unspecified);
+        var s = "{ \"arrivesAt\":\"2024-01-01T12:00:00.00\"}";
+        var inspectionOverride = JsonSerializer.Deserialize<ActualCrossing>(s)!;
+        inspectionOverride.ArrivesAt.Should().Be(dt);
+        inspectionOverride.ArrivesAt!.Value.Kind.Should().Be(DateTimeKind.Unspecified);
     }
     
     [Fact]
     public void CorrectlyDeserialises()
     {
-        var s = "{ \"overriddenOn\":\"2024-01-01T12:00\"}";
-        var inspectionOverride = JsonSerializer.Deserialize<Btms.Types.Ipaffs.InspectionOverride>(s)!;
-        inspectionOverride.OverriddenOn.Should().Be(dt);
-        inspectionOverride.OverriddenOn!.Value.Kind.Should().Be(DateTimeKind.Unspecified);
+        var s = "{ \"arrivesAt\":\"2024-01-01T12:00\"}";
+        var inspectionOverride = JsonSerializer.Deserialize<ActualCrossing>(s)!;
+        inspectionOverride.ArrivesAt.Should().Be(dt);
+        inspectionOverride.ArrivesAt!.Value.Kind.Should().Be(DateTimeKind.Unspecified);
     }
     
     [Fact]
     public void ThrowsExceptionDuringDeserialisationForUtcDate()
     {
-        var s = "{ \"overriddenOn\":\"2024-01-01T12:00:00.00Z\"}";
+        var s = "{ \"arrivesAt\":\"2024-01-01T12:00:00.00Z\"}";
         
-        Action act = () => JsonSerializer.Deserialize<Btms.Types.Ipaffs.InspectionOverride>(s);
+        Action act = () => JsonSerializer.Deserialize<ActualCrossing>(s);
         act.Should().Throw<FormatException>()
-            .WithMessage($"Invalid Value in OverriddenOn, value=2024-01-01T12:00:00.00Z. Unknown TimeZone dates must be DateTimeKind.Unspecified, not Utc");
+            .WithMessage($"Invalid Value in {nameof(ActualCrossing.ArrivesAt)}, value=2024-01-01T12:00:00.00Z. Unknown TimeZone dates must be DateTimeKind.Unspecified, not Utc");
     }
 }

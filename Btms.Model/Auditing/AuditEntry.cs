@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using Btms.Common.Enum;
 using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Common.Extensions;

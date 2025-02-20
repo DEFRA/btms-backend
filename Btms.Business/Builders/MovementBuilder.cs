@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Btms.Business.Builders;
 
-public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFinder decisionStatusFinder, Movement movement, bool hasChanges = false)
+public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFinder decisionStatusFinder, BusinessDecisionStatusFinder businessDecisionFinder, Movement movement, bool hasChanges = false)
 {
     private readonly Movement? _movement = movement;
     public bool HasChanges = hasChanges;
@@ -381,7 +381,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
         alvsDecision.Context.BtmsCheckStatus = GeBtmsCheckStatus(alvsChecks);
 
         var decisionStatus =
-            decisionStatusFinder.GetDecisionStatus(_movement, alvsDecision);
+            decisionStatusFinder.GetStatus(_movement, alvsDecision);
 
         if (decisionStatus == DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)
         {
@@ -394,6 +394,9 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
     public Movement Build()
     {
         GuardNullMovement();
+
+        _movement.BtmsStatus.BusinessDecisionStatus = businessDecisionFinder.GetStatus(_movement);
+
         return _movement;
     }
 }
