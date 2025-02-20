@@ -40,13 +40,19 @@ public class BackendFixture
         (MongoDbContext, BtmsClient) = WebApp.Start();
     }
 
-    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData, bool maintainMessageOrder = false)
+    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData, bool maintainMessageOrder = false, bool clearDb = true)
     {
-        await BtmsClient.ClearDb();
+        if (clearDb)
+            await BtmsClient.ClearDb();
 
         await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), maintainMessageOrder);
 
         return testData;
+    }
+
+    public IMongoDbContext GetDbContext()
+    {
+        return WebApp.Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
 }
 

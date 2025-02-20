@@ -1,4 +1,5 @@
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,9 @@ public static class MessageRoutingExtensions
 
             await PushMessagesToConsumers(sp, logger, messages
                     .Where(m => m is Finalisation));
+
+            await PushMessagesToConsumers(sp, logger, messages
+                .Where(m => m is SearchGmrsForDeclarationIdsResponse));
         }
 
     }
@@ -74,6 +78,13 @@ public static class MessageRoutingExtensions
                     headers.Add(MessageIdHeaderKey, d.Header!.EntryReference!);
                     await bus.Publish(d, "FINALISATIONS", headers);
                     logger.LogInformation("Sent finalisation {0} to consumer", d.Header!.EntryReference!);
+                    break;
+
+                case SearchGmrsForDeclarationIdsResponse d:
+                    var messageId = Guid.NewGuid().ToString();
+                    headers.Add(MessageIdHeaderKey, messageId);
+                    await bus.Publish(d, "GMR", headers);
+                    logger.LogInformation("Sent GMR search response {0} to consumer", messageId);
                     break;
 
                 default:

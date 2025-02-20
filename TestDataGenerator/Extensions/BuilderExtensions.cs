@@ -31,6 +31,9 @@ public static class BuilderExtensions
                     case FinalisationBuilder builder:
                         return builder.Build();
 
+                    case SearchGmrsBuilder builder:
+                        return builder.Build();
+
                     default:
                         throw new InvalidDataException($"Unexpected type {b.GetType().Name}");
                 }
