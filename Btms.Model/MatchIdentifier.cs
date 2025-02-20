@@ -27,7 +27,7 @@ public struct MatchIdentifier(string identifier)
     public string AsCdsDocumentReference()
     {
         // TODO - transfer over from TDM POC
-        return $"GBCHD{Identifier}";
+        return $"GBCHD{Identifier.Substring(0, 4)}.{Identifier.Substring(4)}";
     }
 
     public static MatchIdentifier FromNotification(string reference)
@@ -40,15 +40,6 @@ public struct MatchIdentifier(string identifier)
         if (RegularExpressions.IPaffsIdentifier().IsExactMatch(reference))
         {
             var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
-
-            ////if (identifier.Length > 7)
-            ////{
-            ////    //This removed to the YYYY part of the identifier to keep the code as it, but when we introduce the 
-            ////    //the year within the identifier, this line can be removed
-            ////    identifier = identifier.Substring(identifier.Length - 7);
-            ////}
-
-
             return new MatchIdentifier(identifier);
         }
 
@@ -61,15 +52,6 @@ public struct MatchIdentifier(string identifier)
             RegularExpressions.DocumentReferenceWithoutCountry().IsExactMatch(reference))
         {
             var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
-
-            ////if (identifier.Length > 7)
-            ////{
-            ////    //This removed to the YYYY part of the identifier to keep the code as it, but when we introduce the 
-            ////    //the year within the identifier, this line can be removed
-            ////    identifier = identifier.Substring(identifier.Length - 7);
-            ////}
-
-
             return new MatchIdentifier(identifier);
         }
 
