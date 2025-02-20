@@ -32,7 +32,7 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, B
             DispatchCountryCode = request.Header.DispatchCountryCode!,
             GoodsLocationCode = request.Header.GoodsLocationCode!,
             ClearanceRequests = [request],
-            Items = items!,
+            Items = items!.AsInternalItems(),
             Status = MovementExtensions.GetMovementStatus(GetChedTypes(request.Items!.ToList()), documentReferenceIds, notificationRelationshipIds)
         };
 
@@ -44,7 +44,7 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, B
         return new MovementBuilder(logger, decisionStatusFinder, businessDecisionStatusFinder, movement, true);
     }
 
-    private ImportNotificationTypeEnum[] GetChedTypes(List<Items>? items = null)
+    private ImportNotificationTypeEnum[] GetChedTypes(List<ClearanceRequestItems>? items = null)
     {
         return items?
             .SelectMany(i => i.Documents!)
