@@ -35,7 +35,7 @@ public static class DecisionMapper
             Items = from!.Items!.Select(x => new DecisionItems()
             {
                 ItemNumber = x.ItemNumber!.Value,
-                Checks = x.Checks!.Select(c => new Btms.Model.Cds.Check()
+                Checks = x.Checks!.Select(c => new Btms.Model.Cds.DecisionCheck()
                 {
                     CheckCode = c.CheckCode,
                     DecisionCode = c.DecisionCode,

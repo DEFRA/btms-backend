@@ -15,6 +15,31 @@ using System.Dynamic;
 
 namespace Btms.Model.Cds;
 
+public partial class DecisionCheck  //
+{
+
+    [Attr]
+    [JsonPropertyName("checkCode")]
+    public string? CheckCode { get; set; }
+
+    [Attr]
+    [JsonPropertyName("departmentCode")]
+    public string? DepartmentCode { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionCode")]
+    public string? DecisionCode { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionsValidUntil")]
+    public DateTime? DecisionsValidUntil { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionReasons")]
+    public string[]? DecisionReasons { get; set; }
+
+}
+
 /// <summary>
 /// 
 /// </summary>
@@ -32,6 +57,6 @@ public partial class DecisionItems  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Check[]? Checks { get; set; }
+    public DecisionCheck[]? Checks { get; set; }
 
 }
