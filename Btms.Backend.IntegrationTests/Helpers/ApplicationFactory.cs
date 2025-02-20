@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -26,7 +25,6 @@ public interface IIntegrationTestsApplicationFactory
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
     public Action<IConfigurationBuilder> ConfigureHostConfiguration { get; set; } = _ => { };
-    public bool InternalQueuePublishWillBlock { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -42,12 +40,6 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
         var configurationBuilder = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues);
-
-        if (InternalQueuePublishWillBlock)
-            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { "ConsumerOptions:EnableBlockingPublish", "true" }
-            });
 
         ConfigureHostConfiguration(configurationBuilder);
 
