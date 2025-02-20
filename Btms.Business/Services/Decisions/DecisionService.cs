@@ -12,8 +12,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Services.Decisions;
 
-public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecisionFinder> decisionFinders,
-    MovementBuilderFactory movementBuilderFactory, IMongoDbContext dbContext) : IDecisionService
+public class DecisionService(
+    ILogger<DecisionService> logger,
+    IEnumerable<IDecisionFinder> decisionFinders,
+    MovementBuilderFactory movementBuilderFactory,
+    IMongoDbContext dbContext) : IDecisionService
 {
     public async Task<DecisionResult> Process(DecisionContext decisionContext, CancellationToken cancellationToken)
     {
@@ -42,7 +45,8 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         foreach (var decisionResultDecisionsMessage in decisionResult.DecisionsMessages)
         {
             var internalDecision = DecisionMapper.Map(decisionResultDecisionsMessage);
-            var m = decisionContext.Movements.First(m => m.Id!.Equals(decisionResultDecisionsMessage.Header?.EntryReference));
+            var m = decisionContext.Movements.First(m =>
+                m.Id!.Equals(decisionResultDecisionsMessage.Header?.EntryReference));
             var existingMovementBuilder = movementBuilderFactory
                 .From(m)
                 .MergeDecision(decisionContext.MessageId, internalDecision, notificationContext);
@@ -53,7 +57,9 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         return decisionResult;
     }
 
-    [SuppressMessage("SonarLint", "S1905", Justification = "The Cast<string>() on line 64 is required to force the resulting variable to string[]? rather than string?[]?")]
+    [SuppressMessage("SonarLint", "S1905",
+        Justification =
+            "The Cast<string>() on line 64 is required to force the resulting variable to string[]? rather than string?[]?")]
     private Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
         var decisionsResult = new DecisionResult();
@@ -64,7 +70,8 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
                 if (decisionContext.HasChecks(movement.Id!, item.ItemNumber!.Value))
                 {
                     ////var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
-                    var checkCodes = movement.Items.First(x => x.ItemNumber == item.ItemNumber!.Value).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+                    var checkCodes = movement.Items.First(x => x.ItemNumber == item.ItemNumber!.Value).Checks
+                        ?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
                     HandleNoMatches(decisionContext, item, movement, checkCodes, decisionsResult);
 
                     HandleMatches(decisionContext, item, movement, checkCodes, decisionsResult);
@@ -77,7 +84,6 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         return Task.FromResult(decisionsResult);
     }
 
-   
 
     private void HandleMatches(DecisionContext decisionContext, Items item, Movement movement, string[]? checkCodes,
         DecisionResult decisionsResult)
@@ -87,11 +93,11 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         var matches = decisionContext.MatchingResult.Matches.Where(x =>
             x.ItemNumber == itemNumber &&
             x.MovementId == movement.Id).ToList();
-    
+
         foreach (var match in matches)
         {
             var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
-                        
+
             var decisionCodes = GetDecisions(notification, checkCodes);
             foreach (var decisionCode in decisionCodes)
             {
@@ -99,7 +105,6 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
                     decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
             }
         }
-        
     }
 
     private static void HandleNoMatches(DecisionContext decisionContext, Items item, Movement movement,
@@ -110,7 +115,7 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
         var noMatches = decisionContext.MatchingResult.NoMatches.Where(x =>
             x.ItemNumber == itemNumber &&
             x.MovementId == movement.Id).ToList();
-       
+
         foreach (var noMatch in noMatches)
         {
             HandleNoMatch(checkCodes, decisionsResult, noMatch);
@@ -177,19 +182,25 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
 
         var item = 1;
         foreach (var result in results)
-            logger.LogInformation("Decision finder result {ItemNum} of {NumItems} for Notification {Id} Decision {Decision} - ConsignmentAcceptable {ConsignmentAcceptable}: DecisionEnum {DecisionEnum}: NotAcceptableAction {NotAcceptableAction}",
-                item++, results.Count, notification.Id, result.DecisionCode.ToString(), notification.PartTwo?.Decision?.ConsignmentAcceptable, notification.PartTwo?.Decision?.DecisionEnum.ToString(), notification.PartTwo?.Decision?.NotAcceptableAction?.ToString());
+            logger.LogInformation(
+                "Decision finder result {ItemNum} of {NumItems} for Notification {Id} Decision {Decision} - ConsignmentAcceptable {ConsignmentAcceptable}: DecisionEnum {DecisionEnum}: NotAcceptableAction {NotAcceptableAction}",
+                item++, results.Count, notification.Id, result.DecisionCode.ToString(),
+                notification.PartTwo?.Decision?.ConsignmentAcceptable,
+                notification.PartTwo?.Decision?.DecisionEnum.ToString(),
+                notification.PartTwo?.Decision?.NotAcceptableAction?.ToString());
 
         return results.ToArray();
     }
 
-    private IEnumerable<DecisionFinderResult> GetDecisionsForCheckCode(ImportNotification notification, string? checkCode)
+    private IEnumerable<DecisionFinderResult> GetDecisionsForCheckCode(ImportNotification notification,
+        string? checkCode)
     {
         var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCode)).ToArray();
 
         if (!finders.Any())
         {
-            logger.LogWarning("No Decision Finder count for ImportNotification {Id} and Check code {CheckCode}", notification.Id, checkCode);
+            logger.LogWarning("No Decision Finder count for ImportNotification {Id} and Check code {CheckCode}",
+                notification.Id, checkCode);
             yield return new DecisionFinderResult(DecisionCode.E90, checkCode);
         }
 
