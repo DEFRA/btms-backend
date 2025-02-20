@@ -57,9 +57,6 @@ public class DecisionService(
         return decisionResult;
     }
 
-    [SuppressMessage("SonarLint", "S1905",
-        Justification =
-            "The Cast<string>() on line 64 is required to force the resulting variable to string[]? rather than string?[]?")]
     private Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
         var decisionsResult = new DecisionResult();
@@ -69,7 +66,6 @@ public class DecisionService(
             {
                 if (decisionContext.HasChecks(movement.Id!, item.ItemNumber!.Value))
                 {
-                    ////var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
                     var checkCodes = movement.Items.First(x => x.ItemNumber == item.ItemNumber!.Value).Checks
                         ?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
                     HandleNoMatches(decisionContext, item, movement, checkCodes, decisionsResult);
