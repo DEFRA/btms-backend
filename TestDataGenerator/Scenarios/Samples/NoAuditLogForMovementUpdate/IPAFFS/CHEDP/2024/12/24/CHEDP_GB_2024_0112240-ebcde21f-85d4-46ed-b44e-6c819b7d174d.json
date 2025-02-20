@@ -10,9 +10,9 @@
       "verifiedByInspector": false
     }
   ],
-  "referenceNumber": "CHEDP.GB.2024.031218000003",
+  "referenceNumber": "CHEDP.GB.2024.0112240",
   "version": 5,
-  "lastUpdated": "2024-12-18T12:26:25\u002B00:00",
+  "lastUpdated": "2024-12-24T08:13:10\u002B00:01",
   "lastUpdatedBy": {
     "displayName": "5622ea9b2ad1cb061455a5075cf0770842b8a2c9b7f868ff2657a04adf13e9e8",
     "userId": "79f6dc68-2144-e911-a96a-000d3a29ba60",
@@ -54,7 +54,7 @@
     "typeOfImp": null,
     "personResponsible": {
       "id": null,
-      "name": "d04609d6a2bedc0a82ef48930d3346ba30e26872dacf9c526c6656e86d25d67b",
+      "name": "426d78d56a8faff00448a2cfe34c426aaa8a4103b9c3ead75e211eb5198b6661",
       "companyId": "25b79d6b-6646-e911-a96b-000d3a28d891",
       "contactId": "ab7b426a-6646-e911-a96f-000d3a28da35",
       "companyName": "6cba9249022885162108afb4afb95c46aef7b6e354ff22ec7e2724b0b0a2245f",
@@ -278,8 +278,8 @@
     },
     "pointOfEntry": "GBPBY017",
     "pointOfEntryControlPoint": null,
-    "arrivalDate": "2025-01-05",
-    "arrivalTime": "05:00:00",
+    "arrivalDate": "2024-12-24",
+    "arrivalTime": "08:13:10",
     "meansOfTransport": {
       "type": "Aeroplane",
       "document": "d3fe3d83f38cdf90f183d1cb8e7f8d4d3c51ce2d58ec6f4339718d3130524053",

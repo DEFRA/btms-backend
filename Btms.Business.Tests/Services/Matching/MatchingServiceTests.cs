@@ -32,6 +32,30 @@ public class MatchingServiceTests
         matchResult.NoMatches.Count.Should().Be(movements[0].Items.Count);
     }
 
+
+    [Fact]
+    public async Task SimpleIgnoreMatchTest()
+    {
+        // Arrange
+        var movements = GenerateMovements();
+        movements.ForEach(x => x.Items.ForEach(x =>
+        {
+            foreach (var document in x.Documents!)
+            {
+                document.DocumentReference = "INVALID";
+            }
+        }));
+        var sut = new MatchingService();
+        var context = new MatchingContext(new List<ImportNotification>(), movements);
+
+        // Act
+        var matchResult = await sut.Process(context, CancellationToken.None);
+
+        // Assert
+        matchResult.NoMatches.Count.Should().Be(0);
+        matchResult.NoMatches.Count.Should().Be(0);
+    }
+
     [Fact]
     public async Task SimpleMatchTest()
     {

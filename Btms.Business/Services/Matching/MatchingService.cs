@@ -53,12 +53,12 @@ public class MatchingService : IMatchingService
                 Debug.Assert(notification?.Id != null, "notification.Id != null");
                 matchingResult.AddMatch(notification.Id, movement.Id, item.ItemNumber.Value, documentGroup);
             }
-
-
         }
         else
         {
-            matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
+            Console.WriteLine("Test");
+            // This is when the document reference is not valid, and therefore should be ignored from matching
+            ////matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
         }
     }
 }
