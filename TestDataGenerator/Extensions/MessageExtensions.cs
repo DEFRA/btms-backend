@@ -1,4 +1,5 @@
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Decision = Btms.Types.Alvs.Decision;
 
@@ -21,6 +22,9 @@ public static class MessageExtensions
 
             case Finalisation d:
                 return d.ServiceHeader!.ServiceCallTimestamp!.Value;
+
+            case SearchGmrsForDeclarationIdsResponse d:
+                return d.Gmrs?.Min(x => x.UpdatedSource) ?? DateTime.MinValue;
 
             default:
                 throw new InvalidDataException($"Unexpected type {m.GetType().Name}");

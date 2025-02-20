@@ -38,11 +38,7 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
             CreateIndex("Created",
                 Builders<Gmr>.IndexKeys.Ascending(n => n.Created), cancellationToken: cancellationToken),
             CreateIndex("CreatedSource",
-                Builders<Gmr>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken: cancellationToken),
-            CreateIndex("ImportNotificationGmrLinker",
-                Builders<Gmr>.IndexKeys
-                    .Ascending(new StringFieldDefinition<Gmr>("declarations.transits.id"))
-                    .Ascending(new StringFieldDefinition<Gmr>("declarations.customs.id")), cancellationToken: cancellationToken)
+                Builders<Gmr>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken: cancellationToken)
         );
     }
 

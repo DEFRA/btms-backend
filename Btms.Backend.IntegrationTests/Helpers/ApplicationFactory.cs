@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -20,6 +19,7 @@ public interface IIntegrationTestsApplicationFactory
     string DatabaseName { get; set; }
     BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null);
     IMongoDbContext GetDbContext();
+    IServiceProvider Services { get; }
 }
 
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory

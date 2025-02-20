@@ -1,35 +1,25 @@
-using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Business.Commands;
 using FluentAssertions;
+using TestDataGenerator.Scenarios.SpecificFiles;
+using TestGenerator.IntegrationTesting.Backend;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
+public class GmrTests(ITestOutputHelper testOutputHelper) : MultipleScenarioGeneratorBaseTest(testOutputHelper)
 {
     [Fact]
-    public async Task GmrImport_ShouldCreateAndThenUpdate()
+    public void GmrImport_ShouldCreateAndThenUpdate()
     {
-        await Client.ClearDb();
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        EnsureEnvironmentInitialised(typeof(SmokeTestScenarioGenerator));
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
         document.Data.Attributes?["state"]?.ToString().Should().Be("Finalised");
 
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "Linking"
-        });
+        EnsureEnvironmentInitialised(typeof(LinkingScenarioGenerator), clearDb: false);
 
         document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
@@ -40,12 +30,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
     [Fact]
     public async Task GmrImport_PreservesLocalDateTimes()
     {
-        await Client.ClearDb();
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        EnsureEnvironmentInitialised(typeof(SmokeTestScenarioGenerator));
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
 
@@ -54,7 +39,7 @@ public class GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHe
         // default. Do we want to honour the HMRC spec completely?
         result.Should().Contain("\"departsAt\": \"2024-11-11T00:25:00\"");
 
-        var gmr = Factory.GetDbContext().Gmrs
+        var gmr = BackendFixture.GetDbContext().Gmrs
             .FirstOrDefault(x => x.Id != null && x.Id.Equals("GMRAPOQSPDUG", StringComparison.OrdinalIgnoreCase));
 
         // Strong DateTime should stay as Unspecified as that is how incoming values are deserialized and if it were
