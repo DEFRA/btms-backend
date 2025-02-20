@@ -101,6 +101,7 @@ public class DecisionServiceTests
         _serviceCollection.AddSingleton(Substitute.For<IPublishBus>());
         _serviceCollection.AddSingleton<MovementBuilderFactory>();
         _serviceCollection.AddSingleton<DecisionStatusFinder>();
+        _serviceCollection.AddSingleton<BusinessDecisionStatusFinder>();
         _serviceCollection.AddLogging();
         _serviceCollection.AddSingleton<IMongoDbContext, MemoryMongoDbContext>();
     }

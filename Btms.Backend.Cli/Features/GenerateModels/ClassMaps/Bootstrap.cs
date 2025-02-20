@@ -72,12 +72,6 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("Check", map =>
         {
-            map.AddProperty(new PropertyDescriptor("decisionCode", "string", false, false));
-
-            map.AddProperty(new PropertyDescriptor("decisionsValidUntil", "DateTime", false, false));
-
-            map.AddProperty(new PropertyDescriptor("decisionReasons", "string", false, true));
-
             map.MapProperty("MasterUCR")
                 .SetName("masterUcr")
                 .SetSourceJsonPropertyName("masterUCR");

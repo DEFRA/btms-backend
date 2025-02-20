@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Common.Extensions;
 
-namespace Btms.Model;
+namespace Btms.Common.Enum;
 
 public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum : struct, System.Enum
 {
@@ -15,7 +15,7 @@ public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum
     {
         var type = typeof(TEnum);
 
-        foreach (var value in Enum.GetValues<TEnum>())
+        foreach (var value in System.Enum.GetValues<TEnum>())
         {
             var enumMember = type.GetMember(value.ToString())[0];
             var attr = enumMember.GetCustomAttributes(typeof(EnumMemberAttribute), false)
@@ -73,7 +73,6 @@ public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum
     public string[] GetValues()
     {
         return _enumToString.Values.ToArray();
-        // return _enumToString.Keys.ToArray<string>();
     }
 
     public string GetValue(TEnum value)
