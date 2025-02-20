@@ -39,13 +39,6 @@
           "documentStatus": "AE",
           "documentControl": "P",
           "documentQuantity": null
-        },
-        {
-          "documentCode": "N853",
-          "documentReference": "GBCHD2024.5160988",
-          "documentStatus": "AE",
-          "documentControl": "P",
-          "documentQuantity": null
         }
       ],
       "checks": [

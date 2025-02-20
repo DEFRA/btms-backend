@@ -58,7 +58,7 @@ public class MatchingService : IMatchingService
         {
             Console.WriteLine("Test");
             // This is when the document reference is not valid, and therefore should be ignored from matching
-            matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
+            ////matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
         }
     }
 }

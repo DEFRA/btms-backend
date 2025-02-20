@@ -20,6 +20,7 @@ public enum DecisionCode
 
     E03,
 
+    E89,    // Item with document references where none are valid format
     E90,    // No Decision Finder found
     E94,    // IUU not indicated in PartTwo?.ControlAuthority?.IuuCheckRequired but "H224" requested in Items[]?.Checks[]?.CheckCode
     E95,    // Unexpected value in PartTwo?.Decision?.IuuOption

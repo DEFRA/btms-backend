@@ -55,30 +55,88 @@ public class DecisionService(ILogger<DecisionService> logger, IEnumerable<IDecis
     private Task<DecisionResult> DeriveDecision(DecisionContext decisionContext)
     {
         var decisionsResult = new DecisionResult();
-        foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
+        foreach (var movement in decisionContext.Movements)
         {
-            if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
+            
+            foreach (var item in movement.Items)
             {
-                var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
-                var checkCodes = movement.Items.First(x => x.ItemNumber == noMatch.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+                if (decisionContext.HasChecks(movement.Id!, item.ItemNumber!.Value))
+                {
+                    ////var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
+                    var checkCodes = movement.Items.First(x => x.ItemNumber == item.ItemNumber!.Value).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+                    var noMatches = decisionContext.MatchingResult.NoMatches.Where(x =>
+                        x.ItemNumber == item.ItemNumber!.Value &&
+                        x.MovementId == movement.Id).ToList();
 
-                HandleNoMatch(checkCodes, decisionsResult, noMatch);
+                   
+
+                    if (noMatches.Any())
+                    {
+                        foreach (var noMatch in noMatches)
+                        {
+                            HandleNoMatch(checkCodes, decisionsResult, noMatch);
+                        }
+                    }
+
+                    var matches = decisionContext.MatchingResult.Matches.Where(x =>
+                        x.ItemNumber == item.ItemNumber!.Value &&
+                        x.MovementId == movement.Id).ToList();
+
+                    if (matches.Any())
+                    {
+                        foreach (var match in matches)
+                        {
+                            var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+                            
+                            var decisionCodes = GetDecisions(notification, checkCodes);
+                            foreach (var decisionCode in decisionCodes)
+                            {
+                                decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference,
+                                    decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
+                            }
+                        }
+                    }
+
+                    if (!matches.Any() && !noMatches.Any())
+                    {
+                        foreach (var document in item.Documents!)
+                        {
+                            decisionsResult.AddDecision(movement.Id!, item.ItemNumber.Value,
+                                document.DocumentReference!, null, DecisionCode.E89);
+                        }
+                    }
+
+
+                }
             }
         }
 
-        foreach (var match in decisionContext.MatchingResult.Matches)
-        {
-            if (!decisionContext.HasChecks(match.MovementId, match.ItemNumber)) continue;
-
-            var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
-            var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
-            var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
-            var decisionCodes = GetDecisions(notification, checkCodes);
-            foreach (var decisionCode in decisionCodes)
-                decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
-        }
-
         return Task.FromResult(decisionsResult);
+
+        ////foreach (var noMatch in decisionContext.MatchingResult.NoMatches)
+        ////{
+        ////    if (decisionContext.HasChecks(noMatch.MovementId, noMatch.ItemNumber))
+        ////    {
+        ////        var movement = decisionContext.Movements.First(x => x.Id == noMatch.MovementId);
+        ////        var checkCodes = movement.Items.First(x => x.ItemNumber == noMatch.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+
+        ////        HandleNoMatch(checkCodes, decisionsResult, noMatch);
+        ////    }
+        ////}
+
+        ////foreach (var match in decisionContext.MatchingResult.Matches)
+        ////{
+        ////    if (!decisionContext.HasChecks(match.MovementId, match.ItemNumber)) continue;
+
+        ////    var notification = decisionContext.Notifications.First(x => x.Id == match.NotificationId);
+        ////    var movement = decisionContext.Movements.First(x => x.Id == match.MovementId);
+        ////    var checkCodes = movement.Items.First(x => x.ItemNumber == match.ItemNumber).Checks?.Select(x => x.CheckCode).Where(x => x != null).Cast<string>().ToArray();
+        ////    var decisionCodes = GetDecisions(notification, checkCodes);
+        ////    foreach (var decisionCode in decisionCodes)
+        ////        decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference, decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
+        ////}
+
+        ////return Task.FromResult(decisionsResult);
     }
 
     private static void HandleNoMatch(string[]? checkCodes, DecisionResult decisionsResult, DocumentNoMatch noMatch)
