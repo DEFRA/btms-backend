@@ -38,7 +38,7 @@ public abstract class ScenarioGenerator(ILogger logger)
         {
             foreach (var o in initial)
             {
-                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation or SearchGmrsForDeclarationIdsResponse)
+                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation or SearchGmrsForDeclarationIdsResponse or Gmr)
                 {
                     Messages.Add(o);
                 }

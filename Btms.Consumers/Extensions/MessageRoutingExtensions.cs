@@ -79,6 +79,12 @@ public static class MessageRoutingExtensions
                     await bus.Publish(d, "FINALISATIONS", headers);
                     logger.LogInformation("Sent finalisation {0} to consumer", d.Header!.EntryReference!);
                     break;
+                
+                case Gmr d:
+                    headers.Add(MessageIdHeaderKey, d.GmrId!);
+                    await bus.Publish(d, "GMR", headers);
+                    logger.LogInformation("Sent gmr {0} to consumer", d.GmrId!);
+                    break;
 
                 case SearchGmrsForDeclarationIdsResponse d:
                     var messageId = Guid.NewGuid().ToString();

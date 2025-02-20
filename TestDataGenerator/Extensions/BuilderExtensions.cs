@@ -30,6 +30,9 @@ public static class BuilderExtensions
 
                     case FinalisationBuilder builder:
                         return builder.Build();
+                    
+                    case GmrBuilder builder:
+                        return builder.Build();
 
                     case SearchGmrsBuilder builder:
                         return builder.Build();
