@@ -34,7 +34,7 @@ public static class MovementExtensions
             result.AddRange(item.GetIdentifiers());
         }
 
-        return result;
+        return result.Distinct().ToList();
     }
 
     public static List<string> UniqueDocumentReferenceIds(this Movement movement)
