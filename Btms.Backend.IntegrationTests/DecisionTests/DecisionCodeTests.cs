@@ -32,6 +32,7 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
     [InlineData(typeof(ChedAc03ScenarioGenerator), "C03", "C03", "C03", "C03", "C03")]
     [InlineData(typeof(ChedPc03ScenarioGenerator), "C03", "C03")]
     [InlineData(typeof(ChedDc03ScenarioGenerator), "C03")]
+    [InlineData(typeof(Mrn24Gbdeea43Oy1Cqar7ScenarioGenerator), "C03", "C03")]
     [InlineData(typeof(ChedAc05ScenarioGenerator), "C05", "C05", "C05", "C05", "C05")]
     [InlineData(typeof(ChedAc06ScenarioGenerator), "C06", "C06", "C06", "C06", "C06")]
     [InlineData(typeof(ChedPc06ScenarioGenerator), "C06", "C06")]
@@ -47,6 +48,7 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
     [InlineData(typeof(IuuScenarioGenerator), "E89", "E89")] //"C03", "C07")]
     [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), "C03", "C03", "C03")]
     [InlineData(typeof(Mrn24Gbei6Oisht38Mar9ScenarioGenerator), "H02", "H02")]
+
     public void ShouldHaveCorrectDecisionCode(Type generatorType, params string[] expectedDecisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecisionCode);
