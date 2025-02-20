@@ -10,9 +10,9 @@ public class ClearanceRequestBuilderTests
     public void WithReferenceNumber_WithChedA_ShouldCreateCorrectReference()
     {
         var builder = ClearanceRequestBuilder.Default();
-        builder.WithReferenceNumberOneToOne("CHEDA.GB.2024.123");
+        builder.WithReferenceNumberOneToOne("CHEDA.GB.2024.1234567");
         var cr = builder.Build();
-        cr.Items![0].Documents![0].DocumentReference!.Should().Be("GBCHD2024.123");
+        cr.Items![0].Documents![0].DocumentReference!.Should().Be("GBCHD2024.1234567");
     }
 
     [Fact]

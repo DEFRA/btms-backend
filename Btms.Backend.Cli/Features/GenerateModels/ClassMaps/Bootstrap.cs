@@ -184,7 +184,7 @@ internal static class Bootstrap
             });
 
         GeneratorClassMap.RegisterClassMap("InspectionOverride",
-            map => { map.MapProperty("overriddenOn").IsDateTime(IpaffsNoExamples); });
+            map => { map.MapProperty("overriddenOn").IsDateTime(IpaffsUtc); });
 
         GeneratorClassMap.RegisterClassMap("SealCheck",
             map => { map.MapProperty("dateTimeOfCheck").IsDateTime(IpaffsNoExamples).SetInternalName("checkedOn"); });

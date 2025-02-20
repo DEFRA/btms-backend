@@ -18,31 +18,23 @@ public static class MovementExtensions
             .ToArray();
     }
 
-    private static string TrimUniqueNumber(this string id)
-    {
-        return id.Substring(id.LastIndexOf(".") + 1);
-    }
     public static List<string> UniqueNotificationRelationshipIds(this Movement movement)
     {
         return movement.Relationships.Notifications.Data
-            .Select(n => n.Id!.TrimUniqueNumber())
+            .Select(n => MatchIdentifier.FromNotification(n.Id!).Identifier)
             .Distinct() // We may end up with multiple relationships for the same ID if multiple items link to it?
             .ToList();
     }
 
-    public static bool IsChed(this Document doc)
-    {
-        return doc.DocumentReference != null &&
-            doc.DocumentReference.ToUpper().StartsWith("GBCHD");
-    }
-
     public static List<string> UniqueDocumentReferenceIds(this List<Btms.Model.Cds.Items> items)
     {
-        return items
-            .SelectMany(i => i.Documents ?? [])
-            .Select(d => d.DocumentReference!.TrimUniqueNumber())
-            .Distinct()
-            .ToList();
+        var result = new List<string>();
+        foreach (var item in items)
+        {
+            result.AddRange(item.GetIdentifiers());
+        }
+
+        return result.Distinct().ToList();
     }
 
     public static List<string> UniqueDocumentReferenceIds(this Movement movement)
