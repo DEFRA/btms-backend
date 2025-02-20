@@ -113,7 +113,7 @@ public class DecisionMessageBuilderTests
         decisionResult.AddDecision("movement-1", 2, "", "H111", DecisionCode.H01, "reason-3");
         decisionResult.AddDecision("movement-1", 2, "", "H111", DecisionCode.C06, "reason-4");
         decisionResult.AddDecision("movement-2", 1, "", null, DecisionCode.X00);
-        decisionResult.AddDecision("movement-2", 2, "", null, DecisionCode.E97);
+        decisionResult.AddDecision("movement-2", 2, "", null, DecisionCode.X00, internalDecisionCode: DecisionInternalFurtherDetail.E97);
         return decisionResult;
     }
 }

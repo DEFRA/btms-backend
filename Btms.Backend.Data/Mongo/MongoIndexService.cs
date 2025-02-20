@@ -22,9 +22,9 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.UpdatedEntity), cancellationToken: cancellationToken),
             CreateIndex("PartOneArrivesAt",
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.PartOne!.ArrivesAt), cancellationToken: cancellationToken),
-            CreateIndex("AggregationByCreatedAndStatus",
+            CreateIndex("AggregationByCreatedSourceAndStatus",
                 Builders<ImportNotification>.IndexKeys
-                    .Ascending(n => n.Created)
+                    .Ascending(n => n.CreatedSource)
                     .Ascending(n => n.BtmsStatus.TypeAndLinkStatus),
                 cancellationToken: cancellationToken),
             CreateIndex("AggregationByStatus",

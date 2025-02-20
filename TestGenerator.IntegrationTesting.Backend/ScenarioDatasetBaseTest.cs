@@ -50,15 +50,14 @@ public abstract class ScenarioDatasetBaseTest
         };
 
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
-        var featureManager = Substitute.For<IFeatureManager>();
-
+        
         BackendFixture = new BackendFixture(testOutputHelper, datasetName, 200, backendConfigurationOverrides);
 
         Client = BackendFixture.BtmsClient;
         MongoDbContext = BackendFixture.MongoDbContext;
 
         ImportNotificationsAggregationService = new ImportNotificationsAggregationService(MongoDbContext,
-            TestOutputHelper.GetLogger<ImportNotificationsAggregationService>(), featureManager);
+            TestOutputHelper.GetLogger<ImportNotificationsAggregationService>());
 
         MovementsAggregationService = new MovementsAggregationService(MongoDbContext,
             TestOutputHelper.GetLogger<MovementsAggregationService>());
@@ -108,9 +107,8 @@ public abstract class ScenarioDatasetBaseTest
     protected IImportNotificationsAggregationService GetImportNotificationsAggregationService()
     {
         var logger = TestOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        var featureManager = Substitute.For<IFeatureManager>();
-
-        return new ImportNotificationsAggregationService(MongoDbContext, logger, featureManager);
+        
+        return new ImportNotificationsAggregationService(MongoDbContext, logger);
     }
 
     /// <summary>

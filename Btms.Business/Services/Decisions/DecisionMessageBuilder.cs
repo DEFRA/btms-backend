@@ -1,16 +1,15 @@
 using Btms.Business.Extensions;
 using Btms.Common.Extensions;
 using Btms.Model;
-using Btms.Types.Alvs;
-using Decision = Btms.Types.Alvs.Decision;
+using Btms.Model.Cds;
 
 namespace Btms.Business.Services.Decisions;
 
 public static class DecisionMessageBuilder
 {
-    public static Task<List<Decision>> Build(DecisionContext decisionContext, DecisionResult decisionResult)
+    public static Task<List<CdsDecision>> Build(DecisionContext decisionContext, DecisionResult decisionResult)
     {
-        var list = new List<Decision>();
+        var list = new List<CdsDecision>();
 
         var decisionsByMovement = decisionResult.Decisions.GroupBy(x => x.MovementId);
 
@@ -18,7 +17,7 @@ public static class DecisionMessageBuilder
         {
             var movement = decisionContext.Movements.First(x => x.Id == movementDecisions.Key);
             var messageNumber = movement is { Decisions: null } ? 1 : movement.Decisions.Count + 1;
-            var decisionMessage = new Decision
+            var decisionMessage = new CdsDecision
             {
                 ServiceHeader = BuildServiceHeader(),
                 Header = BuildHeader(movement, messageNumber),
@@ -35,15 +34,15 @@ public static class DecisionMessageBuilder
         return new ServiceHeader
         {
             SourceSystem = "BTMS",
-            ServiceCallTimestamp = DateTime.UtcNow,
+            ServiceCalled = DateTime.UtcNow,
             DestinationSystem = "CDS",
             CorrelationId = Guid.NewGuid().ToString()
         };
     }
 
-    private static Header BuildHeader(Movement movement, int messageNumber)
+    private static DecisionHeader BuildHeader(Movement movement, int messageNumber)
     {
-        return new Header
+        return new DecisionHeader
         {
             EntryReference = movement.EntryReference,
             EntryVersionNumber = movement.EntryVersionNumber,
@@ -51,13 +50,13 @@ public static class DecisionMessageBuilder
         };
     }
 
-    private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
+    private static IEnumerable<DecisionItems> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
     {
         var decisionsByItem = movementDecisions.GroupBy(x => x.ItemNumber);
         foreach (var itemDecisions in decisionsByItem)
         {
             var item = movement.Items.First(x => x.ItemNumber == itemDecisions.Key);
-            yield return new Items
+            yield return new DecisionItems
             {
                 ItemNumber = itemDecisions.Key,
                 Checks = BuildChecks(item, itemDecisions).ToArray()
@@ -65,20 +64,24 @@ public static class DecisionMessageBuilder
         }
     }
 
-    private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
+    private static IEnumerable<DecisionCheck> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
     {
         if (item.Checks == null) yield break;
 
-        foreach (var checkCode in item.Checks.Select(x => x.CheckCode))
+        foreach (var checkCode in item.Checks.Select(x => x.CheckCode!))
         {
             var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).FirstOrDefault();
             if (maxDecisionResult is not null)
             {
-                yield return new Check
+                yield return new DecisionCheck
                 {
                     CheckCode = checkCode,
                     DecisionCode = maxDecisionResult.DecisionCode.ToString(),
-                    DecisionReasons = BuildDecisionReasons(item, maxDecisionResult!)
+                    DecisionReasons = BuildDecisionReasons(item, maxDecisionResult!),
+                    DecisionInternalFurtherDetail =
+                        maxDecisionResult.InternalDecisionCode.HasValue ?
+                            [maxDecisionResult.InternalDecisionCode.Value.ToString()] :
+                            null
                 };
             }
         }

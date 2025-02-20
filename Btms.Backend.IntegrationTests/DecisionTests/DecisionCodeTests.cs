@@ -45,7 +45,7 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
     [InlineData(typeof(ChedPn04ScenarioGenerator), "N04", "N04")]
     [InlineData(typeof(ChedPn07ScenarioGenerator), "N07", "N07")]
     [InlineData(typeof(MissingChedScenarioGenerator), "X00", "X00")]
-    [InlineData(typeof(IuuScenarioGenerator), "E89", "E89")] //"C03", "C07")]
+    [InlineData(typeof(IuuScenarioGenerator), "X00", "X00")] //"C03", "C07")]
     [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), "C03", "C03", "C03")]
     [InlineData(typeof(Mrn24Gbei6Oisht38Mar9ScenarioGenerator), "H02", "H02")]
     [InlineData(typeof(Mrn24Gbc8Onyjqzt5Tar5ScenarioGenerator), "C03", "C03", "E03", "E03")]
@@ -58,6 +58,15 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
         CheckDecisionCode(expectedDecisionCode);
     }
 
+    [Theory]
+    [InlineData(typeof(IuuScenarioGenerator), "E89", "E89")]
+    public void ShouldHaveCorrectInternalDecisionCode(Type generatorType, params string[] expectedInternalDecisionCode)
+    {
+        base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedInternalDecisionCode);
+        EnsureEnvironmentInitialised(generatorType);
+        CheckInternalDecisionCode(expectedInternalDecisionCode);
+    }
+
     private void CheckDecisionCode(params string[] expectedDecisionCode)
     {
         var movement =
@@ -67,10 +76,23 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
         TestOutputHelper.WriteLine("MRN {0}, expectedDecisionCode {1}", movement.EntryReference, expectedDecisionCode);
 
         movement
-            .Decisions!.MaxBy(d => d.ServiceHeader!.ServiceCalled)?
             .Items!.SelectMany(i => i.Checks!)
             .Select(c => c.DecisionCode)
             .Should().Equal(expectedDecisionCode);
+    }
+
+    private void CheckInternalDecisionCode(params string[] expectedInternalDecisionCode)
+    {
+        var movement =
+            Client
+                .GetSingleMovement();
+
+        TestOutputHelper.WriteLine("MRN {0}, expectedInternalDecisionCode {1}", movement.EntryReference, expectedInternalDecisionCode);
+
+        movement
+            .Items!.SelectMany(i => i.Checks!)
+            .SelectMany(c => c.DecisionInternalFurtherDetail ?? [])
+            .Should().Equal(expectedInternalDecisionCode);
     }
 
     [Theory]
