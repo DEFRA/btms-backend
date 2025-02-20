@@ -90,7 +90,7 @@ public class DecisionStatusFinder
     {
         return movement.Items.Any(i =>
             i.Documents?
-                .Any(d => !d.DocumentReference?.StartsWith("GBCHD") ?? false) ?? false);
+                .Any(d =>! MatchIdentifier.TryFromCds(d.DocumentReference!, out _)) ?? false);
     }
 
     private static bool DocumentReferenceCaseIncorrect(Movement movement, AlvsDecision decision)
