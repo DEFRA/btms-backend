@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using TestDataGenerator.Scenarios;
+using TestDataGenerator.Scenarios.SpecificFiles;
 using AllChedsNoMatchScenarioGenerator = TestDataGenerator.Scenarios.SpecificFiles.AllChedsNoMatchScenarioGenerator;
 
 namespace TestDataGenerator.Config;
@@ -16,6 +17,7 @@ public class Datasets(IHost app)
 {
     public const string FunctionalAnalyticsDatasetName = "Functional-Analytics";
     public const string FunctionalAnalyticsDecisionsDatasetName = "Functional-Analytics-Decisions";
+    public const string FunctionalAnalyticsDecisionStatusDatasetName = "Functional-Analytics-DecisionStatus";
 
     public static Dataset[] GetDatasets(IHost app)
     {
@@ -31,7 +33,8 @@ public class Datasets(IHost app)
             ds.LoadTestCondensed,
             ds.LoadTest90Dx10k,
             ds.FunctionalAnalytics,
-            ds.FunctionalAnalyticsDecisions
+            ds.FunctionalAnalyticsDecisions,
+            ds.FunctionalAnalyticsDecisionStatus
         ];
     }
 
@@ -68,6 +71,31 @@ public class Datasets(IHost app)
         {
             app.Services.CreateScenarioConfig<CrNoMatchSingleItemWithDecisionScenarioGenerator>(2, 2, arrivalDateRange: 0),
             app.Services.CreateScenarioConfig<CrNoMatchNoDecisionScenarioGenerator>(2, 2, arrivalDateRange: 2),
+        }
+    };
+
+
+    public readonly Dataset FunctionalAnalyticsDecisionStatus = new()
+    {
+        Name = FunctionalAnalyticsDecisionStatusDatasetName,
+        Description = "Functional Testing Analytics Dataset for testing business decision status chart",
+        RootPath = "FUNCTIONAL-ANALYTICS-DECISION-STATUS",
+        Scenarios = new[]
+        {
+            // Same BTMS & ALVS Decision
+            app.Services.CreateScenarioConfig<Mrn24Gbddjer3Zfrmzar9ScenarioGenerator>(1, 1, arrivalDateRange: 0),
+            
+            // Destroyed
+            app.Services.CreateScenarioConfig<Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator>(1, 1, arrivalDateRange: 0),
+            
+            // Manual Action
+            app.Services.CreateScenarioConfig<Mrn24Gbeds4W7Dfrlmar0ManualActionScenarioGenerator>(1, 1, arrivalDateRange: 0),
+            
+            // Cleared
+            app.Services.CreateScenarioConfig<Mrn24Gbd2Uowtwym5Lar8ScenarioGenerator>(1, 1, arrivalDateRange: 0),
+            
+            // No Finalisation
+            app.Services.CreateScenarioConfig<Mrn24Gbdshixsy6Rckar3ScenarioGenerator>(1, 1, arrivalDateRange: 0),
         }
     };
 
@@ -168,16 +196,4 @@ public class Datasets(IHost app)
                 app.Services.CreateScenarioConfig<Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 90)
             }
     };
-
-    // public readonly Dataset Pha = new()
-    // {
-    //     Name = "PHA",
-    //     Description = "",
-    //     RootPath = "GENERATED-PHA",
-    //     Scenarios = new[]
-    //     {
-    //         app.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 30),
-    //         app.CreateScenarioConfig<ChedAManyCommoditiesScenarioGenerator>(10, 30)
-    //     }
-    // };
 }

@@ -10,6 +10,8 @@ public interface IMovementsAggregationService
     public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByItemCount(DateTime from, DateTime to);
     public Task<SummarisedDataset<SingleSeriesDataset, StringBucketDimensionResult>> ByDecision(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
 
+    public Task<SingleSeriesDataset> ByBusinessDecisionStatus(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
+
     public Task<SingleSeriesDataset> ByAlvsDecision(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null, string? country = null);
 
     public Task<MultiSeriesDataset<ByNumericDimensionResult>> ByUniqueDocumentReferenceCount(DateTime from, DateTime to);
