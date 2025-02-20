@@ -22,7 +22,7 @@ public static class MessageExtensions
 
             case Finalisation d:
                 return d.ServiceHeader!.ServiceCallTimestamp!.Value;
-            
+
             case Gmr d:
                 return d.UpdatedSource!.Value;
 
