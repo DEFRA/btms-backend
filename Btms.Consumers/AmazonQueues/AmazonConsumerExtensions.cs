@@ -15,7 +15,7 @@ internal static class AmazonConsumerExtensions
         var awsLocalOptions = configuration
             .GetSection("AwsOptions")
             .Get<AwsLocalOptions>();
-        
+
         mbb.WithProviderAmazonSQS(cfg =>
         {
             if (awsLocalOptions != null)
@@ -29,7 +29,7 @@ internal static class AmazonConsumerExtensions
 
             cfg.TopologyProvisioning.Enabled = false;
         });
-        
+
         mbb.AddJsonSerializer();
 
         mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, "customs_clearance_request.fifo");

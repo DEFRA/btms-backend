@@ -34,12 +34,12 @@ public class TestAwsConsumers : IAsyncDisposable
                 cbb.AddAmazonConsumers(builder.Services, builder.Configuration);
             });
         });
-        
+
         _app = builder.Build();
 
         Configuration = _app.Configuration;
-        
-        Task.Run(() => _app.Start(), _tokenSource.Token);    
+
+        Task.Run(() => _app.Start(), _tokenSource.Token);
     }
 
     public async ValueTask DisposeAsync()
@@ -47,7 +47,7 @@ public class TestAwsConsumers : IAsyncDisposable
         await _tokenSource.CancelAsync();
         await _app.StopAsync();
     }
-}    
+}
 
 public class ClearanceRequestConsumerHost : ConsumerHost<IClearanceRequestConsumer>
 {
@@ -57,9 +57,9 @@ public class ClearanceRequestConsumerHost : ConsumerHost<IClearanceRequestConsum
 public abstract class ConsumerHost<T> where T : class
 {
     public readonly T Mock = Substitute.For<T>();
-    
+
     private SpinWait _spinner;
-    
+
     protected async Task<bool> WaitUntilHandledAsync(Func<Task> actionToAwait)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -77,5 +77,5 @@ public abstract class ConsumerHost<T> where T : class
         }
 
         return false;
-    }    
+    }
 }

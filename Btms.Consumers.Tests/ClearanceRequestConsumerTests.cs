@@ -92,7 +92,7 @@ public class ClearanceRequestConsumerTests
                 { "messageId", messageId }
             }
         };
-        
+
         return new ClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
             _validationService, _mongoDbContext, NullLogger<ClearanceRequestConsumer>.Instance);
     }
