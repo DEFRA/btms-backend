@@ -33,7 +33,7 @@ public abstract class BaseApiTests
         Factory.TestOutputHelper = testOutputHelper;
         Factory.DatabaseName = databaseName;
     }
-    
+
     protected async Task PublishMessagesToInMemoryTopics<T>(Func<object, bool>? filter = null) where T : ScenarioGenerator
     {
         var messages = GenerateMessages<T>(filter);
@@ -44,7 +44,7 @@ public abstract class BaseApiTests
     protected async Task PublishMessagesToAzureServiceBus<T>(Func<object, bool>? filter = null) where T : ScenarioGenerator
     {
         var messages = GenerateMessages<T>(filter);
-        
+
         foreach (var message in messages)
         {
             switch (message)
@@ -73,7 +73,7 @@ public abstract class BaseApiTests
         var generatorResult = testGeneratorFixture.GenerateTestData<T>();
         var messages = generatorResult.Select(x => x.Message);
         messages = filter != null ? messages.Where(filter) : messages;
-        
+
         return messages;
     }
 }
