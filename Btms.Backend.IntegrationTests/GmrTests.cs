@@ -18,14 +18,14 @@ public class GmrTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task GmrImport_ShouldCreateAndThenUpdate()
     {
         await ClearDb();
-        await LoadData<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
         document.Data.Id.Should().Be("GMRAPOQSPDUG");
         document.Data.Attributes?["state"]?.ToString().Should().Be("Finalised");
 
-        await LoadData<LinkingScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
+        await PublishMessagesToInMemoryTopics<LinkingScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
@@ -37,7 +37,7 @@ public class GmrTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task GmrImport_PreservesLocalDateTimes()
     {
         await ClearDb();
-        await LoadData<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
 

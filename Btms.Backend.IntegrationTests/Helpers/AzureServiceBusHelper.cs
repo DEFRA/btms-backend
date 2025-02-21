@@ -9,7 +9,7 @@ using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Backend.IntegrationTests.Helpers;
 
-public static class ServiceBusHelper
+public static class AzureServiceBusHelper
 {
     private const string ConnectionString =
         "Endpoint=sb://127.0.0.1:5672;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
