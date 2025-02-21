@@ -8,7 +8,7 @@ public class SensitiveFieldsProviderTests
     record ImportNotification(int Id);
 
     record NoFieldList(int Id);
-    
+
     [Fact]
     public void WhenTypeHasList_ShouldReturnList()
     {
