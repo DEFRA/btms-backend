@@ -20,13 +20,13 @@ internal class GmrConsumer(
         foreach (var gmr in message.Gmrs!)
             await HandleGmr(gmr, cancellationToken);
 
-        await mongoDbContext.SaveChangesAsync(Context.CancellationToken);
+        await mongoDbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
     }
 
     public async Task OnHandle(Gmr message, CancellationToken cancellationToken)
     {
         await HandleGmr(message, cancellationToken);
-        await mongoDbContext.SaveChangesAsync(Context.CancellationToken);
+        await mongoDbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
     }
 
     private async Task HandleGmr(Gmr gmr, CancellationToken cancellationToken)

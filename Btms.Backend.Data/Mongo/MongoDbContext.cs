@@ -52,20 +52,29 @@ public class MongoDbContext : IMongoDbContext
         await new MongoIndexService(Database, _loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(cancellationToken);
     }
 
-    public async Task SaveChangesAsync(CancellationToken cancellation = default)
+    public async Task SaveChangesAsync(bool useTransaction = true, CancellationToken cancellation = default)
     {
-        using var transaction = await StartTransaction(cancellation);
-        try
+        if (useTransaction)
+        {
+            using var transaction = await StartTransaction(cancellation);
+            try
+            {
+                await Notifications.PersistAsync(cancellation);
+                await Movements.PersistAsync(cancellation);
+                await Gmrs.PersistAsync(cancellation);
+                await transaction.CommitTransaction(cancellation);
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackTransaction(cancellation);
+                throw;
+            }
+        }
+        else
         {
             await Notifications.PersistAsync(cancellation);
             await Movements.PersistAsync(cancellation);
             await Gmrs.PersistAsync(cancellation);
-            await transaction.CommitTransaction(cancellation);
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackTransaction(cancellation);
-            throw;
         }
     }
 }

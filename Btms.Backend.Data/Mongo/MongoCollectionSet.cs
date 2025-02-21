@@ -52,7 +52,15 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
                 item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
                 item.Created = item.UpdatedEntity = DateTime.UtcNow;
 
-                await _collection.InsertOneAsync(dbContext.ActiveTransaction?.Session, item, cancellationToken: cancellationToken);
+                var session = dbContext.ActiveTransaction?.Session;
+                if (session is not null)
+                {
+                    await _collection.InsertOneAsync(session, item, cancellationToken: cancellationToken);
+                }
+                else
+                {
+                    await _collection.InsertOneAsync(item, cancellationToken: cancellationToken);
+                }
             }
 
             _entitiesToInsert.Clear();

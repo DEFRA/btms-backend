@@ -99,7 +99,7 @@ internal class NotificationConsumer(
                         cancellationToken: Context.CancellationToken))
                 {
                     logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Id} with MessageId {MessageId}", message.ReferenceNumber, messageId);
-                    await dbContext.SaveChangesAsync(Context.CancellationToken);
+                    await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
                     return;
                 }
 
@@ -126,7 +126,7 @@ internal class NotificationConsumer(
                 LogStatus("IsCreatedOrChanged=false", message);
             }
 
-            await dbContext.SaveChangesAsync(Context.CancellationToken);
+            await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
 
         }
     }

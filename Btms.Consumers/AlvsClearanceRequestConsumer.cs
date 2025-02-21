@@ -58,7 +58,7 @@ internal class AlvsClearanceRequestConsumer(
                     logger.LogWarning(
                         "Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}",
                         message.Header?.EntryReference, messageId);
-                    await dbContext.SaveChangesAsync(Context.CancellationToken);
+                    await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
                     return;
                 }
 
@@ -86,7 +86,7 @@ internal class AlvsClearanceRequestConsumer(
                     preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
 
-            await dbContext.SaveChangesAsync(Context.CancellationToken);
+            await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
         }
     }
 
