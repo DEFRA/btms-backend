@@ -13,7 +13,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
     public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(
         PreProcessingContext<ImportNotification> preProcessingContext, CancellationToken cancellationToken = default)
     {
-        if (!ShouldProcess(preProcessingContext.Message))
+        if (ShouldNotProcess(preProcessingContext.Message))
         {
             return PreProcessResult.NotProcessed<Model.Ipaffs.ImportNotification>();
         }
@@ -84,7 +84,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
                 existingNotification.Status == ImportNotificationStatusEnum.PartiallyRejected);
     }
 
-    private static bool ShouldProcess(ImportNotification notification)
+    private static bool ShouldNotProcess(ImportNotification notification)
     {
         return notification.Status == Types.Ipaffs.ImportNotificationStatusEnum.Amend
             || notification.Status == Types.Ipaffs.ImportNotificationStatusEnum.Draft
