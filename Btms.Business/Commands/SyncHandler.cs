@@ -170,7 +170,7 @@ public abstract class SyncCommand : IRequest, ISyncJob
                         var message = sensitiveDataSerializer.Deserialize<TRequest>(blobContent, _ => { })!;
                         var headers = new Dictionary<string, object>
                         {
-                            { "messageId", item.Name }, { "jobId", job.JobId }
+                            { "messageId", item.Name }, { "jobId", job.JobId }, { "use-lock", true }
                         };
                         if (BtmsDiagnostics.ActivitySource.HasListeners())
                         {

@@ -17,6 +17,7 @@ using SlimMessageBus.Host.Memory;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
 using AlvsClearanceRequest = Btms.Types.Alvs.AlvsClearanceRequest;
 using Decision = Btms.Types.Alvs.Decision;
+using ImportNotification = Btms.Types.Ipaffs.ImportNotification;
 
 namespace Btms.Consumers.Extensions
 {

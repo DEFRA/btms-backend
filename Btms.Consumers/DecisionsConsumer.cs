@@ -40,8 +40,8 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
                     movement.AlvsDecisionStatus.Context.DecisionComparison?.BtmsDecisionNumber,
                     movement.AlvsDecisionStatus.Context.AlvsDecisionNumber);
 
-                await dbContext.Movements.Update(movement, existingMovement._Etag);
-                await dbContext.SaveChangesAsync(Context.CancellationToken);
+                await dbContext.Movements.Update(movement, existingMovement._Etag, cancellationToken);
+                await dbContext.SaveChangesAsync(false, cancellationToken);
             }
             else
             {
