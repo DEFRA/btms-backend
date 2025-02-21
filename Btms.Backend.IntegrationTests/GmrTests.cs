@@ -1,11 +1,7 @@
 using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Consumers.Extensions;
 using Btms.Types.Gvms;
 using FluentAssertions;
-using TestDataGenerator;
 using TestDataGenerator.Scenarios.SpecificFiles;
-using TestGenerator.IntegrationTesting.Backend.Extensions;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,7 +17,7 @@ public class GmrTests : BaseApiTests, IClassFixture<ApplicationFactory>
     [Fact]
     public async Task GmrImport_ShouldCreateAndThenUpdate()
     {
-        await Client.ClearDb();
+        await ClearDb();
         await LoadData<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
@@ -40,7 +36,7 @@ public class GmrTests : BaseApiTests, IClassFixture<ApplicationFactory>
     [Fact]
     public async Task GmrImport_PreservesLocalDateTimes()
     {
-        await Client.ClearDb();
+        await ClearDb();
         await LoadData<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         var result = await Client.AsHttpClient().GetStringAsync("api/gmrs/GMRAPOQSPDUG");
