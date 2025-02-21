@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
+using Btms.Common.Enum;
 using Btms.Common.Extensions;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
@@ -49,6 +50,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.BtmsStatus.LinkStatus,
                 m.BtmsStatus.Status,
                 m.BtmsStatus.Segment,
+                m.BtmsStatus.BusinessDecisionStatus,
                 m.AlvsDecisionStatus.Context.DecisionComparison,
                 HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
                 ContiguousAlvsClearanceRequestVersionsFrom1 =
@@ -69,6 +71,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 m.Status,
                 m.Segment,
                 DecisionStatus = (m.DecisionComparison == null) ? DecisionStatusEnum.None : m.DecisionComparison!.DecisionStatus,
+                m.BusinessDecisionStatus,
                 DecisionMatched = (m.DecisionComparison != null) && m.DecisionComparison!.DecisionMatched,
                 m.HasNotificationRelationships,
                 Total = m.MaxDecisionNumber + m.MaxEntryVersion + m.LinkedCheds + m.ItemCount,
@@ -76,21 +79,22 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 ContiguousAlvsClearanceRequestVersionsFrom1 = m.ContiguousAlvsClearanceRequestVersionsFrom1.Count() == m.MaxEntryVersion
             });
 
-        var unMatchedGroupedByMrnStatus = simplifiedMovementView
+        var unMatchedGroupedByDecisionStatus = simplifiedMovementView
             .Where(r => !r.DecisionMatched)
             .GroupBy(r => new { r.DecisionStatus, r.Status, r.Segment })
             .Execute(logger);
 
+
         if (summary)
         {
-            foreach (var g in unMatchedGroupedByMrnStatus)
+            foreach (var g in unMatchedGroupedByDecisionStatus)
             {
                 exceptionsSummary.Values.Add(FormatUnmatched(g.Key.DecisionStatus, g.Key.Status, g.Key.Segment), g.Count());
             }
         }
         else
         {
-            foreach (var g in unMatchedGroupedByMrnStatus)
+            foreach (var g in unMatchedGroupedByDecisionStatus)
             {
                 exceptionsResult.AddRange(g
                     .OrderBy(a => -a.Total)
@@ -109,6 +113,45 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                             MaxDecisionNumber = r.MaxDecisionNumber,
                             LinkedCheds = r.LinkedCheds,
                             Reason = FormatUnmatched(g.Key.DecisionStatus, g.Key.Status, g.Key.Segment)
+                        })
+                );
+            }
+        }
+
+
+        var unMatchedGroupedByBusinessDecisionStatus = simplifiedMovementView
+            .Where(r => !r.DecisionMatched)
+            .GroupBy(r => r.BusinessDecisionStatus)
+            .Execute(logger);
+
+        if (summary)
+        {
+            foreach (var g in unMatchedGroupedByBusinessDecisionStatus)
+            {
+                exceptionsSummary.Values.Add(g.Key.GetValue(), g.Count());
+            }
+        }
+        else
+        {
+            foreach (var g in unMatchedGroupedByBusinessDecisionStatus)
+            {
+                exceptionsResult.AddRange(g
+                    .OrderBy(a => -a.Total)
+                    .Take(10)
+                    .Select(r =>
+                        new ExceptionResult()
+                        {
+                            Resource = Movement,
+                            Id = r.Id!,
+                            UpdatedSource = r.UpdatedSource!.Value,
+                            UpdatedEntity = r.UpdatedEntity,
+                            Updated = r.Updated,
+                            ItemCount = r.ItemCount,
+                            ChedTypes = r.ChedTypes!,
+                            MaxEntryVersion = r.MaxEntryVersion,
+                            MaxDecisionNumber = r.MaxDecisionNumber,
+                            LinkedCheds = r.LinkedCheds,
+                            Reason = g.Key.GetValue()
                         })
                 );
             }
