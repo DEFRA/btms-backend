@@ -1,16 +1,11 @@
 using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Types.Alvs;
 using Btms.Types.Gvms;
-using Btms.Types.Ipaffs;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using TestDataGenerator.Helpers;
 using TestDataGenerator.Scenarios.ChedP;
-using TestGenerator.IntegrationTesting.Backend.Fixtures;
 using TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 using Xunit;
 using Xunit.Abstractions;
-using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Backend.IntegrationTests;
 
@@ -20,37 +15,14 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory,
         testOutputHelper, "AsbSmokeTests")
     {
-        factory.ConfigureHostConfiguration = configurationBuilder =>
-        {
-            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { "ConsumerOptions:EnableAsbConsumers", "true" }
-            });
-        };
+        factory.EnableAzureServiceBusConsumers = true;
     }
 
     [Fact]
     public async Task AsbSmokeTest_NotificationsAndMovements()
     {
         await ClearDb();
-        var testGeneratorFixture = new TestGeneratorFixture(Factory.TestOutputHelper);
-        var generatorResult = testGeneratorFixture.GenerateTestData<SimpleMatchScenarioGenerator>();
-
-        foreach (var generatedResult in generatorResult)
-        {
-            switch (generatedResult.Message)
-            {
-                case AlvsClearanceRequest cr:
-                    await ServiceBusHelper.PublishClearanceRequest(cr);
-                    break;
-                case Decision d:
-                    await ServiceBusHelper.PublishDecision(d);
-                    break;
-                case ImportNotification n:
-                    await ServiceBusHelper.PublishNotification(n);
-                    break;
-            }
-        }
+        await PublishMessagesToAzureServiceBus<SimpleMatchScenarioGenerator>();
 
         ManyItemsJsonApiDocument document;
 
@@ -75,7 +47,7 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
             .With(x => x.UpdatedSource, DateTime.Now)
             .ValidateAndBuild();
 
-        await ServiceBusHelper.PublishGmr(gmr);
+        await AzureServiceBusHelper.PublishGmr(gmr);
 
         ManyItemsJsonApiDocument document;
 
@@ -92,7 +64,7 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
             .With(x => x.UpdatedSource, DateTime.Now)
             .ValidateAndBuild();
 
-        await ServiceBusHelper.PublishGmr(gmr);
+        await AzureServiceBusHelper.PublishGmr(gmr);
 
         ShouldEventually.Be(() =>
             {
