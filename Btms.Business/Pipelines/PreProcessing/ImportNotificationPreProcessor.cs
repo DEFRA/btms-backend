@@ -13,8 +13,7 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
     public async Task<PreProcessingResult<Model.Ipaffs.ImportNotification>> Process(
         PreProcessingContext<ImportNotification> preProcessingContext, CancellationToken cancellationToken = default)
     {
-        if (preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Amend
-            || preProcessingContext.Message.Status == Types.Ipaffs.ImportNotificationStatusEnum.Draft)
+        if (!ShouldProcess(preProcessingContext.Message))
         {
             return PreProcessResult.NotProcessed<Model.Ipaffs.ImportNotification>();
         }
@@ -83,5 +82,12 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
                (existingNotification.Status == ImportNotificationStatusEnum.Validated ||
                 existingNotification.Status == ImportNotificationStatusEnum.Rejected ||
                 existingNotification.Status == ImportNotificationStatusEnum.PartiallyRejected);
+    }
+
+    private static bool ShouldProcess(ImportNotification notification)
+    {
+        return notification.Status == Types.Ipaffs.ImportNotificationStatusEnum.Amend
+            || notification.Status == Types.Ipaffs.ImportNotificationStatusEnum.Draft
+            || notification.ReferenceNumber!.StartsWith("DRAFT", StringComparison.InvariantCultureIgnoreCase);
     }
 }

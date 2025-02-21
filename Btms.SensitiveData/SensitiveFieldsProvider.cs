@@ -35,12 +35,17 @@ public class SensitiveFieldsProvider : ISensitiveFieldsProvider
         var resourceName = $"Btms.SensitiveData.FieldsList.{type.Name}.txt";
 
         using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)!)
-        using (StreamReader reader = new StreamReader(stream))
         {
-            while (reader.Peek() != -1)
+            if (stream is not null)
             {
-                var s = reader.ReadLine();
-                if (s != null) list.Add(s);
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    while (reader.Peek() != -1)
+                    {
+                        var s = reader.ReadLine();
+                        if (s != null) list.Add(s);
+                    }
+                }
             }
         }
 
