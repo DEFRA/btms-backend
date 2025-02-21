@@ -14,6 +14,8 @@ using Btms.Model.Gvms;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 using Btms.Business.Builders;
 using Btms.Types.Alvs.Mapping;
+using AsyncKeyedLock;
+using System.Threading;
 
 namespace Btms.Consumers;
 
@@ -31,7 +33,27 @@ internal class NotificationConsumer(
     ILinker<Gmr, Model.Ipaffs.ImportNotification> gmrLinker)
 : IConsumer<ImportNotification>, IConsumerWithContext
 {
+    private static readonly AsyncKeyedLocker<string> _asyncKeyedLocker = new();
+    private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
     public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
+    {
+        IDisposable? asyncLock = null;
+        try
+        {
+            if (Context.UseLock())
+            {
+                asyncLock = await _asyncKeyedLocker.LockOrNullAsync(message.ReferenceNumber!, _timeout, cancellationToken);
+            }
+
+            await Process(message, cancellationToken);
+        }
+        finally
+        {
+            asyncLock?.Dispose();
+        }
+    }
+
+    private async Task Process(ImportNotification message, CancellationToken cancellationToken)
     {
         var messageId = Context.GetMessageId();
         using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.ReferenceNumber!))
