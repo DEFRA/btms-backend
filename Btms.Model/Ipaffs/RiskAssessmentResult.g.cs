@@ -26,6 +26,7 @@ public partial class RiskAssessmentResult  //
     /// List of risk assessed commodities
     /// </summary>
     [Attr]
+    [JsonPropertyName("commodityResults")]
     [System.ComponentModel.Description("List of risk assessed commodities")]
     public CommodityRiskResult[]? CommodityResults { get; set; }
 
@@ -34,7 +35,9 @@ public partial class RiskAssessmentResult  //
     /// Date and time of assessment
     /// </summary>
     [Attr]
+    [JsonPropertyName("assessedOn")]
     [System.ComponentModel.Description("Date and time of assessment")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(AssessedOn)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? AssessedOn { get; set; }
 
 }

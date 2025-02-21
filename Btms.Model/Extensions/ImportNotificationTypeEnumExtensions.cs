@@ -1,6 +1,7 @@
 using Btms.Model.Ipaffs;
+using Btms.Common.Enum;
 
-namespace Btms.Model.Extensions;
+namespace Btms.Common.Extensions;
 
 public static class ImportNotificationTypeEnumExtensions
 {
@@ -24,7 +25,7 @@ public static class ImportNotificationTypeEnumExtensions
 
     public static string FromImportNotificationTypeEnumString(this string s)
     {
-        var e = Enum.Parse<ImportNotificationTypeEnum>(s);
+        var e = System.Enum.Parse<ImportNotificationTypeEnum>(s);
         return e.AsString();
     }
 }

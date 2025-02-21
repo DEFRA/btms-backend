@@ -1,3 +1,4 @@
+using Btms.Common.Enum;
 using Btms.Model;
 using Btms.Model.Cds;
 using FluentAssertions;

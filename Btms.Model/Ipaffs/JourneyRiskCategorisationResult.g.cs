@@ -26,6 +26,7 @@ public partial class JourneyRiskCategorisationResult  //
     /// Risk Level is defined using enum values High,Medium,Low
     /// </summary>
     [Attr]
+    [JsonPropertyName("riskLevel")]
     [System.ComponentModel.Description("Risk Level is defined using enum values High,Medium,Low")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public JourneyRiskCategorisationResultRiskLevelEnum? RiskLevel { get; set; }
@@ -35,6 +36,7 @@ public partial class JourneyRiskCategorisationResult  //
     /// Indicator of whether the risk level was determined by the system or by the user
     /// </summary>
     [Attr]
+    [JsonPropertyName("riskLevelMethod")]
     [System.ComponentModel.Description("Indicator of whether the risk level was determined by the system or by the user")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public JourneyRiskCategorisationResultRiskLevelMethodEnum? RiskLevelMethod { get; set; }
@@ -44,7 +46,9 @@ public partial class JourneyRiskCategorisationResult  //
     /// The date and time the risk level has been set for a notification
     /// </summary>
     [Attr]
+    [JsonPropertyName("riskLevelSetFor")]
     [System.ComponentModel.Description("The date and time the risk level has been set for a notification")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(RiskLevelSetFor)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? RiskLevelSetFor { get; set; }
 
 }

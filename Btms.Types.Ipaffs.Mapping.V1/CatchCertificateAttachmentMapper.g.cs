@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CatchCertificateAttachmentMapper
 {
-    public static Btms.Model.Ipaffs.CatchCertificateAttachment Map(Btms.Types.Ipaffs.CatchCertificateAttachment from)
+    public static Btms.Model.Ipaffs.CatchCertificateAttachment Map(Btms.Types.Ipaffs.CatchCertificateAttachment? from)
     {
         if (from is null)
         {

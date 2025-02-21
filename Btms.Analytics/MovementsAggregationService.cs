@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
+using Btms.Common.Enum;
 using Btms.Common.Extensions;
-using Btms.Model.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Auditing;
@@ -49,13 +49,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Select(g => new { g.Key, Count = g.Count() })
             .ToDictionary(g => g.Key, g => g.Count);
 
-        var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-
         return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers
                 .GetMovementStatusSegments()
-                .ToDictionary(status => enumLookup.GetValue(status), status => data.GetValueOrDefault(status, 0))
+                .ToDictionary(status => status.GetValue(), status => data.GetValueOrDefault(status, 0))
         });
     }
 
@@ -78,14 +76,12 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var maxCount = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.Count) : 0;
 
-        var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-
         return Task.FromResult(new MultiSeriesDataset<ByNumericDimensionResult>()
         {
             Series = AnalyticsHelpers.GetMovementStatusSegments()
                 .Select(status => new Series<ByNumericDimensionResult>()
                 {
-                    Name = enumLookup.GetValue(status),
+                    Name = status.GetValue(),
                     Dimension = "Item Count",
                     Results = Enumerable.Range(0, maxCount + 1)
                             .Select(i => new ByNumericDimensionResult
@@ -125,24 +121,22 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var maxReferences = mongoResult.Count > 0 ?
             mongoResult.Max(r => r.DocumentReferenceCount) : 0;
 
-        var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-
         return Task.FromResult(new MultiSeriesDataset<ByNumericDimensionResult>()
         {
             Series = AnalyticsHelpers.GetMovementStatusSegments()
-                .Select(status => new Series<ByNumericDimensionResult>()
-                {
-                    Name = enumLookup.GetValue(status),
-                    Dimension = "Document Reference Count",
-                    Results = Enumerable.Range(0, maxReferences + 1)
-                        .Select(i => new ByNumericDimensionResult
-                        {
-                            Dimension = i,
-                            Value = dictionary.GetValueOrDefault(new { LinkStatus = status, DocumentReferenceCount = i },
-                                0)
-                        }).ToList()
-                })
-                .ToList()
+            .Select(status => new Series<ByNumericDimensionResult>()
+            {
+                Name = status.GetValue(),
+                Dimension = "Document Reference Count",
+                Results = Enumerable.Range(0, maxReferences + 1)
+                    .Select(i => new ByNumericDimensionResult
+                    {
+                        Dimension = i,
+                        Value = dictionary.GetValueOrDefault(new { LinkStatus = status, DocumentReferenceCount = i },
+                            0)
+                    }).ToList()
+            })
+            .ToList()
         });
     }
 
@@ -292,15 +286,60 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             .Movements
             .GetAggregatedRecordsDictionary(logger, filter, projection, group, datasetGroup, createDatasetName);
 
-        var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
-
         var output = AnalyticsHelpers.GetMovementStatusSegments()
-            .Select(status => mongoResult.AsDataset(dateRange, enumLookup.GetValue(status)))
+            .Select(status => mongoResult.AsDataset(dateRange, status.GetValue()))
             .AsOrderedArray(m => m.Name);
 
         logger.LogDebug(AggregatedMessage, output.ToList().ToJsonString());
 
         return Task.FromResult(new MultiSeriesDatetimeDataset() { Series = output.ToList() });
+    }
+
+    public Task<SingleSeriesDataset> ByBusinessDecisionStatus(DateTime from, DateTime to, bool finalisedOnly, ImportNotificationTypeEnum[]? chedTypes = null,
+        string? country = null)
+    {
+        BusinessDecisionStatusEnum[] exclude = [
+            BusinessDecisionStatusEnum.CancelledOrDestroyed
+        ];
+
+        var mongoQuery = context
+            .Movements
+            .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
+            .Where(m => !exclude.Contains(m.BtmsStatus.BusinessDecisionStatus))
+            .Select(m => new
+            {
+                Movement = m,
+                DecisionStatus = m.BtmsStatus.BusinessDecisionStatus
+            })
+            .GroupBy(d => new
+            {
+                d.DecisionStatus
+            })
+            .Select(g => new
+            {
+                g.Key,
+                Count = g.Count()
+            })
+            .Execute(logger);
+
+        logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
+
+        var values = mongoQuery
+            .GroupBy(q => q.Key.DecisionStatus)
+            .Select(g => new { g.Key, Sum = g.Sum(k => k.Count) })
+            .OrderBy(s => s.Key)
+            .ToDictionary(
+                g => g.Key.GetValue(),
+                g => g.Sum
+            );
+
+        // Works
+        var result = new SingleSeriesDataset()
+        {
+            Values = values
+        };
+
+        return Task.FromResult(result);
     }
 
     public Task<SingleSeriesDataset> ByAlvsDecision(DateTime from,
@@ -387,13 +426,12 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
-        var enumLookup = new JsonStringEnumConverterEx<DecisionStatusEnum>();
         var summaryValues = mongoQuery
             .GroupBy(q => q.Key.DecisionStatus)
             .Select(g => new { g.Key, Sum = g.Sum(k => k.Count) })
             .OrderBy(s => s.Key)
             .ToDictionary(
-                g => enumLookup.GetValue(g.Key),
+                g => g.Key.GetValue(),
                 g => g.Sum
             );
 
@@ -410,7 +448,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             {
                 Fields = new Dictionary<string, string>()
                     {
-                        { "Classification", enumLookup.GetValue(a.Key.DecisionStatus) },
+                        { "Classification", a.Key.DecisionStatus.GetValue() },
                         { "CheckCode", a.Key.CheckCode! },
                         { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
                         { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
@@ -457,14 +495,13 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
 
         logger.LogDebug(AggregatedMessage, mongoQuery.ToJsonString());
 
-        var enumLookup = new JsonStringEnumConverterEx<MovementSegmentEnum>();
         var summaryValues = mongoQuery
             .GroupBy(q => q.Key.Segment)
             .Select(g => new { g.Key, Sum = g.Sum(k => k.Count) })
             .OrderBy(s => s.Key)
             // .Where(g => g)
             .ToDictionary(
-                g => enumLookup.GetValue(g.Key ?? MovementSegmentEnum.None),
+                g => (g.Key ?? MovementSegmentEnum.None).GetValue(),
                 g => g.Sum
             );
 
@@ -481,11 +518,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
             {
                 Fields = new Dictionary<string, string>()
                     {
-                        // { "Classification", enumLookup.GetValue(a.Key!.Segment) },
-                        { "Classification", enumLookup.GetValue(a.Key.Segment ?? MovementSegmentEnum.None) },
-                        // { "CheckCode", a.Key.CheckCode! },
-                        // { "AlvsDecisionCode", a.Key.AlvsDecisionCode! },
-                        // { "BtmsDecisionCode", a.Key.BtmsDecisionCode! }
+                        { "Classification", (a.Key.Segment ?? MovementSegmentEnum.None).GetValue() }
                     },
                 Value = a.Count
             })

@@ -26,14 +26,16 @@ public partial class DetailsOnReExport  //
     /// Date of re-export
     /// </summary>
     [Attr]
+    [JsonPropertyName("date")]
     [System.ComponentModel.Description("Date of re-export")]
-    public DateTime? Date { get; set; }
+    public DateOnly? Date { get; set; }
 
 
     /// <summary>
     /// Number of vehicle
     /// </summary>
     [Attr]
+    [JsonPropertyName("meansOfTransportNo")]
     [System.ComponentModel.Description("Number of vehicle")]
     public string? MeansOfTransportNo { get; set; }
 
@@ -42,6 +44,7 @@ public partial class DetailsOnReExport  //
     /// Type of transport to be used
     /// </summary>
     [Attr]
+    [JsonPropertyName("transportType")]
     [System.ComponentModel.Description("Type of transport to be used")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public DetailsOnReExportTransportTypeEnum? TransportType { get; set; }
@@ -51,6 +54,7 @@ public partial class DetailsOnReExport  //
     /// Document issued for re-export
     /// </summary>
     [Attr]
+    [JsonPropertyName("document")]
     [System.ComponentModel.Description("Document issued for re-export")]
     public string? Document { get; set; }
 
@@ -59,6 +63,7 @@ public partial class DetailsOnReExport  //
     /// Two letter ISO code for country of re-dispatching
     /// </summary>
     [Attr]
+    [JsonPropertyName("countryOfReDispatching")]
     [System.ComponentModel.Description("Two letter ISO code for country of re-dispatching")]
     public string? CountryOfReDispatching { get; set; }
 
@@ -67,6 +72,7 @@ public partial class DetailsOnReExport  //
     /// Exit BIP (where consignment will leave the country)
     /// </summary>
     [Attr]
+    [JsonPropertyName("exitBip")]
     [System.ComponentModel.Description("Exit BIP (where consignment will leave the country)")]
     public string? ExitBip { get; set; }
 

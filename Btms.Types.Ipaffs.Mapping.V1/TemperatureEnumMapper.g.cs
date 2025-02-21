@@ -17,7 +17,6 @@ public static class TemperatureEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.TemperatureEnum.Ambient => Btms.Model.Ipaffs.TemperatureEnum.Ambient,

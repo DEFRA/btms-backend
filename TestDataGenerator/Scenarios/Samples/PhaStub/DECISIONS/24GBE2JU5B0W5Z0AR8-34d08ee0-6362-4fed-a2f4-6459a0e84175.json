@@ -1,0 +1,75 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "ALVS",
+    "destinationSystem": "CDS",
+    "correlationId": "000",
+    "serviceCallTimestamp": 1734696876434
+  },
+  "header": {
+    "entryReference": "24GBE2JU5B0W5Z0AR8",
+    "entryVersionNumber": 1,
+    "decisionNumber": 1
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    },
+    {
+      "itemNumber": 2,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    },
+    {
+      "itemNumber": 3,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    },
+    {
+      "itemNumber": 4,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    },
+    {
+      "itemNumber": 5,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    }
+  ]
+}

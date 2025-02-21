@@ -1,3 +1,5 @@
+using Btms.Common.Extensions;
+
 namespace Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
 
 public enum Model
@@ -7,11 +9,32 @@ public enum Model
     Both
 }
 
+public enum DateTimeType
+{
+    Epoch,
+    Local,
+    Utc
+}
+
+public enum DateOnlyType
+{
+    Standard,
+    Flexible
+}
+
 internal class PropertyMap(string name)
 {
     public string Name { get; set; } = name;
 
+    public string? SourceJsonPropertyName { get; set; }
+
+    public string? InternalJsonPropertyName { get; set; }
+
     public string Type { get; set; } = null!;
+
+    public DateTimeType? DateTimeType { get; set; } = null!;
+
+    public DateOnlyType? DateOnlyType { get; set; } = null!;
 
     public string InternalType { get; set; } = null!;
 
@@ -19,9 +42,9 @@ internal class PropertyMap(string name)
 
     public bool TypeOverwritten { get; set; }
 
-    public List<string> SourceAttributes { get; set; } = new();
+    public List<string> SourceAttributes { get; set; } = [];
 
-    public List<string> InternalAttributes { get; set; } = new();
+    public List<string> InternalAttributes { get; set; } = [];
 
     public bool AttributesOverwritten { get; set; }
 
@@ -50,29 +73,37 @@ internal class PropertyMap(string name)
 
     public PropertyMap SetInternalType(string type)
     {
-        InternalType = type ?? throw new ArgumentNullException("type");
+        InternalType = type ?? throw new ArgumentNullException(nameof(type));
         InternalTypeOverwritten = true;
         return this;
     }
 
-    public PropertyMap SetType(string type)
+    public PropertyMap SetType(string type, string? internalType = null)
     {
-        Type = type ?? throw new ArgumentNullException("type");
-        InternalType = Type;
-        InternalTypeOverwritten = true;
+        Type = type ?? throw new ArgumentNullException(nameof(type));
+        InternalType = internalType ?? type;
+        InternalTypeOverwritten = internalType.HasValue();
         TypeOverwritten = true;
         return this;
     }
 
-    public PropertyMap IsDateTime()
+    public PropertyMap IsDateTime(DateTimeType type)
     {
         SetType("DateTime");
+        DateTimeType = type;
+
         return this;
     }
 
-    public PropertyMap IsDate()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dateOnlyOnlyType">Adds an attribute that allows the date only property to be controlled</param>
+    /// <returns></returns>
+    public PropertyMap IsDate(DateOnlyType dateOnlyOnlyType = ClassMaps.DateOnlyType.Standard)
     {
         SetType("DateOnly");
+        DateOnlyType = dateOnlyOnlyType;
         return this;
     }
 
@@ -82,30 +113,56 @@ internal class PropertyMap(string name)
         return this;
     }
 
-    public PropertyMap SetName(string name)
+    private static void GuardNameFormat(string? name)
     {
+        if (!name.StartsWithLowercase())
+        {
+            throw new InvalidOperationException(
+                "Name must start with lowercase letter");
+        }
+    }
+
+    public PropertyMap SetName(string name, string? internalName = null)
+    {
+        GuardNameFormat(name);
+        GuardNameFormat(internalName);
+
         SetSourceName(name);
-        SetInternalName(name);
+        SetInternalName(internalName ?? name);
         return this;
     }
 
     public PropertyMap SetSourceName(string name)
     {
-        OverriddenSourceName = name ?? throw new ArgumentNullException("name");
+        GuardNameFormat(name);
+
+        OverriddenSourceName = name ?? throw new ArgumentNullException(nameof(name));
         SourceNameOverwritten = true;
         return this;
     }
 
     public PropertyMap SetInternalName(string name)
     {
-        OverriddenInternalName = name ?? throw new ArgumentNullException("name");
+        GuardNameFormat(name);
+
+        OverriddenInternalName = name ?? throw new ArgumentNullException(nameof(name));
         InternalNameOverwritten = true;
         return this;
     }
 
-    public PropertyMap IsSensitive()
+    public PropertyMap SetSourceJsonPropertyName(string name)
     {
-        AddAttribute("[Btms.SensitiveData.SensitiveData]", Model.Source);
+        GuardNameFormat(name);
+
+        SourceJsonPropertyName = name;
+        return this;
+    }
+
+    public PropertyMap SetInternalJsonPropertyName(string name)
+    {
+        GuardNameFormat(name);
+
+        InternalJsonPropertyName = name;
         return this;
     }
 
@@ -137,7 +194,7 @@ internal class PropertyMap(string name)
     {
         if (string.IsNullOrEmpty(attribute))
         {
-            throw new ArgumentNullException("attribute");
+            throw new ArgumentNullException(nameof(attribute));
         }
 
         switch (model)

@@ -32,6 +32,30 @@ public class MatchingServiceTests
         matchResult.NoMatches.Count.Should().Be(movements[0].Items.Count);
     }
 
+
+    [Fact]
+    public async Task SimpleIgnoreMatchTest()
+    {
+        // Arrange
+        var movements = GenerateMovements();
+        movements.ForEach(x => x.Items.ForEach(x =>
+        {
+            foreach (var document in x.Documents!)
+            {
+                document.DocumentReference = "INVALID";
+            }
+        }));
+        var sut = new MatchingService();
+        var context = new MatchingContext(new List<ImportNotification>(), movements);
+
+        // Act
+        var matchResult = await sut.Process(context, CancellationToken.None);
+
+        // Assert
+        matchResult.NoMatches.Count.Should().Be(0);
+        matchResult.NoMatches.Count.Should().Be(0);
+    }
+
     [Fact]
     public async Task SimpleMatchTest()
     {
@@ -52,7 +76,7 @@ public class MatchingServiceTests
     {
         CrNoMatchScenarioGenerator generator =
             new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
-        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator
@@ -73,7 +97,7 @@ public class MatchingServiceTests
         ChedASimpleMatchScenarioGenerator generator =
             new ChedASimpleMatchScenarioGenerator(NullLogger<ChedASimpleMatchScenarioGenerator>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
-        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 

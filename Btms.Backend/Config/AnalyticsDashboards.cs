@@ -16,16 +16,6 @@ public class DateRange
     public DateTime? From { get; set; }
     [FromQuery(Name = "dateTo")]
     public DateTime? To { get; set; }
-
-    // public static DateRange Default()
-    // {
-    //     return new DateRange() { From = DateTime.Now, To = DateTime.Now };
-    // }
-    // public static bool TryParse(string query, out DateRange dateRange)
-    // {
-    //     dateRange = new DateRange() { From = DateTime.Now, To = DateTime.Now };
-    //     return true;
-    // }
 }
 
 public static class AnalyticsDashboards
@@ -118,6 +108,10 @@ public static class AnalyticsDashboards
             {
                 "lastMonthImportNotificationsByCommodityCount",
                 () => importService.ByCommodityCount(DateTime.Today.MonthAgo(), DateTime.Now).AsIDataset()
+            },
+            {
+                "decisionsByBusinessDecisionStatus",
+                () => movementsService.ByBusinessDecisionStatus(dateRange.From ?? DateTime.Today.MonthAgo(), dateRange.To ?? DateTime.Now, finalisedOnly, chedTypes, country).AsIDataset()
             },
             {
                 "decisionsByDecisionCode",

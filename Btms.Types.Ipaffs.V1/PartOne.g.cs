@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class PartOne  //
 {
 
@@ -153,10 +150,6 @@ public partial class PartOne  //
     [JsonPropertyName("isGVMSRoute")]
     public bool? IsGvmsRoute { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("commodities")]
     public Commodities? Commodities { get; set; }
 
@@ -263,7 +256,6 @@ public partial class PartOne  //
     /// Reference number added by the importer
     /// </summary>
     [JsonPropertyName("importerLocalReferenceNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? ImporterLocalReferenceNumber { get; set; }
 
 
@@ -327,6 +319,7 @@ public partial class PartOne  //
     /// Date of Port Exit for EU Import Notification.
     /// </summary>
     [JsonPropertyName("portOfExitDate")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(PortOfExitDate))]
     public DateTime? PortOfExitDate { get; set; }
 
 
@@ -350,10 +343,6 @@ public partial class PartOne  //
     [JsonPropertyName("originalEstimatedDateTime")]
     public DateTime? OriginalEstimatedOn { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("billingInformation")]
     public BillingInformation? BillingInformation { get; set; }
 
@@ -371,10 +360,6 @@ public partial class PartOne  //
     [JsonPropertyName("wasChargeable")]
     public bool? WasChargeable { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("commonUserCharge")]
     public CommonUserCharge? CommonUserCharge { get; set; }
 

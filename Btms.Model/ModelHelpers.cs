@@ -1,5 +1,5 @@
 using Btms.Model.Ipaffs;
-using Btms.Model.Extensions;
+using Btms.Common.Extensions;
 
 namespace Btms.Model;
 

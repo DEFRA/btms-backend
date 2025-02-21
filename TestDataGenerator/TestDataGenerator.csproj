@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+  <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,6 +7,11 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="Btms.Backend.IntegrationTests" />
+    <InternalsVisibleTo Include="Btms.Business.Tests" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="5.0.0-preview0011"/>
@@ -34,6 +39,7 @@
     <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
     <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
     <ProjectReference Include="..\Btms.Types.Alvs.V1\Btms.Types.Alvs.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Gvms.V1\Btms.Types.Gvms.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
   </ItemGroup>
 

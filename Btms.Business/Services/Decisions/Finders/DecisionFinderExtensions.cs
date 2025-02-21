@@ -38,8 +38,8 @@ internal static class DecisionFinderExtensions
             }
 
             if (notification.PartTwo?.InspectionRequired == InspectionRequiredEnum.Required ||
-                notification.RiskAssessment?.CommodityResults?.Any(x => x.HmiDecision == CommodityRiskResultHmiDecisionEnum.Required) is true
-                                                                       || notification.RiskAssessment?.CommodityResults?.Any(x => x.PhsiDecision == CommodityRiskResultPhsiDecisionEnum.Required) is true)
+                notification.Commodities.Any(x => x.RiskAssesment?.HmiDecision == CommodityRiskResultHmiDecisionEnum.Required) ||
+                notification.Commodities.Any(x => x.RiskAssesment?.PhsiDecision == CommodityRiskResultPhsiDecisionEnum.Required))
             {
                 decisionCode = DecisionCode.H02;
                 return true;

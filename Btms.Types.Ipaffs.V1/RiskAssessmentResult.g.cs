@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Result of risk assessment by the risk scorer
 /// </summary>
@@ -32,6 +33,7 @@ public partial class RiskAssessmentResult  //
     /// Date and time of assessment
     /// </summary>
     [JsonPropertyName("assessmentDateTime")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(AssessmentDateTime))]
     public DateTime? AssessmentDateTime { get; set; }
 
 }

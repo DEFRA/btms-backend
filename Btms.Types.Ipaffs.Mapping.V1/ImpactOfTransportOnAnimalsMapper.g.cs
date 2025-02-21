@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class ImpactOfTransportOnAnimalsMapper
 {
-    public static Btms.Model.Ipaffs.ImpactOfTransportOnAnimals Map(Btms.Types.Ipaffs.ImpactOfTransportOnAnimals from)
+    public static Btms.Model.Ipaffs.ImpactOfTransportOnAnimals Map(Btms.Types.Ipaffs.ImpactOfTransportOnAnimals? from)
     {
         if (from is null)
         {

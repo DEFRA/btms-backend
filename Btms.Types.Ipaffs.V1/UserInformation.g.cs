@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Information about logged-in user
 /// </summary>
@@ -25,7 +26,6 @@ public partial class UserInformation  //
     /// Display name
     /// </summary>
     [JsonPropertyName("displayName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? DisplayName { get; set; }
 
 

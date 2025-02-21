@@ -14,47 +14,32 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class DecisionMapper
 {
-    public static Btms.Model.Ipaffs.Decision Map(Btms.Types.Ipaffs.Decision from)
+    public static Btms.Model.Ipaffs.Decision Map(Btms.Types.Ipaffs.Decision? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.Decision();
         to.ConsignmentAcceptable = from?.ConsignmentAcceptable;
         to.NotAcceptableAction = DecisionNotAcceptableActionEnumMapper.Map(from?.NotAcceptableAction);
-        to.NotAcceptableActionDestructionReason =
-            DecisionNotAcceptableActionDestructionReasonEnumMapper.Map(from?.NotAcceptableActionDestructionReason);
-        to.NotAcceptableActionEntryRefusalReason =
-            DecisionNotAcceptableActionEntryRefusalReasonEnumMapper.Map(from?.NotAcceptableActionEntryRefusalReason);
-        to.NotAcceptableActionQuarantineImposedReason =
-            DecisionNotAcceptableActionQuarantineImposedReasonEnumMapper.Map(from
-                ?.NotAcceptableActionQuarantineImposedReason);
-        to.NotAcceptableActionSpecialTreatmentReason =
-            DecisionNotAcceptableActionSpecialTreatmentReasonEnumMapper.Map(from
-                ?.NotAcceptableActionSpecialTreatmentReason);
-        to.NotAcceptableActionIndustrialProcessingReason =
-            DecisionNotAcceptableActionIndustrialProcessingReasonEnumMapper.Map(from
-                ?.NotAcceptableActionIndustrialProcessingReason);
-        to.NotAcceptableActionReDispatchReason =
-            DecisionNotAcceptableActionReDispatchReasonEnumMapper.Map(from?.NotAcceptableActionReDispatchReason);
-        to.NotAcceptableActionUseForOtherPurposesReason =
-            DecisionNotAcceptableActionUseForOtherPurposesReasonEnumMapper.Map(from
-                ?.NotAcceptableActionUseForOtherPurposesReason);
+        to.NotAcceptableActionDestructionReason = DecisionNotAcceptableActionDestructionReasonEnumMapper.Map(from?.NotAcceptableActionDestructionReason);
+        to.NotAcceptableActionEntryRefusalReason = DecisionNotAcceptableActionEntryRefusalReasonEnumMapper.Map(from?.NotAcceptableActionEntryRefusalReason);
+        to.NotAcceptableActionQuarantineImposedReason = DecisionNotAcceptableActionQuarantineImposedReasonEnumMapper.Map(from?.NotAcceptableActionQuarantineImposedReason);
+        to.NotAcceptableActionSpecialTreatmentReason = DecisionNotAcceptableActionSpecialTreatmentReasonEnumMapper.Map(from?.NotAcceptableActionSpecialTreatmentReason);
+        to.NotAcceptableActionIndustrialProcessingReason = DecisionNotAcceptableActionIndustrialProcessingReasonEnumMapper.Map(from?.NotAcceptableActionIndustrialProcessingReason);
+        to.NotAcceptableActionReDispatchReason = DecisionNotAcceptableActionReDispatchReasonEnumMapper.Map(from?.NotAcceptableActionReDispatchReason);
+        to.NotAcceptableActionUseForOtherPurposesReason = DecisionNotAcceptableActionUseForOtherPurposesReasonEnumMapper.Map(from?.NotAcceptableActionUseForOtherPurposesReason);
         to.NotAcceptableDestructionReason = from?.NotAcceptableDestructionReason;
         to.NotAcceptableActionOtherReason = from?.NotAcceptableActionOtherReason;
         to.NotAcceptableActionByDate = from?.NotAcceptableActionByDate;
-        to.ChedppNotAcceptableReasons = from?.ChedppNotAcceptableReasons
-            ?.Select(x => ChedppNotAcceptableReasonMapper.Map(x)).ToArray();
+        to.ChedppNotAcceptableReasons = from?.ChedppNotAcceptableReasons?.Select(x => ChedppNotAcceptableReasonMapper.Map(x)).ToArray();
         to.NotAcceptableReasons = from?.NotAcceptableReasons;
         to.NotAcceptableCountry = from?.NotAcceptableCountry;
         to.NotAcceptableEstablishment = from?.NotAcceptableEstablishment;
         to.NotAcceptableOtherReason = from?.NotAcceptableOtherReason;
-        to.DetailsOfControlledDestinations = PartyMapper.Map(from?.DetailsOfControlledDestinations!);
-        to.SpecificWarehouseNonConformingConsignment =
-            DecisionSpecificWarehouseNonConformingConsignmentEnumMapper.Map(from
-                ?.SpecificWarehouseNonConformingConsignment);
+        to.DetailsOfControlledDestinations = PartyMapper.Map(from?.DetailsOfControlledDestinations);
+        to.SpecificWarehouseNonConformingConsignment = DecisionSpecificWarehouseNonConformingConsignmentEnumMapper.Map(from?.SpecificWarehouseNonConformingConsignment);
         to.TemporaryDeadline = from?.TemporaryDeadline;
         to.DecisionEnum = DecisionDecisionEnumMapper.Map(from?.DecisionEnum);
         to.FreeCirculationPurpose = DecisionFreeCirculationPurposeEnumMapper.Map(from?.FreeCirculationPurpose);

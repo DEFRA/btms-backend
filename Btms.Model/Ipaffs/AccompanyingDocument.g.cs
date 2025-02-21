@@ -26,6 +26,7 @@ public partial class AccompanyingDocument  //
     /// Additional document type
     /// </summary>
     [Attr]
+    [JsonPropertyName("documentType")]
     [System.ComponentModel.Description("Additional document type")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public AccompanyingDocumentDocumentTypeEnum? DocumentType { get; set; }
@@ -35,6 +36,7 @@ public partial class AccompanyingDocument  //
     /// Additional document reference
     /// </summary>
     [Attr]
+    [JsonPropertyName("documentReference")]
     [System.ComponentModel.Description("Additional document reference")]
     public string? DocumentReference { get; set; }
 
@@ -43,14 +45,16 @@ public partial class AccompanyingDocument  //
     /// Additional document issue date
     /// </summary>
     [Attr]
+    [JsonPropertyName("documentIssuedOn")]
     [System.ComponentModel.Description("Additional document issue date")]
-    public DateTime? DocumentIssuedOn { get; set; }
+    public DateOnly? DocumentIssuedOn { get; set; }
 
 
     /// <summary>
     /// The UUID used for the uploaded file in blob storage
     /// </summary>
     [Attr]
+    [JsonPropertyName("attachmentId")]
     [System.ComponentModel.Description("The UUID used for the uploaded file in blob storage")]
     public string? AttachmentId { get; set; }
 
@@ -59,6 +63,7 @@ public partial class AccompanyingDocument  //
     /// The original filename of the uploaded file
     /// </summary>
     [Attr]
+    [JsonPropertyName("attachmentFilename")]
     [System.ComponentModel.Description("The original filename of the uploaded file")]
     public string? AttachmentFilename { get; set; }
 
@@ -67,6 +72,7 @@ public partial class AccompanyingDocument  //
     /// The MIME type of the uploaded file
     /// </summary>
     [Attr]
+    [JsonPropertyName("attachmentContentType")]
     [System.ComponentModel.Description("The MIME type of the uploaded file")]
     public string? AttachmentContentType { get; set; }
 
@@ -75,6 +81,7 @@ public partial class AccompanyingDocument  //
     /// The UUID for the user that uploaded the file
     /// </summary>
     [Attr]
+    [JsonPropertyName("uploadUserId")]
     [System.ComponentModel.Description("The UUID for the user that uploaded the file")]
     public string? UploadUserId { get; set; }
 
@@ -83,6 +90,7 @@ public partial class AccompanyingDocument  //
     /// The UUID for the organisation that the upload user is associated with
     /// </summary>
     [Attr]
+    [JsonPropertyName("uploadOrganisationId")]
     [System.ComponentModel.Description("The UUID for the organisation that the upload user is associated with")]
     public string? UploadOrganisationId { get; set; }
 
@@ -91,6 +99,7 @@ public partial class AccompanyingDocument  //
     /// External reference of accompanying document, which relates to a downstream service
     /// </summary>
     [Attr]
+    [JsonPropertyName("externalReference")]
     [System.ComponentModel.Description("External reference of accompanying document, which relates to a downstream service")]
     public ExternalReference? ExternalReference { get; set; }
 

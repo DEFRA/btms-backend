@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Gvms;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class PlannedCrossing  //
 {
 
@@ -26,6 +22,7 @@ public partial class PlannedCrossing  //
     /// The ID of the crossing route, using a routeId from the GVMS reference data
     /// </summary>
     [Attr]
+    [JsonPropertyName("routeId")]
     [System.ComponentModel.Description("The ID of the crossing route, using a routeId from the GVMS reference data")]
     public string? RouteId { get; set; }
 
@@ -34,7 +31,9 @@ public partial class PlannedCrossing  //
     /// The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker
     /// </summary>
     [Attr]
+    [JsonPropertyName("departsAt")]
     [System.ComponentModel.Description("The planned date and time of departure, in local time of the departure port. Must not include seconds, time zone or UTC marker")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(DepartsAt)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
     public DateTime? DepartsAt { get; set; }
 
 }

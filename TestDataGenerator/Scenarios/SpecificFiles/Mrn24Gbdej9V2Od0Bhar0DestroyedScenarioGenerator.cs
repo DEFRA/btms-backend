@@ -4,29 +4,20 @@ using TestDataGenerator.Extensions;
 
 namespace TestDataGenerator.Scenarios.SpecificFiles;
 
-public class Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator> logger) : SpecificFilesScenarioGenerator(sp, logger)
+public class Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator(IServiceProvider sp, ILogger<Mrn24Gbdej9V2Od0Bhar0DestroyedScenarioGenerator> logger) :
+    SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJ9V2OD0BHAR0")
 {
-    public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
+    protected override List<(string filePath, IBaseBuilder builder)> ModifyBuilders(List<(string filePath, IBaseBuilder builder)> builders, int? scenario = null, int? item = null, DateTime? entryDate = null)
     {
-        var builders = GetBuilders("Mrn-24GBDEJ9V2OD0BHAR0").GetAwaiter().GetResult();
+        builders = base.ModifyBuilders(builders, scenario, item, entryDate);
 
-        logger.LogInformation("Created {builders} Builders",
-            builders.Count);
-
-        // Set the final state of the finalisations to Destroyed (3)
         foreach (var builderItem in builders
-                     .Where(b => b.builder is FinalisationBuilder))
+            .Where(b => b.builder is FinalisationBuilder))
         {
             ((FinalisationBuilder)builderItem.builder)
                 .WithFinalState(3);
         }
 
-        var messages = builders
-            .Select(b => b.builder)
-            .ToArray()
-            .BuildAll()
-            .ToArray();
-
-        return new GeneratorResult(messages);
+        return builders;
     }
 }

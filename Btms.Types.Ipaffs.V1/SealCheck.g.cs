@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Details of the seal check
 /// </summary>
@@ -46,6 +47,7 @@ public partial class SealCheck  //
     /// date and time of seal check
     /// </summary>
     [JsonPropertyName("dateTimeOfCheck")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(DateTimeOfCheck))]
     public DateTime? DateTimeOfCheck { get; set; }
 
 }

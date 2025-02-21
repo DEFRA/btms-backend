@@ -14,9 +14,6 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class BillingInformation  //
 {
 
@@ -32,7 +29,6 @@ public partial class BillingInformation  //
     /// Billing email address
     /// </summary>
     [JsonPropertyName("emailAddress")]
-    [Btms.SensitiveData.SensitiveData]
     public string? EmailAddress { get; set; }
 
 
@@ -40,7 +36,6 @@ public partial class BillingInformation  //
     /// Billing phone number
     /// </summary>
     [JsonPropertyName("phoneNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? PhoneNumber { get; set; }
 
 
@@ -48,7 +43,6 @@ public partial class BillingInformation  //
     /// Billing Contact Name
     /// </summary>
     [JsonPropertyName("contactName")]
-    [Btms.SensitiveData.SensitiveData]
     public string? ContactName { get; set; }
 
 

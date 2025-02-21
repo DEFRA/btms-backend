@@ -19,7 +19,9 @@ using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Model.Cds;
 using Btms.Types.Alvs;
+using Btms.Types.Gvms;
 
 namespace Btms.Business.Extensions;
 
@@ -35,6 +37,7 @@ public static class ServiceCollectionExtensions
         services.AddBlobStorage(configuration);
         services.AddSingleton<IBlobServiceClientFactory, BlobServiceClientFactory>();
         services.AddSingleton<ISensitiveDataSerializer, SensitiveDataSerializer>();
+        services.AddSingleton<ISensitiveFieldsProvider, SensitiveFieldsProvider>();
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SyncNotificationsCommand>());
 
@@ -65,6 +68,10 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ILinkingService, LinkingService>();
+        services.AddScoped<ILinker<Model.Ipaffs.ImportNotification, Model.Gvms.Gmr>, ImportNotificationGmrLinker>();
+        services.AddScoped<ILinker<Model.Gvms.Gmr, Model.Ipaffs.ImportNotification>, ImportNotificationGmrLinker>();
+        services.Decorate(typeof(ILinker<,>), typeof(LoggingLinker<,>));
+
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<IDecisionService, DecisionService>();
         services.AddScoped<IMatchingService, MatchingService>();
@@ -76,9 +83,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDecisionFinder, IuuDecisionFinder>();
 
         services.AddTransient<DecisionStatusFinder>();
+        services.AddTransient<BusinessDecisionStatusFinder>();
         services.AddTransient<MovementBuilderFactory>();
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
         services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();
+        services.AddScoped<IPreProcessor<Gmr, Model.Gvms.Gmr>, GmrPreProcessor>();
 
         return services;
     }

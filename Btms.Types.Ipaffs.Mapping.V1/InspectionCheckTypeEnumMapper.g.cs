@@ -17,15 +17,11 @@ public static class InspectionCheckTypeEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
-            Btms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiDocument => Btms.Model.Ipaffs.InspectionCheckTypeEnum
-                .PhsiDocument,
-            Btms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiIdentity => Btms.Model.Ipaffs.InspectionCheckTypeEnum
-                .PhsiIdentity,
-            Btms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiPhysical => Btms.Model.Ipaffs.InspectionCheckTypeEnum
-                .PhsiPhysical,
+            Btms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiDocument => Btms.Model.Ipaffs.InspectionCheckTypeEnum.PhsiDocument,
+            Btms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiIdentity => Btms.Model.Ipaffs.InspectionCheckTypeEnum.PhsiIdentity,
+            Btms.Types.Ipaffs.InspectionCheckTypeEnum.PhsiPhysical => Btms.Model.Ipaffs.InspectionCheckTypeEnum.PhsiPhysical,
             Btms.Types.Ipaffs.InspectionCheckTypeEnum.Hmi => Btms.Model.Ipaffs.InspectionCheckTypeEnum.Hmi,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)

@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// inspector
 /// </summary>
@@ -25,7 +26,6 @@ public partial class Inspector  //
     /// Name of inspector
     /// </summary>
     [JsonPropertyName("name")]
-    [SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 
@@ -33,7 +33,6 @@ public partial class Inspector  //
     /// Phone number of inspector
     /// </summary>
     [JsonPropertyName("phone")]
-    [SensitiveData.SensitiveData]
     public string? Phone { get; set; }
 
 
@@ -41,7 +40,6 @@ public partial class Inspector  //
     /// Email address of inspector
     /// </summary>
     [JsonPropertyName("email")]
-    [SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 }

@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CommodityComplementMapper
 {
-    public static Btms.Model.Ipaffs.CommodityComplement Map(Btms.Types.Ipaffs.CommodityComplement from)
+    public static Btms.Model.Ipaffs.CommodityComplement Map(Btms.Types.Ipaffs.CommodityComplement? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.CommodityComplement();
         to.UniqueComplementId = from?.UniqueComplementId;
         to.CommodityDescription = from?.CommodityDescription;
@@ -41,7 +40,7 @@ public static class CommodityComplementMapper
         to.SpeciesCommonName = from?.SpeciesCommonName;
         to.IsCdsMatched = from?.IsCdsMatched;
         to.AdditionalData = from?.AdditionalData;
-        to.RiskAssesment = CommodityRiskResultMapper.Map(from?.RiskAssesment!);
+        to.RiskAssesment = CommodityRiskResultMapper.Map(from?.RiskAssesment);
         to.Checks = from?.Checks?.Select(x => InspectionCheckMapper.Map(x)).ToArray();
         return to;
     }

@@ -101,6 +101,7 @@ public class DecisionServiceTests
         _serviceCollection.AddSingleton(Substitute.For<IPublishBus>());
         _serviceCollection.AddSingleton<MovementBuilderFactory>();
         _serviceCollection.AddSingleton<DecisionStatusFinder>();
+        _serviceCollection.AddSingleton<BusinessDecisionStatusFinder>();
         _serviceCollection.AddLogging();
         _serviceCollection.AddSingleton<IMongoDbContext, MemoryMongoDbContext>();
     }
@@ -161,6 +162,13 @@ public class DecisionServiceTests
                         new Items
                         {
                             ItemNumber = 1,
+                            Documents =
+                            [
+                                new Document()
+                                {
+                                    DocumentCode = "9115"
+                                }
+                            ],
                             Checks = checkCodes?.Select(checkCode => new Check { CheckCode = checkCode }).ToArray()
                         }
                     ]

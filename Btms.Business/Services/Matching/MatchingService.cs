@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Btms.Business.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 
@@ -18,7 +17,6 @@ public class MatchingService : IMatchingService
 
                 var groupedDocuments = item
                     .Documents
-                    // .Where(d => d.IsChed())
                     .GroupBy(d => d.DocumentReference)
                     .Select(d => d.Key);
 
@@ -53,12 +51,6 @@ public class MatchingService : IMatchingService
                 Debug.Assert(notification?.Id != null, "notification.Id != null");
                 matchingResult.AddMatch(notification.Id, movement.Id, item.ItemNumber.Value, documentGroup);
             }
-
-
-        }
-        else
-        {
-            matchingResult.AddDocumentNoMatch(movement.Id, item.ItemNumber.Value, documentGroup);
         }
     }
 }

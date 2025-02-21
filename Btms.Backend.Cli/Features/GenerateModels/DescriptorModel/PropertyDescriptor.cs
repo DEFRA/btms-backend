@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using Btms.Backend.Cli.Features.GenerateModels.ClassMaps;
+using Btms.Common.Extensions;
 using Humanizer;
 
 namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
@@ -7,51 +9,99 @@ namespace Btms.Backend.Cli.Features.GenerateModels.DescriptorModel;
 public class PropertyDescriptor
 {
     private readonly bool _isReferenceType;
-
     private readonly bool _isArray;
-
-    private readonly string _classNamePrefix;
     private bool _typeOverridden;
 
-    public PropertyDescriptor(string sourceName, string type, string description, bool isReferenceType,
-        bool isArray, string classNamePrefix)
-        : this(sourceName, sourceName, type, description, isReferenceType, isArray, classNamePrefix)
-    {
-    }
+    private readonly string _attributeUnknownTimeZone = typeof(Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter).FullName!;
+    private readonly string _attributeEpoch = typeof(Btms.Common.Json.EpochDateTimeJsonConverter).FullName!;
+    private readonly string _attributeFlexibleDate = typeof(Btms.Common.Json.FlexibleDateOnlyJsonConverter).FullName!;
+    private readonly string _attributeBsonRepresentation = "MongoDB.Bson.Serialization.Attributes.BsonRepresentation";
+    private readonly string _attributeBsonDateTimeOptions = "MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions";
 
-    public PropertyDescriptor(string sourceName, string internalName, string type, string? description,
-        bool isReferenceType, bool isArray, string classNamePrefix)
+    public PropertyDescriptor(string schemaName, string type,
+        bool isReferenceType, bool isArray)
     {
-        SourceName = sourceName;
-        InternalName = internalName;
+        SchemaName = schemaName;
+        SourceName = schemaName;
+        InternalName = schemaName;
 
         _isReferenceType = isReferenceType;
         _isArray = isArray;
-        _classNamePrefix = classNamePrefix;
         Type = type;
-        Description = description?.Replace("\n", " ");
         IsReferenceType = isReferenceType;
         IsArray = isArray;
-        SourceAttributes = [$"[JsonPropertyName(\"{sourceName}\")]"];
-        InternalAttributes = ["[Attr]", $"[System.ComponentModel.Description(\"{Description}\")]"];
 
         if (type.EndsWith("Enum"))
         {
             InternalAttributes.Add(
-                "[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]");
+                $"[{_attributeBsonRepresentation}(MongoDB.Bson.BsonType.String)]");
         }
     }
+
+    public bool NoAttributes { get; set; } = default;
+
+    /// <summary>
+    /// The name in the schema the code is being generated from
+    /// </summary>
+    public string SchemaName { get; set; }
+
+    /// <summary>
+    /// The name we want in the Source Type Library
+    /// </summary>
     public string SourceName { get; set; }
 
+    /// <summary>
+    /// The value we want for the JsonProperty attribute in the Source Type Library
+    /// </summary>
+    public string? SourceJsonPropertyName { get; set; }
+
+    /// <summary>
+    /// The name we want in the Internal Data Model
+    /// </summary>
     public string InternalName { get; set; }
 
+    /// <summary>
+    /// The value we want for the JsonProperty attribute in the Internal data model
+    /// </summary>
+    public string? InternalJsonPropertyName { get; set; }
+
+    /// <summary>
+    /// The Type to use (in the Source Type Library??)
+    /// </summary>
     public string Type { get; set; }
 
-    public string? Description { get; set; }
+    /// <summary>
+    /// The kind of datetime
+    /// </summary>
+    public DateTimeType? DateTimeType { get; set; } = null!;
 
-    public List<string> SourceAttributes { get; set; }
+    /// <summary>
+    /// The kind of dateonly
+    /// </summary>
+    public DateOnlyType? DateOnlyType { get; set; } = null!;
 
-    public List<string> InternalAttributes { get; set; }
+    /// <summary>
+    /// The Type to use in the Internal Data Model
+    /// </summary>
+    public string? InternalType { get; set; }
+
+    private readonly string? _description;
+
+    public string? Description
+    {
+        get => _description;
+        init => _description = value?.Replace("\n", " ");
+    }
+
+    /// <summary>
+    /// Allows attributes to be added to the property in the Source Type Library
+    /// </summary>
+    public List<string> SourceAttributes { get; set; } = [];
+
+    /// <summary>
+    /// Allows attributes to be added to the property in the Internal data model
+    /// </summary>
+    public List<string> InternalAttributes { get; set; } = [];
 
     public bool IsReferenceType { get; set; }
 
@@ -67,9 +117,10 @@ public class PropertyDescriptor
 
     public bool ExcludedFromSource { get; set; }
 
-    public void OverrideType(string type)
+    public void OverrideType(string type, string internalType)
     {
         Type = type;
+        InternalType = internalType;
         _typeOverridden = true;
     }
 
@@ -79,12 +130,7 @@ public class PropertyDescriptor
         if (SourceName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
             SourceName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (SourceName.StartsWith(_classNamePrefix))
-            {
-                return $"{SourceName.Dehumanize()}";
-            }
-
-            return $"{_classNamePrefix}{SourceName.Dehumanize()}";
+            return SourceName.Dehumanize();
         }
 
         if (_isArray)
@@ -106,12 +152,7 @@ public class PropertyDescriptor
         if (InternalName.Equals("type", StringComparison.InvariantCultureIgnoreCase) ||
             InternalName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (InternalName.StartsWith(_classNamePrefix))
-            {
-                return $"{InternalName.Dehumanize()}";
-            }
-
-            return $"{_classNamePrefix}{InternalName.Dehumanize()}";
+            return InternalName.Dehumanize();
         }
 
         if (_isArray)
@@ -127,10 +168,67 @@ public class PropertyDescriptor
         return n;
     }
 
-    public string GetPropertyType()
+    private string GetInternalJsonPropertyName()
     {
-        var t = Type;
+        return GetInternalPropertyName().FirstCharToLower();
+    }
 
+    public string[] GetSourceAttributes()
+    {
+        if (NoAttributes) return [];
+
+        var defaultParams = new List<string>() { $"[JsonPropertyName(\"{SourceJsonPropertyName ?? SchemaName}\")]" };
+        defaultParams.AddRange(SourceAttributes);
+
+        if (DateTimeType == ClassMaps.DateTimeType.Local)
+        {
+            defaultParams.Add($"[{_attributeUnknownTimeZone}(nameof({GetSourcePropertyName()}))]");
+        }
+        else if (DateTimeType == ClassMaps.DateTimeType.Epoch)
+        {
+            defaultParams.Add($"[{_attributeEpoch}]");
+        }
+        else if (DateOnlyType == ClassMaps.DateOnlyType.Flexible)
+        {
+            defaultParams.Add($"[{_attributeFlexibleDate}]");
+        }
+
+        return defaultParams.ToArray();
+    }
+
+    public string[] GetInternalAttributes()
+    {
+        if (NoAttributes) return [];
+
+        var defaultParams = new List<string>() { "[Attr]", $"[JsonPropertyName(\"{InternalJsonPropertyName ?? GetInternalJsonPropertyName()}\")]" };
+
+        if (!string.IsNullOrEmpty(Description))
+        {
+            defaultParams.Add($"[System.ComponentModel.Description(\"{Description}\")]");
+        }
+
+        if (DateTimeType == ClassMaps.DateTimeType.Local)
+        {
+            defaultParams.Add($"[{_attributeUnknownTimeZone}(nameof({GetInternalPropertyName()})), {_attributeBsonDateTimeOptions}(Kind = DateTimeKind.Unspecified)]");
+        }
+
+        defaultParams.AddRange(InternalAttributes);
+
+        return defaultParams.ToArray();
+    }
+
+    public string GetInternalPropertyType()
+    {
+        return GetPropertyType(InternalType ?? Type);
+    }
+
+    public string GetSourcePropertyType()
+    {
+        return GetPropertyType(Type);
+    }
+
+    private string GetPropertyType(string t)
+    {
         if (_typeOverridden)
         {
             return t;
@@ -139,7 +237,7 @@ public class PropertyDescriptor
         if (_isReferenceType && !Type.Equals("Result") && !Type.Equals("Unit") && !Type.Equals("string") &&
             !Type.Equals("InspectionRequired"))
         {
-            t = ClassDescriptor.BuildClassName(Type, _classNamePrefix);
+            t = ClassDescriptor.BuildClassName(Type);
         }
 
         if (IsArray && !t.Contains("[]"))
@@ -150,8 +248,13 @@ public class PropertyDescriptor
         return t;
     }
 
-    public string GetPropertyTypeName()
+    public string GetSourcePropertyTypeName()
     {
-        return GetPropertyType().Replace("[]", "");
+        return GetSourcePropertyType().Replace("[]", "");
+    }
+
+    public string GetInternalPropertyTypeName()
+    {
+        return GetInternalPropertyType().Replace("[]", "");
     }
 }

@@ -22,18 +22,18 @@ public abstract class BuilderBase<T, TBuilder> :
     private IPostprocessComposer<T> _composer = null!;
     protected Fixture Fixture { get; set; } = null!;
 
-    protected BuilderBase(string? filePath = null, string? itemJson = null, T? item = default(T)) : base()
+    protected BuilderBase(string? filePath = null, string? itemJson = null, JsonSerializerOptions? options = null, T? item = default(T)) : base()
     {
         Fixture = new Fixture();
 
         if (filePath.HasValue())
         {
             var json = File.ReadAllText(filePath);
-            item = JsonSerializer.Deserialize<T>(json)!;
+            item = JsonSerializer.Deserialize<T>(json, options)!;
         }
         else if (itemJson.HasValue())
         {
-            item = JsonSerializer.Deserialize<T>(itemJson)!;
+            item = JsonSerializer.Deserialize<T>(itemJson, options)!;
         }
         else
         {

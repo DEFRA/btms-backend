@@ -17,35 +17,30 @@ using System.Dynamic;
 
 
 namespace @Model.InternalNamespace;
-
+@if (!String.IsNullOrEmpty(Model.Description))
+{
+<text>
 /// <summary>
 /// @Model.Description
 /// </summary>
-@if (Model.IsResource)
-{
-    <text>     [Resource] 
-    </text>
+</text>
 }
-public partial class @Model.GetClassName()  //@if (Model.IsResource) { <text>: CustomStringMongoIdentifiable</text> }
+public partial class @Model.GetInternalClassName()  //@if (Model.IsResource) { <text>: CustomStringMongoIdentifiable</text> }
 
 {
-@* @if (Model.IsResource)
-{
-    <text>
-        // This field is used by the jsonapi-consumer to control the correct casing in the type field
-        public string Type { get; set; } = "@Model.Name";
-    </text>
-} *@
 
 @foreach(var property in Model.Properties.Where(x => !x.ExcludedFromInternal))
 {
-	var t = new HtmlString(property.GetPropertyType());
+	var t = new HtmlString(property.GetInternalPropertyType());
+    @if (!String.IsNullOrEmpty(property.Description))
+    {
     <text>
         /// <summary>
         /// @property.Description
         /// </summary>
     </text>
-        @foreach (var attr in property.InternalAttributes)
+    }
+        @foreach (var attr in property.GetInternalAttributes())
         {
             var htmlString = new HtmlString(attr);
     <text>@htmlString

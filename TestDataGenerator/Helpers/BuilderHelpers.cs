@@ -1,3 +1,4 @@
+using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 
 namespace TestDataGenerator.Helpers;
@@ -37,6 +38,22 @@ public static class BuilderHelpers
     {
         var fullPath = $"{fullFolder}/{file}{fileExtension}";
         var builder = ImportNotificationBuilder.FromFile(fullPath);
+
+        return builder;
+    }
+
+    internal static GmrBuilder<Gmr> GetGmrBuilder(string file, string fileExtension = JSON_FILE_EXTENSION)
+    {
+        var fullPath = $"{fullFolder}/{file}{fileExtension}";
+        var builder = new GmrBuilder(fullPath);
+
+        return builder;
+    }
+
+    internal static SearchGmrsBuilder<SearchGmrsForDeclarationIdsResponse> GetSearchGmrsBuilder(string file, string fileExtension = JSON_FILE_EXTENSION)
+    {
+        var fullPath = $"{fullFolder}/{file}{fileExtension}";
+        var builder = new SearchGmrsBuilder(fullPath);
 
         return builder;
     }

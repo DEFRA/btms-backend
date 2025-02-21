@@ -1,0 +1,106 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "CDS",
+    "destinationSystem": "ALVS",
+    "correlationId": "1340244",
+    "serviceCallTimestamp": 1734043828000
+  },
+  "header": {
+    "entryReference": "24GBDMPA1EV781WAR7",
+    "entryVersionNumber": 2,
+    "previousVersionNumber": 1,
+    "declarationUCR": "4GB988063278000-F869744PO019255",
+    "declarationPartNumber": null,
+    "declarationType": "S",
+    "arrivalDateTime": null,
+    "submitterTURN": "GB238060183000",
+    "declarantId": "GB238060183000",
+    "declarantName": "GB238060183000",
+    "dispatchCountryCode": "ID",
+    "goodsLocationCode": "FXTFXTFXT",
+    "masterUCR": "550292923"
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "customsProcedureCode": "4000000",
+      "taricCommodityCode": "1604142800",
+      "goodsDescription": "TUNA IN  WATER",
+      "consigneeId": "GB988063278000",
+      "consigneeName": "GB988063278000",
+      "itemNetMass": 15624,
+      "itemSupplementaryUnits": 0,
+      "itemThirdQuantity": null,
+      "itemOriginCountryCode": "ID",
+      "documents": [
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-09-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-13-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-14-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-15-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-16-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-18-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-20-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "C673",
+          "documentReference": "GBIUUID-A051-LA-21-240919-A006-SUB0",
+          "documentStatus": "IP",
+          "documentControl": "P",
+          "documentQuantity": null
+        },
+        {
+          "documentCode": "N853",
+          "documentReference": "GBCHD2024.5249145",
+          "documentStatus": "AE",
+          "documentControl": "P",
+          "documentQuantity": null
+        }
+      ],
+      "checks": [
+        { "checkCode": "H222", "departmentCode": "PHA" },
+        { "checkCode": "H224", "departmentCode": "PHA" }
+      ]
+    }
+  ]
+}

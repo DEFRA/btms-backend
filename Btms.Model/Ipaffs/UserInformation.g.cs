@@ -26,6 +26,7 @@ public partial class UserInformation  //
     /// Display name
     /// </summary>
     [Attr]
+    [JsonPropertyName("displayName")]
     [System.ComponentModel.Description("Display name")]
     public string? DisplayName { get; set; }
 
@@ -34,6 +35,7 @@ public partial class UserInformation  //
     /// User ID
     /// </summary>
     [Attr]
+    [JsonPropertyName("userId")]
     [System.ComponentModel.Description("User ID")]
     public string? UserId { get; set; }
 
@@ -42,6 +44,7 @@ public partial class UserInformation  //
     /// Is this user a control
     /// </summary>
     [Attr]
+    [JsonPropertyName("isControlUser")]
     [System.ComponentModel.Description("Is this user a control")]
     public bool? IsControlUser { get; set; }
 

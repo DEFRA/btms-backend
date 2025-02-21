@@ -14,8 +14,10 @@ using SlimMessageBus;
 using TestDataGenerator;
 using TestDataGenerator.Scenarios;
 using Xunit;
+using static Btms.Common.Extensions.LinksBuilder;
 using Check = Btms.Model.Cds.Check;
 using Decision = Btms.Model.Ipaffs.Decision;
+using Movement = Btms.Model.Movement;
 
 namespace Btms.Business.Tests.Services.Decisions;
 
@@ -26,10 +28,11 @@ public class NoMatchDecisionsTest
     {
         // Arrange
         var movement = GenerateMovementWithH220Checks();
+        movement.Items = movement.Items.Take(1).ToList();
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance,
             Array.Empty<IDecisionFinder>(),
-            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
             new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
@@ -56,7 +59,7 @@ public class NoMatchDecisionsTest
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance,
             Array.Empty<IDecisionFinder>(),
-            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
             new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
@@ -77,11 +80,12 @@ public class NoMatchDecisionsTest
     {
         // Arrange
         var movements = GenerateMovements(true);
+        movements[0].Items = movements[0].Items.Take(1).ToList();
         movements[0].Items[0].Checks = [new Check() { CheckCode = "TEST" }];
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance,
             Array.Empty<IDecisionFinder>(),
-            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
             new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
@@ -108,7 +112,7 @@ public class NoMatchDecisionsTest
 
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
-        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var generatorResult = generator
             .Generate(1, 1, DateTime.UtcNow, config)
             .First(x => x is AlvsClearanceRequest);

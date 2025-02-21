@@ -29,7 +29,7 @@ public abstract class MultipleScenarioGeneratorBaseTest
         ReloadData = reloadData;
     }
 
-    public void EnsureEnvironmentInitialised(Type generatorType)
+    public void EnsureEnvironmentInitialised(Type generatorType, bool clearDb = true)
     {
         // TODO :
         // Setup & cache Web app fixture

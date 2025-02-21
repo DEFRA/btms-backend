@@ -1,8 +1,8 @@
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Btms.Common.Extensions;
 using Json.Patch;
 using Json.Path;
 using Json.Pointer;
@@ -11,24 +11,23 @@ using Microsoft.Extensions.Options;
 
 namespace Btms.SensitiveData;
 
-public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILogger<SensitiveDataSerializer> logger) : ISensitiveDataSerializer
+public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILogger<SensitiveDataSerializer> logger, ISensitiveFieldsProvider sensitiveFieldsProvider) : ISensitiveDataSerializer
 {
-    private readonly JsonSerializerOptions jsonOptions = new()
+    private readonly JsonSerializerOptions _jsonOptions = new()
     {
-        TypeInfoResolver = new SensitiveDataTypeInfoResolver(options.Value),
         PropertyNameCaseInsensitive = true,
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
     public T Deserialize<T>(string json, Action<JsonSerializerOptions>? optionsOverride = null)
     {
-        var newOptions = jsonOptions;
+        string redactedJson = RedactRawJson(json, typeof(T));
+        var newOptions = _jsonOptions;
         if (optionsOverride is not null)
         {
             newOptions = new JsonSerializerOptions
             {
-                TypeInfoResolver = new SensitiveDataTypeInfoResolver(options.Value),
-                PropertyNameCaseInsensitive = true,
+                PropertyNameCaseInsensitive = false,
                 NumberHandling = JsonNumberHandling.AllowReadingFromString
             };
             optionsOverride(newOptions);
@@ -36,7 +35,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
 
         try
         {
-            return JsonSerializer.Deserialize<T>(json, newOptions)!;
+            return JsonSerializer.Deserialize<T>(redactedJson, newOptions)!;
         }
 #pragma warning disable S2139
         catch (Exception e)
@@ -54,7 +53,7 @@ public class SensitiveDataSerializer(IOptions<SensitiveDataOptions> options, ILo
         {
             return json;
         }
-        var sensitiveFields = SensitiveFieldsProvider.Get(type);
+        var sensitiveFields = sensitiveFieldsProvider.Get(type);
 
         if (!sensitiveFields.Any())
         {

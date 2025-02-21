@@ -7,7 +7,6 @@ using Btms.Model.Cds;
 using Btms.Model.ChangeLog;
 using Btms.Model.Ipaffs;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -19,8 +18,8 @@ public class UnLinkingTests
     protected readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
 
-    private static string GenerateDocumentReference(int id) => $"GBCVD2024.{id}";
-    private static string GenerateNotificationReference(int id) => $"CHEDP.GB.2024.{id}";
+    private static string GenerateDocumentReference(string id) => $"GBCVD{id.Substring(0, 4)}.{id.Substring(4)}";
+    private static string GenerateNotificationReference(string id) => $"CHEDP.GB.{id.Substring(0, 4)}.{id.Substring(4)}";
 
     [Fact]
     public async Task Unlink_Notification_And_Movements()
@@ -47,7 +46,7 @@ public class UnLinkingTests
         return new LinkingService(dbContext, linkingMetrics, NullLogger<LinkingService>.Instance);
     }
 
-    protected async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<int> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1, int unMatchedChedsPerMovement = 0)
+    protected async Task<(List<ImportNotification> Cheds, List<Movement> Movements, List<string> UnmatchedChedRefs)> AddTestData(int chedCount = 1, int movementCount = 1, int matchedChedsPerMovement = 1, int unMatchedChedsPerMovement = 0)
     {
         matchedChedsPerMovement = int.Min(matchedChedsPerMovement, chedCount);
         var movements = new List<Movement>();
@@ -95,7 +94,7 @@ public class UnLinkingTests
             for (var j = 0; j < matchedChedsPerMovement; j++)
             {
                 var matchRef = cheds[j]._MatchReference;
-                var refNo = int.Parse(matchRef);
+                var refNo = matchRef;
 
                 mov.Items.Add(
                     new Items
@@ -125,7 +124,7 @@ public class UnLinkingTests
         return (cheds, movements, unmatchedChedRefs);
     }
 
-    private static int GenerateRandomReference()
+    private static string GenerateRandomReference()
     {
         var intString = "1";
 
@@ -134,19 +133,19 @@ public class UnLinkingTests
             intString += Random.Next(9).ToString();
         }
 
-        return int.Parse(intString);
+        return $"{DateTime.Now.Year}{intString}";
     }
 
     protected ImportNotificationLinkContext CreateNotificationContext(ImportNotification? ched,
         bool createExistingNotification, bool fieldsOfInterest)
     {
-        var chedReference = ched != null ? int.Parse(ched._MatchReference) : GenerateRandomReference();
+        var chedReference = ched != null ? ched._MatchReference : GenerateRandomReference();
         var etag = ched != null ? ched._Etag : string.Empty;
 
         return CreateNotificationContext(chedReference, etag, createExistingNotification, fieldsOfInterest);
     }
 
-    protected ImportNotificationLinkContext CreateNotificationContext(int chedReference, string etag, bool createExistingNotification, bool fieldsOfInterest)
+    protected ImportNotificationLinkContext CreateNotificationContext(string chedReference, string etag, bool createExistingNotification, bool fieldsOfInterest)
     {
         var notification = new ImportNotification
         {

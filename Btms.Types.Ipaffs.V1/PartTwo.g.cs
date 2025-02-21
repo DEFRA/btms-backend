@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Part 2 of notification - Decision at inspection
 /// </summary>
@@ -95,7 +96,6 @@ public partial class PartTwo  //
     /// Local reference number at BIP
     /// </summary>
     [JsonPropertyName("bipLocalReferenceNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? BipLocalReferenceNumber { get; set; }
 
 
@@ -133,10 +133,6 @@ public partial class PartTwo  //
     [JsonPropertyName("accompanyingDocuments")]
     public AccompanyingDocument[]? AccompanyingDocuments { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("commodityChecks")]
     public CommodityChecks[]? CommodityChecks { get; set; }
 

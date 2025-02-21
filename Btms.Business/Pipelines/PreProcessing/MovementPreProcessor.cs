@@ -10,7 +10,8 @@ namespace Btms.Business.Pipelines.PreProcessing;
 
 public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilderFactory movementBuilderFactory) : IPreProcessor<AlvsClearanceRequest, Movement>
 {
-    public async Task<PreProcessingResult<Movement>> Process(PreProcessingContext<AlvsClearanceRequest> preProcessingContext)
+    public async Task<PreProcessingResult<Movement>> Process(
+        PreProcessingContext<AlvsClearanceRequest> preProcessingContext, CancellationToken cancellationToken = default)
     {
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
         var mb = movementBuilderFactory.From(internalClearanceRequest);

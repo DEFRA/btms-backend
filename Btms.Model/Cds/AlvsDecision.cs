@@ -13,6 +13,7 @@ using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
 using System.Dynamic;
 using System.Runtime.Serialization;
+using Btms.Common.Enum;
 using Btms.Model.Auditing;
 using Btms.Model.Ipaffs;
 using MongoDB.Bson.Serialization.Attributes;
@@ -176,6 +177,12 @@ public class MovementStatus
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public MovementSegmentEnum? Segment { get; set; }
+
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public BusinessDecisionStatusEnum BusinessDecisionStatus { get; set; } = BusinessDecisionStatusEnum.AnythingElse;
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatusEnum>))]
@@ -198,6 +205,52 @@ public enum LinkStatusEnum
 
     [EnumMember(Value = "Investigate")]
     Investigate
+}
+
+
+[JsonConverter(typeof(JsonStringEnumConverterEx<BusinessDecisionStatusEnum>))]
+public enum BusinessDecisionStatusEnum
+{
+    [EnumMember(Value = "Cancelled Or Destroyed")]
+    CancelledOrDestroyed,
+
+    [EnumMember(Value = "Manual Releases")]
+    ManualReleases,
+
+    [EnumMember(Value = "ALVS Data Error Decision")]
+    AlvsDataErrorDecision,
+
+    [EnumMember(Value = "BTMS Data Error Decision")]
+    BtmsDataErrorDecision,
+
+    [EnumMember(Value = "Match - Complete Match")]
+    MatchComplete,
+
+    [EnumMember(Value = "Match - Group Match")]
+    MatchGroup,
+
+    [EnumMember(Value = "ALVS Hold, BTMS Not Held")]
+    AlvsHoldBtmsNotHeld,
+
+    [EnumMember(Value = "ALVS Not Held, BTMS Hold")]
+    AlvsNotHeldBtmsHold,
+
+
+    [EnumMember(Value = "ALVS Release, BTMS Not Released")]
+    AlvsReleaseBtmsNotReleased,
+
+    [EnumMember(Value = "ALVS Not Released, BTMS Released")]
+    AlvsNotReleasedBtmsReleased,
+
+
+    [EnumMember(Value = "ALVS Refuse, BTMS Not Refused")]
+    AlvsRefuseBtmsNotRefused,
+
+    [EnumMember(Value = "ALVS Not Refused, BTMS Refused")]
+    AlvsNotRefusedBtmsRefused,
+
+    [EnumMember(Value = "Anything Else")]
+    AnythingElse,
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<DecisionStatusEnum>))]
@@ -252,6 +305,14 @@ public enum DecisionStatusEnum
 
     [EnumMember(Value = "Has Multiple Cheds")]
     HasMultipleCheds,
+
+
+    [EnumMember(Value = "Btms Clear Alvs Hold")]
+    BtmsClearAlvsHold,
+
+    [EnumMember(Value = "ALvs Clear Btms Hold")]
+    AlvsClearBtmsHold,
+
 
     [EnumMember(Value = "Investigation Needed")]
     InvestigationNeeded,

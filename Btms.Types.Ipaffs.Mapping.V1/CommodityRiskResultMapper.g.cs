@@ -14,20 +14,19 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class CommodityRiskResultMapper
 {
-    public static Btms.Model.Ipaffs.CommodityRiskResult Map(Btms.Types.Ipaffs.CommodityRiskResult from)
+    public static Btms.Model.Ipaffs.CommodityRiskResult Map(Btms.Types.Ipaffs.CommodityRiskResult? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.CommodityRiskResult();
         to.RiskDecision = CommodityRiskResultRiskDecisionEnumMapper.Map(from?.RiskDecision);
         to.ExitRiskDecision = CommodityRiskResultExitRiskDecisionEnumMapper.Map(from?.ExitRiskDecision);
         to.HmiDecision = CommodityRiskResultHmiDecisionEnumMapper.Map(from?.HmiDecision);
         to.PhsiDecision = CommodityRiskResultPhsiDecisionEnumMapper.Map(from?.PhsiDecision);
         to.PhsiClassification = CommodityRiskResultPhsiClassificationEnumMapper.Map(from?.PhsiClassification);
-        to.Phsi = PhsiMapper.Map(from?.Phsi!);
+        to.Phsi = PhsiMapper.Map(from?.Phsi);
         to.UniqueId = from?.UniqueId;
         to.EppoCode = from?.EppoCode;
         to.Variety = from?.Variety;

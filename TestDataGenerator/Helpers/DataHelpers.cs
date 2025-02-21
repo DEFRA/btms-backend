@@ -90,10 +90,9 @@ public static class DataHelpers
     {
         var prefix = chedType.AsString();
 
-        if (item > 999999) throw new ArgumentException("Currently only deals with max 100,000 items");
+        if (item > 9999) throw new ArgumentException("Currently only deals with max 10,000 items");
 
-        var formatHundredThousands = "000000";
-
-        return $"{prefix}.GB.{created.Year}.{scenario.ToString("00")}{created.DateRef()}{(item + 1).ToString(formatHundredThousands)}";
+        var identifier = $"{scenario:00}{created.DateRef()}{item + 1}";
+        return $"{prefix}.GB.{created.Year}.{identifier}";
     }
 }

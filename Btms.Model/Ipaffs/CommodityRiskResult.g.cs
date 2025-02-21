@@ -26,6 +26,7 @@ public partial class CommodityRiskResult  //
     /// CHED-A, CHED-D, CHED-P - what is the commodity complement risk decision
     /// </summary>
     [Attr]
+    [JsonPropertyName("riskDecision")]
     [System.ComponentModel.Description("CHED-A, CHED-D, CHED-P - what is the commodity complement risk decision")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CommodityRiskResultRiskDecisionEnum? RiskDecision { get; set; }
@@ -35,6 +36,7 @@ public partial class CommodityRiskResult  //
     /// Transit CHED - what is the commodity complement exit risk decision
     /// </summary>
     [Attr]
+    [JsonPropertyName("exitRiskDecision")]
     [System.ComponentModel.Description("Transit CHED - what is the commodity complement exit risk decision")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CommodityRiskResultExitRiskDecisionEnum? ExitRiskDecision { get; set; }
@@ -44,6 +46,7 @@ public partial class CommodityRiskResult  //
     /// HMI decision required
     /// </summary>
     [Attr]
+    [JsonPropertyName("hmiDecision")]
     [System.ComponentModel.Description("HMI decision required")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CommodityRiskResultHmiDecisionEnum? HmiDecision { get; set; }
@@ -53,6 +56,7 @@ public partial class CommodityRiskResult  //
     /// PHSI decision required
     /// </summary>
     [Attr]
+    [JsonPropertyName("phsiDecision")]
     [System.ComponentModel.Description("PHSI decision required")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CommodityRiskResultPhsiDecisionEnum? PhsiDecision { get; set; }
@@ -62,6 +66,7 @@ public partial class CommodityRiskResult  //
     /// PHSI classification
     /// </summary>
     [Attr]
+    [JsonPropertyName("phsiClassification")]
     [System.ComponentModel.Description("PHSI classification")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public CommodityRiskResultPhsiClassificationEnum? PhsiClassification { get; set; }
@@ -71,6 +76,7 @@ public partial class CommodityRiskResult  //
     /// PHSI Decision Breakdown
     /// </summary>
     [Attr]
+    [JsonPropertyName("phsi")]
     [System.ComponentModel.Description("PHSI Decision Breakdown")]
     public Phsi? Phsi { get; set; }
 
@@ -79,6 +85,7 @@ public partial class CommodityRiskResult  //
     /// UUID used to match to the complement parameter set
     /// </summary>
     [Attr]
+    [JsonPropertyName("uniqueId")]
     [System.ComponentModel.Description("UUID used to match to the complement parameter set")]
     public string? UniqueId { get; set; }
 
@@ -87,6 +94,7 @@ public partial class CommodityRiskResult  //
     /// EPPO Code for the species
     /// </summary>
     [Attr]
+    [JsonPropertyName("eppoCode")]
     [System.ComponentModel.Description("EPPO Code for the species")]
     public string? EppoCode { get; set; }
 
@@ -95,6 +103,7 @@ public partial class CommodityRiskResult  //
     /// Name or ID of the variety
     /// </summary>
     [Attr]
+    [JsonPropertyName("variety")]
     [System.ComponentModel.Description("Name or ID of the variety")]
     public string? Variety { get; set; }
 
@@ -103,6 +112,7 @@ public partial class CommodityRiskResult  //
     /// Whether or not a plant is woody
     /// </summary>
     [Attr]
+    [JsonPropertyName("isWoody")]
     [System.ComponentModel.Description("Whether or not a plant is woody")]
     public bool? IsWoody { get; set; }
 
@@ -111,6 +121,7 @@ public partial class CommodityRiskResult  //
     /// Indoor or Outdoor for a plant
     /// </summary>
     [Attr]
+    [JsonPropertyName("indoorOutdoor")]
     [System.ComponentModel.Description("Indoor or Outdoor for a plant")]
     public string? IndoorOutdoor { get; set; }
 
@@ -119,6 +130,7 @@ public partial class CommodityRiskResult  //
     /// Whether the propagation is considered a Plant, Bulb, Seed or None
     /// </summary>
     [Attr]
+    [JsonPropertyName("propagation")]
     [System.ComponentModel.Description("Whether the propagation is considered a Plant, Bulb, Seed or None")]
     public string? Propagation { get; set; }
 
@@ -127,6 +139,7 @@ public partial class CommodityRiskResult  //
     /// Rule type for PHSI checks
     /// </summary>
     [Attr]
+    [JsonPropertyName("phsiRuleType")]
     [System.ComponentModel.Description("Rule type for PHSI checks")]
     public string? PhsiRuleType { get; set; }
 

@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Inspector Address
 /// </summary>
@@ -25,7 +26,6 @@ public partial class Address  //
     /// Street
     /// </summary>
     [JsonPropertyName("street")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Street { get; set; }
 
 
@@ -33,7 +33,6 @@ public partial class Address  //
     /// City
     /// </summary>
     [JsonPropertyName("city")]
-    [Btms.SensitiveData.SensitiveData]
     public string? City { get; set; }
 
 
@@ -48,7 +47,6 @@ public partial class Address  //
     /// Postal Code
     /// </summary>
     [JsonPropertyName("postalCode")]
-    [Btms.SensitiveData.SensitiveData]
     public string? PostalCode { get; set; }
 
 
@@ -56,7 +54,6 @@ public partial class Address  //
     /// 1st line of address
     /// </summary>
     [JsonPropertyName("addressLine1")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine1 { get; set; }
 
 
@@ -64,7 +61,6 @@ public partial class Address  //
     /// 2nd line of address
     /// </summary>
     [JsonPropertyName("addressLine2")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine2 { get; set; }
 
 
@@ -72,7 +68,6 @@ public partial class Address  //
     /// 3rd line of address
     /// </summary>
     [JsonPropertyName("addressLine3")]
-    [Btms.SensitiveData.SensitiveData]
     public string? AddressLine3 { get; set; }
 
 
@@ -80,7 +75,6 @@ public partial class Address  //
     /// Post / zip code
     /// </summary>
     [JsonPropertyName("postalZipCode")]
-    [Btms.SensitiveData.SensitiveData]
     public string? PostalZipCode { get; set; }
 
 
@@ -88,7 +82,6 @@ public partial class Address  //
     /// country 2-digits ISO code
     /// </summary>
     [JsonPropertyName("countryISOCode")]
-    [Btms.SensitiveData.SensitiveData]
     public string? CountryIsoCode { get; set; }
 
 
@@ -96,7 +89,6 @@ public partial class Address  //
     /// Email address
     /// </summary>
     [JsonPropertyName("email")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 
@@ -104,7 +96,6 @@ public partial class Address  //
     /// UK phone number
     /// </summary>
     [JsonPropertyName("ukTelephone")]
-    [Btms.SensitiveData.SensitiveData]
     public string? UkTelephone { get; set; }
 
 
@@ -112,7 +103,6 @@ public partial class Address  //
     /// Telephone number
     /// </summary>
     [JsonPropertyName("telephone")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Telephone { get; set; }
 
 

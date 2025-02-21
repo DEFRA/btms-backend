@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Tests results corresponding to LaboratoryTests
 /// </summary>
@@ -32,14 +33,13 @@ public partial class LaboratoryTestResult  //
     /// When it was released
     /// </summary>
     [JsonPropertyName("releasedDate")]
-    public DateTime? ReleasedDate { get; set; }
+    public DateOnly? ReleasedDate { get; set; }
 
 
     /// <summary>
     /// Laboratory test method
     /// </summary>
     [JsonPropertyName("laboratoryTestMethod")]
-    [Btms.SensitiveData.SensitiveData]
     public string? LaboratoryTestMethod { get; set; }
 
 
@@ -47,7 +47,6 @@ public partial class LaboratoryTestResult  //
     /// Result of test
     /// </summary>
     [JsonPropertyName("results")]
-    [SensitiveData.SensitiveData]
     public string? Results { get; set; }
 
 
@@ -62,6 +61,6 @@ public partial class LaboratoryTestResult  //
     /// Date of lab test created in IPAFFS
     /// </summary>
     [JsonPropertyName("labTestCreatedDate")]
-    public DateTime? LabTestCreatedDate { get; set; }
+    public DateOnly? LabTestCreatedDate { get; set; }
 
 }

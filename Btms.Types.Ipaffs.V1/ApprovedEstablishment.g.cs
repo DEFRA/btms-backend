@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Approved Establishment details
 /// </summary>
@@ -32,7 +33,6 @@ public partial class ApprovedEstablishment  //
     /// Name of approved establishment
     /// </summary>
     [JsonPropertyName("name")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 
@@ -54,7 +54,6 @@ public partial class ApprovedEstablishment  //
     /// Approval number
     /// </summary>
     [JsonPropertyName("approvalNumber")]
-    [Btms.SensitiveData.SensitiveData]
     public string? ApprovalNumber { get; set; }
 
 

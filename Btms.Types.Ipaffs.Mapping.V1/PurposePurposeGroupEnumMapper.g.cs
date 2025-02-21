@@ -17,26 +17,17 @@ public static class PurposePurposeGroupEnumMapper
         {
             return default!;
         }
-
         return from switch
         {
             Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImport => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForImport,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForNONConformingConsignments => Btms.Model.Ipaffs
-                .PurposePurposeGroupEnum.ForNONConformingConsignments,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTranshipmentTo => Btms.Model.Ipaffs.PurposePurposeGroupEnum
-                .ForTranshipmentTo,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTransitTo3rdCountry => Btms.Model.Ipaffs
-                .PurposePurposeGroupEnum.ForTransitTo3rdCountry,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForReImport => Btms.Model.Ipaffs.PurposePurposeGroupEnum
-                .ForReImport,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport => Btms.Model.Ipaffs.PurposePurposeGroupEnum
-                .ForPrivateImport,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTransferTo => Btms.Model.Ipaffs.PurposePurposeGroupEnum
-                .ForTransferTo,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck => Btms.Model.Ipaffs
-                .PurposePurposeGroupEnum.ForImportReConformityCheck,
-            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket => Btms.Model.Ipaffs
-                .PurposePurposeGroupEnum.ForImportNonInternalMarket,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForNONConformingConsignments => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForNONConformingConsignments,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTranshipmentTo => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForTranshipmentTo,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTransitTo3rdCountry => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForTransitTo3rdCountry,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForReImport => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForReImport,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForPrivateImport,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForTransferTo => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForTransferTo,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForImportReConformityCheck,
+            Btms.Types.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket => Btms.Model.Ipaffs.PurposePurposeGroupEnum.ForImportNonInternalMarket,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

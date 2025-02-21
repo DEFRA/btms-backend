@@ -14,23 +14,12 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class KeyDataPair  //
 {
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("key")]
     public string? Key { get; set; }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     [JsonPropertyName("data")]
     public string? Data { get; set; }
 

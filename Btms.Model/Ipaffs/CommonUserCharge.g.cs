@@ -14,10 +14,6 @@ using System.Dynamic;
 
 
 namespace Btms.Model.Ipaffs;
-
-/// <summary>
-/// 
-/// </summary>
 public partial class CommonUserCharge  //
 {
 
@@ -26,6 +22,7 @@ public partial class CommonUserCharge  //
     /// Indicates whether the last applicable change was successfully send over the interface to Trade Charge
     /// </summary>
     [Attr]
+    [JsonPropertyName("wasSentToTradeCharge")]
     [System.ComponentModel.Description("Indicates whether the last applicable change was successfully send over the interface to Trade Charge")]
     public bool? WasSentToTradeCharge { get; set; }
 

@@ -14,13 +14,12 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class AddressMapper
 {
-    public static Btms.Model.Ipaffs.Address Map(Btms.Types.Ipaffs.Address from)
+    public static Btms.Model.Ipaffs.Address Map(Btms.Types.Ipaffs.Address? from)
     {
         if (from is null)
         {
             return default!;
         }
-
         var to = new Btms.Model.Ipaffs.Address();
         to.Street = from?.Street;
         to.City = from?.City;
@@ -34,7 +33,7 @@ public static class AddressMapper
         to.Email = from?.Email;
         to.UkTelephone = from?.UkTelephone;
         to.Telephone = from?.Telephone;
-        to.InternationalTelephone = InternationalTelephoneMapper.Map(from?.InternationalTelephone!);
+        to.InternationalTelephone = InternationalTelephoneMapper.Map(from?.InternationalTelephone);
         return to;
     }
 }

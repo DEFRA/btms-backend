@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Person to be nominated for text and email contact for the consignment
 /// </summary>
@@ -25,7 +26,6 @@ public partial class NominatedContact  //
     /// Name of nominated contact
     /// </summary>
     [JsonPropertyName("name")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Name { get; set; }
 
 
@@ -33,7 +33,6 @@ public partial class NominatedContact  //
     /// Email address of nominated contact
     /// </summary>
     [JsonPropertyName("email")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Email { get; set; }
 
 
@@ -41,7 +40,6 @@ public partial class NominatedContact  //
     /// Telephone number of nominated contact
     /// </summary>
     [JsonPropertyName("telephone")]
-    [Btms.SensitiveData.SensitiveData]
     public string? Telephone { get; set; }
 
 }

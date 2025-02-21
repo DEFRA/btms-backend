@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class OfficialInspectorMapper
 {
-    public static Btms.Model.Ipaffs.OfficialInspector Map(Btms.Types.Ipaffs.OfficialInspector from)
+    public static Btms.Model.Ipaffs.OfficialInspector Map(Btms.Types.Ipaffs.OfficialInspector? from)
     {
         if (from is null)
         {
@@ -26,7 +26,7 @@ public static class OfficialInspectorMapper
         to.Email = from?.Email;
         to.Phone = from?.Phone;
         to.Fax = from?.Fax;
-        to.Address = AddressMapper.Map(from?.Address!);
+        to.Address = AddressMapper.Map(from?.Address);
         to.Signed = from?.Signed;
         return to;
     }

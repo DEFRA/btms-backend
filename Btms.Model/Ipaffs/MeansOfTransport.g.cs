@@ -26,6 +26,7 @@ public partial class MeansOfTransport  //
     /// Type of transport
     /// </summary>
     [Attr]
+    [JsonPropertyName("type")]
     [System.ComponentModel.Description("Type of transport")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public MeansOfTransportTypeEnum? Type { get; set; }
@@ -35,6 +36,7 @@ public partial class MeansOfTransport  //
     /// Document for transport
     /// </summary>
     [Attr]
+    [JsonPropertyName("document")]
     [System.ComponentModel.Description("Document for transport")]
     public string? Document { get; set; }
 
@@ -43,6 +45,7 @@ public partial class MeansOfTransport  //
     /// ID of transport
     /// </summary>
     [Attr]
+    [JsonPropertyName("id")]
     [System.ComponentModel.Description("ID of transport")]
     public string? Id { get; set; }
 

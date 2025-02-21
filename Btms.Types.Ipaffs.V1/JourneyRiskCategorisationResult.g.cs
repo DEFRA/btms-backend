@@ -14,6 +14,7 @@ using System.Dynamic;
 
 namespace Btms.Types.Ipaffs;
 
+
 /// <summary>
 /// Details of the risk categorisation level for a notification
 /// </summary>
@@ -39,6 +40,7 @@ public partial class JourneyRiskCategorisationResult  //
     /// The date and time the risk level has been set for a notification
     /// </summary>
     [JsonPropertyName("riskLevelDateTime")]
+    [Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(RiskLevelSetFor))]
     public DateTime? RiskLevelSetFor { get; set; }
 
 }

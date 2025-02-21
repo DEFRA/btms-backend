@@ -14,7 +14,7 @@ namespace Btms.Types.Ipaffs.Mapping;
 
 public static class NominatedContactMapper
 {
-    public static Btms.Model.Ipaffs.NominatedContact Map(Btms.Types.Ipaffs.NominatedContact from)
+    public static Btms.Model.Ipaffs.NominatedContact Map(Btms.Types.Ipaffs.NominatedContact? from)
     {
         if (from is null)
         {

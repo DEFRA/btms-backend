@@ -1,0 +1,33 @@
+{
+  "serviceHeader": {
+    "sourceSystem": "ALVS",
+    "destinationSystem": "CDS",
+    "correlationId": "000",
+    "serviceCallTimestamp": 1733582101579
+  },
+  "header": {
+    "entryReference": "24GBD8ZE70M2T3ZAR1",
+    "entryVersionNumber": 2,
+    "decisionNumber": 10
+  },
+  "items": [
+    {
+      "itemNumber": 1,
+      "documents": [],
+      "checks": [
+        {
+          "checkCode": "H218",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        },
+        {
+          "checkCode": "H223",
+          "decisionCode": "C03",
+          "decisionValidUntil": null,
+          "decisionReasons": []
+        }
+      ]
+    }
+  ]
+}
