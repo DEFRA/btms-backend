@@ -16,15 +16,14 @@ namespace Btms.Backend.IntegrationTests;
 public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScenarioGeneratorBaseTest(testOutputHelper)
 {
     [Theory]
-    [InlineData(typeof(PhaStubScenarioGenerator), "PhaStub")]
-    [InlineData(typeof(PhaFinalisationStubScenarioGenerator), "PhaFinalisationStub")]
-    public async Task ShouldImportPhaStubScenario(Type generatorType, string folder)
+    [InlineData(typeof(PhaStubScenarioGenerator))]
+    [InlineData(typeof(PhaFinalisationStubScenarioGenerator))]
+    public async Task ShouldImportPhaStubScenario(Type generatorType)
     {
+        // Enabling data export will intentionally cause the test to fail. 
+        // This prevents accidental commits/merges and serves as a warning 
+        // against including sensitive data.
         var exportData = false;
-        var redactData = false;
-
-        if (redactData)
-            await RedactIPAFFSFiles(folder);
 
         EnsureEnvironmentInitialised(generatorType);
 
@@ -41,7 +40,10 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
         }
 
         if (exportData)
+        {
             await ExportData(importedNotifications.Data);
+            Assert.Fail("WARNING: Import notifications have been exported. Ensure sensitive data has been redacted");
+        }
 
     }
 
@@ -55,7 +57,7 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
 
         foreach (var importNotification in importedNotifications)
         {
-            var json = await GetDocument($"api/import-notifications/{importNotification.Id}", Client.AsHttpClient());
+            var json = await GetDocument($"api/import-notifications/{importNotification.Id}");
 
             var jsonNode = JsonNode.Parse(json);
             jsonNode!["data"]!["attributes"]!["partOne"]!["pointOfEntry"] = "GBTEEP1";
@@ -73,19 +75,21 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
         var mrns = relatedMovements.Select(r => r.Id).Distinct();
         foreach (var mrn in mrns)
         {
-            var json = await GetDocument($"api/movements/{mrn}", Client.AsHttpClient());
+            var json = await GetDocument($"api/movements/{mrn}");
             await File.WriteAllTextAsync($"{outputDirectory}/btms-movement-single-{mrn}.json", json);
         }
 
         var grmIds = relatedGoodsMovements.Select(r => r.Id).Distinct();
         foreach (var grmId in grmIds)
         {
-            var json = await GetDocument($"api/gmrs/{grmId}", Client.AsHttpClient());
+            var json = await GetDocument($"api/gmrs/{grmId}");
             await File.WriteAllTextAsync($"{outputDirectory}/btms-goods-movement-single-{grmId}.json", json);
         }
+
+
     }
 
-    private async Task<string> GetDocument(string path, HttpClient httpClient)
+    private async Task<string> GetDocument(string path)
     {
         var response = await Client.AsHttpClient().GetStringAsync(path);
 
@@ -94,23 +98,4 @@ public class PhaScenarioTests(ITestOutputHelper testOutputHelper) : MultipleScen
         return JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
 #pragma warning restore CA1869
     }
-
-    private async Task RedactIPAFFSFiles(string scenarioFolder)
-    {
-        var di = new DirectoryInfo($"../../../../TestDataGenerator/Scenarios/Samples/{scenarioFolder}/IPAFFS");
-
-        var files = di.GetFiles("*.json", SearchOption.AllDirectories);
-
-        await Parallel.ForEachAsync(files, async (fileInfo, ct) =>
-        {
-
-            var json = await File.ReadAllTextAsync(fileInfo.FullName, ct);
-            var options = new SensitiveDataOptions { Include = false };
-            var serializer =
-                new SensitiveDataSerializer(Options.Create(options), NullLogger<SensitiveDataSerializer>.Instance, new SensitiveFieldsProvider());
-            var result = serializer.RedactRawJson(json, typeof(ImportNotification));
-            await File.WriteAllTextAsync(fileInfo.FullName, result, ct);
-        });
-    }
-
 }
