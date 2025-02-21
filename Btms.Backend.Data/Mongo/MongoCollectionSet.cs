@@ -45,27 +45,13 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
 
     public async Task PersistAsync(CancellationToken cancellationToken)
     {
-        if (_entitiesToInsert.Any())
-        {
-            foreach (var item in _entitiesToInsert)
-            {
-                item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
-                item.Created = item.UpdatedEntity = DateTime.UtcNow;
+        await InsertDocuments(cancellationToken);
 
-                var session = dbContext.ActiveTransaction?.Session;
-                if (session is not null)
-                {
-                    await _collection.InsertOneAsync(session, item, cancellationToken: cancellationToken);
-                }
-                else
-                {
-                    await _collection.InsertOneAsync(item, cancellationToken: cancellationToken);
-                }
-            }
+        await UpdateDocuments(cancellationToken);
+    }
 
-            _entitiesToInsert.Clear();
-        }
-
+    private async Task UpdateDocuments(CancellationToken cancellationToken)
+    {
         var builder = Builders<T>.Filter;
 
         if (_entitiesToUpdate.Any())
@@ -91,6 +77,30 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
             }
 
             _entitiesToUpdate.Clear();
+        }
+    }
+
+    private async Task InsertDocuments(CancellationToken cancellationToken)
+    {
+        if (_entitiesToInsert.Any())
+        {
+            foreach (var item in _entitiesToInsert)
+            {
+                item._Etag = BsonObjectIdGenerator.Instance.GenerateId(null, null).ToString()!;
+                item.Created = item.UpdatedEntity = DateTime.UtcNow;
+
+                var session = dbContext.ActiveTransaction?.Session;
+                if (session is not null)
+                {
+                    await _collection.InsertOneAsync(session, item, cancellationToken: cancellationToken);
+                }
+                else
+                {
+                    await _collection.InsertOneAsync(item, cancellationToken: cancellationToken);
+                }
+            }
+
+            _entitiesToInsert.Clear();
         }
     }
 
