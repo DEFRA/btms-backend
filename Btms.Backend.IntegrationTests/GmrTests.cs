@@ -59,14 +59,4 @@ public class GmrTests : BaseApiTests, IClassFixture<ApplicationFactory>
         gmr?.PlannedCrossing.Should().NotBeNull();
         gmr?.PlannedCrossing?.DepartsAt.GetValueOrDefault().Kind.Should().Be(DateTimeKind.Unspecified);
     }
-
-    private async Task LoadData<T>(Func<object, bool>? filter = null) where T : ScenarioGenerator
-    {
-        var testGeneratorFixture = new TestGeneratorFixture(Factory.TestOutputHelper);
-        var generatorResult = testGeneratorFixture.GenerateTestData<T>();
-        var messages = generatorResult.Select(x => x.Message);
-        messages = filter != null ? messages.Where(filter) : messages;
-
-        await Factory.Services.PushToConsumers(Factory.TestOutputHelper.GetLogger<GmrTests>(), messages);
-    }
 }
