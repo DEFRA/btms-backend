@@ -15,9 +15,11 @@ public class HmrcClearanceRequestConsumerTests
         var awsSender = new TestAwsSender(awsConsumers.Configuration);
 
         await awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = "abc" } });
-
-        (await awsConsumers.ClearanceRequestConsumer.WaitUntilHandledAsync()).Should().BeTrue(because: "The message was not handled by the consumer");
         
-        await awsConsumers.ClearanceRequestConsumer.Mock.Received().OnHandle(Arg.Is<AlvsClearanceRequest>(a => a.ServiceHeader != null && a.ServiceHeader.CorrelationId == "abc"), Arg.Any<IConsumerContext>(), Arg.Any<CancellationToken>());
+        awsConsumers.ClearanceRequestConsumer.WaitUntilHandled().Should().BeTrue(because: "The message was not handled by the consumer");
+
+        await awsConsumers.ClearanceRequestConsumer.Mock.Received().OnHandle(Arg.Is<AlvsClearanceRequest>(a => a.ServiceHeader != null && a.ServiceHeader.CorrelationId == "abc"), 
+                                                                             Arg.Any<IConsumerContext>(), 
+                                                                             Arg.Any<CancellationToken>());
     }
 }
