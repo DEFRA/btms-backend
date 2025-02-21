@@ -23,6 +23,9 @@ public static class MessageExtensions
             case Finalisation d:
                 return d.ServiceHeader!.ServiceCallTimestamp!.Value;
 
+            case Gmr d:
+                return d.UpdatedSource!.Value;
+
             case SearchGmrsForDeclarationIdsResponse d:
                 return d.Gmrs?.Min(x => x.UpdatedSource) ?? DateTime.MinValue;
 
