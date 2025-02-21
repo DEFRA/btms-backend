@@ -23,7 +23,7 @@ public class TestAwsConsumers : IAsyncDisposable
         var builder = WebApplication.CreateBuilder();
 
         builder.Configuration.AddJsonFile("appsettings.json", optional: false)
-            .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddIniFile("Properties/local.env", true)
             .AddEnvironmentVariables();
 
         builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumer.Mock);
