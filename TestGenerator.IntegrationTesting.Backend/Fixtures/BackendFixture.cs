@@ -9,12 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using Serilog.Extensions.Logging;
-using TestDataGenerator;
 using Xunit.Abstractions;
 
 using TestGenerator.IntegrationTesting.Backend.Extensions;
@@ -40,19 +37,13 @@ public class BackendFixture
         (MongoDbContext, BtmsClient) = WebApp.Start();
     }
 
-    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData, bool maintainMessageOrder = false, bool clearDb = true)
+    public async Task<List<GeneratedResult>> LoadTestData(List<GeneratedResult> testData, bool maintainMessageOrder = false)
     {
-        if (clearDb)
-            await BtmsClient.ClearDb();
+        await BtmsClient.ClearDb();
 
         await WebApp.Services.PushToConsumers(Logger, testData.Select(d => d.Message), maintainMessageOrder);
 
         return testData;
-    }
-
-    public IMongoDbContext GetDbContext()
-    {
-        return WebApp.Services.CreateScope().ServiceProvider.GetRequiredService<IMongoDbContext>();
     }
 }
 
