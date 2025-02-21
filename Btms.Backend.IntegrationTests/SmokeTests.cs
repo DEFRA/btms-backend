@@ -29,7 +29,7 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
         _jsonOptions = new JsonSerializerOptions();
         _jsonOptions.Converters.Add(new JsonStringEnumConverter());
         _jsonOptions.PropertyNameCaseInsensitive = true;
-        
+
         factory.InternalQueuePublishWillBlock = true;
     }
 

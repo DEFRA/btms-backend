@@ -12,7 +12,7 @@ public class SensitiveDataTests
 {
     private const string FilePath =
         "../../../../TestDataGenerator/Scenarios/Samples/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
-    
+
     [Fact]
     public void WhenIncludeSensitiveData_RedactedShouldBeSameAsJson()
     {
