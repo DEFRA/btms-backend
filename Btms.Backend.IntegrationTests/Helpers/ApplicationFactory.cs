@@ -25,6 +25,8 @@ public interface IIntegrationTestsApplicationFactory
 public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTestsApplicationFactory
 {
     public Action<IConfigurationBuilder> ConfigureHostConfiguration { get; set; } = _ => { };
+    public bool InternalQueuePublishWillBlock { get; set; }
+    public bool EnableAzureServiceBusConsumers { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -40,6 +42,18 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
         var configurationBuilder = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues);
+
+        if (InternalQueuePublishWillBlock)
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "ConsumerOptions:EnableBlockingPublish", "true" }
+            });
+
+        if (EnableAzureServiceBusConsumers)
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "ConsumerOptions:EnableAsbConsumers", "true" }
+            });
 
         ConfigureHostConfiguration(configurationBuilder);
 
