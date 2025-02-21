@@ -7,8 +7,7 @@ namespace Btms.Business.Builders;
 public class DecisionStatusFinder
 {
     private readonly Dictionary<DecisionStatusEnum, Func<Movement, AlvsDecision, bool>> _finders = [];
-    private readonly List<DecisionStatusEnum> _orderedDecisions = Enum.GetValues<DecisionStatusEnum>().ToList();
-
+    private readonly List<DecisionStatusEnum> _orderedFinders = Enum.GetValues<DecisionStatusEnum>().ToList();
     public DecisionStatusFinder()
     {
         _finders.Add(DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs, BtmsMadeSameDecisionAsAlvs);
@@ -39,7 +38,7 @@ public class DecisionStatusFinder
         //Validate that each status in the enum has a finder
         var hasFinders = _finders.Select(f => f.Key).ToArray();
 
-        var missing = _orderedDecisions
+        var missing = _orderedFinders
             .Except(hasFinders);
 
         if (missing.Any())
@@ -48,9 +47,9 @@ public class DecisionStatusFinder
         }
     }
 
-    public DecisionStatusEnum GetDecisionStatus(Movement movement, AlvsDecision decision)
+    public DecisionStatusEnum GetStatus(Movement movement, AlvsDecision decision)
     {
-        return _orderedDecisions
+        return _orderedFinders
             .First(f => _finders[f](movement, decision));
     }
 

@@ -19,6 +19,7 @@ using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Model.Cds;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 
@@ -82,6 +83,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDecisionFinder, IuuDecisionFinder>();
 
         services.AddTransient<DecisionStatusFinder>();
+        services.AddTransient<BusinessDecisionStatusFinder>();
         services.AddTransient<MovementBuilderFactory>();
         services.AddScoped<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>, ImportNotificationPreProcessor>();
         services.AddScoped<IPreProcessor<AlvsClearanceRequest, Model.Movement>, MovementPreProcessor>();

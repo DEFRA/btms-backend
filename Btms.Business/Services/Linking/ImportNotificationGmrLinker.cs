@@ -69,25 +69,31 @@ public class ImportNotificationGmrLinker(IMongoDbContext mongoDbContext)
     {
         if (mrns.Length == 0) return [];
 
-        return await mongoDbContext.Gmrs.Where(x =>
+        var transits = mongoDbContext.Gmrs.Where(x =>
                 x.Declarations != null &&
-                ((
-                    x.Declarations.Transits != null &&
-                    x.Declarations.Transits.Any(y => mrns.Any(mrn =>
-                        y.Id != null &&
+                x.Declarations.Transits != null &&
+                x.Declarations.Transits.Any(y => mrns.Any(mrn =>
+                    y.Id != null &&
 #pragma warning disable CA1862
-                        // MongoDB driver does not support string.Equals()
-                        y.Id.ToLowerInvariant() == mrn.ToLowerInvariant()))
-                ) || (
-                    x.Declarations.Customs != null &&
-                    x.Declarations.Customs.Any(y => mrns.Any(mrn =>
-                        y.Id != null &&
-#pragma warning disable CA1862
-                        // MongoDB driver does not support string.Equals()
-                        y.Id.ToLowerInvariant() == mrn.ToLowerInvariant()))
-                )))
+                    // MongoDB driver does not support string.Equals()
+                    y.Id.ToLowerInvariant() == mrn.ToLowerInvariant())))
 #pragma warning restore CA1862
             .ToListAsync(cancellationToken);
+
+        var customs = mongoDbContext.Gmrs.Where(x =>
+                x.Declarations != null &&
+                x.Declarations.Customs != null &&
+                x.Declarations.Customs.Any(y => mrns.Any(mrn =>
+                    y.Id != null &&
+#pragma warning disable CA1862
+                    // MongoDB driver does not support string.Equals()
+                    y.Id.ToLowerInvariant() == mrn.ToLowerInvariant())))
+#pragma warning restore CA1862
+            .ToListAsync(cancellationToken);
+
+        await Task.WhenAll(transits, customs);
+
+        return transits.Result.Concat(customs.Result).DistinctBy(x => x.Id).ToList();
     }
 
     private async Task AddGmrRelationshipIfNotPresentAndUpdate(

@@ -32,7 +32,7 @@ public class NoMatchDecisionsTest
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance,
             Array.Empty<IDecisionFinder>(),
-            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
             new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
@@ -59,7 +59,7 @@ public class NoMatchDecisionsTest
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance,
             Array.Empty<IDecisionFinder>(),
-            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
             new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
@@ -85,7 +85,7 @@ public class NoMatchDecisionsTest
 
         var sut = new DecisionService(NullLogger<DecisionService>.Instance,
             Array.Empty<IDecisionFinder>(),
-            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
             new MemoryMongoDbContext());
 
         var matchingResult = new MatchingResult();
@@ -112,7 +112,7 @@ public class NoMatchDecisionsTest
 
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
-        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var generatorResult = generator
             .Generate(1, 1, DateTime.UtcNow, config)
             .First(x => x is AlvsClearanceRequest);
