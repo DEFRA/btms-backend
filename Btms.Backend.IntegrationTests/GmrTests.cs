@@ -7,6 +7,7 @@ using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests;
 
+[Trait("Category", "Integration")]
 public class GmrTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
     public GmrTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
