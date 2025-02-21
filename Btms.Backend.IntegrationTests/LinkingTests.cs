@@ -1,31 +1,31 @@
 using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Business.Commands;
+using Btms.Types.Alvs;
+using Btms.Types.Gvms;
+using Btms.Types.Ipaffs;
 using FluentAssertions;
+using TestDataGenerator.Scenarios.SpecificFiles;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
+public class LinkingTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
+    public LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
+    {
+        factory.InternalQueuePublishWillBlock = true;
+    }
+
     [Fact]
     public async Task SyncClearanceRequests_WithNoReferencedNotifications_ShouldNotLink()
     {
-        // Arrange
-        await Client.ClearDb();
+        await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
 
-        // Act
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-
-        // Assert
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
-        jsonClientResponse.Data
+        var document = Client.AsJsonApiClient().Get("api/movements");
+        document.Data.Should().NotBeEmpty();
+        document.Data
             .Where(x => x.Relationships is not null)
             .SelectMany(x => x.Relationships!)
             .Any(x => x.Value is { Links: not null })
@@ -35,24 +35,13 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     [Fact]
     public async Task SyncClearanceRequests_WithReferencedNotifications_ShouldLink()
     {
-        // Arrange
         await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
 
-        // Act
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-
-        // Assert
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
-        jsonClientResponse.Data
+        var document = Client.AsJsonApiClient().Get("api/movements");
+        document.Data.Should().NotBeEmpty();
+        document.Data
             .Where(x => x.Relationships is not null)
             .SelectMany(x => x.Relationships!)
             .Any(x => x.Value is { Links: not null })
@@ -62,19 +51,12 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     [Fact]
     public async Task SyncNotifications_WithNoReferencedMovements_ShouldNotLink()
     {
-        // Arrange
         await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
-        // Act
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-
-        // Assert
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
-        jsonClientResponse.Data
+        var document = Client.AsJsonApiClient().Get("api/import-notifications");
+        document.Data.Should().NotBeEmpty();
+        document.Data
             .Where(x => x.Relationships is not null)
             .SelectMany(x => x.Relationships!)
             .Any(x => x.Value is { Links: not null })
@@ -84,24 +66,13 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     [Fact]
     public async Task SyncNotifications_WithReferencedMovements_ShouldLink()
     {
-        // Arrange
         await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
-        // Act
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-
-        // Assert
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
-        jsonClientResponse.Data
+        var document = Client.AsJsonApiClient().Get("api/import-notifications");
+        document.Data.Should().NotBeEmpty();
+        document.Data
             .Where(x => x.Relationships is not null)
             .SelectMany(x => x.Relationships!)
             .Any(x => x.Value is { Links: not null })
@@ -112,24 +83,14 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task ImportNotification_WhenClearanceRequest_ResourceUpdated_UpdatedFieldOnResource_ShouldNotChange()
     {
         await ClearDb();
-
-        // Import notifications
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
         var document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         var updated = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
         var updatedEntity = DateTime.Parse((document.Data.Attributes?["updatedEntity"]!).ToString()!);
 
         // Import clearance requests and initial linking will take place
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         var updatedPostLink = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
@@ -139,11 +100,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         updatedEntity.Should().BeBefore(updatedEntityPostLink);
 
         // Import new clearance version, link will already exist, but UpdateEntity will still change
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "Linking"
-        });
+        await PublishMessagesToInMemoryTopics<LinkingScenarioGenerator>(x => x is AlvsClearanceRequest);
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         var updatedPostMovementUpdate = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
@@ -157,24 +114,14 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task ImportNotification_WhenGmr_ResourceUpdated_UpdatedFieldOnResource_ShouldNotChange()
     {
         await ClearDb();
-
-        // Import notifications
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
         var document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         var updated = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
         var updatedEntity = DateTime.Parse((document.Data.Attributes?["updatedEntity"]!).ToString()!);
 
         // Import GMRs and initial linking will take place
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         var updatedPostLink = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
@@ -184,11 +131,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         updatedEntity.Should().BeBefore(updatedEntityPostLink);
 
         // Import new GMR, link will already exist, but UpdateEntity will still change
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "Linking"
-        });
+        await PublishMessagesToInMemoryTopics<LinkingScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
         var updatedPostGmrUpdate = DateTime.Parse((document.Data.Attributes?["updated"]!).ToString()!);
@@ -202,16 +145,8 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncGmrs_WithReferenceNotifications_ShouldLink()
     {
         await Client.ClearDb();
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
@@ -223,11 +158,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
 
         // Import new version, link remains and no additional relationships should be added
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "Linking"
-        });
+        await PublishMessagesToInMemoryTopics<LinkingScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
 
@@ -245,16 +176,8 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
     public async Task SyncNotifications_WithReferenceGmrs_ShouldLink()
     {
         await Client.ClearDb();
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
         var document = Client.AsJsonApiClient().GetById("GMRAPOQSPDUG", "api/gmrs");
 
@@ -266,11 +189,7 @@ public class LinkingTests(ApplicationFactory factory, ITestOutputHelper testOutp
         document.Data.Relationships?["gmrs"]!.Data.ManyValue.Should().ContainEquivalentOf(new { Id = "GMRAPOQSPDUG" });
 
         // Import new version, link remains and no additional relationships should be added
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "Linking"
-        });
+        await PublishMessagesToInMemoryTopics<LinkingScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
         document = Client.AsJsonApiClient().GetById("CHEDA.GB.2024.1041389", "api/import-notifications");
 
