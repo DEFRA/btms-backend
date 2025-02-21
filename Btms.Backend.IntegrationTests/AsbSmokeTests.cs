@@ -3,7 +3,6 @@ using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using TestDataGenerator.Helpers;
 using TestDataGenerator.Scenarios.ChedP;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -20,13 +19,7 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public AsbSmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory,
         testOutputHelper, "AsbSmokeTests")
     {
-        factory.ConfigureHostConfiguration = configurationBuilder =>
-        {
-            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { "ConsumerOptions:EnableAsbConsumers", "true" }
-            });
-        };
+        factory.EnableAzureServiceBusConsumers = true;
     }
 
     [Fact]
