@@ -17,6 +17,7 @@ using SlimMessageBus.Host.Memory;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
 using AlvsClearanceRequest = Btms.Types.Alvs.AlvsClearanceRequest;
 using Decision = Btms.Types.Alvs.Decision;
+using ImportNotification = Btms.Types.Ipaffs.ImportNotification;
 
 namespace Btms.Consumers.Extensions
 {
@@ -38,6 +39,7 @@ namespace Btms.Consumers.Extensions
 
             services.AddBtmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
+            services.AddSingleton(typeof(IConsumerInterceptor<ImportNotification>), typeof(NotificationLockInterceptor));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsInterceptor<>));
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(MetricsInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
