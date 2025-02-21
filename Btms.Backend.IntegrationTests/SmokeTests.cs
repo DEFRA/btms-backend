@@ -5,123 +5,87 @@ using System.Text.Json.Serialization;
 using Btms.Backend.IntegrationTests.Helpers;
 using Btms.Business.Commands;
 using Btms.Model;
-using Btms.Model.Auditing;
 using Btms.SyncJob;
+using Btms.Types.Alvs;
+using Btms.Types.Gvms;
+using Btms.Types.Ipaffs;
 using FluentAssertions;
+using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
+using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
 public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
-    private readonly JsonSerializerOptions jsonOptions;
+    private readonly JsonSerializerOptions _jsonOptions;
 
     public SmokeTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
     {
-        jsonOptions = new JsonSerializerOptions();
-        jsonOptions.Converters.Add(new JsonStringEnumConverter());
-        jsonOptions.PropertyNameCaseInsensitive = true;
+        _jsonOptions = new JsonSerializerOptions();
+        _jsonOptions.Converters.Add(new JsonStringEnumConverter());
+        _jsonOptions.PropertyNameCaseInsensitive = true;
+        
+        factory.InternalQueuePublishWillBlock = true;
     }
 
     [Fact]
     public async Task CancelSyncJob()
     {
-        //Arrange
-        await base.ClearDb();
+        await ClearDb();
         var (response, jobId) = await Client.StartJob(new SyncNotificationsCommand
         {
             SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
+            RootFolder = "RootFolder"
         }, "/sync/import-notifications");
 
-        //Act
         var cancelJobResponse = await Client.CancelJob(jobId);
 
-        // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         cancelJobResponse.IsSuccessStatusCode.Should().BeTrue(cancelJobResponse.StatusCode.ToString());
 
-
-        // Check Api
         var jobResponse = await Client.GetJob(jobId);
-        var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
+        var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(_jsonOptions);
         syncJob?.Status.Should().Be(SyncJobStatus.Cancelled);
     }
 
     [Fact]
     public async Task SyncNotifications()
     {
-        //Arrange
-        await base.ClearDb();
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
-        // Assert
-        // Check Db
         Factory.GetDbContext().Notifications.Count().Should().Be(5);
 
-        // Check Api
         var jsonClientResponse = Client.AsJsonApiClient().Get("api/import-notifications");
         jsonClientResponse.Data.Count.Should().Be(5);
 
-        // Check Audit Entry
         Client.GetFirstImportNotification()
             .AuditEntries
-            .First(a =>
-                a.Status == "Created")
-            .Id
-            .Should().StartWith($"SmokeTest{Path.DirectorySeparatorChar}");
-
+            .First(a => a.Status == "Created").Id
+            .Should().Be("CHEDA.GB.2024.1041389");
     }
-
-    // [Fact]
-    // public void AuditEntryIdsShouldBeCorrectFormat()
-    // {
-    //     Client
-    //         .GetSingleMovement()
-    //         .AuditEntries
-    //         .Where(a => a.CreatedBy is CreatedBySystem.Alvs or CreatedBySystem.Cds && a.Status == "Created" )
-    //         .Should().AllSatisfy(
-    //             a =>
-    //             {
-    //
-    //                 a.Id.Should().StartWith("");
-    //             });
-    // }
 
     [Fact]
     public async Task SyncDecisions()
     {
-        //Arrange 
-        await base.ClearDb();
+        await ClearDb();
         await SyncClearanceRequests();
-        await Client.MakeSyncDecisionsRequest(new SyncDecisionsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is Decision);
 
-        // Assert
         var existingMovement = await Factory.GetDbContext().Movements.Find("CHEDPGB20241039875A5");
-
         existingMovement.Should().NotBeNull();
         existingMovement?.Items[0].Checks.Should().NotBeNull();
         existingMovement?.Items[0].Checks?.Length.Should().Be(1);
         existingMovement?.Items[0].Checks?[0].CheckCode.Should().Be("H234");
         existingMovement?.Items[0].Checks?[0].DepartmentCode.Should().Be("PHA");
 
-        // Check Api
-        var jsonClientResponse =
-            Client.AsJsonApiClient().GetById("CHEDPGB20241039875A5", "api/movements");
-        var movement = jsonClientResponse.GetResourceObject<Movement>();
+        var document = Client.AsJsonApiClient().GetById("CHEDPGB20241039875A5", "api/movements");
+        var movement = document.GetResourceObject<Movement>();
         movement.Items[0].Checks?.Length.Should().Be(1);
         movement.Items[0].Checks?[0].CheckCode.Should().Be("H234");
         movement.Items[0].Checks?[0].DepartmentCode.Should().Be("PHA");
@@ -130,42 +94,24 @@ public class SmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     [Fact]
     public async Task SyncClearanceRequests()
     {
-        //Arrange
-        await base.ClearDb();
+        await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
 
-        //Act
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-
-        // Assert
         Factory.GetDbContext().Movements.Count().Should().Be(5);
 
-        // Check Api
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/movements");
-        jsonClientResponse.Data.Count.Should().Be(5);
+        var document = Client.AsJsonApiClient().Get("api/movements");
+        document.Data.Count.Should().Be(5);
     }
 
     [Fact]
     public async Task SyncGmrs()
     {
-        //Arrange
-        await base.ClearDb();
+        await ClearDb();
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is SearchGmrsForDeclarationIdsResponse);
 
-        //Act
-        await Client.MakeSyncGmrsRequest(new SyncGmrsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-
-        // Assert
         Factory.GetDbContext().Gmrs.Count().Should().Be(3);
 
-        // Check Api
-        var jsonClientResponse = Client.AsJsonApiClient().Get("api/gmrs");
-        jsonClientResponse.Data.Count.Should().Be(3);
+        var document = Client.AsJsonApiClient().Get("api/gmrs");
+        document.Data.Count.Should().Be(3);
     }
 }
