@@ -106,6 +106,12 @@ namespace Btms.Consumers.Extensions
                                 x.Instances(consumerOpts.InMemoryGmrs);
                                 x.Topic("GMR").WithConsumer<GmrConsumer>();
                             })
+                            .Produce<Gmr>(x => x.DefaultTopic("GMR"))
+                            .Consume<Gmr>(x =>
+                            {
+                                x.Instances(consumerOpts.InMemoryGmrs);
+                                x.Topic("GMR").WithConsumer<GmrConsumer>();
+                            })
                             .Produce<AlvsClearanceRequest>(x => x.DefaultTopic(nameof(AlvsClearanceRequest)))
                             .Consume<AlvsClearanceRequest>(x =>
                             {

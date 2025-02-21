@@ -1,11 +1,4 @@
 decisionBy.displayName
-laboratoryTests.singleLaboratoryTests.applicant.inspector.email
-laboratoryTests.singleLaboratoryTests.applicant.inspector.name
-laboratoryTests.singleLaboratoryTests.applicant.inspector.phone
-laboratoryTests.singleLaboratoryTests.applicant.laboratory
-laboratoryTests.singleLaboratoryTests.applicant.laboratoryAddress
-laboratoryTests.singleLaboratoryTests.applicant.laboratoryEmail
-laboratoryTests.singleLaboratoryTests.applicant.laboratoryPhoneNumber
 lastUpdatedBy.displayName
 partOne.additionalPermanentAddresses.address.addressLine1
 partOne.additionalPermanentAddresses.address.addressLine2
@@ -19,7 +12,6 @@ partOne.additionalPermanentAddresses.address.telephone
 partOne.additionalPermanentAddresses.address.ukTelephone
 partOne.additionalPermanentAddresses.companyName
 partOne.additionalPermanentAddresses.individualName
-partOne.commodities.complementParameterSet.identifiers.data
 partOne.commodities.complementParameterSet.identifiers.permanentAddress.address.addressLine1
 partOne.commodities.complementParameterSet.identifiers.permanentAddress.address.addressLine2
 partOne.commodities.complementParameterSet.identifiers.permanentAddress.address.addressLine3
@@ -74,12 +66,8 @@ partOne.consignorTwo.companyName
 partOne.consignorTwo.countryISOCode
 partOne.consignorTwo.individualName
 partOne.contactDetails.agent
-partOne.contactDetails.agent
-partOne.contactDetails.email
 partOne.contactDetails.email
 partOne.contactDetails.name
-partOne.contactDetails.name
-partOne.contactDetails.telephone
 partOne.contactDetails.telephone
 partOne.importer.address.addressLine1
 partOne.importer.address.addressLine2
@@ -96,17 +84,8 @@ partOne.importer.countryCode
 partOne.importer.countryISOCode
 partOne.importer.individualName
 partOne.importer.internationalTelephone
-partOne.importerLocalReferenceNumber
-partOne.importerLocalReferenceNumber
-partOne.meansOfTransport.document
-partOne.meansOfTransport.id
-partOne.meansOfTransportFromEntryPoint.document
-partOne.meansOfTransportFromEntryPoint.id
-partOne.nominatedContacts.email
 partOne.nominatedContacts.email
 partOne.nominatedContacts.name
-partOne.nominatedContacts.name
-partOne.nominatedContacts.telephone
 partOne.nominatedContacts.telephone
 partOne.packer.address.addressLine1
 partOne.packer.address.addressLine2
@@ -167,8 +146,6 @@ partOne.pod.address.telephone
 partOne.pod.address.ukTelephone
 partOne.pod.companyName
 partOne.pod.individualName
-partOne.sealsContainers.containerNumber
-partOne.sealsContainers.sealNumber
 partOne.submittedBy.displayName
 partOne.transporter.address.addressLine1
 partOne.transporter.address.addressLine2
@@ -182,8 +159,6 @@ partOne.transporter.address.telephone
 partOne.transporter.address.ukTelephone
 partOne.transporter.companyName
 partOne.transporter.individualName
-partOne.veterinaryInformation.accompanyingDocuments.documentReference
-partOne.veterinaryInformation.identificationDetails.identificationDetail
 partOne.veterinaryInformation.name
 partThree.control.officialInspector.address.addressLine1
 partThree.control.officialInspector.address.addressLine2
@@ -208,7 +183,6 @@ partThree.sealCheck.officialInspector.address.street
 partThree.sealCheck.officialInspector.address.telephone
 partThree.sealCheck.officialInspector.address.ukTelephone
 partThree.sealCheckOverride.overriddenBy.displayName
-partTwo.bipLocalReferenceNumber
 partTwo.controlAuthority.officialVeterinarian.email
 partTwo.controlAuthority.officialVeterinarian.fax
 partTwo.controlAuthority.officialVeterinarian.firstName
@@ -235,5 +209,6 @@ partTwo.decision.detailsOfControlledDestinations.name
 partTwo.decision.detailsOfControlledDestinations.phone
 partTwo.decision.detailsOfControlledDestinations.postCode
 partTwo.inspectionOverride.overriddenBy.displayName
-partTwo.resealedContainersMapping.containerNumber
-partTwo.resealedContainersMapping.sealNumber
+partTwo.laboratoryTests.singleLaboratoryTests.applicant.inspector.email
+partTwo.laboratoryTests.singleLaboratoryTests.applicant.inspector.name
+partTwo.laboratoryTests.singleLaboratoryTests.applicant.inspector.phone
