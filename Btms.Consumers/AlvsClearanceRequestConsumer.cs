@@ -3,7 +3,7 @@ using SlimMessageBus;
 
 namespace Btms.Consumers;
 
-internal class AlvsClearanceRequestConsumer(ClearanceRequestConsumer clearanceRequestConsumer)
+internal class AlvsClearanceRequestConsumer(IClearanceRequestConsumer clearanceRequestConsumer)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
     public async Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)

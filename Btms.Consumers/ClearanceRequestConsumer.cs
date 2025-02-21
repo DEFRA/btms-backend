@@ -11,6 +11,11 @@ using SlimMessageBus;
 
 namespace Btms.Consumers;
 
+public interface IClearanceRequestConsumer
+{
+    Task OnHandle(AlvsClearanceRequest message, IConsumerContext context, CancellationToken cancellationToken);
+}
+
 internal class ClearanceRequestConsumer(
     IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor,
     ILinkingService linkingService,
@@ -18,7 +23,7 @@ internal class ClearanceRequestConsumer(
     IDecisionService decisionService,
     IValidationService validationService,
     IMongoDbContext dbContext,
-    ILogger<ClearanceRequestConsumer> logger)
+    ILogger<ClearanceRequestConsumer> logger) : IClearanceRequestConsumer
 {
     public async Task OnHandle(AlvsClearanceRequest message, IConsumerContext context, CancellationToken cancellationToken)
     {

@@ -1,3 +1,4 @@
+using Amazon;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,14 +12,21 @@ internal static class AmazonConsumerExtensions
 {
     public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, IConfiguration configuration)
     {
-        var serviceUrl = configuration["AWS_SERVICE_URL"];
-        var accessKey = configuration["AWS_ACCESS_KEY_ID"];
-        var accessSecret = configuration["AWS_SECRET_ACCESS_KEY"];
-
+        var awsLocalOptions = configuration
+            .GetSection("AwsOptions")
+            .Get<AwsLocalOptions>();
+        
         mbb.WithProviderAmazonSQS(cfg =>
         {
-            cfg.SqsClientConfig.ServiceURL = serviceUrl;
-            cfg.UseCredentials(accessKey, accessSecret);
+            if (awsLocalOptions != null)
+            {
+                if (awsLocalOptions.ServiceUrl != null)
+                    cfg.SqsClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
+                else
+                    cfg.UseRegion(RegionEndpoint.GetBySystemName(awsLocalOptions.Region));
+                if (awsLocalOptions.AccessKeyId != null) cfg.UseCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
+            }
+
             cfg.TopologyProvisioning.Enabled = false;
         });
         

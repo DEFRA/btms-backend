@@ -45,7 +45,8 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
-            services.AddScoped<ClearanceRequestConsumer>();
+            services.AddScoped<IClearanceRequestConsumer, ClearanceRequestConsumer>();
+            services.AddScoped<AlvsClearanceRequestConsumer>();
 
             services.AddSlimMessageBus(mbb =>
             {
