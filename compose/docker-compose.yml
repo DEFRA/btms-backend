@@ -1,0 +1,17 @@
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566-4599:4566-4599"
+    environment:
+      - SERVICES=s3,sns,sqs
+    volumes:
+      - type: bind
+        source: ./localstack/volume
+        target: /var/lib/localstack
+      - type: bind
+        source: ./localstack/var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: ./start-localstack.sh
+        target: /etc/localstack/init/ready.d/start-localstack.sh

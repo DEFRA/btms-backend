@@ -46,10 +46,10 @@ public class ClearanceRequestConsumerTests
         var consumer = CreateSubject(clearanceRequest.Header!.EntryReference!);
 
         // ACT
-        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
+        await consumer.OnHandle(clearanceRequest, Context, CancellationToken.None);
 
         // ASSERT
-        consumer.Context.IsLinked().Should().BeFalse();
+        Context.IsLinked().Should().BeFalse();
         await _mockLinkingService.DidNotReceive().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
     }
 
@@ -69,11 +69,11 @@ public class ClearanceRequestConsumerTests
         var consumer = CreateSubject(clearanceRequest.Header!.EntryReference!);
 
         // ACT
-        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
+        await consumer.OnHandle(clearanceRequest, Context, CancellationToken.None);
 
         // ASSERT
-        consumer.Context.IsPreProcessed().Should().BeTrue();
-        consumer.Context.IsLinked().Should().BeTrue();
+        Context.IsPreProcessed().Should().BeTrue();
+        Context.IsLinked().Should().BeTrue();
         await _mockLinkingService.Received().Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>());
     }
 
@@ -83,18 +83,19 @@ public class ClearanceRequestConsumerTests
             .WithValidDocumentReferenceNumbers().Build();
     }
 
-    private AlvsClearanceRequestConsumer CreateSubject(string messageId)
+    private ClearanceRequestConsumer CreateSubject(string messageId)
     {
-        return new AlvsClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
-            _validationService, _mongoDbContext, NullLogger<AlvsClearanceRequestConsumer>.Instance)
+        Context = new ConsumerContext
         {
-            Context = new ConsumerContext
+            Headers = new Dictionary<string, object>
             {
-                Headers = new Dictionary<string, object>
-                {
-                    { "messageId", messageId }
-                }
+                { "messageId", messageId }
             }
         };
+
+        return new ClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
+            _validationService, _mongoDbContext, NullLogger<ClearanceRequestConsumer>.Instance);
     }
+
+    private ConsumerContext Context = null!;
 }
