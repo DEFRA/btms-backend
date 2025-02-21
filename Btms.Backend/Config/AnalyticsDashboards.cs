@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Btms.Analytics;
 using Btms.Analytics.Extensions;
 using Btms.Common.Extensions;
@@ -142,11 +143,23 @@ public static class AnalyticsDashboards
                 () => movementsService.ByAlvsDecision(dateRange.From ?? DateTime.Today.AddMonths(-3), dateRange.To ?? DateTime.Today, finalisedOnly, chedTypes, country).AsIDataset()
             }
         };
-        var chartsToReturn = chartsToRender.Length == 0
-            ? charts.ToList()
-            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key)).ToList();
 
-        var taskList = chartsToReturn.Select(r => r.Value()).ToList();
+        var chartsToReturn = (chartsToRender.Length == 0
+            ? charts.ToList()
+            : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key)).ToList());
+
+
+        var taskList = chartsToReturn
+            .Select(r =>
+            {
+                logger.LogInformation("Query {Chart} Starting", r.Key);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                var result = r.Value();
+                stopwatch.Stop();
+                logger.LogInformation("Query {Chart} Complete in {Ms} Milliseconds", r.Key, stopwatch.ElapsedMilliseconds);
+                return result;
+            })
+            .ToList();
 
         await Task.WhenAll(taskList);
 
