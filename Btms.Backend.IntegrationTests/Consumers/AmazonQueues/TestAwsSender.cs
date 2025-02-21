@@ -13,6 +13,7 @@ namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 public class TestAwsSender
 {
     private readonly IAmazonSimpleNotificationService _snsSender;
+    private string _topicArnPrefix;
 
     public TestAwsSender(IConfiguration configuration)
     {
@@ -33,8 +34,14 @@ public class TestAwsSender
         
         serviceCollection.AddDefaultAWSOptions(awsOptions);
         serviceCollection.AddAWSService<IAmazonSimpleNotificationService>();
+        
         var services = serviceCollection.BuildServiceProvider();
+        
         _snsSender = services.GetRequiredService<IAmazonSimpleNotificationService>();
+        
+        var response =_snsSender.ListTopicsAsync().Result;
+        var topicArn = response.Topics.First().TopicArn;
+        _topicArnPrefix = topicArn[..topicArn.LastIndexOf(':')];
     }
 
     public async Task SendAsync<T>(T message) where T : class
@@ -47,7 +54,7 @@ public class TestAwsSender
         
         await _snsSender.PublishAsync(new PublishRequest
         {
-            TopicArn = $"arn:aws:sns:eu-west-2:000000000000:{topicName}.fifo",
+            TopicArn = $"{_topicArnPrefix}:{topicName}.fifo",
             Message = JsonSerializer.Serialize(message),
             MessageDeduplicationId = Guid.NewGuid().ToString(),
             MessageGroupId = "message-group-id"
