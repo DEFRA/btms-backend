@@ -15,6 +15,7 @@ permissions:
   id-token: write
   contents: read
   pull-requests: write
+  repository-projects: read
 
 jobs:
   pr-validator:
