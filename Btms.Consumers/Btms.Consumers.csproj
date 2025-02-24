@@ -46,15 +46,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\compose\docker-compose.yml">
-      <Link>Properties\compose\docker-compose.yml</Link>
+    <Content Include="..\compose.yml">
+      <Link>Properties\compose.yml</Link>
     </Content>
-    <Content Include="..\compose\start-localstack.sh">
-      <Link>Properties\compose\start-localstack.sh</Link>
+    <Content Include="..\start-localstack.sh">
+      <Link>Properties\start-localstack.sh</Link>
     </Content>
   </ItemGroup>
 

@@ -26,10 +26,8 @@ public class TestAwsSender
         var awsOptions = configuration.GetAWSOptions();
         if (awsLocalOptions?.ServiceUrl != null)
         {
-            awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
             awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-            awsOptions.Region = RegionEndpoint.GetBySystemName(awsLocalOptions.Region);
-            awsOptions.DefaultClientConfig.AuthenticationRegion = awsLocalOptions.Region;
+            awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
         }
 
         serviceCollection.AddDefaultAWSOptions(awsOptions);
