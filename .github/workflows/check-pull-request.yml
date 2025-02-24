@@ -34,7 +34,7 @@ jobs:
         with:
           repository: DEFRA/btms-test-data
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.THOMAS_PAT }}
         
       - name: Verify Format
         run: dotnet format --verify-no-changes --verbosity diagnostic
