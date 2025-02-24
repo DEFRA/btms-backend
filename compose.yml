@@ -10,7 +10,7 @@ services:
     environment:
       - SERVICES=s3,sns,sqs
     volumes:
-      - './start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh:ro'
+      - "./start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh:ro"
 
   emulator:
     container_name: "servicebus-emulator"

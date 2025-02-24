@@ -13,7 +13,7 @@ namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 public class TestAwsSender
 {
     private readonly IAmazonSimpleNotificationService _snsSender;
-    private string _topicArnPrefix;
+    private readonly string _topicArnPrefix;
 
     public TestAwsSender(IConfiguration configuration)
     {
