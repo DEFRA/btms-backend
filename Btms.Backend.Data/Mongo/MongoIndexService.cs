@@ -20,6 +20,8 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.CreatedSource), cancellationToken: cancellationToken),
             CreateIndex("UpdatedEntity",
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.UpdatedEntity), cancellationToken: cancellationToken),
+            CreateIndex("PartOneArrivesAt",
+                Builders<ImportNotification>.IndexKeys.Ascending(n => n.PartOne!.ArrivesAt), cancellationToken: cancellationToken),
             CreateIndex("ImportNotificationGmrLinker",
                 Builders<ImportNotification>.IndexKeys
                     .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.system"))
