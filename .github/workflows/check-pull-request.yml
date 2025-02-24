@@ -29,7 +29,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3 
         with:
-            path: backend
+            path: btms-backend
         
       - name: Check out code Test data
         uses: actions/checkout@v3
@@ -37,10 +37,10 @@ jobs:
           repository: DEFRA/btms-test-data
           ref: main
           token: ${{ secrets.THOMAS_PAT }}
-          path: test-data
+          path: btms-test-data
         
       - name: Verify Format
-        run: dotnet format --include ./backend/ --verify-no-changes --verbosity diagnostic
+        run: dotnet format --include ./btms-backend/ --verify-no-changes --verbosity diagnostic
 
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
