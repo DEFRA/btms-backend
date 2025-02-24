@@ -40,7 +40,7 @@ jobs:
           path: btms-test-data
         
       - name: Verify Format
-        run: dotnet format --include ./btms-backend/ --verify-no-changes --verbosity diagnostic
+        run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
 
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
