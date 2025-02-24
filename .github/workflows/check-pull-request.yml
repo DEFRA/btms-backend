@@ -35,9 +35,12 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "compose.yml"
+          
+      - name: Make Script Executable
+        run: chmod +x ./start-localstack.sh
 
-      - name: debug
-        run: docker compose logs localstack
+      - name: Create SNS/SQS
+        run: ./start-localstack.sh
   
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
