@@ -1,7 +1,9 @@
 using System.Text.Json;
 using Btms.Backend.IntegrationTests.Helpers;
-using Btms.Business.Commands;
+using Btms.Types.Alvs;
+using Btms.Types.Ipaffs;
 using FluentAssertions;
+using TestDataGenerator.Scenarios.SpecificFiles;
 using TestGenerator.IntegrationTesting.Backend.JsonApiClient;
 using Xunit;
 using Xunit.Abstractions;
@@ -9,23 +11,19 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests;
 
 [Trait("Category", "Integration")]
-public class SerializationTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper)
-    : BaseApiTests(factory, testOutputHelper), IClassFixture<ApplicationFactory>
+public class SerializationTests : BaseApiTests, IClassFixture<ApplicationFactory>
 {
+    public SerializationTests(ApplicationFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
+    {
+        factory.InternalQueuePublishWillBlock = true;
+    }
+
     [Fact]
     public async Task ImportNotifications_Serialization_AsExpected()
     {
         await ClearDb();
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
 
         var document = Client.AsJsonApiClient().Get("api/import-notifications");
 
@@ -36,16 +34,8 @@ public class SerializationTests(ApplicationFactory factory, ITestOutputHelper te
     public async Task Movements_Serialization_AsExpected()
     {
         await ClearDb();
-        await Client.MakeSyncNotificationsRequest(new SyncNotificationsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
-        await Client.MakeSyncClearanceRequest(new SyncClearanceRequestsCommand
-        {
-            SyncPeriod = SyncPeriod.All,
-            RootFolder = "SmokeTest"
-        });
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is ImportNotification);
+        await PublishMessagesToInMemoryTopics<SmokeTestScenarioGenerator>(x => x is AlvsClearanceRequest);
 
         var document = Client.AsJsonApiClient().Get("api/movements");
 

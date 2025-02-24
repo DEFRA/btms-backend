@@ -1,9 +1,11 @@
 using Btms.Backend.Data.Mongo;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
 using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 
 namespace Btms.Backend.Data.Extensions;
@@ -22,9 +24,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMongoDbContext, MongoDbContext>();
         services.AddSingleton(sp =>
         {
+
             var options = sp.GetService<IOptions<MongoDbOptions>>();
             var settings = MongoClientSettings.FromConnectionString(options?.Value.DatabaseUri);
             settings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber(new InstrumentationOptions { CaptureCommandText = true }));
+
             var client = new MongoClient(settings);
 
             var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
