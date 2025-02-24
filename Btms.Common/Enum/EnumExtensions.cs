@@ -4,7 +4,7 @@ namespace Btms.Common.Enum;
 
 public static class EnumExtensions
 {
-    private static readonly IDictionary<string, object> converters =
+    private static readonly ConcurrentDictionary<string, object> converters =
         new ConcurrentDictionary<string, object>();
 
     public static string GetValue<TEnum>(this TEnum e) where TEnum : struct, System.Enum
