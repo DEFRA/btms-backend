@@ -33,7 +33,10 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "compose.yml"
-        
+
+      - name: debug
+        run: aws --endpoint http://sqs.eu-west-2.localhost.localstack.cloud:4566 sqs list-queues
+  
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
         with:
