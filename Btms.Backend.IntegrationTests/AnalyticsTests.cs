@@ -74,7 +74,7 @@ public class AnalyticsTests(ApplicationFactory factory, ITestOutputHelper testOu
 
         var responseDictionary = await response.ToJsonDictionary();
 
-        responseDictionary.Keys.Take(2).Should().Equal(
+        responseDictionary.Keys.Should().Contain(
             "importNotificationLinkingByCreated",
             "importNotificationLinkingByArrival");
 

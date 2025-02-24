@@ -48,6 +48,7 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Where(n => (from == null || n.CreatedSource >= from) && (to == null || n.CreatedSource < to))
             .GroupBy(n => new { n.ImportNotificationType, Linked = n.Relationships.Movements.Data.Count > 0 })
             .Select(g => new { g.Key.Linked, g.Key.ImportNotificationType, Count = g.Count() })
+            .Execute(logger)
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()),
                 g => g.Count);
 

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using Btms.Analytics;
 using Btms.Analytics.Extensions;
@@ -148,31 +149,20 @@ public static class AnalyticsDashboards
             ? charts.ToList()
             : charts.Where(keyValuePair => chartsToRender.Contains(keyValuePair.Key)).ToList());
 
+        var results = new Dictionary<string, IDataset>();
 
-        var taskList = chartsToReturn
-            .Select(r =>
-            {
-                return Task.Run<IDataset>(async () =>
-                {
-                    logger.LogInformation("Query {Chart} Starting", r.Key);
-                    Stopwatch stopwatch = Stopwatch.StartNew();
-                    var result = await r.Value();
-                    stopwatch.Stop();
-                    logger.LogInformation("Query {Chart} Complete in {Ms} Milliseconds", r.Key,
-                        stopwatch.ElapsedMilliseconds);
-                    return result;
-                });
-            })
-            .ToList();
+        await Parallel.ForEachAsync(chartsToReturn, async (pair, token) =>
+        {
+            logger.LogInformation("Query {Chart} Starting", pair.Key);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            var result = await pair.Value();
+            stopwatch.Stop();
+            logger.LogInformation("Query {Chart} Complete in {Ms} Milliseconds", pair.Key,
+                stopwatch.ElapsedMilliseconds);
 
-        await Task.WhenAll(taskList);
+            results.Add(pair.Key, result);
+        });
 
-        var output = chartsToReturn
-        .Select((x, i) => new { Key = x.Key, Index = i })
-        .ToDictionary(t => t.Key, t => taskList[t.Index].Result);
-
-        logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
-
-        return output;
+        return results;
     }
 }
