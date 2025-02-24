@@ -23,6 +23,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3 
         
+      - name: Check out code Test data
+        uses: actions/checkout@v3
+        with:
+          repository: DEFRA/btms-test-data
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        
       - name: Verify Format
         run: dotnet format --verify-no-changes --verbosity diagnostic
 
