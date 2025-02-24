@@ -2,6 +2,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Btms.Model.Data;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
 
@@ -26,6 +27,11 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public Type ElementType => EntityQueryable.ElementType;
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;
+
+    public IQueryable<T> WithHint(string hint)
+    {
+        throw new NotImplementedException();
+    }
 
     public Task<T?> Find(string id, CancellationToken cancellationToken = default)
     {
