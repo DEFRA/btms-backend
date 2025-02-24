@@ -37,7 +37,7 @@ jobs:
           compose-file: "compose.yml"
 
       - name: debug
-        run: aws --endpoint http://sqs.eu-west-2.localhost.localstack.cloud:4566 sqs list-queues
+        run: docker compose logs localstack
   
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
