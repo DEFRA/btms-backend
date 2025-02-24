@@ -152,20 +152,24 @@ public static class AnalyticsDashboards
         var taskList = chartsToReturn
             .Select(r =>
             {
-                logger.LogInformation("Query {Chart} Starting", r.Key);
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                var result = r.Value();
-                stopwatch.Stop();
-                logger.LogInformation("Query {Chart} Complete in {Ms} Milliseconds", r.Key, stopwatch.ElapsedMilliseconds);
-                return result;
+                return Task.Run<IDataset>(async () =>
+                {
+                    logger.LogInformation("Query {Chart} Starting", r.Key);
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    var result = await r.Value();
+                    stopwatch.Stop();
+                    logger.LogInformation("Query {Chart} Complete in {Ms} Milliseconds", r.Key,
+                        stopwatch.ElapsedMilliseconds);
+                    return result;
+                });
             })
             .ToList();
 
         await Task.WhenAll(taskList);
 
         var output = chartsToReturn
-            .Select((x, i) => new { Key = x.Key, Index = i })
-            .ToDictionary(t => t.Key, t => taskList[t.Index].Result);
+        .Select((x, i) => new { Key = x.Key, Index = i })
+        .ToDictionary(t => t.Key, t => taskList[t.Index].Result);
 
         logger.LogInformation("Results found {0} Datasets, {1}", output.Count, output.Keys);
 
