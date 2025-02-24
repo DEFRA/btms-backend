@@ -28,6 +28,8 @@ jobs:
            8.0
       - name: Check out code
         uses: actions/checkout@v3 
+        with:
+            path: backend
         
       - name: Check out code Test data
         uses: actions/checkout@v3
@@ -35,6 +37,7 @@ jobs:
           repository: DEFRA/btms-test-data
           ref: main
           token: ${{ secrets.THOMAS_PAT }}
+          path: test-data
         
       - name: Verify Format
         run: dotnet format --verify-no-changes --verbosity diagnostic
