@@ -1,9 +1,11 @@
+using System.Collections.Concurrent;
+
 namespace Btms.Common.Enum;
 
 public static class EnumExtensions
 {
-    private static readonly Dictionary<string, object> converters =
-        new Dictionary<string, object>();
+    private static readonly IDictionary<string, object> converters =
+        new ConcurrentDictionary<string, object>();
 
     public static string GetValue<TEnum>(this TEnum e) where TEnum : struct, System.Enum
     {
@@ -11,7 +13,7 @@ public static class EnumExtensions
         if (!converters.TryGetValue(key, out var enumObject))
         {
             enumObject = new JsonStringEnumConverterEx<TEnum>();
-            converters.Add(key, enumObject);
+            converters.TryAdd(key, enumObject);
         }
 
         var enumLookup = (JsonStringEnumConverterEx<TEnum>)enumObject;
