@@ -140,7 +140,7 @@ public static class AnalyticsExtensions
         finally
         {
             logger.LogInformation("Query from IAggregateFluent");
-            // logger.LogExecutedMongoString((IQueryable)source);
+            logger.LogExecutedMongoString(source.ToString());
         }
     }
 
@@ -247,7 +247,12 @@ public static class AnalyticsExtensions
     {
         var stages = ((IMongoQueryProvider)source.Provider).LoggedStages;
         var query = string.Join(",", stages.Select(s => s.ToString()).ToArray());
-        logger.LogInformation("[{Query}]", query);
+        logger.LogExecutedMongoString(query);
+    }
+
+    private static void LogExecutedMongoString(this ILogger logger, string? query)
+    {
+        logger.LogInformation("Query sent to MongoDB [{Query}]", query);
     }
 
     public static async Task<IDataset> AsIDataset(this Task<MultiSeriesDatetimeDataset> ms)
