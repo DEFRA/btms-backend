@@ -38,12 +38,12 @@ jobs:
           path: btms-test-data
         
       - name: Verify Format
-        run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
+        run: dotnet format --verify-no-changes --verbosity diagnostic
 
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: "./btms-backend/compose.yml"
+          compose-file: "./compose.yml"
         
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
@@ -53,14 +53,14 @@ jobs:
           mongodb-port: 29017
 
       - name: Make Script Executable
-        run: chmod +x ./btms-backend/wait-for-docker-logs.sh
+        run: chmod +x ./wait-for-docker-logs.sh
 
       - name: Wait for ASB Emulator
         run: |
-          ./btms-backend/wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
+          ./wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
 
       - name: Test
-        run: dotnet test ./btms-backend/BtmsBackend.sln  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
+        run: dotnet test --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
         
       - name: install dotnet coverage
         run: dotnet tool install --global dotnet-coverage        
