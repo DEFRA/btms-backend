@@ -1,6 +1,8 @@
+using Btms.Common;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
@@ -24,6 +26,9 @@ internal static class AmazonConsumerExtensions
 
     private static void SetConfigurationIfRequired(IConfiguration configuration, SqsMessageBusSettings cfg)
     {
+        var logger = ApplicationLogging.LoggerFactory?.CreateLogger(nameof(AmazonConsumerExtensions));
+        logger?.LogInformation("Configure AWS Consumer: ServiceURL={ServiceUrl}; AccessKeyId={AccessKeyId}; SecretAccessKey={SecretAccessKey}", configuration["AWS_ENDPOINT_URL"], configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
+        
         if (configuration["AWS_ENDPOINT_URL"] != null)
         {
             cfg.SqsClientConfig.ServiceURL = configuration["AWS_ENDPOINT_URL"];
