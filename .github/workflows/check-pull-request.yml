@@ -12,6 +12,7 @@ on:
       - ready_for_review
 
 env:
+  AWS_ENDPOINT_URL: "http://sqs.eu-west-2.localhost.localstack.cloud:4566"
   AWS_REGION: eu-west-2
   AWS_ACCESS_KEY_ID: local
   AWS_SECRET_ACCESS_KEY: local
@@ -35,12 +36,6 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "compose.yml"
-          
-      - name: Make Script Executable
-        run: chmod +x ./start-localstack.sh
-
-      - name: Create SNS/SQS
-        run: ./start-localstack.sh
   
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
@@ -49,12 +44,18 @@ jobs:
           mongodb-replica-set: test-rs
           mongodb-port: 29017
 
-      - name: Make Script Executable
+      - name: Make Wait Script Executable
         run: chmod +x ./wait-for-docker-logs.sh
 
       - name: Wait for ASB Emulator
         run: |
           ./wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
+
+      - name: Make SNS/SQS Script Executable
+        run: chmod +x ./start-localstack.sh
+
+      - name: Create SNS/SQS
+        run: ./start-localstack.sh
 
       - name: Test
         run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage

@@ -24,14 +24,10 @@ internal static class AmazonConsumerExtensions
 
     private static void SetConfigurationIfRequired(IConfiguration configuration, SqsMessageBusSettings cfg)
     {
-        var awsLocalOptions = configuration
-            .GetSection("AwsOptions")
-            .Get<AwsLocalOptions>();
-
-        if (awsLocalOptions?.ServiceUrl != null)
+        if (configuration["AWS_ENDPOINT_URL"] != null)
         {
-            cfg.SqsClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-            cfg.UseCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
+            cfg.SqsClientConfig.ServiceURL = configuration["AWS_ENDPOINT_URL"];
+            cfg.UseCredentials(configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
         }
     }
 

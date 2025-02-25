@@ -1,9 +1,7 @@
 using System.Text.Json;
-using Amazon;
 using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
-using Btms.Consumers.AmazonQueues;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,17 +15,13 @@ public class TestAwsSender
 
     public TestAwsSender(IConfiguration configuration)
     {
-        var awsLocalOptions = configuration
-            .GetSection(AwsLocalOptions.SectionName)
-            .Get<AwsLocalOptions>();
-
         var serviceCollection = new ServiceCollection();
 
         var awsOptions = configuration.GetAWSOptions();
-        if (awsLocalOptions?.ServiceUrl != null)
+        if (configuration["AWS_ENDPOINT_URL"] != null)
         {
-            awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-            awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
+            awsOptions.DefaultClientConfig.ServiceURL = configuration["AWS_ENDPOINT_URL"];
+            awsOptions.Credentials = new BasicAWSCredentials(configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
         }
 
         serviceCollection.AddDefaultAWSOptions(awsOptions);
