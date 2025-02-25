@@ -55,7 +55,7 @@ jobs:
           mongodb-port: 29017
 
       - name: Make Script Executable
-        run: chmod +x ./wait-for-docker-logs.sh
+        run: chmod +x ./btms-backend/wait-for-docker-logs.sh
 
       - name: Wait for ASB Emulator
         run: |
