@@ -1,5 +1,4 @@
 using Btms.Types.Alvs;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
@@ -10,12 +9,12 @@ namespace Btms.Consumers.AmazonQueues;
 
 internal static class AmazonConsumerExtensions
 {
-    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, IConfiguration configuration, ILogger logger)
+    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsLocalOptions awsLocalOptions, ILogger logger)
     {
         mbb.WithProviderAmazonSQS(cfg =>
         {
             cfg.TopologyProvisioning.Enabled = false;
-            SetConfigurationIfRequired(configuration, cfg, logger);
+            SetConfigurationIfRequired(awsLocalOptions, cfg, logger);
         });
 
         mbb.AddJsonSerializer();
@@ -23,14 +22,14 @@ internal static class AmazonConsumerExtensions
         mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, "customs_clearance_request.fifo");
     }
 
-    private static void SetConfigurationIfRequired(IConfiguration configuration, SqsMessageBusSettings cfg, ILogger logger)
+    private static void SetConfigurationIfRequired(AwsLocalOptions awsLocalOptions, SqsMessageBusSettings cfg, ILogger logger)
     {
-        logger.Information("Configure AWS Consumer: ServiceURL={ServiceUrl}; AccessKeyId={AccessKeyId}; SecretAccessKey={SecretAccessKey}", configuration["AWS_ENDPOINT_URL"], configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
+        logger.Information("Configure AWS Consumer: ServiceURL={ServiceUrl}", awsLocalOptions.ServiceUrl);
 
-        if (configuration["AWS_ENDPOINT_URL"] != null)
+        if (awsLocalOptions.ServiceUrl != null)
         {
-            cfg.SqsClientConfig.ServiceURL = configuration["AWS_ENDPOINT_URL"];
-            cfg.UseCredentials(configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
+            cfg.SqsClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
+            cfg.UseCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
         }
     }
 

@@ -3,6 +3,7 @@ using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Btms.Common;
+using Btms.Consumers.AmazonQueues;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,19 +17,19 @@ public class TestAwsSender
     private readonly IAmazonSimpleNotificationService _snsSender;
     private readonly string _topicArnPrefix;
 
-    public TestAwsSender(IConfiguration configuration)
+    public TestAwsSender(IConfiguration configuration, AwsLocalOptions awsLocalOptions)
     {
         var serviceCollection = new ServiceCollection();
 
         var awsOptions = configuration.GetAWSOptions();
 
         var logger = ApplicationLogging.LoggerFactory?.CreateLogger(nameof(TestAwsSender));
-        logger?.LogInformation("Configure AWS Test Sender: ServiceURL={ServiceUrl}; AccessKeyId={AccessKeyId}; SecretAccessKey={SecretAccessKey}", configuration["AWS_ENDPOINT_URL"], configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
+        logger?.LogInformation("Configure AWS Test Sender: ServiceURL={ServiceUrl}", awsLocalOptions.ServiceUrl);
 
-        if (configuration["AWS_ENDPOINT_URL"] != null)
+        if (awsLocalOptions.ServiceUrl != null)
         {
-            awsOptions.DefaultClientConfig.ServiceURL = configuration["AWS_ENDPOINT_URL"];
-            awsOptions.Credentials = new BasicAWSCredentials(configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
+            awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
+            awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
         }
 
         serviceCollection.AddDefaultAWSOptions(awsOptions);
