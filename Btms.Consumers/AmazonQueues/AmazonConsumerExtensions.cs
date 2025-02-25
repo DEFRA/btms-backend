@@ -1,22 +1,21 @@
-using Btms.Common;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
+using ILogger = Serilog.ILogger;
 
 namespace Btms.Consumers.AmazonQueues;
 
 internal static class AmazonConsumerExtensions
 {
-    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, IConfiguration configuration)
+    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, IConfiguration configuration, ILogger logger)
     {
         mbb.WithProviderAmazonSQS(cfg =>
         {
             cfg.TopologyProvisioning.Enabled = false;
-            SetConfigurationIfRequired(configuration, cfg);
+            SetConfigurationIfRequired(configuration, cfg, logger);
         });
 
         mbb.AddJsonSerializer();
@@ -24,10 +23,9 @@ internal static class AmazonConsumerExtensions
         mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, "customs_clearance_request.fifo");
     }
 
-    private static void SetConfigurationIfRequired(IConfiguration configuration, SqsMessageBusSettings cfg)
+    private static void SetConfigurationIfRequired(IConfiguration configuration, SqsMessageBusSettings cfg, ILogger logger)
     {
-        var logger = ApplicationLogging.LoggerFactory?.CreateLogger(nameof(AmazonConsumerExtensions));
-        logger?.LogInformation("Configure AWS Consumer: ServiceURL={ServiceUrl}; AccessKeyId={AccessKeyId}; SecretAccessKey={SecretAccessKey}", configuration["AWS_ENDPOINT_URL"], configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
+        logger.Information("Configure AWS Consumer: ServiceURL={ServiceUrl}; AccessKeyId={AccessKeyId}; SecretAccessKey={SecretAccessKey}", configuration["AWS_ENDPOINT_URL"], configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
 
         if (configuration["AWS_ENDPOINT_URL"] != null)
         {

@@ -11,6 +11,7 @@ using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -23,8 +24,7 @@ namespace Btms.Consumers.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConsumers(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
             services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
             services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName);
@@ -134,7 +134,7 @@ namespace Btms.Consumers.Extensions
                             });
                     });
 
-                mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, configuration));
+                mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, configuration, logger));
             });
 
             return services;
