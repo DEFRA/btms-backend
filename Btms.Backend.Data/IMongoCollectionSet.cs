@@ -6,6 +6,8 @@ namespace Btms.Backend.Data;
 
 public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
 {
+    internal int PendingChanges { get; }
+
     Task<T?> Find(string id, CancellationToken cancellationToken = default);
     Task<T?> Find(Expression<Func<T, bool>> query, CancellationToken cancellationToken = default);
 

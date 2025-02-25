@@ -16,6 +16,8 @@ using Btms.Business.Builders;
 using Btms.Types.Alvs.Mapping;
 using AsyncKeyedLock;
 using System.Threading;
+using Microsoft.FeatureManagement;
+using Btms.Common.FeatureFlags;
 
 namespace Btms.Consumers;
 
@@ -30,28 +32,37 @@ internal class NotificationConsumer(
     IValidationService validationService,
     ILogger<NotificationConsumer> logger,
     IMongoDbContext dbContext,
-    ILinker<Gmr, Model.Ipaffs.ImportNotification> gmrLinker)
+    ILinker<Gmr, Model.Ipaffs.ImportNotification> gmrLinker,
+    IFeatureManager featureManager)
 : IConsumer<ImportNotification>, IConsumerWithContext
 {
     private static readonly AsyncKeyedLocker<string> _asyncKeyedLocker = new();
     private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
     public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
     {
-        IDisposable? asyncLock = null;
-        try
+        if (!await featureManager.IsEnabledAsync(Features.SyncPerformanceEnhancements))
         {
-            if (Context.UseLock())
+            IDisposable? asyncLock = null;
+            try
             {
-                asyncLock = await _asyncKeyedLocker.LockOrNullAsync(message.ReferenceNumber!, _timeout, cancellationToken);
+                if (Context.UseLock())
+                {
+                    asyncLock = await _asyncKeyedLocker.LockOrNullAsync(message.ReferenceNumber!, _timeout, cancellationToken);
+                }
+
+                await Process(message, cancellationToken);
+            }
+            finally
+            {
+                asyncLock?.Dispose();
             }
 
-            await Process(message, cancellationToken);
+            return;
         }
-        finally
-        {
-            asyncLock?.Dispose();
-        }
+
+        await Process(message, cancellationToken);
     }
+       
 
     private async Task Process(ImportNotification message, CancellationToken cancellationToken)
     {

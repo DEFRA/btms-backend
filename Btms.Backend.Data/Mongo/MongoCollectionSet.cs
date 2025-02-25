@@ -33,6 +33,8 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;
 
+    public int PendingChanges => _entitiesToInsert.Count + _entitiesToUpdate.Count;
+
     public async Task<T?> Find(string id, CancellationToken cancellationToken = default)
     {
         return await EntityQueryable.SingleOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);

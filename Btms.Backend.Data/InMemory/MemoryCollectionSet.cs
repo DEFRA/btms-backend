@@ -27,6 +27,8 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;
 
+    public int PendingChanges => 0;
+
     public Task<T?> Find(string id, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(data.Find(x => x.Id == id));

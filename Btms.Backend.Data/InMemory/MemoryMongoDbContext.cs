@@ -19,7 +19,7 @@ public class MemoryMongoDbContext : IMongoDbContext
         throw new NotImplementedException();
     }
 
-    public Task SaveChangesAsync(bool useTransaction = true, CancellationToken cancellation = default)
+    public Task SaveChangesAsync(CancellationToken cancellation = default)
     {
         return Task.CompletedTask;
     }
