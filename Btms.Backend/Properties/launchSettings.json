@@ -5,10 +5,10 @@
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "applicationUrl": "http://btms-backend.localtest.me:5002",
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development",
-            "AWS_EMF_ENVIRONMENT": "Local"
-        }
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AWS_EMF_ENVIRONMENT": "Local"
+      }
     }
   }
 }
