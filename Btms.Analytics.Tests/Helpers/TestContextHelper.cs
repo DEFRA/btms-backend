@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog.Core;
 using TestDataGenerator.Extensions;
 using TestDataGenerator.Helpers;
 using Xunit;
@@ -46,7 +47,7 @@ public static class TestContextHelper
                 s.ConfigureTestGenerationServices();
                 s.AddMongoDbContext(hostContext.Configuration);
                 s.AddBusinessServices(hostContext.Configuration);
-                s.AddConsumers(hostContext.Configuration);
+                s.AddConsumers(hostContext.Configuration, Logger.None);
                 s.AddSyncJob();
                 if (testOutputHelper is not null)
                 {

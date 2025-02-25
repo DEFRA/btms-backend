@@ -1,6 +1,7 @@
 using System.Net;
 using Azure.Messaging.ServiceBus;
 using Btms.Common.Extensions;
+using Btms.Consumers.AmazonQueues;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
@@ -10,6 +11,7 @@ using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -22,8 +24,7 @@ namespace Btms.Consumers.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConsumers(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
             services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
             services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName);
@@ -44,6 +45,8 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
+            services.AddScoped<IClearanceRequestConsumer, ClearanceRequestConsumer>();
+            services.AddScoped<AlvsClearanceRequestConsumer>();
 
             services.AddSlimMessageBus(mbb =>
             {
@@ -130,6 +133,8 @@ namespace Btms.Consumers.Extensions
                                 x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
                             });
                     });
+
+                mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, configuration, logger));
             });
 
             return services;

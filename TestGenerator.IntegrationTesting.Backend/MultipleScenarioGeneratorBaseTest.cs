@@ -1,22 +1,18 @@
-using Microsoft.Extensions.DependencyInjection;
-using TestDataGenerator;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace TestGenerator.IntegrationTesting.Backend;
 
 public abstract class MultipleScenarioGeneratorBaseTest
 {
-    protected BtmsClient Client = null;
+    protected BtmsClient Client = null!;
     protected readonly ITestOutputHelper TestOutputHelper;
 
-    protected List<GeneratedResult> LoadedData;
+    protected List<GeneratedResult> LoadedData = null!;
 
     public required BackendFixture BackendFixture;
 
-    private static Dictionary<Type, List<GeneratedResult>> AllScenarioDatasets
-        = new Dictionary<Type, List<GeneratedResult>>();
+    private static Dictionary<Type, List<GeneratedResult>> AllScenarioDatasets = new();
 
     private bool ReloadData;
 
