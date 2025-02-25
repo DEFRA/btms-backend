@@ -13,7 +13,7 @@ public class MongoDbContext : IMongoDbContext
     private readonly IFeatureManager _featureManager;
     private readonly ILoggerFactory _loggerFactory;
 
-    public MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory, IFeatureManager featureManager )
+    public MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory, IFeatureManager featureManager)
     {
         _featureManager = featureManager;
         _loggerFactory = loggerFactory;
@@ -43,14 +43,17 @@ public class MongoDbContext : IMongoDbContext
 
     public async Task ResetCollections(CancellationToken cancellationToken = default)
     {
-        var collections = await (await Database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken);
+        var collections =
+            await (await Database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(
+                cancellationToken: cancellationToken);
 
         foreach (var collection in collections.Where(collection => collection["name"] != "system.profile"))
         {
             await Database.DropCollectionAsync(collection["name"].ToString(), cancellationToken);
         }
 
-        await new MongoIndexService(Database, _loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(cancellationToken);
+        await new MongoIndexService(Database, _loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(
+            cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellation = default)
@@ -60,7 +63,7 @@ public class MongoDbContext : IMongoDbContext
             await InternalSaveChangesAsync(cancellation);
             return;
         }
-        
+
         if (GetChangedRecordsCount() == 0)
         {
             return;
