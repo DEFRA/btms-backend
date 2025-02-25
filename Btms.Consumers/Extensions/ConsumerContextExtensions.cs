@@ -97,6 +97,16 @@ public static class ConsumerContextExtensions
         return false;
     }
 
+    public static bool UseLock(this IConsumerContext consumerContext)
+    {
+        if (consumerContext.Headers.TryGetValue(MessageBusHeaders.UseLock, out var value))
+        {
+            return (bool)value;
+        }
+
+        return false;
+    }
+
     public static bool WasSkipped(this IConsumerContext consumerContext)
     {
         if (consumerContext.Properties.TryGetValue(MessageBusHeaders.Skipped, out _))
