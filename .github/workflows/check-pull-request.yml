@@ -62,7 +62,7 @@ jobs:
           ./btms-backend/wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
 
       - name: Test
-        run: dotnet test --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
+        run: dotnet test ./btms-backend/BtmsBackend.sln --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
         
       - name: install dotnet coverage
         run: dotnet tool install --global dotnet-coverage        
