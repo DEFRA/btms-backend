@@ -1,12 +1,8 @@
 using System.Collections;
-using AutoFixture;
-using Btms.Common.Extensions;
-using Btms.Model;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Logging;
-using TestDataGenerator.Helpers;
 using TestDataGenerator.Scenarios;
 using Decision = Btms.Types.Alvs.Decision;
 using Finalisation = Btms.Types.Alvs.Finalisation;
@@ -16,10 +12,7 @@ namespace TestDataGenerator;
 public abstract class ScenarioGenerator(ILogger logger)
 {
     protected readonly ILogger Logger = logger;
-
-    private readonly string _fullFolder =
-        $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Scenarios/Samples";
-
+    
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
     protected virtual List<object> ModifyMessages(
