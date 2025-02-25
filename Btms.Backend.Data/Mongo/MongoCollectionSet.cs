@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 
 namespace Btms.Backend.Data.Mongo;
 
@@ -27,6 +28,11 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
     IEnumerator IEnumerable.GetEnumerator()
     {
         return EntityQueryable.GetEnumerator();
+    }
+
+    public IQueryable<T> WithHint(string hint)
+    {
+        return _collection.AsQueryable(new AggregateOptions() { Hint = BsonDocument.Parse(hint) });
     }
 
     public Type ElementType => EntityQueryable.ElementType;
