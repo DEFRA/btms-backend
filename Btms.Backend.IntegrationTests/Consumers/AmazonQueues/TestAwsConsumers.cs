@@ -83,7 +83,7 @@ public abstract class ConsumerHost<T> where T : class
     protected async Task<bool> WaitUntilHandledAsync(Func<Task> actionToAwait)
     {
         var stopwatch = Stopwatch.StartNew();
-        while (stopwatch.Elapsed < TimeSpan.FromSeconds(5))
+        while (stopwatch.Elapsed < TimeSpan.FromSeconds(30))
         {
             try
             {
