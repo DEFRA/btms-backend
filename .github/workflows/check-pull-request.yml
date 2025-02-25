@@ -59,7 +59,7 @@ jobs:
 
       - name: Wait for ASB Emulator
         run: |
-          ./wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
+          ./btms-backend/wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
 
       - name: Test
         run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
