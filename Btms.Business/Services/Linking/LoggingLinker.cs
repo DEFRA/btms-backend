@@ -21,7 +21,6 @@ public class LoggingLinker<TModel, TKModel>(
 
         try
         {
-            logger.LogInformation("Linking {TModel} with {TKModel}", typeof(TModel).Name, typeof(TKModel).Name);
             return await inner.Link(model, cancellationToken);
         }
         finally
