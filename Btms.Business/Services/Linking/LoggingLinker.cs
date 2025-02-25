@@ -21,13 +21,16 @@ public class LoggingLinker<TModel, TKModel>(
 
         try
         {
+            logger.LogInformation("Linking {TModel} with {TKModel}", typeof(TModel).Name, typeof(TKModel).Name);
             return await inner.Link(model, cancellationToken);
         }
         finally
         {
             var elapsed = TimeProvider.System.GetElapsedTime(timestamp);
-            logger.LogInformation("Linking {TModel} with {TKModel} took {Elapsed}ms", typeof(TModel).Name,
-                typeof(TKModel).Name, elapsed.TotalMilliseconds);
+            logger.LogInformation("Linked {TModel} with {TKModel} took {Elapsed}ms",
+                typeof(TModel).Name,
+                typeof(TKModel).Name,
+                elapsed.TotalMilliseconds);
         }
     }
 }
