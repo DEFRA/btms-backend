@@ -35,7 +35,7 @@ public class TestAwsConsumers : IAsyncDisposable
             .Enrich.With<LogLevelMapper>();
         var logger = logBuilder.CreateLogger();
         builder.Logging.AddSerilog(logger);
-        
+
         builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumer.Mock);
         builder.Services.AddSlimMessageBus(mbb =>
         {
