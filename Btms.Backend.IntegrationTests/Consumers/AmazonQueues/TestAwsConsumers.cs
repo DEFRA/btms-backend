@@ -28,7 +28,7 @@ public class TestAwsConsumers : IAsyncDisposable
         var builder = WebApplication.CreateBuilder();
 
         var logger = BuildLogger(builder);
-        
+
         builder.Configuration
             .AddEnvironmentVariables()
             .AddInMemoryCollection(AwsLocalOptions.DefaultLocalConfig);
