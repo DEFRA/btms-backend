@@ -1,20 +1,21 @@
+using Btms.Common.FeatureFlags;
 using Btms.Model;
 using Btms.Model.Gvms;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using MongoDB.Driver;
 
 namespace Btms.Backend.Data.Mongo;
 
 public class MongoDbContext : IMongoDbContext
 {
+    private readonly IFeatureManager _featureManager;
     private readonly ILoggerFactory _loggerFactory;
-#pragma warning disable S1144
-    private readonly Guid _instance = Guid.NewGuid();
-#pragma warning restore S1144
 
-    public MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory)
+    public MongoDbContext(IMongoDatabase database, ILoggerFactory loggerFactory, IFeatureManager featureManager)
     {
+        _featureManager = featureManager;
         _loggerFactory = loggerFactory;
         Database = database;
         Notifications = new MongoCollectionSet<ImportNotification>(this);
@@ -42,24 +43,42 @@ public class MongoDbContext : IMongoDbContext
 
     public async Task ResetCollections(CancellationToken cancellationToken = default)
     {
-        var collections = await (await Database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken);
+        var collections =
+            await (await Database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(
+                cancellationToken: cancellationToken);
 
         foreach (var collection in collections.Where(collection => collection["name"] != "system.profile"))
         {
             await Database.DropCollectionAsync(collection["name"].ToString(), cancellationToken);
         }
 
-        await new MongoIndexService(Database, _loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(cancellationToken);
+        await new MongoIndexService(Database, _loggerFactory.CreateLogger<MongoIndexService>()).StartAsync(
+            cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellation = default)
     {
+        if (!await _featureManager.IsEnabledAsync(Features.SyncPerformanceEnhancements))
+        {
+            await InternalSaveChangesAsync(cancellation);
+            return;
+        }
+
+        if (GetChangedRecordsCount() == 0)
+        {
+            return;
+        }
+
+        if (GetChangedRecordsCount() == 1)
+        {
+            await InternalSaveChangesAsync(cancellation);
+            return;
+        }
+
         using var transaction = await StartTransaction(cancellation);
         try
         {
-            await Notifications.PersistAsync(cancellation);
-            await Movements.PersistAsync(cancellation);
-            await Gmrs.PersistAsync(cancellation);
+            await InternalSaveChangesAsync(cancellation);
             await transaction.CommitTransaction(cancellation);
         }
         catch (Exception)
@@ -67,5 +86,17 @@ public class MongoDbContext : IMongoDbContext
             await transaction.RollbackTransaction(cancellation);
             throw;
         }
+    }
+
+    private int GetChangedRecordsCount()
+    {
+        return Notifications.PendingChanges + Movements.PendingChanges + Gmrs.PendingChanges;
+    }
+
+    private async Task InternalSaveChangesAsync(CancellationToken cancellation = default)
+    {
+        await Notifications.PersistAsync(cancellation);
+        await Movements.PersistAsync(cancellation);
+        await Gmrs.PersistAsync(cancellation);
     }
 }

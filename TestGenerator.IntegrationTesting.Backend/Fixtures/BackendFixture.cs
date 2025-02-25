@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.FeatureManagement;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using Xunit.Abstractions;
@@ -101,7 +102,7 @@ public class BackendFactory(string databaseName, ITestOutputHelper testOutputHel
 
                     var db = client.GetDatabase($"btms-{dbName}");
 
-                    _mongoDbContext = new MongoDbContext(db, testOutputHelper.GetLoggerFactory());
+                    _mongoDbContext = new MongoDbContext(db, testOutputHelper.GetLoggerFactory(), sp.GetRequiredService<IFeatureManager>());
                     return db;
                 });
 

@@ -26,8 +26,10 @@ public class LoggingLinker<TModel, TKModel>(
         finally
         {
             var elapsed = TimeProvider.System.GetElapsedTime(timestamp);
-            logger.LogInformation("Linking {TModel} with {TKModel} took {Elapsed}ms", typeof(TModel).Name,
-                typeof(TKModel), elapsed);
+            logger.LogInformation("Linked {TModel} with {TKModel} took {Elapsed}ms",
+                typeof(TModel).Name,
+                typeof(TKModel).Name,
+                elapsed.TotalMilliseconds);
         }
     }
 }

@@ -41,6 +41,7 @@ using Btms.Backend.Asb;
 using Btms.Business.Mediatr;
 using Btms.Backend.Swagger;
 using Btms.Common;
+using Microsoft.FeatureManagement;
 
 //-------- Configure the WebApplication builder------------------//
 
@@ -54,6 +55,9 @@ await app.RunAsync();
 static WebApplication CreateWebApplication(string[] args)
 {
     var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services
+        .AddFeatureManagement(builder.Configuration.GetSection("FeatureFlags"));
 
     ConfigureWebApplication(builder);
     ConfigureAuthentication(builder);
