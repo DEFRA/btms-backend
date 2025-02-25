@@ -44,7 +44,6 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
     {
         var data = context
             .Notifications
-            .WithHint("{ importNotificationType: 1, 'relationships.movements.data': 1 }")
             .Where(n => (from == null || n.CreatedSource >= from) && (to == null || n.CreatedSource < to))
             .GroupBy(n => new { n.ImportNotificationType, Linked = n.Relationships.Movements.Data.Count > 0 })
             .Select(g => new { g.Key.Linked, g.Key.ImportNotificationType, Count = g.Count() })

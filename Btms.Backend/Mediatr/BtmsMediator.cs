@@ -19,7 +19,7 @@ internal class BtmsMediator(
 
     public async Task SendSyncJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
     {
-        var job = syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
+        var job = syncJobStore.CreateJob(request.JobId, request.RootFolder, request.Timespan, request.Resource);
 
         await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (_) =>
         {
@@ -32,7 +32,7 @@ internal class BtmsMediator(
 
     public async Task SendJob<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest, ISyncJob
     {
-        var job = syncJobStore.CreateJob(request.JobId, request.Timespan, request.Resource);
+        var job = syncJobStore.CreateJob(request.JobId, request.RootFolder, request.Timespan, request.Resource);
 
         await backgroundTaskQueue.QueueBackgroundWorkItemAsync(async (_) =>
         {
