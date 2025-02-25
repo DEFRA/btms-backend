@@ -23,7 +23,7 @@ public abstract class BaseApiTests
     protected IIntegrationTestsApplicationFactory Factory { get; }
 
     protected async Task ClearDb()
-    { 
+    {
         await Client.ClearDb();
     }
 
