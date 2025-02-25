@@ -1,12 +1,16 @@
 using System.Diagnostics;
+using Btms.Backend.Utils.Logging;
 using Btms.Consumers;
 using Btms.Consumers.AmazonQueues;
+using Btms.Metrics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Exceptions;
+using Serilog;
 using SlimMessageBus.Host;
 
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
@@ -25,12 +29,19 @@ public class TestAwsConsumers : IAsyncDisposable
         builder.Configuration.AddIniFile("Properties/local.env", true)
             .AddEnvironmentVariables();
 
+        builder.Logging.ClearProviders();
+        var logBuilder = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .Enrich.With<LogLevelMapper>();
+        var logger = logBuilder.CreateLogger();
+        builder.Logging.AddSerilog(logger);
+        
         builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumer.Mock);
         builder.Services.AddSlimMessageBus(mbb =>
         {
             mbb.AddChildBus("AmazonTest", cbb =>
             {
-                cbb.AddAmazonConsumers(builder.Services, builder.Configuration);
+                cbb.AddAmazonConsumers(builder.Services, builder.Configuration, logger);
             });
         });
 
