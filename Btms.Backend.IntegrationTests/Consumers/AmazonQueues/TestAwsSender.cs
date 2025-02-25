@@ -21,7 +21,7 @@ public class TestAwsSender
         var serviceCollection = new ServiceCollection();
 
         var awsOptions = configuration.GetAWSOptions();
-        
+
         var logger = ApplicationLogging.LoggerFactory?.CreateLogger(nameof(TestAwsSender));
         logger?.LogInformation("Configure AWS Test Sender: ServiceURL={ServiceUrl}; AccessKeyId={AccessKeyId}; SecretAccessKey={SecretAccessKey}", configuration["AWS_ENDPOINT_URL"], configuration["AWS_ACCESS_KEY_ID"], configuration["AWS_SECRET_ACCESS_KEY"]);
 
@@ -58,7 +58,7 @@ public class TestAwsSender
             MessageDeduplicationId = Guid.NewGuid().ToString(),
             MessageGroupId = "message-group-id"
         };
-        
+
         testOutputHelper.WriteLine($"Publish message body to {publishRequest.TopicArn} of type {typeof(T).Name} with message: {publishRequest.Message}");
 
         await _snsSender.PublishAsync(publishRequest);

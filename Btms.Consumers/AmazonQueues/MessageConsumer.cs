@@ -12,12 +12,12 @@ internal abstract class MessageConsumer<T>(ILogger logger) : MessageConsumer, IC
     public async Task OnHandle(MessageBody messageBody, CancellationToken cancellationToken)
     {
         logger.LogInformation("Received message body with {TopicArn} of type {Type} with message: {Message}", messageBody.TopicArn, messageBody.Type, messageBody.Message);
-        
+
         var message = JsonSerializer.Deserialize<T>(messageBody.Message, JsonSerializerOptions);
         if (message != null)
         {
             logger.LogInformation("Received none null message  of type {Type}", typeof(T).Name);
-            
+
             await OnHandle(message, Context, cancellationToken);
         }
     }
