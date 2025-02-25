@@ -13,9 +13,9 @@ public class HmrcClearanceRequestConsumerTests(ITestOutputHelper testOutputHelpe
     public async Task When_receiving_a_clearance_request_from_aws_sqs_Then_resolved_messaged_should_be_received()
     {
         var awsConsumers = new TestAwsConsumers();
-        var awsSender = new TestAwsSender(awsConsumers.Configuration, awsConsumers.AwsLocalOptions);
+        var awsSender = new TestAwsSender(awsConsumers.Configuration, awsConsumers.AwsLocalOptions, testOutputHelper);
 
-        await awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = "abc" } }, testOutputHelper);
+        await awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = "abc" } });
 
         awsConsumers.ClearanceRequestConsumer.WaitUntilHandled().Should().BeTrue(because: "The message was not handled by the consumer");
 

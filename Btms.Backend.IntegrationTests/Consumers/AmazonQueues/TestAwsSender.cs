@@ -2,29 +2,28 @@ using System.Text.Json;
 using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
-using Btms.Common;
 using Btms.Consumers.AmazonQueues;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 
 public class TestAwsSender
 {
+    private readonly ITestOutputHelper _testOutputHelper;
     private readonly IAmazonSimpleNotificationService _snsSender;
     private readonly string _topicArnPrefix;
 
-    public TestAwsSender(IConfiguration configuration, AwsLocalOptions awsLocalOptions)
+    public TestAwsSender(IConfiguration configuration, AwsLocalOptions awsLocalOptions, ITestOutputHelper testOutputHelper)
     {
+        _testOutputHelper = testOutputHelper;
         var serviceCollection = new ServiceCollection();
 
         var awsOptions = configuration.GetAWSOptions();
 
-        var logger = ApplicationLogging.LoggerFactory?.CreateLogger(nameof(TestAwsSender));
-        logger?.LogInformation("Configure AWS Test Sender: ServiceURL={ServiceUrl}", awsLocalOptions.ServiceUrl);
+        testOutputHelper.WriteLine($"Configure AWS Test Sender: ServiceURL={awsLocalOptions.ServiceUrl}");
 
         if (awsLocalOptions.ServiceUrl != null)
         {
@@ -44,7 +43,7 @@ public class TestAwsSender
         _topicArnPrefix = topicArn[..topicArn.LastIndexOf(':')];
     }
 
-    public async Task SendAsync<T>(T message, ITestOutputHelper testOutputHelper) where T : class
+    public async Task SendAsync<T>(T message) where T : class
     {
         var topicName = message switch
         {
@@ -60,7 +59,7 @@ public class TestAwsSender
             MessageGroupId = "message-group-id"
         };
 
-        testOutputHelper.WriteLine($"Publish message body to {publishRequest.TopicArn} of type {typeof(T).Name} with message: {publishRequest.Message}");
+        _testOutputHelper.WriteLine($"Publish message body to {publishRequest.TopicArn} of type {typeof(T).Name} with message: {publishRequest.Message}");
 
         await _snsSender.PublishAsync(publishRequest);
     }
