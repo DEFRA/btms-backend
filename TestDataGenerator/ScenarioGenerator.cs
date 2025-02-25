@@ -12,7 +12,7 @@ namespace TestDataGenerator;
 public abstract class ScenarioGenerator(ILogger logger)
 {
     protected readonly ILogger Logger = logger;
-    
+
     public abstract GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config);
 
     protected virtual List<object> ModifyMessages(
@@ -31,7 +31,8 @@ public abstract class ScenarioGenerator(ILogger logger)
         {
             foreach (var o in initial)
             {
-                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation or SearchGmrsForDeclarationIdsResponse or Gmr)
+                if (o is ImportNotification or AlvsClearanceRequest or Decision or Finalisation
+                    or SearchGmrsForDeclarationIdsResponse or Gmr)
                 {
                     Messages.Add(o);
                 }
@@ -39,7 +40,6 @@ public abstract class ScenarioGenerator(ILogger logger)
                 {
                     throw new Exception($"Unexpected GeneratorResult type {o.GetType().Name}");
                 }
-
             }
         }
 
