@@ -45,7 +45,7 @@ jobs:
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: "compose.yml"
+          compose-file: "./btms-backend/compose.yml"
         
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
