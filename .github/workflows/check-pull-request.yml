@@ -20,9 +20,32 @@ jobs:
         with:
           dotnet-version: |
            8.0
+
+      # - name: Fix up git URLs
+      #   run: |
+      #     git config --global --add url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+      #     git config --global --add url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "git@github.com:"
+
       - name: Check out code
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
+        # with:
+        #   submodules: true
+        #   # token: ${{ secrets.CI_TOKEN }}
         
+      - name: Checkout test data
+        run: |
+          git checkout "https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/DEFRA/btms-test-data.git" Btms.Test.Data
+
+      - name: Debug
+        run: |
+          pwd
+          ls -la
+
+      # - name: Check out test data
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: 'DEFRA/btms-test-data'
+
       - name: Verify Format
         run: dotnet format --verify-no-changes --verbosity diagnostic
 
