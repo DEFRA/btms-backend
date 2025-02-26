@@ -18,7 +18,7 @@ public enum SyncPeriod
     Today,
     LastMonth,
     ThisMonth,
-    From202411,
+    // From202411,
     All
 }
 
@@ -40,9 +40,9 @@ internal static partial class SyncHandlerLogging
 public abstract class SyncCommand : IRequest, ISyncJob
 {
     [JsonConverter(typeof(JsonStringEnumConverter<SyncPeriod>))]
-    public SyncPeriod SyncPeriod { get; set; }
+    public SyncPeriod SyncPeriod { get; init; }
 
-    public string RootFolder { get; set; } = null!;
+    public string? RootFolder { get; init; } = null;
 
     public Guid JobId { get; set; } = Guid.NewGuid();
     public string Timespan => SyncPeriod.ToString();

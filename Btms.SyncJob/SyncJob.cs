@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Btms.SyncJob;
 
-public class SyncJob(Guid id, string timespan, string resource) : ISyncJob, IDisposable
+public class SyncJob(Guid id, string? rootFolder, string timespan, string resource) : ISyncJob, IDisposable
 {
     private readonly CancellationTokenSource source = new();
     private bool disposed;
@@ -14,6 +14,8 @@ public class SyncJob(Guid id, string timespan, string resource) : ISyncJob, IDis
     private bool readingBlobsFinished;
 
     public Guid JobId { get; } = id;
+
+    public string? RootFolder { get; } = rootFolder;
 
     public string Timespan { get; } = timespan;
 

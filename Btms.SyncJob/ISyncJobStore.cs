@@ -6,7 +6,7 @@ public interface ISyncJobStore
 
     SyncJob? GetJob(Guid id);
 
-    SyncJob CreateJob(Guid id, string timespan, string resource);
+    SyncJob CreateJob(Guid id, string? rootFolder, string timespan, string resource);
 
     void ClearSyncJobs();
 

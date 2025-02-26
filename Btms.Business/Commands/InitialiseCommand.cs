@@ -1,16 +1,23 @@
+using System.Globalization;
+using Btms.Backend.Data;
 using Btms.BlobService;
 using Btms.Business.Mediatr;
+using Btms.Common.Extensions;
 using Btms.Metrics;
 using Btms.SensitiveData;
 using Btms.SyncJob;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.FeatureManagement;
 using SlimMessageBus;
-using Btms.Common.FeatureFlags;
 
 namespace Btms.Business.Commands;
 
+public enum InitialisationStrategy
+{
+    AllSinceNovember,
+    AllSinceNovemberImportNotificationsFirst,
+    ImportNotificationsFirst
+}
 public class InitialiseCommand : SyncCommand
 {
     internal class Handler(
@@ -22,60 +29,128 @@ public class InitialiseCommand : SyncCommand
         IOptions<BusinessOptions> businessOptions,
         IBtmsMediator mediator,
         ISyncJobStore syncJobStore,
-        IFeatureManager featureManager)
-        : Handler<InitialiseCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions,
-            syncJobStore)
+        IMongoDbContext context)
+        : Handler<InitialiseCommand>(syncMetrics, bus, logger, sensitiveDataSerializer, blobService, businessOptions, syncJobStore)
     {
         public override async Task Handle(InitialiseCommand request, CancellationToken cancellationToken)
         {
             var job = SyncJobStore.GetJob(request.JobId)!;
             job.Start();
 
-            SyncNotificationsCommand notifications = new() { SyncPeriod = request.SyncPeriod };
-            await mediator.SendSyncJob(notifications, cancellationToken);
+            InitialisationStrategy[] sinceNovemberStrategies =
+            [
+                InitialisationStrategy.AllSinceNovemberImportNotificationsFirst,
+                InitialisationStrategy.AllSinceNovember
+            ];
 
-            Logger.LogInformation("Started Notifications {0} sync job. Waiting on Notifications job to complete.",
-                notifications.JobId);
+            List<string?> datasets = !request.RootFolder.HasValue() ? [null] : [request.RootFolder!];
 
-            if (await featureManager.IsEnabledAsync(Features.SyncPerformanceEnhancements))
+            if (request.Strategy.HasValue() && sinceNovemberStrategies.Contains(request.Strategy!.Value))
             {
-                await SyncJobStore.WaitOnJobCompleting(notifications.JobId);
+                var novFirst2024 = new DateTime(2024, 11, 1, 0, 0, 0, DateTimeKind.Utc);
+
+                datasets = DateTime.Today
+                    .MonthsSince(novFirst2024)
+                    .Select(((monthYear, i) => $"PRODREDACTED-{monthYear.Year}{monthYear.Month:00}"))
+                    .ToList<string?>();
             }
 
-            SyncClearanceRequestsCommand clearanceRequests = new() { SyncPeriod = request.SyncPeriod };
-            await mediator.SendSyncJob(clearanceRequests, cancellationToken);
+            InitialisationStrategy[] importNotificationsFirstStrategies =
+            [
+                InitialisationStrategy.AllSinceNovemberImportNotificationsFirst,
+                InitialisationStrategy.ImportNotificationsFirst
+            ];
 
-            Logger.LogInformation(
-                "Started ClearanceRequests {0} sync jobs. Waiting on ClearanceRequests job to complete.",
-                clearanceRequests.JobId);
+            if (request.DropCollections)
+            {
+                SyncJobStore.ClearSyncJobs();
+                await context.ResetCollections(cancellationToken);
+            }
 
-            await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
+            if (request.Strategy.HasValue() && importNotificationsFirstStrategies.Contains(request.Strategy!.Value))
+            {
+                Logger.LogInformation("ImportNotificationsFirst Strategy");
 
-            var decisions = RunDecisionsAndFinalisations(request, cancellationToken);
+                await datasets.ForEachAsync(async ds =>
+                {
+                    SyncNotificationsCommand notifications = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
+                    await mediator.SendSyncJob(notifications, cancellationToken);
 
-            await Task.WhenAll(
-                decisions,
-                SyncJobStore.WaitOnJobCompleting(notifications.JobId));
+                    Logger.LogInformation("Started Notifications {JobId} job. Waiting on completion.", notifications.JobId);
+                    await SyncJobStore.WaitOnJobCompleting(notifications.JobId);
+
+                });
+
+                await datasets.ForEachAsync(async ds =>
+                {
+                    SyncClearanceRequestsCommand clearanceRequests = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
+                    await mediator.SendSyncJob(clearanceRequests, cancellationToken);
+
+                    Logger.LogInformation("Started Clearance Requests sync job {JobId}. Waiting on completion.", clearanceRequests.JobId);
+
+                    await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
+
+                });
+
+                await datasets.ForEachAsync(async ds =>
+                {
+                    SyncDecisionsCommand decisions = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
+                    await mediator.SendSyncJob(decisions, cancellationToken);
+
+                    Logger.LogInformation("Started Decisions sync job {JobId}. Waiting on completion.", decisions.JobId);
+
+                    await SyncJobStore.WaitOnJobCompleting(decisions.JobId);
+                });
+
+                await datasets.ForEachAsync(async ds =>
+                {
+                    SyncFinalisationsCommand finalisations = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
+                    await mediator.SendSyncJob(finalisations, cancellationToken);
+
+                    Logger.LogInformation("Started Finalisations sync job {JobId} for {Dataset}. Waiting on completion.", finalisations.JobId, ds);
+
+                    await SyncJobStore.WaitOnJobCompleting(finalisations.JobId);
+                });
+            }
+            else
+            {
+                Logger.LogInformation("Run a standard sync of a single dataset");
+                await datasets.ForEachAsync(async ds => await Simple(request.SyncPeriod, ds, cancellationToken));
+            }
 
             job.Complete();
         }
 
-        private async Task RunDecisionsAndFinalisations(InitialiseCommand request, CancellationToken cancellationToken)
+        private async Task Simple(SyncPeriod syncPeriod, string? rootFolder, CancellationToken cancellationToken)
         {
-            SyncDecisionsCommand decisions = new() { SyncPeriod = request.SyncPeriod };
+            SyncClearanceRequestsCommand clearanceRequests = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
+            await mediator.SendSyncJob(clearanceRequests, cancellationToken);
+
+            SyncNotificationsCommand notifications = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
+            await mediator.SendSyncJob(notifications, cancellationToken);
+
+            Logger.LogInformation("Started Notifications {NotificationsJobId} and ClearanceRequests {ClearanceRequestsJobId} sync jobs. Waiting on ClearanceRequests job to complete.",
+                notifications.JobId, clearanceRequests.JobId);
+
+            await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
+
+            SyncDecisionsCommand decisions = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
             await mediator.SendSyncJob(decisions, cancellationToken);
 
-            SyncFinalisationsCommand finalisations = new() { SyncPeriod = request.SyncPeriod };
+            SyncFinalisationsCommand finalisations = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
             await mediator.SendSyncJob(finalisations, cancellationToken);
 
-            Logger.LogInformation("Started Decisions {0} and Finalisations {1} sync jobs", decisions.JobId,
-                finalisations.JobId);
+            Logger.LogInformation("ClearanceRequests sync job complete. Started Decisions {DecisionsJobId} and Finalisations {FinalisationsJobId} sync jobs", decisions.JobId, finalisations.JobId);
 
             await Task.WhenAll(
                 SyncJobStore.WaitOnJobCompleting(decisions.JobId),
-                SyncJobStore.WaitOnJobCompleting(finalisations.JobId));
+                SyncJobStore.WaitOnJobCompleting(finalisations.JobId),
+                SyncJobStore.WaitOnJobCompleting(notifications.JobId));
         }
     }
 
+
     public override string Resource => "Initialise";
+    public InitialisationStrategy? Strategy { get; init; }
+    public bool DropCollections { get; init; } = true;
 }
