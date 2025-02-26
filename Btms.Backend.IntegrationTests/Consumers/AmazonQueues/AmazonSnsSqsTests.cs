@@ -5,6 +5,7 @@ using Xunit.Abstractions;
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 
 [Collection("AwsSqsSns")]
+[Trait("Category", "Integration")]
 public class AmazonSnsSqsTests : IAsyncLifetime
 {
     private readonly TestAwsConsumers _awsConsumers = new();

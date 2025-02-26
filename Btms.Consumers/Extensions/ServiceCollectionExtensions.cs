@@ -135,7 +135,10 @@ namespace Btms.Consumers.Extensions
                             });
                     });
 
-                mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, new AwsLocalOptions(configuration), logger));
+                if (consumerOpts.EnableAmazonConsumers)
+                {
+                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, new AwsLocalOptions(configuration), logger));
+                }
             });
 
             return services;

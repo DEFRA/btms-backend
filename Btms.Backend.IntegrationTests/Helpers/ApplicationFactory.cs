@@ -1,5 +1,4 @@
 using Btms.Backend.Data;
-using Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 using Btms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -28,6 +27,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
     public Action<IConfigurationBuilder> ConfigureHostConfiguration { get; set; } = _ => { };
     public bool InternalQueuePublishWillBlock { get; set; }
     public bool EnableAzureServiceBusConsumers { get; set; }
+    public bool EnableAmazonSnsSqsConsumers { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -35,7 +35,6 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
         // And we don't want to load the backend ini file 
 
         var configurationBuilder = new ConfigurationBuilder()
-            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig)
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "DisableLoadIniFile", "true" },
@@ -54,6 +53,12 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
             configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "ConsumerOptions:EnableAsbConsumers", "true" }
+            });
+
+        if (EnableAmazonSnsSqsConsumers)
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "ConsumerOptions:EnableAmazonConsumers", "true" }
             });
 
         ConfigureHostConfiguration(configurationBuilder);

@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using NSubstitute.Exceptions;
 using Serilog;
 using Serilog.Core;
 using SlimMessageBus.Host;
