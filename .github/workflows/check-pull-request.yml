@@ -40,7 +40,9 @@ jobs:
           path: btms-test-data
 
       - name: Generate OpenAPI specification
-        run: make -f ./btms-backend/Makefile generate-openapi-spec
+        run: |
+          cd btms-backend
+          make generate-openapi-spec
         
       - name: Verify Format
         run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
