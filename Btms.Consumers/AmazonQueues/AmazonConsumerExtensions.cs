@@ -11,15 +11,22 @@ internal static class AmazonConsumerExtensions
 {
     public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsLocalOptions awsLocalOptions, ILogger logger)
     {
-        mbb.WithProviderAmazonSQS(cfg =>
+        try
         {
-            cfg.TopologyProvisioning.Enabled = false;
-            SetConfigurationIfRequired(awsLocalOptions, cfg, logger);
-        });
+            mbb.WithProviderAmazonSQS(cfg =>
+            {
+                cfg.TopologyProvisioning.Enabled = false;
+                SetConfigurationIfRequired(awsLocalOptions, cfg, logger);
+            });
 
-        mbb.AddJsonSerializer();
+            mbb.AddJsonSerializer();
 
-        mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, "customs_clearance_request.fifo");
+            mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, "customs_clearance_request.fifo");
+        }
+        catch (Exception ex)
+        {
+            logger.Warning(ex, "There was an issue starting the SQS Consumer so there are currently no SQS Consumers listening for messages");
+        }
     }
 
     private static void SetConfigurationIfRequired(AwsLocalOptions awsLocalOptions, SqsMessageBusSettings cfg, ILogger logger)
