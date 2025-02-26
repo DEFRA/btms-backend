@@ -94,7 +94,6 @@ public class TestAwsConsumers : IAsyncDisposable
 
 public class ClearanceRequestConsumerHost : ConsumerHost<IClearanceRequestConsumer>
 {
-    public bool WaitUntilHandled() => WaitUntilHandledAsync(() => Mock.ReceivedWithAnyArgs().OnHandle(default!, default!, default)).Result;
 }
 
 public abstract class ConsumerHost<T> where T : class
@@ -103,20 +102,15 @@ public abstract class ConsumerHost<T> where T : class
 
     private SpinWait _spinner;
 
-    protected async Task<bool> WaitUntilHandledAsync(Func<Task> actionToAwait)
+    public bool WaitUntil(Func<bool> actionToAwait)
     {
         var stopwatch = Stopwatch.StartNew();
         while (stopwatch.Elapsed < TimeSpan.FromSeconds(5))
         {
-            try
-            {
-                await actionToAwait();
+            if (actionToAwait())
                 return true;
-            }
-            catch (ReceivedCallsException)
-            {
-                _spinner.SpinOnce();
-            }
+
+            _spinner.SpinOnce();
         }
 
         return false;

@@ -18,15 +18,20 @@ public class HmrcClearanceRequestConsumerTests : IAsyncLifetime
         _awsSender = new TestAwsSender(_awsConsumers.Configuration, _awsConsumers.AwsLocalOptions, testOutputHelper);
     }
 
-    // [Fact(Skip = "Can't get working on the server but need to test deployment")]
     [Fact]
     public async Task When_receiving_a_clearance_request_from_aws_sqs_Then_resolved_messaged_should_be_received()
     {
-        await _awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = "abc" } });
+        var semaphore = new SemaphoreSlim(1, 1);
+        var id = Guid.NewGuid().ToString();
 
-        _awsConsumers.ClearanceRequestConsumer.WaitUntilHandled().Should().BeTrue(because: "The message was not handled by the consumer");
+        _awsConsumers.ClearanceRequestConsumer.Mock
+            .When(mock => mock.OnHandle(Arg.Is<AlvsClearanceRequest>(a => a.ServiceHeader != null && a.ServiceHeader.CorrelationId == id), Arg.Any<IConsumerContext>(), Arg.Any<CancellationToken>()))
+            .Do(_=> semaphore.Release());
 
-        await _awsConsumers.ClearanceRequestConsumer.Mock.Received().OnHandle(Arg.Is<AlvsClearanceRequest>(a => a.ServiceHeader != null && a.ServiceHeader.CorrelationId == "abc"), Arg.Any<IConsumerContext>(), Arg.Any<CancellationToken>());
+        await _awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = id } });
+
+        var received = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+        received.Should().BeTrue();
     }
 
     public Task InitializeAsync() => Task.CompletedTask;
