@@ -43,6 +43,12 @@ jobs:
         run: |
           cd btms-backend
           make generate-openapi-spec
+
+      - name: Save OpenApi specification
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi.json
+          path: openapi.json
         
       - name: Verify Format
         run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
