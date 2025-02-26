@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: openapi.json
-          path: openapi.json
+          path: ./btms-backend/openapi.json
         
       - name: Verify Format
         run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
