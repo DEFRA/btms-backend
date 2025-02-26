@@ -26,48 +26,54 @@ public class DownloadCommand : IRequest, ISyncJob
 
     public string? RootFolder { get; set; }
 
-    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env, IOptions<BusinessOptions> businessOptions) : IRequestHandler<DownloadCommand>
+    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env) : IRequestHandler<DownloadCommand>
     {
 
         public async Task Handle(DownloadCommand request, CancellationToken cancellationToken)
         {
-            var blobContainer = string.IsNullOrEmpty(request.RootFolder)
-                ? businessOptions.Value.DmpBlobRootFolder
-                : request.RootFolder;
+            // var blobContainer = string.IsNullOrEmpty(request.RootFolder)
+            //     ? businessOptions.Value.DmpBlobRootFolder
+            //     : request.RootFolder;
 
-            var subFolder = $"temp\\{request.JobId}";
-            var rootFolder = Path.Combine(env.ContentRootPath, subFolder);
+            // var subFolder = $"temp\\{request.JobId}";
+            var rootFolder = Path.Combine(env.ContentRootPath, "temp", request.JobId.ToString());
             Directory.CreateDirectory(rootFolder);
 
-            if (request.Filter is not null)
+            var datasets = string.IsNullOrEmpty(request.RootFolder) ? DateTimeExtensions.RedactedDatasetsSinceNov24() : [request.RootFolder];
+
+            await datasets.ForEachAsync(async blobContainer =>
             {
-                await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
-
-                await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
-
-                await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), request.Filter.Mrns, cancellationToken);
-
-                var chedGrouping = request.Filter.Cheds.GroupBy(x => x.Type);
-                foreach (var chedGroup in chedGrouping)
+                if (request.Filter is not null)
                 {
-                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/{chedGroup.Key}", typeof(ImportNotification), chedGroup.Select(x => x.Identifier).ToArray(), cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
+
+                    await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
+
+                    await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), request.Filter.Mrns, cancellationToken);
+
+                    var chedGrouping = request.Filter.Cheds.GroupBy(x => x.Type);
+                    foreach (var chedGroup in chedGrouping)
+                    {
+                        await Download(request, rootFolder, $"{blobContainer}/IPAFFS/{chedGroup.Key}", typeof(ImportNotification), chedGroup.Select(x => x.Identifier).ToArray(), cancellationToken);
+                    }
                 }
-            }
-            else
-            {
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDA", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDD", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDP", typeof(ImportNotification), null, cancellationToken);
-                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDPP", typeof(ImportNotification), null, cancellationToken);
+                else
+                {
+                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDA", typeof(ImportNotification), null, cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDD", typeof(ImportNotification), null, cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDP", typeof(ImportNotification), null, cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDPP", typeof(ImportNotification), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), null, cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{blobContainer}/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), null, cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), null, cancellationToken);
+                    await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), null, cancellationToken);
 
-                await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), null, cancellationToken);
-            }
+                    await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), null, cancellationToken);
+                }
+            });
+            
 
 
             if (Directory.EnumerateFiles(rootFolder, "*.json", SearchOption.AllDirectories).Any())
@@ -103,7 +109,7 @@ public class DownloadCommand : IRequest, ISyncJob
                 {
                     var blobContent = await blobService.GetResource(item, cancellationToken);
                     var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
-                    var filename = Path.Combine(rootFolder, item.Name.Replace('/', Path.DirectorySeparatorChar));
+                    var filename = Path.Combine(rootFolder, item.Name.Substring(item.Name.IndexOf('/') + 1).Replace('/', Path.DirectorySeparatorChar));
                     Directory.CreateDirectory(Path.GetDirectoryName(filename)!);
                     await File.WriteAllTextAsync(filename, redactedContent, cancellationToken);
                 }

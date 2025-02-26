@@ -133,24 +133,12 @@ public static class BuilderExtensions
 
         services.AddTransient<Generator>();
 
+        services.PostConfigure<BlobServiceOptions>(x => x.CachePath =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../", "btms-test-data",
+                "Samples")));
+
         services.ConfigureTestGenerationServices();
     }
-
-    // TODO : integration tests currently uses IWebHostBuilder, so this allowed us to set that up
-    // have switched to a seperate host, which uses IHostBuilder  
-    // public static IWebHostBuilder ConfigureTestDataGenerator(this IWebHostBuilder hostBuilder,
-    //     string cachePath = "../../../.test-data-generator")
-    // {
-    //     var (configuration, generatorConfig) = GetConfig(cachePath);
-    //
-    //     hostBuilder
-    //         .ConfigureAppConfiguration(builder => builder.ConfigureAppConfiguration(configuration))
-    //         .ConfigureServices((_, services) => services.ConfigureServices(configuration, generatorConfig));
-    //     //TODO - why doesn't AddLogging work?... 
-    //     // .AddLogging();
-    //
-    //     return hostBuilder;
-    // }
 
     public static IHostBuilder ConfigureTestDataGenerator(this IHostBuilder hostBuilder,
         string cachePath = "../../../.test-data-generator")
@@ -162,7 +150,6 @@ public static class BuilderExtensions
             .ConfigureServices((_, services) =>
                 {
                     services.ConfigureServices(configuration, generatorConfig);
-                    // services.AddSingleton<IBlobService, CachingBlobService>();
                     services.AddSingleton<CachingBlobService>();
                 }
             )
