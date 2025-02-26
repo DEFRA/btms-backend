@@ -8,7 +8,6 @@ using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
 using Btms.Model.Auditing;
-using MongoDB.Driver.Linq;
 
 namespace Btms.Analytics;
 
@@ -45,9 +44,11 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
     {
         var data = context
             .Notifications
+            .WithHint("{ importNotificationType: 1, 'relationships.movements.data': 1 }")
             .Where(n => (from == null || n.CreatedSource >= from) && (to == null || n.CreatedSource < to))
             .GroupBy(n => new { n.ImportNotificationType, Linked = n.Relationships.Movements.Data.Count > 0 })
             .Select(g => new { g.Key.Linked, g.Key.ImportNotificationType, Count = g.Count() })
+            .Execute(logger)
             .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()),
                 g => g.Count);
 
@@ -83,10 +84,6 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .Where(c =>
                 c.Detail.Commodity.CommodityId == "07096010" &&
                 c.MovementCount > 3
-            // c.CommodityDescription == "Sweet peppers"
-            // c.CommodityDescriptionLCase.Contains("sweet") && 
-            // c.CommodityDescriptionLCase.Contains("peppers") && 
-            // !c.CommodityDescriptionLCase.Contains("other than sweet")
             )
             .Take(5)
             .Execute(logger);

@@ -14,6 +14,10 @@ using Btms.Model.Gvms;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 using Btms.Business.Builders;
 using Btms.Types.Alvs.Mapping;
+using AsyncKeyedLock;
+using System.Threading;
+using Microsoft.FeatureManagement;
+using Btms.Common.FeatureFlags;
 
 namespace Btms.Consumers;
 
@@ -28,10 +32,41 @@ internal class NotificationConsumer(
     IValidationService validationService,
     ILogger<NotificationConsumer> logger,
     IMongoDbContext dbContext,
-    ILinker<Gmr, Model.Ipaffs.ImportNotification> gmrLinker)
-: IConsumer<ImportNotification>, IConsumerWithContext
+    ILinker<Gmr, Model.Ipaffs.ImportNotification> gmrLinker,
+    IFeatureManager featureManager)
+    : IConsumer<ImportNotification>, IConsumerWithContext
 {
+    private static readonly AsyncKeyedLocker<string> _asyncKeyedLocker = new();
+    private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
+
     public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
+    {
+        if (!await featureManager.IsEnabledAsync(Features.SyncPerformanceEnhancements))
+        {
+            IDisposable? asyncLock = null;
+            try
+            {
+                if (Context.UseLock())
+                {
+                    asyncLock = await _asyncKeyedLocker.LockOrNullAsync(message.ReferenceNumber!, _timeout,
+                        cancellationToken);
+                }
+
+                await Process(message, cancellationToken);
+            }
+            finally
+            {
+                asyncLock?.Dispose();
+            }
+
+            return;
+        }
+
+        await Process(message, cancellationToken);
+    }
+
+
+    private async Task Process(ImportNotification message, CancellationToken cancellationToken)
     {
         var messageId = Context.GetMessageId();
         using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.ReferenceNumber!))
@@ -76,8 +111,10 @@ internal class NotificationConsumer(
                         triggeringNotification: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
                 {
-                    logger.LogWarning("Skipping Matching/Decisions due to PostLinking failure for {Id} with MessageId {MessageId}", message.ReferenceNumber, messageId);
-                    await dbContext.SaveChangesAsync(Context.CancellationToken);
+                    logger.LogWarning(
+                        "Skipping Matching/Decisions due to PostLinking failure for {Id} with MessageId {MessageId}",
+                        message.ReferenceNumber, messageId);
+                    await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
                     return;
                 }
 
@@ -96,20 +133,22 @@ internal class NotificationConsumer(
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
                 await linkingService.UnLink(linkContext, Context.CancellationToken);
-
             }
             else
             {
-                logger.LogWarning("Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}", message.ReferenceNumber, messageId, preProcessingResult.Outcome.ToString(), preProcessingResult.Record.GetLatestAuditEntry().Status);
+                logger.LogWarning(
+                    "Skipping Linking/Matching/Decisions for {Id} with MessageId {MessageId} with Pre-Processing Outcome {PreProcessingOutcome} Because Last AuditState was {AuditState}",
+                    message.ReferenceNumber, messageId, preProcessingResult.Outcome.ToString(),
+                    preProcessingResult.Record.GetLatestAuditEntry().Status);
                 LogStatus("IsCreatedOrChanged=false", message);
             }
 
-            await dbContext.SaveChangesAsync(Context.CancellationToken);
-
+            await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
         }
     }
 
-    private async Task<List<Model.Ipaffs.ImportNotification>> LoadAllNotificationReferenced(CancellationToken cancellationToken, LinkResult linkResult)
+    private async Task<List<Model.Ipaffs.ImportNotification>> LoadAllNotificationReferenced(
+        CancellationToken cancellationToken, LinkResult linkResult)
     {
         var movementMatchReferences = linkResult.Movements.SelectMany(x => x._MatchReferences).ToList();
         var notificationIdentifiers = linkResult.Notifications.Select(x => x._MatchReference);
@@ -123,7 +162,8 @@ internal class NotificationConsumer(
 
     private void LogStatus(string state, ImportNotification message)
     {
-        logger.LogInformation("{state} : {id}, {version}, {lastUpdated}", state, message.ReferenceNumber, message.Version, message.LastUpdated);
+        logger.LogInformation("{state} : {id}, {version}, {lastUpdated}", state, message.ReferenceNumber,
+            message.Version, message.LastUpdated);
     }
 
     public IConsumerContext Context { get; set; } = null!;

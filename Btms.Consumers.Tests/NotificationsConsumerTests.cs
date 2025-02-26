@@ -11,6 +11,7 @@ using Btms.Types.Ipaffs;
 using Btms.Types.Ipaffs.Mapping;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.FeatureManagement;
 using NSubstitute;
 using SlimMessageBus.Host;
 using TestDataGenerator;
@@ -38,13 +39,14 @@ public class NotificationsConsumerTests : ConsumerTests
         var validationService = Substitute.For<IValidationService>();
         var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
         var gmrLinker = Substitute.For<ILinker<Gmr, Model.Ipaffs.ImportNotification>>();
+        var featureManager = Substitute.For<IFeatureManager>();
 
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker)
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker, featureManager)
             {
                 Context = new ConsumerContext
                 {
@@ -76,6 +78,7 @@ public class NotificationsConsumerTests : ConsumerTests
         var validationService = Substitute.For<IValidationService>();
         var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
         var gmrLinker = Substitute.For<ILinker<Gmr, Model.Ipaffs.ImportNotification>>();
+        var featureManager = Substitute.For<IFeatureManager>();
 
         mockLinkingService.Link(Arg.Any<LinkContext>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new LinkResult(LinkOutcome.Linked)));
@@ -86,7 +89,7 @@ public class NotificationsConsumerTests : ConsumerTests
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker)
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker, featureManager)
             {
                 Context = new ConsumerContext
                 {
@@ -119,13 +122,14 @@ public class NotificationsConsumerTests : ConsumerTests
         var validationService = Substitute.For<IValidationService>();
         var preProcessor = Substitute.For<IPreProcessor<ImportNotification, Model.Ipaffs.ImportNotification>>();
         var gmrLinker = Substitute.For<ILinker<Gmr, Model.Ipaffs.ImportNotification>>();
+        var featureManager = Substitute.For<IFeatureManager>();
 
         preProcessor.Process(Arg.Any<PreProcessingContext<ImportNotification>>())
             .Returns(Task.FromResult(new PreProcessingResult<Model.Ipaffs.ImportNotification>(outcome, modelNotification, null)));
 
         var consumer =
             new NotificationConsumer(preProcessor, mockLinkingService, matchingService, decisionService,
-                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker)
+                validationService, NullLogger<NotificationConsumer>.Instance, new MemoryMongoDbContext(), gmrLinker, featureManager)
             {
                 Context = new ConsumerContext
                 {
