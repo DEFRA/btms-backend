@@ -131,3 +131,8 @@ We have imported redacted production data that is stored in a Blob Storage. We c
   * Once the config has been updated, start BTMS Backend and call the `initialise` API (http://0.0.0.0:5002/mgmt/initialise?syncPeriod=All). Note that a large amount of data will be loaded, particularly the full month dataset. It is also advisable to run Backend from a standalone terminal rather than from Rider as it struggles running this task.
       
 
+## PAT Token
+To Access the BTMS Test Data repo, a PAT token needs to be generated.  If/When the PAT needs to be regenerated, it should be updated within the secrets and variables of the project
+https://github.com/actions/checkout?tab=readme-ov-file#Checkout-multiple-repos-private
+
+https://github.com/DEFRA/btms-backend/settings/secrets/actions
