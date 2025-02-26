@@ -91,7 +91,7 @@ jobs:
           path: code-coverage-results.md
 
       - name: Generate OpenAPI specification
-        run: make generate-openapi-spec
+        run: make ./btms-backend/generate-openapi-spec
 
       - name: Save OpenApi specification
         uses: actions/upload-artifact@v4
