@@ -38,17 +38,6 @@ jobs:
           ref: main
           token: ${{ secrets.BTMS_TEST_DATA_PAT }}
           path: btms-test-data
-
-      - name: Generate OpenAPI specification
-        run: |
-          cd btms-backend
-          make generate-openapi-spec
-
-      - name: Save OpenApi specification
-        uses: actions/upload-artifact@v4
-        with:
-          name: openapi.json
-          path: ./btms-backend/openapi.json
         
       - name: Verify Format
         run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
@@ -102,13 +91,15 @@ jobs:
           path: code-coverage-results.md
 
       - name: Generate OpenAPI specification
-        run: make -f ./btms-backend/Makefile generate-openapi-spec
+        run: |
+          cd btms-backend
+          make generate-openapi-spec
 
       - name: Save OpenApi specification
         uses: actions/upload-artifact@v4
         with:
           name: openapi.json
-          path: openapi.json
+          path: ./btms-backend/openapi.json
 
     ## SonarCloud
     ## Uncomment to unable SonarCloud scan
