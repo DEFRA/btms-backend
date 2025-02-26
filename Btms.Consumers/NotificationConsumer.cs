@@ -41,7 +41,7 @@ internal class NotificationConsumer(
 
     public async Task OnHandle(ImportNotification message, CancellationToken cancellationToken)
     {
-        if (!await featureManager.IsEnabledAsync(Features.SyncPerformanceEnhancements))
+        if (await featureManager.IsEnabledAsync(Features.SyncPerformanceEnhancements))
         {
             IDisposable? asyncLock = null;
             try

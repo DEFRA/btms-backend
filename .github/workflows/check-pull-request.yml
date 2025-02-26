@@ -10,6 +10,12 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+      
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  repository-projects: read
 
 env:
   AWS_REGION: eu-west-2
@@ -28,9 +34,19 @@ jobs:
            8.0
       - name: Check out code
         uses: actions/checkout@v3 
+        with:
+          path: btms-backend
+        
+      - name: Check out code Test data
+        uses: actions/checkout@v3
+        with:
+          repository: DEFRA/btms-test-data
+          ref: main
+          token: ${{ secrets.BTMS_TEST_DATA_PAT }}
+          path: btms-test-data
         
       - name: Verify Format
-        run: dotnet format --verify-no-changes --verbosity diagnostic
+        run: dotnet format ./btms-backend/BtmsBackend.sln --verify-no-changes --verbosity diagnostic
 
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
@@ -44,21 +60,15 @@ jobs:
           mongodb-replica-set: test-rs
           mongodb-port: 29017
 
-      - name: Make Wait Script Executable
-        run: chmod +x ./wait-for-docker-logs.sh
+      - name: Make Script Executable
+        run: chmod +x ./btms-backend/wait-for-docker-logs.sh
 
       - name: Wait for ASB Emulator
         run: |
-          ./wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
-
-      - name: Make SNS/SQS Script Executable
-        run: chmod +x ./start-localstack.sh
-
-      - name: Create SNS/SQS
-        run: ./start-localstack.sh
+          ./btms-backend/wait-for-docker-logs.sh servicebus-emulator "Emulator Service is Successfully Up" 60
 
       - name: Test
-        run: dotnet test  --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
+        run: dotnet test ./btms-backend/BtmsBackend.sln --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true" --collect:"XPlat Code Coverage" --results-directory ./coverage
         
       - name: install dotnet coverage
         run: dotnet tool install --global dotnet-coverage        
@@ -87,13 +97,15 @@ jobs:
           path: code-coverage-results.md
 
       - name: Generate OpenAPI specification
-        run: make generate-openapi-spec
+        run: |
+          cd btms-backend
+          make generate-openapi-spec
 
       - name: Save OpenApi specification
         uses: actions/upload-artifact@v4
         with:
           name: openapi.json
-          path: openapi.json
+          path: ./btms-backend/openapi.json
 
     ## SonarCloud
     ## Uncomment to unable SonarCloud scan

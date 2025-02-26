@@ -13,6 +13,10 @@ public static class ServiceCollectionExtensions
 
         services.BtmsAddOptions<BlobServiceOptions>(configuration, BlobServiceOptions.SectionName);
 
+        services.PostConfigure<BlobServiceOptions>(x => x.CachePath =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../", "btms-test-data",
+                "Samples")));
+
         var blobOptions = config.Get<BlobServiceOptions>()!;
 
         if (blobOptions.CacheReadEnabled || blobOptions.CacheWriteEnabled)
