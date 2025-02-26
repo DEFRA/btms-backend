@@ -32,7 +32,7 @@ public class TestAwsConsumers : IAsyncDisposable
 
         builder.Configuration
             .AddEnvironmentVariables()
-            .AddInMemoryCollection(AwsLocalOptions.DefaultLocalConfig);
+            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
         AwsLocalOptions = new AwsLocalOptions(Configuration);

@@ -1,4 +1,5 @@
 using Btms.Backend.Data;
+using Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 using Btms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -32,16 +33,16 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
     {
         // Any integration test overrides could be added here
         // And we don't want to load the backend ini file 
-        var configurationValues = new Dictionary<string, string?>
-        {
-            { "DisableLoadIniFile", "true" },
-            { "BlobServiceOptions:CachePath", "../../../Fixtures" },
-            { "BlobServiceOptions:CacheReadEnabled", "true" },
-            { "AuthKeyStore:Credentials:IntTest", "Password" }
-        };
 
         var configurationBuilder = new ConfigurationBuilder()
-            .AddInMemoryCollection(configurationValues);
+            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig)
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "DisableLoadIniFile", "true" },
+                { "BlobServiceOptions:CachePath", "../../../Fixtures" },
+                { "BlobServiceOptions:CacheReadEnabled", "true" },
+                { "AuthKeyStore:Credentials:IntTest", "Password" }
+            });
 
         if (InternalQueuePublishWillBlock)
             configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
