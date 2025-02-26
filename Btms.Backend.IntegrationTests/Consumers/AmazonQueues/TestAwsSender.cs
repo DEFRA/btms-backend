@@ -17,7 +17,7 @@ public class TestAwsSender : IAsyncDisposable
     private readonly IAmazonSimpleNotificationService _snsSender;
     private readonly string _topicArnPrefix = null!;
     private readonly ServiceProvider _services;
-    
+
     public readonly List<Topic>? Topics;
     public readonly List<Subscription>? Subscriptions;
 

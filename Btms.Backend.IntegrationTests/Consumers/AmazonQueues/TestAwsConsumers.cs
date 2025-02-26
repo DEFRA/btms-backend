@@ -19,7 +19,7 @@ public class TestAwsConsumers : IAsyncDisposable
 {
     private readonly WebApplication _app = null!;
     private readonly CancellationTokenSource _tokenSource = new();
-    
+
     public readonly ClearanceRequestConsumerHost ClearanceRequestConsumer = new();
     public readonly IConfiguration Configuration;
     public readonly AwsLocalOptions AwsLocalOptions;
@@ -52,10 +52,10 @@ public class TestAwsConsumers : IAsyncDisposable
 
             Task.Run(() => _app.Start(), _tokenSource.Token);
             Task.Delay(TimeSpan.FromSeconds(5), _app.Lifetime.ApplicationStarted).Wait();
-            
+
             throw new TimeoutException("Unable to start the AWS SNS/SQS test service in the allotted time");
         }
-        catch (AggregateException ex) when(ex.InnerException is TaskCanceledException)
+        catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
         {
             // Expected
         }

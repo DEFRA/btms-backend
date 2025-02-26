@@ -36,8 +36,10 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     public void When_checking_if_AWS_SNS_available_Then_should_be_able_to_enumerate_SNS_topics()
     {
         _testOutputHelper.WriteLine("SNS Topics found:");
-        foreach (var topic in _awsSender.Topics ?? []) 
+        foreach (var topic in _awsSender.Topics ?? [])
+        {
             _testOutputHelper.WriteLine($" - {topic.TopicArn}");
+        }
 
         _awsSender.Topics.Should().HaveCount(5);
     }
@@ -46,8 +48,10 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     public void When_checking_if_AWS_SNS_SQS_available_Then_should_be_able_to_enumerate_SNS_SQS_subscriptions()
     {
         _testOutputHelper.WriteLine("SNS Subscriptions found:");
-        foreach (var subscription in _awsSender.Subscriptions ?? []) 
+        foreach (var subscription in _awsSender.Subscriptions ?? [])
+        {
             _testOutputHelper.WriteLine($" - {subscription.TopicArn} - {subscription.Endpoint} - {subscription.SubscriptionArn}");
+        }
 
         _awsSender.Subscriptions.Should().HaveCount(5);
     }

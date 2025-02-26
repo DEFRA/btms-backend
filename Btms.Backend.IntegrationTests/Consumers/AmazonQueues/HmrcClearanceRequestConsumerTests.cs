@@ -26,7 +26,7 @@ public class HmrcClearanceRequestConsumerTests : IAsyncLifetime
 
         _awsConsumers.ClearanceRequestConsumer.Mock
             .When(mock => mock.OnHandle(Arg.Is<AlvsClearanceRequest>(a => a.ServiceHeader != null && a.ServiceHeader.CorrelationId == id), Arg.Any<IConsumerContext>(), Arg.Any<CancellationToken>()))
-            .Do(_=> semaphore.Release());
+            .Do(_ => semaphore.Release());
 
         await _awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = id } });
 
