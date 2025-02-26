@@ -24,7 +24,7 @@ public class SyncNotificationsCommandTests(ITestOutputHelper outputHelper)
         var notification = CreateImportNotification();
         var command = new SyncNotificationsCommand();
         var jobStore = new SyncJobStore(NullLogger<SyncJobStore>.Instance);
-        jobStore.CreateJob(command.JobId, SyncPeriod.All.ToString(), "Test Job");
+        jobStore.CreateJob(command.JobId, null, SyncPeriod.All.ToString(), "Test Job");
 
         var bus = Substitute.For<IPublishBus>();
         var blob = Substitute.For<IBlobService>();

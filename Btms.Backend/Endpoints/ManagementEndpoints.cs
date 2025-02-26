@@ -83,11 +83,12 @@ public static class ManagementEndpoints
 
     private static async Task<IResult> Initialise(
         [FromServices] IHost app,
-        IMongoDbContext context,
-        SyncPeriod syncPeriod)
+        SyncPeriod syncPeriod,
+        string? rootFolder,
+        InitialisationStrategy? strategy,
+        bool dropCollections = true)
     {
-        await DropCollectionsAsync(context);
-        await SyncEndpoints.InitialiseEnvironment(app, syncPeriod);
+        await SyncEndpoints.InitialiseEnvironment(app, syncPeriod, rootFolder, strategy, dropCollections);
 
         return Results.Ok();
     }

@@ -46,14 +46,11 @@ public static class SyncEndpoints
         app.MapGet(BaseRoute + "/jobs/{jobId}/cancel", CancelSyncJob).AllowAnonymous();
     }
 
-    internal static async Task<IResult> InitialiseEnvironment(IHost app, SyncPeriod period)
+    internal static async Task<IResult> InitialiseEnvironment(IHost app, SyncPeriod period, string? rootFolder, InitialisationStrategy? strategy, bool dropCollections)
     {
-        var store = app.Services.GetRequiredService<ISyncJobStore>();
         var mediator = app.Services.GetRequiredService<IBtmsMediator>();
 
-        await ClearSyncJobs(store);
-
-        InitialiseCommand command = new() { SyncPeriod = period };
+        InitialiseCommand command = new() { SyncPeriod = period, RootFolder = rootFolder, Strategy = strategy, DropCollections = dropCollections };
 
         await mediator.SendSyncJob(command);
 
@@ -109,9 +106,10 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetSyncNotifications(
         [FromServices] IBtmsMediator mediator,
-        SyncPeriod syncPeriod)
+        SyncPeriod syncPeriod,
+        string? rootFolder)
     {
-        SyncNotificationsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncNotificationsCommand command = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
         return await SyncNotifications(mediator, command);
     }
 
@@ -125,9 +123,10 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetSyncClearanceRequests(
         [FromServices] IBtmsMediator mediator,
-        SyncPeriod syncPeriod)
+        SyncPeriod syncPeriod,
+        string? rootFolder)
     {
-        SyncClearanceRequestsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncClearanceRequestsCommand command = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
         return await SyncClearanceRequests(mediator, command);
     }
 
@@ -141,9 +140,10 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetSyncGmrs(
         [FromServices] IBtmsMediator mediator,
-        SyncPeriod syncPeriod)
+        SyncPeriod syncPeriod,
+        string? rootFolder)
     {
-        SyncGmrsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncGmrsCommand command = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
         return await SyncGmrs(mediator, command);
     }
 
@@ -156,9 +156,10 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetSyncDecisions(
         [FromServices] IBtmsMediator mediator,
-        SyncPeriod syncPeriod)
+        SyncPeriod syncPeriod,
+        string? rootFolder)
     {
-        SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncDecisionsCommand command = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
         return await SyncDecisions(mediator, command);
     }
 
@@ -171,9 +172,10 @@ public static class SyncEndpoints
 
     private static async Task<IResult> GetSyncFinalisations(
         [FromServices] IBtmsMediator mediator,
-        SyncPeriod syncPeriod)
+        SyncPeriod syncPeriod,
+        string? rootFolder)
     {
-        SyncFinalisationsCommand command = new() { SyncPeriod = syncPeriod };
+        SyncFinalisationsCommand command = new() { SyncPeriod = syncPeriod, RootFolder = rootFolder };
         return await SyncFinalisations(mediator, command);
     }
 
