@@ -4,17 +4,22 @@ using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Btms.Consumers.AmazonQueues;
 using Btms.Types.Alvs;
+using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 
-public class TestAwsSender
+public class TestAwsSender : IAsyncDisposable
 {
     private readonly ITestOutputHelper _testOutputHelper;
     private readonly IAmazonSimpleNotificationService _snsSender;
-    private readonly string _topicArnPrefix;
+    private readonly string _topicArnPrefix = null!;
+    private readonly ServiceProvider _services;
+    
+    public readonly List<Topic>? Topics;
+    public readonly List<Subscription>? Subscriptions;
 
     public TestAwsSender(IConfiguration configuration, AwsLocalOptions awsLocalOptions, ITestOutputHelper testOutputHelper)
     {
@@ -34,13 +39,24 @@ public class TestAwsSender
         serviceCollection.AddDefaultAWSOptions(awsOptions);
         serviceCollection.AddAWSService<IAmazonSimpleNotificationService>();
 
-        var services = serviceCollection.BuildServiceProvider();
+        _services = serviceCollection.BuildServiceProvider();
 
-        _snsSender = services.GetRequiredService<IAmazonSimpleNotificationService>();
+        _snsSender = _services.GetRequiredService<IAmazonSimpleNotificationService>();
 
-        var response = _snsSender.ListTopicsAsync().Result;
-        var topicArn = response.Topics.First().TopicArn;
-        _topicArnPrefix = topicArn[..topicArn.LastIndexOf(':')];
+        for (var i = 0; i < 5; i++)
+        {
+            Topics = _snsSender.ListTopicsAsync().Result.Topics;
+            Subscriptions = _snsSender.ListSubscriptionsAsync().Result.Subscriptions;
+            var topicArn = Topics.FirstOrDefault()?.TopicArn;
+            if (topicArn == null)
+            {
+                Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+                continue;
+            }
+            _topicArnPrefix = topicArn[..topicArn.LastIndexOf(':')];
+        }
+
+        _topicArnPrefix.Should().NotBeNull();
     }
 
     public async Task SendAsync<T>(T message) where T : class
@@ -62,5 +78,11 @@ public class TestAwsSender
         _testOutputHelper.WriteLine($"Publish message body to {publishRequest.TopicArn} of type {typeof(T).Name} with message: {publishRequest.Message}");
 
         await _snsSender.PublishAsync(publishRequest);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _snsSender.Dispose();
+        await _services.DisposeAsync();
     }
 }

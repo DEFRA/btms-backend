@@ -17,8 +17,9 @@ namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 
 public class TestAwsConsumers : IAsyncDisposable
 {
-    private readonly WebApplication _app;
+    private readonly WebApplication _app = null!;
     private readonly CancellationTokenSource _tokenSource = new();
+    
     public readonly ClearanceRequestConsumerHost ClearanceRequestConsumer = new();
     public readonly IConfiguration Configuration;
     public readonly AwsLocalOptions AwsLocalOptions;
@@ -34,21 +35,34 @@ public class TestAwsConsumers : IAsyncDisposable
             .AddInMemoryCollection(AwsLocalOptions.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
-        AwsLocalOptions = new AwsLocalOptions(builder.Configuration);
+        AwsLocalOptions = new AwsLocalOptions(Configuration);
 
-        builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumer.Mock);
-        builder.Services.AddSlimMessageBus(mbb =>
+        try
         {
-            mbb.AddChildBus("AmazonTest", cbb =>
+            builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumer.Mock);
+            builder.Services.AddSlimMessageBus(mbb =>
             {
-                cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, logger);
+                mbb.AddChildBus("AmazonTest", cbb =>
+                {
+                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, logger);
+                });
             });
-        });
 
-        _app = builder.Build();
+            _app = builder.Build();
 
-
-        Task.Run(() => _app.Start(), _tokenSource.Token);
+            Task.Run(() => _app.Start(), _tokenSource.Token);
+            Task.Delay(TimeSpan.FromSeconds(5), _app.Lifetime.ApplicationStarted).Wait();
+            
+            throw new TimeoutException("Unable to start the AWS SNS/SQS test service in the allotted time");
+        }
+        catch (AggregateException ex) when(ex.InnerException is TaskCanceledException)
+        {
+            // Expected
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Unable to build and start the AWS SNS/SQS test service", ex);
+        }
     }
 
     private static Logger BuildLogger(WebApplicationBuilder builder)
@@ -62,10 +76,19 @@ public class TestAwsConsumers : IAsyncDisposable
         return logger;
     }
 
+
     public async ValueTask DisposeAsync()
     {
         await _tokenSource.CancelAsync();
         await _app.StopAsync();
+        try
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5), _app.Lifetime.ApplicationStopped);
+        }
+        catch (TaskCanceledException)
+        {
+            // Expected
+        }
     }
 }
 
@@ -83,7 +106,7 @@ public abstract class ConsumerHost<T> where T : class
     protected async Task<bool> WaitUntilHandledAsync(Func<Task> actionToAwait)
     {
         var stopwatch = Stopwatch.StartNew();
-        while (stopwatch.Elapsed < TimeSpan.FromSeconds(30))
+        while (stopwatch.Elapsed < TimeSpan.FromSeconds(5))
         {
             try
             {
