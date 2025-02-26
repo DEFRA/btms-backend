@@ -1,4 +1,5 @@
 using Btms.Common.Extensions;
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
@@ -160,7 +161,7 @@ public class Mrn24Gbdehmfc4Wgxvar7Tests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.ChedTypes
+            .Status.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Cvedp);
     }
 
@@ -169,8 +170,8 @@ public class Mrn24Gbdehmfc4Wgxvar7Tests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.AllLinked);
+            .Status.LinkStatus
+            .Should().Be(LinkStatus.AllLinked);
     }
 
     [Fact]

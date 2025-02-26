@@ -76,6 +76,8 @@ internal class AlvsClearanceRequestConsumer(
 
                 await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
+                // Recalculate the status of the notifications before saving
+                linkResult.Notifications.ForEach(n => n.CalculateStatus());
 
             }
             else

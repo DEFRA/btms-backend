@@ -51,7 +51,7 @@ public class DecisionMessageBuilderTests
                 new Movement
                 {
                     Id = "movement-1",
-                    BtmsStatus = MovementStatus.Default(),
+                    Status = MovementStatus.Default(),
                     Items =
                     [
                         new Items
@@ -84,7 +84,7 @@ public class DecisionMessageBuilderTests
                 new Movement
                 {
                     Id = "movement-2",
-                    BtmsStatus = MovementStatus.Default(),
+                    Status = MovementStatus.Default(),
                     Items =
                     [
                         new Items

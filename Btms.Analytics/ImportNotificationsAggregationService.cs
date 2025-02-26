@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 using Btms.Analytics.Extensions;
+using Btms.Common.Enum;
 using Btms.Model.Auditing;
 
 namespace Btms.Analytics;
@@ -45,10 +46,11 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         var data = context
             .Notifications
             .Where(n => (from == null || n.CreatedSource >= from) && (to == null || n.CreatedSource < to))
-            .GroupBy(n => new { n.ImportNotificationType, Linked = n.Relationships.Movements.Data.Count > 0 })
-            .Select(g => new { g.Key.Linked, g.Key.ImportNotificationType, Count = g.Count() })
+            .GroupBy(n => n.BtmsStatus.TypeAndLinkStatus)
+            // .GroupBy(n => new { n.ImportNotificationType, Linked = n.Relationships.Movements.Data.Count > 0 })
+            .Select(g => new { Key = g.Key!.Value, Count = g.Count() })
             .Execute(logger)
-            .ToDictionary(g => AnalyticsHelpers.GetLinkedName(g.Linked, g.ImportNotificationType.AsString()),
+            .ToDictionary(g => g.Key.GetValue(),
                 g => g.Count);
 
         return Task.FromResult(new SingleSeriesDataset

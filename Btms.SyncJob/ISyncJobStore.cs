@@ -8,7 +8,7 @@ public interface ISyncJobStore
 
     SyncJob CreateJob(Guid id, string? rootFolder, string timespan, string resource);
 
-    void ClearSyncJobs();
+    void ClearSyncJobs(Guid? except = null);
 
     Task WaitOnJobCompleting(Guid jobId);
 }

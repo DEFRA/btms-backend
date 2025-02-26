@@ -9,6 +9,7 @@ using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus.Host;
+using LinkStatus = Btms.Model.Cds.LinkStatus;
 
 namespace Btms.Business.Services.Validating;
 
@@ -38,23 +39,23 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
 
         await Task.WhenAll(linkResult.Movements.Select(async m =>
         {
-            if (m.BtmsStatus.LinkStatus == LinkStatusEnum.Error) return;
+            if (m.Status.LinkStatus == LinkStatus.Error) return;
 
-            var chedTypes = m.BtmsStatus.ChedTypes;
+            var chedTypes = m.Status.ChedTypes;
 
             var notificationRelationshipIds = m.UniqueNotificationRelationshipIds();
             var documentReferenceIds = m.UniqueDocumentReferenceIds();
 
-            m.BtmsStatus = MovementExtensions.GetMovementStatus(chedTypes, documentReferenceIds, notificationRelationshipIds);
+            m.Status = MovementExtensions.GetMovementStatus(chedTypes, documentReferenceIds, notificationRelationshipIds);
 
             if (m.Items.Any(i => i.Documents?.Length == 0))
             {
                 // One of the error states from CDMS-242
                 // https://eaflood.atlassian.net/wiki/spaces/ALVS/pages/5400723501/To-be+HMRCErrorNotification+-+Error+Codes
 
-                m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
-                m.BtmsStatus.LinkStatusDescription = "ALVSVAL318";
-                m.BtmsStatus.Segment = MovementSegmentEnum.Cdms249;
+                m.Status.Status = MovementStatusEnum.FeatureMissing;
+                m.Status.LinkStatusDescription = "ALVSVAL318";
+                m.Status.Segment = MovementSegmentEnum.Cdms249;
 
                 valid = false;
             }
@@ -62,8 +63,8 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                      documentReferenceIds.Count == 1 &&
                      m.Items.Any(i => i.Checks?.Any(d => d.CheckCode == "H219") ?? false))
             {
-                m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
-                m.BtmsStatus.Segment = linkResult.Notifications.Single().Status switch
+                m.Status.Status = MovementStatusEnum.FeatureMissing;
+                m.Status.Segment = linkResult.Notifications.Single().Status switch
                 {
                     ImportNotificationStatusEnum.Validated => MovementSegmentEnum.Cdms205Ac1,
                     ImportNotificationStatusEnum.Rejected => MovementSegmentEnum.Cdms205Ac2,
@@ -78,8 +79,8 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
                          .SelectMany(i => (i.Checks ?? []).Select(d => d.CheckCode!))
                          .Count(d => d == "H219") > 1)
             {
-                m.BtmsStatus.Status = MovementStatusEnum.FeatureMissing;
-                m.BtmsStatus.Segment = MovementSegmentEnum.Cdms205Ac5;
+                m.Status.Status = MovementStatusEnum.FeatureMissing;
+                m.Status.Segment = MovementSegmentEnum.Cdms205Ac5;
             }
 
             await dbContext.Movements.Update(m, cancellationToken: cancellationToken);

@@ -47,7 +47,7 @@ public class BusinessDecisionComparisonTests(ITestOutputHelper output) : Multipl
         TestOutputHelper.WriteLine("MRN {0}, expectedDecisionStatus {1}", movement.EntryReference, decisionStatus);
 
         movement
-            .BtmsStatus.BusinessDecisionStatus
+            .Status.BusinessDecisionStatus
             .Should().Be(decisionStatus);
     }
 }

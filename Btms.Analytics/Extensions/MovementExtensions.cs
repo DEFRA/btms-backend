@@ -4,6 +4,7 @@ using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
+using LinkStatus = Btms.Model.Cds.LinkStatus;
 
 namespace Btms.Analytics.Extensions;
 
@@ -18,8 +19,8 @@ public static class MovementExtensions
                         && (country == null || m.DispatchCountryCode == country)
                         && (!finalisedOnly || m.Finalised.HasValue)
                         && (chedTypes == null || !chedTypes!.Any() ||
-                            !m.BtmsStatus.ChedTypes!.Any() ||
-                            m.BtmsStatus.ChedTypes!.Any(c => chedTypes!.Contains(c))));
+                            !m.Status.ChedTypes!.Any() ||
+                            m.Status.ChedTypes!.Any(c => chedTypes!.Contains(c))));
 
     }
 
@@ -59,7 +60,7 @@ public static class MovementExtensions
     {
         public required Movement Movement { get; set; }
         public required DateTime CreatedSource { get; set; }
-        public required LinkStatusEnum Status { get; set; }
+        public required LinkStatus Status { get; set; }
     }
 
     public static IQueryable<MovementWithLinkStatus> SelectLinkStatus(this IQueryable<Movement> source)
@@ -69,7 +70,7 @@ public static class MovementExtensions
             {
                 Movement = m,
                 CreatedSource = m.CreatedSource!.Value,
-                Status = m.BtmsStatus.LinkStatus
+                Status = m.Status.LinkStatus
             });
 
         return m;

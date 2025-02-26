@@ -20,6 +20,14 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     [ChangeSetIgnore]
     public string Type { get; set; } = "import-notification";
 
+    /// <summary>
+    /// Has a broader understanding of the status of the CHED and its relationships with other resources etc
+    /// I'd like to name this Status but that already exists on the notification so need to review.
+    /// </summary>
+    [ChangeSetIgnore]
+    [Attr]
+    public ImportNotificationStatus BtmsStatus { get; set; } = ImportNotificationStatus.Default();
+
     //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     [JsonIgnore]
     [Attr]
@@ -235,4 +243,46 @@ public partial class ImportNotification : IMongoIdentifiable, IDataEntity, IAudi
     {
         return AuditEntries.OrderByDescending(x => x.CreatedLocal).First();
     }
+
+    public void CalculateStatus()
+    {
+        BtmsStatus.LinkStatus = (Relationships.Movements.Data.Count > 0) ? NotificationLinkStatus.Linked : NotificationLinkStatus.NotLinked;
+        BtmsStatus.TypeAndLinkStatus = this switch
+        {
+            //Linked
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.Linked, ImportNotificationType: ImportNotificationTypeEnum.Cveda } => TypeAndLinkStatus.ChedALinked,
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.Linked, ImportNotificationType: ImportNotificationTypeEnum.Ced } => TypeAndLinkStatus.ChedDLinked,
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.Linked, ImportNotificationType: ImportNotificationTypeEnum.Cvedp } => TypeAndLinkStatus.ChedPLinked,
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.Linked, ImportNotificationType: ImportNotificationTypeEnum.Chedpp } => TypeAndLinkStatus.ChedPpLinked,
+
+            //Not linked
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.NotLinked, ImportNotificationType: ImportNotificationTypeEnum.Cveda } => TypeAndLinkStatus.ChedANotLinked,
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.NotLinked, ImportNotificationType: ImportNotificationTypeEnum.Ced } => TypeAndLinkStatus.ChedDNotLinked,
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.NotLinked, ImportNotificationType: ImportNotificationTypeEnum.Cvedp } => TypeAndLinkStatus.ChedPNotLinked,
+            { BtmsStatus.LinkStatus: NotificationLinkStatus.NotLinked, ImportNotificationType: ImportNotificationTypeEnum.Chedpp } => TypeAndLinkStatus.ChedPpNotLinked,
+            _ => throw new NotImplementedException($"No mapping for LinkStatus={BtmsStatus.LinkStatus}, ImportNotificationType={ImportNotificationType}.")
+        };
+    }
+}
+
+
+public class ImportNotificationStatus
+{
+    public static ImportNotificationStatus Default()
+    {
+        return new ImportNotificationStatus()
+        {
+            LinkStatus = NotificationLinkStatus.NotLinked
+        };
+    }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public TypeAndLinkStatus? TypeAndLinkStatus { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public required NotificationLinkStatus LinkStatus { get; set; }
 }

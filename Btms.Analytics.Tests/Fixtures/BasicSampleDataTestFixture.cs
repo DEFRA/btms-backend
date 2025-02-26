@@ -39,7 +39,7 @@ public class BasicSampleDataTestFixture : IDisposable
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
 
-            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 2))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchCrFirstScenarioGenerator>(10, 3, arrivalDateRange: 2))
                 .GetAwaiter().GetResult();
 
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
@@ -53,7 +53,7 @@ public class BasicSampleDataTestFixture : IDisposable
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(5, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
-            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchCrFirstScenarioGenerator>(1, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))

@@ -23,10 +23,7 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
             CreateIndex("PartOneArrivesAt",
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.PartOne!.ArrivesAt), cancellationToken: cancellationToken),
             CreateIndex("AggregationByStatus",
-                Builders<ImportNotification>.IndexKeys
-                    .Ascending(n => n.ImportNotificationType)
-                    .Ascending(n => n.Relationships.Movements.Data),
-                cancellationToken: cancellationToken),
+                Builders<ImportNotification>.IndexKeys.Ascending(n => n.BtmsStatus.TypeAndLinkStatus), cancellationToken: cancellationToken),
             CreateIndex("ImportNotificationGmrLinker",
                 Builders<ImportNotification>.IndexKeys
                     .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.system"))
