@@ -15,9 +15,9 @@ public class SyncJobStore(ILogger<SyncJobStore> logger) : ISyncJobStore
         return jobs.Values.ToList();
     }
 
-    public SyncJob CreateJob(Guid id, string timespan, string resource)
+    public SyncJob CreateJob(Guid id, string? rootFolder, string timespan, string resource)
     {
-        var syncJob = new SyncJob(id, timespan, resource);
+        var syncJob = new SyncJob(id, rootFolder, timespan, resource);
         jobs[id] = syncJob;
         return syncJob;
     }
