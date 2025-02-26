@@ -26,6 +26,10 @@ public class DecisionComparisonTests(ITestOutputHelper output) : MultipleScenari
 
     [InlineData(typeof(Mrn24Gbd0Mbe1Q1Cntar7ScenarioGenerator), DecisionStatusEnum.PartialImportNotificationsLinked)]
     [InlineData(typeof(Mrn25Gb16796A6B91Ear9ScenarioGenerator), DecisionStatusEnum.BtmsMadeSameDecisionAsAlvs)]
+
+    //This has a combination of X00s that we've cleared, and X00s that we've generated E03 for :|
+    [InlineData(typeof(Mrn24Gbc8Onyjqzt5Tar5ScenarioGenerator), DecisionStatusEnum.AlvsX00NotBtms)]
+
     public void ShouldHaveCorrectDecisionCode(Type generatorType, DecisionStatusEnum decisionStatus)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Status : {1}", generatorType!.FullName, decisionStatus);

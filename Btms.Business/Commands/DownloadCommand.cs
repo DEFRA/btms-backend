@@ -31,11 +31,6 @@ public class DownloadCommand : IRequest, ISyncJob
 
         public async Task Handle(DownloadCommand request, CancellationToken cancellationToken)
         {
-            // var blobContainer = string.IsNullOrEmpty(request.RootFolder)
-            //     ? businessOptions.Value.DmpBlobRootFolder
-            //     : request.RootFolder;
-
-            // var subFolder = $"temp\\{request.JobId}";
             var rootFolder = Path.Combine(env.ContentRootPath, "temp", request.JobId.ToString());
             Directory.CreateDirectory(rootFolder);
 
@@ -73,7 +68,7 @@ public class DownloadCommand : IRequest, ISyncJob
                     await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), null, cancellationToken);
                 }
             });
-            
+
 
 
             if (Directory.EnumerateFiles(rootFolder, "*.json", SearchOption.AllDirectories).Any())

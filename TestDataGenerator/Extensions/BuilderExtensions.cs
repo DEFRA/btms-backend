@@ -72,13 +72,17 @@ public static class BuilderExtensions
         return new ServiceCollection()
             .AddBlobStorage(configuration)
             .AddSingleton<CachingBlobService>()
-            .ConfigureTestGenerationServices()
+            .ConfigureTestDataGenerationServices()
             .BuildServiceProvider();
     }
 
-    public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
+    public static IServiceCollection ConfigureTestDataGenerationServices(this IServiceCollection services)
     {
         services.AddHttpClient();
+
+        services.PostConfigure<BlobServiceOptions>(x => x.CachePath =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../", "btms-test-data",
+                "Samples")));
 
         foreach (var type in GetAllScenarios())
         {
@@ -133,11 +137,7 @@ public static class BuilderExtensions
 
         services.AddTransient<Generator>();
 
-        services.PostConfigure<BlobServiceOptions>(x => x.CachePath =
-            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../", "btms-test-data",
-                "Samples")));
-
-        services.ConfigureTestGenerationServices();
+        services.ConfigureTestDataGenerationServices();
     }
 
     public static IHostBuilder ConfigureTestDataGenerator(this IHostBuilder hostBuilder,

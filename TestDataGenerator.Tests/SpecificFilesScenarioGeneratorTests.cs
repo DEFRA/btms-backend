@@ -22,7 +22,7 @@ public class SpecificFilesScenarioGeneratorTests
         var sp = new ServiceCollection()
             .AddBlobStorage(configuration)
             .AddSingleton<CachingBlobService>()
-            .ConfigureTestGenerationServices()
+            .ConfigureTestDataGenerationServices()
             .BuildServiceProvider();
 
         var scenario = new DuplicateMovementItemsCdms211(sp, NullLogger<DuplicateMovementItemsCdms211>.Instance);
