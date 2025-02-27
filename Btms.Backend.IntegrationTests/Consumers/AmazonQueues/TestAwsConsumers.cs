@@ -1,15 +1,12 @@
 using System.Diagnostics;
-using Btms.Backend.Utils.Logging;
+using Btms.Common.Extensions;
 using Btms.Consumers;
 using Btms.Consumers.AmazonQueues;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Serilog;
-using Serilog.Core;
 using SlimMessageBus.Host;
 
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
@@ -21,20 +18,18 @@ public class TestAwsConsumers : IAsyncDisposable
 
     public readonly ClearanceRequestConsumerHost ClearanceRequestConsumer = new();
     public readonly IConfiguration Configuration;
-    public readonly AwsLocalOptions AwsLocalOptions;
+    public readonly AwsSqsOptions AwsLocalOptions;
 
     public TestAwsConsumers()
     {
         var builder = WebApplication.CreateBuilder();
-
-        var logger = BuildLogger(builder);
-
+        
         builder.Configuration
             .AddEnvironmentVariables()
             .AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
-        AwsLocalOptions = new AwsLocalOptions(Configuration);
+        AwsLocalOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
 
         try
         {
@@ -43,7 +38,7 @@ public class TestAwsConsumers : IAsyncDisposable
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
                 {
-                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, logger);
+                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions);
                 });
             });
 
@@ -62,17 +57,6 @@ public class TestAwsConsumers : IAsyncDisposable
         {
             throw new Exception("Unable to build and start the AWS SNS/SQS test service", ex);
         }
-    }
-
-    private static Logger BuildLogger(WebApplicationBuilder builder)
-    {
-        builder.Logging.ClearProviders();
-        var logBuilder = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .Enrich.With<LogLevelMapper>();
-        var logger = logBuilder.CreateLogger();
-        builder.Logging.AddSerilog(logger);
-        return logger;
     }
 
 

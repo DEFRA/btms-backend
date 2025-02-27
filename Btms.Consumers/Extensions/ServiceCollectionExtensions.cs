@@ -25,18 +25,9 @@ namespace Btms.Consumers.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
+        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration)
         {
-            services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
-            services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName);
-
-            var consumerOpts = configuration
-                .GetSection(ConsumerOptions.SectionName)
-                .Get<ConsumerOptions>() ?? new ConsumerOptions();
-
-            var serviceBusOptions = configuration
-                .GetSection(ServiceBusOptions.SectionName)
-                .Get<ServiceBusOptions>() ?? throw new InvalidOperationException("Service bus options not found");
+            var consumerOpts = services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName).Get();
 
             services.AddBtmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
@@ -53,6 +44,7 @@ namespace Btms.Consumers.Extensions
             {
                 if (consumerOpts.EnableAsbConsumers)
                 {
+                    var serviceBusOptions = services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName).Get();
                     mbb.AddChildBus("ASB_Notification", cbb =>
                     {
                         ConfigureServiceBusClient(cbb, serviceBusOptions.NotificationSubscription.ConnectionString);
@@ -137,7 +129,8 @@ namespace Btms.Consumers.Extensions
 
                 if (consumerOpts.EnableAmazonConsumers)
                 {
-                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, new AwsLocalOptions(configuration), logger));
+                    var awsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
+                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsOptions));
                 }
             });
 

@@ -3,41 +3,29 @@ using Microsoft.Extensions.DependencyInjection;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
-using ILogger = Serilog.ILogger;
 
 namespace Btms.Consumers.AmazonQueues;
 
 internal static class AmazonConsumerExtensions
 {
-    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsLocalOptions awsLocalOptions, ILogger logger)
+    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsSqsOptions options)
     {
-        try
+        mbb.WithProviderAmazonSQS(cfg =>
         {
-            mbb.WithProviderAmazonSQS(cfg =>
-            {
-                cfg.TopologyProvisioning.Enabled = false;
-                SetConfigurationIfRequired(awsLocalOptions, cfg, logger);
-            });
+            cfg.TopologyProvisioning.Enabled = false;
+            SetConfigurationIfRequired(options, cfg);
+        });
 
-            mbb.AddJsonSerializer();
-
-            mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, "customs_clearance_request.fifo");
-        }
-        catch (Exception ex)
-        {
-            logger.Warning(ex, "There was an issue starting the SQS Consumer so there are currently no SQS Consumers listening for messages");
-        }
+        mbb.AddJsonSerializer();
+        
+            //"customs_clearance_request.fifo"
+        mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, options.ClearanceRequestQueueName);
     }
 
-    private static void SetConfigurationIfRequired(AwsLocalOptions awsLocalOptions, SqsMessageBusSettings cfg, ILogger logger)
+    private static void SetConfigurationIfRequired(AwsSqsOptions options, SqsMessageBusSettings cfg)
     {
-        logger.Information("Configure AWS Consumer: ServiceURL={ServiceUrl}", awsLocalOptions.ServiceUrl);
-
-        if (awsLocalOptions.ServiceUrl != null)
-        {
-            cfg.SqsClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-            cfg.UseCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
-        }
+        cfg.SqsClientConfig.ServiceURL = options.ServiceUrl;
+        cfg.UseCredentials(options.AccessKeyId, options.SecretAccessKey);
     }
 
     private static void AddConsumer<TConsumer, TMessage>(this MessageBusBuilder mbb, IServiceCollection services, string queueName) where TConsumer : MessageConsumer<TMessage> where TMessage : class

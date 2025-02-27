@@ -25,4 +25,10 @@ public static class OptionsExtensions
 
         return s;
     }
+
+    public static TOptions Get<TOptions>(this OptionsBuilder<TOptions> optionsBuilder)
+        where TOptions : class
+    {
+        return optionsBuilder.Services.BuildServiceProvider().GetRequiredService<IOptions<TOptions>>().Value;
+    }
 }
