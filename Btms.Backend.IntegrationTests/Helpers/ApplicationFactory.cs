@@ -1,4 +1,5 @@
 using Btms.Backend.Data;
+using Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 using Btms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -35,6 +36,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
         // And we don't want to load the backend ini file 
 
         var configurationBuilder = new ConfigurationBuilder()
+            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig)
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "DisableLoadIniFile", "true" },
