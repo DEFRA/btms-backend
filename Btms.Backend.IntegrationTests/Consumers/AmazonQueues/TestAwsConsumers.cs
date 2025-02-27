@@ -23,10 +23,8 @@ public class TestAwsConsumers : IAsyncDisposable
     public TestAwsConsumers()
     {
         var builder = WebApplication.CreateBuilder();
-        
-        builder.Configuration
-            .AddEnvironmentVariables()
-            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
+
+        builder.Configuration.AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
         AwsLocalOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
@@ -59,7 +57,10 @@ public class TestAwsConsumers : IAsyncDisposable
         }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1a01839 (Added aws config to app factory and cleaned up test)
     public async ValueTask DisposeAsync()
     {
         await _tokenSource.CancelAsync();
