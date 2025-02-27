@@ -47,7 +47,7 @@ public static class TestContextHelper
                 s.ConfigureTestDataGenerationServices();
                 s.AddMongoDbContext(hostContext.Configuration);
                 s.AddBusinessServices(hostContext.Configuration);
-                s.AddConsumers(hostContext.Configuration);
+                s.AddConsumers(hostContext.Configuration, Logger.None);
                 s.AddSyncJob();
                 if (testOutputHelper is not null)
                 {
