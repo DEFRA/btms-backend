@@ -11,11 +11,12 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class MultiChedDecisionTest(ITestOutputHelper output)
     : MultipleScenarioGeneratorBaseTest(output)
 {
+    // Data has been updated to exercise CDMS-345. Data has a in-progress notification after the Validated notification.
     [Theory]
-    [InlineData(typeof(MultiChedPMatchScenarioGenerator), "H02")]
-    [InlineData(typeof(MultiChedAMatchScenarioGenerator), "C03")]
-    [InlineData(typeof(MultiChedDMatchScenarioGenerator), "C03", Skip = "Lim to investigate test data")]
-    public void MultiChed_DecisionCode(Type generatorType, string expectedDecision)
+    [InlineData(typeof(MultiChedPMatchScenarioGenerator), "C03", "C03", "C03")]
+    [InlineData(typeof(MultiChedAMatchScenarioGenerator), "C03", "C03")]
+    [InlineData(typeof(MultiChedDMatchScenarioGenerator), "C03", "C03", "C03")]
+    public void MultiChed_DecisionCode(Type generatorType, params string[] expectedDecision)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, expectedDecision);
         EnsureEnvironmentInitialised(generatorType);
@@ -47,16 +48,12 @@ public class MultiChedDecisionTest(ITestOutputHelper output)
         }
     }
 
-    private void CheckDecisionCode(string expectedDecision)
+    private void CheckDecisionCode(params string[] expectedDecision)
     {
-        var decision = "";
-        Client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>().Single().Decisions
-            .OrderBy(x => x.ServiceHeader?.ServiceCalled).Last().Items!
-            .All(i =>
-            {
-                decision = i.Checks!.First().DecisionCode!;
-
-                return decision.Equals(expectedDecision);
-            }).Should().BeTrue($"Expected {expectedDecision}. Actually {{0}}", decision);
+        Client.AsJsonApiClient().Get("api/movements").GetResourceObjects<Movement>().Single()
+            .Decisions!.MaxBy(d => d.ServiceHeader!.ServiceCalled)?
+            .Items!.SelectMany(i => i.Checks!)
+            .Select(c => c.DecisionCode)
+            .Should().Equal(expectedDecision);
     }
 }
