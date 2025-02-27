@@ -57,10 +57,6 @@ public class TestAwsConsumers : IAsyncDisposable
         }
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1a01839 (Added aws config to app factory and cleaned up test)
     public async ValueTask DisposeAsync()
     {
         await _tokenSource.CancelAsync();
