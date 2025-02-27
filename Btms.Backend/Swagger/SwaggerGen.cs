@@ -14,9 +14,11 @@ public static class SwaggerGen
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
+            c.CustomSchemaIds(x => x.FullName);
             c.SwaggerDoc("public-v0.1", new OpenApiInfo { Title = "BTMS Public API", Version = "v0.1" });
-            c.DocumentFilter<DocumentFilter>();
+            c.SchemaFilter<BtmsTypeSchemaFilter>();
             c.SchemaFilter<SchemaFilter>();
+            c.DocumentFilter<DocumentFilter>();
             c.UseAllOfToExtendReferenceSchemas();
             c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
         });

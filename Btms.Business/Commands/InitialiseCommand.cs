@@ -6,6 +6,7 @@ using Btms.Common.Extensions;
 using Btms.Metrics;
 using Btms.SensitiveData;
 using Btms.SyncJob;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SlimMessageBus;
@@ -47,12 +48,9 @@ public class InitialiseCommand : SyncCommand
 
             if (request.Strategy.HasValue() && sinceNovemberStrategies.Contains(request.Strategy!.Value))
             {
-                var novFirst2024 = new DateTime(2024, 11, 1, 0, 0, 0, DateTimeKind.Utc);
-
-                datasets = DateTime.Today
-                    .MonthsSince(novFirst2024)
-                    .Select(((monthYear, i) => $"PRODREDACTED-{monthYear.Year}{monthYear.Month:00}"))
-                    .ToList<string?>();
+                datasets = DateTimeExtensions.RedactedDatasetsSinceNov24()
+                    .Cast<string?>()
+                    .ToList();
             }
 
             InitialisationStrategy[] importNotificationsFirstStrategies =
