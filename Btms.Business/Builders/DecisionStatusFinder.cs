@@ -56,7 +56,8 @@ public class DecisionStatusFinder
     private static bool BtmsMadeSameDecisionAsAlvs(Movement movement, AlvsDecision decision)
     {
         return decision.Context.DecisionComparison!.Checks.All(c =>
-            c.AlvsDecisionCode == c.BtmsDecisionCode);
+            (c.AlvsDecisionCode == c.BtmsDecisionCode) || (c.AlvsDecisionCode == "X00" &&
+                                                           (c.BtmsDecisionCode?.StartsWith('E') ?? false) && c.BtmsDecisionCode != "E03"));
     }
 
     private static bool BtmMadeSameDecisionTypeAsAlvs(Movement movement, AlvsDecision decision)
