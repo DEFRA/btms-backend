@@ -71,7 +71,8 @@ public class ImportNotificationPreProcessor(IMongoDbContext dbContext, ILogger<I
             result = PreProcessResult.Skipped(existingNotification);
         }
 
-        internalNotification.Skipped(preProcessingContext.MessageId, internalNotification.Version.GetValueOrDefault());
+        existingNotification.Skipped(preProcessingContext.MessageId, internalNotification.Version.GetValueOrDefault());
+        await dbContext.Notifications.Update(existingNotification, existingNotification._Etag, cancellationToken);
         return result;
 
     }

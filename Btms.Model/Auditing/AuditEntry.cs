@@ -132,7 +132,7 @@ public class AuditEntry
             CreatedSource = lastUpdated,
             CreatedBy = source,
             CreatedLocal = DateTime.UtcNow,
-            Status = "Updated"
+            Status = "Skipped"
         };
     }
 
