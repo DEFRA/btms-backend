@@ -10,7 +10,6 @@ public static class AwsConfig
         { "AwsSqsOptions:Region", "eu-west-2" },
         { "AwsSqsOptions:ServiceUrl", "http://sqs.eu-west-2.localhost.localstack.cloud:4966" },
         { "AwsSqsOptions:AccessKeyId", "local" },
-        { "AwsSqsOptions:SecretAccessKey", "local" },
-        { "AwsSqsOptions:ClearanceRequestQueueName", "customs_clearance_request.fifo" }
+        { "AwsSqsOptions:SecretAccessKey", "local" }
     };
 }

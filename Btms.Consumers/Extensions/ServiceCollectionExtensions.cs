@@ -7,7 +7,6 @@ using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
-using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,8 +24,10 @@ namespace Btms.Consumers.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
+            logger.Information("Start configuring Consumers");
+            
             var consumerOpts = services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName).Get();
 
             services.AddBtmsMetrics();
@@ -44,6 +45,8 @@ namespace Btms.Consumers.Extensions
             {
                 if (consumerOpts.EnableAsbConsumers)
                 {
+                    logger.Information("Start configuring Azure Service Bus Consumers");
+
                     var serviceBusOptions = services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName).Get();
                     mbb.AddChildBus("ASB_Notification", cbb =>
                     {
@@ -78,6 +81,8 @@ namespace Btms.Consumers.Extensions
                             .Instances(consumerOpts.AsbGmrs));
                     });
                 }
+
+                logger.Information("Start configuring in-memory Consumers");
 
                 mbb
                     .AddChildBus("InMemory", cbb =>
@@ -129,8 +134,10 @@ namespace Btms.Consumers.Extensions
 
                 if (consumerOpts.EnableAmazonConsumers)
                 {
+                    logger.Information("Start configuring AWS Consumers");
+
                     var awsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
-                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsOptions));
+                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsOptions, logger));
                 }
             });
 

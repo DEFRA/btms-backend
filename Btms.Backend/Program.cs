@@ -107,7 +107,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddCustomTrustStore(logger);
 
     builder.Services.AddBusinessServices(builder.Configuration);
-    builder.Services.AddConsumers(builder.Configuration);
+    builder.Services.AddConsumers(builder.Configuration, logger);
 
     ConfigureEndpoints(builder);
 
@@ -173,7 +173,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
-    builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
         .Enrich.With<LogLevelMapper>()
