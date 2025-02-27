@@ -395,7 +395,7 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
     {
         GuardNullMovement();
 
-        _movement.BtmsStatus.BusinessDecisionStatus = businessDecisionFinder.GetStatus(_movement);
+        _movement.Status.BusinessDecisionStatus = businessDecisionFinder.GetStatus(_movement);
 
         return _movement;
     }

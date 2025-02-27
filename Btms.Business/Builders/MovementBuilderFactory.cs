@@ -33,7 +33,7 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, B
             GoodsLocationCode = request.Header.GoodsLocationCode!,
             ClearanceRequests = [request],
             Items = items!,
-            BtmsStatus = MovementExtensions.GetMovementStatus(GetChedTypes(request.Items!.ToList()), documentReferenceIds, notificationRelationshipIds)
+            Status = MovementExtensions.GetMovementStatus(GetChedTypes(request.Items!.ToList()), documentReferenceIds, notificationRelationshipIds)
         };
 
         return new MovementBuilder(logger, decisionStatusFinder, businessDecisionStatusFinder, movement, true);

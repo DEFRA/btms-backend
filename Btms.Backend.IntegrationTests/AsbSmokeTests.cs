@@ -22,7 +22,7 @@ public class AsbSmokeTests : BaseApiTests, IClassFixture<ApplicationFactory>
     public async Task AsbSmokeTest_NotificationsAndMovements()
     {
         await ClearDb();
-        await PublishMessagesToAzureServiceBus<SimpleMatchScenarioGenerator>();
+        await PublishMessagesToAzureServiceBus<SimpleMatchCrFirstScenarioGenerator>();
 
         ManyItemsJsonApiDocument document;
 

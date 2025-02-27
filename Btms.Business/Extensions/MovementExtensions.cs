@@ -4,6 +4,7 @@ using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Items = Btms.Types.Alvs.Items;
+using LinkStatus = Btms.Model.Cds.LinkStatus;
 
 namespace Btms.Business.Extensions;
 
@@ -52,15 +53,15 @@ public static class MovementExtensions
         {
             ChedTypes = chedTypes,
             LinkStatus = documentReferenceIds.Count == 0
-                ? LinkStatusEnum.NoLinks
+                ? LinkStatus.NoLinks
                 : notificationRelationshipIds.Count == documentReferenceIds.Count &&
                   notificationRelationshipIds.All(documentReferenceIds.Contains)
-                    ? LinkStatusEnum.AllLinked
+                    ? LinkStatus.AllLinked
                     : notificationRelationshipIds.Count == 0
-                        ? LinkStatusEnum.MissingLinks
+                        ? LinkStatus.MissingLinks
                         : notificationRelationshipIds.Count < documentReferenceIds.Count
-                            ? LinkStatusEnum.PartiallyLinked
-                            : LinkStatusEnum.Investigate
+                            ? LinkStatus.PartiallyLinked
+                            : LinkStatus.Investigate
         };
     }
 

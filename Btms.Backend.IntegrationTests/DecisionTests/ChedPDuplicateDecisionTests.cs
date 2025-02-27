@@ -15,7 +15,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class ChedPDuplicateDecisionTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<SimpleMatchCrFirstScenarioGenerator>(output)
 {
     // [Fact(Skip = "We currently import the duplicate alvs decision & store it on the movement")]
     [Fact]

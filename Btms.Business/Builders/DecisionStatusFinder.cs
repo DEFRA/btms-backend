@@ -84,7 +84,7 @@ public class DecisionStatusFinder
 
     private static bool HasChedppChecks(Movement movement, AlvsDecision decision)
     {
-        return movement.BtmsStatus.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp);
+        return movement.Status.ChedTypes.Contains(ImportNotificationTypeEnum.Chedpp);
     }
 
     private static bool DocumentReferenceFormatIncorrect(Movement movement, AlvsDecision? decision)
@@ -108,12 +108,12 @@ public class DecisionStatusFinder
 
     private static bool ReliesOnCDMS205(Movement movement, AlvsDecision decision)
     {
-        return movement.BtmsStatus.Segment == MovementSegmentEnum.Cdms205Ac1;
+        return movement.Status.Segment == MovementSegmentEnum.Cdms205Ac1;
     }
 
     private static bool ReliesOnCDMS249(Movement movement, AlvsDecision decision)
     {
-        return movement.BtmsStatus.Segment == MovementSegmentEnum.Cdms249;
+        return movement.Status.Segment == MovementSegmentEnum.Cdms249;
     }
 
     private static bool HasGenericDataErrors(Movement movement, AlvsDecision decision)
@@ -128,7 +128,7 @@ public class DecisionStatusFinder
 
     private static bool HasMultipleChedTypes(Movement movement, AlvsDecision decision)
     {
-        return movement.BtmsStatus.ChedTypes.Count() > 1;
+        return movement.Status.ChedTypes.Count() > 1;
     }
 
     private static bool HasMultipleCheds(Movement movement, AlvsDecision decision)
