@@ -38,6 +38,7 @@ using System.Text.Json.Serialization;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 using Btms.Backend.Asb;
+using Btms.Backend.Aws;
 using Btms.Business.Mediatr;
 using Btms.Backend.Swagger;
 using Btms.Common;
@@ -232,7 +233,8 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
     builder.Services.AddHealthChecks()
         .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient(5, 1), timeout: TimeSpan.FromSeconds(15))
         .AddMongoDb(timeout: TimeSpan.FromSeconds(15))
-        .AddBtmsAzureServiceBusSubscription(TimeSpan.FromSeconds(15));
+        .AddBtmsAzureServiceBusSubscription(TimeSpan.FromSeconds(15))
+        .AddBtmsSqs(builder.Configuration);
 }
 
 [ExcludeFromCodeCoverage]
