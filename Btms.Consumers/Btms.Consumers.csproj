@@ -51,7 +51,10 @@
     <Content Include="..\compose.yml">
       <Link>Properties\compose.yml</Link>
     </Content>
-    <Content Include="..\start-localstack.sh">
+    <Content Include="..\compose\Dockerfile.localstack">
+      <Link>Properties\Dockerfile.localstack</Link>
+    </Content>
+    <Content Include="..\compose\start-localstack.sh">
       <Link>Properties\start-localstack.sh</Link>
     </Content>
   </ItemGroup>
