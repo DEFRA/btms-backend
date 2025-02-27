@@ -20,4 +20,7 @@ public class AwsSqsOptions
 
     [Required]
     public required string ClearanceRequestQueueName { get; set; }
+
+    [Required]
+    public required string DecisionsQueueName { get; set; }
 }

@@ -11,6 +11,7 @@ public static class AwsConfig
         { "AwsSqsOptions:ServiceUrl", "http://sqs.eu-west-2.localhost.localstack.cloud:4966" },
         { "AwsSqsOptions:AccessKeyId", "local" },
         { "AwsSqsOptions:SecretAccessKey", "local" },
-        { "AwsSqsOptions:ClearanceRequestQueueName", "customs_clearance_request.fifo" }
+        { "AwsSqsOptions:ClearanceRequestQueueName", "customs_clearance_request.fifo" },
+        { "AwsSqsOptions:DecisionsQueueName", "alvs_decision_notification.fifo" }
     };
 }

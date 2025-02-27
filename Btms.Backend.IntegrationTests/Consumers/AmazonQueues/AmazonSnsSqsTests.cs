@@ -15,14 +15,14 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     public AmazonSnsSqsTests(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
-        _awsSender = new TestAwsSender(_awsConsumers.Configuration, _awsConsumers.AwsLocalOptions, _testOutputHelper);
+        _awsSender = new TestAwsSender(_awsConsumers.Configuration, _awsConsumers.AwsSqsOptions, _testOutputHelper);
     }
 
     [Fact]
     public async Task When_checking_if_localstack_available_Then_should_be_available_in_development()
     {
         var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync($"{_awsConsumers.AwsLocalOptions.ServiceUrl.TrimEnd('/')}/_localstack/health");
+        var response = await httpClient.GetAsync($"{_awsConsumers.AwsSqsOptions.ServiceUrl.TrimEnd('/')}/_localstack/health");
         response.IsSuccessStatusCode.Should().BeTrue();
     }
 

@@ -9,10 +9,15 @@ using SlimMessageBus;
 
 namespace Btms.Consumers;
 
-public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory movementBuilderFactory, ILogger<DecisionsConsumer> logger)
-    : IConsumer<Decision>, IConsumerWithContext
+public interface IDecisionsConsumer
 {
-    public async Task OnHandle(Decision message, CancellationToken cancellationToken)
+    Task OnHandle(Decision message, IConsumerContext context, CancellationToken cancellationToken);
+}
+
+public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory movementBuilderFactory, ILogger<DecisionsConsumer> logger)
+    : IDecisionsConsumer
+{
+    public async Task OnHandle(Decision message, IConsumerContext context, CancellationToken cancellationToken)
     {
         var internalDecision = DecisionMapper.Map(message);
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
@@ -24,12 +29,12 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
 
         if (existingMovement != null)
         {
-            var auditId = Context.GetMessageId();
-            var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
+            var auditId = context.GetMessageId();
+            var notificationContext = context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
 
             var existingMovementBuilder = movementBuilderFactory
-                .From(existingMovement!)
-                .MergeDecision(auditId!, internalDecision, notificationContext);
+                .From(existingMovement)
+                .MergeDecision(auditId, internalDecision, notificationContext);
 
             if (existingMovementBuilder.HasChanges)
             {
@@ -49,6 +54,4 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
             }
         }
     }
-
-    public IConsumerContext Context { get; set; } = null!;
 }

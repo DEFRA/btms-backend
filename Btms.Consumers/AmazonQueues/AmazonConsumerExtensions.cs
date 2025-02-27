@@ -19,6 +19,7 @@ internal static class AmazonConsumerExtensions
         mbb.AddJsonSerializer();
 
         mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, options.ClearanceRequestQueueName);
+        mbb.AddConsumer<HmrcDecisionsConsumer, Decision>(services, options.DecisionsQueueName);
     }
 
     private static void SetConfigurationIfRequired(AwsSqsOptions options, SqsMessageBusSettings cfg)

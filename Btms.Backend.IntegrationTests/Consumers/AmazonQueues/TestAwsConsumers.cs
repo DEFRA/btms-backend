@@ -16,8 +16,9 @@ public class TestAwsConsumers : IAsyncDisposable
     private readonly CancellationTokenSource _tokenSource = new();
 
     public readonly IClearanceRequestConsumer ClearanceRequestConsumerMock = Substitute.For<IClearanceRequestConsumer>();
+    public readonly IDecisionsConsumer DecisionsConsumerMock = Substitute.For<IDecisionsConsumer>();
     public readonly IConfiguration Configuration;
-    public readonly AwsSqsOptions AwsLocalOptions;
+    public readonly AwsSqsOptions AwsSqsOptions;
 
     public TestAwsConsumers()
     {
@@ -26,16 +27,17 @@ public class TestAwsConsumers : IAsyncDisposable
         builder.Configuration.AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
-        AwsLocalOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
+        AwsSqsOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
 
         try
         {
             builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumerMock);
+            builder.Services.AddScoped<IDecisionsConsumer>(_ => DecisionsConsumerMock);
             builder.Services.AddSlimMessageBus(mbb =>
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
                 {
-                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions);
+                    cbb.AddAmazonConsumers(builder.Services, AwsSqsOptions);
                 });
             });
 

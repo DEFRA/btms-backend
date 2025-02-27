@@ -7,11 +7,9 @@ using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
-using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -38,7 +36,9 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
             services.AddScoped<IClearanceRequestConsumer, ClearanceRequestConsumer>();
+            services.AddScoped<IDecisionsConsumer, DecisionsConsumer>();
             services.AddScoped<AlvsClearanceRequestConsumer>();
+            services.AddScoped<AlvsDecisionsConsumer>();
 
             services.AddSlimMessageBus(mbb =>
             {
@@ -117,7 +117,7 @@ namespace Btms.Consumers.Extensions
                             .Consume<Decision>(x =>
                             {
                                 x.Instances(consumerOpts.InMemoryDecisions);
-                                x.Topic("DECISIONS").WithConsumer<DecisionsConsumer>();
+                                x.Topic("DECISIONS").WithConsumer<AlvsDecisionsConsumer>();
                             })
                             .Produce<Finalisation>(x => x.DefaultTopic(nameof(Finalisation)))
                             .Consume<Finalisation>(x =>

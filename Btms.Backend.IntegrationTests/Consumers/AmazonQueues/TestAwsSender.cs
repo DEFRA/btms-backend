@@ -3,7 +3,6 @@ using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Btms.Consumers.AmazonQueues;
-using Btms.Types.Alvs;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,17 +20,17 @@ public class TestAwsSender : IAsyncDisposable
     public readonly List<Topic>? Topics;
     public readonly List<Subscription>? Subscriptions;
 
-    public TestAwsSender(IConfiguration configuration, AwsSqsOptions awsLocalOptions, ITestOutputHelper testOutputHelper)
+    public TestAwsSender(IConfiguration configuration, AwsSqsOptions awsSqsOptions, ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
         var serviceCollection = new ServiceCollection();
 
         var awsOptions = configuration.GetAWSOptions();
 
-        testOutputHelper.WriteLine($"Configure AWS Test Sender: ServiceURL={awsLocalOptions.ServiceUrl}");
+        testOutputHelper.WriteLine($"Configure AWS Test Sender: ServiceURL={awsSqsOptions.ServiceUrl}");
 
-        awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-        awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
+        awsOptions.DefaultClientConfig.ServiceURL = awsSqsOptions.ServiceUrl;
+        awsOptions.Credentials = new BasicAWSCredentials(awsSqsOptions.AccessKeyId, awsSqsOptions.SecretAccessKey);
 
         serviceCollection.AddDefaultAWSOptions(awsOptions);
         serviceCollection.AddAWSService<IAmazonSimpleNotificationService>();
@@ -56,17 +55,11 @@ public class TestAwsSender : IAsyncDisposable
         _topicArnPrefix.Should().NotBeNull();
     }
 
-    public async Task SendAsync<T>(T message) where T : class
+    public async Task SendAsync<T>(T message, string topicName) where T : class
     {
-        var topicName = message switch
-        {
-            AlvsClearanceRequest => "customs_clearance_request",
-            _ => throw new ArgumentException("Invalid message type", nameof(message))
-        };
-
         var publishRequest = new PublishRequest
         {
-            TopicArn = $"{_topicArnPrefix}:{topicName}.fifo",
+            TopicArn = $"{_topicArnPrefix}:{topicName}",
             Message = JsonSerializer.Serialize(message),
             MessageDeduplicationId = Guid.NewGuid().ToString(),
             MessageGroupId = "message-group-id"
