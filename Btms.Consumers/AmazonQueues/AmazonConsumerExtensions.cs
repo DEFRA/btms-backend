@@ -17,8 +17,7 @@ internal static class AmazonConsumerExtensions
         });
 
         mbb.AddJsonSerializer();
-        
-            //"customs_clearance_request.fifo"
+
         mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, options.ClearanceRequestQueueName);
     }
 
