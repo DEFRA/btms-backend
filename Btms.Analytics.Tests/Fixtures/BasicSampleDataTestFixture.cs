@@ -3,6 +3,8 @@ using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
+using NSubstitute;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit.Abstractions;
@@ -65,7 +67,8 @@ public class BasicSampleDataTestFixture : IDisposable
     public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        return new ImportNotificationsAggregationService(_mongoDbContext, logger);
+        var featureManager = Substitute.For<IFeatureManager>();
+        return new ImportNotificationsAggregationService(_mongoDbContext, logger, featureManager);
     }
 
     public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)
