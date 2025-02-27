@@ -72,13 +72,17 @@ public static class BuilderExtensions
         return new ServiceCollection()
             .AddBlobStorage(configuration)
             .AddSingleton<CachingBlobService>()
-            .ConfigureTestGenerationServices()
+            .ConfigureTestDataGenerationServices()
             .BuildServiceProvider();
     }
 
-    public static IServiceCollection ConfigureTestGenerationServices(this IServiceCollection services)
+    public static IServiceCollection ConfigureTestDataGenerationServices(this IServiceCollection services)
     {
         services.AddHttpClient();
+
+        services.PostConfigure<BlobServiceOptions>(x => x.CachePath =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../", "btms-test-data",
+                "Samples")));
 
         foreach (var type in GetAllScenarios())
         {
@@ -133,24 +137,8 @@ public static class BuilderExtensions
 
         services.AddTransient<Generator>();
 
-        services.ConfigureTestGenerationServices();
+        services.ConfigureTestDataGenerationServices();
     }
-
-    // TODO : integration tests currently uses IWebHostBuilder, so this allowed us to set that up
-    // have switched to a seperate host, which uses IHostBuilder  
-    // public static IWebHostBuilder ConfigureTestDataGenerator(this IWebHostBuilder hostBuilder,
-    //     string cachePath = "../../../.test-data-generator")
-    // {
-    //     var (configuration, generatorConfig) = GetConfig(cachePath);
-    //
-    //     hostBuilder
-    //         .ConfigureAppConfiguration(builder => builder.ConfigureAppConfiguration(configuration))
-    //         .ConfigureServices((_, services) => services.ConfigureServices(configuration, generatorConfig));
-    //     //TODO - why doesn't AddLogging work?... 
-    //     // .AddLogging();
-    //
-    //     return hostBuilder;
-    // }
 
     public static IHostBuilder ConfigureTestDataGenerator(this IHostBuilder hostBuilder,
         string cachePath = "../../../.test-data-generator")
@@ -162,7 +150,6 @@ public static class BuilderExtensions
             .ConfigureServices((_, services) =>
                 {
                     services.ConfigureServices(configuration, generatorConfig);
-                    // services.AddSingleton<IBlobService, CachingBlobService>();
                     services.AddSingleton<CachingBlobService>();
                 }
             )

@@ -1,4 +1,5 @@
 using Btms.Backend.Data;
+using Btms.Backend.IntegrationTests.Extensions;
 using Btms.BlobService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
