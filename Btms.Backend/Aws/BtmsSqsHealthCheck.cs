@@ -25,10 +25,15 @@ public class BtmsSqsHealthCheck(AwsSqsOptions sqsOptions) : IHealthCheck
 
     private IAmazonSQS CreateSqsClient()
     {
-        return new AmazonSQSClient(new BasicAWSCredentials(sqsOptions.AccessKeyId, sqsOptions.SecretAccessKey), new AmazonSQSConfig
+        if (sqsOptions.ServiceUrl != null)
         {
-            RegionEndpoint = RegionEndpoint.GetBySystemName(sqsOptions.Region),
-            ServiceURL = sqsOptions.ServiceUrl
-        });
+            return new AmazonSQSClient(new BasicAWSCredentials(sqsOptions.AccessKeyId, sqsOptions.SecretAccessKey), new AmazonSQSConfig
+            {
+                RegionEndpoint = RegionEndpoint.GetBySystemName(sqsOptions.Region),
+                ServiceURL = sqsOptions.ServiceUrl
+            });
+        }
+
+        return new AmazonSQSClient(new AnonymousAWSCredentials());
     }
 }
