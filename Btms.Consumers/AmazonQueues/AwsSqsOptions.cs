@@ -4,7 +4,7 @@ namespace Btms.Consumers.AmazonQueues;
 
 public class AwsSqsOptions
 {
-    public static readonly string SectionName = nameof(AwsSqsOptions);
+    public const string SectionName = nameof(AwsSqsOptions);
 
     [Required]
     public required string Region { get; set; }

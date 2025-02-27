@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Btms.Common.Extensions;
 using Btms.Consumers;
 using Btms.Consumers.AmazonQueues;
@@ -16,7 +15,7 @@ public class TestAwsConsumers : IAsyncDisposable
     private readonly WebApplication _app = null!;
     private readonly CancellationTokenSource _tokenSource = new();
 
-    public readonly ClearanceRequestConsumerHost ClearanceRequestConsumer = new();
+    public readonly IClearanceRequestConsumer ClearanceRequestConsumerMock = Substitute.For<IClearanceRequestConsumer>();
     public readonly IConfiguration Configuration;
     public readonly AwsSqsOptions AwsLocalOptions;
 
@@ -31,7 +30,7 @@ public class TestAwsConsumers : IAsyncDisposable
 
         try
         {
-            builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumer.Mock);
+            builder.Services.AddScoped<IClearanceRequestConsumer>(_ => ClearanceRequestConsumerMock);
             builder.Services.AddSlimMessageBus(mbb =>
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
@@ -69,30 +68,5 @@ public class TestAwsConsumers : IAsyncDisposable
         {
             // Expected
         }
-    }
-}
-
-public class ClearanceRequestConsumerHost : ConsumerHost<IClearanceRequestConsumer>
-{
-}
-
-public abstract class ConsumerHost<T> where T : class
-{
-    public readonly T Mock = Substitute.For<T>();
-
-    private SpinWait _spinner;
-
-    public bool WaitUntil(Func<bool> actionToAwait)
-    {
-        var stopwatch = Stopwatch.StartNew();
-        while (stopwatch.Elapsed < TimeSpan.FromSeconds(5))
-        {
-            if (actionToAwait())
-                return true;
-
-            _spinner.SpinOnce();
-        }
-
-        return false;
     }
 }

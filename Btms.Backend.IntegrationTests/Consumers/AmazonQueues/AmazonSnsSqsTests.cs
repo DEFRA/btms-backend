@@ -21,16 +21,9 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     [Fact]
     public async Task When_checking_if_localstack_available_Then_should_be_available_in_development()
     {
-        if (_awsConsumers.AwsLocalOptions.ServiceUrl != null)
-        {
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"{_awsConsumers.AwsLocalOptions.ServiceUrl.TrimEnd('/')}/_localstack/health");
-            response.IsSuccessStatusCode.Should().BeTrue();
-        }
-        else
-        {
-            _testOutputHelper.WriteLine("Service URL is null so unable to check localstack");
-        }
+        var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync($"{_awsConsumers.AwsLocalOptions.ServiceUrl.TrimEnd('/')}/_localstack/health");
+        response.IsSuccessStatusCode.Should().BeTrue();
     }
 
     [Fact]

@@ -30,11 +30,8 @@ public class TestAwsSender : IAsyncDisposable
 
         testOutputHelper.WriteLine($"Configure AWS Test Sender: ServiceURL={awsLocalOptions.ServiceUrl}");
 
-        if (awsLocalOptions.ServiceUrl != null)
-        {
-            awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-            awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
-        }
+        awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
+        awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
 
         serviceCollection.AddDefaultAWSOptions(awsOptions);
         serviceCollection.AddAWSService<IAmazonSimpleNotificationService>();
