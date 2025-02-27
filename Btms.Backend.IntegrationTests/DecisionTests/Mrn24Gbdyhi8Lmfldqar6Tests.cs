@@ -1,3 +1,4 @@
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using FluentAssertions;
@@ -85,7 +86,7 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.ChedTypes
+            .Status.ChedTypes
             .Should().BeEmpty();
     }
 
@@ -94,8 +95,8 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.NoLinks);
+            .Status.LinkStatus
+            .Should().Be(LinkStatus.NoLinks);
     }
 
     [Fact]
@@ -124,11 +125,11 @@ public class ClearanceRequestWithNoDocuments(ITestOutputHelper output)
             .GetSingleMovement();
 
         movement
-            .BtmsStatus
+            .Status
             .Should().BeEquivalentTo(
                 new
                 {
-                    LinkStatus = LinkStatusEnum.NoLinks,
+                    LinkStatus = LinkStatus.NoLinks,
                     LinkStatusDescription = "ALVSVAL318",
                     Segment = MovementSegmentEnum.Cdms249
                 }

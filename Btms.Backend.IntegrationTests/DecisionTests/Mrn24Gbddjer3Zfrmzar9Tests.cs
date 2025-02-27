@@ -1,3 +1,4 @@
+using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
 using Btms.Model.Auditing;
@@ -162,11 +163,11 @@ public class Mrn24Gbddjer3Zfrmzar9Tests(ITestOutputHelper output)
                 .GetSingleMovement();
 
         movement
-            .BtmsStatus
+            .Status
             .Should().BeEquivalentTo(
                 new
                 {
-                    LinkStatus = LinkStatusEnum.AllLinked,
+                    LinkStatus = LinkStatus.AllLinked,
                     Segment = MovementSegmentEnum.Cdms205Ac5,
                     ChedTypes = (ImportNotificationTypeEnum[])[ImportNotificationTypeEnum.Chedpp]
                 }

@@ -145,7 +145,7 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.ChedTypes
+            .Status.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Cvedp);
     }
 
@@ -154,8 +154,8 @@ public class Mrn24Gbde3Cf94H96Tar0ModifiedTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.AllLinked);
+            .Status.LinkStatus
+            .Should().Be(LinkStatus.AllLinked);
     }
 
     [Fact]

@@ -61,7 +61,7 @@ public class InitialiseCommand : SyncCommand
 
             if (request.DropCollections)
             {
-                SyncJobStore.ClearSyncJobs();
+                SyncJobStore.ClearSyncJobs(request.JobId);
                 await context.ResetCollections(cancellationToken);
             }
 

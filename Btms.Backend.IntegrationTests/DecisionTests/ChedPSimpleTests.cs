@@ -1,3 +1,4 @@
+using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.Cds;
 using Btms.Types.Ipaffs;
@@ -13,7 +14,7 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 
 [Trait("Category", "Integration")]
 public class ChedPSimpleTests(ITestOutputHelper output)
-    : ScenarioGeneratorBaseTest<SimpleMatchScenarioGenerator>(output)
+    : ScenarioGeneratorBaseTest<SimpleMatchCrFirstScenarioGenerator>(output)
 {
     [Fact]
     public void ShouldHaveCorrectAlvsDecisionMatchedStatusOnDecison()
@@ -127,7 +128,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.ChedTypes
+            .Status.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Cvedp);
     }
 
@@ -136,8 +137,8 @@ public class ChedPSimpleTests(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.LinkStatus
-            .Should().Be(LinkStatusEnum.AllLinked);
+            .Status.LinkStatus
+            .Should().Be(LinkStatus.AllLinked);
     }
 
     // [Fact]

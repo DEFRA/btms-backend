@@ -52,8 +52,8 @@ public static class AnalyticsHelpers
             .ToArray();
     }
 
-    public static LinkStatusEnum[] GetMovementStatusSegments()
+    public static LinkStatus[] GetMovementStatusSegments()
     {
-        return Enum.GetValues<LinkStatusEnum>();
+        return Enum.GetValues<LinkStatus>();
     }
 }

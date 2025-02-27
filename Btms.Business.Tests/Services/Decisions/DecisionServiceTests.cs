@@ -156,7 +156,7 @@ public class DecisionServiceTests
                 {
                     EntryReference = "movement-1",
                     Id = "movement-1",
-                    BtmsStatus = MovementStatus.Default(),
+                    Status = MovementStatus.Default(),
                     Items =
                     [
                         new Items

@@ -609,7 +609,7 @@ public class LinkingServiceTests
                 Documents = [new Document { DocumentReference = GenerateDocumentReference(x) }]
             }).ToList(),
             ClearanceRequests = new(),
-            BtmsStatus = MovementStatus.Default()
+            Status = MovementStatus.Default()
         };
 
         var existingMovement = new Movement
@@ -621,7 +621,7 @@ public class LinkingServiceTests
                 Documents = [new Document { DocumentReference = GenerateDocumentReference(x) }]
             }).ToList(),
             ClearanceRequests = new(),
-            BtmsStatus = MovementStatus.Default()
+            Status = MovementStatus.Default()
         };
 
         var changeSet = mov.GenerateChangeSet(existingMovement);
@@ -654,7 +654,7 @@ public class LinkingServiceTests
                         .ToArray()
                 }],
             ClearanceRequests = new(),
-            BtmsStatus = MovementStatus.Default()
+            Status = MovementStatus.Default()
         };
 
         var existingMovement = new Movement
@@ -669,7 +669,7 @@ public class LinkingServiceTests
                         .ToArray()
                 }],
             ClearanceRequests = new(),
-            BtmsStatus = MovementStatus.Default()
+            Status = MovementStatus.Default()
         };
 
         var changeSet = mov.GenerateChangeSet(existingMovement);
@@ -699,7 +699,7 @@ public class LinkingServiceTests
                 : []
             }).ToList(),
             ClearanceRequests = new(),
-            BtmsStatus = MovementStatus.Default()
+            Status = MovementStatus.Default()
         };
 
         var existingMovement = createExistingMovement ?
@@ -714,7 +714,7 @@ public class LinkingServiceTests
                         : []
                 }).ToList(),
                 ClearanceRequests = new(),
-                BtmsStatus = MovementStatus.Default()
+                Status = MovementStatus.Default()
             } : null;
 
 
@@ -803,7 +803,7 @@ public class LinkingServiceTests
                     }
                 ],
                 Items = new(),
-                BtmsStatus = MovementStatus.Default()
+                Status = MovementStatus.Default()
             };
 
             movements.Add(mov);

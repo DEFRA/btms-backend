@@ -145,7 +145,7 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
     {
         Client
             .GetSingleMovement()
-            .BtmsStatus.ChedTypes
+            .Status.ChedTypes
             .Should().Equal(ImportNotificationTypeEnum.Chedpp);
     }
 
@@ -157,11 +157,11 @@ public class ChedPpPhsiPartiallyRejected(ITestOutputHelper output)
                 .GetSingleMovement();
 
         movement
-            .BtmsStatus
+            .Status
             .Should().BeEquivalentTo(
                 new
                 {
-                    LinkStatus = LinkStatusEnum.AllLinked,
+                    LinkStatus = LinkStatus.AllLinked,
                     Segment = MovementSegmentEnum.Cdms205Ac3
                 }
             );
