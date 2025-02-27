@@ -2,6 +2,17 @@ namespace Btms.Common.Extensions;
 
 public static class ListExtensions
 {
+
+    public static T First<T>(this List<T> list)
+    {
+        return list[0];
+    }
+
+    public static T First<T>(this IList<T> list)
+    {
+        return list[0];
+    }
+
     public static void AddIfNotPresent<T>(this List<T> list, T item)
     {
         if (!list.Contains(item))

@@ -4,9 +4,11 @@ using Btms.Analytics.Extensions;
 using Btms.Backend.Data;
 using Btms.Common.Enum;
 using Btms.Common.Extensions;
+using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
+using LinkStatus = Btms.Model.Cds.LinkStatus;
 
 namespace Btms.Analytics;
 
@@ -46,11 +48,11 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
                 MaxEntryVersion = m.ClearanceRequests.Max(c => c.Header!.EntryVersionNumber) ?? 0,
                 LinkedCheds = m.Relationships.Notifications.Data.Count,
                 ItemCount = m.Items.Count,
-                m.BtmsStatus.ChedTypes,
-                m.BtmsStatus.LinkStatus,
-                m.BtmsStatus.Status,
-                m.BtmsStatus.Segment,
-                m.BtmsStatus.BusinessDecisionStatus,
+                m.Status.ChedTypes,
+                m.Status.LinkStatus,
+                m.Status.Status,
+                m.Status.Segment,
+                m.Status.BusinessDecisionStatus,
                 m.AlvsDecisionStatus.Context.DecisionComparison,
                 HasNotificationRelationships = m.Relationships.Notifications.Data.Count > 0,
                 ContiguousAlvsClearanceRequestVersionsFrom1 =
@@ -158,7 +160,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         }
 
         var moreComplexMovementsQuery = simplifiedMovementView
-            .Where(m => m.LinkStatus != LinkStatusEnum.AllLinked
+            .Where(m => m.LinkStatus != LinkStatus.AllLinked
                 && m.TotalDocumentVersions > 5);
 
         if (summary)
@@ -190,7 +192,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
         }
 
         var movementsWhereAlvsLinksButNotBtmsQuery = simplifiedMovementView
-            .Where(r => r.LinkStatus != LinkStatusEnum.AllLinked);
+            .Where(r => r.LinkStatus != LinkStatus.AllLinked);
 
         if (summary)
         {
@@ -222,7 +224,7 @@ public class MovementExceptions(IMongoDbContext context, ILogger logger)
 
         var movementsWhereWeHaveAndContigousVersionsButDecisionsAreDifferentQuery = simplifiedMovementView
             .Where(r =>
-                r.LinkStatus != LinkStatusEnum.AllLinked
+                r.LinkStatus != LinkStatus.AllLinked
                 && r.ContiguousAlvsClearanceRequestVersionsFrom1 && r.DecisionMatched
                 && r.HasNotificationRelationships);
 

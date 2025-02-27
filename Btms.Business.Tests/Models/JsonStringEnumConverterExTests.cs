@@ -11,8 +11,8 @@ public class JsonStringEnumConverterExTests
     [Fact]
     public void ShouldCreateLookupForLinkStatusEnum()
     {
-        new JsonStringEnumConverterEx<LinkStatusEnum>()
-            .GetValue(LinkStatusEnum.Investigate)
-            .Should().Be(LinkStatusEnum.Investigate.ToString());
+        new JsonStringEnumConverterEx<LinkStatus>()
+            .GetValue(LinkStatus.Investigate)
+            .Should().Be(LinkStatus.Investigate.ToString());
     }
 }

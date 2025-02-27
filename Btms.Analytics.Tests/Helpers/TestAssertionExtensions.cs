@@ -18,7 +18,7 @@ public static class TestAssertionExtensions
 
     private static void ShouldBeEquivalentToLinkStatusEnum(this List<string> result)
     {
-        var enumLookup = new JsonStringEnumConverterEx<LinkStatusEnum>();
+        var enumLookup = new JsonStringEnumConverterEx<LinkStatus>();
 
         var fields = enumLookup.GetValues();
         result.Count().Should().Be(fields.Count());

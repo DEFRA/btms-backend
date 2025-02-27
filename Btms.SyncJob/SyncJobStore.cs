@@ -22,9 +22,14 @@ public class SyncJobStore(ILogger<SyncJobStore> logger) : ISyncJobStore
         return syncJob;
     }
 
-    public void ClearSyncJobs()
+    public void ClearSyncJobs(Guid? except = null)
     {
-        jobs.Clear();
+        var itemsToRemove =
+            jobs
+                .Where(p => !except.HasValue || p.Key != except)
+                .ToList();
+
+        itemsToRemove.ForEach(i => jobs.Remove(i));
     }
 
     public async Task WaitOnJobCompleting(Guid jobId)

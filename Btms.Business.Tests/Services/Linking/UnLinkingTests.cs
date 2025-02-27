@@ -86,7 +86,7 @@ public class UnLinkingTests
                     }
                 ],
                 Items = new(),
-                BtmsStatus = MovementStatus.Default()
+                Status = MovementStatus.Default()
             };
 
             movements.Add(mov);

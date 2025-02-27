@@ -20,7 +20,7 @@ public class ManyItemTests(ITestOutputHelper output)
         // Act
         var movementResource = Client
             .GetSingleMovement()
-            .BtmsStatus.ChedTypes!.Count()
+            .Status.ChedTypes!.Count()
             .Should().Be(1);
     }
 }

@@ -3,6 +3,8 @@ using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
+using NSubstitute;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit.Abstractions;
@@ -39,7 +41,7 @@ public class BasicSampleDataTestFixture : IDisposable
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
 
-            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 2))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchCrFirstScenarioGenerator>(10, 3, arrivalDateRange: 2))
                 .GetAwaiter().GetResult();
 
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
@@ -53,7 +55,7 @@ public class BasicSampleDataTestFixture : IDisposable
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<ChedANoMatchScenarioGenerator>(5, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
-            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
+            App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchCrFirstScenarioGenerator>(1, 3, arrivalDateRange: 10))
                 .GetAwaiter().GetResult();
 
             App.Services.GeneratorPushToConsumers(_logger, App.Services.CreateScenarioConfig<CrNoMatchScenarioGenerator>(1, 3, arrivalDateRange: 10))
@@ -65,7 +67,8 @@ public class BasicSampleDataTestFixture : IDisposable
     public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        return new ImportNotificationsAggregationService(_mongoDbContext, logger);
+        var featureManager = Substitute.For<IFeatureManager>();
+        return new ImportNotificationsAggregationService(_mongoDbContext, logger, featureManager);
     }
 
     public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)

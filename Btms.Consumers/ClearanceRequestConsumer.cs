@@ -78,6 +78,8 @@ internal class ClearanceRequestConsumer(
 
                 await validationService.PostDecision(linkResult, decisionResult, context.CancellationToken);
 
+                // Recalculate the status of the notifications before saving
+                linkResult.Notifications.ForEach(n => n.CalculateStatus());
 
             }
             else

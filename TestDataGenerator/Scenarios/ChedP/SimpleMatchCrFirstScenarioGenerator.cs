@@ -5,7 +5,13 @@ using TestDataGenerator.Helpers;
 
 namespace TestDataGenerator.Scenarios.ChedP;
 
-public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> logger) : ScenarioGenerator(logger)
+public class SimpleMatchCrFirstScenarioGenerator(ILogger<SimpleMatchCrFirstScenarioGenerator> logger)
+    : SimpleMatchScenarioGenerator(logger);
+
+public class SimpleMatchNotificationFirstScenarioGenerator(ILogger<SimpleMatchNotificationFirstScenarioGenerator> logger)
+    : SimpleMatchScenarioGenerator(logger, false);
+
+public abstract class SimpleMatchScenarioGenerator(ILogger logger, bool crFirst = true) : ScenarioGenerator(logger)
 {
     public override GeneratorResult Generate(int scenario, int item, DateTime entryDate, ScenarioConfig config)
     {
@@ -27,7 +33,7 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithTunaItem()
             .ValidateAndBuild();
 
-        logger.LogInformation("Created Notification {NotificationReference}, Clearance Request {ClearanceRequest}",
+        Logger.LogInformation("Created Notification {NotificationReference}, Clearance Request {ClearanceRequest}",
             notification.ReferenceNumber, clearanceRequest.Header!.EntryReference);
 
         var alvsDecision = BuilderHelpers.GetDecisionBuilder("decision-one-item")
@@ -39,8 +45,8 @@ public class SimpleMatchScenarioGenerator(ILogger<SimpleMatchScenarioGenerator> 
             .WithItemAndCheck(1, "H224", "C07")
             .ValidateAndBuild();
 
-        logger.LogInformation("Created Decision {EntryReference}", alvsDecision.Header!.EntryReference);
+        Logger.LogInformation("Created Decision {EntryReference}", alvsDecision.Header!.EntryReference);
 
-        return new GeneratorResult([clearanceRequest, notification, alvsDecision]);
+        return new GeneratorResult(crFirst ? [clearanceRequest, notification, alvsDecision] : [notification, clearanceRequest, alvsDecision]);
     }
 }
