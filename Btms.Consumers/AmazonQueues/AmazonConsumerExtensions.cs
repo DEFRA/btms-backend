@@ -34,7 +34,7 @@ internal static class AmazonConsumerExtensions
         if (options.ServiceUrl != null)
         {
             logger.Information("Use AWS consumer Service URL {ServiceUrl}", options.ServiceUrl);
-            
+
             cfg.SqsClientConfig.ServiceURL = options.ServiceUrl;
             cfg.UseCredentials(options.AccessKeyId, options.SecretAccessKey);
         }
@@ -43,7 +43,7 @@ internal static class AmazonConsumerExtensions
     private static void AddConsumer<TConsumer, TMessage>(this MessageBusBuilder mbb, IServiceCollection services, string queueName, ILogger logger) where TConsumer : MessageConsumer<TMessage> where TMessage : class
     {
         logger.Information("Added AWS consumer of type {ConsumerType} for messages of {MessageType} from {QueueName}", typeof(TConsumer).Name, typeof(TMessage).Name, queueName);
-        
+
         services.AddScoped<TConsumer>();
         mbb.Consume<MessageBody>(x => x
             .WithConsumer<TConsumer>()

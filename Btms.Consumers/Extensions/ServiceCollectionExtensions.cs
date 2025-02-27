@@ -27,7 +27,7 @@ namespace Btms.Consumers.Extensions
         public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
             logger.Information("Start configuring Consumers");
-            
+
             var consumerOpts = services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName).Get();
 
             services.AddBtmsMetrics();
