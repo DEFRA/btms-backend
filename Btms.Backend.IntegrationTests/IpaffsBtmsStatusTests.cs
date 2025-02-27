@@ -15,26 +15,26 @@ namespace Btms.Backend.IntegrationTests;
 public class IpaffsBtmsStatusTests(ITestOutputHelper output) : MultipleScenarioGeneratorBaseTest(output)
 {
     [Theory]
-    [InlineData(typeof(SimpleMatchCrFirstScenarioGenerator), NotificationLinkStatus.Linked, TypeAndLinkStatus.ChedPLinked)]
-    [InlineData(typeof(SimpleMatchNotificationFirstScenarioGenerator), NotificationLinkStatus.Linked, TypeAndLinkStatus.ChedPLinked)]
-    [InlineData(typeof(ChedANoMatchScenarioGenerator), NotificationLinkStatus.NotLinked, TypeAndLinkStatus.ChedANotLinked)]
+    [InlineData(typeof(SimpleMatchCrFirstScenarioGenerator), LinkStatus.Linked, TypeAndLinkStatus.ChedPLinked)]
+    [InlineData(typeof(SimpleMatchNotificationFirstScenarioGenerator), LinkStatus.Linked, TypeAndLinkStatus.ChedPLinked)]
+    [InlineData(typeof(ChedANoMatchScenarioGenerator), LinkStatus.NotLinked, TypeAndLinkStatus.ChedANotLinked)]
 
-    public void ShouldHaveCorrectStatus(Type generatorType, NotificationLinkStatus notificationLinkStatus, TypeAndLinkStatus typeAndLinkStatus)
+    public void ShouldHaveCorrectStatus(Type generatorType, LinkStatus linkStatus, TypeAndLinkStatus typeAndLinkStatus)
     {
-        base.TestOutputHelper.WriteLine("Generator : {0}, Decision Status : {1}", generatorType!.FullName, notificationLinkStatus);
+        base.TestOutputHelper.WriteLine("Generator : {0}, Decision Status : {1}", generatorType!.FullName, linkStatus);
         EnsureEnvironmentInitialised(generatorType);
-        CheckLinkStatus(notificationLinkStatus, typeAndLinkStatus);
+        CheckLinkStatus(linkStatus, typeAndLinkStatus);
     }
 
-    private void CheckLinkStatus(NotificationLinkStatus notificationLinkStatus, TypeAndLinkStatus typeAndLinkStatus)
+    private void CheckLinkStatus(LinkStatus linkStatus, TypeAndLinkStatus typeAndLinkStatus)
     {
         var notification = Client.GetSingleImportNotification();
 
-        TestOutputHelper.WriteLine("Notification {0}, expectedLinkStatus {1}", notification.Id, notificationLinkStatus);
+        TestOutputHelper.WriteLine("Notification {0}, expectedLinkStatus {1}", notification.Id, linkStatus);
 
         notification
             .BtmsStatus.LinkStatus
-            .Should().Be(notificationLinkStatus);
+            .Should().Be(linkStatus);
 
         notification
             .BtmsStatus.TypeAndLinkStatus

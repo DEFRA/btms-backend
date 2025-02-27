@@ -12,8 +12,8 @@ namespace Btms.Model.Ipaffs;
 ///
 /// Should be called LinkStatus but causes a collision in OpenAPI spec so have had to give it a different name...
 /// </summary>
-[JsonConverter(typeof(JsonStringEnumConverterEx<NotificationLinkStatus>))]
-public enum NotificationLinkStatus
+[JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatus>))]
+public enum LinkStatus
 {
     [EnumMember(Value = "No Links")]
     NotLinked,
