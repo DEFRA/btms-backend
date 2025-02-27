@@ -1,15 +1,12 @@
 using System.Diagnostics;
-using Btms.Backend.Utils.Logging;
+using Btms.Common.Extensions;
 using Btms.Consumers;
 using Btms.Consumers.AmazonQueues;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Serilog;
-using Serilog.Core;
 using SlimMessageBus.Host;
 
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
@@ -21,7 +18,7 @@ public class TestAwsConsumers : IAsyncDisposable
 
     public readonly ClearanceRequestConsumerHost ClearanceRequestConsumer = new();
     public readonly IConfiguration Configuration;
-    public readonly AwsLocalOptions AwsLocalOptions;
+    public readonly AwsSqsOptions AwsLocalOptions;
 
     public TestAwsConsumers()
     {
@@ -30,7 +27,7 @@ public class TestAwsConsumers : IAsyncDisposable
         builder.Configuration.AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
-        AwsLocalOptions = new AwsLocalOptions(Configuration);
+        AwsLocalOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
 
         try
         {
@@ -39,7 +36,7 @@ public class TestAwsConsumers : IAsyncDisposable
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
                 {
-                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, Logger.None);
+                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions);
                 });
             });
 

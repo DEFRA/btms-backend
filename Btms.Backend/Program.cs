@@ -106,7 +106,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddCustomTrustStore(logger);
 
     builder.Services.AddBusinessServices(builder.Configuration);
-    builder.Services.AddConsumers(builder.Configuration, logger);
+    builder.Services.AddConsumers(builder.Configuration);
 
     ConfigureEndpoints(builder);
 

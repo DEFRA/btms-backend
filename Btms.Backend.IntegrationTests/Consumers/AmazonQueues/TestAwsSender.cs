@@ -21,7 +21,7 @@ public class TestAwsSender : IAsyncDisposable
     public readonly List<Topic>? Topics;
     public readonly List<Subscription>? Subscriptions;
 
-    public TestAwsSender(IConfiguration configuration, AwsLocalOptions awsLocalOptions, ITestOutputHelper testOutputHelper)
+    public TestAwsSender(IConfiguration configuration, AwsSqsOptions awsLocalOptions, ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
         var serviceCollection = new ServiceCollection();
