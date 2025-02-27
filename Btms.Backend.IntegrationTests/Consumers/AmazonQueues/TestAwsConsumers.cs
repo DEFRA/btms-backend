@@ -27,11 +27,7 @@ public class TestAwsConsumers : IAsyncDisposable
     {
         var builder = WebApplication.CreateBuilder();
 
-        var logger = BuildLogger(builder);
-
-        builder.Configuration
-            .AddEnvironmentVariables()
-            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
+        builder.Configuration.AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
         AwsLocalOptions = new AwsLocalOptions(Configuration);
@@ -43,7 +39,7 @@ public class TestAwsConsumers : IAsyncDisposable
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
                 {
-                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, logger);
+                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, Logger.None);
                 });
             });
 
@@ -63,18 +59,6 @@ public class TestAwsConsumers : IAsyncDisposable
             throw new Exception("Unable to build and start the AWS SNS/SQS test service", ex);
         }
     }
-
-    private static Logger BuildLogger(WebApplicationBuilder builder)
-    {
-        builder.Logging.ClearProviders();
-        var logBuilder = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .Enrich.With<LogLevelMapper>();
-        var logger = logBuilder.CreateLogger();
-        builder.Logging.AddSerilog(logger);
-        return logger;
-    }
-
 
     public async ValueTask DisposeAsync()
     {
