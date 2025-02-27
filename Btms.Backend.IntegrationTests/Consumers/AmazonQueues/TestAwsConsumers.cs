@@ -23,10 +23,8 @@ public class TestAwsConsumers : IAsyncDisposable
     public TestAwsConsumers()
     {
         var builder = WebApplication.CreateBuilder();
-        
-        builder.Configuration
-            .AddEnvironmentVariables()
-            .AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
+
+        builder.Configuration.AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
         AwsLocalOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
@@ -58,7 +56,6 @@ public class TestAwsConsumers : IAsyncDisposable
             throw new Exception("Unable to build and start the AWS SNS/SQS test service", ex);
         }
     }
-
 
     public async ValueTask DisposeAsync()
     {
