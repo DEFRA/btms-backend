@@ -16,7 +16,7 @@ public class DocumentFilter : IDocumentFilter
             path: "import-notifications",
             pathDescription: "Notification Operations",
             operationDescription: "Get Notifications",
-            referenceId: "NotificationResourceResponse",
+            referenceId: typeof(NotificationResourceResponse).FullName!,
             tag: "Notifications"
         );
 
@@ -29,7 +29,7 @@ public class DocumentFilter : IDocumentFilter
             path: "movements",
             pathDescription: "Movement Operations",
             operationDescription: "Get Movements",
-            referenceId: "MovementResourceResponse",
+            referenceId: typeof(MovementResourceResponse).FullName!,
             tag: "Movements"
         );
 
@@ -39,10 +39,10 @@ public class DocumentFilter : IDocumentFilter
         );
 
         swaggerDoc.AddPath(
-            path: "goods-movements",
+            path: "gmrs",
             pathDescription: "Goods Movement Operations",
             operationDescription: "Get Goods Movements",
-            referenceId: "GoodsMovementResourceResponse",
+            referenceId: typeof(GoodsMovementResourceResponse).FullName!,
             tag: "GoodsMovements"
         );
     }
