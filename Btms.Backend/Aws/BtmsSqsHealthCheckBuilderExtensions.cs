@@ -1,4 +1,4 @@
-﻿using Btms.Common.Extensions;
+using Btms.Common.Extensions;
 using Btms.Consumers.AmazonQueues;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
