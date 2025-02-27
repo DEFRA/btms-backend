@@ -16,7 +16,7 @@ public class HmrcClearanceRequestConsumerTests : IAsyncLifetime
 
     public HmrcClearanceRequestConsumerTests(ITestOutputHelper testOutputHelper)
     {
-        _awsSender = new TestAwsSender(_awsConsumers.Configuration, _awsConsumers.AwsLocalOptions, testOutputHelper);
+        _awsSender = new TestAwsSender(_awsConsumers.Configuration, _awsConsumers.AwsSqsOptions, testOutputHelper);
     }
 
     [Fact]

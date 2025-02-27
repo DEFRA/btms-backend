@@ -18,7 +18,7 @@ public class TestAwsConsumers : IAsyncDisposable
 
     public readonly IClearanceRequestConsumer ClearanceRequestConsumerMock = Substitute.For<IClearanceRequestConsumer>();
     public readonly IConfiguration Configuration;
-    public readonly AwsSqsOptions AwsLocalOptions;
+    public readonly AwsSqsOptions AwsSqsOptions;
 
     public TestAwsConsumers()
     {
@@ -27,7 +27,7 @@ public class TestAwsConsumers : IAsyncDisposable
         builder.Configuration.AddInMemoryCollection(AwsConfig.DefaultLocalConfig);
 
         Configuration = builder.Configuration;
-        AwsLocalOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
+        AwsSqsOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
 
         try
         {
@@ -36,7 +36,7 @@ public class TestAwsConsumers : IAsyncDisposable
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
                 {
-                    cbb.AddAmazonConsumers(builder.Services, AwsLocalOptions, Logger.None);
+                    cbb.AddAmazonConsumers(builder.Services, AwsSqsOptions, Logger.None);
                 });
             });
 

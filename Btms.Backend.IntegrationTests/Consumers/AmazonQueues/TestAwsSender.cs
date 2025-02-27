@@ -21,17 +21,17 @@ public class TestAwsSender : IAsyncDisposable
     public readonly List<Topic>? Topics;
     public readonly List<Subscription>? Subscriptions;
 
-    public TestAwsSender(IConfiguration configuration, AwsSqsOptions awsLocalOptions, ITestOutputHelper testOutputHelper)
+    public TestAwsSender(IConfiguration configuration, AwsSqsOptions awsSqsOptions, ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
         var serviceCollection = new ServiceCollection();
 
         var awsOptions = configuration.GetAWSOptions();
 
-        testOutputHelper.WriteLine($"Configure AWS Test Sender: ServiceURL={awsLocalOptions.ServiceUrl}");
+        testOutputHelper.WriteLine($"Configure AWS Test Sender: ServiceURL={awsSqsOptions.ServiceUrl}");
 
-        awsOptions.DefaultClientConfig.ServiceURL = awsLocalOptions.ServiceUrl;
-        awsOptions.Credentials = new BasicAWSCredentials(awsLocalOptions.AccessKeyId, awsLocalOptions.SecretAccessKey);
+        awsOptions.DefaultClientConfig.ServiceURL = awsSqsOptions.ServiceUrl;
+        awsOptions.Credentials = new BasicAWSCredentials(awsSqsOptions.AccessKeyId, awsSqsOptions.SecretAccessKey);
 
         serviceCollection.AddDefaultAWSOptions(awsOptions);
         serviceCollection.AddAWSService<IAmazonSimpleNotificationService>();
