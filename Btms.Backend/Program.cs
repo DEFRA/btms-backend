@@ -173,6 +173,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
+    builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
         .Enrich.With<LogLevelMapper>()
