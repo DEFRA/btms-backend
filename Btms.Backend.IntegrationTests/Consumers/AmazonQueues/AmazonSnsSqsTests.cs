@@ -19,7 +19,7 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task When_checking_if_localstack_available_Then_should_be_available_in_development()
+    public async Task WhenCheckingIfLocalstackAvailableThenShouldBeAvailableInDevelopment()
     {
         var httpClient = new HttpClient();
         var response = await httpClient.GetAsync($"{_awsConsumers.AwsSqsOptions.ServiceUrl?.TrimEnd('/')}/_localstack/health");
@@ -27,7 +27,7 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     }
 
     [Fact]
-    public void When_checking_if_AWS_SNS_available_Then_should_be_able_to_enumerate_SNS_topics()
+    public void WhenCheckingIfAwsSnsAvailableThenShouldBeAbleToEnumerateSndTopics()
     {
         _testOutputHelper.WriteLine("SNS Topics found:");
         foreach (var topic in _awsSender.Topics ?? [])
@@ -39,7 +39,7 @@ public class AmazonSnsSqsTests : IAsyncLifetime
     }
 
     [Fact]
-    public void When_checking_if_AWS_SNS_SQS_available_Then_should_be_able_to_enumerate_SNS_SQS_subscriptions()
+    public void WhenCheckingIfAwsSnsSqsAvailableThenShouldBeAbleToEnumerateSnsSqsSubscriptions()
     {
         _testOutputHelper.WriteLine("SNS Subscriptions found:");
         foreach (var subscription in _awsSender.Subscriptions ?? [])
