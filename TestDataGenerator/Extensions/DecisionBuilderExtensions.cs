@@ -18,12 +18,12 @@ public static class DecisionBuilderExtensions
             {
                 d.Items = clearanceRequest
                     .Items?
-                    .Select(i => new Items()
+                    .Select(i => new DecisionItems()
                     {
-                        ItemNumber = i.ItemNumber,
+                        ItemNumber = i.ItemNumber!.Value,
                         Documents = i.Documents,
                         Checks = i.Checks?
-                            .Select(c => new Check() { CheckCode = c.CheckCode, DecisionCode = decisionCode }).ToArray()
+                            .Select(c => new DecisionCheck() { CheckCode = c.CheckCode, DecisionCode = decisionCode }).ToArray()
                     })
                     .ToArray();
             });

@@ -1,4 +1,5 @@
 using Btms.Business.Extensions;
+using Btms.Common.Enum;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Alvs;
@@ -51,13 +52,13 @@ public static class DecisionMessageBuilder
         };
     }
 
-    private static IEnumerable<Items> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
+    private static IEnumerable<DecisionItems> BuildItems(Movement movement, IGrouping<string, DocumentDecisionResult> movementDecisions)
     {
         var decisionsByItem = movementDecisions.GroupBy(x => x.ItemNumber);
         foreach (var itemDecisions in decisionsByItem)
         {
             var item = movement.Items.First(x => x.ItemNumber == itemDecisions.Key);
-            yield return new Items
+            yield return new DecisionItems
             {
                 ItemNumber = itemDecisions.Key,
                 Checks = BuildChecks(item, itemDecisions).ToArray()
@@ -65,7 +66,7 @@ public static class DecisionMessageBuilder
         }
     }
 
-    private static IEnumerable<Check> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
+    private static IEnumerable<DecisionCheck> BuildChecks(Model.Cds.Items item, IGrouping<int, DocumentDecisionResult> itemDecisions)
     {
         if (item.Checks == null) yield break;
 
@@ -74,10 +75,12 @@ public static class DecisionMessageBuilder
             var maxDecisionResult = itemDecisions.Where(x => x.CheckCode == null || x.CheckCode == checkCode).OrderByDescending(x => x.DecisionCode).FirstOrDefault();
             if (maxDecisionResult is not null)
             {
-                yield return new Check
+                yield return new DecisionCheck
                 {
                     CheckCode = checkCode,
                     DecisionCode = maxDecisionResult.DecisionCode.ToString(),
+                    DecisionInternalFurtherDetail = maxDecisionResult.InternalDecisionCode.HasValue ?
+                        [maxDecisionResult.InternalDecisionCode!.Value.ToString()] : null,
                     DecisionReasons = BuildDecisionReasons(item, maxDecisionResult!)
                 };
             }

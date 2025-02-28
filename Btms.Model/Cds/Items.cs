@@ -8,7 +8,6 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
-
 namespace Btms.Model.Cds;
 
 /// <summary>
@@ -53,7 +52,14 @@ public partial class Items  //
             }
             else
             {
-                checks.Add(decisionItemsCheck);
+                checks.Add(new Check()
+                {
+                    CheckCode = decisionItemsCheck.CheckCode,
+                    DecisionCode = decisionItemsCheck.DecisionCode,
+                    DecisionReasons = decisionItemsCheck.DecisionReasons,
+                    DecisionsValidUntil = decisionItemsCheck.DecisionsValidUntil,
+                    DepartmentCode = decisionItemsCheck.DepartmentCode
+                });
             }
         }
 

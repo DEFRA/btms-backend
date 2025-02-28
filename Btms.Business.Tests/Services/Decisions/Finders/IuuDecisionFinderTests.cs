@@ -31,13 +31,13 @@ public class IuuDecisionFinderTests
     }
 
     [Theory]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, "IUU Compliant")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, "IUU Not compliant")]
-    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, "IUU Not applicable")]
-    [InlineData(true, null, DecisionCode.X00, "IUU Awaiting decision")]
-    [InlineData(true, (ControlAuthorityIuuOptionEnum)999, DecisionCode.E95, "IUU Data error")]
-    [InlineData(false, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.E94, "IUU Data error")]
-    public void FindDecisionTest(bool iuuCheckRequired, ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, string? expectedDecisionReason)
+    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.C07, null, "IUU Compliant")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.IUUNotCompliant, DecisionCode.X00, null, "IUU Not compliant")]
+    [InlineData(true, ControlAuthorityIuuOptionEnum.Iuuna, DecisionCode.C08, null, "IUU Not applicable")]
+    [InlineData(true, null, DecisionCode.X00, null, "IUU Awaiting decision")]
+    [InlineData(true, (ControlAuthorityIuuOptionEnum)999, DecisionCode.X00, DecisionInternalFurtherDetail.E95, "IUU Data error")]
+    [InlineData(false, ControlAuthorityIuuOptionEnum.Iuuok, DecisionCode.X00, DecisionInternalFurtherDetail.E94, "IUU Data error")]
+    public void FindDecisionTest(bool iuuCheckRequired, ControlAuthorityIuuOptionEnum? iuuOption, DecisionCode expectedDecisionCode, DecisionInternalFurtherDetail? expectedFurtherDetail = null, string? expectedDecisionReason = null)
     {
         var notification = new ImportNotification
         {
@@ -55,6 +55,7 @@ public class IuuDecisionFinderTests
         var result = sut.FindDecision(notification, IuuDecisionFinder.IuuCheckCode);
 
         result.DecisionCode.Should().Be(expectedDecisionCode);
+        result.InternalDecisionCode.Should().Be(expectedFurtherDetail);
         result.DecisionReason.Should().StartWith(expectedDecisionReason);
         result.CheckCode.Should().Be(IuuDecisionFinder.IuuCheckCode);
     }
