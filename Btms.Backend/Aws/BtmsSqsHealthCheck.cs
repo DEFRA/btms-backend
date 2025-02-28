@@ -34,6 +34,6 @@ public class BtmsSqsHealthCheck(AwsSqsOptions sqsOptions) : IHealthCheck
             });
         }
 
-        return new AmazonSQSClient(new AnonymousAWSCredentials());
+        return new AmazonSQSClient(new GenericContainerCredentials());
     }
 }
