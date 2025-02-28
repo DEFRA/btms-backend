@@ -2,6 +2,10 @@ name: Publish Hot Fix
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number manual override'
+        required: false
 
 permissions:
   id-token: write
@@ -26,6 +30,7 @@ jobs:
         uses: DEFRA/cdp-build-action/build-hotfix@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ inputs.version }}
     ## SonarCloud
     ## Uncomment to unable SonarCloud scan
     ## Requires project to be set up in SonarCloud
