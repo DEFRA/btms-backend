@@ -5,10 +5,11 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 internal static class DecisionFinderExtensions
 {
-    public static bool TryGetConsignmentAcceptable(this ImportNotification notification, out bool acceptable, out DecisionCode? decisionCode)
+    public static bool TryGetConsignmentAcceptable(this ImportNotification notification, out bool acceptable, out DecisionCode? decisionCode, out DecisionInternalFurtherDetail? internalDecisionCode)
     {
         var consignmentAcceptable = notification.PartTwo?.Decision?.ConsignmentAcceptable;
         decisionCode = null;
+        internalDecisionCode = null;
         acceptable = false;
 
         if (consignmentAcceptable.HasValue)
@@ -22,7 +23,8 @@ internal static class DecisionFinderExtensions
             return true;
         }
 
-        decisionCode = DecisionCode.E99;
+        decisionCode = DecisionCode.X00;
+        internalDecisionCode = DecisionInternalFurtherDetail.E99;
         return false;
     }
 

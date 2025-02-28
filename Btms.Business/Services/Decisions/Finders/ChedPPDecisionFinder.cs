@@ -18,7 +18,7 @@ public class ChedPPDecisionFinder : IDecisionFinder
             ImportNotificationStatusEnum.Validated => new DecisionFinderResult(DecisionCode.C03, checkCode),
             ImportNotificationStatusEnum.Rejected => new DecisionFinderResult(DecisionCode.N02, checkCode),
             ImportNotificationStatusEnum.PartiallyRejected => new DecisionFinderResult(DecisionCode.H01, checkCode),
-            _ => new DecisionFinderResult(DecisionCode.E99, checkCode)
+            _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E99)
         };
     }
 }

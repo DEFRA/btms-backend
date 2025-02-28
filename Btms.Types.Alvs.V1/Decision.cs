@@ -25,8 +25,8 @@ public class DecisionCheck  //
     [JsonPropertyName("decisionReasons")]
     public string[]? DecisionReasons { get; set; }
 
-    // [JsonPropertyName("decisionReasons")]
-    // public string[]? DecisionInternalFurtherDetail { get; set; }
+    [JsonPropertyName("decisionInternalFurtherDetail")]
+    public string[]? DecisionInternalFurtherDetail { get; set; }
 
 }
 

@@ -1,4 +1,5 @@
 using Btms.Business.Extensions;
+using Btms.Common.Enum;
 using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Types.Alvs;
@@ -78,6 +79,8 @@ public static class DecisionMessageBuilder
                 {
                     CheckCode = checkCode,
                     DecisionCode = maxDecisionResult.DecisionCode.ToString(),
+                    DecisionInternalFurtherDetail = maxDecisionResult.InternalDecisionCode.HasValue ?
+                        [maxDecisionResult.InternalDecisionCode!.Value.ToString()] : null,
                     DecisionReasons = BuildDecisionReasons(item, maxDecisionResult!)
                 };
             }

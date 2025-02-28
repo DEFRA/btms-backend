@@ -14,9 +14,9 @@ public class ChedPDecisionFinder : IDecisionFinder
             return new DecisionFinderResult(code!.Value, checkCode);
         }
 
-        if (!notification.TryGetConsignmentAcceptable(out var consignmentAcceptable, out var decisionCode))
+        if (!notification.TryGetConsignmentAcceptable(out var consignmentAcceptable, out var decisionCode, out var internalDecisionCode))
         {
-            return new DecisionFinderResult(decisionCode!.Value, checkCode);
+            return new DecisionFinderResult(decisionCode!.Value, checkCode, InternalDecisionCode: internalDecisionCode);
         }
 
         return consignmentAcceptable switch
@@ -29,7 +29,7 @@ public class ChedPDecisionFinder : IDecisionFinder
                     new DecisionFinderResult(DecisionCode.E03, checkCode),
                 DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, checkCode),
                 DecisionDecisionEnum.AcceptableIfChanneled => new DecisionFinderResult(DecisionCode.C06, checkCode),
-                _ => new DecisionFinderResult(DecisionCode.E96, checkCode)
+                _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E96)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
@@ -37,9 +37,8 @@ public class ChedPDecisionFinder : IDecisionFinder
                 DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, checkCode),
                 DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03, checkCode),
                 DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07, checkCode),
-                _ => new DecisionFinderResult(DecisionCode.E97, checkCode)
-            },
-            // _ => new DecisionFinderResult(DecisionCode.E99, checkCode)
+                _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E97)
+            }
         };
     }
 }
