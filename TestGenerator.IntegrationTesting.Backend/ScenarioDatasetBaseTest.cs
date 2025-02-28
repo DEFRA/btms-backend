@@ -1,6 +1,8 @@
 using Btms.Analytics;
 using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
+using NSubstitute;
 using TestDataGenerator;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using TestGenerator.IntegrationTesting.Backend.Fixtures;
@@ -48,13 +50,15 @@ public abstract class ScenarioDatasetBaseTest
         };
 
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
+        var featureManager = Substitute.For<IFeatureManager>();
+
         BackendFixture = new BackendFixture(testOutputHelper, datasetName, 200, backendConfigurationOverrides);
 
         Client = BackendFixture.BtmsClient;
         MongoDbContext = BackendFixture.MongoDbContext;
 
         ImportNotificationsAggregationService = new ImportNotificationsAggregationService(MongoDbContext,
-            TestOutputHelper.GetLogger<ImportNotificationsAggregationService>());
+            TestOutputHelper.GetLogger<ImportNotificationsAggregationService>(), featureManager);
 
         MovementsAggregationService = new MovementsAggregationService(MongoDbContext,
             TestOutputHelper.GetLogger<MovementsAggregationService>());
@@ -104,7 +108,9 @@ public abstract class ScenarioDatasetBaseTest
     protected IImportNotificationsAggregationService GetImportNotificationsAggregationService()
     {
         var logger = TestOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        return new ImportNotificationsAggregationService(MongoDbContext, logger);
+        var featureManager = Substitute.For<IFeatureManager>();
+
+        return new ImportNotificationsAggregationService(MongoDbContext, logger, featureManager);
     }
 
     /// <summary>

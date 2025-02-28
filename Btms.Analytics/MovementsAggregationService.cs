@@ -305,11 +305,11 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
         var mongoQuery = context
             .Movements
             .WhereFilteredByCreatedDateAndParams(from, to, finalisedOnly, chedTypes, country)
-            .Where(m => !exclude.Contains(m.BtmsStatus.BusinessDecisionStatus))
+            .Where(m => !exclude.Contains(m.Status.BusinessDecisionStatus))
             .Select(m => new
             {
                 Movement = m,
-                DecisionStatus = m.BtmsStatus.BusinessDecisionStatus
+                DecisionStatus = m.Status.BusinessDecisionStatus
             })
             .GroupBy(d => new
             {
@@ -475,7 +475,7 @@ public class MovementsAggregationService(IMongoDbContext context, ILogger<Moveme
                     DecisionStatusEnum.None :
                     m.AlvsDecisionStatus.Context.DecisionComparison.DecisionStatus,
                 DecisionMatched = false,
-                m.BtmsStatus,
+                BtmsStatus = m.Status,
                 m.AlvsDecisionStatus
             })
             .GroupBy(d => new

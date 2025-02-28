@@ -144,6 +144,8 @@ internal class NotificationConsumer(
                 LogStatus("IsCreatedOrChanged=false", message);
             }
 
+            preProcessingResult.Record.CalculateStatus();
+
             await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
         }
     }

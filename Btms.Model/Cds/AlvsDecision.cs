@@ -145,7 +145,7 @@ public class MovementStatus
         return new MovementStatus()
         {
             ChedTypes = [],
-            LinkStatus = LinkStatusEnum.NoLinks
+            LinkStatus = LinkStatus.NoLinks
         };
     }
 
@@ -161,7 +161,7 @@ public class MovementStatus
     [Attr]
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
-    public required LinkStatusEnum LinkStatus { get; set; }
+    public required LinkStatus LinkStatus { get; set; }
 
     [Attr]
     [System.ComponentModel.Description("")]
@@ -185,8 +185,8 @@ public class MovementStatus
     public BusinessDecisionStatusEnum BusinessDecisionStatus { get; set; } = BusinessDecisionStatusEnum.AnythingElse;
 }
 
-[JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatusEnum>))]
-public enum LinkStatusEnum
+[JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatus>))]
+public enum LinkStatus
 {
     [EnumMember(Value = "Error")]
     Error,

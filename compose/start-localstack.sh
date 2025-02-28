@@ -2,7 +2,7 @@
 
 ENDPOINT_URL=http://sqs.eu-west-2.localhost.localstack.cloud:4566
 
-export AWS_ENDPOINT_URL=ENDPOINT_URL
+export AWS_ENDPOINT_URL=$ENDPOINT_URL
 export AWS_REGION=eu-west-2
 export AWS_DEFAULT_REGION=eu-west-2
 export AWS_ACCESS_KEY_ID=local

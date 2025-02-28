@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSubstitute;
+using Serilog.Core;
 using SlimMessageBus.Host;
 
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
@@ -37,7 +38,7 @@ public class TestAwsConsumers : IAsyncDisposable
             {
                 mbb.AddChildBus("AmazonTest", cbb =>
                 {
-                    cbb.AddAmazonConsumers(builder.Services, AwsSqsOptions);
+                    cbb.AddAmazonConsumers(builder.Services, AwsSqsOptions, Logger.None);
                 });
             });
 

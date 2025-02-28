@@ -7,10 +7,10 @@ public static partial class RegularExpressions
     [GeneratedRegex("(CHEDD|CHEDA|CHEDP|CHEDPP)\\.?GB\\.?(20|21)\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex IPaffsIdentifier();
 
-    [GeneratedRegex("(GBCVD|GBCHD|GBCVD|GBCHD)\\.?(20|21)\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    [GeneratedRegex("(GBCVD|GBCHD|GBCVD|GBCHD)\\.?(20|21)?\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex DocumentReferenceWithoutCountry();
 
-    [GeneratedRegex("\\d{4}\\.?\\d{7}", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    [GeneratedRegex("\\d{2,4}\\.?\\d{7}", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex DocumentReferenceIdentifier();
 
     public static bool IsExactMatch(this Regex regex, string input)
@@ -52,6 +52,10 @@ public struct MatchIdentifier(string identifier)
             RegularExpressions.DocumentReferenceWithoutCountry().IsExactMatch(reference))
         {
             var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
+            if (identifier.Length == 9)
+            {
+                identifier = $"20{identifier}";
+            }
             return new MatchIdentifier(identifier);
         }
 

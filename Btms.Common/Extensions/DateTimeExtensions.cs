@@ -127,4 +127,21 @@ public static class DateTimeExtensions
             iterator = iterator.AddMonths(1);
         }
     }
+
+    /// <summary>
+    /// Returns
+    /// </summary>
+    /// <returns>A list of nullable strings as that's what initialise command currently expects</returns>
+    public static List<string> RedactedDatasetsSinceNov24()
+    {
+        var novFirst2024 = new DateTime(2024, 11, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        return DateTime.Today
+            .MonthsSince(novFirst2024)
+            .Select(((monthYear, i) => $"PRODREDACTED-{monthYear.Year}{monthYear.Month:00}"))
+            .ToList<string>();
+    }
+
+
+
 }

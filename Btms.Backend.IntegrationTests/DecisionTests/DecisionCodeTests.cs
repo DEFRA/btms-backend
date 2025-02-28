@@ -48,6 +48,8 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
     [InlineData(typeof(IuuScenarioGenerator), "E89", "E89")] //"C03", "C07")]
     [InlineData(typeof(Mrn24Gbdzsrxdxtbvkar6ScenarioGenerator), "C03", "C03", "C03")]
     [InlineData(typeof(Mrn24Gbei6Oisht38Mar9ScenarioGenerator), "H02", "H02")]
+    [InlineData(typeof(Mrn24Gbc8Onyjqzt5Tar5ScenarioGenerator), "C03", "C03", "E03", "E03")]
+    [InlineData(typeof(Mrn25Gb0Hrwmaj7Fbwar8ScenarioGenerator), "C03")]
 
     public void ShouldHaveCorrectDecisionCode(Type generatorType, params string[] expectedDecisionCode)
     {

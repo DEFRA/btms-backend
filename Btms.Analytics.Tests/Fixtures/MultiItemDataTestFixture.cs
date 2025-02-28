@@ -2,6 +2,8 @@ using Btms.Analytics.Tests.Helpers;
 using Btms.Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
+using NSubstitute;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit.Abstractions;
@@ -46,7 +48,7 @@ public class MultiItemDataTestFixture : IDisposable
             app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<ChedASimpleMatchScenarioGenerator>(10, 3, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
 
-            app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchScenarioGenerator>(1, 1, arrivalDateRange: 0))
+            app.Services.GeneratorPushToConsumers(_logger, app.Services.CreateScenarioConfig<TestDataGenerator.Scenarios.ChedP.SimpleMatchCrFirstScenarioGenerator>(1, 1, arrivalDateRange: 0))
                 .GetAwaiter().GetResult();
         }
     }
@@ -54,7 +56,8 @@ public class MultiItemDataTestFixture : IDisposable
     public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        return new ImportNotificationsAggregationService(MongoDbContext, logger);
+        var featureManager = Substitute.For<IFeatureManager>();
+        return new ImportNotificationsAggregationService(MongoDbContext, logger, featureManager);
     }
 
     public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)

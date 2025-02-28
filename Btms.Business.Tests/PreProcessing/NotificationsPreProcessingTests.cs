@@ -83,7 +83,7 @@ public class NotificationsPreProcessingTests
         var savedNotification = await dbContext.Notifications.Find(notification.ReferenceNumber!);
         savedNotification?.Status.Should().Be(expectedStatus);
         savedNotification.Should().NotBeNull();
-        savedNotification?.AuditEntries.Count.Should().Be(preProcessingResult.Outcome == PreProcessingOutcome.Skipped ? 0 : 1);
+        savedNotification?.AuditEntries.Count.Should().Be(1);
     }
 
     private static ImportNotification CreateImportNotification(ImportNotificationStatusEnum status = ImportNotificationStatusEnum.Submitted)
