@@ -1,15 +1,16 @@
 using System.Net;
 using Azure.Messaging.ServiceBus;
 using Btms.Common.Extensions;
+using Btms.Consumers.AmazonQueues;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
-using Btms.Types.Ipaffs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AzureServiceBus;
 using SlimMessageBus.Host.Interceptor;
@@ -23,19 +24,11 @@ namespace Btms.Consumers.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConsumers(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
-            services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName);
-            services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName);
+            logger.Information("Start configuring Consumers");
 
-            var consumerOpts = configuration
-                .GetSection(ConsumerOptions.SectionName)
-                .Get<ConsumerOptions>() ?? new ConsumerOptions();
-
-            var serviceBusOptions = configuration
-                .GetSection(ServiceBusOptions.SectionName)
-                .Get<ServiceBusOptions>() ?? throw new InvalidOperationException("Service bus options not found");
+            var consumerOpts = services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName).Get();
 
             services.AddBtmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
@@ -45,11 +38,16 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
+            services.AddScoped<IClearanceRequestConsumer, ClearanceRequestConsumer>();
+            services.AddScoped<AlvsClearanceRequestConsumer>();
 
             services.AddSlimMessageBus(mbb =>
             {
                 if (consumerOpts.EnableAsbConsumers)
                 {
+                    logger.Information("Start configuring Azure Service Bus Consumers");
+
+                    var serviceBusOptions = services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName).Get();
                     mbb.AddChildBus("ASB_Notification", cbb =>
                     {
                         ConfigureServiceBusClient(cbb, serviceBusOptions.NotificationSubscription.ConnectionString);
@@ -83,6 +81,8 @@ namespace Btms.Consumers.Extensions
                             .Instances(consumerOpts.AsbGmrs));
                     });
                 }
+
+                logger.Information("Start configuring in-memory Consumers");
 
                 mbb
                     .AddChildBus("InMemory", cbb =>
@@ -131,6 +131,14 @@ namespace Btms.Consumers.Extensions
                                 x.Topic("FINALISATIONS").WithConsumer<FinalisationsConsumer>();
                             });
                     });
+
+                if (consumerOpts.EnableAmazonConsumers)
+                {
+                    logger.Information("Start configuring AWS Consumers");
+
+                    var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
+                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions, logger));
+                }
             });
 
             return services;

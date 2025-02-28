@@ -16,7 +16,7 @@ permissions:
   contents: read
   pull-requests: write
   repository-projects: read
-
+  
 jobs:
   pr-validator:
     name: Run Pull Request Checks
@@ -46,7 +46,7 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./btms-backend/compose.yml"
-        
+  
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.11.0
         with:
