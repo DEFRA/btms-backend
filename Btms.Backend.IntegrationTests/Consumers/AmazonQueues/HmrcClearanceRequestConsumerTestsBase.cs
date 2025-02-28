@@ -12,7 +12,7 @@ namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 public class HmrcClearanceRequestConsumerTestsBase(ITestOutputHelper testOutputHelper) : AwsConsumerTestsBase(testOutputHelper)
 {
     [Fact]
-    public async Task When_receiving_a_clearance_request_from_aws_sqs_Then_resolved_messaged_should_be_received()
+    public async Task WhenReceivingClearanceRequestFromAwsSqsThenResolvedMessagedShouldBeReceived()
     {
         var semaphore = new SemaphoreSlim(1, 1);
         var id = Guid.NewGuid().ToString();

@@ -88,13 +88,13 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         }
     );
 
-    var logger = ConfigureLogging(builder);
-
     if (!builder.Configuration.GetValue<bool>("DisableLoadIniFile"))
     {
         builder.Configuration.AddIniFile("Properties/local.env", true)
             .AddIniFile($"Properties/local.{builder.Environment.EnvironmentName}.env", true);
     }
+
+    var logger = ConfigureLogging(builder);
 
     builder.Services.BtmsAddOptions<ApiOptions, ApiOptions.Validator>(builder.Configuration, ApiOptions.SectionName)
         .PostConfigure(options =>
