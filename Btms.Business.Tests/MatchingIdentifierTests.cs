@@ -29,6 +29,10 @@ public class MatchingIdentifierTests
     [InlineData("GBCHD2024.1036543v", "20241036543")]
     [InlineData("GBCVD20241036543v", "20241036543")]
     [InlineData("GBCHD20241036543v", "20241036543")]
+    [InlineData("GBCHD241036543v", "20241036543")]
+    [InlineData("GBCHD.241036543v", "20241036543")]
+    [InlineData("GBCHD24.1036543v", "20241036543")]
+    [InlineData("GBCHD.24.1036543v", "20241036543")]
     public void ReferenceNumber_FromDocumentReference_Valid(string reference, string identifier)
     {
         MatchIdentifier.FromCds(reference).Identifier.Should().Be(identifier);
