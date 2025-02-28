@@ -136,8 +136,8 @@ namespace Btms.Consumers.Extensions
                 {
                     logger.Information("Start configuring AWS Consumers");
 
-                    // var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
-                    // mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions, logger));
+                    var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
+                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions, logger));
                 }
             });
 
