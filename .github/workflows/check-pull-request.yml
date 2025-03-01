@@ -30,6 +30,7 @@ jobs:
         uses: actions/checkout@v3 
         with:
           path: btms-backend
+          submodules: true
         
       - name: Check out code Test data
         uses: actions/checkout@v3
