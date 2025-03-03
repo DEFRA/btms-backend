@@ -50,7 +50,7 @@ public abstract class ScenarioDatasetBaseTest
         };
 
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
-        
+
         BackendFixture = new BackendFixture(testOutputHelper, datasetName, 200, backendConfigurationOverrides);
 
         Client = BackendFixture.BtmsClient;
@@ -107,7 +107,7 @@ public abstract class ScenarioDatasetBaseTest
     protected IImportNotificationsAggregationService GetImportNotificationsAggregationService()
     {
         var logger = TestOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        
+
         return new ImportNotificationsAggregationService(MongoDbContext, logger);
     }
 
