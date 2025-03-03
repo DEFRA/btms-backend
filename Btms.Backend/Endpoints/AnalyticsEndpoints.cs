@@ -29,7 +29,7 @@ public static class AnalyticsEndpoints
 
         app.MapGet(BaseRoute + "/export/mrns", GetMrnCsv);
         app.MapGet(BaseRoute + "/export/checks", GetCheckCsv);
-        
+
         app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState)
             .AllowAnonymous();
 
@@ -143,9 +143,9 @@ public static class AnalyticsEndpoints
 
         return TypedResults.Json(result, options);
     }
-    
 
-    private static async Task<FileResult> GetMrnCsv(
+
+    private static async Task<IResult> GetMrnCsv(
         [FromServices] MovementExportService exportService,
         [AsParameters] DateRange dateRange,
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
@@ -156,13 +156,10 @@ public static class AnalyticsEndpoints
             await exportService
                 .GetMrnExport(dateRange.From!.Value, dateRange.To!.Value, finalisedOnly, chedTypes, countryOfOrigin);
 
-        return new FileContentResult(exportService.WriteAsCsv(result), "text/csv")
-        {
-            FileDownloadName = "mrn.csv"
-        };
+        return Results.File(exportService.WriteAsCsv(result), "text/csv", "mrn.csv");
     }
-    
-    private static async Task<FileResult> GetCheckCsv(
+
+    private static async Task<IResult> GetCheckCsv(
         [FromServices] MovementExportService exportService,
         [AsParameters] DateRange dateRange,
         [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
@@ -173,21 +170,6 @@ public static class AnalyticsEndpoints
             await exportService
                 .GetCheckExport(dateRange.From!.Value, dateRange.To!.Value, finalisedOnly, chedTypes, countryOfOrigin);
 
-        return new FileContentResult(exportService.WriteAsCsv(result), "text/csv")
-        {
-            FileDownloadName = "check.csv"
-        };
+        return Results.File(exportService.WriteAsCsv(result), "text/csv", "check.csv");
     }
-    
-    // private static FileResult WriteAsCsv<T>(string fileName, List<T> data)
-    // {
-    //     var m = new MemoryStream();
-    //     
-    //     byte[] fileBytes = [];
-    //
-    //     return new FileContentResult(fileBytes, "text/csv")
-    //     {
-    //         FileDownloadName = fileName
-    //     };
-    // }
 }

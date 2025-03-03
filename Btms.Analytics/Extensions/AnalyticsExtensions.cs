@@ -13,15 +13,16 @@ namespace Btms.Analytics.Extensions;
 
 public static class AnalyticsExtensions
 {
-    private static readonly bool EnableMetrics = true;
+    private static readonly bool enableMetrics = true;
+
     public static IServiceCollection AddAnalyticsServices(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddScoped<IImportNotificationsAggregationService, ImportNotificationsAggregationService>();
         services.AddScoped<IMovementsAggregationService, MovementsAggregationService>();
-        
+
         // To revisit in future 
-        if (EnableMetrics)
+        if (enableMetrics)
         {
             services.TryAddScoped<ImportNotificationMetrics>();
         }
@@ -217,7 +218,7 @@ public static class AnalyticsExtensions
         }
     }
 
-    internal static IEnumerable<TSource> Execute<TSource>(
+    public static IEnumerable<TSource> Execute<TSource>(
         this IQueryable<TSource> source, ILogger logger)
     {
 

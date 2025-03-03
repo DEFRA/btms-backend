@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Btms.Analytics\Btms.Analytics.csproj" />
+      <ProjectReference Include="..\Btms.Backend.Data\Btms.Backend.Data.csproj" />
       <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
     </ItemGroup>
 

@@ -9,7 +9,7 @@ public static class AnalyticsExportExtensions
         IConfiguration configuration)
     {
         services.AddScoped<MovementExportService, MovementExportService>();
-        
+
         return services;
     }
 }
