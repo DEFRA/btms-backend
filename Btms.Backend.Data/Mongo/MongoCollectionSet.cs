@@ -35,6 +35,11 @@ public class MongoCollectionSet<T>(MongoDbContext dbContext, string collectionNa
         return _collection.AsQueryable(new AggregateOptions() { Hint = BsonDocument.Parse(hint) });
     }
 
+    public IQueryable<T> WithHintName(string hintName)
+    {
+        return _collection.AsQueryable(new AggregateOptions() { Hint = hintName });
+    }
+
     public Type ElementType => EntityQueryable.ElementType;
     public Expression Expression => EntityQueryable.Expression;
     public IQueryProvider Provider => EntityQueryable.Provider;

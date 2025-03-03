@@ -56,8 +56,7 @@ public class MultiItemDataTestFixture : IDisposable
     public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        var featureManager = Substitute.For<IFeatureManager>();
-        return new ImportNotificationsAggregationService(MongoDbContext, logger, featureManager);
+        return new ImportNotificationsAggregationService(MongoDbContext, logger);
     }
 
     public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)

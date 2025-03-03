@@ -22,18 +22,17 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.UpdatedEntity), cancellationToken: cancellationToken),
             CreateIndex("PartOneArrivesAt",
                 Builders<ImportNotification>.IndexKeys.Ascending(n => n.PartOne!.ArrivesAt), cancellationToken: cancellationToken),
-            CreateIndex("AggregationByCreatedAndStatus",
+            CreateIndex("AggregationByCreatedSourceAndStatus",
                 Builders<ImportNotification>.IndexKeys
-                    .Ascending(n => n.Created)
+                    .Ascending(n => n.CreatedSource)
                     .Ascending(n => n.BtmsStatus.TypeAndLinkStatus),
                 cancellationToken: cancellationToken),
-            CreateIndex("AggregationByStatus",
-                Builders<ImportNotification>.IndexKeys.Ascending(n => n.BtmsStatus.TypeAndLinkStatus), cancellationToken: cancellationToken),
             CreateIndex("ImportNotificationGmrLinker",
                 Builders<ImportNotification>.IndexKeys
                     .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.system"))
                     .Ascending(new StringFieldDefinition<ImportNotification>("externalReferences.reference")), cancellationToken: cancellationToken),
-
+            DropIndex<ImportNotification>("AggregationByCreatedAndStatus", cancellationToken),
+            DropIndex<ImportNotification>("AggregationByStatus", cancellationToken),
             CreateIndex("MatchReferenceIdx",
                 Builders<Movement>.IndexKeys.Ascending(m => m._MatchReferences), cancellationToken: cancellationToken),
             CreateIndex("Created",
@@ -78,5 +77,28 @@ public class MongoIndexService(IMongoDatabase database, ILogger<MongoIndexServic
             logger.LogError(e, "Failed to Create index {Name} on {Collection}", name, typeof(T).Name);
         }
 
+    }
+
+    private async Task DropIndex<T>(string name, CancellationToken cancellationToken = default)
+    {
+        var collection = database.GetCollection<T>(typeof(T).Name);
+        var indexes = await (await collection.Indexes
+                .ListAsync(cancellationToken))
+            .ToListAsync(cancellationToken);
+
+        var exists = indexes
+            .SelectMany(index => index.Elements)
+            .Any(element =>
+                element.Name == "name" &&
+                element.Value == name);
+
+        if (!exists)
+        {
+            return;
+        }
+
+        logger.LogWarning("DropIndex Index {Name} exists, dropping.", name);
+
+        await collection.Indexes.DropOneAsync(name, cancellationToken: cancellationToken);
     }
 }

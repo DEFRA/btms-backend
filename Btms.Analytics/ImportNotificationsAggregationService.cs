@@ -14,7 +14,7 @@ using Microsoft.FeatureManagement;
 
 namespace Btms.Analytics;
 
-public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger, IFeatureManager featureManager)
+public class ImportNotificationsAggregationService(IMongoDbContext context, ILogger<ImportNotificationsAggregationService> logger)
     : IImportNotificationsAggregationService
 {
     public Task<MultiSeriesDatetimeDataset> ByCreated(DateTime from, DateTime to, AggregationPeriod aggregateBy = AggregationPeriod.Day)
@@ -43,20 +43,11 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
         return AggregateByLinkedAndNotificationType(dateRange, CreateDatasetName, matchFilter, "$partOne.arrivesAt", aggregateBy);
     }
 
-    public async Task<SingleSeriesDataset> ByStatus(DateTime? from = null, DateTime? to = null)
+    public Task<SingleSeriesDataset> ByStatus(DateTime? from = null, DateTime? to = null)
     {
-        var collection = context
-            .Notifications;
-
-        var queryable = (IQueryable<ImportNotification>)collection;
-
-        if (await featureManager.IsEnabledAsync(Features.ImportNotificationAnalyticsUseHint))
-        {
-            queryable = collection
-                .WithHint("{  \"btmsStatus.typeAndLinkStatus\":1 }");
-        }
-
-        var data = queryable
+        var data = context
+            .Notifications
+            .WithHintName("AggregationByCreatedSourceAndStatus")
             .Where(n => (from == null || n.CreatedSource >= from) && (to == null || n.CreatedSource < to))
             .GroupBy(n => n.BtmsStatus.TypeAndLinkStatus)
             .Select(g => new { Key = g.Key!.Value, Count = g.Count() })
@@ -64,10 +55,10 @@ public class ImportNotificationsAggregationService(IMongoDbContext context, ILog
             .ToDictionary(g => g.Key.GetValue(),
                 g => g.Count);
 
-        return new SingleSeriesDataset
+        return Task.FromResult(new SingleSeriesDataset
         {
             Values = AnalyticsHelpers.GetImportNotificationSegments().ToDictionary(title => title, title => data.GetValueOrDefault(title, 0))
-        };
+        });
     }
 
     public EntityDataset<ScenarioItem> Scenarios(DateTime? from = null, DateTime? to = null)

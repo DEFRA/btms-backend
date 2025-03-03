@@ -8,7 +8,6 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
-
 namespace Btms.Model.Cds;
 
 /// <summary>
@@ -50,10 +49,19 @@ public partial class Items  //
                 existing.DecisionReasons = decisionItemsCheck.DecisionReasons;
                 existing.DecisionsValidUntil = decisionItemsCheck.DecisionsValidUntil;
                 existing.DepartmentCode = decisionItemsCheck.DepartmentCode;
+                existing.DecisionInternalFurtherDetail = decisionItemsCheck.DecisionInternalFurtherDetail;
             }
             else
             {
-                checks.Add(decisionItemsCheck);
+                checks.Add(new Check()
+                {
+                    CheckCode = decisionItemsCheck.CheckCode,
+                    DecisionCode = decisionItemsCheck.DecisionCode,
+                    DecisionReasons = decisionItemsCheck.DecisionReasons,
+                    DecisionsValidUntil = decisionItemsCheck.DecisionsValidUntil,
+                    DepartmentCode = decisionItemsCheck.DepartmentCode,
+                    DecisionInternalFurtherDetail = decisionItemsCheck.DecisionInternalFurtherDetail
+                });
             }
         }
 

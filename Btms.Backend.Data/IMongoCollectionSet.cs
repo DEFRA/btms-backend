@@ -9,6 +9,7 @@ public interface IMongoCollectionSet<T> : IQueryable<T> where T : IDataEntity
 {
     int PendingChanges { get; }
     IQueryable<T> WithHint(string hint);
+    IQueryable<T> WithHintName(string hintName);
 
     Task<T?> Find(string id, CancellationToken cancellationToken = default);
     Task<T?> Find(Expression<Func<T, bool>> query, CancellationToken cancellationToken = default);
