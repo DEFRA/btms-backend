@@ -33,6 +33,11 @@ public class MemoryCollectionSet<T> : IMongoCollectionSet<T> where T : IDataEnti
         throw new NotImplementedException();
     }
 
+    public IQueryable<T> WithHintName(string hintName)
+    {
+        throw new NotImplementedException();
+    }
+
     public int PendingChanges => 0;
 
     public Task<T?> Find(string id, CancellationToken cancellationToken = default)

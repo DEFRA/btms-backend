@@ -42,11 +42,10 @@ public class DecisionService(
             })
             .ToList();
 
-        foreach (var decisionResultDecisionsMessage in decisionResult.DecisionsMessages)
+        foreach (var internalDecision in decisionResult.DecisionsMessages)
         {
-            var internalDecision = DecisionMapper.Map(decisionResultDecisionsMessage);
             var m = decisionContext.Movements.First(m =>
-                m.Id!.Equals(decisionResultDecisionsMessage.Header?.EntryReference));
+                m.Id!.Equals(internalDecision.Header?.EntryReference));
             var existingMovementBuilder = movementBuilderFactory
                 .From(m)
                 .MergeDecision(decisionContext.MessageId, internalDecision, notificationContext);
@@ -98,7 +97,7 @@ public class DecisionService(
             foreach (var decisionCode in decisionCodes)
             {
                 decisionsResult.AddDecision(match.MovementId, match.ItemNumber, match.DocumentReference,
-                    decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason);
+                    decisionCode.CheckCode, decisionCode.DecisionCode, decisionCode.DecisionReason, decisionCode.InternalDecisionCode);
             }
         }
     }
@@ -156,7 +155,7 @@ public class DecisionService(
             foreach (var document in item.Documents!)
             {
                 decisionsResult.AddDecision(movementId, itemNumber,
-                    document.DocumentReference!, null, DecisionCode.E89);
+                    document.DocumentReference!, null, DecisionCode.X00, internalDecisionCode: DecisionInternalFurtherDetail.E89);
             }
         }
     }
@@ -197,7 +196,7 @@ public class DecisionService(
         {
             logger.LogWarning("No Decision Finder count for ImportNotification {Id} and Check code {CheckCode}",
                 notification.Id, checkCode);
-            yield return new DecisionFinderResult(DecisionCode.E90, checkCode);
+            yield return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E90);
         }
 
         foreach (var finder in finders)

@@ -14,13 +14,13 @@ namespace Btms.Types.Alvs.Mapping;
 
 public static class ItemsMapper
 {
-    public static Btms.Model.Cds.Items Map(Btms.Types.Alvs.Items? from)
+    public static Btms.Model.Cds.ClearanceRequestItems Map(Btms.Types.Alvs.Items? from)
     {
         if (from is null)
         {
             return default!;
         }
-        var to = new Btms.Model.Cds.Items();
+        var to = new Btms.Model.Cds.ClearanceRequestItems();
         to.ItemNumber = from?.ItemNumber;
         to.CustomsProcedureCode = from?.CustomsProcedureCode;
         to.TaricCommodityCode = from?.TaricCommodityCode;

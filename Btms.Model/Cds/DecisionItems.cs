@@ -15,6 +15,34 @@ using System.Dynamic;
 
 namespace Btms.Model.Cds;
 
+public partial class DecisionCheck
+{
+
+    [Attr]
+    [JsonPropertyName("checkCode")]
+    public required string CheckCode { get; set; }
+
+    [Attr]
+    [JsonPropertyName("departmentCode")]
+    public string? DepartmentCode { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionCode")]
+    public required string DecisionCode { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionsValidUntil")]
+    public DateTime? DecisionsValidUntil { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionReasons")]
+    public string[]? DecisionReasons { get; set; }
+
+    [Attr]
+    [JsonPropertyName("decisionInternalFurtherDetail")]
+    public string[]? DecisionInternalFurtherDetail { get; set; }
+}
+
 /// <summary>
 /// 
 /// </summary>
@@ -32,6 +60,33 @@ public partial class DecisionItems  //
     /// </summary>
     [Attr]
     [System.ComponentModel.Description("")]
-    public Check[]? Checks { get; set; }
+    public required DecisionCheck[] Checks { get; set; }
+
+    // public void MergeChecks(DecisionItems decisionItems)
+    // {
+    //     var checks = Checks?.ToList();
+    //     if (checks == null)
+    //     {
+    //         checks = new List<DecisionCheck>();
+    //     }
+    //
+    //     foreach (var decisionItemsCheck in decisionItems.Checks!)
+    //     {
+    //         var existing = checks.Find(x => x.CheckCode == decisionItemsCheck.CheckCode);
+    //         if (existing != null)
+    //         {
+    //             existing.DecisionCode = decisionItemsCheck.DecisionCode;
+    //             existing.DecisionReasons = decisionItemsCheck.DecisionReasons;
+    //             existing.DecisionsValidUntil = decisionItemsCheck.DecisionsValidUntil;
+    //             existing.DepartmentCode = decisionItemsCheck.DepartmentCode;
+    //         }
+    //         else
+    //         {
+    //             checks.Add(decisionItemsCheck);
+    //         }
+    //     }
+    //
+    //     Checks = checks.ToArray();
+    // }
 
 }
