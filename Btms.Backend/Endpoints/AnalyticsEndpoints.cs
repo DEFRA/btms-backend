@@ -1,10 +1,12 @@
 using System.Text.Json;
 using Btms.Analytics;
+using Btms.Analytics.Export;
 using Btms.Backend.Config;
 using Btms.Common;
 using Btms.Common.Extensions;
 using Btms.Model.Ipaffs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 
@@ -25,6 +27,9 @@ public static class AnalyticsEndpoints
 
         var scenarios = app.MapGet(BaseRoute + "/scenarios", Scenarios);
 
+        app.MapGet(BaseRoute + "/export/mrns", GetMrnCsv);
+        app.MapGet(BaseRoute + "/export/checks", GetCheckCsv);
+        
         app.MapGet(BaseRoute + "/record-current-state", RecordCurrentState)
             .AllowAnonymous();
 
@@ -44,7 +49,6 @@ public static class AnalyticsEndpoints
     }
 
     private static async Task<IResult> Timeline(
-        [FromServices] IImportNotificationsAggregationService importService,
         [FromServices] IMovementsAggregationService movementsService,
         [FromQuery] string movementId)
     {
@@ -77,7 +81,6 @@ public static class AnalyticsEndpoints
     }
 
     private static IResult Scenarios(
-        [FromServices] IMovementsAggregationService movementsService,
         [FromServices] IImportNotificationsAggregationService importService,
         [AsParameters] DateRange dateRange)
     {
@@ -140,4 +143,51 @@ public static class AnalyticsEndpoints
 
         return TypedResults.Json(result, options);
     }
+    
+
+    private static async Task<FileResult> GetMrnCsv(
+        [FromServices] MovementExportService exportService,
+        [AsParameters] DateRange dateRange,
+        [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
+        [FromQuery(Name = "coo")] string? countryOfOrigin,
+        [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
+    {
+        var result =
+            await exportService
+                .GetMrnExport(dateRange.From!.Value, dateRange.To!.Value, finalisedOnly, chedTypes, countryOfOrigin);
+
+        return new FileContentResult(exportService.WriteAsCsv(result), "text/csv")
+        {
+            FileDownloadName = "mrn.csv"
+        };
+    }
+    
+    private static async Task<FileResult> GetCheckCsv(
+        [FromServices] MovementExportService exportService,
+        [AsParameters] DateRange dateRange,
+        [FromQuery(Name = "chedType")] ImportNotificationTypeEnum[] chedTypes,
+        [FromQuery(Name = "coo")] string? countryOfOrigin,
+        [FromQuery(Name = "finalisedOnly")] bool finalisedOnly = true)
+    {
+        var result =
+            await exportService
+                .GetCheckExport(dateRange.From!.Value, dateRange.To!.Value, finalisedOnly, chedTypes, countryOfOrigin);
+
+        return new FileContentResult(exportService.WriteAsCsv(result), "text/csv")
+        {
+            FileDownloadName = "check.csv"
+        };
+    }
+    
+    // private static FileResult WriteAsCsv<T>(string fileName, List<T> data)
+    // {
+    //     var m = new MemoryStream();
+    //     
+    //     byte[] fileBytes = [];
+    //
+    //     return new FileContentResult(fileBytes, "text/csv")
+    //     {
+    //         FileDownloadName = fileName
+    //     };
+    // }
 }

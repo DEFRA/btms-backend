@@ -19,7 +19,7 @@ public static class AnalyticsExtensions
     {
         services.AddScoped<IImportNotificationsAggregationService, ImportNotificationsAggregationService>();
         services.AddScoped<IMovementsAggregationService, MovementsAggregationService>();
-
+        
         // To revisit in future 
         if (EnableMetrics)
         {
