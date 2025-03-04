@@ -1,4 +1,4 @@
-[submodule "btms-test-data"]
-	path = btms-test-data
+[submodule "Btms.Test.Data"]
+	path = Btms.Test.Data
 	url = https://github.com/DEFRA/btms-test-data.git
 	branch = main

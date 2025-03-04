@@ -81,7 +81,7 @@ public static class BuilderExtensions
         services.AddHttpClient();
 
         services.PostConfigure<BlobServiceOptions>(x => x.CachePath =
-            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../", "btms-test-data",
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../", "Btms.Test.Data",
                 "Samples")));
 
         foreach (var type in GetAllScenarios())
