@@ -29,7 +29,10 @@ public class CdsFinalisationConsumerTests : IAsyncLifetime
         {
             Header = new FinalisationHeader()
             {
-                EntryReference = "TEst", FinalState = "final", ManualAction = "manual", EntryVersionNumber = 1
+                EntryReference = "TEst",
+                FinalState = "final",
+                ManualAction = "manual",
+                EntryVersionNumber = 1
             },
             ServiceHeader = new ServiceHeader { CorrelationId = id }
         });
