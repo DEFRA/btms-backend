@@ -93,8 +93,10 @@ public class ClearanceRequestConsumerTests
             }
         };
 
-        return new ClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
+        var consumer =  new ClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
             _validationService, _mongoDbContext, NullLogger<ClearanceRequestConsumer>.Instance);
+        consumer.Context = Context;
+        return consumer;
     }
 
     private ConsumerContext Context = null!;
