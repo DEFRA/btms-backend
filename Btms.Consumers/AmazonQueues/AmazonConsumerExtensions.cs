@@ -7,7 +7,8 @@ namespace Btms.Consumers.AmazonQueues;
 
 internal static class AmazonConsumerExtensions
 {
-    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsSqsOptions options)
+    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services,
+        AwsSqsOptions options)
     {
         mbb.WithProviderAmazonSQS(cfg =>
         {
@@ -32,5 +33,5 @@ internal static class AmazonConsumerExtensions
         {
             cfg.ClientProviderFactory = (provider => new CdpCredentialsSqsClientProvider(cfg.SqsClientConfig));
         }
-    }   
+    }
 }

@@ -18,7 +18,7 @@ internal class ClearanceRequestConsumer(
     IDecisionService decisionService,
     IValidationService validationService,
     IMongoDbContext dbContext,
-    ILogger<ClearanceRequestConsumer> logger) 
+    ILogger<ClearanceRequestConsumer> logger)
     : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
     public async Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
@@ -76,7 +76,6 @@ internal class ClearanceRequestConsumer(
 
                 // Recalculate the status of the notifications before saving
                 linkResult.Notifications.ForEach(n => n.CalculateStatus());
-
             }
             else
             {

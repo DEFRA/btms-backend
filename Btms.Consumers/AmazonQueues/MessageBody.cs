@@ -2,12 +2,16 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Btms.Common.Extensions;
 
 namespace Btms.Consumers.AmazonQueues;
 
 public class MessageBody
 {
-    protected static readonly JsonSerializerOptions? JsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() } };
+    protected static readonly JsonSerializerOptions? JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() }
+    };
 
     public required string Type { get; init; }
     public required string MessageId { get; init; }
