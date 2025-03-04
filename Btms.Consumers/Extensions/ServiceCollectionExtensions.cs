@@ -24,10 +24,8 @@ namespace Btms.Consumers.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration, ILogger logger)
+        public static IServiceCollection AddConsumers(this IServiceCollection services, IConfiguration configuration)
         {
-            logger.Information("Start configuring Consumers");
-
             var consumerOpts = services.BtmsAddOptions<ConsumerOptions>(configuration, ConsumerOptions.SectionName).Get();
 
             services.AddBtmsMetrics();
@@ -38,15 +36,11 @@ namespace Btms.Consumers.Extensions
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(JobConsumerInterceptor<>));
             services.AddSingleton(typeof(IMemoryConsumerErrorHandler<>), typeof(InMemoryConsumerErrorHandler<>));
-            services.AddScoped<IClearanceRequestConsumer, ClearanceRequestConsumer>();
-            services.AddScoped<AlvsClearanceRequestConsumer>();
 
             services.AddSlimMessageBus(mbb =>
             {
                 if (consumerOpts.EnableAsbConsumers)
                 {
-                    logger.Information("Start configuring Azure Service Bus Consumers");
-
                     var serviceBusOptions = services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName).Get();
                     mbb.AddChildBus("ASB_Notification", cbb =>
                     {
@@ -82,8 +76,6 @@ namespace Btms.Consumers.Extensions
                     });
                 }
 
-                logger.Information("Start configuring in-memory Consumers");
-
                 mbb
                     .AddChildBus("InMemory", cbb =>
                     {
@@ -116,7 +108,7 @@ namespace Btms.Consumers.Extensions
                             .Consume<AlvsClearanceRequest>(x =>
                             {
                                 x.Instances(consumerOpts.InMemoryClearanceRequests);
-                                x.Topic("CLEARANCEREQUESTS").WithConsumer<AlvsClearanceRequestConsumer>();
+                                x.Topic("CLEARANCEREQUESTS").WithConsumer<ClearanceRequestConsumer>();
                             })
                             .Produce<Decision>(x => x.DefaultTopic(nameof(Decision)))
                             .Consume<Decision>(x =>
@@ -134,10 +126,8 @@ namespace Btms.Consumers.Extensions
 
                 if (consumerOpts.EnableAmazonConsumers)
                 {
-                    logger.Information("Start configuring AWS Consumers");
-
                     var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
-                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions, logger));
+                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions));
                 }
             });
 

@@ -1,5 +1,6 @@
 using SlimMessageBus;
 using System.Diagnostics;
+using Amazon.SQS.Model;
 using Azure.Messaging.ServiceBus;
 
 namespace Btms.Consumers.Extensions;
@@ -37,6 +38,11 @@ public static class ConsumerContextExtensions
         if (consumerContext.Properties.TryGetValue(MessageBusHeaders.ServiceBusMessage, out var sbMessage))
         {
             return ((ServiceBusReceivedMessage)sbMessage).MessageId;
+        }
+
+        if (consumerContext.Properties.TryGetValue(MessageBusHeaders.SqsBusMessage, out var sqsMessage))
+        {
+            return ((Message)sqsMessage).MessageId;
         }
 
         return string.Empty;

@@ -11,6 +11,7 @@ public static class MessageBusHeaders
     public const string Linked = "linked";
     public const string MessageType = "messageType";
     public const string ServiceBusMessage = "ServiceBus_Message";
+    public const string SqsBusMessage = "Sqs_Message";
     public const string UseLock = "use-lock";
 }
 
