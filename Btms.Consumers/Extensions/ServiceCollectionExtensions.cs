@@ -124,9 +124,10 @@ namespace Btms.Consumers.Extensions
                             });
                     });
 
+                var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
+
                 if (consumerOpts.EnableAmazonConsumers)
                 {
-                    var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
                     mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions));
                 }
             });

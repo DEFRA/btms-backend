@@ -6,7 +6,7 @@ using Btms.Consumers.AmazonQueues;
 
 namespace Btms.Backend.Aws;
 
-public class BtmsSqsHealthCheck(AwsSqsOptions sqsOptions) : IHealthCheck
+public class BtmsSqsHealthCheck(AwsSqsOptions sqsOptions, string queueName) : IHealthCheck
 {
     /// <inheritdoc />
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
@@ -14,7 +14,7 @@ public class BtmsSqsHealthCheck(AwsSqsOptions sqsOptions) : IHealthCheck
         try
         {
             using var client = CreateSqsClient();
-            _ = await client.GetQueueUrlAsync(sqsOptions.ClearanceRequestQueueName, cancellationToken).ConfigureAwait(false);
+            _ = await client.GetQueueUrlAsync(queueName, cancellationToken).ConfigureAwait(false);
             return HealthCheckResult.Healthy();
         }
         catch (Exception ex)

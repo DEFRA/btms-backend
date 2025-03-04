@@ -9,7 +9,7 @@ using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
-public class MockClearanceRequestConsumer : IConsumer<MessageBody>, IConsumerWithContext
+public class MockSqsConsumer : IConsumer<MessageBody>, IConsumerWithContext
 {
     public Task OnHandle(MessageBody message, CancellationToken cancellationToken)
     {
@@ -31,7 +31,7 @@ public class TestAwsConsumers : IAsyncDisposable
     private readonly WebApplication _app = null!;
     private readonly CancellationTokenSource _tokenSource = new();
 
-    public readonly MockClearanceRequestConsumer ClearanceRequestConsumerMock = new();
+    public readonly MockSqsConsumer ConsumerMock = new();
     public readonly IConfiguration Configuration;
     public readonly AwsSqsOptions AwsSqsOptions;
 
@@ -43,7 +43,7 @@ public class TestAwsConsumers : IAsyncDisposable
 
         Configuration = builder.Configuration;
         AwsSqsOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(Configuration, AwsSqsOptions.SectionName).Get();
-        builder.Services.AddScoped<MockClearanceRequestConsumer>(_ => ClearanceRequestConsumerMock);
+        builder.Services.AddScoped<MockSqsConsumer>(_ => ConsumerMock);
 
         try
         {
@@ -60,8 +60,12 @@ public class TestAwsConsumers : IAsyncDisposable
 
                     mbb.AddJsonSerializer();
                     mbb.Consume<MessageBody>(x => x
-                        .WithConsumer<MockClearanceRequestConsumer>()
+                        .WithConsumer<MockSqsConsumer>()
                         .Queue(AwsSqsOptions.ClearanceRequestQueueName));
+
+                    mbb.Consume<MessageBody>(x => x
+                        .WithConsumer<MockSqsConsumer>()
+                        .Queue(AwsSqsOptions.DecisionQueueName));
                 });
             });
 
