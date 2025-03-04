@@ -18,7 +18,9 @@ public class ChedPpPhsiTests(ITestOutputHelper output) : MultipleScenarioGenerat
 {
     [Theory]
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBD70G9C5RSI5AR5", "C03")]
+    // Test data updated to have in-progress notification come after partially reject notification to exercise CDMS-345.
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDC4TW6DUQYIAR5", "N02")]
+    // Test data updated to have in-progress notification come after partially reject notification to exercise CDMS-345.
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDN3EZ714MBIAR9", "H01")]
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDCVPBWY0GE9AR8", "H02")]
     [InlineData(typeof(ChedPpPhsiDecisionTestsScenarioGenerator), "24GBDB6P6GWPVLKAR7", "C03")]
