@@ -1,6 +1,4 @@
-using Btms.Types.Alvs;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
@@ -9,44 +7,30 @@ namespace Btms.Consumers.AmazonQueues;
 
 internal static class AmazonConsumerExtensions
 {
-    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsSqsOptions options, ILogger logger)
+    public static void AddAmazonConsumers(this MessageBusBuilder mbb, IServiceCollection services, AwsSqsOptions options)
     {
-        try
+        mbb.WithProviderAmazonSQS(cfg =>
         {
-            mbb.WithProviderAmazonSQS(cfg =>
-            {
-                cfg.TopologyProvisioning.Enabled = false;
-                SetConfigurationIfRequired(options, cfg, logger);
-            });
+            cfg.TopologyProvisioning.Enabled = false;
+            SetConfiguration(options, cfg);
+        });
 
-            mbb.AddJsonSerializer();
-
-            mbb.AddConsumer<HmrcClearanceRequestConsumer, AlvsClearanceRequest>(services, options.ClearanceRequestQueueName, logger);
-        }
-        catch (Exception ex)
-        {
-            logger.Error(ex, "Unable to configure AWS consumers");
-        }
+        mbb.AddJsonSerializer();
+        mbb.Consume<MessageBody>(x => x
+            .WithConsumer<SqsClearanceRequestConsumer>()
+            .Queue(options.ClearanceRequestQueueName));
     }
 
-    private static void SetConfigurationIfRequired(AwsSqsOptions options, SqsMessageBusSettings cfg, ILogger logger)
+    private static void SetConfiguration(AwsSqsOptions options, SqsMessageBusSettings cfg)
     {
         if (options.ServiceUrl != null)
         {
-            logger.Information("Use AWS consumer Service URL {ServiceUrl}", options.ServiceUrl);
-
             cfg.SqsClientConfig.ServiceURL = options.ServiceUrl;
             cfg.UseCredentials(options.AccessKeyId, options.SecretAccessKey);
         }
-    }
-
-    private static void AddConsumer<TConsumer, TMessage>(this MessageBusBuilder mbb, IServiceCollection services, string queueName, ILogger logger) where TConsumer : MessageConsumer<TMessage> where TMessage : class
-    {
-        logger.Information("Added AWS consumer of type {ConsumerType} for messages of {MessageType} from {QueueName}", typeof(TConsumer).Name, typeof(TMessage).Name, queueName);
-
-        services.AddScoped<TConsumer>();
-        mbb.Consume<MessageBody>(x => x
-            .WithConsumer<TConsumer>()
-            .Queue(queueName));
-    }
+        else
+        {
+            cfg.ClientProviderFactory = (provider => new CdpCredentialsSqsClientProvider(cfg.SqsClientConfig));
+        }
+    }   
 }

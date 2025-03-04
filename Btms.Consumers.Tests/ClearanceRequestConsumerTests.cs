@@ -46,7 +46,7 @@ public class ClearanceRequestConsumerTests
         var consumer = CreateSubject(clearanceRequest.Header!.EntryReference!);
 
         // ACT
-        await consumer.OnHandle(clearanceRequest, Context, CancellationToken.None);
+        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
         Context.IsLinked().Should().BeFalse();
@@ -69,7 +69,7 @@ public class ClearanceRequestConsumerTests
         var consumer = CreateSubject(clearanceRequest.Header!.EntryReference!);
 
         // ACT
-        await consumer.OnHandle(clearanceRequest, Context, CancellationToken.None);
+        await consumer.OnHandle(clearanceRequest, CancellationToken.None);
 
         // ASSERT
         Context.IsPreProcessed().Should().BeTrue();

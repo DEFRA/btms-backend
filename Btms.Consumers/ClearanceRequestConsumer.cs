@@ -11,11 +11,6 @@ using SlimMessageBus;
 
 namespace Btms.Consumers;
 
-public interface IClearanceRequestConsumer
-{
-    Task OnHandle(AlvsClearanceRequest message, IConsumerContext context, CancellationToken cancellationToken);
-}
-
 internal class ClearanceRequestConsumer(
     IPreProcessor<AlvsClearanceRequest, Model.Movement> preProcessor,
     ILinkingService linkingService,
@@ -23,60 +18,61 @@ internal class ClearanceRequestConsumer(
     IDecisionService decisionService,
     IValidationService validationService,
     IMongoDbContext dbContext,
-    ILogger<ClearanceRequestConsumer> logger) : IClearanceRequestConsumer
+    ILogger<ClearanceRequestConsumer> logger) 
+    : IConsumer<AlvsClearanceRequest>, IConsumerWithContext
 {
-    public async Task OnHandle(AlvsClearanceRequest message, IConsumerContext context, CancellationToken cancellationToken)
+    public async Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
     {
-        var messageId = context.GetMessageId();
-        using (logger.BeginScope(context.GetJobId()!, messageId, GetType().Name, message.Header?.EntryReference!))
+        var messageId = Context.GetMessageId();
+        using (logger.BeginScope(Context.GetJobId()!, messageId, GetType().Name, message.Header?.EntryReference!))
         {
             var preProcessingResult = await preProcessor
                 .Process(new PreProcessingContext<AlvsClearanceRequest>(message, messageId));
 
             if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
             {
-                context.Skipped();
+                Context.Skipped();
             }
             else
             {
-                context.PreProcessed();
+                Context.PreProcessed();
             }
 
             if (preProcessingResult.IsCreatedOrChanged())
             {
                 var linkContext = new MovementLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
-                var linkResult = await linkingService.Link(linkContext, context.CancellationToken);
+                var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
 
                 if (linkResult.Outcome != LinkOutcome.NotLinked)
                 {
-                    context.Linked();
+                    Context.Linked();
                 }
 
                 if (!await validationService.PostLinking(linkContext, linkResult,
                         triggeringMovement: preProcessingResult.Record,
-                        cancellationToken: context.CancellationToken))
+                        cancellationToken: Context.CancellationToken))
                 {
                     logger.LogWarning(
                         "Skipping Matching/Decisions due to PostLinking failure for {Mrn} with MessageId {MessageId}",
                         message.Header?.EntryReference, messageId);
-                    await dbContext.SaveChangesAsync(context.CancellationToken);
+                    await dbContext.SaveChangesAsync(Context.CancellationToken);
                     return;
                 }
 
                 // We need to mark the entity as updated even if the conceptual resource has not changed
                 // so that consumers of BTMS can query notifications where related data has changed but
                 // the resource itself hasn't
-                await dbContext.Notifications.Update(linkResult.Notifications, context.CancellationToken);
+                await dbContext.Notifications.Update(linkResult.Notifications, Context.CancellationToken);
 
                 var matchResult = await matchingService.Process(
-                    new MatchingContext(linkResult.Notifications, linkResult.Movements), context.CancellationToken);
+                    new MatchingContext(linkResult.Notifications, linkResult.Movements), Context.CancellationToken);
 
                 var decisionContext =
                     new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, messageId);
-                var decisionResult = await decisionService.Process(decisionContext, context.CancellationToken);
+                var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
-                await validationService.PostDecision(linkResult, decisionResult, context.CancellationToken);
+                await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
 
                 // Recalculate the status of the notifications before saving
                 linkResult.Notifications.ForEach(n => n.CalculateStatus());
@@ -90,7 +86,9 @@ internal class ClearanceRequestConsumer(
                     preProcessingResult.Record.GetLatestAuditEntry().Status);
             }
 
-            await dbContext.SaveChangesAsync(context.CancellationToken);
+            await dbContext.SaveChangesAsync(Context.CancellationToken);
         }
     }
+
+    public IConsumerContext Context { get; set; } = null!;
 }

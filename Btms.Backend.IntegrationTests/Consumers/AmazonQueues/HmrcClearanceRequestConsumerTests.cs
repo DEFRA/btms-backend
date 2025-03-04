@@ -1,7 +1,5 @@
 using Btms.Types.Alvs;
 using FluentAssertions;
-using NSubstitute;
-using SlimMessageBus;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,9 +23,7 @@ public class HmrcClearanceRequestConsumerTests : IAsyncLifetime
         var semaphore = new SemaphoreSlim(1, 1);
         var id = Guid.NewGuid().ToString();
 
-        _awsConsumers.ClearanceRequestConsumerMock
-            .When(mock => mock.OnHandle(Arg.Is<AlvsClearanceRequest>(a => a.ServiceHeader != null && a.ServiceHeader.CorrelationId == id), Arg.Any<IConsumerContext>(), Arg.Any<CancellationToken>()))
-            .Do(_ => semaphore.Release());
+        _awsConsumers.ClearanceRequestConsumerMock.SetOnHandle = () => semaphore.Release();
 
         await _awsSender.SendAsync(new AlvsClearanceRequest { ServiceHeader = new ServiceHeader { CorrelationId = id } });
 
