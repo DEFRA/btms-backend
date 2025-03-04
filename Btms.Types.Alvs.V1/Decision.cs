@@ -7,6 +7,42 @@ using System.Dynamic;
 
 namespace Btms.Types.Alvs;
 
+public class DecisionCheck
+{
+
+    [JsonPropertyName("checkCode")]
+    public string? CheckCode { get; set; }
+
+    [JsonPropertyName("departmentCode")]
+    public string? DepartmentCode { get; set; }
+
+    [JsonPropertyName("decisionCode")]
+    public string? DecisionCode { get; set; }
+
+    [JsonPropertyName("decisionsValidUntil")]
+    public DateTime? DecisionsValidUntil { get; set; }
+
+    [JsonPropertyName("decisionReasons")]
+    public string[]? DecisionReasons { get; set; }
+
+}
+
+/// <summary>
+/// 
+/// </summary>
+public partial class DecisionItems
+{
+    [JsonPropertyName("itemNumber")]
+    public int ItemNumber { get; set; }
+
+    [JsonPropertyName("documents")]
+    public Document[]? Documents { get; set; }
+
+    [JsonPropertyName("checks")]
+    public DecisionCheck[]? Checks { get; set; }
+
+}
+
 /// <summary>
 /// This is a copy of the AlvsClearanceRequest
 /// As a temporary measure to allow us to distinguish between the two types when
@@ -35,6 +71,6 @@ public class Decision
     /// 
     /// </summary>
     [JsonPropertyName("items")]
-    public Items[]? Items { get; set; }
+    public DecisionItems[]? Items { get; set; }
 
 }

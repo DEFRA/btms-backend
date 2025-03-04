@@ -67,8 +67,7 @@ public class BasicSampleDataTestFixture : IDisposable
     public IImportNotificationsAggregationService GetImportNotificationsAggregationService(ITestOutputHelper testOutputHelper)
     {
         var logger = testOutputHelper.GetLogger<ImportNotificationsAggregationService>();
-        var featureManager = Substitute.For<IFeatureManager>();
-        return new ImportNotificationsAggregationService(_mongoDbContext, logger, featureManager);
+        return new ImportNotificationsAggregationService(_mongoDbContext, logger);
     }
 
     public IMovementsAggregationService GetMovementsAggregationService(ITestOutputHelper testOutputHelper)

@@ -27,6 +27,6 @@ public partial class CdsClearanceRequest  //
 
     [Attr]
     [JsonPropertyName("items")]
-    public Items[]? Items { get; set; }
+    public ClearanceRequestItems[]? Items { get; set; }
 
 }

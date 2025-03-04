@@ -32,13 +32,13 @@ public static class DecisionMapper
                 EntryReference = from.Header.EntryReference,
                 EntryVersionNumber = from.Header.EntryVersionNumber
             },
-            Items = from!.Items!.Select(x => new DecisionItems()
+            Items = from!.Items!.Select(x => new Btms.Model.Cds.DecisionItems()
             {
-                ItemNumber = x.ItemNumber!.Value,
-                Checks = x.Checks!.Select(c => new Btms.Model.Cds.Check()
+                ItemNumber = x.ItemNumber,
+                Checks = x.Checks!.Select(c => new Btms.Model.Cds.DecisionCheck()
                 {
-                    CheckCode = c.CheckCode,
-                    DecisionCode = c.DecisionCode,
+                    CheckCode = c.CheckCode!,
+                    DecisionCode = c.DecisionCode!,
                     DecisionReasons = c.DecisionReasons,
                     DecisionsValidUntil = c.DecisionsValidUntil,
                     DepartmentCode = c.DepartmentCode
@@ -47,14 +47,7 @@ public static class DecisionMapper
 
             }).ToArray()
         };
-        // to.ServiceHeader = ServiceHeaderMapper.Map(from?.ServiceHeader!);
-        // to.Header = new DecisionHeader()
-        // {
-        //     DecisionNumber = from.Header.DecisionNumber,
-        //     EntryReference = from.Header.EntryReference,
-        //     EntryVersionNumber = from.Header.EntryVersionNumber
-        // };
-        // to.Items = from?.Items?.Select(x => ItemsMapper.Map(x)).ToArray();
+
         return to;
     }
 }

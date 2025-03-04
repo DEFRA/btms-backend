@@ -90,10 +90,10 @@ public class DecisionBuilder<T> : BuilderBase<T, DecisionBuilder<T>>
 
             dec.Items = dec
                 .Items
-                .Append(new Items()
+                .Append(new DecisionItems()
                 {
                     ItemNumber = item,
-                    Checks = new[] { new Check() { CheckCode = checkCode, DecisionCode = decisionCode } }
+                    Checks = new[] { new DecisionCheck() { CheckCode = checkCode, DecisionCode = decisionCode } }
                 })
                 .ToArray();
         });
