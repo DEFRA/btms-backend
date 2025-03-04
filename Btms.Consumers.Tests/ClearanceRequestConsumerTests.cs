@@ -26,18 +26,22 @@ public class ClearanceRequestConsumerTests
     private readonly IMatchingService _matchingService = Substitute.For<IMatchingService>();
     private readonly IValidationService _validationService = Substitute.For<IValidationService>();
     private readonly IMongoDbContext _mongoDbContext = Substitute.For<IMongoDbContext>();
-    private readonly IPreProcessor<AlvsClearanceRequest, Movement> _preProcessor = Substitute.For<IPreProcessor<AlvsClearanceRequest, Movement>>();
+
+    private readonly IPreProcessor<AlvsClearanceRequest, Movement> _preProcessor =
+        Substitute.For<IPreProcessor<AlvsClearanceRequest, Movement>>();
 
     [Theory]
     [InlineData(PreProcessingOutcome.New)]
     [InlineData(PreProcessingOutcome.Skipped)]
     [InlineData(PreProcessingOutcome.Changed)]
     [InlineData(PreProcessingOutcome.AlreadyProcessed)]
-    public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsLinked_ThenLinkShouldNotBeRun(PreProcessingOutcome outcome)
+    public async Task WhenPreProcessingSucceeds_AndLastAuditEntryIsLinked_ThenLinkShouldNotBeRun(
+        PreProcessingOutcome outcome)
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
-        var mbFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var mbFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(),
+            NullLogger<MovementBuilder>.Instance);
         var mb = mbFactory.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
         mb.Update(AuditEntry.CreateLinked("Test", 1));
         var movement = mb.Build();
@@ -58,7 +62,8 @@ public class ClearanceRequestConsumerTests
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
-        var mbFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var mbFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(),
+            NullLogger<MovementBuilder>.Instance);
         var mb = mbFactory.From(AlvsClearanceRequestMapper.Map(clearanceRequest));
         mb.Update(mb.CreateAuditEntry("Test", CreatedBySystem.Cds));
         var movement = mb.Build();
@@ -85,15 +90,10 @@ public class ClearanceRequestConsumerTests
 
     private ClearanceRequestConsumer CreateSubject(string messageId)
     {
-        Context = new ConsumerContext
-        {
-            Headers = new Dictionary<string, object>
-            {
-                { "messageId", messageId }
-            }
-        };
+        Context = new ConsumerContext { Headers = new Dictionary<string, object> { { "messageId", messageId } } };
 
-        var consumer =  new ClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService, _decisionService,
+        var consumer = new ClearanceRequestConsumer(_preProcessor, _mockLinkingService, _matchingService,
+            _decisionService,
             _validationService, _mongoDbContext, NullLogger<ClearanceRequestConsumer>.Instance);
         consumer.Context = Context;
         return consumer;
