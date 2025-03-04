@@ -61,6 +61,7 @@ public class TestAwsSender : IAsyncDisposable
         var topicName = message switch
         {
             AlvsClearanceRequest => "customs_clearance_request",
+            Decision => "alvs_decision_notification",
             _ => throw new ArgumentException("Invalid message type", nameof(message))
         };
 
