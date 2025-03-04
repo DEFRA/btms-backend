@@ -21,7 +21,6 @@ internal static class AmazonConsumerExtensions
             .WithConsumer<SqsClearanceRequestConsumer>()
             .Queue(options.ClearanceRequestQueueName));
 
-
         mbb.Consume<MessageBody>(x => x
             .WithConsumer<SqsDecisionConsumer>()
             .Queue(options.DecisionQueueName));
