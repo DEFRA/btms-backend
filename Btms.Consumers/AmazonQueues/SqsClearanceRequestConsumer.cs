@@ -26,7 +26,8 @@ internal class SqsClearanceRequestConsumer(
     {
         try
         {
-            var innerConsumer = new ClearanceRequestConsumer(preProcessor, linkingService, matchingService, decisionService,
+            var innerConsumer = new ClearanceRequestConsumer(preProcessor, linkingService, matchingService,
+                decisionService,
                 validationService, dbContext, logger);
 
             innerConsumer.Context = Context;
@@ -39,9 +40,9 @@ internal class SqsClearanceRequestConsumer(
         {
             var tp = Context.GetTransportMessage();
             logger.LogError("Failed to process SQS Message {RawMessage}", JsonSerializer.Serialize(tp));
-            throw;
         }
-      
+
+        return Task.CompletedTask;
     }
 
     public IConsumerContext Context { get; set; } = null!;
