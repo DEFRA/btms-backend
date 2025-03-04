@@ -9,16 +9,16 @@ public class MessageBody
 {
     protected static readonly JsonSerializerOptions? JsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() } };
 
-    public required string Type { get; init; }
-    public required string MessageId { get; init; }
-    public required string TopicArn { get; init; }
-    public required string Message { get; init; }
-    public required string Timestamp { get; init; }
-    public required string UnsubscribeURL { get; init; }
-    public required string SequenceNumber { get; init; }
+    public string? Type { get; set; }
+    public string? MessageId { get; set; }
+    public string? TopicArn { get; set; }
+    public string? Message { get; set; }
+    public string? Timestamp { get; set; }
+    public string? UnsubscribeURL { get; set; }
+    public string? SequenceNumber { get; set; }
 
     public T? MessageAs<T>()
     {
-        return JsonSerializer.Deserialize<T>(Message, JsonSerializerOptions);
+        return JsonSerializer.Deserialize<T>(Message!, JsonSerializerOptions);
     }
 }
