@@ -20,6 +20,10 @@ internal static class AmazonConsumerExtensions
         mbb.Consume<MessageBody>(x => x
             .WithConsumer<SqsClearanceRequestConsumer>()
             .Queue(options.ClearanceRequestQueueName));
+
+        mbb.Consume<MessageBody>(x => x
+            .WithConsumer<SqsDecisionConsumer>()
+            .Queue(options.DecisionQueueName));
     }
 
     private static void SetConfiguration(AwsSqsOptions options, SqsMessageBusSettings cfg)
