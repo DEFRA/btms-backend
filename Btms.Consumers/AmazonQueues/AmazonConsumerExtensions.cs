@@ -1,3 +1,4 @@
+using Btms.Types.Alvs;
 using Microsoft.Extensions.DependencyInjection;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
@@ -17,12 +18,12 @@ internal static class AmazonConsumerExtensions
         });
 
         mbb.AddJsonSerializer();
-        mbb.Consume<MessageBody>(x => x
-            .WithConsumer<SqsClearanceRequestConsumer>()
+        mbb.Consume<AlvsClearanceRequest>(x => x
+            .WithConsumer<ClearanceRequestConsumer>()
             .Queue(options.ClearanceRequestQueueName));
 
-        mbb.Consume<MessageBody>(x => x
-            .WithConsumer<SqsDecisionConsumer>()
+        mbb.Consume<Decision>(x => x
+            .WithConsumer<DecisionsConsumer>()
             .Queue(options.DecisionQueueName));
     }
 

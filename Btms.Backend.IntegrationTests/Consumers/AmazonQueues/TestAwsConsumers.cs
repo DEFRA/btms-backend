@@ -1,5 +1,6 @@
 using Btms.Common.Extensions;
 using Btms.Consumers.AmazonQueues;
+using Btms.Types.Alvs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,9 +10,19 @@ using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
-public class MockSqsConsumer : IConsumer<MessageBody>, IConsumerWithContext
+public class MockSqsConsumer : IConsumer<AlvsClearanceRequest>, IConsumer<Decision>, IConsumerWithContext
 {
-    public Task OnHandle(MessageBody message, CancellationToken cancellationToken)
+    public Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
+    {
+        if (SetOnHandle != null)
+        {
+            SetOnHandle();
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task OnHandle(Decision message, CancellationToken cancellationToken)
     {
         if (SetOnHandle != null)
         {
@@ -59,11 +70,11 @@ public class TestAwsConsumers : IAsyncDisposable
                     });
 
                     mbb.AddJsonSerializer();
-                    mbb.Consume<MessageBody>(x => x
+                    mbb.Consume<AlvsClearanceRequest>(x => x
                         .WithConsumer<MockSqsConsumer>()
                         .Queue(AwsSqsOptions.ClearanceRequestQueueName));
 
-                    mbb.Consume<MessageBody>(x => x
+                    mbb.Consume<Decision>(x => x
                         .WithConsumer<MockSqsConsumer>()
                         .Queue(AwsSqsOptions.DecisionQueueName));
                 });
