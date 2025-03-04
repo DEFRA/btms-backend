@@ -25,13 +25,14 @@ public class CdsFinalisationConsumerTests : IAsyncLifetime
 
         _awsConsumers.ConsumerMock.SetOnHandle = () => semaphore.Release();
 
-        await _awsSender.SendAsync(new Finalisation() { Header = new FinalisationHeader()
+        await _awsSender.SendAsync(new Finalisation()
         {
-            EntryReference = "TEst",
-            FinalState = "final",
-            ManualAction = "manual",
-            EntryVersionNumber = 1
-        }, ServiceHeader = new ServiceHeader { CorrelationId = id } });
+            Header = new FinalisationHeader()
+            {
+                EntryReference = "TEst", FinalState = "final", ManualAction = "manual", EntryVersionNumber = 1
+            },
+            ServiceHeader = new ServiceHeader { CorrelationId = id }
+        });
 
         var received = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
         received.Should().BeTrue();
