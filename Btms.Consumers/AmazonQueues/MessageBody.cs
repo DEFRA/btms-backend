@@ -2,7 +2,6 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Btms.Common.Extensions;
 
 namespace Btms.Consumers.AmazonQueues;
 
