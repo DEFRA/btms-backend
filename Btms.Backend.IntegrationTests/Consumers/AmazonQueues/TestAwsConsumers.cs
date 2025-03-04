@@ -10,7 +10,7 @@ using SlimMessageBus.Host;
 using SlimMessageBus.Host.AmazonSQS;
 using SlimMessageBus.Host.Serialization.SystemTextJson;
 namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
-public class MockSqsConsumer : IConsumer<AlvsClearanceRequest>, IConsumer<Decision>, IConsumerWithContext
+public class MockSqsConsumer : IConsumer<AlvsClearanceRequest>, IConsumer<Decision>, IConsumer<Finalisation>, IConsumerWithContext
 {
     public Task OnHandle(AlvsClearanceRequest message, CancellationToken cancellationToken)
     {
@@ -35,6 +35,16 @@ public class MockSqsConsumer : IConsumer<AlvsClearanceRequest>, IConsumer<Decisi
     public IConsumerContext Context { get; set; } = null!;
 
     public Action SetOnHandle = null!;
+    public Task OnHandle(Finalisation message, CancellationToken cancellationToken)
+    {
+
+        if (SetOnHandle != null)
+        {
+            SetOnHandle();
+        }
+
+        return Task.CompletedTask;
+    }
 }
 
 public class TestAwsConsumers : IAsyncDisposable
