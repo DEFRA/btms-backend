@@ -11,7 +11,7 @@ namespace Btms.Backend.IntegrationTests;
 public class SensitiveDataTests
 {
     private static string FilePath =
-        $"{Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../", "btms-test-data", "Samples"))}/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
+        $"{Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../", "Btms.Test.Data", "Samples"))}/SmokeTest/IPAFFS/CHEDA/CHEDA_GB_2024_1041389-ee0e6fcf-52a4-45ea-8830-d4553ee70361.json";
 
     [Fact]
     public void WhenIncludeSensitiveData_RedactedShouldBeSameAsJson()
