@@ -59,6 +59,12 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
                     case MovementLinkContext movementLinkContext:
                         result = await FindMovementLinks(movementLinkContext.PersistedMovement, cancellationToken);
 
+                        if (result.Notifications.All(x => x.Status == ImportNotificationStatusEnum.Deleted))
+                        {
+                            result.Outcome = LinkOutcome.NotLinked;
+                            return result;
+                        }
+
                         if (!ShouldLinkMovement(movementLinkContext.ChangeSet))
                         {
                             logger.LinkNotAttempted(linkContext.GetType().Name, linkContext.GetIdentifiers());
@@ -256,7 +262,10 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
 
     private async Task<LinkResult> FindMovementLinks(Movement movement, CancellationToken cancellationToken)
     {
-        var notifications = await dbContext.Notifications.Where(x => movement._MatchReferences.Contains(x._MatchReference)).ToListAsync(cancellationToken: cancellationToken);
+        var notifications = await dbContext.Notifications
+            .Where(x => movement._MatchReferences.Contains(x._MatchReference) 
+                        && x.Status != ImportNotificationStatusEnum.Deleted)
+            .ToListAsync(cancellationToken: cancellationToken);
 
         return new LinkResult(notifications.Any() ? LinkOutcome.Linked : LinkOutcome.NotLinked)
         {

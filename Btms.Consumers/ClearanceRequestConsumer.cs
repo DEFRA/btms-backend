@@ -49,6 +49,12 @@ internal class ClearanceRequestConsumer(
                     Context.Linked();
                 }
 
+                if (linkResult.IsAllNotificationsDeleted())
+                {
+                    await dbContext.SaveChangesAsync(Context.CancellationToken);
+                    return;
+                }
+
                 if (!await validationService.PostLinking(linkContext, linkResult,
                         triggeringMovement: preProcessingResult.Record,
                         cancellationToken: Context.CancellationToken))
