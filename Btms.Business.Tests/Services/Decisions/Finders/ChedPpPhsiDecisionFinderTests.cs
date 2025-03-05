@@ -20,19 +20,18 @@ public class ChedPpPhsiDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Validated, true, "H220")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Replaced, false, "H220")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Cancelled, false, "H220")]
-
     [InlineData(ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, true, "H219")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, true, "H218")]
-     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false, null)]
-    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, ImportNotificationStatusEnum notificationStatus, bool expectedResult, string? checkCode)
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false, null)]
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType,
+        ImportNotificationStatusEnum notificationStatus, bool expectedResult, string? checkCode)
     {
         var notification = new ImportNotification
         {
-            Status = notificationStatus,
-            ImportNotificationType = importNotificationType,
+            Status = notificationStatus, ImportNotificationType = importNotificationType,
         };
         var sut = new ChedPPDecisionFinder();
 
@@ -53,12 +52,10 @@ public class ChedPpPhsiDecisionFinderTests
     [InlineData(ImportNotificationStatusEnum.Rejected, DecisionCode.N02)]
     [InlineData(ImportNotificationStatusEnum.Replaced, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     [InlineData(ImportNotificationStatusEnum.SplitConsignment, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
-    public void DecisionFinderTest(ImportNotificationStatusEnum status, DecisionCode expectedCode, DecisionInternalFurtherDetail? expectedFurtherDetail = null)
+    public void DecisionFinderTest(ImportNotificationStatusEnum status, DecisionCode expectedCode,
+        DecisionInternalFurtherDetail? expectedFurtherDetail = null)
     {
-        var notification = new ImportNotification
-        {
-            Status = status
-        };
+        var notification = new ImportNotification { Status = status };
         var sut = new ChedPPDecisionFinder();
 
         var result = sut.FindDecision(notification, null);

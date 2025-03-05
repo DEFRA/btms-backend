@@ -4,7 +4,7 @@ namespace Btms.Business.Services.Decisions.Finders;
 
 public class ChedADecisionFinder : IDecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string? checkCode) => 
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
         notification.ImportNotificationType == ImportNotificationTypeEnum.Cveda &&
         notification.Status != ImportNotificationStatusEnum.Cancelled &&
         notification.Status != ImportNotificationStatusEnum.Replaced &&
@@ -22,19 +22,26 @@ public class ChedADecisionFinder : IDecisionFinder
         {
             true => notification.PartTwo?.Decision?.DecisionEnum switch
             {
-                DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit => new DecisionFinderResult(DecisionCode.E03, checkCode),
-                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03, checkCode),
-                DecisionDecisionEnum.AcceptableForTemporaryImport => new DecisionFinderResult(DecisionCode.C05, checkCode),
+                DecisionDecisionEnum.AcceptableForTranshipment or DecisionDecisionEnum.AcceptableForTransit =>
+                    new DecisionFinderResult(DecisionCode.E03, checkCode),
+                DecisionDecisionEnum.AcceptableForInternalMarket => new DecisionFinderResult(DecisionCode.C03,
+                    checkCode),
+                DecisionDecisionEnum.AcceptableForTemporaryImport => new DecisionFinderResult(DecisionCode.C05,
+                    checkCode),
                 DecisionDecisionEnum.HorseReEntry => new DecisionFinderResult(DecisionCode.C06, checkCode),
-                _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E96)
+                _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
+                    InternalDecisionCode: DecisionInternalFurtherDetail.E96)
             },
             false => notification.PartTwo?.Decision?.NotAcceptableAction switch
             {
-                DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter => new DecisionFinderResult(DecisionCode.N02, checkCode),
+                DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter =>
+                    new DecisionFinderResult(DecisionCode.N02, checkCode),
                 DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, checkCode),
-                _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E97)
+                _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
+                    InternalDecisionCode: DecisionInternalFurtherDetail.E97)
             },
-            _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E99)
+            _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
+                InternalDecisionCode: DecisionInternalFurtherDetail.E99)
         };
     }
 }
