@@ -44,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Btms.Analytics.Export\Btms.Analytics.Export.csproj" />
     <ProjectReference Include="..\Btms.Analytics\Btms.Analytics.csproj" />
     <ProjectReference Include="..\Btms.Business\Btms.Business.csproj" />
     <ProjectReference Include="..\Btms.Consumers\Btms.Consumers.csproj" />
