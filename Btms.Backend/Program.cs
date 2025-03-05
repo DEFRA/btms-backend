@@ -35,6 +35,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
+using Btms.Analytics.Export.Extensions;
 using Btms.Azure.Extensions;
 using Environment = System.Environment;
 using Btms.Backend.Asb;
@@ -168,6 +169,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddScoped(typeof(IResourceRepository<,>), typeof(MongoRepository<,>));
 
     builder.Services.AddAnalyticsServices(builder.Configuration);
+    builder.Services.AddAnalyticsExportServices(builder.Configuration);
 }
 
 [ExcludeFromCodeCoverage]
