@@ -11,6 +11,6 @@ public class LinkResult(LinkOutcome state)
 
     public bool IsAllNotificationsDeleted()
     {
-        return Notifications.All(x => x.Status == ImportNotificationStatusEnum.Deleted);
+        return Notifications.Count > 0 && Notifications.All(x => x.Status == ImportNotificationStatusEnum.Deleted);
     }
 }
