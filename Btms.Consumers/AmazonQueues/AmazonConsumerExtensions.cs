@@ -25,6 +25,10 @@ internal static class AmazonConsumerExtensions
         mbb.Consume<Decision>(x => x
             .WithConsumer<DecisionsConsumer>()
             .Queue(options.DecisionQueueName));
+
+        mbb.Consume<Finalisation>(x => x
+            .WithConsumer<FinalisationsConsumer>()
+            .Queue(options.FinalisationQueueName));
     }
 
     private static void SetConfiguration(AwsSqsOptions options, SqsMessageBusSettings cfg)

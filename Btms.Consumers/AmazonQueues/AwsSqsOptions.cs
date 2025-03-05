@@ -19,4 +19,7 @@ public class AwsSqsOptions
 
     [Required]
     public required string DecisionQueueName { get; set; }
+
+    [Required]
+    public required string FinalisationQueueName { get; set; }
 }

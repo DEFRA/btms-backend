@@ -32,6 +32,13 @@ public static class BtmsSqsHealthCheckBuilderExtensions
             tags,
             timeout));
 
+        builder.Add(new HealthCheckRegistration(
+            $"{Name} finalisations",
+            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.FinalisationQueueName),
+            failureStatus,
+            tags,
+            timeout));
+
         return builder;
     }
 }
