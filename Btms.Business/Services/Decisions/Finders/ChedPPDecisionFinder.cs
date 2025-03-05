@@ -7,7 +7,10 @@ namespace Btms.Business.Services.Decisions.Finders;
 public class ChedPPDecisionFinder : IDecisionFinder
 {
     public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
-        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp && checkCode?.GetChedTypeFromCheckCode() == ImportNotificationTypeEnum.Chedpp;
+        notification.ImportNotificationType == ImportNotificationTypeEnum.Chedpp &&
+        notification.Status != ImportNotificationStatusEnum.Cancelled &&
+        notification.Status != ImportNotificationStatusEnum.Replaced &&
+        checkCode?.GetChedTypeFromCheckCode() == ImportNotificationTypeEnum.Chedpp;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {

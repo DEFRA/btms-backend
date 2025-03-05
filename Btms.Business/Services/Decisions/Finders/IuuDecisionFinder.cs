@@ -6,7 +6,11 @@ public class IuuDecisionFinder : IDecisionFinder
 {
     public const string IuuCheckCode = "H224";
 
-    public bool CanFindDecision(ImportNotification notification, string? checkCode) => notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp && checkCode == IuuCheckCode;
+    public bool CanFindDecision(ImportNotification notification, string? checkCode) => 
+        notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp &&
+        notification.Status != ImportNotificationStatusEnum.Cancelled &&
+        notification.Status != ImportNotificationStatusEnum.Replaced &&
+        checkCode == IuuCheckCode;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
