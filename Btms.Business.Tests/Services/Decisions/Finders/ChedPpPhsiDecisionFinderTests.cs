@@ -31,7 +31,8 @@ public class ChedPpPhsiDecisionFinderTests
     {
         var notification = new ImportNotification
         {
-            Status = notificationStatus, ImportNotificationType = importNotificationType,
+            Status = notificationStatus,
+            ImportNotificationType = importNotificationType,
         };
         var sut = new ChedPPDecisionFinder();
 
