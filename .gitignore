@@ -118,6 +118,9 @@ _TeamCity*
 # DotCover is a Code Coverage Tool
 *.dotCover
 
+# Coverage is output by dotnet XPlat Code Coverage
+coverage
+
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml

@@ -31,10 +31,10 @@ jobs:
         with:
           submodules: true
           token: ${{ secrets.BTMS_TEST_DATA_PAT }}
-        
+
       - name: Verify Format
         run: dotnet format BtmsBackend.sln --verify-no-changes --verbosity diagnostic
-
+        
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
