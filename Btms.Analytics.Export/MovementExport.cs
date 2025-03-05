@@ -13,10 +13,13 @@ namespace Btms.Analytics.Export;
 
 public record MrnExportResult
 {
+    public required string Mrn { get; set; }
     public required string? FrontendLink { get; set; }
     public required string? HistoryLink { get; set; }
-    public required string Mrn { get; set; }
     public required string BusinessDecisionStatus { get; set; }
+
+    public required string CreatedDate { get; set; }
+    public required string LastUpdatedDate { get; set; }
     public required int ItemCount { get; set; }
     public required int CheckCount { get; set; }
 
@@ -61,13 +64,15 @@ public class MovementExportService(IMongoDbContext context, ILogger<MovementExpo
             .Select(m => new MrnExportResult()
             {
                 Mrn = m.Id!,
+                BusinessDecisionStatus = m.Status.BusinessDecisionStatus.GetValue(),
+                CreatedDate = m.CreatedSource!.Value.ToString("dd/MM/yyyy", CultureInfo.CurrentCulture),
+                LastUpdatedDate = m.UpdatedSource!.Value.ToString("dd/MM/yyyy", CultureInfo.CurrentCulture),
                 ItemCount = m.Items.Count,
                 CheckCount = m.Items.Sum(i => i.Checks?.Length ?? 0),
                 ChecksMatching = m.AlvsDecisionStatus.Context.DecisionComparison?.Checks
                     .Count(c => c.BtmsDecisionCode == c.AlvsDecisionCode) ?? 0,
                 ChecksNotMatching = m.AlvsDecisionStatus.Context.DecisionComparison?.Checks
                     .Count(c => c.BtmsDecisionCode != c.AlvsDecisionCode) ?? 0,
-                BusinessDecisionStatus = m.Status.BusinessDecisionStatus.GetValue(),
                 AlvsDecisionCount = m.AlvsDecisionStatus.Decisions.Count,
                 BtmsDecisionCount = m.Decisions.Count,
                 DecisionStatus = m.AlvsDecisionStatus.Context.DecisionComparison?.DecisionStatus.GetValue(),
