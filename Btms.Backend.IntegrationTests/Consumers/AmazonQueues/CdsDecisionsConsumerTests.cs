@@ -7,12 +7,12 @@ namespace Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 
 [Collection("AwsSqsSns")]
 [Trait("Category", "Integration")]
-public class CdsDecisionsConsumerTestsBase : IAsyncLifetime
+public class CdsDecisionsConsumerTests : IAsyncLifetime
 {
     private readonly TestAwsConsumers _awsConsumers = new();
     private readonly TestAwsSender _awsSender;
 
-    public CdsDecisionsConsumerTestsBase(ITestOutputHelper testOutputHelper)
+    public CdsDecisionsConsumerTests(ITestOutputHelper testOutputHelper)
     {
         _awsSender = new TestAwsSender(_awsConsumers.Configuration, _awsConsumers.AwsSqsOptions, testOutputHelper);
     }
