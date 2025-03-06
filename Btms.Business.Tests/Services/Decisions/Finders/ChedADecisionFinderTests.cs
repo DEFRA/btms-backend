@@ -62,6 +62,7 @@ public class ChedADecisionFinderTests
 
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Euthanasia, DecisionCode.N02)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Reexport, DecisionCode.N04)]
+    [InlineData(false, null, null, DecisionCode.N04)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Slaughter, DecisionCode.N02)]
 
 
@@ -86,7 +87,8 @@ public class ChedADecisionFinderTests
                 {
                     ConsignmentAcceptable = consignmentAcceptable,
                     DecisionEnum = decision,
-                    NotAcceptableAction = notAcceptableAction
+                    NotAcceptableAction = notAcceptableAction,
+                    NotAcceptableReasons = ["Other"]
                 }
             }
         };

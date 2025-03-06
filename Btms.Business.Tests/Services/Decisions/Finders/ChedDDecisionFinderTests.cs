@@ -60,6 +60,7 @@ public class ChedDDecisionFinderTests
 
     [InlineData(null, null, null, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
 
+    [InlineData(false, null, null, DecisionCode.N04)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Redispatching, DecisionCode.N04)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Destruction, DecisionCode.N02)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Transformation, DecisionCode.N03)]
@@ -86,7 +87,8 @@ public class ChedDDecisionFinderTests
                 {
                     ConsignmentAcceptable = consignmentAcceptable,
                     DecisionEnum = decision,
-                    NotAcceptableAction = notAcceptableAction
+                    NotAcceptableAction = notAcceptableAction,
+                    NotAcceptableReasons = ["Other"]
                 }
             }
         };

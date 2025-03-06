@@ -59,4 +59,14 @@ internal static class DecisionFinderExtensions
             .First(x => x.ItemNumber == itemNumber).Checks;
         return checks != null && checks.Any();
     }
+
+    public static DecisionFinderResult HandleNullNotAcceptableAction(this ImportNotification notification, string? checkCode)
+    {
+        if (notification.PartTwo?.Decision?.NotAcceptableReasons?.Length > 0)
+        {
+            return new DecisionFinderResult(DecisionCode.N04, checkCode);
+        }
+
+        return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E97);
+    }
 }
