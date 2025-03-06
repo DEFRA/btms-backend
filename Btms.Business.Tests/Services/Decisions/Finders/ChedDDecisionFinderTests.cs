@@ -9,16 +9,26 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class ChedDDecisionFinderTests
 {
     [Theory]
-    [InlineData(null, ImportNotificationTypeEnum.Cveda, false)]
-    [InlineData(null, ImportNotificationTypeEnum.Ced, true)]
-    [InlineData(null, ImportNotificationTypeEnum.Cvedp, false)]
-    [InlineData(null, ImportNotificationTypeEnum.Chedpp, false)]
-    [InlineData(false, ImportNotificationTypeEnum.Ced, true)]
-    [InlineData(true, ImportNotificationTypeEnum.Ced, false)]
-    public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, bool expectedResult)
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Amend, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.InProgress, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Modify, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.PartiallyRejected, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Rejected, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.SplitConsignment, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Validated, true)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Replaced, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Cancelled, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false)]
+    [InlineData(null, ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false)]
+    [InlineData(false, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, true)]
+    [InlineData(true, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false)]
+    public void CanFindDecisionTest(bool? iuuCheckRequired, ImportNotificationTypeEnum? importNotificationType, ImportNotificationStatusEnum notificationStatus, bool expectedResult)
     {
         var notification = new ImportNotification
         {
+            Status = notificationStatus,
             ImportNotificationType = importNotificationType,
             PartTwo = new PartTwo
             {

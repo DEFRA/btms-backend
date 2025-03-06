@@ -10,17 +10,28 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class ChedPpPhsiDecisionFinderTests
 {
     [Theory]
-    [InlineData(ImportNotificationTypeEnum.Cveda, false, "H219")]
-    [InlineData(ImportNotificationTypeEnum.Ced, false, "H219")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H219")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, true, "H219")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, true, "H218")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, true, "H220")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, false, null)]
-    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Amend, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.InProgress, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Modify, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.PartiallyRejected, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Rejected, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.SplitConsignment, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Validated, true, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Replaced, false, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Cancelled, false, "H220")]
+    [InlineData(ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false, "H219")]
+    [InlineData(ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false, "H219")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, "H219")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, true, "H219")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, true, "H218")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false, null)]
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType,
+        ImportNotificationStatusEnum notificationStatus, bool expectedResult, string? checkCode)
     {
         var notification = new ImportNotification
         {
+            Status = notificationStatus,
             ImportNotificationType = importNotificationType,
         };
         var sut = new ChedPPDecisionFinder();
@@ -42,12 +53,10 @@ public class ChedPpPhsiDecisionFinderTests
     [InlineData(ImportNotificationStatusEnum.Rejected, DecisionCode.N02)]
     [InlineData(ImportNotificationStatusEnum.Replaced, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     [InlineData(ImportNotificationStatusEnum.SplitConsignment, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
-    public void DecisionFinderTest(ImportNotificationStatusEnum status, DecisionCode expectedCode, DecisionInternalFurtherDetail? expectedFurtherDetail = null)
+    public void DecisionFinderTest(ImportNotificationStatusEnum status, DecisionCode expectedCode,
+        DecisionInternalFurtherDetail? expectedFurtherDetail = null)
     {
-        var notification = new ImportNotification
-        {
-            Status = status
-        };
+        var notification = new ImportNotification { Status = status };
         var sut = new ChedPPDecisionFinder();
 
         var result = sut.FindDecision(notification, null);
