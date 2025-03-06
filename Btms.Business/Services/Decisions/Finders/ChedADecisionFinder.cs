@@ -37,6 +37,7 @@ public class ChedADecisionFinder : IDecisionFinder
                 DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter =>
                     new DecisionFinderResult(DecisionCode.N02, checkCode),
                 DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, checkCode),
+                null => notification.HandleNullNotAcceptableAction(checkCode),
                 _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
                     InternalDecisionCode: DecisionInternalFurtherDetail.E97)
             },

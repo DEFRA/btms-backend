@@ -1,5 +1,6 @@
 using Btms.Common.Extensions;
 using Btms.Model.Ipaffs;
+using static Btms.Common.Extensions.LinksBuilder;
 
 namespace Btms.Business.Services.Decisions.Finders;
 
@@ -43,6 +44,7 @@ public class ChedPDecisionFinder : IDecisionFinder
                 DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, checkCode),
                 DecisionNotAcceptableActionEnum.Transformation => new DecisionFinderResult(DecisionCode.N03, checkCode),
                 DecisionNotAcceptableActionEnum.Other => new DecisionFinderResult(DecisionCode.N07, checkCode),
+                null => notification.HandleNullNotAcceptableAction(checkCode),
                 _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
                     InternalDecisionCode: DecisionInternalFurtherDetail.E97)
             }
