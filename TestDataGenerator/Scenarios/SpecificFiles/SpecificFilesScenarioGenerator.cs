@@ -152,6 +152,9 @@ public class Mrn24Gbc8Onyjqzt5Tar5ScenarioGenerator(IServiceProvider sp, ILogger
 public class Mrn25Gb0Hrwmaj7Fbwar8ScenarioGenerator(IServiceProvider sp, ILogger<Mrn25Gb0Hrwmaj7Fbwar8ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-25GB0HRWMAJ7FBWAR8");
 
+public class Mrn25Gb02Rlz9P0U8Far5ScenarioGenerator(IServiceProvider sp, ILogger<Mrn25Gb02Rlz9P0U8Far5ScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-25GB02RLZ9P0U8FAR5");
+
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
 
