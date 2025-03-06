@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Data;
 using Btms.Business.Builders;
 using Btms.Business.Services.Decisions.Finders;
@@ -7,7 +6,6 @@ using Btms.Business.Services.Matching;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
-using Btms.Types.Alvs.Mapping;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Services.Decisions;
@@ -182,7 +180,7 @@ public class DecisionService(
             }
             else
             {
-                foreach(var checkCode in checkCodes)
+                foreach (var checkCode in checkCodes)
                 {
                     results.AddRange(GetDecisionsForCheckCode(notification, checkCode, finders));
                 }
