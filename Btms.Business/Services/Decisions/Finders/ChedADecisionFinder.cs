@@ -37,22 +37,12 @@ public class ChedADecisionFinder : IDecisionFinder
                 DecisionNotAcceptableActionEnum.Euthanasia or DecisionNotAcceptableActionEnum.Slaughter =>
                     new DecisionFinderResult(DecisionCode.N02, checkCode),
                 DecisionNotAcceptableActionEnum.Reexport => new DecisionFinderResult(DecisionCode.N04, checkCode),
-                null => HandleNullNotAcceptableAction(notification, checkCode),
+                null => notification.HandleNullNotAcceptableAction(checkCode),
                 _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
                     InternalDecisionCode: DecisionInternalFurtherDetail.E97)
             },
             _ => new DecisionFinderResult(DecisionCode.X00, checkCode,
                 InternalDecisionCode: DecisionInternalFurtherDetail.E99)
         };
-    }
-
-    private static DecisionFinderResult HandleNullNotAcceptableAction(ImportNotification notification, string? checkCode)
-    {
-        if (notification.PartTwo?.Decision?.NotAcceptableReasons?.Length > 0)
-        {
-            return new DecisionFinderResult(DecisionCode.N04, checkCode);
-        }
-
-        return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E97);
     }
 }
