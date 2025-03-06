@@ -187,7 +187,6 @@ public class DecisionService(
                     results.AddRange(GetDecisionsForCheckCode(notification, checkCode, finders));
                 }
             }
-            
         }
 
         var item = 1;
