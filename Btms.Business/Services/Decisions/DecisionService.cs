@@ -165,14 +165,29 @@ public class DecisionService(
         var results = new List<DecisionFinderResult>();
         if (checkCodes == null)
         {
-            results.AddRange(GetDecisionsForCheckCode(notification, null));
+            results.AddRange(GetDecisionsForCheckCode(notification, null, decisionFinders));
         }
         else
         {
-            foreach (var checkCode in checkCodes)
+            var finders = GetDecisionsFindersForCheckCodes(notification, checkCodes).ToList();
+
+            if (!finders.Any())
             {
-                results.AddRange(GetDecisionsForCheckCode(notification, checkCode));
+                foreach (var checkCode in checkCodes)
+                {
+                    logger.LogWarning("No Decision Finder count for ImportNotification {Id} and Check code {CheckCode}",
+                        notification.Id, checkCode);
+                    results.Add(new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E90));
+                }
             }
+            else
+            {
+                foreach(var checkCode in checkCodes)
+                {
+                    results.AddRange(GetDecisionsForCheckCode(notification, checkCode, finders));
+                }
+            }
+            
         }
 
         var item = 1;
@@ -187,21 +202,18 @@ public class DecisionService(
         return results.ToArray();
     }
 
-    private IEnumerable<DecisionFinderResult> GetDecisionsForCheckCode(ImportNotification notification,
-        string? checkCode)
+    private static IEnumerable<DecisionFinderResult> GetDecisionsForCheckCode(ImportNotification notification, string? checkCode, IEnumerable<IDecisionFinder> decisionFinders)
     {
         var finders = decisionFinders.Where(x => x.CanFindDecision(notification, checkCode)).ToArray();
-
-        if (!finders.Any())
-        {
-            logger.LogWarning("No Decision Finder count for ImportNotification {Id} and Check code {CheckCode}",
-                notification.Id, checkCode);
-            yield return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E90);
-        }
 
         foreach (var finder in finders)
         {
             yield return finder.FindDecision(notification, checkCode);
         }
+    }
+
+    private IEnumerable<IDecisionFinder> GetDecisionsFindersForCheckCodes(ImportNotification notification, string[] checkCodes)
+    {
+        return checkCodes.SelectMany(checkCode => decisionFinders.Where(x => x.CanFindDecision(notification, checkCode)));
     }
 }
