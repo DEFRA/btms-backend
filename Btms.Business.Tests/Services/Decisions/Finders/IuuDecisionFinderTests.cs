@@ -9,18 +9,27 @@ namespace Btms.Business.Tests.Services.Decisions.Finders;
 public class IuuDecisionFinderTests
 {
     [Theory]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, true, "H224")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, false, "H222")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, false, null)]
-
-    [InlineData(ImportNotificationTypeEnum.Cveda, false, "H224")]
-    [InlineData(ImportNotificationTypeEnum.Ced, false, "H224")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, false, "H224")]
-    [InlineData(null, false, "H224")]
-    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, bool expectedResult, string? checkCode)
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Amend, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.InProgress, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Modify, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.PartiallyRejected, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Rejected, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.SplitConsignment, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Validated, true, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Replaced, false, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Cancelled, false, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, null)]
+    [InlineData(ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false, "H224")]
+    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false, "H224")]
+    [InlineData(null, ImportNotificationStatusEnum.Submitted, false, "H224")]
+    public void CanFindDecisionTest(ImportNotificationTypeEnum? importNotificationType, ImportNotificationStatusEnum notificationStatus, bool expectedResult, string? checkCode)
     {
         var notification = new ImportNotification
         {
+            Status = notificationStatus,
             ImportNotificationType = importNotificationType
         };
         var sut = new IuuDecisionFinder();
