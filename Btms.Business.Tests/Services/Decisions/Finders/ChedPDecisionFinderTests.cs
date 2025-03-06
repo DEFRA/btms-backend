@@ -52,6 +52,7 @@ public class ChedPDecisionFinderTests
     [InlineData(true, DecisionDecisionEnum.AcceptableForTransfer, null, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
     [InlineData(null, null, null, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Reexport, DecisionCode.N04)]
+    [InlineData(false, null, null, DecisionCode.N04)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Destruction, DecisionCode.N02)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Transformation, DecisionCode.N03)]
     [InlineData(false, null, DecisionNotAcceptableActionEnum.Other, DecisionCode.N07)]
@@ -76,7 +77,8 @@ public class ChedPDecisionFinderTests
                 {
                     ConsignmentAcceptable = consignmentAcceptable,
                     DecisionEnum = decision,
-                    NotAcceptableAction = notAcceptableAction
+                    NotAcceptableAction = notAcceptableAction,
+                    NotAcceptableReasons = ["Other"]
                 }
             }
         };
