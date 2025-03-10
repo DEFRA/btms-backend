@@ -1,8 +1,20 @@
 using System.ComponentModel.DataAnnotations;
+using Btms.Azure;
 using Btms.Business.Commands;
 
 namespace Btms.Business;
 
+public class ReplicationOptions : IAzureConfig
+{
+    public const string SectionName = nameof(ReplicationOptions);
+
+    public string? AzureClientId { get; set; }
+    public string? AzureTenantId { get; set; }
+    public string? AzureClientSecret { get; set; }
+
+    public bool Enabled { get; set; } = false;
+
+}
 public class BusinessOptions
 {
     public const string SectionName = nameof(BusinessOptions);
