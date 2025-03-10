@@ -1,3 +1,4 @@
+using Btms.Model.Validation;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,4 +1,6 @@
-﻿namespace Btms.Validation;
+using Btms.Validation;
+
+namespace Btms.Model.Validation;
 
 /// <summary>
 /// Defines a validation failure
@@ -17,7 +19,7 @@ public class BtmsValidationFailure
     /// <summary>
     /// Creates a new ValidationFailure.
     /// </summary>
-    public BtmsValidationFailure(string propertyName, string errorMessage, string errorCode, object attemptedValue, ValidationSeverity severity = ValidationSeverity.Error)
+    public BtmsValidationFailure(string propertyName, string errorMessage, string errorCode, object? attemptedValue, ValidationSeverity severity = ValidationSeverity.Error)
     {
         PropertyName = propertyName;
         ErrorMessage = errorMessage;
@@ -39,12 +41,12 @@ public class BtmsValidationFailure
     /// <summary>
     /// The property value that caused the failure.
     /// </summary>
-    public object AttemptedValue { get; private set; }
+    public object? AttemptedValue { get; private set; }
 
     /// <summary>
     /// Custom severity level associated with the failure.
     /// </summary>
-    public ValidationSeverity Severity { get; private set; } = ValidationSeverity.Error;
+    public ValidationSeverity Severity { get; private set; }
 
     /// <summary>
     /// Gets or sets the error code.
