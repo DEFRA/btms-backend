@@ -29,7 +29,8 @@ public class ChedPDecisionFinderTests
     {
         var notification = new ImportNotification
         {
-            Status = notificationStatus, ImportNotificationType = importNotificationType,
+            Status = notificationStatus,
+            ImportNotificationType = importNotificationType
         };
         var sut = new ChedPDecisionFinder();
 
