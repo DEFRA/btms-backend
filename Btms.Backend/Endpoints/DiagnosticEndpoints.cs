@@ -16,7 +16,7 @@ public static class DiagnosticEndpoints
 
     public static void UseDiagnosticEndpoints(this IEndpointRouteBuilder app, IOptions<ApiOptions> options)
     {
-        if (options.Value.EnableManagement)
+        if (options.Value.EnableDiagnostics)
         {
             app.MapGet(BaseRoute + "/blob", GetBlobDiagnosticAsync).AllowAnonymous();
             app.MapGet(BaseRoute + "/asb", GetAzureServiceBusDiagnosticAsync).AllowAnonymous();
