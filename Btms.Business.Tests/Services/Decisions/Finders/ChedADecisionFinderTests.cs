@@ -46,38 +46,39 @@ public class ChedADecisionFinderTests
     }
 
     [Theory]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForTranshipment, null, DecisionCode.E03)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, DecisionCode.E03)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, DecisionCode.C03)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForTemporaryImport, null, DecisionCode.C05)]
-    [InlineData(true, DecisionDecisionEnum.HorseReEntry, null, DecisionCode.C06)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForTranshipment, null, new[] {"Other"}, DecisionCode.E03)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForTransit, null, new [] {"Other"}, DecisionCode.E03)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForInternalMarket, null, new [] {"Other"}, DecisionCode.C03)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForTemporaryImport, null, new [] {"Other"}, DecisionCode.C05)]
+    [InlineData(true, DecisionDecisionEnum.HorseReEntry,  null, new [] {"Other"},DecisionCode.C06)]
 
-    [InlineData(true, DecisionDecisionEnum.NonAcceptable, null, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableIfChanneled, null, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForSpecificWarehouse, null, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForPrivateImport, null, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
-    [InlineData(true, DecisionDecisionEnum.AcceptableForTransfer, null, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
+    [InlineData(true, DecisionDecisionEnum.NonAcceptable, null, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableIfChanneled, null, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForSpecificWarehouse, null, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForPrivateImport, null, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
+    [InlineData(true, DecisionDecisionEnum.AcceptableForTransfer, null, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E96)]
 
-    [InlineData(null, null, null, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
+    [InlineData(null, null, null, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
 
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Euthanasia, DecisionCode.N02)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Reexport, DecisionCode.N04)]
-    [InlineData(false, null, null, DecisionCode.N04)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Slaughter, DecisionCode.N02)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Euthanasia, null, DecisionCode.N02)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Reexport, new [] {"Other"}, DecisionCode.N04)]
+    [InlineData(false, null, null, new [] {"Other"}, DecisionCode.N04)]
+    [InlineData(false, null, null, new [] {"IdMismatchWithDocuments", "Other"}, DecisionCode.N04)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Slaughter, null, DecisionCode.N02)]
 
 
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Redispatching, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Destruction, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Transformation, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.Other, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.EntryRefusal, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.QuarantineImposed, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.SpecialTreatment, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.IndustrialProcessing, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.ReDispatch, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
-    [InlineData(false, null, DecisionNotAcceptableActionEnum.UseForOtherPurposes, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Redispatching, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Destruction, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Transformation, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.Other, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.EntryRefusal, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.QuarantineImposed, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.SpecialTreatment, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.IndustrialProcessing, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.ReDispatch, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
+    [InlineData(false, null, DecisionNotAcceptableActionEnum.UseForOtherPurposes, new [] {"Other"}, DecisionCode.X00, DecisionInternalFurtherDetail.E97)]
 
-    public void DecisionFinderTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, DecisionCode expectedCode, DecisionInternalFurtherDetail? expectedFurtherDetail = null)
+    public void DecisionFinderTest(bool? consignmentAcceptable, DecisionDecisionEnum? decision, DecisionNotAcceptableActionEnum? notAcceptableAction, String[]? notAcceptableReasons, DecisionCode expectedCode, DecisionInternalFurtherDetail? expectedFurtherDetail = null)
     {
         var notification = new ImportNotification
         {
@@ -88,7 +89,7 @@ public class ChedADecisionFinderTests
                     ConsignmentAcceptable = consignmentAcceptable,
                     DecisionEnum = decision,
                     NotAcceptableAction = notAcceptableAction,
-                    NotAcceptableReasons = ["Other"]
+                    NotAcceptableReasons = notAcceptableReasons
                 }
             }
         };
