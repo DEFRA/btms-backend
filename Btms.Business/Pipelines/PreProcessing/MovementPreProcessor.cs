@@ -1,12 +1,15 @@
 using Btms.Backend.Data;
 using Btms.Business.Builders;
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
 using Btms.Model.ChangeLog;
+using Btms.Model.Validation;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using Btms.Validation;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 
 namespace Btms.Business.Pipelines.PreProcessing;
 
@@ -19,6 +22,14 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
         if (!schemaValidationResult.IsValid)
         {
+            await dbContext.ValidationErrors.Insert(new ValidationErrorEntity()
+            {
+                Id = preProcessingContext.MessageId,
+                Data = BsonDocument.Parse(preProcessingContext.Message.ToJson()),
+                Created = DateTime.Now,
+                UpdatedEntity = DateTime.Now,
+                ValidationResult = schemaValidationResult
+            }, cancellationToken);
             return PreProcessResult.ValidationError<Movement>();
         }
 

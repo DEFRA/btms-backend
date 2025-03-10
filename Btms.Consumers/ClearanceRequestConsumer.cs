@@ -31,7 +31,7 @@ internal class ClearanceRequestConsumer(
 
             if (preProcessingResult.Outcome == PreProcessingOutcome.ValidationError)
             {
-                ////TBD save validation error details, and possibly send them out
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
                 return;
             }
             else if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)

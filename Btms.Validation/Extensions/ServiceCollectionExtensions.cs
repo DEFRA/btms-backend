@@ -19,7 +19,7 @@ public class ValidationSetup(IServiceCollection services)
 {
     public ValidationSetup AddValidatorsFromAssemblyContaining<T>()
     {
-        services.AddValidatorsFromAssemblyContaining<T>();
+        services.AddValidatorsFromAssemblyContaining<T>(ServiceLifetime.Singleton);
         return this;
     }
 }

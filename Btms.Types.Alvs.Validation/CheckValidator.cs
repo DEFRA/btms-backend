@@ -6,7 +6,7 @@ public class CheckValidator : AbstractValidator<Check>
 {
     public CheckValidator()
     {
-        RuleFor(p => p.CheckCode).NotNull().NotEmpty();
-        RuleFor(p => p.DepartmentCode).NotNull().NotEmpty();
+        RuleFor(p => p.CheckCode).NotEmpty();
+        RuleFor(p => p.DepartmentCode).NotEmpty();
     }
 }

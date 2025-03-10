@@ -6,8 +6,8 @@ public class DocumentValidator : AbstractValidator<Document>
 {
     public DocumentValidator()
     {
-        RuleFor(p => p.DocumentCode).NotNull().NotEmpty();
-        RuleFor(p => p.DocumentStatus).NotNull().NotEmpty();
-        RuleFor(p => p.DocumentControl).NotNull().NotEmpty();
+        RuleFor(p => p.DocumentCode).NotEmpty();
+        RuleFor(p => p.DocumentStatus).NotEmpty();
+        RuleFor(p => p.DocumentControl).NotEmpty();
     }
 }

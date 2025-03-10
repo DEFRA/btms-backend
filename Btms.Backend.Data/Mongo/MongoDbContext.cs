@@ -102,5 +102,6 @@ public class MongoDbContext : IMongoDbContext
         await Notifications.PersistAsync(cancellation);
         await Movements.PersistAsync(cancellation);
         await Gmrs.PersistAsync(cancellation);
+        await ValidationErrors.PersistAsync(cancellation);
     }
 }

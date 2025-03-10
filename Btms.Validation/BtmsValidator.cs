@@ -17,11 +17,6 @@ public class BtmsValidator(IServiceProvider serviceProvider) : IBtmsValidator
 
         var validationFailures = validators.Select(validator => validator.Validate(entity));
 
-        if (!validationFailures.Any())
-        {
-            return new BtmsValidationResult([]);
-        }
-
         var errors = validationFailures
             .Where(validationResult => !validationResult.IsValid)
             .SelectMany(validationResult => validationResult.Errors)
