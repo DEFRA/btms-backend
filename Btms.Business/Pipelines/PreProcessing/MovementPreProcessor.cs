@@ -2,17 +2,26 @@ using Btms.Backend.Data;
 using Btms.Business.Builders;
 using Btms.Model;
 using Btms.Model.Auditing;
+using Btms.Model.ChangeLog;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
+using Btms.Validation;
 using Microsoft.Extensions.Logging;
 
 namespace Btms.Business.Pipelines.PreProcessing;
 
-public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilderFactory movementBuilderFactory) : IPreProcessor<AlvsClearanceRequest, Movement>
+public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilderFactory movementBuilderFactory, IBtmsValidator validator) : IPreProcessor<AlvsClearanceRequest, Movement>
 {
     public async Task<PreProcessingResult<Movement>> Process(
         PreProcessingContext<AlvsClearanceRequest> preProcessingContext, CancellationToken cancellationToken = default)
     {
+        var schemaValidationResult = validator.Validate(preProcessingContext.Message);
+
+        if (!schemaValidationResult.IsValid)
+        {
+            return PreProcessResult.ValidationError<Movement>();
+        }
+
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
         var mb = movementBuilderFactory.From(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(mb.Id);

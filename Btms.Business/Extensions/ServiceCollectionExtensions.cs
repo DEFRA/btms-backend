@@ -1,3 +1,4 @@
+using System.Dynamic;
 using Btms.Business.Commands;
 using Btms.Business.Pipelines;
 using Btms.Business.Pipelines.Matching;
@@ -21,7 +22,9 @@ using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
 using Btms.Model.Cds;
 using Btms.Types.Alvs;
+using Btms.Types.Alvs.Validation;
 using Btms.Types.Gvms;
+using Btms.Validation.Extensions;
 
 namespace Btms.Business.Extensions;
 
@@ -29,6 +32,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddBtmsValidation(setup => setup.AddValidatorsFromAssemblyContaining<CheckValidator>());
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
         services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);

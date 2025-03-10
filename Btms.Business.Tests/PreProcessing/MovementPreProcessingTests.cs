@@ -3,6 +3,7 @@ using Btms.Business.Builders;
 using Btms.Business.Pipelines.PreProcessing;
 using Btms.Model;
 using Btms.Types.Alvs;
+using Btms.Validation;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using TestDataGenerator;
@@ -12,13 +13,24 @@ namespace Btms.Business.Tests.PreProcessing;
 
 public class MovementPreProcessingTests
 {
+
+    public class NullValidator : IBtmsValidator
+    {
+        public BtmsValidationResult Validate<T>(T entity)
+        {
+            return new BtmsValidationResult([]);
+        }
+    }
     [Fact]
     public async Task WhenNotificationNotExists_ThenShouldBeCreated()
     {
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
-        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance));
+        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance,
+            new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(),
+                NullLogger<MovementBuilder>.Instance),
+                new NullValidator());
 
         // ACT
         var preProcessingResult = await preProcessor.Process(

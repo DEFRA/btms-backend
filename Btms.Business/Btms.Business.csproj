@@ -8,8 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="8.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="JsonPatch.Net" Version="3.3.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="SlimMessageBus" Version="2.0.4" />
+    <PackageReference Include="xunit" Version="2.9.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,10 +33,12 @@
     <ProjectReference Include="..\Btms.Types.Alvs.Mapping.V1.Tests\Btms.Types.Alvs.Mapping.V1.Tests.csproj" />
     <ProjectReference Include="..\Btms.Types.Alvs.Mapping.V1\Btms.Types.Alvs.Mapping.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Alvs.V1\Btms.Types.Alvs.V1.csproj" />
+    <ProjectReference Include="..\Btms.Types.Alvs.Validation\Btms.Types.Alvs.Validation.csproj" />
     <ProjectReference Include="..\Btms.Types.Gvms.Mapping.V1\Btms.Types.Gvms.Mapping.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Gvms.V1\Btms.Types.Gvms.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.Mapping.V1\Btms.Types.Ipaffs.Mapping.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
+    <ProjectReference Include="..\Btms.Validation\Btms.Validation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

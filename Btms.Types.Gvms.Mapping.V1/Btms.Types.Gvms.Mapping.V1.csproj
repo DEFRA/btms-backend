@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JsonPatch.Net" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
     <ProjectReference Include="..\Btms.Types.Gvms.V1\Btms.Types.Gvms.V1.csproj" />
   </ItemGroup>
