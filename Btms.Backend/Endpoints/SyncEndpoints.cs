@@ -79,7 +79,7 @@ public static class SyncEndpoints
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)
     {
         await mediator.SendJob(command);
-        return Results.Ok(command.JobId);
+        return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)

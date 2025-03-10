@@ -43,7 +43,7 @@ internal class DownloadScenarioDataCommand : IRequest
             logger.LogInformation("Timeline for MRN: {Mrn} History items found {HistoryCount}", request.ClearanceRequest, history.Items.Count);
 
             var cheds = history.Items.Where(x => x.ResourceType == nameof(ImportNotification)).Distinct()
-                .Select(x => new DownloadCommand.Ched(x.ResourceId.Split('.')[0], x.ResourceId.Split('.')[^1]))
+                .Select(x => DownloadCommand.Ched.FromReference(x.ResourceId))
                 .ToArray();
 
             DownloadCommand apiCommand = new DownloadCommand()

@@ -40,7 +40,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "DisableLoadIniFile", "true" },
-                { "BlobServiceOptions:CachePath", "../../../Fixtures" },
+                { "BlobServiceOptions:CachePath", "../../../../Btms.Test.Data/Samples" },
                 { "BlobServiceOptions:CacheReadEnabled", "true" },
                 { "AuthKeyStore:Credentials:IntTest", "Password" }
             });

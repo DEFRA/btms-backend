@@ -29,12 +29,32 @@ public class BtmsClient
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(BasicAuthenticationDefaults.AuthenticationScheme, encodedCredentials);
     }
-    private async Task WaitOnJobCompleting(Uri jobUri)
+
+    public async Task<SyncJobResponse> GetJobStatus(Uri jobUri)
     {
         var jsonOptions = new JsonSerializerOptions();
         jsonOptions.Converters.Add(new JsonStringEnumConverter());
         jsonOptions.PropertyNameCaseInsensitive = true;
 
+        var jobResponse = await client.GetAsync(jobUri);
+        var typedResponse = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
+        return typedResponse!;
+
+    }
+
+    public async Task<SyncJobResponse> GetJobStatus(string jobUri)
+    {
+        var jsonOptions = new JsonSerializerOptions();
+        jsonOptions.Converters.Add(new JsonStringEnumConverter());
+        jsonOptions.PropertyNameCaseInsensitive = true;
+
+        var jobResponse = await client.GetAsync(jobUri);
+        var typedResponse = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
+        return typedResponse!;
+
+    }
+    public async Task WaitOnJobCompleting(Uri jobUri)
+    {
         var jobStatusTask = Task.Run(async () =>
         {
             var status = SyncJobStatus.Pending;
@@ -42,9 +62,8 @@ public class BtmsClient
             while (status != SyncJobStatus.Completed)
             {
                 await Task.Delay(200);
-                var jobResponse = await client.GetAsync(jobUri);
-                var syncJob = await jobResponse.Content.ReadFromJsonAsync<SyncJobResponse>(jsonOptions);
-                if (syncJob != null) status = syncJob.Status;
+                var syncJob = await GetJobStatus(jobUri);
+                status = syncJob.Status;
             }
         });
 
@@ -62,6 +81,11 @@ public class BtmsClient
     public Task<HttpResponseMessage> MakeSyncDecisionsRequest(SyncDecisionsCommand command)
     {
         return PostCommand(command, "/sync/decisions");
+    }
+
+    public Task<HttpResponseMessage> MakeDownloadRequest(DownloadCommand command)
+    {
+        return PostCommand(command, "/sync/generate-download");
     }
 
     public Task<HttpResponseMessage> MakeSyncNotificationsRequest(SyncNotificationsCommand command)
@@ -138,7 +162,7 @@ public class BtmsClient
             $"/analytics/dashboard?chartsToRender={chartsFilter}{dateFromFilter}{dateToFilter}{countryFilter}{chedTypeFilter}{finalisedOnlyFilter}");
     }
 
-    private async Task<HttpResponseMessage> PostCommand<T>(T command, string uri)
+    private async Task<HttpResponseMessage> PostCommand<T>(T command, string uri, HttpStatusCode expectedResult = HttpStatusCode.Accepted)
     {
         var jsonData = JsonSerializer.Serialize(command);
         HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
@@ -147,7 +171,7 @@ public class BtmsClient
         var response = await client.PostAsync(uri, content);
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+        response.StatusCode.Should().Be(expectedResult);
 
         //get job id and wait for job to be completed
         var jobUri = response.Headers.Location;

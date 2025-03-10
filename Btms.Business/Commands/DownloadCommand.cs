@@ -130,7 +130,13 @@ public class DownloadCommand : IRequest, ISyncJob
 
     public record DownloadFilter(string[] Mrns, Ched[] Cheds);
 
-    public record Ched(string Type, string Identifier);
+    public record Ched(string Type, string Identifier)
+    {
+        public static Ched FromReference(string reference)
+        {
+            return new Ched(reference.Split('.')[0], reference.Split('.')[^1]);
+        }
+    };
 
 
 }
