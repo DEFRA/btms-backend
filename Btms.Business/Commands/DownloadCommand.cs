@@ -10,6 +10,7 @@ using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Business.Commands;
 
@@ -25,6 +26,18 @@ public class DownloadCommand : IRequest, ISyncJob
     public DownloadFilter? Filter { get; set; } = null;
 
     public string? RootFolder { get; set; }
+
+    public static readonly List<(string path, Type dataType)> BlobFolders =
+    [
+        ("IPAFFS/CHEDA", typeof(ImportNotification)),
+        ("IPAFFS/CHEDD", typeof(ImportNotification)),
+        ("IPAFFS/CHEDP", typeof(ImportNotification)),
+        ("IPAFFS/CHEDPP", typeof(ImportNotification)),
+        ("IPAFFS/ALVS", typeof(AlvsClearanceRequest)),
+        ("GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse)),
+        ("DECISIONS", typeof(Decision)),
+        ("FINALISATION", typeof(Finalisation))
+    ];
 
     internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env) : IRequestHandler<DownloadCommand>
     {

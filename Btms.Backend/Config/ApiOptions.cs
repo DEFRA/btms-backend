@@ -7,6 +7,7 @@ public class ApiOptions
 {
     public static readonly string SectionName = nameof(ApiOptions);
 
+    public bool EnableDiagnostics { get; set; } = default!;
     public bool EnableManagement { get; set; } = default!;
 
     public string? AnalyticsCachePolicy { get; set; } = default!;
