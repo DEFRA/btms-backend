@@ -1,3 +1,4 @@
+using Btms.Common.Extensions;
 using Btms.Validation;
 
 namespace Btms.Model.Validation;
@@ -24,7 +25,7 @@ public class BtmsValidationFailure
         PropertyName = propertyName;
         ErrorMessage = errorMessage;
         ErrorCode = errorCode;
-        AttemptedValue = attemptedValue;
+        AttemptedValue = attemptedValue?.ToJson();
         Severity = severity;
     }
 

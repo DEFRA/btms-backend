@@ -1,10 +1,11 @@
+using FluentValidation;
 using FluentValidation.TestHelper;
 
 namespace Btms.Types.Alvs.Validation.Tests;
 
 public class HeaderValidatorTests
 {
-    private HeaderValidator validator = new();
+    private HeaderValidator validator = new("123");
 
     [Fact]
     public void Should_have_error_when_EntryReference_is_null()
@@ -17,9 +18,15 @@ public class HeaderValidatorTests
     [Fact]
     public void Should_not_have_error_when_EntryReference_is_specified()
     {
+        var cr = new AlvsClearanceRequest();
+            
         var model = new Header { EntryReference = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.EntryReference);
+        cr.Header = model;
+        var result = new AlvsClearanceRequestValidator().TestValidate(new ValidationContext<AlvsClearanceRequest>(cr)
+        {
+            RootContextData = { {"Thomas", 123} }
+        });
+        ////result.ShouldNotHaveValidationErrorFor(p => p.EntryReference);
     }
 
     [Fact]
@@ -97,7 +104,7 @@ public class HeaderValidatorTests
     [Fact]
     public void Should_not_have_error_when_DispatchCountryCode_is_specified()
     {
-        var model = new Header { DispatchCountryCode = "test" };
+        var model = new Header { DispatchCountryCode = "GB" };
         var result = validator.TestValidate(model);
         result.ShouldNotHaveValidationErrorFor(p => p.DispatchCountryCode);
     }

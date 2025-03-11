@@ -32,7 +32,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddBtmsValidation(setup => setup.AddValidatorsFromAssemblyContaining<CheckValidator>());
+        services.AddBtmsValidation(setup =>
+        {
+            setup.AddValidator<Finalisation, FinalisationValidator>();
+            setup.AddValidator<AlvsClearanceRequest, AlvsClearanceRequestValidator>();
+        });
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
         services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);

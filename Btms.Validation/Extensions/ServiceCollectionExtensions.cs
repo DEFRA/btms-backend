@@ -22,4 +22,10 @@ public class ValidationSetup(IServiceCollection services)
         services.AddValidatorsFromAssemblyContaining<T>(ServiceLifetime.Singleton);
         return this;
     }
+
+    public ValidationSetup AddValidator<T, TInstance>() where TInstance : class, IValidator<T>
+    {
+        services.AddSingleton<IValidator<T>, TInstance>();
+        return this;
+    }
 }

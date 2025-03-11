@@ -11,7 +11,7 @@ public class MemoryMongoDbContext : IMongoDbContext
     public IMongoCollectionSet<Movement> Movements { get; } = new MemoryCollectionSet<Movement>();
     public IMongoCollectionSet<Gmr> Gmrs { get; } = new MemoryCollectionSet<Gmr>();
 
-    public IMongoCollectionSet<ValidationErrorEntity> ValidationErrors { get; } = new MemoryCollectionSet<ValidationErrorEntity>();
+    public IMongoCollectionSet<AlvsValidationError> AlvsValidationErrors { get; } = new MemoryCollectionSet<AlvsValidationError>();
     public Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default)
     {
         return Task.FromResult<IMongoDbTransaction>(new EmptyMongoDbTransaction());

@@ -4,7 +4,7 @@ namespace Btms.Types.Alvs.Validation.Tests;
 
 public class ItemsValidatorTests
 {
-    private ItemsValidator validator = new();
+    private ItemsValidator validator = new("123");
 
     [Fact]
     public void Should_have_error_when_ItemNumber_is_null()
@@ -132,6 +132,22 @@ public class ItemsValidatorTests
         var model = new Items { ItemOriginCountryCode = "test" };
         var result = validator.TestValidate(model);
         result.ShouldNotHaveValidationErrorFor(p => p.ItemOriginCountryCode);
+    }
+
+    [Fact]
+    public void Should_have_error_when_Documents_is_Empty()
+    {
+        var model = new Items { ItemOriginCountryCode = "test" };
+        var result = validator.TestValidate(model);
+        result.ShouldHaveValidationErrorFor(p => p.Documents);
+    }
+
+    [Fact]
+    public void Should_not_have_error_when_Documents_is_not_Empty()
+    {
+        var model = new Items { ItemOriginCountryCode = "test", Documents = [new Document() {DocumentCode = "123"}] };
+        var result = validator.TestValidate(model);
+        result.ShouldNotHaveValidationErrorFor(p => p.Documents);
     }
 
 

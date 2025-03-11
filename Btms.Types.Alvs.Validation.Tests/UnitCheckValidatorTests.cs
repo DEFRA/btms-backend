@@ -5,7 +5,7 @@ namespace Btms.Types.Alvs.Validation.Tests
 {
     public class UnitCheckValidatorTests
     {
-        private CheckValidator validator = new();
+        private CheckValidator validator = new("123");
 
         [Fact]
         public void Should_have_error_when_CheckCode_is_null()

@@ -4,7 +4,7 @@ namespace Btms.Types.Alvs.Validation.Tests;
 
 public class DocumentValidatorTests
 {
-    private DocumentValidator validator = new();
+    private DocumentValidator validator = new(1, "123");
 
     [Fact]
     public void Should_have_error_when_DocumentCode_is_null()
@@ -17,7 +17,7 @@ public class DocumentValidatorTests
     [Fact]
     public void Should_not_have_error_when_DocumentCode_is_specified()
     {
-        var model = new Document { DocumentCode = "test" };
+        var model = new Document { DocumentCode = "C633" };
         var result = validator.TestValidate(model);
         result.ShouldNotHaveValidationErrorFor(p => p.DocumentCode);
     }

@@ -17,7 +17,7 @@ public class ServiceHeaderValidatorTests
     [Fact]
     public void Should_not_have_error_when_SourceSystem_is_specified()
     {
-        var model = new ServiceHeader { SourceSystem = "test" };
+        var model = new ServiceHeader { SourceSystem = "CDS" };
         var result = validator.TestValidate(model);
         result.ShouldNotHaveValidationErrorFor(p => p.SourceSystem);
     }
@@ -25,7 +25,7 @@ public class ServiceHeaderValidatorTests
     [Fact]
     public void Should_have_error_when_DestinationSystem_is_null()
     {
-        var model = new ServiceHeader { DestinationSystem = null };
+        var model = new ServiceHeader {  CorrelationId = "123"};
         var result = validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(p => p.DestinationSystem);
     }
@@ -33,7 +33,7 @@ public class ServiceHeaderValidatorTests
     [Fact]
     public void Should_not_have_error_when_DestinationSystem_is_specified()
     {
-        var model = new ServiceHeader { DestinationSystem = "test" };
+        var model = new ServiceHeader { DestinationSystem = "ALVS" };
         var result = validator.TestValidate(model);
         result.ShouldNotHaveValidationErrorFor(p => p.DestinationSystem);
     }

@@ -22,12 +22,11 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
         if (!schemaValidationResult.IsValid)
         {
-            await dbContext.ValidationErrors.Insert(new ValidationErrorEntity()
+            await dbContext.AlvsValidationErrors.Insert(new AlvsValidationError()
             {
                 Id = preProcessingContext.MessageId,
+                Type = nameof(AlvsClearanceRequest),
                 Data = BsonDocument.Parse(preProcessingContext.Message.ToJson()),
-                Created = DateTime.Now,
-                UpdatedEntity = DateTime.Now,
                 ValidationResult = schemaValidationResult
             }, cancellationToken);
             return PreProcessResult.ValidationError<Movement>();

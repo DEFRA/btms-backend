@@ -12,7 +12,7 @@ public interface IMongoDbContext
 
     IMongoCollectionSet<Gmr> Gmrs { get; }
 
-    IMongoCollectionSet<ValidationErrorEntity> ValidationErrors { get; }
+    IMongoCollectionSet<AlvsValidationError> AlvsValidationErrors { get; }
 
     Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default);
 

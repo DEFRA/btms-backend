@@ -22,7 +22,7 @@ public class MongoDbContext : IMongoDbContext
         Notifications = new MongoCollectionSet<ImportNotification>(this);
         Movements = new MongoCollectionSet<Movement>(this);
         Gmrs = new MongoCollectionSet<Gmr>(this);
-        ValidationErrors = new MongoCollectionSet<ValidationErrorEntity>(this);
+        AlvsValidationErrors = new MongoCollectionSet<AlvsValidationError>(this);
     }
 
     internal IMongoDatabase Database { get; }
@@ -35,7 +35,7 @@ public class MongoDbContext : IMongoDbContext
 
     public IMongoCollectionSet<Gmr> Gmrs { get; }
 
-    public IMongoCollectionSet<ValidationErrorEntity> ValidationErrors { get; }
+    public IMongoCollectionSet<AlvsValidationError> AlvsValidationErrors { get; }
 
     public async Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default)
     {
@@ -102,6 +102,6 @@ public class MongoDbContext : IMongoDbContext
         await Notifications.PersistAsync(cancellation);
         await Movements.PersistAsync(cancellation);
         await Gmrs.PersistAsync(cancellation);
-        await ValidationErrors.PersistAsync(cancellation);
+        await AlvsValidationErrors.PersistAsync(cancellation);
     }
 }
