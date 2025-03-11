@@ -145,7 +145,7 @@ public class ItemsValidatorTests
     [Fact]
     public void Should_not_have_error_when_Documents_is_not_Empty()
     {
-        var model = new Items { ItemOriginCountryCode = "test", Documents = [new Document() {DocumentCode = "123"}] };
+        var model = new Items { ItemOriginCountryCode = "test", Documents = [new Document() { DocumentCode = "123" }] };
         var result = validator.TestValidate(model);
         result.ShouldNotHaveValidationErrorFor(p => p.Documents);
     }

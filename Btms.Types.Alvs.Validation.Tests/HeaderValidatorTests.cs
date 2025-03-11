@@ -18,15 +18,9 @@ public class HeaderValidatorTests
     [Fact]
     public void Should_not_have_error_when_EntryReference_is_specified()
     {
-        var cr = new AlvsClearanceRequest();
-            
         var model = new Header { EntryReference = "test" };
-        cr.Header = model;
-        var result = new AlvsClearanceRequestValidator().TestValidate(new ValidationContext<AlvsClearanceRequest>(cr)
-        {
-            RootContextData = { {"Thomas", 123} }
-        });
-        ////result.ShouldNotHaveValidationErrorFor(p => p.EntryReference);
+        var result = validator.TestValidate(model);
+        result.ShouldNotHaveValidationErrorFor(p => p.EntryReference);
     }
 
     [Fact]

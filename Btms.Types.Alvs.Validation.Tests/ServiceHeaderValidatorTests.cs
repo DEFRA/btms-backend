@@ -25,7 +25,7 @@ public class ServiceHeaderValidatorTests
     [Fact]
     public void Should_have_error_when_DestinationSystem_is_null()
     {
-        var model = new ServiceHeader {  CorrelationId = "123"};
+        var model = new ServiceHeader { CorrelationId = "123"};
         var result = validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(p => p.DestinationSystem);
     }
