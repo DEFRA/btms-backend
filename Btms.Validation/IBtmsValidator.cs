@@ -1,4 +1,4 @@
-﻿namespace Btms.Validation;
+namespace Btms.Validation;
 
 public interface IBtmsValidator
 {

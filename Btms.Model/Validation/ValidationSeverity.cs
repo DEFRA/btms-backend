@@ -1,4 +1,4 @@
-﻿namespace Btms.Validation;
+namespace Btms.Validation;
 
 public enum ValidationSeverity
 {
@@ -6,10 +6,12 @@ public enum ValidationSeverity
     /// Error
     /// </summary>
     Error,
+
     /// <summary>
     /// Warning
     /// </summary>
     Warning,
+
     /// <summary>
     /// Info
     /// </summary>
