@@ -9,8 +9,9 @@ public class HeaderValidator : AbstractValidator<Header>
         RuleFor(p => p.EntryReference).NotEmpty();
         RuleFor(p => p.EntryVersionNumber).NotNull()
             .WithErrorCode("ALVSVAL153")
-            .WithMessage($"EntryVersionNumber has not been provided for the import document. Provide an EntryVersionNumber. Your request with correlation ID {correlationId} has been terminated.");
-        
+            .WithMessage(
+                $"EntryVersionNumber has not been provided for the import document. Provide an EntryVersionNumber. Your request with correlation ID {correlationId} has been terminated.");
+
         RuleFor(p => p.PreviousVersionNumber).NotNull().WithErrorCode("ALVSVAL152")
             .WithMessage($"PreviousVersionNumber has not been provided for the import document. Provide a PreviousVersionNumber. Your request with correlation ID {correlationId} has been terminated.")
             .When(p => p.EntryVersionNumber > 1);
