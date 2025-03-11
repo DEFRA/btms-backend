@@ -6,8 +6,6 @@ public class DocumentValidator : AbstractValidator<Document>
 {
     public DocumentValidator(int? itemNumber, string correlationId)
     {
-        
-
         RuleFor(p => p.DocumentCode).Must(BeAValidDocumentCode)
             .WithMessage(c => $"DocumentCode {c.DocumentCode} on item number {itemNumber} is invalid. Your request with correlation ID {correlationId} has been terminated.")
             .WithErrorCode("ALVSVAL308");

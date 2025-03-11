@@ -11,7 +11,8 @@ using Finalisation = Btms.Types.Alvs.Finalisation;
 
 namespace Btms.Consumers;
 
-public class FinalisationsConsumer(IMongoDbContext dbContext,
+public class FinalisationsConsumer(
+    IMongoDbContext dbContext,
     MovementBuilderFactory movementBuilderFactory,
     ILogger<FinalisationsConsumer> logger,
     IBtmsValidator validator)
@@ -24,13 +25,14 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
 
         if (!validationResult.IsValid)
         {
-            await dbContext.AlvsValidationErrors.Insert(new AlvsValidationError()
-            {
-                Id = auditId,
-                Type = nameof(Finalisation),
-                Data = BsonDocument.Parse(message.ToJson()),
-                ValidationResult = validationResult
-            }, cancellationToken);
+            await dbContext.AlvsValidationErrors.Insert(
+                new AlvsValidationError()
+                {
+                    Id = auditId,
+                    Type = nameof(Finalisation),
+                    Data = BsonDocument.Parse(message.ToJson()),
+                    ValidationResult = validationResult
+                }, cancellationToken);
             await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
         }
 
@@ -40,14 +42,15 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
         if (existingMovement != null)
         {
             logger.LogInformation("Finalisation received");
-            
+
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeFinalisation(auditId!, internalFinalisation);
 
             if (existingMovementBuilder.HasChanges)
             {
-                await dbContext.Movements.Update(existingMovementBuilder.Build(), existingMovement._Etag, cancellationToken);
+                await dbContext.Movements.Update(existingMovementBuilder.Build(), existingMovement._Etag,
+                    cancellationToken);
                 await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
             }
         }

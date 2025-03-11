@@ -37,7 +37,7 @@ public class ItemsValidator : AbstractValidator<Items>
         RuleFor(p => p.Checks).Must(MustHavePoAoCheck)
             .WithMessage(p => $"An IUU document has been specified for ItemNumber {p.ItemNumber}. Request a manual clearance if the item does not require a CHED P. Your request with correlation ID {correlationId} has been terminated.")
             .WithErrorCode("ALVSVAL328")
-            .When(x =>x.Checks is not null && x.Checks.Any(x => x.CheckCode == "H224"));
+            .When(x => x.Checks is not null && x.Checks.Any(x => x.CheckCode == "H224"));
 
         RuleFor(p => p.Documents).NotEmpty()
             .WithMessage(c => $"Item {c.ItemNumber} has no document code. BTMS requires at least one item document. Your request with correlation ID {correlationId} has been terminated..")
