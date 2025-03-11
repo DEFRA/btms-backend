@@ -4,11 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-<<<<<<<< HEAD:Btms.Types.Gvms.V1/Btms.Types.Gvms.V1.csproj
     <AssemblyName>Btms.Types.Gvms</AssemblyName>
-========
+
     <AssemblyName>Btms.Types.Ipaffs</AssemblyName>
->>>>>>>> origin/main:Btms.Types.Ipaffs.V1/Btms.Types.Ipaffs.V1.csproj
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -17,11 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<<< HEAD:Btms.Types.Gvms.V1/Btms.Types.Gvms.V1.csproj
     <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
-========
+
     <ProjectReference Include="..\Btms.SensitiveData\Btms.SensitiveData.csproj" />
->>>>>>>> origin/main:Btms.Types.Ipaffs.V1/Btms.Types.Ipaffs.V1.csproj
   </ItemGroup>
 
 </Project>

@@ -4,21 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-<<<<<<<< HEAD:Btms.Types.Alvs.V1/Btms.Types.Alvs.V1.csproj
     <AssemblyName>Btms.Types.Alvs</AssemblyName>
-========
     <AssemblyName>Btms.Types.Ipaffs.Mapping</AssemblyName>
->>>>>>>> origin/main:Btms.Types.Ipaffs.Mapping.V1/Btms.Types.Ipaffs.Mapping.V1.csproj
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<<< HEAD:Btms.Types.Alvs.V1/Btms.Types.Alvs.V1.csproj
     <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
-========
     <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
->>>>>>>> origin/main:Btms.Types.Ipaffs.Mapping.V1/Btms.Types.Ipaffs.Mapping.V1.csproj
   </ItemGroup>
 
 </Project>
