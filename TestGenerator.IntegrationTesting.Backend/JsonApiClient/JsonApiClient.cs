@@ -19,7 +19,8 @@ public class JsonApiClient(HttpClient client)
         string path,
         Dictionary<string, string>? query = null,
         Dictionary<string, string>? headers = null,
-        IList<string>? relations = null)
+        IList<string>? relations = null,
+        HttpStatusCode statusCode = HttpStatusCode.OK)
     {
         client.DefaultRequestHeaders.Accept.Add(ContentType);
 
@@ -48,7 +49,7 @@ public class JsonApiClient(HttpClient client)
 
         var responseMessage = client.GetAsync(uri).Result;
 
-        responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
+        responseMessage.StatusCode.Should().Be(statusCode, $"Status code was {responseMessage.StatusCode}");
 
 
         var s = responseMessage.Content.ReadAsStringAsync().Result;
@@ -65,7 +66,25 @@ public class JsonApiClient(HttpClient client)
         string path,
         Dictionary<string, string>? query = null,
         Dictionary<string, string>? headers = null,
-        IList<string>? relations = null)
+        IList<string>? relations = null,
+        HttpStatusCode statusCode = HttpStatusCode.OK)
+    {
+        var s = GetStringById(id, path, query, headers, relations, statusCode);
+
+        return JsonSerializer.Deserialize<SingleItemJsonApiDocument>(s,
+            new JsonSerializerOptions
+            {
+                Converters = { new SingleOrManyDataConverterFactory() },
+                PropertyNameCaseInsensitive = true
+            })!;
+    }
+
+    public string GetStringById(string id,
+        string path,
+        Dictionary<string, string>? query = null,
+        Dictionary<string, string>? headers = null,
+        IList<string>? relations = null,
+        HttpStatusCode statusCode = HttpStatusCode.OK)
     {
         client.DefaultRequestHeaders.Accept.Add(ContentType);
 
@@ -94,15 +113,10 @@ public class JsonApiClient(HttpClient client)
 
         var responseMessage = client.GetAsync(uri).Result;
 
-        responseMessage.StatusCode.Should().Be(HttpStatusCode.OK, $"Status code was {responseMessage.StatusCode}");
+        responseMessage.StatusCode.Should().Be(statusCode, $"Status code was {responseMessage.StatusCode}");
 
         var s = responseMessage.Content.ReadAsStringAsync().Result;
 
-        return JsonSerializer.Deserialize<SingleItemJsonApiDocument>(s,
-            new JsonSerializerOptions
-            {
-                Converters = { new SingleOrManyDataConverterFactory() },
-                PropertyNameCaseInsensitive = true
-            })!;
+        return s;
     }
 }

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,11 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<<< HEAD:Btms.Types.Alvs.Validation/Btms.Types.Alvs.Validation.csproj
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Btms.Types.Alvs.V1\Btms.Types.Alvs.V1.csproj" />
+========
+    <PackageReference Include="SlimMessageBus.Host" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
+>>>>>>>> origin/main:Btms.Metrics/Btms.Metrics.csproj
   </ItemGroup>
 
 </Project>

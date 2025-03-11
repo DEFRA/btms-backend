@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+<<<<<<<< HEAD:Btms.Validation/Btms.Validation.csproj
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Btms.Model\Btms.Model.csproj" />
+========
+    <AssemblyName>Btms.Types.Alvs</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
+>>>>>>>> origin/main:Btms.Types.Alvs.V1/Btms.Types.Alvs.V1.csproj
   </ItemGroup>
 
 </Project>

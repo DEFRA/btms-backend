@@ -4,10 +4,19 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+<<<<<<<< HEAD:Btms.Metrics/Btms.Metrics.csproj
+========
+    <AssemblyName>Btms.Types.Gvms</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+>>>>>>>> origin/main:Btms.Types.Gvms.V1/Btms.Types.Gvms.V1.csproj
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="SlimMessageBus.Host" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Btms.Common\Btms.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
