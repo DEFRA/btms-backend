@@ -1,13 +1,20 @@
+using Btms.Common.FeatureFlags;
 using Btms.Model.Validation;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
 
 namespace Btms.Validation;
 
-public class BtmsValidator(IServiceProvider serviceProvider) : IBtmsValidator
+public class BtmsValidator(IServiceProvider serviceProvider, IFeatureManager featureManager) : IBtmsValidator
 {
     public BtmsValidationResult Validate<T>(T entity)
     {
+        if (!featureManager.IsEnabledAsync($"{Features.Validation}_{typeof(T).Name}").GetAwaiter().GetResult())
+        {
+            return new BtmsValidationResult([]);
+        }
+
         var validators = serviceProvider.GetServices<IValidator<T>>().ToList();
 
         if (!validators.Any())
