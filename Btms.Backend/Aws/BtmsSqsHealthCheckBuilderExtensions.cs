@@ -16,7 +16,28 @@ public static class BtmsSqsHealthCheckBuilderExtensions
         IEnumerable<string>? tags = default,
         TimeSpan? timeout = default)
     {
-        builder.Services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
+        var awsOptions = builder.Services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
+
+        builder.Add(new HealthCheckRegistration(
+            $"{Name} clearance requests",
+            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.ClearanceRequestQueueName),
+            failureStatus,
+            tags,
+            timeout));
+
+        builder.Add(new HealthCheckRegistration(
+            $"{Name} decisions",
+            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.DecisionQueueName),
+            failureStatus,
+            tags,
+            timeout));
+
+        builder.Add(new HealthCheckRegistration(
+            $"{Name} finalisations",
+            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.FinalisationQueueName),
+            failureStatus,
+            tags,
+            timeout));
 
         return builder;
     }
