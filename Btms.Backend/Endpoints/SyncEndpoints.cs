@@ -48,9 +48,9 @@ public static class SyncEndpoints
         if (options.Value.EnableDiagnostics)
             app.MapGet(BaseRoute + "/blob/", GetBlob).AllowAnonymous();
 
+        app.MapGet(BaseRoute + "/generate-download", GetGenerateDownload).AllowAnonymous();
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
         app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
-
 
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
@@ -74,6 +74,14 @@ public static class SyncEndpoints
     {
         var stream = File.OpenRead($"{env.ContentRootPath}/{id}.zip");
         return Results.File(stream, "application/zip", $"{id}.zip", enableRangeProcessing: true);
+    }
+
+    private static async Task<IResult> GetGenerateDownload([FromServices] IBtmsMediator mediator, SyncPeriod period)
+    {
+        DownloadCommand command = new() { SyncPeriod = period };
+
+        await mediator.SendJob(command);
+        return Results.Ok(command.JobId);
     }
 
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)

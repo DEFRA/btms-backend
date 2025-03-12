@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Btms.BlobService;
 using Btms.Common.Extensions;
 using MediatR;
@@ -9,6 +10,7 @@ using Btms.SyncJob;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Decision = Btms.Types.Alvs.Decision;
 
@@ -33,55 +35,69 @@ public class DownloadCommand : IRequest, ISyncJob
         ("IPAFFS/CHEDD", typeof(ImportNotification)),
         ("IPAFFS/CHEDP", typeof(ImportNotification)),
         ("IPAFFS/CHEDPP", typeof(ImportNotification)),
-        ("IPAFFS/ALVS", typeof(AlvsClearanceRequest)),
+        ("ALVS", typeof(AlvsClearanceRequest)),
         ("GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse)),
         ("DECISIONS", typeof(Decision)),
         ("FINALISATION", typeof(Finalisation))
     ];
 
-    internal class Handler(IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env) : IRequestHandler<DownloadCommand>
+    internal class Handler(ILogger<DownloadCommand> logger, IOptions<BusinessOptions> businessOptions, IBlobService blobService, ISensitiveDataSerializer sensitiveDataSerializer, IHostEnvironment env) : IRequestHandler<DownloadCommand>
     {
+
+        private List<string> GetDataSets(DownloadCommand request)
+        {
+            List<string> datasets = [businessOptions.Value.DmpBlobRootFolder];
+
+            if (!string.IsNullOrEmpty(request.RootFolder))
+            {
+                datasets = [request.RootFolder];
+            }
+            else if (request.Filter is not null)
+            {
+                datasets = DateTimeExtensions.RedactedDatasetsSinceNov24();
+            }
+
+            return datasets;
+        }
 
         public async Task Handle(DownloadCommand request, CancellationToken cancellationToken)
         {
             var rootFolder = Path.Combine(env.ContentRootPath, "temp", request.JobId.ToString());
             Directory.CreateDirectory(rootFolder);
 
-            var datasets = string.IsNullOrEmpty(request.RootFolder) ? DateTimeExtensions.RedactedDatasetsSinceNov24() : [request.RootFolder];
+            var datasets = GetDataSets(request);
 
             await datasets.ForEachAsync(async blobContainer =>
             {
                 if (request.Filter is not null)
                 {
-                    await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
-
-                    await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), request.Filter.Mrns, cancellationToken);
-
-                    await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), request.Filter.Mrns, cancellationToken);
-
-                    var chedGrouping = request.Filter.Cheds.GroupBy(x => x.Type);
-                    foreach (var chedGroup in chedGrouping)
+                    await BlobFolders.ForEachAsync(async f =>
                     {
-                        await Download(request, rootFolder, $"{blobContainer}/IPAFFS/{chedGroup.Key}", typeof(ImportNotification), chedGroup.Select(x => x.Identifier).ToArray(), cancellationToken);
-                    }
+                        if (f.dataType != typeof(ImportNotification))
+                        {
+                            await Download(request, rootFolder, $"{blobContainer}/{f.path}", f.dataType, request.Filter.Mrns,
+                                cancellationToken);
+                        }
+                        else
+                        {
+                            //There are multiple paths to search for cheds, so need to search them all based on the cheds we're trying to find
+                            var chedGrouping = request.Filter.Cheds.GroupBy(x => x.Type);
+                            foreach (var chedGroup in chedGrouping)
+                            {
+                                await Download(request, rootFolder, $"{blobContainer}/IPAFFS/{chedGroup.Key}", typeof(ImportNotification), chedGroup.Select(x => x.Identifier).ToArray(), cancellationToken);
+                            }
+                        }
+                    });
                 }
                 else
                 {
-                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDA", typeof(ImportNotification), null, cancellationToken);
-                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDD", typeof(ImportNotification), null, cancellationToken);
-                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDP", typeof(ImportNotification), null, cancellationToken);
-                    await Download(request, rootFolder, $"{blobContainer}/IPAFFS/CHEDPP", typeof(ImportNotification), null, cancellationToken);
-
-                    await Download(request, rootFolder, $"{blobContainer}/ALVS", typeof(AlvsClearanceRequest), null, cancellationToken);
-
-                    await Download(request, rootFolder, $"{blobContainer}/GVMSAPIRESPONSE", typeof(SearchGmrsForDeclarationIdsResponse), null, cancellationToken);
-
-                    await Download(request, rootFolder, $"{blobContainer}/DECISIONS", typeof(AlvsClearanceRequest), null, cancellationToken);
-
-                    await Download(request, rootFolder, $"{blobContainer}/FINALISATION", typeof(Finalisation), null, cancellationToken);
+                    await BlobFolders.ForEachAsync(async f =>
+                    {
+                        await Download(request, rootFolder, $"{blobContainer}/{f.path}", f.dataType, null,
+                            cancellationToken);
+                    });
                 }
             });
-
 
 
             if (Directory.EnumerateFiles(rootFolder, "*.json", SearchOption.AllDirectories).Any())
@@ -104,6 +120,12 @@ public class DownloadCommand : IRequest, ISyncJob
                 )
                 .FlattenAsyncEnumerable();
 
+            var folderMaps = new List<(string, Type, Regex)>()
+            {
+                ("FINALISATION", typeof(Finalisation), new Regex("\"finalState\":\\s?\"", RegexOptions.None, TimeSpan.FromMilliseconds(100))),
+                ("DECISIONS", typeof(Decision), new Regex("\"decisionCode\":\\s?\"", RegexOptions.None, TimeSpan.FromMilliseconds(100)))
+            };
+
             //Write local files
             await Parallel.ForEachAsync(tasks, options, async (item, _) =>
             {
@@ -116,8 +138,30 @@ public class DownloadCommand : IRequest, ISyncJob
                 if (shouldDownload)
                 {
                     var blobContent = await blobService.GetResource(item, cancellationToken);
+
+                    //Get the parts of the path as an array, dropping the DmpBlobRootFolder part
+                    var fileParts = item.Name
+                        .Split('/')
+                        .Skip(1)
+                        .ToArray();
+
+                    // CDMS-408 Temporary fix for incorrect paths for ALVS in data lake
+                    // Move files into the correct folder by checking if text exists
+                    if (type == typeof(AlvsClearanceRequest))
+                    {
+                        var f = folderMaps.FirstOrDefault(t => t.Item3.IsMatch(blobContent));
+
+                        if (f.Item1.HasValue())
+                        {
+                            type = f.Item2;
+                            logger.LogWarning("File {Name} contains a {Type} so moving to {NewFolder}", item.Name, type.FullName, f.Item1);
+                            fileParts[0] = f.Item1;
+                        }
+                    }
+
                     var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
-                    var filename = Path.Combine(rootFolder, item.Name.Substring(item.Name.IndexOf('/') + 1).Replace('/', Path.DirectorySeparatorChar));
+                    var filename = Path.Combine(rootFolder, String.Join(Path.DirectorySeparatorChar, fileParts));
+
                     Directory.CreateDirectory(Path.GetDirectoryName(filename)!);
                     await File.WriteAllTextAsync(filename, redactedContent, cancellationToken);
                 }
