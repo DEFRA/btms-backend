@@ -23,7 +23,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         {
             await dbContext.AlvsValidationErrors.Insert(new AlvsValidationError()
             {
-                Id = preProcessingContext.MessageId,
+                Id = $"{nameof(AlvsClearanceRequest)}_{preProcessingContext.MessageId}",
                 Type = nameof(AlvsClearanceRequest),
                 Data = BsonDocument.Parse(GeneralExtensions.ToJson(preProcessingContext.Message)),
                 ValidationResult = schemaValidationResult

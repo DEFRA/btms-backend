@@ -31,12 +31,13 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
             await dbContext.AlvsValidationErrors.Insert(
                 new AlvsValidationError()
                 {
-                    Id = auditId,
+                    Id = $"{nameof(Finalisation)}_{auditId}",
                     Type = nameof(Finalisation),
                     Data = BsonDocument.Parse(GeneralExtensions.ToJson(message)),
                     ValidationResult = validationResult
                 }, cancellationToken);
             await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
+            return;
         }
 
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
