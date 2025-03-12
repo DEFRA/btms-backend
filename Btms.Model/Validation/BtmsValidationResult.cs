@@ -1,4 +1,4 @@
-﻿namespace Btms.Model.Validation;
+namespace Btms.Model.Validation;
 
 public class BtmsValidationResult
 {
