@@ -20,22 +20,8 @@ public static class AzureServiceBusHealthCheckBuilderExtensions
         TimeSpan? timeout = null)
     {
         builder.Add(new HealthCheckRegistration(
-            "azuresubscription_alvs",
-            sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.AlvsSubscription),
-            null,
-            null,
-            timeout));
-
-        builder.Add(new HealthCheckRegistration(
             "azuresubscription_notification",
             sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.NotificationSubscription),
-            null,
-            null,
-            timeout));
-
-        builder.Add(new HealthCheckRegistration(
-            "azuresubscription_gmr",
-            sp => CreateHealthCheck(sp, sp.GetRequiredService<IOptions<ServiceBusOptions>>().Value.GmrSubscription),
             null,
             null,
             timeout));
