@@ -29,7 +29,12 @@ internal class ClearanceRequestConsumer(
             var preProcessingResult = await preProcessor
                 .Process(new PreProcessingContext<AlvsClearanceRequest>(message, messageId));
 
-            if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
+            if (preProcessingResult.Outcome == PreProcessingOutcome.ValidationError)
+            {
+                await dbContext.SaveChangesAsync(Context.CancellationToken);
+                return;
+            }
+            else if (preProcessingResult.Outcome == PreProcessingOutcome.Skipped)
             {
                 Context.Skipped();
             }

@@ -6,5 +6,6 @@ public enum PreProcessingOutcome
     Changed,
     Skipped,
     AlreadyProcessed,
-    NotProcessed
+    NotProcessed,
+    ValidationError
 }

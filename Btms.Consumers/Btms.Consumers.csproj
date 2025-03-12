@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -45,6 +45,7 @@
     <ProjectReference Include="..\Btms.Types.Gvms.V1\Btms.Types.Gvms.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.Mapping.V1\Btms.Types.Ipaffs.Mapping.V1.csproj" />
     <ProjectReference Include="..\Btms.Types.Ipaffs.V1\Btms.Types.Ipaffs.V1.csproj" />
+    <ProjectReference Include="..\Btms.Validation\Btms.Validation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

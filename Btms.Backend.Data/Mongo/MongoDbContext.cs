@@ -2,6 +2,7 @@ using Btms.Common.FeatureFlags;
 using Btms.Model;
 using Btms.Model.Gvms;
 using Btms.Model.Ipaffs;
+using Btms.Model.Validation;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using MongoDB.Driver;
@@ -21,6 +22,7 @@ public class MongoDbContext : IMongoDbContext
         Notifications = new MongoCollectionSet<ImportNotification>(this);
         Movements = new MongoCollectionSet<Movement>(this);
         Gmrs = new MongoCollectionSet<Gmr>(this);
+        AlvsValidationErrors = new MongoCollectionSet<AlvsValidationError>(this);
     }
 
     internal IMongoDatabase Database { get; }
@@ -32,6 +34,8 @@ public class MongoDbContext : IMongoDbContext
     public IMongoCollectionSet<Movement> Movements { get; }
 
     public IMongoCollectionSet<Gmr> Gmrs { get; }
+
+    public IMongoCollectionSet<AlvsValidationError> AlvsValidationErrors { get; }
 
     public async Task<IMongoDbTransaction> StartTransaction(CancellationToken cancellationToken = default)
     {
@@ -98,5 +102,6 @@ public class MongoDbContext : IMongoDbContext
         await Notifications.PersistAsync(cancellation);
         await Movements.PersistAsync(cancellation);
         await Gmrs.PersistAsync(cancellation);
+        await AlvsValidationErrors.PersistAsync(cancellation);
     }
 }
