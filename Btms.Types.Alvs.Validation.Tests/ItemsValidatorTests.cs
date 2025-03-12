@@ -4,7 +4,7 @@ namespace Btms.Types.Alvs.Validation.Tests;
 
 public class ItemsValidatorTests
 {
-    private ItemsValidator validator = new("123");
+    private readonly ItemsValidator validator = new("123");
 
     [Fact]
     public void Should_have_error_when_ItemNumber_is_null()

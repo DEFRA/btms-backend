@@ -8,10 +8,10 @@ public class ServiceHeaderValidator : AbstractValidator<ServiceHeader>
     {
         RuleFor(p => p.SourceSystem).Must(p => p == "CDS")
             .WithMessage(c => $"Source system {c.SourceSystem} is invalid. Your request with correlation ID {c.CorrelationId} has been terminated.")
-            .WithErrorCode("ALVSVAL101");
+            .WithState(p => "ALVSVAL101");
         RuleFor(p => p.DestinationSystem).Must(p => p == "ALVS")
             .WithMessage(c => $"Destination system {c.DestinationSystem} is invalid. Your request with correlation ID {c.CorrelationId} has been terminated.")
-            .WithErrorCode("ALVSVAL102");
+            .WithState(p => "ALVSVAL102");
 
         RuleFor(p => p.CorrelationId).NotEmpty().MaximumLength(20);
         RuleFor(p => p.ServiceCallTimestamp).NotNull();

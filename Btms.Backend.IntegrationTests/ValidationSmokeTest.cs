@@ -18,7 +18,7 @@ public class ValidationSmokeTest(ITestOutputHelper output)
     [Fact]
     public void VerifyValidationErrorWrittenToDb()
     {
-        BackendFixture.MongoDbContext.AlvsValidationErrors.Count(x => x.Type == nameof(AlvsClearanceRequest)).Should().BeGreaterThan(0);
-        BackendFixture.MongoDbContext.AlvsValidationErrors.Count(x => x.Type == nameof(Finalisation)).Should().BeGreaterThan(0);
+        BackendFixture.MongoDbContext.CdsValidationErrors.Count(x => x.Type == nameof(AlvsClearanceRequest)).Should().BeGreaterThan(0);
+        BackendFixture.MongoDbContext.CdsValidationErrors.Count(x => x.Type == nameof(Finalisation)).Should().BeGreaterThan(0);
     }
 }

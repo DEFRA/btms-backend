@@ -2,7 +2,7 @@ using Btms.Model.Data;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Btms.Model.Validation;
-public class AlvsValidationError : IDataEntity
+public class CdsValidationError : IDataEntity
 {
     [BsonId] public string? Id { get; set; } = null!;
 

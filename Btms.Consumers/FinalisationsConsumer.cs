@@ -28,8 +28,8 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
 
         if (!validationResult.IsValid)
         {
-            await dbContext.AlvsValidationErrors.Insert(
-                new AlvsValidationError()
+            await dbContext.CdsValidationErrors.Insert(
+                new CdsValidationError()
                 {
                     Id = $"{nameof(Finalisation)}_{auditId}",
                     Type = nameof(Finalisation),

@@ -10,7 +10,7 @@ public class FinalisationHeaderValidator : AbstractValidator<FinalisationHeader>
             .NotEmpty()
             .MaximumLength(22)
             .Matches("[1-9]{2}[A-Za-z]{2}[A-Za-z0-9]{14}")
-            .WithErrorCode("ALVSVAL401");
+            .WithState(p => "ALVSVAL401");
         RuleFor(p => p.EntryVersionNumber).NotNull();
 
         RuleFor(p => p.FinalState).NotNull();

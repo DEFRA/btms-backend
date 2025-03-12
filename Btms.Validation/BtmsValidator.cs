@@ -32,6 +32,7 @@ public class BtmsValidator(IServiceProvider serviceProvider, IFeatureManager fea
                 validationFailure.ErrorMessage,
                 validationFailure.ErrorCode,
                 validationFailure.AttemptedValue,
+                new BtmsValidationFailureContext() { CdsErrorCode = validationFailure.CustomState?.ToString() },
                 Enum.Parse<ValidationSeverity>(validationFailure.Severity.ToString())))
             .ToList();
 

@@ -19,29 +19,28 @@ public class ItemsValidator : AbstractValidator<Items>
         RuleForEach(p => p.Documents).SetValidator(item => new DocumentValidator(item.ItemNumber, correlationId));
         RuleForEach(p => p.Checks).SetValidator(new CheckValidator(correlationId));
 
-
         RuleForEach(p => p.Documents).Must(MustHaveCorrectDocumentCodesForChecks)
             .WithMessage((item, document) => $"Document code{document.DocumentCode} is not appropriate for the check code requested on ItemNumber {item.ItemNumber}. Your request with correlation ID {correlationId} has been terminated.")
-            .WithErrorCode("ALVSVAL320")
+            .WithState(p => "ALVSVAL320")
             .When(p => p.Checks is not null);
 
         RuleForEach(p => p.Checks).Must(MustHaveDocumentForCheck)
             .WithMessage((item, check) => $"Check code {check.CheckCode} on ItemNumber {item.ItemNumber} must have a document code. Your request with Correlation ID {correlationId} has been terminated.")
-            .WithErrorCode("ALVSVAL321");
+            .WithState(p => "ALVSVAL321");
 
         RuleFor(p => p.Checks).Must(MustOnlyHaveOneCheckPerAuthority)
             .WithMessage(p => $"Item {p.ItemNumber} has more than one Item Check defined for the same authority. You can only provide one. Your service request with Correlation ID {correlationId} has been terminated.")
-            .WithErrorCode("ALVSVAL317")
+            .WithState(p => "ALVSVAL317")
             .When(p => p.Checks is not null);
 
         RuleFor(p => p.Checks).Must(MustHavePoAoCheck)
             .WithMessage(p => $"An IUU document has been specified for ItemNumber {p.ItemNumber}. Request a manual clearance if the item does not require a CHED P. Your request with correlation ID {correlationId} has been terminated.")
-            .WithErrorCode("ALVSVAL328")
+            .WithState(p => "ALVSVAL328")
             .When(x => x.Checks is not null && x.Checks.Any(x => x.CheckCode == "H224"));
 
         RuleFor(p => p.Documents).NotEmpty()
             .WithMessage(c => $"Item {c.ItemNumber} has no document code. BTMS requires at least one item document. Your request with correlation ID {correlationId} has been terminated..")
-            .WithErrorCode("ALVSVAL308");
+            .WithState(p => "ALVSVAL308");
     }
 
     private static bool MustHaveCorrectDocumentCodesForChecks(Items item, Document document)

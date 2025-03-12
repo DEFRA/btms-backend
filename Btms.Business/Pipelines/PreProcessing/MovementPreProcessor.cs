@@ -21,7 +21,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
         if (!schemaValidationResult.IsValid)
         {
-            await dbContext.AlvsValidationErrors.Insert(new AlvsValidationError()
+            await dbContext.CdsValidationErrors.Insert(new CdsValidationError()
             {
                 Id = $"{nameof(AlvsClearanceRequest)}_{preProcessingContext.MessageId}",
                 Type = nameof(AlvsClearanceRequest),

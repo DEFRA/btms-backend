@@ -59,7 +59,7 @@ public class MovementPreProcessingTests
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
-        var validator = new StubValidator([new BtmsValidationFailure("Test", "test", "test", null, ValidationSeverity.Error)]);
+        var validator = new StubValidator([new BtmsValidationFailure("Test", "test", "test", null, null, ValidationSeverity.Error)]);
         var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance), validator);
 
         // ACT
