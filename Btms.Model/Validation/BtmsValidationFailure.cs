@@ -1,4 +1,4 @@
-﻿using Btms.Common.Extensions;
+using Btms.Common.Extensions;
 
 namespace Btms.Model.Validation;
 
@@ -8,7 +8,6 @@ public class BtmsValidationFailure
         ValidationSeverity severity = ValidationSeverity.Error) : this(propertyName, errorMessage, errorCode, null,
         severity)
     {
-
     }
 
     public BtmsValidationFailure(string propertyName, string errorMessage, string errorCode, object? attemptedValue,
