@@ -1,12 +1,21 @@
+using System.Text.Json;
 using Btms.Backend.Config;
 using Btms.Backend.Mediatr;
+using Btms.BlobService;
+using Btms.Business;
 using Btms.Business.Commands;
 using Btms.Business.Mediatr;
+using Btms.Common.Extensions;
 using Btms.Consumers.MemoryQueue;
+using Btms.SensitiveData;
 using Btms.SyncJob;
+using Btms.Types.Alvs;
+using Btms.Types.Gvms;
+using Btms.Types.Ipaffs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SlimMessageBus.Host;
+using Decision = Btms.Types.Alvs.Decision;
 
 namespace Btms.Backend.Endpoints;
 
@@ -18,6 +27,7 @@ public static class SyncEndpoints
     {
         if (options.Value.EnableSync)
         {
+
             app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
             app.MapPost(BaseRoute + "/import-notifications/", SyncNotifications).AllowAnonymous();
 
@@ -34,6 +44,9 @@ public static class SyncEndpoints
             app.MapPost(BaseRoute + "/finalisations/", SyncFinalisations).AllowAnonymous();
 
         }
+
+        if (options.Value.EnableDiagnostics)
+            app.MapGet(BaseRoute + "/blob/", GetBlob).AllowAnonymous();
 
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
         app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
@@ -66,7 +79,7 @@ public static class SyncEndpoints
     private static async Task<IResult> GenerateDownload([FromServices] IBtmsMediator mediator, [FromBody] DownloadCommand command)
     {
         await mediator.SendJob(command);
-        return Results.Ok(command.JobId);
+        return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
@@ -102,6 +115,22 @@ public static class SyncEndpoints
         return Task.FromResult(queueStatsMonitor.GetAll().Any(x => x.Value.Count > 0)
              ? Results.Ok(queueStatsMonitor.GetAll())
              : Results.NoContent());
+    }
+
+    private static async Task<IResult> GetBlob(
+        [FromServices] IOptions<BusinessOptions> options,
+        [FromServices] IBlobService blobService,
+        [FromServices] ISensitiveDataSerializer sensitiveDataSerializer,
+        string path)
+    {
+        var segments = path.Split("/");
+
+        //Handles IPAFFS multiple paths per type & others which only have a single path
+        var type = DownloadCommand.BlobFolders.First(f => f.path == segments.First() || f.path.StartsWith($"{segments.First()}/")).dataType;
+        var blobContent = await blobService.GetResource(new BtmsBlobItem() { Name = $"{options.Value.DmpBlobRootFolder}/{path}" }, CancellationToken.None);
+        var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
+
+        return Results.Json(JsonDocument.Parse(redactedContent));
     }
 
     private static async Task<IResult> GetSyncNotifications(
@@ -184,5 +213,18 @@ public static class SyncEndpoints
     {
         await mediator.SendSyncJob(command);
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
+    }
+
+    private static Type ByName(string typeName)
+    {
+        return typeName switch
+        {
+            "clearance-request" => typeof(AlvsClearanceRequest),
+            "import-notification" => typeof(ImportNotification),
+            "finalisation" => typeof(Finalisation),
+            "decision" => typeof(Decision),
+            "gmr" => typeof(Gmr),
+            _ => throw new ArgumentOutOfRangeException(nameof(typeName))
+        };
     }
 }
