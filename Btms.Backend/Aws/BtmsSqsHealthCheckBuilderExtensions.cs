@@ -17,7 +17,7 @@ public static class BtmsSqsHealthCheckBuilderExtensions
         TimeSpan? timeout = default)
     {
         builder.Services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
-        
+
         return builder;
     }
 }
