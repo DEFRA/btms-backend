@@ -26,14 +26,4 @@ public class BtmsValidationResult
     {
         _errors = failures.Where(failure => failure != null).ToList();
     }
-
-    public override string ToString()
-    {
-        return ToString(Environment.NewLine);
-    }
-
-    public string ToString(string separator)
-    {
-        return string.Join(separator, _errors.Select(failure => failure.ErrorMessage));
-    }
 }
