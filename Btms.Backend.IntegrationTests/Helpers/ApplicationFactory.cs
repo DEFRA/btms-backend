@@ -67,7 +67,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                 { "ConsumerOptions:EnableAmazonConsumers", "true" }
             });
 
-        if(EnableClearanceRequestValidation)
+        if (EnableClearanceRequestValidation)
             configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "FeatureFlags:Validation_AlvsClearanceRequest", "true" }
