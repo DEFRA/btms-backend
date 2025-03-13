@@ -2,20 +2,14 @@ using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Decisions.Finders;
 
-public class ChedADecisionFinder : IDecisionFinder
+public class ChedADecisionFinder : DecisionFinder
 {
-    public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
+    public override bool CanFindDecision(ImportNotification notification, string? checkCode) =>
         notification.ImportNotificationType == ImportNotificationTypeEnum.Cveda &&
         notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
+    protected override DecisionFinderResult FindDecisionInternal(ImportNotification notification, string? checkCode)
     {
-        if (notification.Status == ImportNotificationStatusEnum.Cancelled ||
-            notification.Status == ImportNotificationStatusEnum.Replaced)
-        {
-            return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E88);
-        }
-
         if (notification.TryGetHoldDecision(out var code))
         {
             return new DecisionFinderResult(code!.Value, checkCode);
