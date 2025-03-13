@@ -28,7 +28,7 @@ namespace Btms.Model.Validation.Tests
                     EntryVersionNumber = 1,
                     Status = new MovementStatus()
                     {
-                        ChedTypes = [ImportNotificationTypeEnum.Ced], 
+                        ChedTypes = [ImportNotificationTypeEnum.Ced],
                         LinkStatus = LinkStatus.AllLinked
                     },
                     Finalisation = new Finalisation()
