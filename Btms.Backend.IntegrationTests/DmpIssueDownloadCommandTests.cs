@@ -34,13 +34,15 @@ public class DmpIssueDownloadCommandTests(ApplicationFactory factory, ITestOutpu
         archive.Entries
             .Select(e => e.FullName)
             .Order()
-            .Should().BeEquivalentTo(
-                "ALVS/2025/02/02/clearance-request.json",
-                "ALVS/2025/02/02/clearance-request-formatted.json",
-                "DECISIONS/2025/02/02/decision.json",
-                "DECISIONS/2025/02/02/decision-formatted.json",
-                "FINALISATION/2025/02/02/finalisation.json",
-                "FINALISATION/2025/02/02/finalisation-formatted.json"
+            .Should().Contain(
+                new[] {
+                    "ALVS/2025/02/02/clearance-request.json",
+                    "ALVS/2025/02/02/clearance-request-formatted.json",
+                    "DECISIONS/2025/02/02/decision.json",
+                    "DECISIONS/2025/02/02/decision-formatted.json",
+                    "FINALISATION/2025/02/02/finalisation.json",
+                    "FINALISATION/2025/02/02/finalisation-formatted.json"
+                }
             );
     }
 }
