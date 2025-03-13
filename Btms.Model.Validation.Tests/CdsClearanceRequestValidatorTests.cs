@@ -10,7 +10,7 @@ namespace Btms.Model.Validation.Tests
     public class CdsClearanceRequestValidatorTests
     {
         private readonly CdsClearanceRequestValidator validator = new();
-        
+
         [Fact]
         public void Should_have_error_when_already_cancelled()
         {
@@ -28,7 +28,8 @@ namespace Btms.Model.Validation.Tests
                     EntryVersionNumber = 1,
                     Status = new MovementStatus()
                     {
-                        ChedTypes = [ImportNotificationTypeEnum.Ced], LinkStatus = LinkStatus.AllLinked
+                        ChedTypes = [ImportNotificationTypeEnum.Ced], 
+                        LinkStatus = LinkStatus.AllLinked
                     },
                     Finalisation = new Finalisation()
                     {
