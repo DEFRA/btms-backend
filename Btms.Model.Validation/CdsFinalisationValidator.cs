@@ -35,23 +35,21 @@ public class CdsFinalisationValidator : AbstractValidator<BtmsValidationPair<Cds
     private bool NotBeDuplicateFinalise(BtmsValidationPair<CdsFinalisation, Movement> pair, Movement movement)
     {
         var movementCancelled = (movement.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault();
-        return pair.NewRecord.Header.FinalState.IsCancelled() && movementCancelled;
+        return !(pair.NewRecord.Header.FinalState.IsCancelled() && movementCancelled);
     }
 
     private bool NotBeADuplicateEntryVersionNumber(BtmsValidationPair<CdsFinalisation, Movement> pair, CdsFinalisation finalisation)
     {
-        var isCancelled = (pair.ExistingRecord?.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault(false);
-        return !isCancelled && pair.ExistingRecord?.EntryVersionNumber != finalisation.Header?.EntryVersionNumber;
+        return !finalisation.Header.FinalState.IsCancelled() && pair.ExistingRecord?.EntryVersionNumber == finalisation.Header?.EntryVersionNumber;
     }
 
     private bool BeValidCancelRequest(BtmsValidationPair<CdsFinalisation, Movement> pair, CdsFinalisation finalisation)
     {
-        var isCancelled = (pair.ExistingRecord?.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault(false);
-        return isCancelled && pair.ExistingRecord?.EntryVersionNumber != finalisation.Header?.EntryVersionNumber;
+        return !(finalisation.Header.FinalState.IsCancelled() && pair.ExistingRecord?.EntryVersionNumber == finalisation.Header?.EntryVersionNumber);
     }
 
     private bool NotBeCancelled(Movement movement)
     {
-        return (movement.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault();
+        return !(movement.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault();
     }
 }

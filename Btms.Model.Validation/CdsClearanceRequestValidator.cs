@@ -23,12 +23,12 @@ namespace Btms.Model.Validation
 
         private bool NotBeADuplicateEntryVersionNumber(BtmsValidationPair<CdsClearanceRequest, Movement> pair, CdsClearanceRequest clearanceRequest)
         {
-            return pair.ExistingRecord?.EntryVersionNumber == clearanceRequest.Header?.EntryVersionNumber;
+            return pair.ExistingRecord?.EntryVersionNumber != clearanceRequest.Header?.EntryVersionNumber;
         }
 
         private bool NotBeCancelled(Movement movement)
         {
-            return (movement.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault();
+            return !(movement.Finalisation?.FinalState.IsCancelled()).GetValueOrDefault();
         }
     }
 }
