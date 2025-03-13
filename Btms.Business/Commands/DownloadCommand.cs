@@ -109,41 +109,29 @@ public class DownloadCommand : IRequest, ISyncJob
 
             Directory.Delete(rootFolder, true);
         }
-    
-        // protected bool CanProcessBlob(string blobContent)
-        // {
-        //     var path = JsonPath.Parse("$.header.finalState", new PathParsingOptions { AllowMathOperations = true });
-        //     var expected = JsonNode.Parse(blobContent);
-        //     return path.Evaluate(expected).Matches.Count > 1;
-        // }
-        
-        List<(string, Type, Regex)> folderMaps =
-        [
-            ("FINALISATION", typeof(Finalisation),
-                new Regex("\"finalState\":\\s?\"", RegexOptions.None, TimeSpan.FromMilliseconds(100))),
-            ("DECISIONS", typeof(Decision),
-                new Regex("\"decisionCode\":\\s?\"", RegexOptions.None, TimeSpan.FromMilliseconds(100)))
-        ];
 
-
-        private (Type, string[]) EnsureTypeAndFilePath(string name, Type type, string[] fileParts, string content)
+        // CDMS-408 Temporary fix for incorrect paths for ALVS in data lake
+        // Move files into the correct folder by checking if text exists
+        private static (Type, string[]) EnsureTypeAndFilePath(Type type, string[] fileParts, string content)
         {
-            // CDMS-408 Temporary fix for incorrect paths for ALVS in data lake
-            // Move files into the correct folder by checking if text exists
-            if (type == typeof(AlvsClearanceRequest))
+            var path = JsonPath.Parse("$.header.finalState", new PathParsingOptions { AllowMathOperations = true });
+            var expected = JsonNode.Parse(content);
+            if (path.Evaluate(expected).Matches.Count > 0)
             {
-                var f = folderMaps.FirstOrDefault(t => t.Item3.IsMatch(content));
-
-                if (f.Item1.HasValue())
-                {
-                    type = f.Item2;
-                    logger.LogWarning("File {Name} contains a {Type} so moving to {NewFolder}", name, type.FullName, f.Item1);
-                    fileParts[0] = f.Item1;
-                }
+                fileParts[0] = "FINALISATION";
+                return (typeof(Finalisation), fileParts);
             }
-            
+
+            path = JsonPath.Parse("$.header.decisionNumber", new PathParsingOptions { AllowMathOperations = true });
+            expected = JsonNode.Parse(content);
+            if (path.Evaluate(expected).Matches.Count > 0)
+            {
+                fileParts[0] = "DECISIONS";
+                return (typeof(Decision), fileParts);
+            }
+
             return (type, fileParts);
-        } 
+        }
 
         private async Task Download(DownloadCommand request, string rootFolder, string folder, Type type, string[]? filenameFilter, CancellationToken cancellationToken)
         {
@@ -157,12 +145,12 @@ public class DownloadCommand : IRequest, ISyncJob
                 )
                 .FlattenAsyncEnumerable();
 
-            
+
             //Write local files
             await Parallel.ForEachAsync(tasks, options, async (item, _) =>
             {
                 logger.LogWarning("Processing file {Name}", item.Name);
-                
+
                 bool shouldDownload = true;
                 if (filenameFilter is not null)
                 {
@@ -179,8 +167,8 @@ public class DownloadCommand : IRequest, ISyncJob
                         .Skip(1)
                         .ToArray();
 
-                    (type, fileParts) = EnsureTypeAndFilePath(item.Name, type, fileParts, blobContent);
-                    
+                    (type, fileParts) = EnsureTypeAndFilePath(type, fileParts, blobContent);
+
                     var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
                     var filename = Path.Combine(rootFolder, String.Join(Path.DirectorySeparatorChar, fileParts));
 
