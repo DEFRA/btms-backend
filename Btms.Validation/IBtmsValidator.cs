@@ -4,5 +4,5 @@ namespace Btms.Validation;
 
 public interface IBtmsValidator
 {
-    BtmsValidationResult Validate<T>(T entity);
+    BtmsValidationResult Validate<T>(T entity, string? friendlyName = null);
 }

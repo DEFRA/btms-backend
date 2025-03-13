@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Btms.Types.Alvs.Validation.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Btms.Validation", "Btms.Validation\Btms.Validation.csproj", "{7EB7813D-F288-49BC-9A1F-9C11E6357E75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Btms.Model.Validation", "Btms.Model.Validation\Btms.Model.Validation.csproj", "{AE39149B-5F47-4581-8027-67514E67CA00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +221,10 @@ Global
 		{7EB7813D-F288-49BC-9A1F-9C11E6357E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EB7813D-F288-49BC-9A1F-9C11E6357E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EB7813D-F288-49BC-9A1F-9C11E6357E75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE39149B-5F47-4581-8027-67514E67CA00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE39149B-5F47-4581-8027-67514E67CA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE39149B-5F47-4581-8027-67514E67CA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE39149B-5F47-4581-8027-67514E67CA00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

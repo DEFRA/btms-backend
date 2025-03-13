@@ -8,13 +8,9 @@
 //------------------------------------------------------------------------------
 #nullable enable
 
-using JsonApiDotNetCore.Resources.Annotations;
 using System.Text.Json.Serialization;
-using System.Dynamic;
-using System.Runtime.Serialization;
 using Btms.Model.Auditing;
-using Btms.Model.Ipaffs;
-using MongoDB.Bson.Serialization.Attributes;
+using JsonApiDotNetCore.Resources.Annotations;
 
 namespace Btms.Model.Cds;
 
@@ -43,6 +39,19 @@ public enum FinalState
     Seized = 4,
     ReleasedToKingsWarehouse = 5,
     TransferredToMss = 6
+}
+
+public static class FinalStateExtensions
+{
+    public static bool IsCancelled(this FinalState finalState)
+    {
+        return finalState == FinalState.CancelledAfterArrival || finalState == FinalState.CancelledWhilePreLodged;
+    }
+
+    public static bool IsNotCancelled(this FinalState finalState)
+    {
+        return !finalState.IsCancelled();
+    }
 }
 
 public partial class FinalisationHeader  //
