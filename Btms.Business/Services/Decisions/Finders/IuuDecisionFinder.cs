@@ -2,17 +2,15 @@ using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Decisions.Finders;
 
-public class IuuDecisionFinder : IDecisionFinder
+public class IuuDecisionFinder : DecisionFinder
 {
     public const string IuuCheckCode = "H224";
 
-    public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
+    public override bool CanFindDecision(ImportNotification notification, string? checkCode) =>
         notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp &&
-        notification.Status != ImportNotificationStatusEnum.Cancelled &&
-        notification.Status != ImportNotificationStatusEnum.Replaced &&
         checkCode == IuuCheckCode;
 
-    public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
+    protected override DecisionFinderResult FindDecisionInternal(ImportNotification notification, string? checkCode)
     {
         return (notification.PartTwo?.ControlAuthority?.IuuCheckRequired == true) switch
         {

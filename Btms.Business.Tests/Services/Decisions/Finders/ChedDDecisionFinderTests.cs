@@ -17,8 +17,6 @@ public class ChedDDecisionFinderTests
     [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Rejected, true)]
     [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.SplitConsignment, true)]
     [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Validated, true)]
-    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Replaced, false)]
-    [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Cancelled, false)]
     [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false)]
     [InlineData(null, ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false)]
     [InlineData(null, ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false)]
@@ -38,7 +36,7 @@ public class ChedDDecisionFinderTests
         };
         var sut = new ChedDDecisionFinder();
 
-        var result = sut.CanFindDecision(notification, null);
+        var result = sut.CanFindDecision(notification, "H223");
 
         result.Should().Be(expectedResult);
     }
