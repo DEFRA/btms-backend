@@ -23,10 +23,7 @@ public static class ListExtensions
 
     public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> func)
     {
-        foreach (var value in list)
-        {
-            await func(value);
-        }
+        await Task.WhenAll(list.Select(func));
     }
 
     public static async IAsyncEnumerable<T> FlattenAsyncEnumerable<T>(this IEnumerable<IAsyncEnumerable<T>> list)

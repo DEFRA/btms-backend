@@ -1,6 +1,7 @@
 using Btms.Backend.Data;
 using Btms.Backend.IntegrationTests.Consumers.AmazonQueues;
 using Btms.BlobService;
+using Btms.Common.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ public interface IIntegrationTestsApplicationFactory
 {
     ITestOutputHelper TestOutputHelper { get; set; }
     string DatabaseName { get; set; }
+    string? DmpBlobRootFolder { get; set; }
     BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null);
     IMongoDbContext GetDbContext();
     IServiceProvider Services { get; }
@@ -63,6 +65,12 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                 { "ConsumerOptions:EnableAmazonConsumers", "true" }
             });
 
+        if (DmpBlobRootFolder.HasValue())
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "BusinessOptions:DmpBlobRootFolder", DmpBlobRootFolder }
+            });
+
         ConfigureHostConfiguration(configurationBuilder);
 
         builder
@@ -101,6 +109,8 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
     public ITestOutputHelper TestOutputHelper { get; set; } = null!;
 
     public string DatabaseName { get; set; } = null!;
+    public string? DmpBlobRootFolder { get; set; } = null!;
+
 
     public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null)
     {
