@@ -18,8 +18,6 @@ public class ChedPpPhsiDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Rejected, true, "H220")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.SplitConsignment, true, "H220")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Validated, true, "H220")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Replaced, false, "H220")]
-    [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Cancelled, false, "H220")]
     [InlineData(ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false, "H219")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, "H219")]
@@ -43,7 +41,7 @@ public class ChedPpPhsiDecisionFinderTests
 
     [Theory]
     [InlineData(ImportNotificationStatusEnum.Amend, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
-    [InlineData(ImportNotificationStatusEnum.Cancelled, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
+    [InlineData(ImportNotificationStatusEnum.Cancelled, DecisionCode.X00, DecisionInternalFurtherDetail.E88)]
     [InlineData(ImportNotificationStatusEnum.Deleted, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     [InlineData(ImportNotificationStatusEnum.Draft, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     [InlineData(ImportNotificationStatusEnum.InProgress, DecisionCode.H02)]
@@ -51,7 +49,7 @@ public class ChedPpPhsiDecisionFinderTests
     [InlineData(ImportNotificationStatusEnum.Modify, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     [InlineData(ImportNotificationStatusEnum.PartiallyRejected, DecisionCode.H01)]
     [InlineData(ImportNotificationStatusEnum.Rejected, DecisionCode.N02)]
-    [InlineData(ImportNotificationStatusEnum.Replaced, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
+    [InlineData(ImportNotificationStatusEnum.Replaced, DecisionCode.X00, DecisionInternalFurtherDetail.E88)]
     [InlineData(ImportNotificationStatusEnum.SplitConsignment, DecisionCode.X00, DecisionInternalFurtherDetail.E99)]
     public void DecisionFinderTest(ImportNotificationStatusEnum status, DecisionCode expectedCode,
         DecisionInternalFurtherDetail? expectedFurtherDetail = null)

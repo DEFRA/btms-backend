@@ -17,8 +17,6 @@ public class ChedADecisionFinderTests
     [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Rejected, true)]
     [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.SplitConsignment, true)]
     [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Validated, true)]
-    [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Replaced, false)]
-    [InlineData(null, ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Cancelled, false)]
     [InlineData(null, ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false)]
     [InlineData(null, ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false)]
     [InlineData(null, ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false)]
