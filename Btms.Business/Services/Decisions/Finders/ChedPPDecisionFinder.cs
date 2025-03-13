@@ -16,12 +16,11 @@ public class ChedPPDecisionFinder : DecisionFinder
     {
         return notification.Status switch
         {
-            ImportNotificationStatusEnum.Submitted or ImportNotificationStatusEnum.InProgress =>
-                new DecisionFinderResult(DecisionCode.H02, checkCode),
+            ImportNotificationStatusEnum.Submitted or ImportNotificationStatusEnum.InProgress => new DecisionFinderResult(DecisionCode.H02, checkCode),
             ImportNotificationStatusEnum.Validated => new DecisionFinderResult(DecisionCode.C03, checkCode),
             ImportNotificationStatusEnum.Rejected => new DecisionFinderResult(DecisionCode.N02, checkCode),
             ImportNotificationStatusEnum.PartiallyRejected => new DecisionFinderResult(DecisionCode.H01, checkCode),
-           _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E99)
+            _ => new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E99)
         };
     }
 }
