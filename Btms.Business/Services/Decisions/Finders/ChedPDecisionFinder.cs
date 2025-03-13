@@ -8,12 +8,16 @@ public class ChedPDecisionFinder : IDecisionFinder
 {
     public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
         notification.ImportNotificationType == ImportNotificationTypeEnum.Cvedp &&
-        notification.Status != ImportNotificationStatusEnum.Cancelled &&
-        notification.Status != ImportNotificationStatusEnum.Replaced &&
         checkCode != IuuDecisionFinder.IuuCheckCode;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
+        if (notification.Status == ImportNotificationStatusEnum.Cancelled ||
+            notification.Status == ImportNotificationStatusEnum.Replaced)
+        {
+            return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E88);
+        }
+
         if (notification.TryGetHoldDecision(out var code))
         {
             return new DecisionFinderResult(code!.Value, checkCode);

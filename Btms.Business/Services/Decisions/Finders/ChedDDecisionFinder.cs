@@ -1,3 +1,4 @@
+using Btms.Business.Extensions;
 using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Services.Decisions.Finders;
@@ -8,12 +9,17 @@ public class ChedDDecisionFinder : IDecisionFinder
 {
     public bool CanFindDecision(ImportNotification notification, string? checkCode) =>
         notification.ImportNotificationType == ImportNotificationTypeEnum.Ced &&
-        notification.Status != ImportNotificationStatusEnum.Cancelled &&
-        notification.Status != ImportNotificationStatusEnum.Replaced &&
-        notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true;
+        notification.PartTwo?.ControlAuthority?.IuuCheckRequired != true &&
+        checkCode?.GetChedTypeFromCheckCode() == ImportNotificationTypeEnum.Ced;
 
     public DecisionFinderResult FindDecision(ImportNotification notification, string? checkCode)
     {
+        if (notification.Status == ImportNotificationStatusEnum.Cancelled ||
+            notification.Status == ImportNotificationStatusEnum.Replaced)
+        {
+            return new DecisionFinderResult(DecisionCode.X00, checkCode, InternalDecisionCode: DecisionInternalFurtherDetail.E88);
+        }
+
         if (notification.TryGetHoldDecision(out var code))
         {
             return new DecisionFinderResult(code!.Value, checkCode);
