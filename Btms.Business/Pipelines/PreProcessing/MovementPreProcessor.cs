@@ -1,14 +1,20 @@
 using Btms.Backend.Data;
 using Btms.Business.Builders;
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Auditing;
+using Btms.Model.Cds;
+using Btms.Model.Validation;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
+using Btms.Validation;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using MongoDB.Bson;
 
 namespace Btms.Business.Pipelines.PreProcessing;
 
-public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilderFactory movementBuilderFactory) : IPreProcessor<AlvsClearanceRequest, Movement>
+public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPreProcessor> logger, MovementBuilderFactory movementBuilderFactory, IBtmsValidator validator) : IPreProcessor<AlvsClearanceRequest, Movement>
 {
     public async Task<PreProcessingResult<Movement>> Process(
         PreProcessingContext<AlvsClearanceRequest> preProcessingContext, CancellationToken cancellationToken = default)
@@ -16,6 +22,11 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
         var mb = movementBuilderFactory.From(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(mb.Id);
+
+        if (!await Validate(preProcessingContext.MessageId, preProcessingContext.Message, internalClearanceRequest, existingMovement, cancellationToken))
+        {
+            return PreProcessResult.ValidationError<Movement>();
+        }
 
         if (existingMovement is null)
         {
@@ -71,5 +82,29 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
 
         return result;
 
+    }
+
+    private async Task<bool> Validate(string auditId, AlvsClearanceRequest message, CdsClearanceRequest clearanceRequest, Movement? existing, CancellationToken cancellationToken)
+    {
+        var schemaValidationResult = validator.Validate(message);
+        var modelValidationResult = validator.Validate(new BtmsValidationPair<CdsClearanceRequest, Movement>(clearanceRequest, existing), "CdsClearanceRequest_Movement");
+
+        schemaValidationResult.Merge(modelValidationResult);
+
+        if (!schemaValidationResult.IsValid)
+        {
+            await dbContext.CdsValidationErrors.Insert(
+                new CdsValidationError()
+                {
+                    Id = $"{nameof(AlvsClearanceRequest)}_{auditId}",
+                    Type = nameof(AlvsClearanceRequest),
+                    Data = BsonDocument.Parse(GeneralExtensions.ToJson(message)),
+                    ValidationResult = schemaValidationResult
+                });
+            await dbContext.SaveChangesAsync(cancellation: cancellationToken);
+            return false;
+        }
+
+        return true;
     }
 }

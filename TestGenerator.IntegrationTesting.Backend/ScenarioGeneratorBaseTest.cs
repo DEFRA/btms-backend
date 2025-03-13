@@ -21,13 +21,14 @@ public abstract class ScenarioGeneratorBaseTest<T>
 
     protected ScenarioGeneratorBaseTest(
         ITestOutputHelper testOutputHelper,
-        bool reloadData = true
+        bool reloadData = true,
+        Dictionary<string, string>? backendConfigOverrides = null
     )
     {
         TestOutputHelper = testOutputHelper;
 
         var testGeneratorFixture = new TestGeneratorFixture(testOutputHelper);
-        BackendFixture = new BackendFixture(testOutputHelper, typeof(T).Name);
+        BackendFixture = new BackendFixture(testOutputHelper, typeof(T).Name, backendConfigOverrides: backendConfigOverrides);
 
         Client = BackendFixture.BtmsClient;
 
