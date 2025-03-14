@@ -28,12 +28,13 @@ public abstract class BaseApiTests
     }
 
     protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper,
-        string databaseName = "SmokeTests", string? dmpBlobRootFolder = null)
+        string databaseName = "SmokeTests", string? dmpBlobRootFolder = null, Dictionary<string, string?>? configurationOverrides = null)
     {
         Factory = factory;
         Factory.TestOutputHelper = testOutputHelper;
         Factory.DatabaseName = databaseName;
         Factory.DmpBlobRootFolder = dmpBlobRootFolder;
+        Factory.ConfigurationOverrides = configurationOverrides;
     }
 
     protected async Task PublishMessagesToInMemoryTopics<T>(Func<object, bool>? filter = null) where T : ScenarioGenerator

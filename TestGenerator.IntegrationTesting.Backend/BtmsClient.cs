@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Btms.Business.Commands;
 using Btms.Model.Ipaffs;
+using Btms.Replication.Commands;
 using Btms.SyncJob;
 using Elastic.CommonSchema;
 using FluentAssertions;
@@ -86,6 +87,11 @@ public class BtmsClient
     public Task<HttpResponseMessage> MakeDownloadRequest(DownloadCommand command)
     {
         return PostCommand(command, "/sync/generate-download");
+    }
+
+    public Task<HttpResponseMessage> MakeReplicateRequest(ReplicateCommand command)
+    {
+        return PostCommand(command, "/sync/replicate");
     }
 
     public Task<HttpResponseMessage> MakeSyncNotificationsRequest(SyncNotificationsCommand command)
