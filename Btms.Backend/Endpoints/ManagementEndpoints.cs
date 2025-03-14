@@ -41,6 +41,7 @@ public static class ManagementEndpoints
     {
         return key.StartsWith("AZURE") ||
                key.StartsWith("BlobServiceOptions__Azure") ||
+               key.StartsWith("ReplicationOptions__Azure") ||
                key.Contains("ConnectionString") ||
                key.StartsWith("AuthKeyStore__Credentials") ||
                key.Contains("password", StringComparison.OrdinalIgnoreCase) ||

@@ -19,6 +19,7 @@ public static class DiagnosticEndpoints
         if (options.Value.EnableDiagnostics)
         {
             app.MapGet(BaseRoute + "/blob", GetBlobDiagnosticAsync).AllowAnonymous();
+            app.MapGet(BaseRoute + "/blob-replica", GetBlobDiagnosticAsync).AllowAnonymous();
             app.MapGet(BaseRoute + "/asb", GetAzureServiceBusDiagnosticAsync).AllowAnonymous();
         }
     }

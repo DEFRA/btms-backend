@@ -20,6 +20,7 @@ public interface IIntegrationTestsApplicationFactory
     ITestOutputHelper TestOutputHelper { get; set; }
     string DatabaseName { get; set; }
     string? DmpBlobRootFolder { get; set; }
+    Dictionary<string, string?>? ConfigurationOverrides { get; set; }
     BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null);
     IMongoDbContext GetDbContext();
     IServiceProvider Services { get; }
@@ -71,6 +72,9 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                 { "BusinessOptions:DmpBlobRootFolder", DmpBlobRootFolder }
             });
 
+        if (ConfigurationOverrides.HasValue())
+            configurationBuilder.AddInMemoryCollection(ConfigurationOverrides);
+
         ConfigureHostConfiguration(configurationBuilder);
 
         builder
@@ -110,6 +114,8 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
 
     public string DatabaseName { get; set; } = null!;
     public string? DmpBlobRootFolder { get; set; } = null!;
+
+    public Dictionary<string, string?>? ConfigurationOverrides { get; set; }
 
 
     public BtmsClient CreateBtmsClient(WebApplicationFactoryClientOptions? options = null)
