@@ -7,6 +7,7 @@ using Btms.Business.Commands;
 using Btms.Business.Mediatr;
 using Btms.Common.Extensions;
 using Btms.Consumers.MemoryQueue;
+using Btms.Replication;
 using Btms.Replication.Commands;
 using Btms.SensitiveData;
 using Btms.SyncJob;
@@ -24,9 +25,9 @@ public static class SyncEndpoints
 {
     private const string BaseRoute = "sync";
 
-    public static void UseSyncEndpoints(this IEndpointRouteBuilder app, IOptions<ApiOptions> options)
+    public static void UseSyncEndpoints(this IEndpointRouteBuilder app, IOptions<ApiOptions> apiOptions, IOptions<ReplicationOptions> replicationOptions)
     {
-        if (options.Value.EnableSync)
+        if (apiOptions.Value.EnableSync)
         {
 
             app.MapGet(BaseRoute + "/import-notifications/", GetSyncNotifications).AllowAnonymous();
@@ -46,13 +47,19 @@ public static class SyncEndpoints
 
         }
 
-        if (options.Value.EnableDiagnostics)
-            app.MapGet(BaseRoute + "/blob/", GetBlob).AllowAnonymous();
+        if (apiOptions.Value.EnableDiagnostics)
+            app.MapPost(BaseRoute + "/blob/", GetBlob).AllowAnonymous();
 
         app.MapGet(BaseRoute + "/generate-download", GetGenerateDownload).AllowAnonymous();
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
         app.MapGet(BaseRoute + "/download/{id}", DownloadNotifications).AllowAnonymous();
-        app.MapGet(BaseRoute + "/replicate", ReplicateGet).AllowAnonymous();
+
+        if (replicationOptions.Value.Enabled)
+        {
+            app.MapGet(BaseRoute + "/replicate", GetReplicate).AllowAnonymous();
+            app.MapPost(BaseRoute + "/replicate", Replicate).AllowAnonymous();
+        }
+
         app.MapGet(BaseRoute + "/queue-counts/", GetQueueCounts).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/", GetAllSyncJobs).AllowAnonymous();
         app.MapGet(BaseRoute + "/jobs/clear", ClearSyncJobs).AllowAnonymous();
@@ -91,13 +98,20 @@ public static class SyncEndpoints
         return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
-    private static async Task<IResult> ReplicateGet(
+    private static async Task<IResult> GetReplicate(
         [FromServices] IBtmsMediator mediator,
         SyncPeriod syncPeriod)
     {
         ReplicateCommand command = new() { SyncPeriod = syncPeriod };
+        return await Replicate(mediator, command);
+    }
+
+    private static async Task<IResult> Replicate(
+        [FromServices] IBtmsMediator mediator,
+        [FromBody] ReplicateCommand command)
+    {
         await mediator.SendJob(command);
-        return Results.Ok(command.JobId);
+        return Results.Accepted($"/sync/jobs/{command.JobId}", command.JobId);
     }
 
     private static Task<IResult> GetAllSyncJobs([FromServices] ISyncJobStore store)
