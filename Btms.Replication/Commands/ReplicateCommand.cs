@@ -84,13 +84,13 @@ public class ReplicateCommand() : IRequest, ISyncJob
                             }
                             catch (Exception ex)
                             {
-                                logger.LogWarning("Failed to process and replicated file {Name}. {Error}", item.Name, ex.Message);
+                                logger.LogWarning(ex, "Failed to process and replicated file {Name}. {Error}", item.Name, ex.Message);
                                 job.MessageFailed();
                             }
                         }
                         catch (Exception ex)
                         {
-                            logger.LogError("Failed to read file {Name}. {Error}", item.Name, ex.Message);
+                            logger.LogError(ex, "Failed to read file {Name}. {Error}", item.Name, ex.Message);
                             job.BlobFailed();
                         }
 
