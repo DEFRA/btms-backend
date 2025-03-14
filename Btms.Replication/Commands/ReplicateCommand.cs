@@ -38,11 +38,10 @@ public class ReplicateCommand() : IRequest, ISyncJob
 
             var blobFolder = businessOptions.Value.DmpBlobRootFolder;
             var targetBlobContainer = replicationOptions.Value.DmpBlobContainer;
-            var targetBlobFolder = replicationOptions.Value.DmpBlobRootFolder;
 
             if (replicationOptions.Value.Enabled)
             {
-                logger.LogInformation("Replicating from {BlobFolder} to {DestinationContainer}/{DestinationFolder}", blobFolder, targetBlobContainer, targetBlobFolder);
+                logger.LogInformation("Replicating from {BlobFolder} to {DestinationContainer}", blobFolder, targetBlobContainer);
 
                 await DownloadCommand.BlobFolders.ForEachAsync(async f =>
                 {
@@ -69,8 +68,11 @@ public class ReplicateCommand() : IRequest, ISyncJob
                                 //Redact
                                 var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
 
-                                //Write to target
-                                var filename = Path.Combine(replicationOptions.Value.DmpBlobRootFolder,
+                                //Write to target - get the year and month from the path array, handling both the ALVS paths
+                                // and those from IPAFFS which have an additional directory
+
+                                var targetBlobFolder = $"PRODREDACTED-{String.Join("", fileParts[^4..^2])}";
+                                var filename = Path.Combine(targetBlobFolder,
                                     String.Join(Path.DirectorySeparatorChar, fileParts));
 
                                 logger.LogWarning("Writing file to {Name}/{PATH}",
