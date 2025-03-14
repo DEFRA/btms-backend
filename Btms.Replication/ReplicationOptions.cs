@@ -13,9 +13,6 @@ public class ReplicationOptions : IBlobServiceOptions
     public bool Enabled { get; set; } = false;
 
     [RequiredIf(nameof(Enabled), true)]
-    public string DmpBlobRootFolder { get; set; } = null!;
-
-    [RequiredIf(nameof(Enabled), true)]
     public string DmpBlobContainer { get; set; } = null!;
 
     [RequiredIf(nameof(Enabled), true)]
