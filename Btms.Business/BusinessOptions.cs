@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Btms.Business.Commands;
+using Microsoft.Extensions.Hosting;
 
 namespace Btms.Business;
 
@@ -10,6 +11,7 @@ public class BusinessOptions
     private readonly int defaultDegreeOfParallelism = Math.Max(Environment.ProcessorCount / 4, 1);
 
     [Required] public string DmpBlobRootFolder { get; set; } = "RAW";
+    public string? DownloadFolder { get; set; }
 
     public Dictionary<string, Dictionary<Feature, int>> ConcurrencyConfiguration { get; set; }
 
