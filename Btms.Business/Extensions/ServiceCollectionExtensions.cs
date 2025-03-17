@@ -19,9 +19,10 @@ using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
-using Btms.Model.Cds;
 using Btms.Types.Alvs;
+using Btms.Types.Alvs.Validation;
 using Btms.Types.Gvms;
+using Btms.Validation.Extensions;
 
 namespace Btms.Business.Extensions;
 
@@ -29,6 +30,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddBtmsValidation(setup =>
+        {
+            setup.AddValidator<Finalisation, FinalisationValidator>();
+            setup.AddValidator<AlvsClearanceRequest, AlvsClearanceRequestValidator>();
+        });
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
         services.BtmsAddOptions<BusinessOptions>(configuration, BusinessOptions.SectionName);

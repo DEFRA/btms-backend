@@ -29,4 +29,8 @@ public abstract record PreProcessResult
     {
         return new PreProcessingResult<T>(PreProcessingOutcome.NotProcessed, default(T)!, null);
     }
+    public static PreProcessingResult<T> ValidationError<T>() where T : IAuditable
+    {
+        return new PreProcessingResult<T>(PreProcessingOutcome.ValidationError, default(T)!, null);
+    }
 }

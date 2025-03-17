@@ -32,6 +32,10 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
     public bool EnableAzureServiceBusConsumers { get; set; }
     public bool EnableAmazonSnsSqsConsumers { get; set; }
 
+    public bool EnableClearanceRequestValidation { get; set; }
+
+    public bool EnableFinalisationValidation { get; set; }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Any integration test overrides could be added here
@@ -65,10 +69,24 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
                 { "ConsumerOptions:EnableAmazonConsumers", "true" }
             });
 
+
+        if (EnableClearanceRequestValidation)
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "FeatureFlags:Validation_AlvsClearanceRequest", "true" }
+            });
+
+        if (EnableFinalisationValidation)
+            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "FeatureFlags:Validation_Finalisation", "true" }
+            });
+
         if (DmpBlobRootFolder.HasValue())
             configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "BusinessOptions:DmpBlobRootFolder", DmpBlobRootFolder }
+
             });
 
         ConfigureHostConfiguration(configurationBuilder);
