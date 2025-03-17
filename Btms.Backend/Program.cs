@@ -43,6 +43,8 @@ using Btms.Backend.Aws;
 using Btms.Business.Mediatr;
 using Btms.Backend.Swagger;
 using Btms.Common;
+using Btms.Replication;
+using Btms.Replication.Extensions;
 using Microsoft.FeatureManagement;
 
 //-------- Configure the WebApplication builder------------------//
@@ -170,6 +172,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
     builder.Services.AddAnalyticsServices(builder.Configuration);
     builder.Services.AddAnalyticsExportServices(builder.Configuration);
+    builder.Services.AddReplicationServices(builder.Configuration);
 }
 
 [ExcludeFromCodeCoverage]
@@ -263,11 +266,13 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
 
-    var options = app.Services.GetRequiredService<IOptions<ApiOptions>>();
-    app.UseSyncEndpoints(options);
-    app.UseManagementEndpoints(options);
-    app.UseDiagnosticEndpoints(options);
-    app.UseAnalyticsEndpoints(options);
+    var apiOptions = app.Services.GetRequiredService<IOptions<ApiOptions>>();
+    var replicationOptions = app.Services.GetRequiredService<IOptions<ReplicationOptions>>();
+
+    app.UseSyncEndpoints(apiOptions, replicationOptions);
+    app.UseManagementEndpoints(apiOptions);
+    app.UseDiagnosticEndpoints(apiOptions);
+    app.UseAnalyticsEndpoints(apiOptions);
 
     if (builder.Environment.IsDevelopment())
     {

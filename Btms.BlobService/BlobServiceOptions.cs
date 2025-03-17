@@ -3,7 +3,7 @@ using Btms.Azure;
 
 namespace Btms.BlobService;
 
-public class BlobServiceOptions : IAzureConfig
+public class BlobServiceOptions : IBlobServiceOptions
 {
     public const string SectionName = nameof(BlobServiceOptions);
 

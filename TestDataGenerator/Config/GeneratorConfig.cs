@@ -26,7 +26,7 @@ public class GeneratorConfig : IAzureConfig
             : StorageService.AzureBlob;
 
         DmpBlobUri = $"https://{configuration["DMP_BLOB_STORAGE_NAME"]!}.blob.core.windows.net";
-        DmpBlobContainer = $"dmp-data-{dmpSlot}";
+        DmpBlobContainer = $"btms-{dmpSlot}";
     }
 
     public string DmpEnvironment { get; }

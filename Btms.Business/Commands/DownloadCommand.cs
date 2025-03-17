@@ -1,16 +1,16 @@
 using System.IO.Compression;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using Btms.BlobService;
+using Btms.Business.Extensions;
 using Btms.Common.Extensions;
-using MediatR;
 using Btms.SensitiveData;
-using Btms.Types.Ipaffs;
 using Btms.SyncJob;
 using Btms.Types.Alvs;
 using Btms.Types.Gvms;
+using Btms.Types.Ipaffs;
 using Json.Path;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -105,7 +105,6 @@ public class DownloadCommand : IRequest, ISyncJob
                 }
             });
 
-
             if (Directory.EnumerateFiles(rootFolder, "*.json", SearchOption.AllDirectories).Any())
             {
                 ZipFile.CreateFromDirectory(rootFolder, $"{env.ContentRootPath}/{request.JobId}.zip");
@@ -116,41 +115,11 @@ public class DownloadCommand : IRequest, ISyncJob
             job.Complete();
         }
 
-        // CDMS-408 'Temporary' fix for incorrect paths for ALVS in data lake
-        // Move files into the correct folder by checking if JSON elements exists
-        private static (Type, string[]) EnsureTypeAndFilePath(Type type, string[] fileParts, string content)
-        {
-            var path = JsonPath.Parse("$.header.finalState", new PathParsingOptions { AllowMathOperations = true });
-            var expected = JsonNode.Parse(content);
-            if (path.Evaluate(expected).Matches.Count > 0)
-            {
-                fileParts[0] = "FINALISATION";
-                return (typeof(Finalisation), fileParts);
-            }
-
-            path = JsonPath.Parse("$.header.decisionNumber", new PathParsingOptions { AllowMathOperations = true });
-            expected = JsonNode.Parse(content);
-            if (path.Evaluate(expected).Matches.Count > 0)
-            {
-                fileParts[0] = "DECISIONS";
-                return (typeof(Decision), fileParts);
-            }
-
-            return (type, fileParts);
-        }
-
         private async Task Download(DownloadCommand request, string rootFolder, string folder, Type type, string[]? filenameFilter, SyncJob.SyncJob job, CancellationToken cancellationToken)
         {
             ParallelOptions options = new() { CancellationToken = cancellationToken, MaxDegreeOfParallelism = 10 };
 
-            var paths = request.SyncPeriod.GetPeriodPaths();
-
-            var tasks = paths
-                .Select((periodPath) =>
-                    blobService.GetResourcesAsync($"{folder}{periodPath}", cancellationToken)
-                )
-                .FlattenAsyncEnumerable();
-
+            var tasks = blobService.GetBlobItems(folder, request.SyncPeriod, cancellationToken);
 
             //Write local files
             await Parallel.ForEachAsync(tasks, options, async (item, _) =>
@@ -170,13 +139,7 @@ public class DownloadCommand : IRequest, ISyncJob
                     {
                         var blobContent = await blobService.GetResource(item, cancellationToken);
 
-                        //Get the parts of the path as an array, dropping the DmpBlobRootFolder part
-                        var fileParts = item.Name
-                            .Split('/')
-                            .Skip(1)
-                            .ToArray();
-
-                        (type, fileParts) = EnsureTypeAndFilePath(type, fileParts, blobContent);
+                        (type, var fileParts) = item.EnsureCorrectTypeAndFilePath(type, blobContent);
 
                         var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
                         var filename = Path.Combine(rootFolder, String.Join(Path.DirectorySeparatorChar, fileParts));

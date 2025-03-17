@@ -13,9 +13,17 @@ public class BlobService(
     ILogger<BlobService> logger,
     IOptions<BlobServiceOptions> options,
     IHttpClientFactory clientFactory)
+    : BaseBlobService(serviceProvider, blobServiceClientFactory, logger, options, clientFactory);
+
+public abstract class BaseBlobService(
+    IServiceProvider serviceProvider,
+    IBlobServiceClientFactory blobServiceClientFactory,
+    ILogger logger,
+    IOptions<IBlobServiceOptions> options,
+    IHttpClientFactory clientFactory)
     : AzureService(serviceProvider, logger, options.Value, clientFactory), IBlobService
 {
-    private BlobContainerClient CreateBlobClient(int timeout = default, int retries = default)
+    protected BlobContainerClient CreateBlobClient(int timeout = default, int retries = default)
     {
         var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient(timeout, retries);
 
