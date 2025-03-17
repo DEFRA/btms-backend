@@ -21,8 +21,8 @@ namespace Btms.Business.Tests.Services.Decisions;
 public class DecisionServiceTests
 {
     [Theory]
-    [InlineData(ImportNotificationTypeEnum.Ced, ChedDDecisionCode, "H222")]
-    [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode, "H222")]
+    [InlineData(ImportNotificationTypeEnum.Ced, ChedDDecisionCode, "H223")]
+    [InlineData(ImportNotificationTypeEnum.Cveda, ChedADecisionCode, "H221")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ChedPDecisionCode, "H222")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ChedPPDecisionCode, "H219")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, IuuDecisionCode, "H224")]

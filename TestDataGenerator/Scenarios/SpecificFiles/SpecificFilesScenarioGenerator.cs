@@ -158,6 +158,9 @@ public class Mrn25Gb02Rlz9P0U8Far5ScenarioGenerator(IServiceProvider sp, ILogger
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
 
+public class SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "ItemWithMultipleChecks");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)
 {
     private readonly IBlobService _blobService = sp.GetRequiredService<CachingBlobService>();

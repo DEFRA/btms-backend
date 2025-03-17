@@ -17,8 +17,6 @@ public class ChedPDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Rejected, true, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.SplitConsignment, true, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Validated, true, "H222")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Replaced, false, "H222")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Cancelled, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Ced, ImportNotificationStatusEnum.Submitted, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Chedpp, ImportNotificationStatusEnum.Submitted, false, "H222")]

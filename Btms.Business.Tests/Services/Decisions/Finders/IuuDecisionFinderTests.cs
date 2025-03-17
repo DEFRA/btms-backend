@@ -17,8 +17,6 @@ public class IuuDecisionFinderTests
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Rejected, true, "H224")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.SplitConsignment, true, "H224")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Validated, true, "H224")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Replaced, false, "H224")]
-    [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Cancelled, false, "H224")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, "H222")]
     [InlineData(ImportNotificationTypeEnum.Cvedp, ImportNotificationStatusEnum.Submitted, false, null)]
     [InlineData(ImportNotificationTypeEnum.Cveda, ImportNotificationStatusEnum.Submitted, false, "H224")]
