@@ -30,7 +30,7 @@ public class SingleCrWithFinalisationValidationErrorsScenarioGenerator(ILogger<C
             .WithDecisionVersionNumber()
             .ValidateAndBuild();
 
-        finalisation.Header.FinalState = null!;
+        finalisation.ServiceHeader.SourceSystem = "INV";
 
         return new GeneratorResult([clearanceRequest, finalisation]);
     }
