@@ -27,11 +27,13 @@ public abstract class BaseApiTests
         await Client.ClearDb();
     }
 
-    protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper, string databaseName = "SmokeTests")
+    protected BaseApiTests(IIntegrationTestsApplicationFactory factory, ITestOutputHelper testOutputHelper,
+        string databaseName = "SmokeTests", string? dmpBlobRootFolder = null)
     {
         Factory = factory;
         Factory.TestOutputHelper = testOutputHelper;
         Factory.DatabaseName = databaseName;
+        Factory.DmpBlobRootFolder = dmpBlobRootFolder;
     }
 
     protected async Task PublishMessagesToInMemoryTopics<T>(Func<object, bool>? filter = null) where T : ScenarioGenerator
