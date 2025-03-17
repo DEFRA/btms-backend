@@ -5,7 +5,6 @@ using Btms.Consumers.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Validation;
-using Btms.Types.Alvs;
 using Btms.Types.Alvs.Mapping;
 using Btms.Validation;
 using Microsoft.Extensions.Logging;
@@ -24,24 +23,13 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
     public async Task OnHandle(Finalisation message, CancellationToken cancellationToken)
     {
         var auditId = Context.GetMessageId();
-        var validationResult = validator.Validate(message);
-
-        if (!validationResult.IsValid)
-        {
-            await dbContext.CdsValidationErrors.Insert(
-                new CdsValidationError()
-                {
-                    Id = $"{nameof(Finalisation)}_{auditId}",
-                    Type = nameof(Finalisation),
-                    Data = BsonDocument.Parse(GeneralExtensions.ToJson(message)),
-                    ValidationResult = validationResult
-                }, cancellationToken);
-            await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
-            return;
-        }
-
         var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
         var internalFinalisation = FinalisationMapper.Map(message);
+
+        if (!await Validate(auditId, message, internalFinalisation, existingMovement))
+        {
+            return;
+        }
 
         if (existingMovement != null)
         {
@@ -57,6 +45,30 @@ public class FinalisationsConsumer(IMongoDbContext dbContext,
                 await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
             }
         }
+    }
+
+    private async Task<bool> Validate(string auditId, Finalisation message, CdsFinalisation finalisation, Movement? existing)
+    {
+        var schemaValidationResult = validator.Validate(message);
+        var modelValidationResult = validator.Validate(new BtmsValidationPair<CdsFinalisation, Movement>(finalisation, existing), "CdsFinalisation_Movement");
+
+        schemaValidationResult.Merge(modelValidationResult);
+
+        if (!schemaValidationResult.IsValid)
+        {
+            await dbContext.CdsValidationErrors.Insert(
+                new CdsValidationError()
+                {
+                    Id = $"{nameof(Finalisation)}_{auditId}",
+                    Type = nameof(Finalisation),
+                    Data = BsonDocument.Parse(GeneralExtensions.ToJson(message)),
+                    ValidationResult = schemaValidationResult
+                });
+            await dbContext.SaveChangesAsync(cancellation: Context.CancellationToken);
+            return false;
+        }
+
+        return true;
     }
 
     public IConsumerContext Context { get; set; } = null!;

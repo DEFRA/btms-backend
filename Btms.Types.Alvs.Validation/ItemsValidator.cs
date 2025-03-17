@@ -28,12 +28,12 @@ public class ItemsValidator : AbstractValidator<Items>
             .WithMessage((item, check) => $"Check code {check.CheckCode} on ItemNumber {item.ItemNumber} must have a document code. Your request with Correlation ID {correlationId} has been terminated.")
             .WithState(p => "ALVSVAL321");
 
-        RuleFor(p => p.Checks).Must(MustOnlyHaveOneCheckPerAuthority)
+        RuleFor(p => p.Checks).Must(MustOnlyHaveOneCheckPerAuthority!)
             .WithMessage(p => $"Item {p.ItemNumber} has more than one Item Check defined for the same authority. You can only provide one. Your service request with Correlation ID {correlationId} has been terminated.")
             .WithState(p => "ALVSVAL317")
             .When(p => p.Checks is not null);
 
-        RuleFor(p => p.Checks).Must(MustHavePoAoCheck)
+        RuleFor(p => p.Checks).Must(MustHavePoAoCheck!)
             .WithMessage(p => $"An IUU document has been specified for ItemNumber {p.ItemNumber}. Request a manual clearance if the item does not require a CHED P. Your request with correlation ID {correlationId} has been terminated.")
             .WithState(p => "ALVSVAL328")
             .When(x => x.Checks is not null && x.Checks.Any(x => x.CheckCode == "H224"));
@@ -46,13 +46,13 @@ public class ItemsValidator : AbstractValidator<Items>
     private static bool MustHaveCorrectDocumentCodesForChecks(Items item, Document document)
     {
         var checkCodes = AuthorityCodeMappings.Where(x => x.DocumentCode == document.DocumentCode).Select(x => x.CheckCode);
-        return item.Checks.Any(x => checkCodes.Contains(x.CheckCode));
+        return item.Checks != null && item.Checks.Any(x => checkCodes.Contains(x.CheckCode));
     }
 
     private static bool MustHaveDocumentForCheck(Items item, Check check)
     {
         var documentCodes = AuthorityCodeMappings.Where(x => x.CheckCode == check.CheckCode).Select(x => x.DocumentCode);
-        return item.Documents.Any(x => documentCodes.Contains(x.DocumentCode));
+        return item.Documents != null && item.Documents.Any(x => documentCodes.Contains(x.DocumentCode));
     }
 
     private static bool MustOnlyHaveOneCheckPerAuthority(Items item, Check[] checks)
@@ -61,7 +61,7 @@ public class ItemsValidator : AbstractValidator<Items>
             .ToDictionary(g => g.Key, g => g.Select(x => x.CheckCode).Distinct().ToList());
 
         return authorityCheckCodes.All(authorityCheckCode =>
-            checks.Count(x => authorityCheckCode.Value.Contains(x.CheckCode)) <= authorityCheckCode.Value.Count);
+            checks.Count(x => x.CheckCode != null && authorityCheckCode.Value.Contains(x.CheckCode)) <= authorityCheckCode.Value.Count);
     }
 
     private static bool MustHavePoAoCheck(Items item, Check[] checks)
@@ -69,7 +69,7 @@ public class ItemsValidator : AbstractValidator<Items>
         return checks.Any(x => x.CheckCode == "H222");
     }
 
-    private record AuthorityCodeMap(string Name, string DocumentCode, string CheckCode);
+    private sealed record AuthorityCodeMap(string Name, string DocumentCode, string CheckCode);
 
     private static List<AuthorityCodeMap> AuthorityCodeMappings = new()
     {

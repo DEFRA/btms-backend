@@ -8,9 +8,11 @@ namespace Btms.Validation;
 
 public class BtmsValidator(IServiceProvider serviceProvider, IFeatureManager featureManager) : IBtmsValidator
 {
-    public BtmsValidationResult Validate<T>(T entity)
+    public BtmsValidationResult Validate<T>(T entity, string? friendlyName = null)
     {
-        if (!featureManager.IsEnabledAsync($"{Features.Validation}_{typeof(T).Name}").GetAwaiter().GetResult())
+        var name = string.IsNullOrEmpty(friendlyName) ? typeof(T).Name : friendlyName;
+
+        if (!featureManager.IsEnabledAsync($"{Features.Validation}_{name}").GetAwaiter().GetResult())
         {
             return new BtmsValidationResult([]);
         }

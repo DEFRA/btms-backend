@@ -45,6 +45,19 @@ public enum FinalState
     TransferredToMss = 6
 }
 
+public static class FinalStateExtensions
+{
+    public static bool IsCancelled(this FinalState finalState)
+    {
+        return finalState == FinalState.CancelledAfterArrival || finalState == FinalState.CancelledWhilePreLodged;
+    }
+
+    public static bool IsNotCancelled(this FinalState finalState)
+    {
+        return !finalState.IsCancelled();
+    }
+}
+
 public partial class FinalisationHeader  //
 {
 
