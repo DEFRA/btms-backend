@@ -11,14 +11,14 @@ public class CachingBlobService(
     IOptions<BlobServiceOptions> options
 ) : IBlobService
 {
-    public Task<Status> CheckBlobAsync(int timeout = default, int retries = default)
+    public Task<Status> CheckBlobAsync(string prefix = "RAW", int timeout = default, int retries = default)
     {
-        return blobService.CheckBlobAsync(timeout, retries);
+        return blobService.CheckBlobAsync(prefix, timeout, retries);
     }
 
-    public Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default)
+    public Task<Status> CheckBlobAsync(string uri, string container, string prefix = "RAW", int timeout = default, int retries = default)
     {
-        return blobService.CheckBlobAsync(uri, timeout, retries);
+        return blobService.CheckBlobAsync(uri, container, prefix, timeout, retries);
     }
 
     public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -70,7 +70,7 @@ public class CachingBlobService(
 
         var filePath = $"{options.Value.CachePath}/{item.Name}";
         logger.LogInformation("GetResource {FilePath}", filePath);
-        return File.ReadAllText(filePath);
+        return await File.ReadAllTextAsync(filePath, cancellationToken);
     }
 
     public async Task<bool> CreateBlobsAsync(IBlobItem[] items)

@@ -23,30 +23,38 @@ public abstract class BaseBlobService(
     IHttpClientFactory clientFactory)
     : AzureService(serviceProvider, logger, options.Value, clientFactory), IBlobService
 {
-    protected BlobContainerClient CreateBlobClient(int timeout = default, int retries = default)
+    protected BlobContainerClient CreateBlobClient(string uri, string container, int timeout = default, int retries = default)
     {
-        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient(timeout, retries);
+        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient(uri, timeout, retries);
 
-        var containerClient = blobServiceClient.GetBlobContainerClient(options.Value.DmpBlobContainer);
+        var containerClient = blobServiceClient.GetBlobContainerClient(container);
 
         return containerClient;
     }
-    public async Task<Status> CheckBlobAsync(int timeout = default, int retries = default)
+
+    private static string EnsurePrefixHasTrailingSlash(string prefix)
     {
-        return await CheckBlobAsync(options.Value.DmpBlobUri, timeout, retries);
+        return !prefix.EndsWith('/') ? $"{prefix}/" : prefix;
     }
 
-    public async Task<Status> CheckBlobAsync(string uri, int timeout = default, int retries = default)
+    public async Task<Status> CheckBlobAsync(string prefix = "RAW", int timeout = default, int retries = default)
     {
-        Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}. timeout={Timeout}, retries={Retries}",
-            uri, options.Value.DmpBlobContainer, timeout, retries);
+        return await CheckBlobAsync(options.Value.DmpBlobUri, options.Value.DmpBlobContainer, prefix, timeout, retries);
+    }
+
+    public async Task<Status> CheckBlobAsync(string uri, string container, string prefix = "RAW", int timeout = default, int retries = default)
+    {
+        prefix = EnsurePrefixHasTrailingSlash(prefix);
+
+        Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}/{Prefix}. timeout={Timeout}, retries={Retries}",
+            uri, container, prefix, timeout, retries);
 
         try
         {
-            var containerClient = CreateBlobClient(timeout, retries);
+            var containerClient = CreateBlobClient(uri, container, timeout, retries);
 
-            Logger.LogInformation("Getting blob folders...");
-            var folders = containerClient.GetBlobsByHierarchyAsync(prefix: "RAW/", delimiter: "/");
+            Logger.LogInformation("Getting blob folders from {Prefix}...", prefix);
+            var folders = containerClient.GetBlobsByHierarchyAsync(prefix: prefix, delimiter: "/");
 
             var itemCount = 0;
             await foreach (var blobItem in folders)
@@ -58,7 +66,7 @@ public abstract class BaseBlobService(
             return new Status
             {
                 Success = true,
-                Description = $"Connected. {itemCount} blob folders found in RAW"
+                Description = $"Connected. {itemCount} blob folders found in {prefix}"
             };
         }
         catch (Exception ex)
@@ -74,10 +82,12 @@ public abstract class BaseBlobService(
             "Ignored this is IAsyncEnumerable and doesn't support linq filtering out the box")]
     public async IAsyncEnumerable<IBlobItem> GetResourcesAsync(string prefix, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
+        prefix = EnsurePrefixHasTrailingSlash(prefix);
+
         Logger.LogDebug("Connecting to blob storage {BlobUri} : {BlobContainer} : {Path}", options.Value.DmpBlobUri,
             options.Value.DmpBlobContainer, prefix);
 
-        var containerClient = CreateBlobClient();
+        var containerClient = CreateBlobClient(options.Value.DmpBlobUri, options.Value.DmpBlobContainer);
 
         var itemCount = 0;
 
@@ -99,7 +109,7 @@ public abstract class BaseBlobService(
 
     public async Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)
     {
-        var client = CreateBlobClient(options.Value.Timeout, options.Value.Retries);
+        var client = CreateBlobClient(options.Value.DmpBlobUri, options.Value.DmpBlobContainer, options.Value.Timeout, options.Value.Retries);
         var blobClient = client.GetBlobClient(item.Name);
 
         var content = await blobClient.DownloadContentAsync(cancellationToken);
