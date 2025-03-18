@@ -13,8 +13,7 @@ public static class ServiceProviderExtensions
         while (!complete)
         {
             var jobs = store.GetJobs();
-            // logger.LogInformation(jobs.ToJsonString());
-            logger.LogInformation("{jobs} found.", jobs.Count);
+            logger.LogInformation("{Jobs} found.", jobs.Count);
 
             complete = true;
         }

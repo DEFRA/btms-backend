@@ -199,7 +199,7 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
 
         await foreach (var blobItem in blobs)
         {
-            Logger.LogInformation("Found blob item {name}", blobItem.Name);
+            Logger.LogInformation("Found blob item {Name}", blobItem.Name);
             var builder = createBuilder(blobItem.Name, "");
             list.Add((blobItem.Name, builder!));
         }
@@ -218,7 +218,7 @@ public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogge
         var builders = GetBuilders(sampleFolder, scenario, item, entryDate)
             .GetAwaiter().GetResult();
 
-        Logger.LogInformation("Created {builders} Builders",
+        Logger.LogInformation("Created {Builders} Builders",
             builders.Count);
 
         var messages = ModifyMessages(builders

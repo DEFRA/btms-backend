@@ -9,6 +9,11 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Btms.Backend.IntegrationTests" />
+    <PackageReference Include="JsonPatch.Net" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.3" />
     <PackageReference Include="Microsoft.FeatureManagement" Version="4.0.0" />
     
     <PackageReference Include="MongoDB.Driver" Version="2.30.0" />
