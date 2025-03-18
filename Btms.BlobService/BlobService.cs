@@ -8,26 +8,22 @@ using Microsoft.Extensions.Options;
 namespace Btms.BlobService;
 
 public class BlobService(
-    IServiceProvider serviceProvider,
     IBlobServiceClientFactory blobServiceClientFactory,
     ILogger<BlobService> logger,
-    IOptions<BlobServiceOptions> options,
-    IHttpClientFactory clientFactory)
-    : BaseBlobService(serviceProvider, blobServiceClientFactory, logger, options, clientFactory);
+    IOptions<BlobServiceOptions> options)
+    : BaseBlobService(blobServiceClientFactory, logger, options);
 
 public abstract class BaseBlobService(
-    IServiceProvider serviceProvider,
     IBlobServiceClientFactory blobServiceClientFactory,
     ILogger logger,
-    IOptions<IBlobServiceOptions> options,
-    IHttpClientFactory clientFactory)
-    : AzureService(serviceProvider, logger, options.Value, clientFactory), IBlobService
+    IOptions<IBlobServiceOptions> options)
+    : IBlobService
 {
-    protected BlobContainerClient CreateBlobClient(string uri, string container, int timeout = default, int retries = default)
+    protected BlobContainerClient CreateBlobClient(int timeout = default, int retries = default)
     {
-        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient(uri, timeout, retries);
+        var blobServiceClient = blobServiceClientFactory.CreateBlobServiceClient(options, timeout, retries);
 
-        var containerClient = blobServiceClient.GetBlobContainerClient(container);
+        var containerClient = blobServiceClient.GetBlobContainerClient(options.Value.DmpBlobContainer);
 
         return containerClient;
     }
@@ -46,20 +42,20 @@ public abstract class BaseBlobService(
     {
         prefix = EnsurePrefixHasTrailingSlash(prefix);
 
-        Logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}/{Prefix}. timeout={Timeout}, retries={Retries}",
+        logger.LogInformation("Connecting to blob storage {Uri} : {BlobContainer}/{Prefix}. timeout={Timeout}, retries={Retries}",
             uri, container, prefix, timeout, retries);
 
         try
         {
-            var containerClient = CreateBlobClient(uri, container, timeout, retries);
+            var containerClient = CreateBlobClient(timeout, retries);
 
-            Logger.LogInformation("Getting blob folders from {Prefix}...", prefix);
+            logger.LogInformation("Getting blob folders from {Prefix}...", prefix);
             var folders = containerClient.GetBlobsByHierarchyAsync(prefix: prefix, delimiter: "/");
 
             var itemCount = 0;
             await foreach (var blobItem in folders)
             {
-                Logger.LogInformation("\t{Prefix}", blobItem.Prefix);
+                logger.LogInformation("\t{Prefix}", blobItem.Prefix);
                 itemCount++;
             }
 
@@ -71,7 +67,7 @@ public abstract class BaseBlobService(
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error loading files");
+            logger.LogError(ex, "Error loading files");
             return new Status { Success = false, Description = ex.Message };
         }
 
@@ -84,10 +80,10 @@ public abstract class BaseBlobService(
     {
         prefix = EnsurePrefixHasTrailingSlash(prefix);
 
-        Logger.LogDebug("Connecting to blob storage {BlobUri} : {BlobContainer} : {Path}", options.Value.DmpBlobUri,
+        logger.LogDebug("Connecting to blob storage {BlobUri} : {BlobContainer} : {Path}", options.Value.DmpBlobUri,
             options.Value.DmpBlobContainer, prefix);
 
-        var containerClient = CreateBlobClient(options.Value.DmpBlobUri, options.Value.DmpBlobContainer);
+        var containerClient = CreateBlobClient();
 
         var itemCount = 0;
 
@@ -104,12 +100,12 @@ public abstract class BaseBlobService(
             }
         }
 
-        Logger.LogDebug("GetResourcesAsync {ItemCount} blobs found", itemCount);
+        logger.LogDebug("GetResourcesAsync {ItemCount} blobs found", itemCount);
     }
 
     public async Task<string> GetResource(IBlobItem item, CancellationToken cancellationToken)
     {
-        var client = CreateBlobClient(options.Value.DmpBlobUri, options.Value.DmpBlobContainer, options.Value.Timeout, options.Value.Retries);
+        var client = CreateBlobClient();
         var blobClient = client.GetBlobClient(item.Name);
 
         var content = await blobClient.DownloadContentAsync(cancellationToken);
