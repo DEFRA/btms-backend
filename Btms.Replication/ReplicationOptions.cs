@@ -8,7 +8,7 @@ namespace Btms.Replication;
 
 public class ReplicationOptions : IBlobServiceOptions
 {
-    public new const string SectionName = nameof(ReplicationOptions);
+    public const string SectionName = nameof(ReplicationOptions);
 
     public bool Enabled { get; set; } = false;
 
