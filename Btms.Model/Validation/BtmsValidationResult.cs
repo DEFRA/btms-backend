@@ -26,4 +26,9 @@ public class BtmsValidationResult
     {
         _errors = failures.Where(failure => failure != null).ToList();
     }
+
+    public void Merge(BtmsValidationResult validationResult)
+    {
+        _errors.AddRange(validationResult.Errors);
+    }
 }

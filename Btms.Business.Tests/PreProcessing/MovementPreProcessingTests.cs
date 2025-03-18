@@ -24,7 +24,7 @@ public class StubValidator : IBtmsValidator
     {
         _failures = [];
     }
-    public BtmsValidationResult Validate<T>(T entity)
+    public BtmsValidationResult Validate<T>(T entity, string? friendlyName = null)
     {
         return new BtmsValidationResult(_failures);
     }

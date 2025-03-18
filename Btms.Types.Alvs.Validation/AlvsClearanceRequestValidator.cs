@@ -6,9 +6,9 @@ namespace Btms.Types.Alvs.Validation
     {
         public AlvsClearanceRequestValidator()
         {
-            RuleFor(p => p.ServiceHeader).SetValidator(new ServiceHeaderValidator());
-            RuleFor(p => p.Header).SetValidator(p => new HeaderValidator(p?.ServiceHeader?.CorrelationId));
-            RuleForEach(p => p.Items).SetValidator(p => new ItemsValidator(p?.ServiceHeader?.CorrelationId));
+            RuleFor(p => p.ServiceHeader).SetValidator(new ServiceHeaderValidator()!);
+            RuleFor(p => p.Header).SetValidator(p => new HeaderValidator(p?.ServiceHeader?.CorrelationId!));
+            RuleForEach(p => p.Items).SetValidator(p => new ItemsValidator(p?.ServiceHeader?.CorrelationId!));
         }
     }
 }

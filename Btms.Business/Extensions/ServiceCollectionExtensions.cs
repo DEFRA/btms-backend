@@ -19,10 +19,15 @@ using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Linking;
 using Btms.Business.Services.Matching;
 using Btms.Business.Services.Validating;
+using Btms.Model;
+using Btms.Model.Cds;
+using Btms.Model.Validation;
 using Btms.Types.Alvs;
 using Btms.Types.Alvs.Validation;
 using Btms.Types.Gvms;
+using Btms.Validation;
 using Btms.Validation.Extensions;
+using Finalisation = Btms.Types.Alvs.Finalisation;
 
 namespace Btms.Business.Extensions;
 
@@ -34,6 +39,8 @@ public static class ServiceCollectionExtensions
         {
             setup.AddValidator<Finalisation, FinalisationValidator>();
             setup.AddValidator<AlvsClearanceRequest, AlvsClearanceRequestValidator>();
+            setup.AddValidator<BtmsValidationPair<CdsClearanceRequest, Movement>, CdsClearanceRequestValidator>();
+            setup.AddValidator<BtmsValidationPair<CdsFinalisation, Movement>, CdsFinalisationValidator>();
         });
         services.AddBtmsMetrics();
         services.BtmsAddOptions<SensitiveDataOptions>(configuration, SensitiveDataOptions.SectionName);
