@@ -23,8 +23,8 @@ public class ReplicateCommand() : IRequest, ISyncJob
     public SyncPeriod SyncPeriod { get; set; }
 
     public Guid JobId { get; } = Guid.NewGuid();
-    public string Timespan { get; } = null!;
-    public string Resource { get; } = null!;
+    public string Timespan => SyncPeriod.ToString();
+    public string Resource { get; } = "Replicate";
 
     public string? RootFolder { get; set; }
 
@@ -45,9 +45,10 @@ public class ReplicateCommand() : IRequest, ISyncJob
 
                 await DownloadCommand.BlobFolders.ForEachAsync(async f =>
                 {
-                    logger.LogInformation("Replicate {Path}", f.path);
+                    logger.LogInformation("Replicate {Path} for syncPeriod {Period}", f.path, request.SyncPeriod);
 
                     var blobs = blobService.GetBlobItems($"{blobFolder}/{f.path}", request.SyncPeriod, cancellationToken);
+
 
                     await Parallel.ForEachAsync(blobs, cancellationToken, async (item, ct) =>
                     {

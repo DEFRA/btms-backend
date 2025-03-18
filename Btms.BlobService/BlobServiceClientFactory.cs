@@ -14,6 +14,10 @@ public class BlobServiceClientFactory(
 {
     public BlobServiceClient CreateBlobServiceClient(int timeout = default, int retries = default)
     {
+        return CreateBlobServiceClient(options.Value.DmpBlobUri);
+    }
+    public BlobServiceClient CreateBlobServiceClient(string uri, int timeout = default, int retries = default)
+    {
         // Allow timeout and retry to be overridden, e.g. from healthchecker
         timeout = timeout > 0 ? timeout : options.Value.Timeout;
         retries = retries > 0 ? retries : options.Value.Retries;
@@ -30,9 +34,8 @@ public class BlobServiceClientFactory(
             Diagnostics = { IsLoggingContentEnabled = true, IsLoggingEnabled = true }
         };
 
-
         return new BlobServiceClient(
-            new Uri(options.Value.DmpBlobUri),
+            new Uri(uri),
             Credentials,
             bcOptions);
     }

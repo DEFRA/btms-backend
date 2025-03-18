@@ -13,7 +13,7 @@ public class ReplicationTargetBlobService(IServiceProvider serviceProvider,
 {
     public async Task WriteResource(string path, string content, CancellationToken cancellationToken)
     {
-        var client = CreateBlobClient(options.Value.Timeout, options.Value.Retries);
+        var client = CreateBlobClient(options.Value.DmpBlobUri, options.Value.DmpBlobContainer, options.Value.Timeout, options.Value.Retries);
         var blobClient = client.GetBlobClient(path);
 
         var result = await blobClient.UploadAsync(BinaryData.FromString(content), cancellationToken);
