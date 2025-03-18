@@ -76,7 +76,7 @@ public class ReplicateCommand() : IRequest, ISyncJob
                                 var filename = Path.Combine(targetBlobFolder,
                                     String.Join(Path.DirectorySeparatorChar, fileParts));
 
-                                logger.LogWarning("Writing file to {Name}/{PATH}",
+                                logger.LogInformation("Writing file to {Name}/{PATH}",
                                     replicationOptions.Value.DmpBlobContainer, filename);
 
                                 await replicationTargetBlobService.WriteResource(filename, redactedContent,
@@ -87,7 +87,7 @@ public class ReplicateCommand() : IRequest, ISyncJob
                             }
                             catch (Exception ex)
                             {
-                                logger.LogWarning(ex, "Failed to process and replicated file {Name}. {Error}", item.Name, ex.Message);
+                                logger.LogWarning(ex, "Failed to process and replicate file {Name}. {Error}", item.Name, ex.Message);
                                 job.MessageFailed();
                             }
                         }
