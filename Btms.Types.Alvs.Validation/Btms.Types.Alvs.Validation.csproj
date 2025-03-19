@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Btms.Types.Alvs.V1\Btms.Types.Alvs.V1.csproj" />
-    <PackageReference Include="SlimMessageBus.Host" Version="2.5.3" />
+    <PackageReference Include="SlimMessageBus.Host" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>

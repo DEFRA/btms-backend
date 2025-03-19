@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
-using NSubstitute;
 using TestDataGenerator.Scenarios;
 using TestGenerator.IntegrationTesting.Backend.Extensions;
 using Xunit.Abstractions;

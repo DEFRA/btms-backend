@@ -5,11 +5,10 @@ using Microsoft.Extensions.Options;
 
 namespace Btms.Replication;
 
-public class ReplicationTargetBlobService(IServiceProvider serviceProvider,
+public class ReplicationTargetBlobService(
     IBlobServiceClientFactory blobServiceClientFactory,
     ILogger<ReplicationTargetBlobService> logger,
-    IOptions<ReplicationOptions> options,
-    IHttpClientFactory clientFactory) : BaseBlobService(blobServiceClientFactory, logger, options)
+    IOptions<ReplicationOptions> options) : BaseBlobService(blobServiceClientFactory, logger, options)
 {
     public async Task WriteResource(string path, string content, CancellationToken cancellationToken)
     {

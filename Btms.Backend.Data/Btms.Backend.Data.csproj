@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Btms.Backend.IntegrationTests" />
-    <PackageReference Include="Microsoft.FeatureManagement" Version="4.0.0" />
     
     <PackageReference Include="MongoDB.Driver" Version="2.30.0" />
     <PackageReference Include="MongoDB.Driver.Core.Extensions.DiagnosticSources" Version="1.5.0" />
