@@ -23,7 +23,7 @@ public class JsonPropertyAttributeTests(CodeBuilderFixture fixture) : IClassFixt
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Path == "/tmp/btms-cli-tests/source/PlannedCrossing.g.cs");
-        
+
         sourceFile.Content.Should().Contain("public DateTime? DepartsAt { get; set; }");
         sourceFile.Content.Should().Contain("[JsonPropertyName(\"localDateTimeOfDeparture\")]");
     }
