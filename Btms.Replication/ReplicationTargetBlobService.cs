@@ -11,12 +11,13 @@ public class ReplicationTargetBlobService(IServiceProvider serviceProvider,
     IOptions<ReplicationOptions> options,
     IHttpClientFactory clientFactory) : BaseBlobService(blobServiceClientFactory, logger, options)
 {
-    public async Task WriteResource(string path, string content, CancellationToken cancellationToken)
+    public async Task WriteResource(string path, string content, bool overwrite, CancellationToken cancellationToken)
     {
         var client = CreateBlobClient();
         var blobClient = client.GetBlobClient(path);
 
-        var result = await blobClient.UploadAsync(BinaryData.FromString(content), cancellationToken);
+        var result = await blobClient.UploadAsync(BinaryData.FromString(content),
+            overwrite: overwrite, cancellationToken: cancellationToken);
 
         if (!result.HasValue())
         {

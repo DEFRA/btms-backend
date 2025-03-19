@@ -79,7 +79,7 @@ public class ReplicateCommand() : IRequest, ISyncJob
                                 logger.LogInformation("Writing file to {Name}/{PATH}",
                                     replicationOptions.Value.DmpBlobContainer, filename);
 
-                                await replicationTargetBlobService.WriteResource(filename, redactedContent,
+                                await replicationTargetBlobService.WriteResource(filename, redactedContent, true,
                                     ct);
 
                                 job.MessageProcessed();
