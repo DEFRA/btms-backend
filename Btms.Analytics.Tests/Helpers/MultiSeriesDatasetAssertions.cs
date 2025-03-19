@@ -1,10 +1,11 @@
 using FluentAssertions;
 using FluentAssertions.Collections;
+using FluentAssertions.Execution;
 
 namespace Btms.Analytics.Tests.Helpers;
 
 public class MultiSeriesDatasetAssertions(List<Series<ByNumericDimensionResult>>? test)
-    : GenericCollectionAssertions<Series<ByNumericDimensionResult>>(test)
+    : GenericCollectionAssertions<Series<ByNumericDimensionResult>>(test, AssertionChain.GetOrCreate())
 {
     [CustomAssertion]
     public void BeSameLength(string because = "", params object[] becauseArgs)

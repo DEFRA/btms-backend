@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SlimMessageBus" Version="3.0.0" />
     <PackageReference Include="SlimMessageBus.Host" Version="2.5.3" />
   </ItemGroup>
 
