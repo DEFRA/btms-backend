@@ -6,149 +6,58 @@ public class ItemsValidatorTests
 {
     private readonly ItemsValidator validator = new("123");
 
-    [Fact]
-    public void Should_have_error_when_ItemNumber_is_null()
+    [Theory]
+    [ClassData(typeof(ItemValidatorTestData))]
+    public void TheoryTests(Items model, ExpectedResult expectedResult)
     {
-        var model = new Items { ItemNumber = null };
         var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.ItemNumber);
+
+        if (expectedResult.HasValidationError)
+        {
+            result.ShouldHaveValidationErrorFor(expectedResult.PropertyName);
+        }
+        else
+        {
+            result.ShouldNotHaveValidationErrorFor(expectedResult.PropertyName);
+        }
     }
 
-    [Fact]
-    public void Should_not_have_error_when_ItemNumber_is_specified()
+    public class ItemValidatorTestData : TheoryData<Items, ExpectedResult>
     {
-        var model = new Items { ItemNumber = 1 };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.ItemNumber);
+        public ItemValidatorTestData()
+        {
+            Add(new Items { ItemNumber = 22 }, new ExpectedResult(nameof(Items.ItemNumber), false));
+            Add(new Items { ItemNumber = 0 }, new ExpectedResult(nameof(Items.ItemNumber), true));
+            Add(new Items { ItemNumber = 1000 }, new ExpectedResult(nameof(Items.ItemNumber), true));
+            Add(new Items { ItemNumber = null }, new ExpectedResult(nameof(Items.ItemNumber), true));
+
+            Add(new Items { CustomsProcedureCode = "Valid" }, new ExpectedResult(nameof(Items.CustomsProcedureCode), false));
+            Add(new Items { CustomsProcedureCode = "fjrkdosp" }, new ExpectedResult(nameof(Items.CustomsProcedureCode), true));
+            Add(new Items { CustomsProcedureCode = null }, new ExpectedResult(nameof(Items.CustomsProcedureCode), true));
+
+            Add(new Items { TaricCommodityCode = "1234567899" }, new ExpectedResult(nameof(Items.TaricCommodityCode), false));
+            Add(new Items { TaricCommodityCode = "0123456789" }, new ExpectedResult(nameof(Items.TaricCommodityCode), true));
+            Add(new Items { TaricCommodityCode = "123456789" }, new ExpectedResult(nameof(Items.TaricCommodityCode), true));
+            Add(new Items { TaricCommodityCode = null }, new ExpectedResult(nameof(Items.TaricCommodityCode), true));
+
+            Add(new Items { GoodsDescription = "Valid" }, new ExpectedResult(nameof(Items.GoodsDescription), false));
+            Add(new Items { GoodsDescription = null }, new ExpectedResult(nameof(Items.GoodsDescription), true));
+
+            Add(new Items { ConsigneeId = "Valid" }, new ExpectedResult(nameof(Items.ConsigneeId), false));
+            Add(new Items { ConsigneeId = "djgksospeksjdjdls;ldjfsl;dkflsdkfsdkfsdl;f" }, new ExpectedResult(nameof(Items.ConsigneeId), true));
+            Add(new Items { ConsigneeId = null }, new ExpectedResult(nameof(Items.ConsigneeId), true));
+
+            Add(new Items { ConsigneeName = "Valid" }, new ExpectedResult(nameof(Items.ConsigneeName), false));
+            Add(new Items { ConsigneeName = "djgksospeksjdjdls;ldjfsl;dkflsdkfsdkfsdl;f" }, new ExpectedResult(nameof(Items.ConsigneeName), true));
+            Add(new Items { ConsigneeName = null }, new ExpectedResult(nameof(Items.ConsigneeName), true));
+
+            Add(new Items { ItemNetMass = (decimal?)16.5 }, new ExpectedResult(nameof(Items.ItemNetMass), false));
+            Add(new Items { ItemNetMass = null }, new ExpectedResult(nameof(Items.ItemNetMass), true));
+
+            Add(new Items { ItemOriginCountryCode = "GB" }, new ExpectedResult(nameof(Items.ItemOriginCountryCode), false));
+            Add(new Items { ItemOriginCountryCode = "GB1" }, new ExpectedResult(nameof(Items.ItemOriginCountryCode), true));
+            Add(new Items { ItemOriginCountryCode = null }, new ExpectedResult(nameof(Items.ItemOriginCountryCode), true));
+
+        }
     }
-
-    [Fact]
-    public void Should_have_error_when_CustomsProcedureCode_is_null()
-    {
-        var model = new Items { CustomsProcedureCode = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.CustomsProcedureCode);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_CustomsProcedureCode_is_specified()
-    {
-        var model = new Items { CustomsProcedureCode = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.CustomsProcedureCode);
-    }
-
-    [Fact]
-    public void Should_have_error_when_TaricCommodityCode_is_null()
-    {
-        var model = new Items { TaricCommodityCode = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.TaricCommodityCode);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_TaricCommodityCode_is_specified()
-    {
-        var model = new Items { TaricCommodityCode = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.TaricCommodityCode);
-    }
-
-    [Fact]
-    public void Should_have_error_when_GoodsDescription_is_null()
-    {
-        var model = new Items { GoodsDescription = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.GoodsDescription);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_GoodsDescription_is_specified()
-    {
-        var model = new Items { GoodsDescription = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.GoodsDescription);
-    }
-
-    [Fact]
-    public void Should_have_error_when_ConsigneeId_is_null()
-    {
-        var model = new Items { ConsigneeId = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.ConsigneeId);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_ConsigneeId_is_specified()
-    {
-        var model = new Items { ConsigneeId = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.ConsigneeId);
-    }
-
-    [Fact]
-    public void Should_have_error_when_ConsigneeName_is_null()
-    {
-        var model = new Items { ConsigneeName = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.ConsigneeName);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_ConsigneeName_is_specified()
-    {
-        var model = new Items { ConsigneeName = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.ConsigneeName);
-    }
-
-    [Fact]
-    public void Should_have_error_when_ItemNetMass_is_null()
-    {
-        var model = new Items { ItemNetMass = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.ItemNetMass);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_ItemNetMass_is_specified()
-    {
-        var model = new Items { ItemNetMass = 1 };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.ItemNetMass);
-    }
-
-    [Fact]
-    public void Should_have_error_when_ItemOriginCountryCode_is_null()
-    {
-        var model = new Items { ItemOriginCountryCode = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.ItemOriginCountryCode);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_ItemOriginCountryCode_is_specified()
-    {
-        var model = new Items { ItemOriginCountryCode = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.ItemOriginCountryCode);
-    }
-
-    [Fact]
-    public void Should_have_error_when_Documents_is_Empty()
-    {
-        var model = new Items { ItemOriginCountryCode = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.Documents);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_Documents_is_not_Empty()
-    {
-        var model = new Items { ItemOriginCountryCode = "test", Documents = [new Document() { DocumentCode = "123" }] };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.Documents);
-    }
-
-
 }

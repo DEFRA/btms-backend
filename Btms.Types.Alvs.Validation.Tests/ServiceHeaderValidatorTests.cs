@@ -6,69 +6,40 @@ public class ServiceHeaderValidatorTests
 {
     private ServiceHeaderValidator validator = new();
 
-    [Fact]
-    public void Should_have_error_when_SourceSystem_is_null()
+    [Theory]
+    [ClassData(typeof(ServiceHeaderValidatorTestData))]
+    public void TheoryTests(ServiceHeader model, ExpectedResult expectedResult)
     {
-        var model = new ServiceHeader { SourceSystem = null };
         var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.SourceSystem);
+
+        if (expectedResult.HasValidationError)
+        {
+            result.ShouldHaveValidationErrorFor(expectedResult.PropertyName);
+        }
+        else
+        {
+            result.ShouldNotHaveValidationErrorFor(expectedResult.PropertyName);
+        }
     }
 
-    [Fact]
-    public void Should_not_have_error_when_SourceSystem_is_specified()
+    public class ServiceHeaderValidatorTestData : TheoryData<ServiceHeader, ExpectedResult>
     {
-        var model = new ServiceHeader { SourceSystem = "CDS" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.SourceSystem);
+        public ServiceHeaderValidatorTestData()
+        {
+            Add(new ServiceHeader { SourceSystem = "CDS" }, new ExpectedResult(nameof(ServiceHeader.SourceSystem), false));
+            Add(new ServiceHeader { SourceSystem = "SDC" }, new ExpectedResult(nameof(ServiceHeader.SourceSystem), true));
+            Add(new ServiceHeader { SourceSystem = null }, new ExpectedResult(nameof(ServiceHeader.SourceSystem), true));
+
+            Add(new ServiceHeader { DestinationSystem = "ALVS" }, new ExpectedResult(nameof(ServiceHeader.DestinationSystem), false));
+            Add(new ServiceHeader { DestinationSystem = "SVLA" }, new ExpectedResult(nameof(ServiceHeader.DestinationSystem), true));
+            Add(new ServiceHeader { DestinationSystem = null }, new ExpectedResult(nameof(ServiceHeader.DestinationSystem), true));
+
+            Add(new ServiceHeader { CorrelationId = "test" }, new ExpectedResult(nameof(ServiceHeader.CorrelationId), false));
+            Add(new ServiceHeader { CorrelationId = "123456789123456789123" }, new ExpectedResult(nameof(ServiceHeader.CorrelationId), true));
+            Add(new ServiceHeader { CorrelationId = null }, new ExpectedResult(nameof(ServiceHeader.CorrelationId), true));
+
+            Add(new ServiceHeader { ServiceCallTimestamp = DateTime.Now }, new ExpectedResult(nameof(ServiceHeader.ServiceCallTimestamp), false));
+            Add(new ServiceHeader { ServiceCallTimestamp = null }, new ExpectedResult(nameof(ServiceHeader.ServiceCallTimestamp), true));
+        }
     }
-
-    [Fact]
-    public void Should_have_error_when_DestinationSystem_is_null()
-    {
-        var model = new ServiceHeader { CorrelationId = "123" };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.DestinationSystem);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_DestinationSystem_is_specified()
-    {
-        var model = new ServiceHeader { DestinationSystem = "ALVS" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.DestinationSystem);
-    }
-
-    [Fact]
-    public void Should_have_error_when_CorrelationId_is_null()
-    {
-        var model = new ServiceHeader { CorrelationId = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.CorrelationId);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_CorrelationId_is_specified()
-    {
-        var model = new ServiceHeader { CorrelationId = "test" };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.CorrelationId);
-    }
-
-    [Fact]
-    public void Should_have_error_when_ServiceCallTimestamp_is_null()
-    {
-        var model = new ServiceHeader { ServiceCallTimestamp = null };
-        var result = validator.TestValidate(model);
-        result.ShouldHaveValidationErrorFor(p => p.ServiceCallTimestamp);
-    }
-
-    [Fact]
-    public void Should_not_have_error_when_ServiceCallTimestamp_is_specified()
-    {
-        var model = new ServiceHeader { ServiceCallTimestamp = DateTime.Now };
-        var result = validator.TestValidate(model);
-        result.ShouldNotHaveValidationErrorFor(p => p.ServiceCallTimestamp);
-    }
-
-
 }
