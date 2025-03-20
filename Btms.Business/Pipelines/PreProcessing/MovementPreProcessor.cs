@@ -18,11 +18,16 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
     public async Task<PreProcessingResult<Movement>> Process(
         PreProcessingContext<AlvsClearanceRequest> preProcessingContext, CancellationToken cancellationToken = default)
     {
+        if (!await SchemaValidate(preProcessingContext.MessageId, preProcessingContext.Message, cancellationToken))
+        {
+            return PreProcessResult.ValidationError<Movement>();
+        }
+
         var internalClearanceRequest = AlvsClearanceRequestMapper.Map(preProcessingContext.Message);
         var mb = movementBuilderFactory.From(internalClearanceRequest);
         var existingMovement = await dbContext.Movements.Find(mb.Id);
 
-        if (!await Validate(preProcessingContext.MessageId, preProcessingContext.Message, internalClearanceRequest, existingMovement, cancellationToken))
+        if (!await ModelValidate(preProcessingContext.MessageId, internalClearanceRequest, existingMovement, cancellationToken))
         {
             return PreProcessResult.ValidationError<Movement>();
         }
@@ -82,12 +87,31 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
         return result;
     }
 
-    private async Task<bool> Validate(string auditId, AlvsClearanceRequest message, CdsClearanceRequest clearanceRequest, Movement? existing, CancellationToken cancellationToken)
+    private async Task<bool> ModelValidate(string auditId, CdsClearanceRequest clearanceRequest, Movement? existing, CancellationToken cancellationToken)
+    {
+        var model = new BtmsValidationPair<CdsClearanceRequest, Movement>(clearanceRequest, existing);
+        var modelValidationResult = validator.Validate(model, "CdsClearanceRequest_Movement");
+
+        if (!modelValidationResult.IsValid)
+        {
+            await dbContext.CdsValidationErrors.Insert(
+                new CdsValidationError()
+                {
+                    Id = $"{nameof(AlvsClearanceRequest)}_{auditId}",
+                    Type = nameof(AlvsClearanceRequest),
+                    Data = BsonDocument.Parse(GeneralExtensions.ToJson(model)),
+                    ValidationResult = modelValidationResult
+                });
+            await dbContext.SaveChangesAsync(cancellation: cancellationToken);
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task<bool> SchemaValidate(string auditId, AlvsClearanceRequest message, CancellationToken cancellationToken)
     {
         var schemaValidationResult = validator.Validate(message);
-        var modelValidationResult = validator.Validate(new BtmsValidationPair<CdsClearanceRequest, Movement>(clearanceRequest, existing), "CdsClearanceRequest_Movement");
-
-        schemaValidationResult.Merge(modelValidationResult);
 
         if (!schemaValidationResult.IsValid)
         {
@@ -98,7 +122,7 @@ public class MovementPreProcessor(IMongoDbContext dbContext, ILogger<MovementPre
                     Type = nameof(AlvsClearanceRequest),
                     Data = BsonDocument.Parse(GeneralExtensions.ToJson(message)),
                     ValidationResult = schemaValidationResult
-                });
+                }, cancellationToken);
             await dbContext.SaveChangesAsync(cancellation: cancellationToken);
             return false;
         }
