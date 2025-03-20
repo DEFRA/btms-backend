@@ -9,8 +9,8 @@ public class DocumentValidator : AbstractValidator<Document>
         RuleFor(p => p.DocumentCode).Must(BeAValidDocumentCode!)
             .WithMessage(c => $"DocumentCode {c.DocumentCode} on item number {itemNumber} is invalid. Your request with correlation ID {correlationId} has been terminated.")
             .WithState(p => "ALVSVAL308");
-        RuleFor(p => p.DocumentStatus).NotEmpty();
-        RuleFor(p => p.DocumentControl).NotEmpty();
+        RuleFor(p => p.DocumentStatus).NotEmpty().MaximumLength(1);
+        RuleFor(p => p.DocumentControl).NotEmpty().MaximumLength(2);
     }
 
     private static List<string> documentCodes =

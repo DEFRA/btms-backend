@@ -6,15 +6,15 @@ public class ItemsValidator : AbstractValidator<Items>
 {
     public ItemsValidator(string correlationId)
     {
-        RuleFor(p => p.ItemNumber).NotNull();
-        RuleFor(p => p.CustomsProcedureCode).NotEmpty();
-        RuleFor(p => p.TaricCommodityCode).NotEmpty();
-        RuleFor(p => p.GoodsDescription).NotEmpty();
+        RuleFor(p => p.ItemNumber).NotNull().InclusiveBetween(1, 999);
+        RuleFor(p => p.CustomsProcedureCode).NotEmpty().MaximumLength(7);
+        RuleFor(p => p.TaricCommodityCode).NotEmpty().Matches("[1-9]\\d{9}");
+        RuleFor(p => p.GoodsDescription).NotEmpty().MaximumLength(280);
 
-        RuleFor(p => p.ConsigneeId).NotEmpty();
-        RuleFor(p => p.ConsigneeName).NotEmpty();
+        RuleFor(p => p.ConsigneeId).NotEmpty().MaximumLength(18);
+        RuleFor(p => p.ConsigneeName).NotEmpty().MaximumLength(35);
         RuleFor(p => p.ItemNetMass).NotNull();
-        RuleFor(p => p.ItemOriginCountryCode).NotNull();
+        RuleFor(p => p.ItemOriginCountryCode).NotNull().Length(2);
 
         RuleForEach(p => p.Documents).SetValidator(item => new DocumentValidator(item.ItemNumber, correlationId));
         RuleForEach(p => p.Checks).SetValidator(new CheckValidator(correlationId));
