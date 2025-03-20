@@ -6,7 +6,7 @@ using FluentAssertions;
 namespace Btms.Backend.Cli.Tests.Features.GenerateModels;
 
 public class EpochDateTimeTests(CodeBuilderFixture fixture) : IClassFixture<CodeBuilderFixture>
-{   
+{
     private async Task<CSharpDescriptor> BuildEpochDateProperty()
     {
         var csharpDescriptor = await fixture.BuildSingleProperty(
@@ -35,11 +35,11 @@ public class EpochDateTimeTests(CodeBuilderFixture fixture) : IClassFixture<Code
     public async Task ShouldAddLocalDateTimeJsonConverterAttributeToSourceType()
     {
         var csharpDescriptor = await BuildEpochDateProperty();
-        
+
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Path == "/tmp/btms-cli-tests/source/Header.g.cs");
-        
+
         sourceFile.Content.Should().Contain("[Btms.Common.Json.EpochDateTimeJsonConverter]");
     }
 
@@ -47,11 +47,11 @@ public class EpochDateTimeTests(CodeBuilderFixture fixture) : IClassFixture<Code
     public async Task ShouldNotAddLocalDateTimeJsonConverterAttributeToInternalModel()
     {
         var csharpDescriptor = await BuildEpochDateProperty();
-        
+
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Path == "/tmp/btms-cli-tests/internal/Header.g.cs");
-        
+
         sourceFile.Content.Should().NotContain("Btms.Common.Json.EpochDateTimeJsonConverter");
     }
 }

@@ -18,13 +18,13 @@ public class NullabilityTests(CodeBuilderFixture fixture) : IClassFixture<CodeBu
                 isReferenceType: false,
                 isArray: false)
         );
-        
+
         csharpDescriptor.OutputFiles.Count.Should().Be(3);
-        
+
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Name == "PlannedCrossingMapper");
-        
+
         sourceFile.Content.Should().Contain("public static Test.Model.PlannedCrossing Map(Test.Source.PlannedCrossing? from)");
         sourceFile.Content.Should().Contain("to.RouteId = from?.RouteId");
     }

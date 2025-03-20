@@ -20,13 +20,13 @@ public class EnumTests(CodeBuilderFixture fixture) : IClassFixture<CodeBuilderFi
                 Values = [new EnumDescriptor.EnumValueDescriptor("For Import")]
             }
         );
-        
+
         csharpDescriptor.OutputFiles.Count.Should().Be(3);
-        
+
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Path == "/tmp/btms-cli-tests/source/PurposePurposeGroupEnum.g.cs");
-        
+
         sourceFile.Content.Should().Contain("ForImportNonInternalMarket");
         sourceFile.Content.Should().Contain("[EnumMember(Value = \"For Import Non-Internal Market\")]");
         sourceFile.Content.Should().Contain("[EnumMember(Value = \"For Import\")]");
