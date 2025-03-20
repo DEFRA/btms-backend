@@ -21,7 +21,6 @@ namespace Btms.Types.Alvs.Validation.Tests
             {
                 result.ShouldNotHaveValidationErrorFor(expectedResult.PropertyName);
             }
-           
         }
 
         public class CheckValidatorTestData : TheoryData<Check, ExpectedResult>
