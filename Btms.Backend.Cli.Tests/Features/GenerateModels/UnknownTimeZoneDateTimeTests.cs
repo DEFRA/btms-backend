@@ -35,11 +35,11 @@ public class UnknownTimeZoneDateTimeTests(CodeBuilderFixture fixture) : IClassFi
     public async Task ShouldAddLocalDateTimeJsonConverterAttributeToSourceType()
     {
         var csharpDescriptor = await BuildLocalDateProperty();
-        
+
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Path == "/tmp/btms-cli-tests/source/ActualCrossing.g.cs");
-        
+
         sourceFile.Content.Should().Contain("[Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(ArrivesAt))");
     }
 
@@ -47,11 +47,11 @@ public class UnknownTimeZoneDateTimeTests(CodeBuilderFixture fixture) : IClassFi
     public async Task ShouldAddLocalDateTimeJsonConverterAttributeToInternalModel()
     {
         var csharpDescriptor = await BuildLocalDateProperty();
-        
+
         var sourceFile =
             csharpDescriptor.OutputFiles.Single(f =>
                 f.Path == "/tmp/btms-cli-tests/internal/ActualCrossing.g.cs");
-        
+
         sourceFile.Content.Should().Contain("[Btms.Common.Json.UnknownTimeZoneDateTimeJsonConverter(nameof(ArrivesAt)), MongoDB.Bson.Serialization.Attributes.BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]");
     }
 }

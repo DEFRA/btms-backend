@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -82,6 +81,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Btms.Model.Validation.Tests", "Btms.Model.Validation.Tests\Btms.Model.Validation.Tests.csproj", "{69AFBB42-5DE3-479A-9CEE-E31941BFE8B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Btms.Replication", "Btms.Replication\Btms.Replication.csproj", "{5E414468-DECA-43BA-832C-EA89E3DFE7F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Btms.Backend.Cli.Tests", "Btms.Backend.Cli.Tests\Btms.Backend.Cli.Tests.csproj", "{81C4E3D2-4E27-4C28-BD1E-27B1AF79E23D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,6 +238,10 @@ Global
 		{5E414468-DECA-43BA-832C-EA89E3DFE7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E414468-DECA-43BA-832C-EA89E3DFE7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E414468-DECA-43BA-832C-EA89E3DFE7F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81C4E3D2-4E27-4C28-BD1E-27B1AF79E23D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81C4E3D2-4E27-4C28-BD1E-27B1AF79E23D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81C4E3D2-4E27-4C28-BD1E-27B1AF79E23D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81C4E3D2-4E27-4C28-BD1E-27B1AF79E23D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -267,6 +272,7 @@ Global
 		{F4D20EDF-E8C2-4BBD-89FC-464313B79478} = {3F5B86A8-8142-40C3-9525-5AA00DEDEF34}
 		{7C2C17DC-FF57-483B-84D6-A6AA4DB7B92F} = {3F5B86A8-8142-40C3-9525-5AA00DEDEF34}
 		{7EB7813D-F288-49BC-9A1F-9C11E6357E75} = {2338E9F1-BADC-4D5F-AD5B-B14AF0A75CCD}
+		{81C4E3D2-4E27-4C28-BD1E-27B1AF79E23D} = {EB18A70D-18CE-4790-BD1D-AA0D86E539C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A8269F1-22E5-438E-A129-383A6D567DA1}
