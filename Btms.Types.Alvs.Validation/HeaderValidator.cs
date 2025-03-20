@@ -31,7 +31,7 @@ public class HeaderValidator : AbstractValidator<Header?>
         RuleFor(p => p!.DeclarationUcr).NotEmpty()
             .WithState(p => "ALVSVAL313")
             .WithMessage($"DeclarationUcr has not been provided for the import document. Provide an DeclarationUcr. Your request with correlation ID {correlationId} has been terminated.");
-        
+
         RuleFor(p => p!.DeclarationUcr).MaximumLength(35);
 
         RuleFor(p => p!.DeclarantId).NotEmpty().MaximumLength(18);
