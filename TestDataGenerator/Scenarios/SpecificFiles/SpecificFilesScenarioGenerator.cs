@@ -161,6 +161,9 @@ public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServi
 public class SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "ItemWithMultipleChecks");
 
+public class CancelledWithE88Generator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "CancelledWithE88");
+
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)
 {
     private readonly IBlobService _blobService = sp.GetRequiredService<CachingBlobService>();
