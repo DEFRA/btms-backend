@@ -61,7 +61,9 @@ public class ApplicationFactory : WebApplicationFactory<Program>, IIntegrationTe
         if (EnableAzureServiceBusConsumers)
             configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                { "ConsumerOptions:EnableAsbConsumers", "true" }
+                { "Consumers_Asb_Alvs", "true" },
+                { "Consumers_Asb_Ipaffs", "true" },
+                { "Consumers_Asb_Gmr", "true" }
             });
 
         if (EnableAmazonSnsSqsConsumers)
