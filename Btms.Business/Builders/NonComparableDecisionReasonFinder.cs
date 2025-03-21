@@ -44,8 +44,17 @@ public static class NonComparableDecisionReasonFinder
     {
         if (movement.Decisions.Count == 0) return null;
 
-        return _nullableOrderedFinders
-            .FirstOrDefault(f => _finders[f!.Value!](movement), null);
+        try
+        {
+            return _nullableOrderedFinders
+                .FirstOrDefault(f => _finders[f!.Value!](movement), null);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+
     }
 
     private static bool DocumentReferenceFieldIncorrect(Movement movement)

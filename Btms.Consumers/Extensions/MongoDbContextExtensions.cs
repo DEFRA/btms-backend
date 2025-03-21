@@ -37,15 +37,26 @@ public static class MongoDbContextExtensions
 
     public static void UpdateAlvsDecisionStatusImportNotificationState(this IMongoCollectionSet<Movement> dbSet, List<Movement> movements, ImportNotification notification)
     {
+        var decisionImportNotification = notification.AsDecisionImportNotification();
         movements.ForEach(m =>
         {
-            m.AlvsDecisionStatus
-                .Context.ImportNotifications!.Replace(n =>
-                        n.Id == notification.Id,
-                    notification.AsDecisionImportNotification());
+            if (m.AlvsDecisionStatus
+                .Context.ImportNotifications.HasValue())
+            {
+                m.AlvsDecisionStatus
+                    .Context.ImportNotifications!.Replace(n =>
+                            n.Id == notification.Id,
+                        decisionImportNotification);
 
-            m.Status.BusinessDecisionStatus = m.GetBusinessDecisionStatus();
-            m.Status.NonComparableDecisionReason = m.GetNonComparableDecisionReason();
+                m.Status.BusinessDecisionStatus = m.GetBusinessDecisionStatus();
+                m.Status.NonComparableDecisionReason = m.GetNonComparableDecisionReason();
+            }
+            else
+            {
+                m.AlvsDecisionStatus
+                        .Context.ImportNotifications =
+                    new List<DecisionImportNotifications>() { decisionImportNotification };
+            }
 
             dbSet.Update(m);
         });

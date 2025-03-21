@@ -46,8 +46,16 @@ public static class BusinessDecisionStatusFinder
 
     public static BusinessDecisionStatusEnum GetBusinessDecisionStatus(this Movement movement)
     {
-        return _orderedFinders
-            .First(f => _finders[f](movement));
+        try
+        {
+            return _orderedFinders
+                .First(f => _finders[f](movement));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BusinessDecisionStatusEnum.AnythingElse;
+        }
     }
 
     private static readonly FinalState[] cancelledOrDestroyed = [
