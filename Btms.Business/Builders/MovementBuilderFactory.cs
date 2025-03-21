@@ -7,7 +7,7 @@ using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Builders;
 
-public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, BusinessDecisionStatusFinder businessDecisionStatusFinder, ILogger<MovementBuilder> logger)
+public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, ILogger<MovementBuilder> logger)
 {
     public MovementBuilder From(CdsClearanceRequest request)
     {
@@ -36,15 +36,15 @@ public class MovementBuilderFactory(DecisionStatusFinder decisionStatusFinder, B
             Status = MovementExtensions.GetMovementStatus(GetChedTypes(request.Items!.ToList()), documentReferenceIds, notificationRelationshipIds)
         };
 
-        return new MovementBuilder(logger, decisionStatusFinder, businessDecisionStatusFinder, movement, true);
+        return new MovementBuilder(logger, decisionStatusFinder, movement, true);
     }
 
     public MovementBuilder From(Movement movement)
     {
-        return new MovementBuilder(logger, decisionStatusFinder, businessDecisionStatusFinder, movement, true);
+        return new MovementBuilder(logger, decisionStatusFinder, movement, true);
     }
 
-    private ImportNotificationTypeEnum[] GetChedTypes(List<ClearanceRequestItems>? items = null)
+    private static ImportNotificationTypeEnum[] GetChedTypes(List<ClearanceRequestItems>? items = null)
     {
         return items?
             .SelectMany(i => i.Documents!)

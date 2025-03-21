@@ -57,7 +57,6 @@ public class BlobServiceClientFactory(
 
     private TokenCredential BuildCredentials(IOptions<IBlobServiceOptions> options)
     {
-        using var listener = AzureEventSourceListener.CreateConsoleLogger(EventLevel.Verbose);
         TokenCredential? credentials;
         if (options.Value.AzureClientId != null)
         {

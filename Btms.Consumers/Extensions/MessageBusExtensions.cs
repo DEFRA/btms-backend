@@ -1,5 +1,7 @@
 using Btms.Business.Services.Decisions;
+using Btms.Common.Extensions;
 using Btms.Model.Cds;
+using Btms.Model.Extensions;
 using SlimMessageBus;
 using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
@@ -15,16 +17,7 @@ public static class MessageBusExtensions
             {
                 { "messageId", messageId },
                 { "notifications", decisionContext.Notifications
-                    .Select(n => new DecisionImportNotifications
-                    {
-                        Id = n.Id!,
-                        Version = n.Version,
-                        Created = n.Created,
-                        Updated = n.Updated,
-                        UpdatedEntity = n.UpdatedEntity,
-                        CreatedSource = n.CreatedSource!.Value,
-                        UpdatedSource = n.UpdatedSource!.Value
-                    })
+                    .Select(n => n.AsDecisionImportNotification())
                     .ToList()
                 },
             };
