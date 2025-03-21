@@ -1,3 +1,4 @@
+using Btms.Common.FeatureFlags;
 using Btms.Types.Alvs;
 using Microsoft.Extensions.DependencyInjection;
 using SlimMessageBus.Host;
@@ -18,17 +19,27 @@ internal static class AmazonConsumerExtensions
         });
 
         mbb.AddJsonSerializer();
-        mbb.Consume<AlvsClearanceRequest>(x => x
-            .WithConsumer<ClearanceRequestConsumer>()
-            .Queue(options.ClearanceRequestQueueName));
 
-        mbb.Consume<Decision>(x => x
-            .WithConsumer<DecisionsConsumer>()
-            .Queue(options.DecisionQueueName));
+        services.RunIfFeatureEnabled(Features.Consumers.Sqs.ClearanceRequests, () =>
+        {
+            mbb.Consume<AlvsClearanceRequest>(x => x
+                .WithConsumer<ClearanceRequestConsumer>()
+                .Queue(options.ClearanceRequestQueueName));
+        });
 
-        mbb.Consume<Finalisation>(x => x
-            .WithConsumer<FinalisationsConsumer>()
-            .Queue(options.FinalisationQueueName));
+        services.RunIfFeatureEnabled(Features.Consumers.Sqs.Decisions, () =>
+        {
+            mbb.Consume<Decision>(x => x
+                .WithConsumer<DecisionsConsumer>()
+                .Queue(options.DecisionQueueName));
+        });
+
+        services.RunIfFeatureEnabled(Features.Consumers.Sqs.Finalisations, () =>
+        {
+            mbb.Consume<Finalisation>(x => x
+                .WithConsumer<FinalisationsConsumer>()
+                .Queue(options.FinalisationQueueName));
+        });
     }
 
     private static void SetConfiguration(AwsSqsOptions options, SqsMessageBusSettings cfg)

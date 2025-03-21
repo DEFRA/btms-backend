@@ -238,8 +238,8 @@ static void ConfigureEndpoints(WebApplicationBuilder builder)
     builder.Services.AddHealthChecks()
         .AddAzureBlobStorage(sp => sp.GetService<IBlobServiceClientFactory>()!.CreateBlobServiceClient(5, 1), timeout: TimeSpan.FromSeconds(15))
         .AddMongoDb(timeout: TimeSpan.FromSeconds(15))
-        .AddBtmsAzureServiceBusSubscription(TimeSpan.FromSeconds(15))
-        .AddBtmsSqs(builder.Configuration);
+        .AddBtmsAzureServiceBusSubscription(builder.Configuration, TimeSpan.FromSeconds(15))
+        .AddBtmsSqs(builder.Configuration, timeout: TimeSpan.FromSeconds(15));
 }
 
 [ExcludeFromCodeCoverage]
