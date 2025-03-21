@@ -12,6 +12,7 @@ public class FeatureFlagHealthCheck(IFeatureManager featureManager, string featu
             return await innerHeathCheck.CheckHealthAsync(context, cancellationToken);
         }
 
-        return HealthCheckResult.Healthy("Health Check disabled", new Dictionary<string, object>() { {"featureFlag", feature }});
+        return HealthCheckResult.Healthy("Health Check disabled",
+            new Dictionary<string, object>() { { "featureFlag", feature } });
     }
 }
