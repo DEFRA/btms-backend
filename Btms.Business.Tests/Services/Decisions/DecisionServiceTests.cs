@@ -169,6 +169,7 @@ public class DecisionServiceTests
                                     DocumentCode = "9115"
                                 }
                             ],
+                            //
                             Checks = checkCodes?.Select(checkCode => new Check { CheckCode = checkCode }).ToArray()
                         }
                     ]
