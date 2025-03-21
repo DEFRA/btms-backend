@@ -127,13 +127,27 @@ internal class NotificationConsumer(
                 var decisionContext = new DecisionContext(notifications, linkResult.Movements, matchResult, messageId);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
-                await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+                await validationService.PostDecision(decisionContext, decisionResult, Context.CancellationToken);
             }
-            else if (preProcessingResult.IsDeleted())
+            else if (preProcessingResult.IsCancelledOrDeleted())
             {
+                // This would happen from a decision, but for cancellation or deleted updates, no decision
+                // is made.
+                LogStatus("Notification is CancelledOrDeleted, update Movements ImportNotificationState", message);
+
                 var linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
                     preProcessingResult.ChangeSet);
-                await linkingService.UnLink(linkContext, Context.CancellationToken);
+                var linkResult = await linkingService.Link(linkContext, Context.CancellationToken);
+
+                dbContext.Movements.UpdateAlvsDecisionStatusImportNotificationState(linkResult.Movements,
+                    preProcessingResult.Record);
+
+                if (preProcessingResult.IsDeleted())
+                {
+                    linkContext = new ImportNotificationLinkContext(preProcessingResult.Record,
+                        preProcessingResult.ChangeSet, linkResult.Movements);
+                    await linkingService.UnLink(linkContext, Context.CancellationToken);
+                }
             }
             else
             {

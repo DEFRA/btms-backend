@@ -76,7 +76,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
 
                         break;
                     case ImportNotificationLinkContext notificationLinkContext:
-                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification,
+                        result = await FindImportNotificationLinks(notificationLinkContext.PersistedImportNotification, notificationLinkContext.Movements,
                             cancellationToken);
 
                         if (!ShouldLink(notificationLinkContext.ChangeSet))
@@ -163,7 +163,7 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
             logger.UnLinkingStarted(linkContext.GetType().Name, linkContext.GetIdentifiers());
             try
             {
-                var result = await FindImportNotificationLinks(linkContext.PersistedImportNotification, cancellationToken);
+                var result = await FindImportNotificationLinks(linkContext.PersistedImportNotification, linkContext.Movements, cancellationToken);
 
                 foreach (var movement in result.Movements)
                 {
@@ -271,9 +271,14 @@ public class LinkingService(IMongoDbContext dbContext, LinkingMetrics metrics, I
         };
     }
 
-    private async Task<LinkResult> FindImportNotificationLinks(ImportNotification importNotification, CancellationToken cancellationToken)
+    private async Task<LinkResult> FindImportNotificationLinks(ImportNotification importNotification, List<Movement>? movements, CancellationToken cancellationToken)
     {
-        var movements = await dbContext.Movements.Where(x => x._MatchReferences.Contains(importNotification._MatchReference)).ToListAsync(cancellationToken);
+        if (movements is null || !movements.Any())
+        {
+            movements = await dbContext.Movements
+                .Where(x => x._MatchReferences.Contains(importNotification._MatchReference))
+                .ToListAsync(cancellationToken);
+        }
 
         return new LinkResult(movements.Any() ? LinkOutcome.Linked : LinkOutcome.NotLinked)
         {

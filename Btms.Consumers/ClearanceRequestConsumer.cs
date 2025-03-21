@@ -83,7 +83,7 @@ internal class ClearanceRequestConsumer(
                     new DecisionContext(linkResult.Notifications, linkResult.Movements, matchResult, messageId);
                 var decisionResult = await decisionService.Process(decisionContext, Context.CancellationToken);
 
-                await validationService.PostDecision(linkResult, decisionResult, Context.CancellationToken);
+                await validationService.PostDecision(decisionContext, decisionResult, Context.CancellationToken);
 
                 // Recalculate the status of the notifications before saving
                 linkResult.Notifications.ForEach(n => n.CalculateStatus());

@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Btms.Common.Extensions;
 
 namespace Btms.Model;
 
@@ -74,5 +75,10 @@ public struct MatchIdentifier(string identifier)
             matchIdentifier = default;
             return false;
         }
+    }
+
+    public static bool IsValid(string? reference)
+    {
+        return reference.HasValue() && TryFromCds(reference, out var _);
     }
 }

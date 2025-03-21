@@ -74,7 +74,7 @@ public class DecisionServiceTests
     // }
 
     [Fact]
-    public async Task When_processing_unknown_decisions_Then_should_not_throw()
+    public async Task When_processing_unknown_import_notification_type_Then_should_not_throw()
     {
         var decisionContext = CreateDecisionContext((ImportNotificationTypeEnum)999, ["H224"], iuuCheckRequired: false);
         var serviceProvider = ConfigureDecisionFinders(decisionContext.Notifications[0], ["H224"]);
@@ -101,7 +101,6 @@ public class DecisionServiceTests
         _serviceCollection.AddSingleton(Substitute.For<IPublishBus>());
         _serviceCollection.AddSingleton<MovementBuilderFactory>();
         _serviceCollection.AddSingleton<DecisionStatusFinder>();
-        _serviceCollection.AddSingleton<BusinessDecisionStatusFinder>();
         _serviceCollection.AddLogging();
         _serviceCollection.AddSingleton<IMongoDbContext, MemoryMongoDbContext>();
     }

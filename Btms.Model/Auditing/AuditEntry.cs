@@ -60,6 +60,11 @@ public class AuditEntry
         return Status == "Deleted";
     }
 
+    public bool IsCancelled()
+    {
+        return Status == "Cancelled";
+    }
+
 
     public static AuditEntry Create<T>(T previous, T current, string id, int version, DateTime? lastUpdated,
         CreatedBySystem lastUpdatedBy, string status, CreatedBySystem source)

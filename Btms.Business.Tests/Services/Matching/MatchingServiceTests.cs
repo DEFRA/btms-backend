@@ -76,7 +76,7 @@ public class MatchingServiceTests
     {
         CrNoMatchScenarioGenerator generator =
             new CrNoMatchScenarioGenerator(NullLogger<CrNoMatchScenarioGenerator>.Instance);
-        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
 
         var generatorResult = generator
@@ -97,7 +97,7 @@ public class MatchingServiceTests
         ChedASimpleMatchScenarioGenerator generator =
             new ChedASimpleMatchScenarioGenerator(NullLogger<ChedASimpleMatchScenarioGenerator>.Instance);
         var config = ScenarioFactory.CreateScenarioConfig(generator, 1, 1);
-        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
+        var movementBuilderFactory = new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance);
 
         var generatorResult = generator.Generate(1, 1, DateTime.UtcNow, config);
 

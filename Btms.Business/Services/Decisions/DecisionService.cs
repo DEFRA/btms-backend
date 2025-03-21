@@ -3,8 +3,10 @@ using Btms.Backend.Data;
 using Btms.Business.Builders;
 using Btms.Business.Services.Decisions.Finders;
 using Btms.Business.Services.Matching;
+using Btms.Common.Extensions;
 using Btms.Model;
 using Btms.Model.Cds;
+using Btms.Model.Extensions;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 
@@ -27,17 +29,9 @@ public class DecisionService(
             decisionResult.AddDecisionMessage(message);
         }
 
-        var notificationContext = decisionContext.Notifications
-            .Select(n => new DecisionImportNotifications
-            {
-                Id = n.Id!,
-                Version = n.Version,
-                Created = n.Created,
-                Updated = n.Updated,
-                UpdatedEntity = n.UpdatedEntity,
-                CreatedSource = n.CreatedSource!.Value,
-                UpdatedSource = n.UpdatedSource!.Value
-            })
+        var notificationContext = decisionContext
+            .Notifications
+            .Select(n => n.AsDecisionImportNotification())
             .ToList();
 
         foreach (var internalDecision in decisionResult.DecisionsMessages)

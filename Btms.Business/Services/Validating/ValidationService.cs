@@ -9,6 +9,7 @@ using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
 using Microsoft.Extensions.Logging;
 using SlimMessageBus.Host;
+using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 using LinkStatus = Btms.Model.Cds.LinkStatus;
 
 namespace Btms.Business.Services.Validating;
@@ -92,7 +93,7 @@ public class ValidationService(IMongoDbContext dbContext, ValidationMetrics metr
         return valid;
     }
 
-    public async Task<bool> PostDecision(LinkResult linkResult, DecisionResult decision, CancellationToken cancellationToken = default)
+    public async Task<bool> PostDecision(DecisionContext decisionContext, DecisionResult decision, CancellationToken cancellationToken = default)
     {
         logger.LogInformation("PostDecision");
 
