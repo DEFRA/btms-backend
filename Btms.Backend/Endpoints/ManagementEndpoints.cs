@@ -94,9 +94,9 @@ public static class ManagementEndpoints
         return Results.Ok();
     }
 
-    private static async Task<IResult> StartAsb([FromServices] ICompositeMessageBus messageBus, [FromServices] IOptions<ConsumerOptions> options)
+    private static async Task<IResult> StartAsb([FromServices] ICompositeMessageBus messageBus)
     {
-        if (options.Value.EnableAsbConsumers && messageBus is ICompositeMessageBus compositeMessageBus)
+        if (messageBus is ICompositeMessageBus compositeMessageBus)
         {
             var asbMessageBuses = compositeMessageBus.GetChildBuses().Where(x => x.Name.StartsWith("ASB"));
             foreach (var asbMessageBus in asbMessageBuses)
@@ -112,9 +112,9 @@ public static class ManagementEndpoints
     }
 
 
-    private static async Task<IResult> StopAsb([FromServices] IMasterMessageBus messageBus, [FromServices] IOptions<ConsumerOptions> options)
+    private static async Task<IResult> StopAsb([FromServices] IMasterMessageBus messageBus)
     {
-        if (options.Value.EnableAsbConsumers && messageBus is ICompositeMessageBus compositeMessageBus)
+        if (messageBus is ICompositeMessageBus compositeMessageBus)
         {
             var asbMessageBuses = compositeMessageBus.GetChildBuses().Where(x => x.Name.StartsWith("ASB"));
             foreach (var asbMessageBus in asbMessageBuses)
