@@ -20,4 +20,9 @@ public record PreProcessingResult<T>(
         return Record.GetLatestAuditEntry().IsDeleted();
     }
 
+    public bool IsCancelledOrDeleted()
+    {
+        var entry = Record.GetLatestAuditEntry();
+        return entry.IsDeleted() || entry.IsCancelled();
+    }
 }

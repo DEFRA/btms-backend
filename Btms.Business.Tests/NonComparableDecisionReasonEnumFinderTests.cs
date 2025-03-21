@@ -6,13 +6,13 @@ using Xunit;
 
 namespace Btms.Business.Tests;
 
-public class BusinessDecisionStatusFinderTests
+public class NonComparableDecisionReasonEnumFinderTests
 {
     [Fact]
     public void EnsureWeHaveAllStatusFinders()
     {
         //An exception would be thrown if it doesn't
-        Action act = BusinessDecisionStatusFinder.Validate;
+        Action act = DecisionCategoryFinder.Validate;
 
         act.Should().NotThrow();
     }

@@ -5,11 +5,11 @@ using Btms.Model.Ipaffs;
 
 namespace Btms.Business.Builders;
 
-public class BusinessDecisionStatusFinder
+public static class BusinessDecisionStatusFinder
 {
-    private readonly Dictionary<BusinessDecisionStatusEnum, Func<Movement, bool>> _finders = [];
-    private readonly List<BusinessDecisionStatusEnum> _orderedFinders = Enum.GetValues<BusinessDecisionStatusEnum>().ToList();
-    public BusinessDecisionStatusFinder()
+    private static readonly Dictionary<BusinessDecisionStatusEnum, Func<Movement, bool>> _finders = [];
+    private static readonly List<BusinessDecisionStatusEnum> _orderedFinders = Enum.GetValues<BusinessDecisionStatusEnum>().ToList();
+    static BusinessDecisionStatusFinder()
     {
         _finders.Add(BusinessDecisionStatusEnum.CancelledOrDestroyed, CancelledOrDestroyed);
         _finders.Add(BusinessDecisionStatusEnum.ManualReleases, ManualReleases);
@@ -25,8 +25,13 @@ public class BusinessDecisionStatusFinder
         _finders.Add(BusinessDecisionStatusEnum.BtmsDataErrorDecision, BtmsDataErrorDecision);
 
         // Default if none of the above match - AnythingElse needs to be the last one in the Enum
-        _finders.Add(BusinessDecisionStatusEnum.AnythingElse, m => true);
+        _finders.Add(BusinessDecisionStatusEnum.AnythingElse, _ => true);
 
+        Validate();
+    }
+
+    internal static void Validate()
+    {
         //Validate that each status in the enum has a finder
         var hasFinders = _finders.Select(f => f.Key).ToArray();
 
@@ -39,10 +44,18 @@ public class BusinessDecisionStatusFinder
         }
     }
 
-    public BusinessDecisionStatusEnum GetStatus(Movement movement)
+    public static BusinessDecisionStatusEnum GetBusinessDecisionStatus(this Movement movement)
     {
-        return _orderedFinders
-            .First(f => _finders[f](movement));
+        try
+        {
+            return _orderedFinders
+                .First(f => _finders[f](movement));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BusinessDecisionStatusEnum.AnythingElse;
+        }
     }
 
     private static readonly FinalState[] cancelledOrDestroyed = [

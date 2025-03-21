@@ -37,7 +37,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().BeTrue();
     }
 
-    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void ShouldHave2BtmsDecisions()
     {
         Client
@@ -46,7 +46,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Should().Be(2);
     }
 
-    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void ShouldHaveCorrectDecisionAuditEntries()
     {
         var chedPNotification = (ImportNotification)LoadedData
@@ -88,7 +88,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be(1);
     }
 
-    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void ShouldHaveCorrectAuditTrail()
     {
         Client
@@ -169,7 +169,7 @@ public class ChedPSimpleTests(ITestOutputHelper output)
             .Be("[]");
     }
 
-    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
+    [Fact]
     public void AlvsDecisionShouldBePaired()
     {
         Client

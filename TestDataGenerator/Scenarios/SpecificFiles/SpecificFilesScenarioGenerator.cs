@@ -33,9 +33,9 @@ public class Mrn24Gbdyhi8Lmfldqar6ScenarioGenerator(
     ILogger<Mrn24Gbdyhi8Lmfldqar6ScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDYHI8LMFLDQAR6");
 
-public class Mrn24Gbdpn81Vsulagar9ScenarioGenerator(
+public class ChedPPLinkedMrnNoDecisionsScenarioGenerator(
     IServiceProvider sp,
-    ILogger<Mrn24Gbdpn81Vsulagar9ScenarioGenerator> logger)
+    ILogger<ChedPPLinkedMrnNoDecisionsScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDPN81VSULAGAR9");
 
 public class Mrn24Gbdev7Bgq1L0Oar4ScenarioGenerator(
@@ -67,6 +67,11 @@ public class CancelledNotificationTestsScenarioGenerator(
     IServiceProvider sp,
     ILogger<CancelledNotificationTestsScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "CancelledNotification");
+
+public class CancelledNotificationSingleChedMrnTestsScenarioGenerator(
+    IServiceProvider sp,
+    ILogger<CancelledNotificationSingleChedMrnTestsScenarioGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "Mrn-25GB1EM0NUGUJTQAR8");
 
 public class MissingChedScenarioGenerator(
     IServiceProvider sp,
@@ -158,7 +163,7 @@ public class Mrn25Gb02Rlz9P0U8Far5ScenarioGenerator(IServiceProvider sp, ILogger
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
 
-public class SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+public class SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator(IServiceProvider sp, ILogger<SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "ItemWithMultipleChecks");
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)

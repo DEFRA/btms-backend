@@ -34,6 +34,8 @@ public record MrnExportResult
     public required string? DecisionStatus { get; set; }
     public required string? Segment { get; set; }
 
+    public required string? DecisionCategory { get; set; }
+
 }
 
 public record CheckExportResult : MrnExportResult
@@ -65,6 +67,7 @@ public class MovementExportService(IMongoDbContext context, ILogger<MovementExpo
             {
                 Mrn = m.Id!,
                 BusinessDecisionStatus = m.Status.BusinessDecisionStatus.GetValue(),
+                DecisionCategory = m.Status.NonComparableDecisionReason?.GetValue(),
                 CreatedDate = m.CreatedSource!.Value.ToString("dd/MM/yyyy", CultureInfo.CurrentCulture),
                 LastUpdatedDate = m.UpdatedSource!.Value.ToString("dd/MM/yyyy", CultureInfo.CurrentCulture),
                 ItemCount = m.Items.Count,

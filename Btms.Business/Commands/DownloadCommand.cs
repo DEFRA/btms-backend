@@ -72,12 +72,19 @@ public class DownloadCommand : IRequest, ISyncJob
 
             var datasets = GetDataSets(request);
 
+            var references = (request.Filter?.Mrns ?? [])
+                .Concat(request.Filter?.Cheds.Select(c => c.Reference).ToArray() ?? [])
+                .ToArray();
+
             await datasets.ForEachAsync(async blobContainer =>
             {
                 if (request.Filter is not null)
                 {
+
                     await BlobFolders.ForEachAsync(async f =>
                     {
+                        logger.LogInformation("Searching dataset {Dataset} Folder {Path}, {DataType} for references {References}", blobContainer, f.path, f.dataType, references);
+
                         if (f.dataType != typeof(ImportNotification))
                         {
                             await Download(request, rootFolder, $"{blobContainer}/{f.path}", f.dataType, request.Filter.Mrns,
@@ -99,6 +106,8 @@ public class DownloadCommand : IRequest, ISyncJob
                 {
                     await BlobFolders.ForEachAsync(async f =>
                     {
+                        logger.LogInformation("Downloading entire dataset {Dataset} Folder {Path}, {DataType}", blobContainer, f.path, f.dataType);
+
                         await Download(request, rootFolder, $"{blobContainer}/{f.path}", f.dataType, null,
                             job, cancellationToken);
                     });
@@ -107,9 +116,17 @@ public class DownloadCommand : IRequest, ISyncJob
 
             if (Directory.EnumerateFiles(rootFolder, "*.json", SearchOption.AllDirectories).Any())
             {
-                ZipFile.CreateFromDirectory(rootFolder, $"{env.ContentRootPath}/{request.JobId}.zip");
+                logger.LogInformation("{Count} files found for download References={Mrns} in {Path}", job.MessagesProcessed, references, rootFolder);
+                var zipFilePath = $"{env.ContentRootPath}/{request.JobId}.zip";
+                ZipFile.CreateFromDirectory(rootFolder, zipFilePath);
+                logger.LogInformation("Zipfile created in {Path}", zipFilePath);
+            }
+            else
+            {
+                logger.LogWarning("No files found for download References={Mrns} in {Path}", references, rootFolder);
             }
 
+            logger.LogInformation("Deleting directory {Path}", rootFolder);
             Directory.Delete(rootFolder, true);
 
             job.Complete();
@@ -154,7 +171,6 @@ public class DownloadCommand : IRequest, ISyncJob
                 {
                     job.MessageFailed();
                 }
-
             });
         }
 
@@ -165,11 +181,11 @@ public class DownloadCommand : IRequest, ISyncJob
 
     public record DownloadFilter(string[] Mrns, Ched[] Cheds);
 
-    public record Ched(string Type, string Identifier)
+    public record Ched(string Reference, string Type, string Identifier)
     {
         public static Ched FromReference(string reference)
         {
-            return new Ched(reference.Split('.')[0], reference.Split('.')[^1]);
+            return new Ched(reference, reference.Split('.')[0], reference.Split('.')[^1]);
         }
     };
 

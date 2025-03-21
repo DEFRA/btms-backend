@@ -48,7 +48,7 @@ public static class SyncEndpoints
         }
 
         if (apiOptions.Value.EnableDiagnostics)
-            app.MapPost(BaseRoute + "/blob/", GetBlob).AllowAnonymous();
+            app.MapGet(BaseRoute + "/blob", GetBlob).AllowAnonymous();
 
         app.MapGet(BaseRoute + "/generate-download", GetGenerateDownload).AllowAnonymous();
         app.MapPost(BaseRoute + "/generate-download", GenerateDownload).AllowAnonymous();
@@ -156,10 +156,13 @@ public static class SyncEndpoints
         string path)
     {
         var segments = path.Split("/");
+        var name = options.Value.DmpBlobRootFolder == "RAW" ?
+            $"RAW/{path}" :
+            $"PRODREDACTED-{String.Join("", segments[^4..^2])}/{path}";
 
         //Handles IPAFFS multiple paths per type & others which only have a single path
         var type = DownloadCommand.BlobFolders.First(f => f.path == segments.First() || f.path.StartsWith($"{segments.First()}/")).dataType;
-        var blobContent = await blobService.GetResource(new BtmsBlobItem() { Name = $"{options.Value.DmpBlobRootFolder}/{path}" }, CancellationToken.None);
+        var blobContent = await blobService.GetResource(new BtmsBlobItem() { Name = name }, CancellationToken.None);
         var redactedContent = sensitiveDataSerializer.RedactRawJson(blobContent, type);
 
         return Results.Json(JsonDocument.Parse(redactedContent));
