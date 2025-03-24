@@ -18,6 +18,6 @@ public class ConsumerOptions
 
     public int ErrorRetries { get; set; } = 10;
 
-    public bool EnableAsbConsumers { get; set; }
-    public bool EnableAmazonConsumers { get; set; }
+    ////public bool EnableAsbConsumers { get; set; }
+    ////public bool EnableAmazonConsumers { get; set; }
 }
