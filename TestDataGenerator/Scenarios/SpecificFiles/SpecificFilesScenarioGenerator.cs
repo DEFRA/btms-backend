@@ -158,11 +158,14 @@ public class Mrn25Gb02Rlz9P0U8Far5ScenarioGenerator(IServiceProvider sp, ILogger
 public class ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "Mrn-24GBDEJTCUNJKRQAR1");
 
-public class SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+public class SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator(IServiceProvider sp, ILogger<SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "ItemWithMultipleChecks");
 
-public class CancelledWithE88Generator(IServiceProvider sp, ILogger<ChedWithAlvsX00WrongDocumentReferenceFormatScenarioGenerator> logger)
+public class CancelledWithE88Generator(IServiceProvider sp, ILogger<CancelledWithE88Generator> logger)
     : SpecificFilesScenarioGenerator(sp, logger, "CancelledWithE88");
+
+public class DeletedX00DecisionGenerator(IServiceProvider sp, ILogger<DeletedX00DecisionGenerator> logger)
+    : SpecificFilesScenarioGenerator(sp, logger, "DeletedX00Decision");
 
 public abstract class SpecificFilesScenarioGenerator(IServiceProvider sp, ILogger logger, string? sampleFolder = null) : ScenarioGenerator(logger)
 {
