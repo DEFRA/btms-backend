@@ -1,6 +1,9 @@
 using Btms.Common.Extensions;
+using Btms.Common.FeatureFlags;
 using Btms.Consumers.AmazonQueues;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
+using Microsoft.FeatureManagement;
 
 namespace Btms.Backend.Aws;
 
@@ -20,25 +23,32 @@ public static class BtmsSqsHealthCheckBuilderExtensions
 
         builder.Add(new HealthCheckRegistration(
             $"{Name} clearance requests",
-            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.ClearanceRequestQueueName),
+            sp => BuildHealthCheck(sp, Features.HealthChecks.Sqs.ClearanceRequests, awsOptions.ClearanceRequestQueueName),
             failureStatus,
             tags,
             timeout));
 
         builder.Add(new HealthCheckRegistration(
             $"{Name} decisions",
-            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.DecisionQueueName),
+            sp => BuildHealthCheck(sp, Features.HealthChecks.Sqs.Decisions, awsOptions.DecisionQueueName),
             failureStatus,
             tags,
             timeout));
 
         builder.Add(new HealthCheckRegistration(
             $"{Name} finalisations",
-            _ => new BtmsSqsHealthCheck(awsOptions, awsOptions.FinalisationQueueName),
+            sp => BuildHealthCheck(sp, Features.HealthChecks.Sqs.Finalisations, awsOptions.FinalisationQueueName),
             failureStatus,
             tags,
             timeout));
 
         return builder;
+    }
+
+    private static IHealthCheck BuildHealthCheck(IServiceProvider sp, string feature, string queueName)
+    {
+        var awsOptions = sp.GetRequiredService<IOptions<AwsSqsOptions>>();
+        return new FeatureFlagHealthCheck(sp.GetRequiredService<IFeatureManager>(), feature,
+            new BtmsSqsHealthCheck(awsOptions.Value, queueName));
     }
 }

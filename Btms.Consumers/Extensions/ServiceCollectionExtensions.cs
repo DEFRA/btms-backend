@@ -1,6 +1,7 @@
 using System.Net;
 using Azure.Messaging.ServiceBus;
 using Btms.Common.Extensions;
+using Btms.Common.FeatureFlags;
 using Btms.Consumers.AmazonQueues;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
@@ -39,9 +40,10 @@ namespace Btms.Consumers.Extensions
 
             services.AddSlimMessageBus(mbb =>
             {
-                if (consumerOpts.EnableAsbConsumers)
+                var serviceBusOptions = services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName).Get();
+
+                services.RunIfFeatureEnabled(Features.Consumers.Asb.Ipaffs, () =>
                 {
-                    var serviceBusOptions = services.BtmsAddOptions<ServiceBusOptions>(configuration, ServiceBusOptions.SectionName).Get();
                     mbb.AddChildBus("ASB_Notification", cbb =>
                     {
                         ConfigureServiceBusClient(cbb, serviceBusOptions.NotificationSubscription.ConnectionString);
@@ -52,7 +54,10 @@ namespace Btms.Consumers.Extensions
                             .WithConsumer<NotificationConsumer>()
                             .Instances(consumerOpts.AsbNotifications));
                     });
+                });
 
+                services.RunIfFeatureEnabled(Features.Consumers.Asb.Alvs, () =>
+                {
                     mbb.AddChildBus("ASB_Alvs", cbb =>
                     {
                         ConfigureServiceBusClient(cbb, serviceBusOptions.AlvsSubscription.ConnectionString);
@@ -63,7 +68,10 @@ namespace Btms.Consumers.Extensions
                             .WithConsumer<AlvsAsbConsumer>()
                             .Instances(consumerOpts.AsbAlvsMessages));
                     });
+                });
 
+                services.RunIfFeatureEnabled(Features.Consumers.Asb.Gmr, () =>
+                {
                     mbb.AddChildBus("ASB_Gmr", cbb =>
                     {
                         ConfigureServiceBusClient(cbb, serviceBusOptions.GmrSubscription.ConnectionString);
@@ -74,7 +82,7 @@ namespace Btms.Consumers.Extensions
                             .WithConsumer<GmrConsumer>()
                             .Instances(consumerOpts.AsbGmrs));
                     });
-                }
+                });
 
                 mbb
                     .AddChildBus("InMemory", cbb =>
@@ -125,11 +133,11 @@ namespace Btms.Consumers.Extensions
                     });
 
                 var awsSqsOptions = services.BtmsAddOptions<AwsSqsOptions>(configuration, AwsSqsOptions.SectionName).Get();
-
-                if (consumerOpts.EnableAmazonConsumers)
-                {
-                    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions));
-                }
+                mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions));
+                ////if (consumerOpts.EnableAmazonConsumers)
+                ////{
+                ////    mbb.AddChildBus("AmazonQueues", cbb => cbb.AddAmazonConsumers(services, awsSqsOptions));
+                ////}
             });
 
             return services;
