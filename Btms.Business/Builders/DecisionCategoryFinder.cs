@@ -6,15 +6,17 @@ namespace Btms.Business.Builders;
 
 public static class DecisionCategoryFinder
 {
-    private static readonly Dictionary<DecisionCategoryEnum, Func<Movement, bool>> _finders = [];
-    private static List<DecisionCategoryEnum?> _nullableOrderedFinders = [];
+    private static readonly Dictionary<DecisionCategoryEnum, Func<Movement, bool>> finders = (new()
+    {
+        { DecisionCategoryEnum.DocumentReferenceFieldIncorrect, DocumentReferenceFieldIncorrect },
+        { DecisionCategoryEnum.E89ErrorCode, E89ErrorCode },
+        { DecisionCategoryEnum.IpaffsDeletedChed, IpaffsDeletedChed },
+        { DecisionCategoryEnum.IpaffsCancelledChed, IpaffsCancelledChed }
+    });
 
     static DecisionCategoryFinder()
     {
-        _finders.Add(DecisionCategoryEnum.DocumentReferenceFieldIncorrect, DocumentReferenceFieldIncorrect);
-        _finders.Add(DecisionCategoryEnum.E89ErrorCode, E89ErrorCode);
-        _finders.Add(DecisionCategoryEnum.IpaffsDeletedChed, IpaffsDeletedChed);
-        _finders.Add(DecisionCategoryEnum.IpaffsCancelledChed, IpaffsCancelledChed);
+        finders = finders.OrderBy(f => f.Key).ToDictionary();
 
         //Validate that each status in the enum has a finder
         Validate();
@@ -23,7 +25,7 @@ public static class DecisionCategoryFinder
     internal static void Validate()
     {
         //Validate that each status in the enum has a finder
-        var hasFinders = _finders.Select(f => f.Key).ToArray();
+        var hasFinders = finders.Select(f => f.Key).ToArray();
 
         var enumValues = Enum.GetValues<DecisionCategoryEnum>().ToList();
 
@@ -33,27 +35,20 @@ public static class DecisionCategoryFinder
         {
             throw new InvalidOperationException("Decision Status Finders missing in DecisionStatusFinder");
         }
-
-        // This is so we can get a nullable value from FirstOrDefault below, otherwise it FirstOrDefault returns
-        // the first item from the enum as the default.
-        _nullableOrderedFinders = enumValues
-            .ConvertAll<DecisionCategoryEnum?>(i => i);
     }
 
     public static DecisionCategoryEnum? GetDecisionCategory(this Movement movement)
     {
         if (movement.Decisions.Count == 0) return null;
 
-        try
+        foreach (var finder in finders)
         {
-            return _nullableOrderedFinders
-                .FirstOrDefault(f => _finders[f!.Value!](movement), null);
+            if (finder.Value(movement))
+            {
+                return finder.Key;
+            }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return null;
-        }
+        return null;
 
     }
 

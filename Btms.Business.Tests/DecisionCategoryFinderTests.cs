@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Btms.Business.Tests;
 
-public class NonComparableDecisionReasonEnumFinderTests
+public class DecisionCategoryFinderTests
 {
     [Fact]
     public void EnsureWeHaveAllStatusFinders()
