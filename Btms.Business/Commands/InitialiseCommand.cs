@@ -69,17 +69,16 @@ public class InitialiseCommand : SyncCommand
             {
                 Logger.LogInformation("ImportNotificationsFirst Strategy");
 
-                await datasets.ForEachAsync(async ds =>
+                foreach (var ds in datasets)
                 {
                     SyncNotificationsCommand notifications = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
                     await mediator.SendSyncJob(notifications, cancellationToken);
 
                     Logger.LogInformation("Started Notifications {JobId} job. Waiting on completion.", notifications.JobId);
                     await SyncJobStore.WaitOnJobCompleting(notifications.JobId);
+                }
 
-                });
-
-                await datasets.ForEachAsync(async ds =>
+                foreach (var ds in datasets)
                 {
                     SyncClearanceRequestsCommand clearanceRequests = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
                     await mediator.SendSyncJob(clearanceRequests, cancellationToken);
@@ -87,10 +86,10 @@ public class InitialiseCommand : SyncCommand
                     Logger.LogInformation("Started Clearance Requests sync job {JobId}. Waiting on completion.", clearanceRequests.JobId);
 
                     await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
+                }
 
-                });
 
-                await datasets.ForEachAsync(async ds =>
+                foreach (var ds in datasets)
                 {
                     SyncDecisionsCommand decisions = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
                     await mediator.SendSyncJob(decisions, cancellationToken);
@@ -98,9 +97,9 @@ public class InitialiseCommand : SyncCommand
                     Logger.LogInformation("Started Decisions sync job {JobId}. Waiting on completion.", decisions.JobId);
 
                     await SyncJobStore.WaitOnJobCompleting(decisions.JobId);
-                });
+                }
 
-                await datasets.ForEachAsync(async ds =>
+                foreach (var ds in datasets)
                 {
                     SyncFinalisationsCommand finalisations = new() { SyncPeriod = request.SyncPeriod, RootFolder = ds };
                     await mediator.SendSyncJob(finalisations, cancellationToken);
@@ -108,7 +107,7 @@ public class InitialiseCommand : SyncCommand
                     Logger.LogInformation("Started Finalisations sync job {JobId} for {Dataset}. Waiting on completion.", finalisations.JobId, ds);
 
                     await SyncJobStore.WaitOnJobCompleting(finalisations.JobId);
-                });
+                }
             }
             else
             {
