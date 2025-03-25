@@ -76,6 +76,10 @@ public static class DecisionCategoryFinder
 
     private static bool E89ErrorCode(Movement movement)
     {
-        return false;
+        return movement.AlvsDecisionStatus?.Decisions.Any(d =>
+            d.Decision.Items
+                .Any(i => i.Checks
+                    .Any(c => c.DecisionInternalFurtherDetail?
+                        .Any(difd => difd == "E89") ?? false))) ?? false;
     }
 }
