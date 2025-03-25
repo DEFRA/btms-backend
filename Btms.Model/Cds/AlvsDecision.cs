@@ -49,6 +49,18 @@ public class DecisionImportNotifications
     public required DateTime UpdatedEntity { get; set; }
     public required DateTime CreatedSource { get; set; }
     public required DateTime UpdatedSource { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public required ImportNotificationStatusEnum? Status { get; set; }
+
+    public required DateTime? AutoClearedOn { get; set; }
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public required ImportNotificationTypeEnum Type { get; set; }
 }
 
 public class StatusChecker
@@ -183,6 +195,11 @@ public class MovementStatus
     [System.ComponentModel.Description("")]
     [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
     public BusinessDecisionStatusEnum BusinessDecisionStatus { get; set; } = BusinessDecisionStatusEnum.AnythingElse;
+
+    [Attr]
+    [System.ComponentModel.Description("")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public DecisionCategoryEnum? NonComparableDecisionReason { get; set; } = null;
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<LinkStatus>))]
@@ -251,6 +268,90 @@ public enum BusinessDecisionStatusEnum
 
     [EnumMember(Value = "Anything Else")]
     AnythingElse,
+}
+
+
+[JsonConverter(typeof(JsonStringEnumConverterEx<DecisionCategoryEnum>))]
+public enum DecisionCategoryEnum
+{
+    [EnumMember(Value = "Document Reference Field Incorrect")]
+    DocumentReferenceFieldIncorrect,
+
+    [EnumMember(Value = "IPAFFS - Deleted CHED")]
+    IpaffsDeletedChed,
+
+    [EnumMember(Value = "IPAFFS - Cancelled CHED")]
+    IpaffsCancelledChed,
+    //
+    // [EnumMember(Value = "IPAFFS - Replaced CHED")]
+    // IpaffsReplacedChed,
+    //
+    // [EnumMember(Value = "Manual Release of MRN")]
+    // ManualReleaseofMrn,
+    //
+    // [EnumMember(Value = "Cancelled MRN")]
+    // CancelledMrn,
+    //
+    // [EnumMember(Value = "Destroyed MRN")]
+    // DestroyedMrn,
+    //
+    // [EnumMember(Value = "IBM Match Model Failure")]
+    // IbmMatchModelFailure,
+    //
+    // [EnumMember(Value = "CHED In 'In Progress' Status")]
+    // CHEDInInProgressStatus,
+    //
+    // [EnumMember(Value = "Autocleared CHED-A")]
+    // AutoclearedChedA,
+    //
+    // [EnumMember(Value = "Autocleared CHED-P")]
+    // AutoclearedChedP,
+    //
+    // [EnumMember(Value = "Autocleared CHED-PP")]
+    // AutoclearedChedPp,
+    //
+    // [EnumMember(Value = "IUU Check Required")]
+    // IuuheckRequired,
+    //
+    // [EnumMember(Value = "HMI SMS Check Required")]
+    // HmiSmsCheckRequired,
+    //
+    // [EnumMember(Value = "HMI GMS Check Only")]
+    // HmiGmsCheckOnly,
+    //
+    // [EnumMember(Value = "CHED In 'Partially Rejected' Status")]
+    // CHEDInPartiallyRejectedStatus,
+    //
+    // [EnumMember(Value = "Tri-Regulated Commodity")]
+    // TriRegulatedCommodity,
+    //
+    [EnumMember(Value = "E89 Error Code")]
+    E89ErrorCode,
+    //
+    // [EnumMember(Value = "E90 Error Code")]
+    // E90ErrorCode,
+    //
+    // [EnumMember(Value = "E94 Error Code")]
+    // E94ErrorCode,
+    //
+    // [EnumMember(Value = "E95 Error Code")]
+    // E95ErrorCode,
+    //
+    // [EnumMember(Value = "E96 Error Code")]
+    // E96ErrorCode,
+    //
+    // [EnumMember(Value = "E97 Error Code")]
+    // E97ErrorCode,
+    //
+    // [EnumMember(Value = "E98 Error Code")]
+    // E98ErrorCode,
+    //
+    // [EnumMember(Value = "E99 Error Code")]
+    // E99ErrorCode,
+    //
+    // [EnumMember(Value = "Northern Ireland Consignment")]
+    // NorthernIrelandConsignment
+
 }
 
 [JsonConverter(typeof(JsonStringEnumConverterEx<DecisionStatusEnum>))]

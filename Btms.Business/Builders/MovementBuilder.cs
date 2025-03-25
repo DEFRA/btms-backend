@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Btms.Business.Builders;
 
-public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFinder decisionStatusFinder, BusinessDecisionStatusFinder businessDecisionFinder, Movement movement, bool hasChanges = false)
+public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFinder decisionStatusFinder, Movement movement, bool hasChanges = false)
 {
     private readonly Movement? _movement = movement;
     public bool HasChanges = hasChanges;
@@ -395,7 +395,8 @@ public class MovementBuilder(ILogger<MovementBuilder> logger, DecisionStatusFind
     {
         GuardNullMovement();
 
-        _movement.Status.BusinessDecisionStatus = businessDecisionFinder.GetStatus(_movement);
+        _movement.Status.BusinessDecisionStatus = _movement.GetBusinessDecisionStatus();
+        _movement.Status.NonComparableDecisionReason = _movement.GetDecisionCategory();
 
         return _movement;
     }

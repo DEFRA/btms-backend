@@ -14,15 +14,10 @@ namespace Btms.Backend.IntegrationTests.DecisionTests;
 public class ChedPUpdatedNotificationTests
     : ScenarioGeneratorBaseTest<MultiStepScenarioGenerator>
 {
-    // public required AlvsClearanceRequest ChedPMovement;
     public required ImportNotification ChedPNotification;
 
     public ChedPUpdatedNotificationTests(ITestOutputHelper output) : base(output)
     {
-        // ChedPMovement = (AlvsClearanceRequest)LoadedData.Single(d =>
-        //         d is { Message: AlvsClearanceRequest })
-        //     .Message;
-
         // The scenario has multiple versions of the same notification so we just want one of them.
         ChedPNotification = (ImportNotification)LoadedData.First(d =>
                 d is { Message: ImportNotification })
@@ -31,7 +26,6 @@ public class ChedPUpdatedNotificationTests
 
     // This scenario has an update adding a commodity that gets 
     // processed but doesn't cause a new decision
-    // [FailingFact(jiraTicket:"CDMS-234"), Trait("JiraTicket", "CDMS-234")]
     [Fact]
     public void ShouldHaveCorrectAuditEntries()
     {
@@ -46,13 +40,12 @@ public class ChedPUpdatedNotificationTests
                 (CreatedBySystem.Btms, "Decision", 1, null),
                 (CreatedBySystem.Btms, "Linked", null, null), //TODO : can we get context in here including the notification info
                 (CreatedBySystem.Btms, "Decision", 2, 1),
-                (CreatedBySystem.Alvs, "Decision", 1, null), //TODO : we should be able to use the IBM provided file to get some context
+                (CreatedBySystem.Alvs, "Decision", 1, 1), //TODO : we should be able to use the IBM provided file to get some context
                 (CreatedBySystem.Btms, "Decision", 3, 2),
             ]);
     }
 
-    [FailingFact(jiraTicket: "CDMS-234"), Trait("JiraTicket", "CDMS-234")]
-    // [Fact]
+    [Fact]
     public void ShouldHave3BtmsDecisions()
     {
         var movement = Client
@@ -112,8 +105,6 @@ public class ChedPUpdatedNotificationTests
 
         decisionWithLinkAndContext.Context.As<DecisionContext>()!.ImportNotifications!
             .Select(n => (n.Id, n.Version))
-            .Should().Equal([
-                (ChedPNotification.ReferenceNumber!, 2)
-            ]);
+            .Should().Equal((ChedPNotification.ReferenceNumber!, 2));
     }
 }
