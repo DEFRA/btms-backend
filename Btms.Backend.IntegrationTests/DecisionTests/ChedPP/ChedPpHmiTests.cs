@@ -42,7 +42,7 @@ public class ChedPpHmiTests(ITestOutputHelper output) : MultipleScenarioGenerato
     }
 
     [Theory]
-    [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator), "24GBDY6XFF66H0XAR1", "H220", "E90")]
+    [InlineData(typeof(Mrn24Gbdy6Xff66H0Xar1ScenarioGenerator), "24GBDY6XFF66H0XAR1", "H218", "C03")]
     public void DecisionShouldHaveCorrectDecisionCodeForCheckCode(Type generatorType, string mrn, string checkCode, string decisionCode)
     {
         base.TestOutputHelper.WriteLine("Generator : {0}, Decision Code : {1}", generatorType!.FullName, decisionCode);
