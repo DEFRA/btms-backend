@@ -87,7 +87,7 @@ public class InitialiseCommand : SyncCommand
 
                     await SyncJobStore.WaitOnJobCompleting(clearanceRequests.JobId);
                 }
-               
+
 
                 foreach (var ds in datasets)
                 {
