@@ -15,7 +15,7 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
     public async Task OnHandle(Decision message, CancellationToken cancellationToken)
     {
         var internalDecision = DecisionMapper.Map(message);
-        var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!);
+        var existingMovement = await dbContext.Movements.Find(message.Header!.EntryReference!, cancellationToken);
 
         logger.LogInformation("OnHandle Decision SourceSystem {SourceSystem}, EntryReference {EntryReference} DecisionNumber {DecisionNumber}",
             message.ServiceHeader?.SourceSystem,
@@ -25,8 +25,12 @@ public class DecisionsConsumer(IMongoDbContext dbContext, MovementBuilderFactory
         if (existingMovement != null)
         {
             var auditId = Context.GetMessageId();
-            var notificationContext = Context.Headers.GetValueOrDefault("notifications", null) as List<DecisionImportNotifications>;
 
+            var linkedChedRefs = existingMovement
+                .Relationships.Notifications.Data
+                .Select(n => n.Id!);
+
+            var notificationContext = dbContext.Notifications.GetDecisionImportNotifications(linkedChedRefs);
             var existingMovementBuilder = movementBuilderFactory
                 .From(existingMovement!)
                 .MergeDecision(auditId!, internalDecision, notificationContext);

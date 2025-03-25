@@ -3,6 +3,7 @@ using Btms.Business.Services.Linking;
 using Btms.Model;
 using Btms.Model.Cds;
 using Btms.Model.Ipaffs;
+using DecisionContext = Btms.Business.Services.Decisions.DecisionContext;
 
 namespace Btms.Business.Services.Validating;
 
@@ -26,5 +27,5 @@ public interface IValidationService
     /// <param name="linkResult"></param>
     /// <param name="decision"></param>
     /// <param name="cancellationToken"></param>
-    Task<bool> PostDecision(LinkResult linkResult, DecisionResult decision, CancellationToken cancellationToken = default);
+    Task<bool> PostDecision(DecisionContext decisionContext, DecisionResult decision, CancellationToken cancellationToken = default);
 }

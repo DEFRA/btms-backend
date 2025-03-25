@@ -38,7 +38,10 @@ public class MovementPreProcessingTests
         // ARRANGE
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
-        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance), new StubValidator());
+        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance,
+            new MovementBuilderFactory(new DecisionStatusFinder(),
+                NullLogger<MovementBuilder>.Instance),
+            new StubValidator());
 
         // ACT
         var preProcessingResult = await preProcessor.Process(
@@ -60,7 +63,9 @@ public class MovementPreProcessingTests
         var clearanceRequest = CreateAlvsClearanceRequest();
         var dbContext = new MemoryMongoDbContext();
         var validator = new StubValidator([new BtmsValidationFailure("Test", "test", "test", null, null, ValidationSeverity.Error)]);
-        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance, new MovementBuilderFactory(new DecisionStatusFinder(), new BusinessDecisionStatusFinder(), NullLogger<MovementBuilder>.Instance), validator);
+        var preProcessor = new MovementPreProcessor(dbContext, NullLogger<MovementPreProcessor>.Instance,
+            new MovementBuilderFactory(new DecisionStatusFinder(), NullLogger<MovementBuilder>.Instance),
+            validator);
 
         // ACT
         var preProcessingResult = await preProcessor.Process(

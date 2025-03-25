@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Btms.Common.Extensions;
 
 namespace Btms.Model;
 
@@ -9,6 +10,9 @@ public static partial class RegularExpressions
 
     [GeneratedRegex("(GBCVD|GBCHD|GBCVD|GBCHD)\\.?(20|21)?\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex DocumentReferenceWithoutCountry();
+
+    [GeneratedRegex("(GBIUU|IUU)\\.*", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    internal static partial Regex IuuIdentifier();
 
     [GeneratedRegex("\\d{2,4}\\.?\\d{7}", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex DocumentReferenceIdentifier();
@@ -74,5 +78,15 @@ public struct MatchIdentifier(string identifier)
             matchIdentifier = default;
             return false;
         }
+    }
+
+    public static bool IsValid(string? reference)
+    {
+        return reference.HasValue() && TryFromCds(reference, out var _);
+    }
+
+    public static bool IsIuuRef(string? reference)
+    {
+        return reference.HasValue() && RegularExpressions.IuuIdentifier().IsExactMatch(reference);
     }
 }
