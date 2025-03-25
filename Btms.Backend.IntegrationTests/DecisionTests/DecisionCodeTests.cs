@@ -52,6 +52,8 @@ public class DecisionCodeTests(ITestOutputHelper output) : MultipleScenarioGener
     [InlineData(typeof(Mrn25Gb0Hrwmaj7Fbwar8ScenarioGenerator), "C03")]
     [InlineData(typeof(Mrn25Gb02Rlz9P0U8Far5ScenarioGenerator), "C03", "C03", "C03")]
     [InlineData(typeof(SingleItemWithMultipleChecksButOneHasBeenReplacedGenerator), "C03", "X00")]
+    [InlineData(typeof(CancelledWithE88Generator), "C03")]
+    [InlineData(typeof(DeletedX00DecisionGenerator), "X00")]
 
     public void ShouldHaveCorrectDecisionCode(Type generatorType, params string[] expectedDecisionCode)
     {
