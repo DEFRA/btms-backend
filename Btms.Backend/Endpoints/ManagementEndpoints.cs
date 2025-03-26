@@ -6,9 +6,12 @@ using MongoDB.Driver;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Btms.Backend.Config;
+using Btms.Business;
 using Btms.Business.Commands;
 using Btms.Consumers;
+using JsonApiDotNetCore.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement;
 using SlimMessageBus.Host;
 
 namespace Btms.Backend.Endpoints;
@@ -21,6 +24,7 @@ public static class ManagementEndpoints
     {
         if (options.Value.EnableManagement)
         {
+            app.MapGet(BaseRoute + "/features", GetFeaturesAsync).AllowAnonymous();
             app.MapGet(BaseRoute + "/collections", GetCollectionsAsync).AllowAnonymous();
             app.MapGet(BaseRoute + "/collections/drop", DropCollectionsAsync).AllowAnonymous();
             app.MapGet(BaseRoute + "/environment", GetEnvironment).AllowAnonymous();
@@ -154,6 +158,16 @@ public static class ManagementEndpoints
             { "version", System.Environment.GetEnvironmentVariable("CONTAINER_VERSION")! }
         };
         return Results.Ok(dict);
+    }
+
+    private static async Task<IResult> GetFeaturesAsync(IFeatureManager featureManager)
+    {
+        var featureNames = await featureManager.GetFeatureNamesAsync().ToListAsync();
+
+        var featuresList = from f in featureNames
+                           select new { Name = f, Enabled = featureManager.IsEnabledAsync(f).Result };
+
+        return Results.Ok(featuresList);
     }
 
     [AllowAnonymous]

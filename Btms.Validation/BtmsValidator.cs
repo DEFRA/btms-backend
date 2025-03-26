@@ -2,18 +2,21 @@ using Btms.Common.FeatureFlags;
 using Btms.Model.Validation;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 
 namespace Btms.Validation;
 
-public class BtmsValidator(IServiceProvider serviceProvider, IFeatureManager featureManager) : IBtmsValidator
+public class BtmsValidator(IServiceProvider serviceProvider, IFeatureManager featureManager, ILogger<BtmsValidator> logger) : IBtmsValidator
 {
     public BtmsValidationResult Validate<T>(T entity, string? friendlyName = null)
     {
         var name = string.IsNullOrEmpty(friendlyName) ? typeof(T).Name : friendlyName;
+        var featureName = $"{Features.Validation}_{name}";
 
-        if (!featureManager.IsEnabledAsync($"{Features.Validation}_{name}").GetAwaiter().GetResult())
+        if (!featureManager.IsEnabledAsync(featureName).GetAwaiter().GetResult())
         {
+            logger.LogInformation("{FeatureName} is not enabled", featureName);
             return new BtmsValidationResult([]);
         }
 
