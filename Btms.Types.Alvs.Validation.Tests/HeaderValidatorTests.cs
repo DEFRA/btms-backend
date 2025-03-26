@@ -44,6 +44,7 @@ public class HeaderValidatorTests
             Add(new Header { DeclarationUcr = null }, new ExpectedResult(nameof(Header.DeclarationUcr), true));
 
             Add(new Header { DeclarationType = "F" }, new ExpectedResult(nameof(Header.DeclarationType), false));
+            Add(new Header { DeclarationType = "S" }, new ExpectedResult(nameof(Header.DeclarationType), false));
             Add(new Header { DeclarationType = "T" }, new ExpectedResult(nameof(Header.DeclarationType), true));
             Add(new Header { DeclarationType = null }, new ExpectedResult(nameof(Header.DeclarationType), true));
 
