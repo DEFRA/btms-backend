@@ -160,11 +160,15 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
         options.SerializerOptions.WriteIndented = true;
 #endif
     }
-
+    builder.Services.AddScoped<RecursiveQueryStringParameterReader>();
+    builder.Services.AddScoped<IQueryStringParameterReader>(serviceProvider =>
+        serviceProvider.GetRequiredService<RecursiveQueryStringParameterReader>());
+    
     builder.Services.AddJsonApi(ConfigureJsonApiOptions,
         discovery => discovery.AddAssembly(Assembly.Load("Btms.Model")));
 
     builder.Services.AddJsonApiMongoDb();
+    builder.Services.AddScoped<IResponseModelAdapter, RecursiveResponseModelAdapter>();
     builder.Services.AddScoped<IResponseModelAdapter, BtmsResponseModelAdapter>();
     builder.Services.AddScoped(typeof(IResourceReadRepository<,>), typeof(MongoRepository<,>));
     builder.Services.AddScoped(typeof(IResourceWriteRepository<,>), typeof(MongoRepository<,>));
