@@ -33,10 +33,12 @@ public class FinalisationHeaderValidatorTests
             Add(CreateHeader(entryVersionNumber: 0), new ExpectedResult(nameof(FinalisationHeader.EntryVersionNumber), true));
             Add(CreateHeader(entryVersionNumber: 100), new ExpectedResult(nameof(FinalisationHeader.EntryVersionNumber), true));
 
+            Add(CreateHeader(finalState: "10"), new ExpectedResult(nameof(FinalisationHeader.FinalState), true));
+
             Add(CreateHeader(manualAction: "P"), new ExpectedResult(nameof(FinalisationHeader.ManualAction), true));
         }
 
-        private FinalisationHeader CreateHeader(string entryReference = "test", int entryVersionNumber = 1, string finalState = "F", string manualAction = "Y")
+        private FinalisationHeader CreateHeader(string entryReference = "15GB1245fst7s8g9s4", int entryVersionNumber = 1, string finalState = "1", string manualAction = "Y")
         {
             return new FinalisationHeader()
             {

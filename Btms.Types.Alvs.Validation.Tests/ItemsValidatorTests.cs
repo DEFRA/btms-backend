@@ -36,7 +36,7 @@ public class ItemsValidatorTests
             Add(new Items { CustomsProcedureCode = null }, new ExpectedResult(nameof(Items.CustomsProcedureCode), true));
 
             Add(new Items { TaricCommodityCode = "1234567899" }, new ExpectedResult(nameof(Items.TaricCommodityCode), false));
-            Add(new Items { TaricCommodityCode = "0123456789" }, new ExpectedResult(nameof(Items.TaricCommodityCode), true));
+            Add(new Items { TaricCommodityCode = "0123456789" }, new ExpectedResult(nameof(Items.TaricCommodityCode), false));
             Add(new Items { TaricCommodityCode = "123456789" }, new ExpectedResult(nameof(Items.TaricCommodityCode), true));
             Add(new Items { TaricCommodityCode = null }, new ExpectedResult(nameof(Items.TaricCommodityCode), true));
 

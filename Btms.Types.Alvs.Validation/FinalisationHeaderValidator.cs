@@ -13,7 +13,7 @@ public class FinalisationHeaderValidator : AbstractValidator<FinalisationHeader>
             .WithState(p => "ALVSVAL401");
         RuleFor(p => p.EntryVersionNumber).NotNull().InclusiveBetween(1, 99);
 
-        RuleFor(p => p.FinalState).NotNull();
+        RuleFor(p => p.FinalState).NotNull().Length(1).Matches("[0-9]");
 
         RuleFor(p => p.ManualAction).Must(p => p == "N" || p == "Y");
     }
