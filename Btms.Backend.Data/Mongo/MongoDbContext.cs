@@ -94,7 +94,7 @@ public class MongoDbContext : IMongoDbContext
 
     private int GetChangedRecordsCount()
     {
-        return Notifications.PendingChanges + Movements.PendingChanges + Gmrs.PendingChanges;
+        return Notifications.PendingChanges + Movements.PendingChanges + Gmrs.PendingChanges + CdsValidationErrors.PendingChanges;
     }
 
     private async Task InternalSaveChangesAsync(CancellationToken cancellation = default)

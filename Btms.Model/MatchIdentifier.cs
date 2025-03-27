@@ -8,7 +8,7 @@ public static partial class RegularExpressions
     [GeneratedRegex("(CHEDD|CHEDA|CHEDP|CHEDPP)\\.?GB\\.?(20|21)\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex IPaffsIdentifier();
 
-    [GeneratedRegex("(GBCVD|GBCHD|GBCVD|GBCHD)\\.?(20|21)?\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    [GeneratedRegex("[gbchdv]{5}\\.?(20|21)?\\d{2}\\.?\\d{7}[rv]?", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex DocumentReferenceWithoutCountry();
 
     [GeneratedRegex("(GBIUU|IUU)\\.*", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
