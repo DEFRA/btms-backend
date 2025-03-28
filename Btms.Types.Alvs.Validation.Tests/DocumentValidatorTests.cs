@@ -30,13 +30,13 @@ public class DocumentValidatorTests
             Add(new Document { DocumentCode = "C633" }, new ExpectedResult(nameof(Document.DocumentCode), false));
             Add(new Document { DocumentCode = null }, new ExpectedResult(nameof(Document.DocumentCode), true));
 
-            Add(new Document { DocumentControl = "AE" }, new ExpectedResult(nameof(Document.DocumentControl), false));
-            Add(new Document { DocumentControl = "AEE" }, new ExpectedResult(nameof(Document.DocumentControl), true));
-            Add(new Document { DocumentControl = null }, new ExpectedResult(nameof(Document.DocumentControl), true));
-
-            Add(new Document { DocumentStatus = "P" }, new ExpectedResult(nameof(Document.DocumentStatus), false));
-            Add(new Document { DocumentStatus = "PP" }, new ExpectedResult(nameof(Document.DocumentStatus), true));
+            Add(new Document { DocumentStatus = "AE" }, new ExpectedResult(nameof(Document.DocumentStatus), false));
+            Add(new Document { DocumentStatus = "AEE" }, new ExpectedResult(nameof(Document.DocumentStatus), true));
             Add(new Document { DocumentStatus = null }, new ExpectedResult(nameof(Document.DocumentStatus), true));
+
+            Add(new Document { DocumentControl = "P" }, new ExpectedResult(nameof(Document.DocumentControl), false));
+            Add(new Document { DocumentControl = "PP" }, new ExpectedResult(nameof(Document.DocumentControl), true));
+            Add(new Document { DocumentControl = null }, new ExpectedResult(nameof(Document.DocumentControl), true));
         }
     }
 }
