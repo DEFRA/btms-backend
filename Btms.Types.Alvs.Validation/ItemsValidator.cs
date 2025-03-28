@@ -8,7 +8,7 @@ public class ItemsValidator : AbstractValidator<Items>
     {
         RuleFor(p => p.ItemNumber).NotNull().InclusiveBetween(1, 999);
         RuleFor(p => p.CustomsProcedureCode).NotEmpty().MaximumLength(7);
-        RuleFor(p => p.TaricCommodityCode).NotEmpty().Matches("\\d{10}");
+        RuleFor(p => p.TaricCommodityCode).NotEmpty().Matches("\\d").Length(10);
         RuleFor(p => p.GoodsDescription).NotEmpty().MaximumLength(280);
 
         RuleFor(p => p.ConsigneeId).NotEmpty().MaximumLength(18);

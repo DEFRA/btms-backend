@@ -35,6 +35,8 @@ public class FinalisationHeaderValidatorTests
 
             Add(CreateHeader(finalState: "10"), new ExpectedResult(nameof(FinalisationHeader.FinalState), true));
 
+            Add(CreateHeader(finalState: "10"), new ExpectedResult(nameof(FinalisationHeader.FinalState), true));
+
             Add(CreateHeader(manualAction: "P"), new ExpectedResult(nameof(FinalisationHeader.ManualAction), true));
         }
 
