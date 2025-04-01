@@ -43,8 +43,10 @@ using Btms.Backend.Aws;
 using Btms.Business.Mediatr;
 using Btms.Backend.Swagger;
 using Btms.Common;
+using Btms.Consumers.Serilog;
 using Btms.Replication;
 using Btms.Replication.Extensions;
+using Elastic.CommonSchema.Serilog;
 using Microsoft.FeatureManagement;
 
 //-------- Configure the WebApplication builder------------------//
@@ -178,16 +180,26 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
+    var httpAccessor = builder.Configuration.Get<HttpContextAccessor>();
+    var traceIdHeader = builder.Configuration.GetValue<string>("TraceHeader");
+
     builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
         .Enrich.With<LogLevelMapper>()
+        .Enrich.WithEcsHttpContext(httpAccessor!)
         .Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"))
         .WriteTo.OpenTelemetry(options =>
         {
             options.LogsEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
             options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
         });
+
+    if (traceIdHeader != null)
+    {
+        logBuilder.Enrich.WithCorrelationId(traceIdHeader, true);
+        logBuilder.Enrich.WithConsumerCorrelationId(traceIdHeader, true);
+    }
 
     var logger = logBuilder.CreateLogger();
     builder.Logging.AddSerilog(logger);
