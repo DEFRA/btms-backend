@@ -31,6 +31,7 @@ public static class MovementExtensions
             ItemOriginCountryCode = item.ItemOriginCountryCode,
             ItemSupplementaryUnits = item.ItemSupplementaryUnits,
             ItemThirdQuantity = item.ItemThirdQuantity,
+            TaricCommodityCode = item.TaricCommodityCode,
             Documents = item.Documents,
             Checks = item.Checks?
                 .Select(c => c.AsInternalCheck())

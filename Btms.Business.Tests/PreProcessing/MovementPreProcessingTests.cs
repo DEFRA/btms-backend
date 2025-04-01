@@ -1,7 +1,6 @@
 using Btms.Backend.Data.InMemory;
 using Btms.Business.Builders;
 using Btms.Business.Pipelines.PreProcessing;
-using Btms.Model;
 using Btms.Model.Validation;
 using Btms.Types.Alvs;
 using Btms.Validation;
@@ -54,6 +53,10 @@ public class MovementPreProcessingTests
         savedMovement?.AuditEntries.Count.Should().Be(1);
         savedMovement?.AuditEntries[0].Status.Should().Be("Created");
         savedMovement?.Updated.Should().BeAfter(default);
+        savedMovement?.Items.Count.Should().Be(clearanceRequest.Items?.Length);
+        clearanceRequest.Items?.Select(cri =>
+            savedMovement?.Items.Should().Contain(mi =>
+                mi.TaricCommodityCode == cri.TaricCommodityCode)).All(x => true).Should().BeTrue();
     }
 
     [Fact]
