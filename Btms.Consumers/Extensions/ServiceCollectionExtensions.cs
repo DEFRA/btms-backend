@@ -3,6 +3,7 @@ using Azure.Messaging.ServiceBus;
 using Btms.Common.Extensions;
 using Btms.Common.FeatureFlags;
 using Btms.Consumers.AmazonQueues;
+using Btms.Consumers.ConsumerContextAccessor.ContextAccessor;
 using Btms.Consumers.Interceptors;
 using Btms.Consumers.MemoryQueue;
 using Btms.Metrics.Extensions;
@@ -31,6 +32,8 @@ namespace Btms.Consumers.Extensions
 
             services.AddBtmsMetrics();
             services.AddSingleton<IMemoryQueueStatsMonitor, MemoryQueueStatsMonitor>();
+            services.AddSingleton<IConsumerContextAccessor, ContextAccessor.ConsumerContextAccessor>();
+            services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(ConsumerContextAccessorInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(MetricsInterceptor<>));
             services.AddSingleton(typeof(IPublishInterceptor<>), typeof(MetricsInterceptor<>));
             services.AddSingleton(typeof(IConsumerInterceptor<>), typeof(InMemoryQueueStatusInterceptor<>));
