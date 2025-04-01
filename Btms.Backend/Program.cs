@@ -180,14 +180,12 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
-    var httpAccessor = builder.Configuration.Get<HttpContextAccessor>();
     var traceIdHeader = builder.Configuration.GetValue<string>("TraceHeader");
 
     builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
         .Enrich.With<LogLevelMapper>()
-        .Enrich.WithEcsHttpContext(httpAccessor!)
         .Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"))
         .WriteTo.OpenTelemetry(options =>
         {
@@ -197,7 +195,6 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 
     if (traceIdHeader != null)
     {
-        logBuilder.Enrich.WithCorrelationId(traceIdHeader, true);
         logBuilder.Enrich.WithConsumerCorrelationId(traceIdHeader, true);
     }
 
