@@ -180,7 +180,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 [ExcludeFromCodeCoverage]
 static Logger ConfigureLogging(WebApplicationBuilder builder)
 {
-    var traceIdHeader = builder.Configuration.GetValue<string>("TraceHeader");
+    ////var traceIdHeader = builder.Configuration.GetValue<string>("TraceHeader");
 
     builder.Logging.ClearProviders();
     var logBuilder = new LoggerConfiguration()
@@ -193,10 +193,10 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
             options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
         });
 
-    if (traceIdHeader != null)
-    {
-        logBuilder.Enrich.WithConsumerCorrelationId(traceIdHeader);
-    }
+    ////if (traceIdHeader != null)
+    ////{
+    ////    logBuilder.Enrich.WithConsumerCorrelationId(traceIdHeader);
+    ////}
 
     var logger = logBuilder.CreateLogger();
     builder.Logging.AddSerilog(logger);
