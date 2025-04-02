@@ -195,7 +195,7 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
 
     if (traceIdHeader != null)
     {
-        logBuilder.Enrich.WithConsumerCorrelationId(traceIdHeader, true);
+        logBuilder.Enrich.WithConsumerCorrelationId(traceIdHeader);
     }
 
     var logger = logBuilder.CreateLogger();
