@@ -22,7 +22,7 @@ public class ConsumerContextAccessorInterceptor<TMessage>(IConfiguration configu
         ////consumerContextAccessor.ConsumerContext = context;
 
         context.Headers.TryGetValue(traceIdHeader, out object? headerValue);
-        var requestHeader = headerValue?.ToString();
+        var requestHeader = headerValue?.ToString()?.Replace("-", "");
 
         if (!string.IsNullOrWhiteSpace(requestHeader))
         {
