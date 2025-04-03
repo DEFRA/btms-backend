@@ -26,6 +26,7 @@ public class ConsumerContextAccessorInterceptor<TMessage>(IConfiguration configu
 
         if (!string.IsNullOrWhiteSpace(requestHeader))
         {
+            logger.LogInformation("Found {TraceIdHeader} - {TraceValue} - List of Headers {Headers}", traceIdHeader, requestHeader, string.Join(Environment.NewLine, context.Headers));
             using (LogContext.PushProperty("CorrelationId", requestHeader))
             {
                 logger.LogInformation("Set CorrelationId to {CorrelationId}", requestHeader);
