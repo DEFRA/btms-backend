@@ -208,7 +208,7 @@ namespace Btms.Model.Validation.Tests
 
             result.Errors.Any(x => x.CustomState.Equals("ALVSVAL403")).Should().BeFalse();
         }
-        
+
         [Fact]
         public void Should_have_error_when_cancellation_not_same_version_as_cr()
         {
@@ -241,7 +241,7 @@ namespace Btms.Model.Validation.Tests
 
             result.Errors.Any(x => x.CustomState.Equals("ALVSVAL506")).Should().BeTrue();
         }
-        
+
         [Fact]
         public void Should_not_have_error_when_cancellation_not_same_version_as_cr()
         {
