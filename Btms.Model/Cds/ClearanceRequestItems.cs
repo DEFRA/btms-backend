@@ -28,7 +28,7 @@ public partial class ClearanceRequestItems  //
         {
             foreach (var itemDocument in Documents)
             {
-                if (MatchIdentifier.TryFromCds(itemDocument.DocumentReference!, out var identifier))
+                if (MatchIdentifier.TryFromCds(itemDocument.DocumentReference!, itemDocument.DocumentCode!, out var identifier))
                 {
                     list.Add(identifier.Identifier);
                 }

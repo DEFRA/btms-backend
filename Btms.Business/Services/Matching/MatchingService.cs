@@ -17,12 +17,12 @@ public class MatchingService : IMatchingService
 
                 var groupedDocuments = item
                     .Documents
-                    .GroupBy(d => d.DocumentReference)
+                    .GroupBy(d => new { d.DocumentReference, d.DocumentCode })
                     .Select(d => d.Key);
 
                 foreach (var documentGroup in groupedDocuments)
                 {
-                    ProcessDocument(matchingContext, documentGroup, movement, item, matchingResult);
+                    ProcessDocument(matchingContext, documentGroup.DocumentReference, documentGroup.DocumentCode, movement, item, matchingResult);
                 }
             }
         }
@@ -30,14 +30,14 @@ public class MatchingService : IMatchingService
         return Task.FromResult(matchingResult);
     }
 
-    private static void ProcessDocument(MatchingContext matchingContext, string? documentGroup, Movement movement,
+    private static void ProcessDocument(MatchingContext matchingContext, string? documentGroup, string? documentCode, Movement movement,
         Items item, MatchingResult matchingResult)
     {
         Debug.Assert(documentGroup != null);
         Debug.Assert(movement.Id != null, "movement.Id != null");
         Debug.Assert(item.ItemNumber != null, "item.ItemNumber != null");
 
-        if (MatchIdentifier.TryFromCds(documentGroup!, out var identifier))
+        if (MatchIdentifier.TryFromCds(documentGroup!, documentCode!, out var identifier))
         {
             var notification = matchingContext.Notifications.Find(x =>
                 x._MatchReference == identifier.Identifier);

@@ -91,7 +91,7 @@ public class DecisionStatusFinder
     {
         return movement.Items.Any(i =>
             i.Documents?
-                .Any(d => !MatchIdentifier.TryFromCds(d.DocumentReference!, out _)) ?? false);
+                .Any(d => !MatchIdentifier.TryFromCds(d.DocumentReference!, d.DocumentCode!, out _)) ?? false);
     }
 
     private static bool DocumentReferenceCaseIncorrect(Movement movement, AlvsDecision decision)

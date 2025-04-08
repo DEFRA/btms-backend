@@ -26,12 +26,13 @@ public static partial class RegularExpressions
 
 public struct MatchIdentifier(string identifier)
 {
+    private static string[] _validDocumentCodes = new[] { "C640", "C678", "N853", "N851", "9115", "C085", "N002" };
     public string Identifier { get; private set; } = identifier;
 
     public string AsCdsDocumentReference()
     {
         // TODO - transfer over from TDM POC
-        return $"GBCHD{Identifier.Substring(0, 4)}.{Identifier.Substring(4)}";
+        return $"GBCHD2024{Identifier}";
     }
 
     public static MatchIdentifier FromNotification(string reference)
@@ -44,21 +45,30 @@ public struct MatchIdentifier(string identifier)
         if (RegularExpressions.IPaffsIdentifier().IsExactMatch(reference))
         {
             var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
+            if (identifier.Length > 7)
+            {
+                identifier = identifier.Substring(identifier.Length - 7);
+            }
             return new MatchIdentifier(identifier);
         }
 
         throw new FormatException($"Ipaffs Reference invalid format {reference}");
     }
 
-    public static MatchIdentifier FromCds(string reference)
+    public static MatchIdentifier FromCds(string reference, string documentCode)
     {
-        if (RegularExpressions.IPaffsIdentifier().IsExactMatch(reference) ||
-            RegularExpressions.DocumentReferenceWithoutCountry().IsExactMatch(reference))
+        if (_validDocumentCodes.Contains(documentCode))
         {
             var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
-            if (identifier.Length == 9)
+
+            if (string.IsNullOrEmpty(identifier))
             {
-                identifier = $"20{identifier}";
+                throw new FormatException($"Document Reference invalid format {reference}");
+            }
+
+            if (identifier.Length > 7)
+            {
+                identifier = identifier.Substring(identifier.Length - 7);
             }
             return new MatchIdentifier(identifier);
         }
@@ -66,11 +76,11 @@ public struct MatchIdentifier(string identifier)
         throw new FormatException($"Document Reference invalid format {reference}");
     }
 
-    public static bool TryFromCds(string reference, out MatchIdentifier matchIdentifier)
+    public static bool TryFromCds(string reference, string documentCode, out MatchIdentifier matchIdentifier)
     {
         try
         {
-            matchIdentifier = FromCds(reference);
+            matchIdentifier = FromCds(reference, documentCode);
             return true;
         }
         catch (Exception)
@@ -80,9 +90,9 @@ public struct MatchIdentifier(string identifier)
         }
     }
 
-    public static bool IsValid(string? reference)
+    public static bool IsValid(string? reference, string? documentCode)
     {
-        return reference.HasValue() && TryFromCds(reference, out var _);
+        return reference.HasValue() && documentCode.HasValue() && TryFromCds(reference, documentCode, out var _);
     }
 
     public static bool IsIuuRef(string? reference)

@@ -55,7 +55,7 @@ public static class DecisionCategoryFinder
     private static bool DocumentReferenceFieldIncorrect(Movement movement)
     {
         return movement.Items
-            .Any(i => i.Documents?.Any(d => (!MatchIdentifier.IsValid(d.DocumentReference) && !MatchIdentifier.IsIuuRef(d.DocumentReference))) ?? false);
+            .Any(i => i.Documents?.Any(d => (!MatchIdentifier.IsValid(d.DocumentReference, d.DocumentCode) && !MatchIdentifier.IsIuuRef(d.DocumentReference))) ?? false);
     }
 
     private static bool IpaffsDeletedChed(Movement movement)
