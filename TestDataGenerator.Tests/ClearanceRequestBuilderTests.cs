@@ -12,7 +12,7 @@ public class ClearanceRequestBuilderTests
         var builder = ClearanceRequestBuilder.Default();
         builder.WithReferenceNumberOneToOne("CHEDA.GB.2024.1234567");
         var cr = builder.Build();
-        cr.Items![0].Documents![0].DocumentReference!.Should().Be("GBCHD2024.1234567");
+        cr.Items![0].Documents![0].DocumentReference!.Should().Be("GBCHD20241234567");
     }
 
     [Fact]
