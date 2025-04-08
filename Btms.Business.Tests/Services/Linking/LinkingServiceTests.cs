@@ -19,8 +19,8 @@ public class LinkingServiceTests
     private static readonly Random Random = new();
     protected readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
-    private static string GenerateDocumentReference(string id) => $"GBCVD{id.Substring(0, 4)}.{id.Substring(4)}";
-    private static string GenerateNotificationReference(string id) => $"CHEDP.GB.{id.Substring(0, 4)}.{id.Substring(4)}";
+    private static string GenerateDocumentReference(string id) => $"GBCVD2024.{id}";
+    private static string GenerateNotificationReference(string id) => $"CHEDP.GB.2024.{id}";
 
     [Fact]
     public async Task Link_UnknownContextType_ShouldThrowException()
@@ -606,7 +606,7 @@ public class LinkingServiceTests
             _Etag = etag,
             Items = receivedChedReferences.Select(x => new Items
             {
-                Documents = [new Document { DocumentReference = GenerateDocumentReference(x) }]
+                Documents = [new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640" }]
             }).ToList(),
             ClearanceRequests = new(),
             Status = MovementStatus.Default()
@@ -618,7 +618,7 @@ public class LinkingServiceTests
             EntryReference = entryReference,
             Items = existingChedReferences.Select(x => new Items
             {
-                Documents = [new Document { DocumentReference = GenerateDocumentReference(x) }]
+                Documents = [new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640" }]
             }).ToList(),
             ClearanceRequests = new(),
             Status = MovementStatus.Default()
@@ -650,7 +650,7 @@ public class LinkingServiceTests
                 new Items
                 {
                     Documents = receivedChedReferences
-                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x) })
+                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640"})
                         .ToArray()
                 }],
             ClearanceRequests = new(),
@@ -665,7 +665,7 @@ public class LinkingServiceTests
                 new Items
                 {
                     Documents = existingChedReferences
-                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x) })
+                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640" })
                         .ToArray()
                 }],
             ClearanceRequests = new(),
@@ -695,7 +695,7 @@ public class LinkingServiceTests
             Items = chedReferences.Select(x => new Items
             {
                 Documents = newDocs
-                ? [new Document { DocumentReference = GenerateDocumentReference(x) }]
+                ? [new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640" }]
                 : []
             }).ToList(),
             ClearanceRequests = new(),
@@ -710,7 +710,7 @@ public class LinkingServiceTests
                 Items = chedReferences.Select(x => new Items
                 {
                     Documents = existingDocs
-                        ? [new Document { DocumentReference = GenerateDocumentReference(x) }]
+                        ? [new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640" }]
                         : []
                 }).ToList(),
                 ClearanceRequests = new(),
@@ -818,7 +818,7 @@ public class LinkingServiceTests
                     {
                         Documents =
                         [
-                            new Document { DocumentReference = GenerateDocumentReference(refNo) }
+                            new Document { DocumentReference = GenerateDocumentReference(refNo), DocumentCode = "C640" }
                         ]
                     });
             }
@@ -830,7 +830,7 @@ public class LinkingServiceTests
                     {
                         Documents =
                         [
-                            new Document { DocumentReference = GenerateDocumentReference(refNo) }
+                            new Document { DocumentReference = GenerateDocumentReference(refNo), DocumentCode = "C640" }
                         ]
                     });
             }
@@ -850,7 +850,7 @@ public class LinkingServiceTests
             intString += Random.Next(9).ToString();
         }
 
-        return $"{DateTime.Now.Year}{intString}";
+        return $"{intString}";
     }
 }
 

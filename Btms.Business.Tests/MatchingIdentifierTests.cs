@@ -89,6 +89,6 @@ public class MatchingIdentifierTests
     {
         var referenceNumber = MatchIdentifier.FromCds("GBCHD2024.1036543V", "C640");
 
-        referenceNumber.Identifier.Should().Be("20241036543");
+        referenceNumber.Identifier.Should().Be("1036543");
     }
 }

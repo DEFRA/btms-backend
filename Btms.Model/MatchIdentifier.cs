@@ -32,7 +32,7 @@ public struct MatchIdentifier(string identifier)
     public string AsCdsDocumentReference()
     {
         // TODO - transfer over from TDM POC
-        return $"GBCHD{Identifier.Substring(0, 4)}.{Identifier.Substring(4)}";
+        return $"GBCHD2024{Identifier}";
     }
 
     public static MatchIdentifier FromNotification(string reference)
@@ -60,6 +60,12 @@ public struct MatchIdentifier(string identifier)
         if (_validDocumentCodes.Contains(documentCode))
         {
             var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
+
+            if (string.IsNullOrEmpty(identifier))
+            {
+                throw new FormatException($"Document Reference invalid format {reference}");
+            }
+
             if (identifier.Length > 7)
             {
                 identifier = identifier.Substring(identifier.Length - 7);

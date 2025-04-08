@@ -18,8 +18,8 @@ public class UnLinkingTests
     protected readonly IMongoDbContext dbContext = new MemoryMongoDbContext();
     private readonly LinkingMetrics linkingMetrics = new(new DummyMeterFactory());
 
-    private static string GenerateDocumentReference(string id) => $"GBCVD{id.Substring(0, 4)}.{id.Substring(4)}";
-    private static string GenerateNotificationReference(string id) => $"CHEDP.GB.{id.Substring(0, 4)}.{id.Substring(4)}";
+    private static string GenerateDocumentReference(string id) => $"GBCVD2024.{id}";
+    private static string GenerateNotificationReference(string id) => $"CHEDP.GB.2024.{id}";
 
     [Fact]
     public async Task Unlink_Notification_And_Movements()
@@ -101,7 +101,7 @@ public class UnLinkingTests
                     {
                         Documents =
                         [
-                            new Document { DocumentReference = GenerateDocumentReference(refNo) }
+                            new Document { DocumentReference = GenerateDocumentReference(refNo), DocumentCode = "C640" }
                         ]
                     });
             }
@@ -113,7 +113,7 @@ public class UnLinkingTests
                     {
                         Documents =
                         [
-                            new Document { DocumentReference = GenerateDocumentReference(refNo) }
+                            new Document { DocumentReference = GenerateDocumentReference(refNo), DocumentCode = "C640" }
                         ]
                     });
             }
@@ -133,7 +133,7 @@ public class UnLinkingTests
             intString += Random.Next(9).ToString();
         }
 
-        return $"{DateTime.Now.Year}{intString}";
+        return $"{intString}";
     }
 
     protected ImportNotificationLinkContext CreateNotificationContext(ImportNotification? ched,
