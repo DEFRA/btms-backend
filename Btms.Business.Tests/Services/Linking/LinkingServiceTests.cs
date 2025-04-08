@@ -650,7 +650,7 @@ public class LinkingServiceTests
                 new Items
                 {
                     Documents = receivedChedReferences
-                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640"})
+                        .Select(x => new Document { DocumentReference = GenerateDocumentReference(x), DocumentCode = "C640" })
                         .ToArray()
                 }],
             ClearanceRequests = new(),
