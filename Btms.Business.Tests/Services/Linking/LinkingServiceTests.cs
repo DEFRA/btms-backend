@@ -674,7 +674,6 @@ public class LinkingServiceTests
 
         var changeSet = mov.GenerateChangeSet(existingMovement);
         var output = LinkContext.ForMovement(mov, changeSet);
-
         return output;
     }
 
