@@ -17,7 +17,7 @@ public class MatchingService : IMatchingService
 
                 var groupedDocuments = item
                     .Documents
-                    .GroupBy(d => new { d.DocumentReference, d.DocumentCode})
+                    .GroupBy(d => new { d.DocumentReference, d.DocumentCode })
                     .Select(d => d.Key);
 
                 foreach (var documentGroup in groupedDocuments)
