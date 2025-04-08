@@ -36,7 +36,13 @@ public static class NoMatchExtensions
             .First()
             .Documents?
             .First()
-            .DocumentReference!);
+            .DocumentReference!,
+            clearanceRequest
+            .Items?
+            .First()
+            .Documents?
+            .First()
+            .DocumentCode!);
     }
 
     public static DecisionBuilder<Decision> GetDecisionBuilder(
