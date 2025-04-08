@@ -87,7 +87,7 @@ namespace Btms.Model.Validation.Tests
                     {
                         EntryVersionNumber = 2,
                         EntryReference = "123",
-                        FinalState = FinalState.CancelledAfterArrival,
+                        FinalState = FinalState.Destroyed,
                         ManualAction = true
                     }
                 },
@@ -101,7 +101,7 @@ namespace Btms.Model.Validation.Tests
                     },
                     Finalisation = new Finalisation()
                     {
-                        FinalState = FinalState.CancelledAfterArrival,
+                        FinalState = FinalState.Destroyed,
                         ManualAction = true,
                     }
                 });
@@ -207,6 +207,72 @@ namespace Btms.Model.Validation.Tests
             var result = validator.TestValidate(model);
 
             result.Errors.Any(x => x.CustomState.Equals("ALVSVAL403")).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Should_have_error_when_cancellation_not_same_version_as_cr()
+        {
+            var model = new BtmsValidationPair<CdsFinalisation, Movement>(
+                new CdsFinalisation()
+                {
+                    Header = new FinalisationHeader()
+                    {
+                        EntryVersionNumber = 4,
+                        EntryReference = "123",
+                        FinalState = FinalState.CancelledWhilePreLodged,
+                        ManualAction = true
+                    }
+                },
+                new Movement()
+                {
+                    EntryVersionNumber = 3,
+                    Status = new MovementStatus()
+                    {
+                        ChedTypes = [ImportNotificationTypeEnum.Ced],
+                        LinkStatus = LinkStatus.AllLinked
+                    },
+                    Finalisation = new Finalisation()
+                    {
+                        FinalState = FinalState.CancelledWhilePreLodged,
+                        ManualAction = true,
+                    }
+                });
+            var result = validator.TestValidate(model);
+
+            result.Errors.Any(x => x.CustomState.Equals("ALVSVAL506")).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_not_have_error_when_cancellation_not_same_version_as_cr()
+        {
+            var model = new BtmsValidationPair<CdsFinalisation, Movement>(
+                new CdsFinalisation()
+                {
+                    Header = new FinalisationHeader()
+                    {
+                        EntryVersionNumber = 4,
+                        EntryReference = "123",
+                        FinalState = FinalState.CancelledWhilePreLodged,
+                        ManualAction = true
+                    }
+                },
+                new Movement()
+                {
+                    EntryVersionNumber = 4,
+                    Status = new MovementStatus()
+                    {
+                        ChedTypes = [ImportNotificationTypeEnum.Ced],
+                        LinkStatus = LinkStatus.AllLinked
+                    },
+                    Finalisation = new Finalisation()
+                    {
+                        FinalState = FinalState.CancelledWhilePreLodged,
+                        ManualAction = true,
+                    }
+                });
+            var result = validator.TestValidate(model);
+
+            result.Errors.Any(x => x.CustomState.Equals("ALVSVAL506")).Should().BeFalse();
         }
     }
 }

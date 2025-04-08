@@ -45,7 +45,7 @@ public class CdsFinalisationValidator : AbstractValidator<BtmsValidationPair<Cds
 
     private static bool BeValidCancelRequest(BtmsValidationPair<CdsFinalisation, Movement> pair, CdsFinalisation finalisation)
     {
-        return !(finalisation.Header.FinalState.IsCancelled() && pair.ExistingRecord?.EntryVersionNumber == finalisation.Header?.EntryVersionNumber);
+        return finalisation.Header.FinalState.IsCancelled() && pair.ExistingRecord?.EntryVersionNumber == finalisation.Header?.EntryVersionNumber;
     }
 
     private static bool NotBeCancelled(Movement movement)
