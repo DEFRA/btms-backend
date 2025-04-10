@@ -14,7 +14,7 @@ public static partial class RegularExpressions
     [GeneratedRegex("(GBIUU|IUU)\\.*", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex IuuIdentifier();
 
-    [GeneratedRegex("\\d{2,4}\\.?\\d{7}", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    [GeneratedRegex("\\d{2,4}\\.?\\d{7,}", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
     internal static partial Regex DocumentReferenceIdentifier();
 
     public static bool IsExactMatch(this Regex regex, string input)
@@ -59,7 +59,8 @@ public struct MatchIdentifier(string identifier)
     {
         if (_validDocumentCodes.Contains(documentCode))
         {
-            var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value.Replace(".", "");
+            reference = reference.Replace(".", "").Replace(" ", "");
+            var identifier = RegularExpressions.DocumentReferenceIdentifier().Match(reference).Value;
 
             if (string.IsNullOrEmpty(identifier))
             {
