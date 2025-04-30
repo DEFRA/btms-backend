@@ -122,7 +122,7 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
     builder.Services.AddMsalHttpProxyClient(Proxy.ConfigurePrimaryHttpMessageHandler);
 
     builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-    
+
     static void ConfigureJsonApiOptions(JsonApiOptions options)
     {
         options.Namespace = "api";
