@@ -26,9 +26,6 @@ using JsonApiDotNetCore.Repositories;
 using JsonApiDotNetCore.Serialization.Response;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
-using OpenTelemetry;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Core;
 using System.Diagnostics.CodeAnalysis;
@@ -126,29 +123,6 @@ static void ConfigureWebApplication(WebApplicationBuilder builder)
 
     builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-    // This uses grafana for metrics and tracing and works with the local docker compose setup as well as in CDP
-
-    builder.Services.AddOpenTelemetry()
-        .WithMetrics(metrics =>
-        {
-            metrics.AddRuntimeInstrumentation()
-                .AddMeter(
-                    "Microsoft.AspNetCore.Hosting",
-                    "Microsoft.AspNetCore.Server.Kestrel",
-                    "System.Net.Http",
-                    MetricNames.MeterName,
-                    AnalyticsMetricNames.MeterName)
-                .AddPrometheusExporter();
-        })
-        .WithTracing(tracing =>
-        {
-            tracing.AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation()
-                .AddSource(MetricNames.MeterName)
-                .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
-        })
-        .UseOtlpExporter();
-
     static void ConfigureJsonApiOptions(JsonApiOptions options)
     {
         options.Namespace = "api";
@@ -186,12 +160,7 @@ static Logger ConfigureLogging(WebApplicationBuilder builder)
     var logBuilder = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
         .Enrich.With<LogLevelMapper>()
-        .Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"))
-        .WriteTo.OpenTelemetry(options =>
-        {
-            options.LogsEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-            options.ResourceAttributes.Add("service.name", MetricNames.MeterName);
-        });
+        .Enrich.WithProperty("service.version", Environment.GetEnvironmentVariable("SERVICE_VERSION"));
 
     ////if (traceIdHeader != null)
     ////{
@@ -282,11 +251,6 @@ static WebApplication BuildWebApplication(WebApplicationBuilder builder)
     app.UseManagementEndpoints(apiOptions);
     app.UseDiagnosticEndpoints(apiOptions);
     app.UseAnalyticsEndpoints(apiOptions);
-
-    if (builder.Environment.IsDevelopment())
-    {
-        app.UseOpenTelemetryPrometheusScrapingEndpoint();
-    }
 
     return app;
 }
