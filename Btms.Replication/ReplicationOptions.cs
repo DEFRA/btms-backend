@@ -27,6 +27,6 @@ public class ReplicationOptions : IBlobServiceOptions
     [RequiredIf(nameof(Enabled), true)]
     public string AzureClientSecret { get; set; } = null!;
 
-    public int Retries { get; set; }
-    public int Timeout { get; set; }
+    public int Retries { get; set; } = 3;
+    public int Timeout { get; set; } = 10;
 }
