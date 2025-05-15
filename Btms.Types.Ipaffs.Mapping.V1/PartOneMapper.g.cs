@@ -40,6 +40,7 @@ public static class PartOneMapper
         to.IsPlaceOfDestinationThePermanentAddress = from?.IsPlaceOfDestinationThePermanentAddress;
         to.IsCatchCertificateRequired = from?.IsCatchCertificateRequired;
         to.IsGvmsRoute = from?.IsGvmsRoute;
+        to.Commodities = CommoditiesMapper.Map(from?.Commodities);
         to.Purpose = PurposeMapper.Map(from?.Purpose);
         to.PointOfEntry = from?.PointOfEntry;
         to.PointOfEntryControlPoint = from?.PointOfEntryControlPoint;

@@ -165,6 +165,10 @@ public partial class PartTwo  //
     [System.ComponentModel.Description("Accompanying documents")]
     public AccompanyingDocument[]? AccompanyingDocuments { get; set; }
 
+    [Attr]
+    [JsonPropertyName("commodityChecks")]
+    public CommodityChecks[]? CommodityChecks { get; set; }
+
 
     /// <summary>
     /// Have the PHSI regulated commodities been auto cleared?

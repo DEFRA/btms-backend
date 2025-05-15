@@ -157,7 +157,7 @@ internal static class Bootstrap
             map.MapProperty("RiskDecisionLockingTime").SetName("riskDecisionLockedOn")
                 .IsDateTime(IpaffsUtc);
 
-            map.MapProperty("RiskAssessment").ExcludeFromInternal();
+            // map.MapProperty("RiskAssessment").ExcludeFromInternal();
         });
 
         GeneratorClassMap.RegisterClassMap("Purpose", map =>
@@ -247,14 +247,14 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("Commodities", map =>
         {
-            map.MapProperty("complementParameterSet").ExcludeFromInternal();
-            map.MapProperty("commodityComplement").ExcludeFromInternal();
+            // map.MapProperty("complementParameterSet").ExcludeFromInternal();
+            // map.MapProperty("commodityComplement").ExcludeFromInternal();
         });
 
 
         GeneratorClassMap.RegisterClassMap("PartOne", map =>
         {
-            map.MapProperty("commodities").ExcludeFromInternal();
+            // map.MapProperty("commodities").ExcludeFromInternal();
             map.MapProperty("originalEstimatedDateTime").SetName("originalEstimatedOn")
                 .IsDateTime(IpaffsUtc);
 
@@ -274,7 +274,7 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("PartTwo", map =>
         {
-            map.MapProperty("commodityChecks").ExcludeFromInternal();
+            // map.MapProperty("commodityChecks").ExcludeFromInternal();
             map.MapProperty("autoClearedDateTime").SetInternalName("autoClearedOn")
                 .IsDateTime(IpaffsUtc);
             map.MapProperty("checkDate").SetInternalName("checkedOn")
@@ -288,7 +288,7 @@ internal static class Bootstrap
 
         GeneratorClassMap.RegisterClassMap("ComplementParameterSet", map =>
         {
-            map.ExcludeFromInternal();
+            // map.ExcludeFromInternal();
 
             map.MapProperty("KeyDataPair")
                 .SetType("IDictionary<string, object>")

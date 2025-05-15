@@ -30,6 +30,8 @@ public static class CommoditiesMapper
         to.NumberOfPackages = from?.NumberOfPackages;
         to.Temperature = from?.Temperature;
         to.NumberOfAnimals = from?.NumberOfAnimals;
+        to.CommodityComplements = from?.CommodityComplements?.Select(x => CommodityComplementMapper.Map(x)).ToArray();
+        to.ComplementParameterSets = from?.ComplementParameterSets?.Select(x => ComplementParameterSetMapper.Map(x)).ToArray();
         to.IncludeNonAblactedAnimals = from?.IncludeNonAblactedAnimals;
         to.CountryOfOrigin = from?.CountryOfOrigin;
         to.CountryOfOriginIsPodCountry = from?.CountryOfOriginIsPodCountry;

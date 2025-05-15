@@ -37,6 +37,7 @@ public static class PartTwoMapper
         to.ConsignmentValidations = from?.ConsignmentValidations?.Select(x => ValidationMessageCodeMapper.Map(x)).ToArray();
         to.CheckedOn = from?.CheckDate;
         to.AccompanyingDocuments = from?.AccompanyingDocuments?.Select(x => AccompanyingDocumentMapper.Map(x)).ToArray();
+        to.CommodityChecks = from?.CommodityChecks?.Select(x => CommodityChecksMapper.Map(x)).ToArray();
         to.PhsiAutoCleared = from?.PhsiAutoCleared;
         to.HmiAutoCleared = from?.HmiAutoCleared;
         to.InspectionRequired = InspectionRequiredEnumMapper.Map(from?.InspectionRequired);
