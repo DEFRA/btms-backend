@@ -29,7 +29,7 @@ public static class AddressMapper
         to.AddressLine2 = from?.AddressLine2;
         to.AddressLine3 = from?.AddressLine3;
         to.PostalZipCode = from?.PostalZipCode;
-        to.CountryIsoCode = from?.CountryIsoCode;
+        to.CountryISOCode = from?.CountryISOCode;
         to.Email = from?.Email;
         to.UkTelephone = from?.UkTelephone;
         to.Telephone = from?.Telephone;

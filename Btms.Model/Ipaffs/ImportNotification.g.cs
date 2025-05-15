@@ -284,4 +284,13 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
     [System.ComponentModel.Description("Indicates whether a CHED has been matched with a GVMS GMR via DMP")]
     public bool? IsGMRMatched { get; set; }
 
+
+    /// <summary>
+    /// Indicates whether CHED is exempted from autoclearance
+    /// </summary>
+    [Attr]
+    [JsonPropertyName("isAutoClearanceExempted")]
+    [System.ComponentModel.Description("Indicates whether CHED is exempted from autoclearance")]
+    public bool? IsAutoClearanceExempted { get; set; }
+
 }

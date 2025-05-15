@@ -51,6 +51,7 @@ public static class ImportNotificationMapper
         to.IsCdsFullMatched = from?.IsCdsFullMatched;
         to.ChedTypeVersion = from?.ChedTypeVersion;
         to.IsGMRMatched = from?.IsGMRMatched;
+        to.IsAutoClearanceExempted = from?.IsAutoClearanceExempted;
         return to;
     }
 }

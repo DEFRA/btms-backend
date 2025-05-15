@@ -15,7 +15,7 @@ internal class GenerateIpaffsModelCommand : IRequest
     [Option('s', "schema",
         HelpText = "The Json schema file, which to use to generate the csharp classes.")]
     public string SchemaFile { get; set; } =
-        $"{SolutionPath}/Btms.Backend.Cli/Features/GenerateModels/GenerateIpaffsModel/jsonschema.json";
+        $"{SolutionPath}/Btms.Backend.Cli/Features/GenerateModels/GenerateIpaffsModel/notification-schema-17.5.json";
 
     public string SourceOutputPath { get; set; } = $"{SolutionPath}/Btms.Types.Ipaffs.V1/";
 

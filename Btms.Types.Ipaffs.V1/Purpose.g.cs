@@ -133,4 +133,11 @@ public partial class Purpose  //
     [JsonPropertyName("estimatedArrivalTimeAtPortOfExit")]
     public TimeOnly? EstimatedArrivalTimeAtPortOfExit { get; set; }
 
+
+    /// <summary>
+    /// Place of departure
+    /// </summary>
+    [JsonPropertyName("pointOfExit")]
+    public string? PointOfExit { get; set; }
+
 }

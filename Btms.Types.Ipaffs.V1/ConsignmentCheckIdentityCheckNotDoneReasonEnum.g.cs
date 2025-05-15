@@ -16,4 +16,7 @@ public enum ConsignmentCheckIdentityCheckNotDoneReasonEnum
     [EnumMember(Value = "Not required")]
     NotRequired,
 
+    [EnumMember(Value = "Chilled equine semen facilitation scheme")]
+    ChilledEquineSemenFacilitationScheme,
+
 }

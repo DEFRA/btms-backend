@@ -435,6 +435,16 @@ public partial class PartOne  //
 
 
     /// <summary>
+    /// Select whether the importer wishes to store transporter contact details
+    /// </summary>
+    [Attr]
+    [JsonPropertyName("storeTransporterContact")]
+    [System.ComponentModel.Description("Select whether the importer wishes to store transporter contact details")]
+    [MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    public PartOneStoreTransporterContactEnum? StoreTransporterContact { get; set; }
+
+
+    /// <summary>
     /// DateTime
     /// </summary>
     [Attr]

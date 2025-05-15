@@ -82,7 +82,7 @@ public partial class Address  //
     /// country 2-digits ISO code
     /// </summary>
     [JsonPropertyName("countryISOCode")]
-    public string? CountryIsoCode { get; set; }
+    public string? CountryISOCode { get; set; }
 
 
     /// <summary>

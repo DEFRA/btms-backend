@@ -98,9 +98,9 @@ public partial class Address  //
     /// country 2-digits ISO code
     /// </summary>
     [Attr]
-    [JsonPropertyName("countryIsoCode")]
+    [JsonPropertyName("countryISOCode")]
     [System.ComponentModel.Description("country 2-digits ISO code")]
-    public string? CountryIsoCode { get; set; }
+    public string? CountryISOCode { get; set; }
 
 
     /// <summary>

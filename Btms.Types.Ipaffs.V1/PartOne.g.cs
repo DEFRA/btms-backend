@@ -370,4 +370,11 @@ public partial class PartOne  //
     [JsonPropertyName("provideCtcMrn")]
     public PartOneProvideCtcMrnEnum? ProvideCtcMrn { get; set; }
 
+
+    /// <summary>
+    /// Select whether the importer wishes to store transporter contact details
+    /// </summary>
+    [JsonPropertyName("storeTransporterContact")]
+    public PartOneStoreTransporterContactEnum? StoreTransporterContact { get; set; }
+
 }

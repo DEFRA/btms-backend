@@ -21,6 +21,7 @@ public static class DecisionDecisionEnumMapper
         {
             Btms.Types.Ipaffs.DecisionDecisionEnum.NonAcceptable => Btms.Model.Ipaffs.DecisionDecisionEnum.NonAcceptable,
             Btms.Types.Ipaffs.DecisionDecisionEnum.AcceptableForInternalMarket => Btms.Model.Ipaffs.DecisionDecisionEnum.AcceptableForInternalMarket,
+            Btms.Types.Ipaffs.DecisionDecisionEnum.AcceptableForNonInternalMarket => Btms.Model.Ipaffs.DecisionDecisionEnum.AcceptableForNonInternalMarket,
             Btms.Types.Ipaffs.DecisionDecisionEnum.AcceptableIfChanneled => Btms.Model.Ipaffs.DecisionDecisionEnum.AcceptableIfChanneled,
             Btms.Types.Ipaffs.DecisionDecisionEnum.AcceptableForTranshipment => Btms.Model.Ipaffs.DecisionDecisionEnum.AcceptableForTranshipment,
             Btms.Types.Ipaffs.DecisionDecisionEnum.AcceptableForTransit => Btms.Model.Ipaffs.DecisionDecisionEnum.AcceptableForTransit,

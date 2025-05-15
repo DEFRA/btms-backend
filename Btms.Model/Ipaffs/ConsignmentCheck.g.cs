@@ -168,4 +168,13 @@ public partial class ConsignmentCheck  //
     [System.ComponentModel.Description("Result of laboratory tests")]
     public string? LaboratoryCheckResult { get; set; }
 
+
+    /// <summary>
+    /// Additional details for document check
+    /// </summary>
+    [Attr]
+    [JsonPropertyName("documentCheckAdditionalDetails")]
+    [System.ComponentModel.Description("Additional details for document check")]
+    public string? DocumentCheckAdditionalDetails { get; set; }
+
 }

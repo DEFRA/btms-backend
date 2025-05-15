@@ -116,8 +116,8 @@ internal static class Bootstrap
         GeneratorEnumMap.RegisterEnumMap("ImportNotificationStatusEnum",
             map => { map.RemoveEnumValue("SUBMITTED,IN_PROGRESS,MODIFY"); });
 
-        GeneratorEnumMap.RegisterEnumMap("PurposePurposeGroupEnum",
-            map => { map.AddEnumValue("For Import Non-Internal Market"); });
+        // GeneratorEnumMap.RegisterEnumMap("PurposePurposeGroupEnum",
+        //     map => { map.AddEnumValue("For Import Non-Internal Market"); });
     }
 
     private static void RegisterIpaffsClassMaps()

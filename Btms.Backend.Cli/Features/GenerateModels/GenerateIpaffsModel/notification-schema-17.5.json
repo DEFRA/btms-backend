@@ -1,4 +1,4 @@
-﻿{
+{
   "$id": "notification-schema",
   "description": "A notification of an import in IPAFFS system",
   "type": "object",
@@ -603,7 +603,8 @@
                 "For Re-Import",
                 "For Private Import",
                 "For Transfer To",
-                "For Import Re-Conformity Check"
+                "For Import Re-Conformity Check",
+                "For Import Non-Internal Market"
               ]
             },
             "estimatedArrivalDateAtPortOfExit": {
@@ -615,6 +616,12 @@
               "type": "string",
               "javaType": "java.time.LocalTime",
               "description": "Estimated time at port of exit"
+            },
+            "pointOfExit": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 255,
+              "description": "Place of departure"
             }
           }
         },
@@ -928,6 +935,14 @@
             "YES_ADD_LATER",
             "NO"
           ]
+        },
+        "storeTransporterContact": {
+          "type": "string",
+          "description": "Select whether the importer wishes to store transporter contact details",
+          "enum": [
+            "YES",
+            "NO"
+          ]
         }
       }
     },
@@ -992,6 +1007,10 @@
     "isGMRMatched": {
       "type": "boolean",
       "description": "Indicates whether a CHED has been matched with a GVMS GMR via DMP"
+    },
+    "isAutoClearanceExempted": {
+      "type": "boolean",
+      "description": "Indicates whether CHED is exempted from autoclearance"
     }
   },
   "definitions": {
@@ -1231,7 +1250,8 @@
           "description": "What was the reason for skipping identity check",
           "enum": [
             "Reduced checks regime",
-            "Not required"
+            "Not required",
+            "Chilled equine semen facilitation scheme"
           ]
         },
         "physicalCheckDone": {
@@ -1273,6 +1293,12 @@
         "laboratoryCheckResult": {
           "$ref": "#/definitions/Result",
           "description": "Result of laboratory tests"
+        },
+        "documentCheckAdditionalDetails": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 150,
+          "description": "Additional details for document check"
         }
       }
     },
@@ -1722,6 +1748,7 @@
           "enum": [
             "Non Acceptable",
             "Acceptable for Internal Market",
+            "Acceptable for Non Internal Market",
             "Acceptable if Channeled",
             "Acceptable for Transhipment",
             "Acceptable for Transit",
@@ -2838,11 +2865,11 @@
           "description": "Other reason text when selected reason is 'Other'",
           "maxLength": 32
         },
-        "isSelectedForChecks": {
+        "isSelectedForChecks" : {
           "type": "boolean",
           "description": "Has commodity been selected for checks?"
         },
-        "hasChecksComplete": {
+        "hasChecksComplete" : {
           "type": "boolean",
           "description": "Has commodity completed this type of check"
         }

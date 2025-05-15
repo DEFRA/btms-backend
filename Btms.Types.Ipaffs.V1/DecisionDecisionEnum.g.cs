@@ -16,6 +16,9 @@ public enum DecisionDecisionEnum
     [EnumMember(Value = "Acceptable for Internal Market")]
     AcceptableForInternalMarket,
 
+    [EnumMember(Value = "Acceptable for Non Internal Market")]
+    AcceptableForNonInternalMarket,
+
     [EnumMember(Value = "Acceptable if Channeled")]
     AcceptableIfChanneled,
 

@@ -153,6 +153,15 @@ public partial class Purpose  //
 
 
     /// <summary>
+    /// Place of departure
+    /// </summary>
+    [Attr]
+    [JsonPropertyName("pointOfExit")]
+    [System.ComponentModel.Description("Place of departure")]
+    public string? PointOfExit { get; set; }
+
+
+    /// <summary>
     /// DateTime
     /// </summary>
     [Attr]

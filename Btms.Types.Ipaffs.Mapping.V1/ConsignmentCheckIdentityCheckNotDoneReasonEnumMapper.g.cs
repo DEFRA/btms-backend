@@ -21,6 +21,7 @@ public static class ConsignmentCheckIdentityCheckNotDoneReasonEnumMapper
         {
             Btms.Types.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.ReducedChecksRegime => Btms.Model.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.ReducedChecksRegime,
             Btms.Types.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.NotRequired => Btms.Model.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.NotRequired,
+            Btms.Types.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.ChilledEquineSemenFacilitationScheme => Btms.Model.Ipaffs.ConsignmentCheckIdentityCheckNotDoneReasonEnum.ChilledEquineSemenFacilitationScheme,
 
             _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
         };

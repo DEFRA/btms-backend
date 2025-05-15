@@ -230,4 +230,11 @@ public partial class ImportNotification  //: CustomStringMongoIdentifiable
     [JsonPropertyName("isGMRMatched")]
     public bool? IsGMRMatched { get; set; }
 
+
+    /// <summary>
+    /// Indicates whether CHED is exempted from autoclearance
+    /// </summary>
+    [JsonPropertyName("isAutoClearanceExempted")]
+    public bool? IsAutoClearanceExempted { get; set; }
+
 }

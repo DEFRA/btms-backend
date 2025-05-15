@@ -14,6 +14,8 @@ public enum DecisionDecisionEnum
 
     AcceptableForInternalMarket,
 
+    AcceptableForNonInternalMarket,
+
     AcceptableIfChanneled,
 
     AcceptableForTranshipment,

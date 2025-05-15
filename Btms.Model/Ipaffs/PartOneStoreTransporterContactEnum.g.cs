@@ -7,13 +7,11 @@ using System.Text.Json.Serialization;
 namespace Btms.Model.Ipaffs;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum ConsignmentCheckIdentityCheckNotDoneReasonEnum
+public enum PartOneStoreTransporterContactEnum
 {
 
-    ReducedChecksRegime,
+    Yes,
 
-    NotRequired,
-
-    ChilledEquineSemenFacilitationScheme,
+    No,
 
 }

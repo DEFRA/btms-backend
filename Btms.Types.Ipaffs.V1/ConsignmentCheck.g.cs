@@ -133,4 +133,11 @@ public partial class ConsignmentCheck  //
     [JsonPropertyName("laboratoryCheckResult")]
     public string? LaboratoryCheckResult { get; set; }
 
+
+    /// <summary>
+    /// Additional details for document check
+    /// </summary>
+    [JsonPropertyName("documentCheckAdditionalDetails")]
+    public string? DocumentCheckAdditionalDetails { get; set; }
+
 }

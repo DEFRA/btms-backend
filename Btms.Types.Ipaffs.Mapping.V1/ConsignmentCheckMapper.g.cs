@@ -37,6 +37,7 @@ public static class ConsignmentCheckMapper
         to.NumberOfAnimalsChecked = from?.NumberOfAnimalsChecked;
         to.LaboratoryCheckDone = from?.LaboratoryCheckDone;
         to.LaboratoryCheckResult = from?.LaboratoryCheckResult;
+        to.DocumentCheckAdditionalDetails = from?.DocumentCheckAdditionalDetails;
         return to;
     }
 }
